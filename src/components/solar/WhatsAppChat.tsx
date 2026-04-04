@@ -316,8 +316,6 @@ export default function WhatsAppChat() {
           aria-label="Open chat"
         >
           <MessageCircle className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-          {/* Subtle pulse ring */}
-          <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20" />
         </button>
       )}
 

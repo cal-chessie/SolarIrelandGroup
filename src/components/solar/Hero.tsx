@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { MessageCircle, ArrowRight, Shield, Zap, Euro, Sun, Clock, CheckCircle2, Star, ChevronDown } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
 
 /* ═══════════════════════════════════════════
    ANIMATED COUNTER — lightweight RAF
+   Starts ONLY after page has fully settled (1.5s delay)
    ═══════════════════════════════════════════ */
 function AnimatedCounter({ value, prefix = '', suffix = '' }: { value: number; prefix?: string; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -20,17 +21,20 @@ function AnimatedCounter({ value, prefix = '', suffix = '' }: { value: number; p
         if (entry.isIntersecting && !started.current) {
           started.current = true;
           obs.disconnect();
-          const duration = 2000;
-          const start = performance.now();
-          const step = (now: number) => {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const current = eased * value;
-            el.textContent = prefix + Math.round(current).toString() + suffix;
-            if (progress < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
+          // Delay counter start to let the page fully settle first
+          setTimeout(() => {
+            const duration = 2000;
+            const start = performance.now();
+            const step = (now: number) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = eased * value;
+              el.textContent = prefix + Math.round(current).toString() + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+          }, 1500);
         }
       },
       { threshold: 0.3 }
@@ -43,28 +47,32 @@ function AnimatedCounter({ value, prefix = '', suffix = '' }: { value: number; p
 }
 
 /* ═══════════════════════════════════════════
-   LIVE SAVINGS TICKER
+   LIVE SAVINGS TICKER — uses ref, NO re-renders
    ═══════════════════════════════════════════ */
 function SavingsTicker() {
-  const [currentSaving, setCurrentSaving] = useState(847293);
+  const savingRef = useRef(847293);
+  const elRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSaving((prev) => prev + Math.floor(Math.random() * 3) + 1);
+    // Delay start to let page settle
+    const startDelay = setTimeout(() => {
+      const interval = setInterval(() => {
+        savingRef.current += Math.floor(Math.random() * 3) + 1;
+        if (elRef.current) {
+          elRef.current.textContent = '€' + (savingRef.current / 1000).toFixed(1) + 'k';
+        }
+      }, 2000);
+      return () => clearInterval(interval);
     }, 2000);
-    return () => clearInterval(interval);
+    return () => clearTimeout(startDelay);
   }, []);
-
-  const formatted = (currentSaving / 1000).toFixed(1);
 
   return (
     <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/40 border border-white/[0.08]">
-      <span className="icon-spin-slow text-green-400">
-        <Euro className="w-3.5 h-3.5" />
-      </span>
+      <Euro className="w-3.5 h-3.5 text-green-400" />
       <div className="flex items-baseline gap-1">
         <span className="text-xs text-gray-400">Irish homes saving right now:</span>
-        <span className="text-xs font-bold text-green-400 tabular-nums">€{formatted}k</span>
+        <span ref={elRef} className="text-xs font-bold text-green-400 tabular-nums">€847.3k</span>
       </div>
     </div>
   );
@@ -97,7 +105,7 @@ function StatPill({ icon: Icon, label, value, prefix, suffix, color }: {
 }
 
 /* ═══════════════════════════════════════════
-   MAIN HERO — ZERO framer-motion, pure CSS
+   MAIN HERO — ZERO animations on load
    ═══════════════════════════════════════════ */
 export default function Hero() {
   return (
@@ -108,13 +116,10 @@ export default function Hero() {
           src="/hero-solar.jpg"
           alt="Modern black frameless solar panels on an Irish home"
           className="w-full h-full object-cover"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 via-50% to-[#0a0a0a]" />
       </div>
-
-      {/* ─── Ambient light effects — static CSS ─── */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/[0.03] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-400/[0.02] rounded-full pointer-events-none" />
 
       {/* ─── Main content ─── */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pt-28 pb-32 sm:pb-36">
@@ -124,9 +129,7 @@ export default function Hero() {
             {/* Badge */}
             <div>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/30 text-amber-400 border border-white/[0.15]">
-                <span className="icon-spin-slow">
-                  <Sun className="w-3.5 h-3.5" />
-                </span>
+                <Sun className="w-3.5 h-3.5" />
                 SEAI Registered Installer
               </span>
             </div>
@@ -188,12 +191,10 @@ export default function Hero() {
           {/* ─── Right side: Bumblebee + Stats ─── */}
           <div className="flex-shrink-0 lg:mt-8 w-full lg:w-auto">
             <div className="flex flex-col items-center gap-6">
-              {/* Bumblebee with CSS glow rings */}
+              {/* Bumblebee — NO float animation, NO glow rings */}
               <div className="relative group cursor-pointer">
-                <div className="hero-glow-ring hero-glow-ring--inner absolute -inset-8 rounded-full" />
-                <div className="hero-glow-ring hero-glow-ring--outer absolute -inset-14 rounded-full" />
                 <div className="relative">
-                  <BumblebeeMascot size="hero" />
+                  <BumblebeeMascot size="hero" animate={false} />
                 </div>
               </div>
 
@@ -227,12 +228,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ─── Scroll indicator ─── */}
+      {/* ─── Scroll indicator — static, no bounce animation ─── */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
         <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
-        <div className="hero-scroll-bounce">
-          <ChevronDown className="w-4 h-4 text-white/30" />
-        </div>
+        <ChevronDown className="w-4 h-4 text-white/30" />
       </div>
     </section>
   );
