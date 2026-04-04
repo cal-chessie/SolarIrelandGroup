@@ -100,11 +100,6 @@ function StepCard({
 
   return (
     <div className="relative">
-      {/* Mobile: vertical connector line */}
-      {index < steps.length - 1 && (
-        <div className="md:hidden absolute left-6 top-[72px] w-px h-[calc(100%-48px)] bg-gradient-to-b from-white/10 via-white/5 to-transparent" />
-      )}
-
       <div
         onClick={onToggle}
         role="button"
@@ -219,24 +214,6 @@ function StepCard({
 }
 
 /* ═══════════════════════════════════════════
-   DESKTOP TIMELINE CONNECTOR
-   ═══════════════════════════════════════════ */
-function TimelineConnector({ activeIndex }: { activeIndex: number }) {
-  return (
-    <div className="hidden md:flex absolute top-0 left-0 right-0 h-full pointer-events-none">
-      <div className="relative flex-1 flex items-center justify-center">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent relative">
-          <div
-            className="absolute left-0 top-0 h-full bg-gradient-to-r from-amber-400/40 via-emerald-400/40 to-sky-400/40 transition-all duration-500 ease-out"
-            style={{ width: `${((activeIndex + 1) / steps.length) * 100}%` }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════
    PROGRESS DOTS (mobile)
    ═══════════════════════════════════════════ */
 function ProgressDots({ activeIndex }: { activeIndex: number }) {
@@ -293,20 +270,16 @@ export default function HowItWorks() {
         </div>
 
         {/* ─── Steps grid ─── */}
-        <div className="relative">
-          <TimelineConnector activeIndex={activeStep ?? 0} />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 relative z-10">
-            {steps.map((step, i) => (
-              <StepCard
-                key={step.number}
-                step={step}
-                index={i}
-                isActive={activeStep === i}
-                onToggle={() => setActiveStep(activeStep === i ? null : i)}
-              />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+          {steps.map((step, i) => (
+            <StepCard
+              key={step.number}
+              step={step}
+              index={i}
+              isActive={activeStep === i}
+              onToggle={() => setActiveStep(activeStep === i ? null : i)}
+            />
+          ))}
         </div>
 
         {/* Mobile progress dots */}
