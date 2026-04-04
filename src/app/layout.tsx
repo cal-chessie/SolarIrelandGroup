@@ -53,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <link rel="preload" as="image" href="/hero-solar.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
