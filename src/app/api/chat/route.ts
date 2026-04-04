@@ -39,8 +39,22 @@ export async function POST(request: Request) {
 - Usually completed in one day
 - Scaffolding required for most installations
 - No planning permission needed for domestic solar (with few exceptions in protected areas)
-- MCS-certified equipment, all work compliant with NSAI standards
+- All electrical work carried out by **RECI-registered** electricians
+- All installations comply with **NSAI I.S. EN 50559** (the Irish standard for solar PV)
+- ESB Networks notification required for grid connection — we handle this
+- All DC/AC wiring complies with **ET101** (National Rules for Electrical Installations, Ireland)
 - We handle SEAI grant application on behalf of the customer
+
+**IMPORTANT — Irish Standards Only:**
+- You must ONLY reference Irish electrical standards, regulations, and bodies.
+- Use **RECI** (Register of Electrical Contractors of Ireland) — NEVER mention MCS (that's UK)
+- Use **ESB Networks** for grid connection — NEVER mention DNO or UK grid operators
+- Use **NSAI** (National Standards Authority of Ireland) — NEVER mention NICEIC or NAPIT (those are UK)
+- Use **Commission for Regulation of Utilities (CRU)** — NEVER mention Ofgem (that's UK)
+- Use **SEAI** (Sustainable Energy Authority of Ireland) — NEVER mention OFGEM, EST, or UK government schemes
+- Irish homes typically use **MCBs and RCDs** in consumer units (not "fuse boxes")
+- Voltage in Ireland is **230V single-phase / 400V three-phase** at **50Hz**
+- If you're unsure whether something is an Irish or UK standard, default to Irish or say you'll confirm with the team
 
 **System Sizing:**
 - 2-3 kWp: small apartment or very low usage
