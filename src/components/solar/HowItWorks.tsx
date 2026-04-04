@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, CheckCircle2, Camera, Wrench, PartyPopper } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════
    STEP DATA
@@ -44,7 +46,7 @@ const steps = [
       'Zero cost, zero pressure',
     ],
     stat: { value: '~45', unit: 'minutes', label: 'for a full survey' },
-    cta: { href: 'https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20solar%20survey.', text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    cta: { href: buildWhatsAppUrl({ source: 'hero', customMessage: "Hi! I'd like to book a free solar survey." }), text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',
@@ -62,8 +64,8 @@ const steps = [
       'ESB grid connection sorted',
       'Saving from day one',
     ],
-    stat: { value: '€1,800', unit: '', label: 'SEAI grant included' },
-    cta: { href: 'https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20solar%20panels.', text: 'Get a Quote', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
+    stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
+    cta: { href: buildWhatsAppUrl({ source: 'hero', customMessage: "Hi! I'd like to get a quote for solar panels for my home." }), text: 'Get a Quote', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
 

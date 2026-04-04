@@ -22,6 +22,8 @@ import {
   ClipboardCheck,
   BadgeEuro,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════
    ANIMATED GRANT COUNTER
@@ -33,7 +35,7 @@ function AnimatedGrant({ show }: { show: boolean }) {
   const rounded = useTransform(count, (v) => Math.round(v).toString());
 
   if ((show && inView) || (show && count.get() === 0)) {
-    animate(count, 1800, { duration: 1.8, ease: 'easeOut' });
+    animate(count, SOLAR_DATA.grant.amount, { duration: 1.8, ease: 'easeOut' });
   }
 
   return (
@@ -271,7 +273,7 @@ function EligibilityChecker() {
                     <p className="text-xs text-gray-600 mb-4">We&apos;ll confirm everything during your free survey.</p>
                   )}
                   <motion.a
-                    href="https://wa.me/353873958424?text=Hi%2C%20I%20checked%20the%20grant%20eligibility%20tool%20and%20think%20I%20qualify.%20I%27d%20like%20a%20free%20survey."
+                    href={buildWhatsAppUrl({ source: 'grant-checker', eligible: true })}
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.03 }}
@@ -298,7 +300,7 @@ function EligibilityChecker() {
                     However, solar panels can still save you money without the grant. Get in touch and we&apos;ll give you honest advice.
                   </p>
                   <motion.a
-                    href="https://wa.me/353873958424?text=Hi%2C%20I%20checked%20the%20eligibility%20tool%20and%20may%20not%20qualify%20for%20the%20grant.%20Can%20I%20still%20get%20solar?"
+                    href={buildWhatsAppUrl({ source: 'grant-checker', eligible: false })}
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.03 }}
@@ -355,7 +357,7 @@ const timelineSteps = [
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: 'After post-install BER assessment, SEAI pays €1,800 directly — deducted from your invoice.',
+    description: `After post-install BER assessment, SEAI pays ${SOLAR_DATA.grant.label} directly - deducted from your invoice.`,
     duration: '4-8 weeks',
     who: 'SEAI pays us',
     color: 'text-violet-400',
@@ -428,7 +430,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
   const show = isInView && selfInView;
 
   if (show) {
-    animate(count, 1800, { duration: 2, ease: 'easeOut' });
+    animate(count, SOLAR_DATA.grant.amount, { duration: 2, ease: 'easeOut' });
   }
 
   return (
@@ -452,7 +454,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        The Irish government pays you to go solar. Check if you qualify and see how the process works.
+        The Irish government pays you to go solar. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
       </p>
     </motion.div>
   );
@@ -463,7 +465,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
    ═══════════════════════════════════════════ */
 function KeyFactsRow() {
   const facts = [
-    { label: 'Grant amount', value: '€1,800', icon: Euro, color: 'text-amber-400', bg: 'bg-amber-400/10' },
+    { label: 'Grant amount', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-amber-400', bg: 'bg-amber-400/10' },
     { label: 'Min. system', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER required', value: 'C3 or lower', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },

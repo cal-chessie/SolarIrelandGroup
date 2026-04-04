@@ -38,6 +38,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BumblebeeMascot from './BumblebeeMascot';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════
    TYPES
@@ -765,7 +767,7 @@ export default function BillAnalyser() {
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
-                    <p className="text-xs text-gray-500 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at €0.21/kWh via the microgeneration scheme.</p>
+                    <p className="text-xs text-gray-500 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
                   </div>
 
                   {/* Monthly Chart */}
@@ -826,7 +828,7 @@ export default function BillAnalyser() {
                             ['Recommended system', `${analysis.recommendedSystem} kWp`, 'text-amber-400'],
                             ['Est. annual generation', `${analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh`, 'text-white'],
                             ['Self-consumption saving', `€${analysis.annualSaving.toLocaleString()}/yr`, 'text-white'],
-                            ['Export payment (€0.21/kWh)', `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
+                            ['Export payment ({SOLAR_DATA.export.label})', `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
                             ['Total annual benefit', `€${analysis.totalAnnualBenefit.toLocaleString()}/yr`, 'text-amber-400 font-bold'],
                             ['System cost (before grant)', `€${analysis.installCost.toLocaleString()}`, 'text-white'],
                             ['SEAI grant', `- €${analysis.seaiGrant.toLocaleString()}`, 'text-blue-400'],
@@ -848,9 +850,17 @@ export default function BillAnalyser() {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <Button className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-bold py-4 rounded-xl shadow-lg shadow-amber-400/20" asChild>
-                      <a href={`https://wa.me/353873958424?text=${encodeURIComponent(
-                        `Hi! I analysed my bill on your site.\n\n📊 Bill: €${analysis.monthlyBill}/mo (${analysis.annualUsage.toLocaleString()} kWh/yr)\n🏢 Provider: ${analysis.provider}\n🏠 Home: ${analysis.homeType}\n☀️ Recommended: ${analysis.recommendedSystem}kWp\n💰 Annual benefit: €${analysis.totalAnnualBenefit}\n⏱️ Payback: ${analysis.paybackYears} years\n🌳 CO₂: ${analysis.annualCo2Saved} kg/yr\n\nI'd love a free site survey!`
-                      )}`} target="_blank" rel="noopener noreferrer">
+                      <a href={buildWhatsAppUrl({
+                        source: 'bill-analyser',
+                        annualSaving: analysis.annualSaving,
+                        paybackYears: analysis.paybackYears,
+                        total25yrSaving: analysis.total25YearSavings,
+                        monthlyBill: analysis.monthlyBill,
+                        annualUsage: analysis.annualUsage,
+                        homeType: analysis.homeType,
+                        recommendedSystem: analysis.recommendedSystem,
+                        provider: analysis.provider,
+                      })} target="_blank" rel="noopener noreferrer">
                         <Share2 className="mr-2 w-4 h-4" /> Get Your Free Survey
                       </a>
                     </Button>

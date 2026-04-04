@@ -159,3 +159,28 @@ Stage Summary:
 - Three files rewritten: Navbar.tsx, WhatsAppChat.tsx, globals.css
 - Hero.tsx updated: removed Tailwind bg classes from glow ring divs
 - All animations in initial viewport now use pure CSS — zero JS animation libraries
+
+---
+Task ID: 9 - shared-data-connector
+### Work Task
+Create shared solar-data.ts and shared components to connect the entire Solar Ireland website with a single source of truth for all hardcoded constants, WhatsApp URL builder, and reusable CTA components.
+
+### Work Summary
+Created three new shared files and updated eight existing components:
+
+**Files Created:**
+- `/src/lib/solar-data.ts` — Single source of truth for all data constants (grant €1,800, savings €1,100/yr, export €0.21/kWh, 6yr payback, €38k+ 25yr, 4kWp system, 900 kWh/kWp, provider contact info, certifications, service areas)
+- `/src/lib/whatsapp.ts` — `buildWhatsAppUrl()` function that creates rich pre-filled WhatsApp messages with contextual data from bill analyser results, grant checker eligibility, hero section, FAQ, footer, and quick actions
+- `/src/components/solar/shared/SolarCTA.tsx` — Reusable CTA button component with primary (amber gradient), secondary (WhatsApp), and outline variants
+
+**Files Updated:**
+- **Hero.tsx**: Stat pills now use SOLAR_DATA (avgAnnual: 1100, paybackYears: 6, total25yr: 38k, grant: 1800), WhatsApp CTA uses buildWhatsAppUrl({ source: 'hero' }), service areas from SOLAR_DATA.serviceAreas
+- **WhySolar.tsx**: Stats array uses SOLAR_DATA values, export rate €0.21/kWh from SOLAR_DATA.export.label, WhatsApp CTA uses buildWhatsAppUrl({ source: 'why-solar' })
+- **GrantInfo.tsx**: Animated counter uses SOLAR_DATA.grant.amount (1800) in both AnimatedGrant and GrantHero, KeyFactsRow uses SOLAR_DATA.grant.label, eligibility buttons use buildWhatsAppUrl({ source: 'grant-checker', eligible: true/false }), timeline description uses SOLAR_DATA.grant.label, GrantHero links to #faq
+- **HowItWorks.tsx**: Step 03 stat uses SOLAR_DATA.grant.label, Step 02 CTA uses buildWhatsAppUrl with custom survey booking message, Step 03 CTA uses buildWhatsAppUrl with quote request message
+- **BillAnalyser.tsx**: Results WhatsApp button uses buildWhatsAppUrl with full bill analyser context (annualSaving, paybackYears, total25yrSaving, monthlyBill, annualUsage, homeType, recommendedSystem, provider), export rate display uses SOLAR_DATA.export.label
+- **FAQ.tsx**: All hardcoded numbers replaced with SOLAR_DATA references (€1,800 grant, €0.21/kWh export, 4kWp system), added section cross-links (calculator → #calculator, grant → #grant-info, export → #why-solar), added "Still have questions? Ask us on WhatsApp" with buildWhatsAppUrl({ source: 'faq' }), answer rendering uses dangerouslySetInnerHTML for HTML links
+- **Footer.tsx**: PreFooterCTA WhatsApp uses buildWhatsAppUrl({ source: 'footer' }), Call Now uses tel:${SOLAR_DATA.provider.phone}, ContactCard values use SOLAR_DATA.provider phone/email/phoneDisplay, footer WhatsApp link uses buildWhatsAppUrl
+- **WhatsAppChat.tsx**: QUICK_ACTIONS messages reference SOLAR_DATA.grant.label and SOLAR_DATA.system.avgSizeKwp, added #bill-analyser and #grant-info contextual greetings, chat WhatsApp link uses buildWhatsAppUrl({ source: 'chat-widget' })
+
+Build: ESLint passes with zero errors, Next.js build compiles successfully, dev server returns 200.

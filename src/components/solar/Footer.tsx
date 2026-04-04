@@ -21,6 +21,8 @@ import {
   Linkedin,
   ExternalLink,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -89,7 +91,7 @@ function PreFooterCTA() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
           <motion.a
-            href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
+            href={buildWhatsAppUrl({ source: 'footer' })}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}
@@ -101,7 +103,7 @@ function PreFooterCTA() {
             <ArrowRight className="w-4 h-4" />
           </motion.a>
           <motion.a
-            href="tel:+353873958424"
+            href={`tel:${SOLAR_DATA.provider.phone}`}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm text-white text-sm hover:bg-white/10 transition-colors whitespace-nowrap"
@@ -304,22 +306,22 @@ export default function Footer() {
               <ContactCard
                 icon={MessageCircle}
                 label="WhatsApp"
-                value="+353 87 395 8424"
-                href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
+                value={SOLAR_DATA.provider.phoneDisplay}
+                href={buildWhatsAppUrl({ source: 'footer' })}
                 color="bg-green-400/10 text-green-400"
               />
               <ContactCard
                 icon={Mail}
                 label="Email"
-                value="cal@solarireland.com"
+                value={SOLAR_DATA.provider.email}
                 href="mailto:cal@solarireland.com"
                 color="bg-amber-400/10 text-amber-400"
               />
               <ContactCard
                 icon={Phone}
                 label="Phone"
-                value="+353 87 395 8424"
-                href="tel:+353873958424"
+                value={SOLAR_DATA.provider.phoneDisplay}
+                href={`tel:${SOLAR_DATA.provider.phone}`}
                 color="bg-sky-400/10 text-sky-400"
               />
             </div>

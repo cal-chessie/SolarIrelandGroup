@@ -12,6 +12,8 @@ import {
   X,
   Sparkles,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════
    FAQ DATA WITH CATEGORIES
@@ -48,7 +50,7 @@ const faqs: FAQItem[] = [
     id: 1,
     question: 'How much do solar panels cost in Ireland in 2026?',
     answer:
-      'A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the €1,800 grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes — no hidden costs, no surprises.',
+      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes — no hidden costs, no surprises. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
     category: 'costs',
     keywords: ['cost', 'price', 'expensive', 'cheap', 'budget', 'how much', 'money', 'afford'],
   },
@@ -56,7 +58,7 @@ const faqs: FAQItem[] = [
     id: 2,
     question: 'How much could I save with solar panels?',
     answer:
-      'A typical 3-bed semi-detached home with a 4 kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser — it reads your actual bill and calculates your personalised savings.',
+      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser — it reads your actual bill and calculates your personalised savings. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
     category: 'costs',
     keywords: ['save', 'savings', 'saving', 'return', 'roi', 'payback', 'worth it', 'investment'],
   },
@@ -72,7 +74,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      'The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels on your home. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf.',
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -80,7 +82,7 @@ const faqs: FAQItem[] = [
     id: 5,
     question: 'How does the SEAI grant application work?',
     answer:
-      'It\'s straightforward — and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and a post-install BER assessment is completed, SEAI pays the €1,800 grant directly to us, and it\'s deducted from your final invoice. You don\'t need to pay the grant amount upfront and wait for a refund.',
+      `It's straightforward — and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and a post-install BER assessment is completed, SEAI pays the ${SOLAR_DATA.grant.label} grant directly to us, and it's deducted from your final invoice. You don't need to pay the grant amount upfront and wait for a refund.`,
     category: 'grants',
     keywords: ['grant', 'apply', 'application', 'process', 'paperwork', 'how does it work', 'seai'],
   },
@@ -136,7 +138,7 @@ const faqs: FAQItem[] = [
     id: 12,
     question: 'What happens to electricity I don\'t use?',
     answer:
-      'Any excess electricity your panels generate that you don\'t use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you €0.21 per kWh for exported energy. For a typical 4 kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill — it\'s all handled automatically through your smart meter.',
+      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill — it's all handled automatically through your smart meter. <a href="#why-solar" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
     category: 'technical',
     keywords: ['export', 'sell', 'excess', 'surplus', 'grid', 'microgeneration', 'credit', 'smart meter', 'esb'],
   },
@@ -212,9 +214,7 @@ function FAQItemCard({
               {/* Answer */}
               <div className="px-5 sm:px-6 pb-4">
                 <div className="pl-10">
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {faq.answer}
-                  </p>
+                  <p className="text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
 
                   {/* Related questions */}
                   {related.length > 0 && (
@@ -496,6 +496,27 @@ export default function FAQ() {
           </AnimatePresence>
         </div>
 
+
+        {/* ─── Still have questions? ─── */}
+        <motion.div
+          className="mt-8 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <p className="text-sm text-gray-500">
+            Still have questions?{' '}
+            <a
+              href={buildWhatsAppUrl({ source: 'faq' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:text-green-300 transition-colors font-medium"
+            >
+              Ask us on WhatsApp →
+            </a>
+          </p>
+        </motion.div>
 
       </div>
     </section>

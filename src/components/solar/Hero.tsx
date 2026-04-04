@@ -13,6 +13,8 @@ import {
   Star,
   ChevronDown,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════════════════════
    WORLD-CLASS HERO — GPU-safe animations only
@@ -215,7 +217,7 @@ export default function Hero() {
             >
               Upload your electricity bill and our AI will show you exactly what
               solar will save you. We handle everything — survey, install,
-              and your <strong className="text-white font-semibold">€1,800 SEAI grant</strong>.
+              and your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant</strong>.
             </p>
 
             {/* CTAs */}
@@ -236,7 +238,7 @@ export default function Hero() {
               </a>
               {/* Secondary CTA */}
               <a
-                href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
+                href={buildWhatsAppUrl({ source: 'hero' })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/30 text-white text-sm tracking-wide w-full sm:w-auto justify-center hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300"
@@ -303,10 +305,10 @@ export default function Hero() {
                 className="hero-fade-up grid grid-cols-2 gap-2.5 w-full max-w-[280px]"
                 style={{ animationDelay: '0.7s' }}
               >
-                <StatPill icon={Euro} label="Avg. annual saving" target={1100} prefix="€" suffix="/yr" color="bg-green-400/10 text-green-400" loaded={loaded} />
-                <StatPill icon={Clock} label="Payback period" target={6} suffix=" years" color="bg-amber-400/10 text-amber-400" loaded={loaded} />
-                <StatPill icon={Zap} label="25-year savings" target={38} prefix="€" suffix="k+" color="bg-sky-400/10 text-sky-400" loaded={loaded} />
-                <StatPill icon={Sun} label="SEAI grant" target={1800} prefix="€" color="bg-violet-400/10 text-violet-400" loaded={loaded} />
+                <StatPill icon={Euro} label="Avg. annual saving" target={SOLAR_DATA.savings.avgAnnual} prefix="€" suffix="/yr" color="bg-green-400/10 text-green-400" loaded={loaded} />
+                <StatPill icon={Clock} label="Payback period" target={SOLAR_DATA.savings.paybackYears} suffix=" years" color="bg-amber-400/10 text-amber-400" loaded={loaded} />
+                <StatPill icon={Zap} label="25-year savings" target={Math.round(SOLAR_DATA.savings.total25yr / 1000)} prefix="€" suffix="k+" color="bg-sky-400/10 text-sky-400" loaded={loaded} />
+                <StatPill icon={Sun} label="SEAI grant" target={SOLAR_DATA.grant.amount} prefix="€" color="bg-violet-400/10 text-violet-400" loaded={loaded} />
               </div>
             </div>
           </div>
@@ -317,7 +319,7 @@ export default function Hero() {
           className="hero-fade-up mt-16 sm:mt-20 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs text-gray-300"
           style={{ animationDelay: '0.9s' }}
         >
-          {['Connacht', 'Leinster', 'Munster'].map((area) => (
+          {SOLAR_DATA.serviceAreas.map((area) => (
             <span key={area} className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400/70" />
               {area}

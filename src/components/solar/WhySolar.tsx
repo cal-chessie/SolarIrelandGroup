@@ -16,16 +16,18 @@ import {
   Info,
   MessageCircle,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════════════
    DATA — all Irish-specific, zero carbon messaging
    ═══════════════════════════════════════════════════════ */
 
 const stats = [
-  { icon: Euro, label: 'Avg. annual saving', value: 1100, prefix: '€', suffix: '/yr', color: 'text-green-400', bg: 'bg-green-400/10' },
-  { icon: TrendingUp, label: 'SEAI grant', value: 1800, prefix: '€', suffix: '', color: 'text-amber-400', bg: 'bg-amber-400/10' },
-  { icon: Zap, label: 'Payback period', value: 6, prefix: '', suffix: ' years', color: 'text-sky-400', bg: 'bg-sky-400/10' },
-  { icon: Sun, label: 'Panel warranty', value: 25, prefix: '', suffix: '+ yrs', color: 'text-violet-400', bg: 'bg-violet-400/10' },
+  { icon: Euro, label: 'Avg. annual saving', value: SOLAR_DATA.savings.avgAnnual, prefix: '€', suffix: '/yr', color: 'text-green-400', bg: 'bg-green-400/10' },
+  { icon: TrendingUp, label: 'SEAI grant', value: SOLAR_DATA.grant.amount, prefix: '€', suffix: '', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+  { icon: Zap, label: 'Payback period', value: SOLAR_DATA.savings.paybackYears, prefix: '', suffix: ' years', color: 'text-sky-400', bg: 'bg-sky-400/10' },
+  { icon: Sun, label: 'Panel warranty', value: SOLAR_DATA.system.panelWarranty, prefix: '', suffix: '+ yrs', color: 'text-violet-400', bg: 'bg-violet-400/10' },
 ];
 
 // Irish residential electricity prices (all-in per kWh, incl. VAT, PSO levy, standing charges)
@@ -81,10 +83,10 @@ const benefits = [
   {
     icon: Zap,
     title: 'Earn from Excess Energy',
-    stat: '€0.21/kWh',
+    stat: SOLAR_DATA.export.label,
     statLabel: 'microgeneration tariff',
     description:
-      "Under the Clean Export Guarantee, your energy supplier pays you €0.21 for every kWh of excess solar energy you export to the national grid. Any energy your home doesn't use during the day is automatically sold — it appears as a credit on your bill.",
+      `Under the Clean Export Guarantee, your energy supplier pays you ${SOLAR_DATA.export.label} for every kWh of excess solar energy you export to the national grid. Any energy your home doesn't use during the day is automatically sold — it appears as a credit on your bill.`,
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
     border: 'hover:border-sky-400/15',
@@ -619,7 +621,7 @@ export default function WhySolar() {
                 Under Ireland&apos;s Clean Export Guarantee (CEG), your electricity supplier
                 must pay you for excess solar exported to the grid. Most suppliers
                 currently offer{' '}
-                <span className="text-white font-semibold">€0.21 per kWh</span> — paid
+                <span className="text-white font-semibold">{SOLAR_DATA.export.label}</span> — paid
                 automatically as a credit on your electricity bill. A typical 4kWp
                 system can earn €200–€400 per year from exports alone.
               </p>
@@ -656,7 +658,7 @@ export default function WhySolar() {
               <ArrowRight className="w-4 h-4" />
             </motion.a>
             <motion.a
-              href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20learn%20more%20about%20going%20solar."
+              href={buildWhatsAppUrl({ source: 'why-solar' })}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}

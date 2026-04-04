@@ -18,6 +18,8 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════════════════════
    WORLD-CLASS WHATSAPP WIDGET
@@ -41,17 +43,18 @@ interface QuickAction {
 
 /* ─── Constants ─── */
 const QUICK_ACTIONS: QuickAction[] = [
-  { label: 'Solar costs', icon: Euro, message: 'How much does a solar panel system cost in Ireland?' },
-  { label: 'SEAI grant', icon: Sparkles, message: 'Tell me about the SEAI grant for solar panels' },
-  { label: 'My savings', icon: Zap, message: 'How much could I save with solar panels?' },
-  { label: 'Installation', icon: Clock, message: 'How long does installation take?' },
+  { label: 'Solar costs', icon: Euro, message: 'How much does a full solar panel system cost in Ireland including installation?' },
+  { label: 'SEAI grant', icon: Sparkles, message: `What is the ${SOLAR_DATA.grant.label} SEAI grant and how do I get it?` },
+  { label: 'My savings', icon: Zap, message: `How much could I save with a ${SOLAR_DATA.system.avgSizeKwp}kWp system in Ireland?` },
+  { label: 'Installation', icon: Clock, message: 'How long does a solar panel installation take from start to finish?' },
 ];
 
 const CONTEXTUAL_GREETINGS: Record<string, string> = {
-  '#calculator': "👋 Welcome back! Already checked out our Bill Analyser? Ask me anything about your results, or I can help you understand the savings projections.",
+  '#calculator': '👋 Just finished analysing your bill? I can explain any of the results — savings projections, system sizing, or grant eligibility. What would you like to know?',
   '#how-it-works': "👋 Curious about how it works? I can walk you through the process — from survey to installation. What would you like to know?",
   '#why-solar': "👋 Great, you're exploring the benefits! I can tell you about savings, the SEAI grant, or how solar works with the Irish grid. What interests you?",
   '#faq': "👋 Got a specific question? I might have a quicker answer than scrolling through FAQs. Fire away!",
+  '#grant-info': "👋 Looking into the SEAI grant? I can check your eligibility and explain how the process works.",
 };
 
 const DEFAULT_GREETING = "👋 Hi there! I'm the Solar Ireland assistant. I can help with grants, costs, installation, savings — anything solar. What would you like to know?";
@@ -541,7 +544,7 @@ export default function WhatsAppChat() {
             {/* ─── Input Area ─── */}
             <div className="px-4 sm:px-5 py-3 border-t border-white/[0.06] bg-[#0a0a0a]">
               <div className="flex items-center gap-2 mb-2">
-                <a href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
+                <a href={buildWhatsAppUrl({ source: 'chat-widget' })}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-green-400 hover:bg-green-400/10 transition-colors">
                   <Phone className="w-3 h-3" /> WhatsApp
