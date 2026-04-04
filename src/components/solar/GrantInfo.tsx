@@ -418,26 +418,67 @@ function GrantTimeline() {
 }
 
 /* ═══════════════════════════════════════════
-   KEY FACTS CARD
+   GRANT HERO — big animated €1,800
    ═══════════════════════════════════════════ */
-function KeyFactsCard() {
+function GrantHero({ isInView }: { isInView: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const selfInView = useInView(ref, { once: true, margin: '-40px' });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v).toString());
+  const show = isInView && selfInView;
+
+  if (show) {
+    animate(count, 1800, { duration: 2, ease: 'easeOut' });
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6 }}
+      className="text-center mb-10 sm:mb-14"
+    >
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
+        <Euro className="w-3 h-3 text-amber-400" />
+        <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
+          SEAI Grant
+        </span>
+      </div>
+
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
+        Up to{' '}
+        <span className="text-gradient tabular-nums">€<motion.span>{rounded}</motion.span></span>
+        {' '}grant for solar PV.
+      </h2>
+      <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+        The Irish government pays you to go solar. Check if you qualify and see how the process works.
+      </p>
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   KEY FACTS CARD — horizontal row
+   ═══════════════════════════════════════════ */
+function KeyFactsRow() {
   const facts = [
     { label: 'Grant amount', value: '€1,800', icon: Euro, color: 'text-amber-400', bg: 'bg-amber-400/10' },
-    { label: 'Min. system size', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
+    { label: 'Min. system', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER required', value: 'C3 or lower', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {facts.map((fact) => {
         const FactIcon = fact.icon;
         return (
-          <div key={fact.label} className="glass-card rounded-xl p-4 hover:bg-white/[0.04] transition-colors">
+          <div key={fact.label} className="glass-card rounded-xl p-4 sm:p-5 hover:bg-white/[0.04] transition-colors">
             <div className={`w-8 h-8 rounded-lg ${fact.bg} flex items-center justify-center mb-3`}>
               <FactIcon className={`w-4 h-4 ${fact.color}`} />
             </div>
-            <p className="text-lg font-bold text-white">{fact.value}</p>
+            <p className="text-lg sm:text-xl font-bold text-white">{fact.value}</p>
             <p className="text-[10px] text-gray-600 uppercase tracking-wider mt-0.5">{fact.label}</p>
           </div>
         );
@@ -458,65 +499,42 @@ export default function GrantInfo() {
       {/* Ambient glow */}
       <div className="absolute top-1/3 left-0 w-[600px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto relative z-10" ref={sectionRef}>
-        {/* ─── Section header ─── */}
-        <motion.div
-          className="text-center mb-12 sm:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-5">
-            <Euro className="w-3 h-3 text-amber-400" />
-            <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
-              SEAI Grant
-            </span>
-          </div>
+      <div className="max-w-6xl mx-auto relative z-10" ref={sectionRef}>
+        {/* ─── Hero with animated grant amount ─── */}
+        <GrantHero isInView={isInView} />
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
-            Up to <span className="text-gradient">€1,800</span> grant
-            <br />
-            for solar PV.
-          </h2>
-          <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-            The Irish government pays you to go solar. Here&apos;s how to check if you qualify and what the process looks like.
-          </p>
+        {/* ─── Key facts — full-width row ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-8 sm:mb-10"
+        >
+          <KeyFactsRow />
         </motion.div>
 
-        {/* ─── Main content grid ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
+        {/* ─── Two-column: Eligibility checker + Timeline ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
           {/* Left: Eligibility checker */}
-          <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <EligibilityChecker />
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            <EligibilityChecker />
+          </motion.div>
 
-          {/* Right: Timeline + Key facts */}
-          <div className="lg:col-span-3 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <GrantTimeline />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-            >
-              <KeyFactsCard />
-            </motion.div>
-          </div>
+          {/* Right: Timeline */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+          >
+            <GrantTimeline />
+          </motion.div>
         </div>
 
         {/* ─── Disclaimer + SEAI link ─── */}
@@ -525,7 +543,7 @@ export default function GrantInfo() {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
         >
           <Info className="w-4 h-4 text-gray-600 mt-0.5 shrink-0" />
           <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
