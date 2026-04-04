@@ -8,17 +8,15 @@ import BumblebeeMascot from './BumblebeeMascot';
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background image — fills entire section including behind navbar */}
+      {/* Background image — full bleed, extends behind navbar */}
       <div className="absolute inset-0">
         <img
           src="/hero-solar.jpg"
           alt="Modern black frameless solar panels on an Irish home"
           className="w-full h-full object-cover"
         />
-        {/* Gradient: solid dark at top → transparent middle → solid dark at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent via-40% to-black/70" />
-        {/* Slight side darkening so text on the left is readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/20" />
+        {/* Gradient: gentle dark at top (navbar area), mostly clear in middle, fade to page bg at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 via-50% to-[#0a0a0a]" />
       </div>
 
       {/* Content */}
@@ -32,7 +30,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
             >
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-white/[0.08] backdrop-blur-sm text-amber-400 border border-white/[0.1]">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/30 backdrop-blur-sm text-amber-400 border border-white/[0.15]">
                 SEAI Registered Installer
               </span>
             </motion.div>
@@ -44,14 +42,14 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
             >
-              <span className="text-white">Your Energy.</span>
+              <span className="text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">Your Energy.</span>
               <br />
-              <span className="text-gradient">Your Asset.</span>
+              <span className="text-gradient drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">Your Asset.</span>
             </motion.h1>
 
             {/* Subtitle */}
             <motion.p
-              className="text-base sm:text-lg text-gray-300 max-w-lg leading-relaxed mb-10"
+              className="text-base sm:text-lg text-gray-200 max-w-lg leading-relaxed mb-10 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.25, ease: 'easeOut' }}
@@ -70,7 +68,7 @@ export default function Hero() {
             >
               <Button
                 size="lg"
-                className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-7 py-3.5 text-sm rounded-full tracking-wide glow-amber"
+                className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-7 py-3.5 text-sm rounded-full tracking-wide shadow-lg shadow-amber-400/20"
                 asChild
               >
                 <a href="#calculator">
@@ -81,7 +79,7 @@ export default function Hero() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-white/[0.15] text-white hover:bg-white/[0.08] px-7 py-3.5 text-sm rounded-full tracking-wide"
+                className="border-white/20 bg-black/30 backdrop-blur-sm text-white hover:bg-white/10 px-7 py-3.5 text-sm rounded-full tracking-wide"
                 asChild
               >
                 <a href="mailto:cal@solarireland.com">
@@ -93,34 +91,40 @@ export default function Hero() {
 
             {/* Service areas */}
             <motion.div
-              className="mt-12 flex items-center gap-6 text-xs text-gray-400"
+              className="mt-12 flex items-center gap-6 text-xs text-gray-300"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
                 Connacht
               </span>
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
                 Leinster
               </span>
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
                 Munster
               </span>
             </motion.div>
           </div>
 
-          {/* Bumblebee — right side, always visible, vertically centered */}
+          {/* Bumblebee — always visible, right side */}
           <motion.div
             className="flex-shrink-0 lg:mt-16"
             initial={{ opacity: 0, scale: 0.6, x: 40 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
           >
-            <BumblebeeMascot size="hero" />
+            <div className="relative">
+              {/* Subtle light backdrop behind bumblebee so it pops against dark image */}
+              <div className="absolute -inset-6 bg-white/5 rounded-full blur-2xl" />
+              <div className="relative">
+                <BumblebeeMascot size="hero" />
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

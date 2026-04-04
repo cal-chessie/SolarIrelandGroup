@@ -2,7 +2,6 @@
 
 import Navbar from '@/components/solar/Navbar';
 import Hero from '@/components/solar/Hero';
-import BrandBanner from '@/components/solar/BrandBanner';
 import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
 import CustomerInstalls from '@/components/solar/CustomerInstalls';
@@ -19,7 +18,6 @@ export default function Home() {
 
       <main>
         <Hero />
-        <BrandBanner />
         <div id="how-it-works">
           <HowItWorks />
         </div>
