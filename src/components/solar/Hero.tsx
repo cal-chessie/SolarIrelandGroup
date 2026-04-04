@@ -1,14 +1,13 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import { MessageCircle, ArrowRight, Shield, Zap, Euro, Sun, Clock, CheckCircle2, Star, ChevronDown } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
 
 /* ═══════════════════════════════════════════
-   ANIMATED COUNTER — lightweight RAF, no Framer Motion pipeline
+   ANIMATED COUNTER — lightweight RAF
    ═══════════════════════════════════════════ */
-function AnimatedCounter({ value, prefix = '', suffix = '', decimals = 0 }: { value: number; prefix?: string; suffix?: string; decimals?: number }) {
+function AnimatedCounter({ value, prefix = '', suffix = '' }: { value: number; prefix?: string; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
 
@@ -26,10 +25,9 @@ function AnimatedCounter({ value, prefix = '', suffix = '', decimals = 0 }: { va
           const step = (now: number) => {
             const elapsed = now - start;
             const progress = Math.min(elapsed / duration, 1);
-            // easeOut
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = eased * value;
-            el.textContent = prefix + (decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString()) + suffix;
+            el.textContent = prefix + Math.round(current).toString() + suffix;
             if (progress < 1) requestAnimationFrame(step);
           };
           requestAnimationFrame(step);
@@ -39,26 +37,9 @@ function AnimatedCounter({ value, prefix = '', suffix = '', decimals = 0 }: { va
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [value, prefix, suffix, decimals]);
+  }, [value, prefix, suffix]);
 
   return <span ref={ref}>{prefix}0{suffix}</span>;
-}
-
-/* ═══════════════════════════════════════════
-   SCROLL INDICATOR
-   ═══════════════════════════════════════════ */
-function ScrollIndicator() {
-  return (
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-100">
-      <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
-      <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <ChevronDown className="w-4 h-4 text-white/30" />
-      </motion.div>
-    </div>
-  );
 }
 
 /* ═══════════════════════════════════════════
@@ -77,13 +58,10 @@ function SavingsTicker() {
   const formatted = (currentSaving / 1000).toFixed(1);
 
   return (
-    <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/[0.08]">
-      <motion.div
-        animate={{ rotate: [0, 10, -10, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <Euro className="w-3.5 h-3.5 text-green-400" />
-      </motion.div>
+    <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/40 border border-white/[0.08]">
+      <span className="icon-spin-slow text-green-400">
+        <Euro className="w-3.5 h-3.5" />
+      </span>
       <div className="flex items-baseline gap-1">
         <span className="text-xs text-gray-400">Irish homes saving right now:</span>
         <span className="text-xs font-bold text-green-400 tabular-nums">€{formatted}k</span>
@@ -104,10 +82,7 @@ function StatPill({ icon: Icon, label, value, prefix, suffix, color }: {
   color: string;
 }) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.03, y: -2 }}
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.15] transition-colors cursor-default"
-    >
+    <div className="stat-pill flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/30 border border-white/[0.08] cursor-default">
       <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center shrink-0`}>
         <Icon className="w-4 h-4" />
       </div>
@@ -117,67 +92,31 @@ function StatPill({ icon: Icon, label, value, prefix, suffix, color }: {
         </p>
         <p className="text-[10px] text-gray-500 mt-1">{label}</p>
       </div>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   TRUST BAR
-   ═══════════════════════════════════════════ */
-function TrustBar() {
-  const items = [
-    { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
-    { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
-    { icon: Star, label: '5-Year Warranty', color: 'text-sky-400' },
-  ];
-
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-10">
-      {items.map((item, i) => (
-        <div
-          key={item.label}
-          className="flex items-center gap-1.5 text-[11px] text-gray-400"
-        >
-          <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
-          <span>{item.label}</span>
-          {i < items.length - 1 && <span className="text-white/10 ml-1">·</span>}
-        </div>
-      ))}
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════
-   MAIN HERO
+   MAIN HERO — ZERO framer-motion, pure CSS
    ═══════════════════════════════════════════ */
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  });
-
-  // Parallax on background only
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center overflow-hidden">
-      {/* ─── Background with parallax ─── */}
-      <motion.div className="absolute inset-0" style={{ y: bgY }}>
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* ─── Background — static, no parallax ─── */}
+      <div className="absolute inset-0">
         <img
           src="/hero-solar.jpg"
           alt="Modern black frameless solar panels on an Irish home"
-          className="w-full h-[120%] object-cover"
+          className="w-full h-full object-cover"
         />
-        {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 via-50% to-[#0a0a0a]" />
-      </motion.div>
+      </div>
 
-      {/* ─── Ambient light effects ─── */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/[0.03] rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-400/[0.02] rounded-full blur-[120px] pointer-events-none" />
+      {/* ─── Ambient light effects — static CSS ─── */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/[0.03] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-400/[0.02] rounded-full pointer-events-none" />
 
-      {/* ─── Main content — NO entrance animations, renders instantly ─── */}
+      {/* ─── Main content ─── */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pt-28 pb-32 sm:pb-36">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-6">
           {/* ─── Text column ─── */}
@@ -185,12 +124,9 @@ export default function Hero() {
             {/* Badge */}
             <div>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/30 text-amber-400 border border-white/[0.15]">
-                <motion.span
-                  animate={{ rotate: [0, 15, -15, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                >
+                <span className="icon-spin-slow">
                   <Sun className="w-3.5 h-3.5" />
-                </motion.span>
+                </span>
                 SEAI Registered Installer
               </span>
             </div>
@@ -214,49 +150,48 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center lg:items-start gap-3">
-              <motion.a
+              <a
                 href="#calculator"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm tracking-wide shadow-xl shadow-amber-400/20 hover:shadow-amber-400/30 transition-shadow w-full sm:w-auto justify-center"
+                className="hero-cta inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm tracking-wide shadow-xl shadow-amber-400/20 w-full sm:w-auto justify-center"
               >
                 <Zap className="w-4 h-4" />
                 Analyse My Bill — Free
                 <ArrowRight className="w-4 h-4" />
-              </motion.a>
-              <motion.a
+              </a>
+              <a
                 href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/30 text-white text-sm tracking-wide hover:bg-white/10 transition-colors w-full sm:w-auto justify-center"
+                className="hero-cta inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/30 text-white text-sm tracking-wide w-full sm:w-auto justify-center"
               >
                 <MessageCircle className="w-4 h-4 text-green-400" />
                 WhatsApp Us
-              </motion.a>
+              </a>
             </div>
 
             {/* Trust bar */}
-            <TrustBar />
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-10">
+              {[
+                { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
+                { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
+                { icon: Star, label: '5-Year Warranty', color: 'text-sky-400' },
+              ].map((item, i) => (
+                <div key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-400">
+                  <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
+                  <span>{item.label}</span>
+                  {i < 2 && <span className="text-white/10 ml-1">·</span>}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ─── Right side: Bumblebee + Stats ─── */}
           <div className="flex-shrink-0 lg:mt-8 w-full lg:w-auto">
             <div className="flex flex-col items-center gap-6">
-              {/* Bumblebee */}
+              {/* Bumblebee with CSS glow rings */}
               <div className="relative group cursor-pointer">
-                {/* Animated glow rings */}
-                <motion.div
-                  className="absolute -inset-8 rounded-full bg-amber-400/[0.04] blur-2xl"
-                  animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                />
-                <motion.div
-                  className="absolute -inset-14 rounded-full bg-amber-400/[0.02] blur-3xl"
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                />
+                <div className="hero-glow-ring hero-glow-ring--inner absolute -inset-8 rounded-full bg-amber-400/[0.04]" />
+                <div className="hero-glow-ring hero-glow-ring--outer absolute -inset-14 rounded-full bg-amber-400/[0.02]" />
                 <div className="relative">
                   <BumblebeeMascot size="hero" />
                 </div>
@@ -267,42 +202,16 @@ export default function Hero() {
 
               {/* Stat pills grid */}
               <div className="grid grid-cols-2 gap-2.5 w-full max-w-[280px]">
-                <StatPill
-                  icon={Euro}
-                  label="Avg. annual saving"
-                  value={1100}
-                  prefix="€"
-                  suffix="/yr"
-                  color="bg-green-400/10 text-green-400"
-                />
-                <StatPill
-                  icon={Clock}
-                  label="Payback period"
-                  value={6}
-                  suffix=" years"
-                  color="bg-amber-400/10 text-amber-400"
-                />
-                <StatPill
-                  icon={Zap}
-                  label="25-year savings"
-                  value={38}
-                  prefix="€"
-                  suffix="k+"
-                  color="bg-sky-400/10 text-sky-400"
-                />
-                <StatPill
-                  icon={Sun}
-                  label="SEAI grant"
-                  value={1800}
-                  prefix="€"
-                  color="bg-violet-400/10 text-violet-400"
-                />
+                <StatPill icon={Euro} label="Avg. annual saving" value={1100} prefix="€" suffix="/yr" color="bg-green-400/10 text-green-400" />
+                <StatPill icon={Clock} label="Payback period" value={6} suffix=" years" color="bg-amber-400/10 text-amber-400" />
+                <StatPill icon={Zap} label="25-year savings" value={38} prefix="€" suffix="k+" color="bg-sky-400/10 text-sky-400" />
+                <StatPill icon={Sun} label="SEAI grant" value={1800} prefix="€" color="bg-violet-400/10 text-violet-400" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* ─── Service areas (bottom of hero) ─── */}
+        {/* ─── Service areas ─── */}
         <div className="mt-16 sm:mt-20 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs text-gray-300/70">
           {['Connacht', 'Leinster', 'Munster'].map((area) => (
             <span key={area} className="flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
@@ -319,7 +228,12 @@ export default function Hero() {
       </div>
 
       {/* ─── Scroll indicator ─── */}
-      <ScrollIndicator />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
+        <div className="hero-scroll-bounce">
+          <ChevronDown className="w-4 h-4 text-white/30" />
+        </div>
+      </div>
     </section>
   );
 }
