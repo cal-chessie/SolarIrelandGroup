@@ -1,99 +1,124 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  PiggyBank,
-  Leaf,
-  TrendingUp,
-  ShieldCheck,
-} from 'lucide-react';
+import { PiggyBank, Leaf, TrendingUp, ShieldCheck, Sun, Zap } from 'lucide-react';
 
 const benefits = [
   {
     icon: PiggyBank,
-    title: 'Lower Electricity Bills',
+    title: 'Lower Bills',
+    stat: 'Up to 70%',
+    statLabel: 'of electricity costs',
     description:
-      'A typical 4kW solar system in Ireland can generate around 3,400 kWh per year, reducing your reliance on the grid and cutting your electricity costs. With Irish electricity prices rising year on year, the savings only grow over time. Most homeowners see a meaningful reduction in their annual bills within the first year of operation.',
+      'A typical Irish home with a 4kWp system can save significantly on annual electricity costs. With energy prices rising year on year, those savings grow over the system\'s 25+ year lifespan. The more prices go up, the more valuable your solar becomes.',
   },
   {
     icon: TrendingUp,
-    title: 'SEAI Grant Available',
+    title: 'SEAI Grant',
+    stat: '€1,800',
+    statLabel: 'government grant',
     description:
-      'The SEAI Solar PV scheme offers a grant of up to \u20AC1,800 towards the cost of installing solar panels on your home. The grant is subject to eligibility criteria, including being a homeowner-occupier of a property built before 2021. We handle the application process on your behalf as part of our installation service.',
+      'The SEAI Solar PV scheme offers up to €1,800 towards your installation in 2026. Available to owner-occupiers of homes built before 2021 with a BER rating of C3 or lower. We handle the entire application on your behalf.',
   },
   {
     icon: Leaf,
-    title: 'Reduce Your Carbon Footprint',
+    title: 'Carbon Offset',
+    stat: '3+ tonnes',
+    statLabel: 'CO₂ offset per year',
     description:
-      'Solar panels generate clean, renewable energy that doesn\'t produce carbon emissions. A typical residential solar system can offset several tonnes of CO2 per year compared to grid electricity. As Ireland works towards its 2030 climate targets, generating your own renewable energy at home is one of the most practical steps you can take.',
+      'Solar panels generate clean electricity that produces zero carbon emissions at the point of use. A residential system can offset several tonnes of CO2 annually compared to grid electricity, making it one of the most practical steps an Irish household can take towards reducing its carbon footprint.',
   },
   {
     icon: ShieldCheck,
-    title: 'Increase Your BER Rating',
+    title: 'BER Improvement',
+    stat: 'Better',
+    statLabel: 'energy rating',
     description:
-      'Installing solar panels improves your home\'s Building Energy Rating (BER), which is the official energy efficiency grade for Irish properties. A better BER rating makes your home more attractive to future buyers and can increase its market value. A BER assessment is required after installation for the SEAI grant, and we coordinate this for you.',
+      'Solar panels improve your home\'s Building Energy Rating, a legal requirement when selling or renting in Ireland. A better BER makes your home more attractive to buyers and can increase its market value. We coordinate the post-install BER assessment as part of our service.',
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 25 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 export default function WhySolar() {
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="why-solar" className="py-24 sm:py-32 px-5 sm:px-8 relative">
+      {/* Subtle honeycomb background */}
+      <div className="absolute inset-0 honeycomb-bg" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Section header */}
         <motion.div
-          className="text-center mb-16"
+          className="mb-16 sm:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Why Go <span className="text-gradient">Solar?</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Solar panels are a practical investment for Irish homeowners. Here are
-            the real benefits, without the hype.
+          <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+            Why go solar
           </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl">
+            The practical
+            <br />
+            <span className="text-gradient">benefits of solar.</span>
+          </h2>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          {benefits.map((benefit) => (
+        {/* Benefits grid — 2 large + 2 small pattern */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {benefits.map((benefit, i) => (
             <motion.div
               key={benefit.title}
-              variants={itemVariants}
-              className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-amber-400/20 transition-colors"
+              className={`glass-card rounded-2xl p-7 sm:p-8 hover:border-amber-400/15 transition-all duration-300 ${
+                i < 2 ? 'md:row-span-1' : ''
+              }`}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <div className="flex items-start gap-4">
-                <div className="shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400">
-                  <benefit.icon className="w-6 h-6" />
+              <div className="flex items-start justify-between mb-5">
+                <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-amber-400/10 text-amber-400">
+                  <benefit.icon className="w-5 h-5" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {benefit.description}
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-amber-400 leading-none">
+                    {benefit.stat}
+                  </p>
+                  <p className="text-[10px] uppercase tracking-widest text-gray-600 mt-1">
+                    {benefit.statLabel}
                   </p>
                 </div>
               </div>
+              <h3 className="text-lg font-bold text-white mb-2">
+                {benefit.title}
+              </h3>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {benefit.description}
+              </p>
             </motion.div>
           ))}
+        </div>
+
+        {/* Trust line */}
+        <motion.div
+          className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-gray-600"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <span className="flex items-center gap-2">
+            <Sun className="w-3.5 h-3.5 text-amber-400/50" />
+            SEAI Registered
+          </span>
+          <span className="flex items-center gap-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-400/50" />
+            Safe Electric
+          </span>
+          <span className="flex items-center gap-2">
+            <Zap className="w-3.5 h-3.5 text-amber-400/50" />
+            25+ Year Panel Warranty
+          </span>
         </motion.div>
       </div>
     </section>

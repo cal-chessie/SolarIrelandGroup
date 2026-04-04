@@ -1,94 +1,105 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ClipboardCheck, FileText, Zap, Upload } from 'lucide-react';
+import { Upload, Home, Zap, ArrowRight } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
 
 const steps = [
   {
     icon: Upload,
+    number: '01',
     title: 'Upload Your Bill',
     description:
-      'Upload your electricity bill or enter your details into our AI Bill Analyser. Our AI reads your bill and instantly shows you what solar panels could save you.',
-    mascot: true,
+      'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds.',
   },
   {
-    icon: ClipboardCheck,
-    title: 'Free Home Survey',
+    icon: Home,
+    number: '02',
+    title: 'Free Survey',
     description:
-      'We visit your home to assess your roof space, orientation, shading, and current energy usage. There is no charge and no obligation to proceed.',
-    mascot: false,
+      "We visit your home to assess your roof, shading, and energy usage. No charge, no obligation — just honest advice.",
   },
   {
     icon: Zap,
-    title: 'Installation & Handover',
+    number: '03',
+    title: 'Install & Save',
     description:
-      'Our SEAI-registered team installs your system, typically completed within one day. We handle everything including the grant application paperwork.',
-    mascot: false,
+      'Our SEAI-registered team installs your system in a day. We handle the grant paperwork. You start saving from day one.',
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
 export default function HowItWorks() {
   return (
-    <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-6xl mx-auto">
+    <section id="how-it-works" className="py-24 sm:py-32 px-5 sm:px-8 relative noise-bg">
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Section header */}
         <motion.div
-          className="text-center mb-16"
+          className="mb-16 sm:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            How It <span className="text-gradient">Works</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            A straightforward process from start to finish. No hard sell, just
-            honest advice about whether solar is right for your home.
+          <p className="text-amber-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+            How it works
           </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl">
+            Three steps to
+            <br />
+            <span className="text-gradient">lower bills.</span>
+          </h2>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          {steps.map((step, index) => (
+        {/* Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {steps.map((step, i) => (
             <motion.div
-              key={step.title}
-              variants={itemVariants}
-              className="relative text-center p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-amber-400/20 transition-colors"
+              key={step.number}
+              className="relative group"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-400/10 text-amber-400 mb-5">
-                <step.icon className="w-7 h-7" />
-              </div>
-              {step.mascot && (
-                <div className="mb-4">
-                  <BumblebeeMascot size="md" flipped />
+              {/* Connector arrow on desktop */}
+              {i < steps.length - 1 && (
+                <div className="hidden md:flex absolute top-10 -right-4 lg:-right-5 z-10 text-white/10">
+                  <ArrowRight className="w-8 h-8" />
                 </div>
               )}
-              <span className="absolute top-4 right-4 text-5xl font-bold text-white/[0.04]">
-                {index + 1}
-              </span>
-              <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{step.description}</p>
+
+              <div className="glass-card rounded-2xl p-7 sm:p-8 h-full hover:border-amber-400/20 transition-all duration-300 group-hover:bg-white/[0.04]">
+                {/* Number */}
+                <span className="block text-5xl font-black text-white/[0.04] mb-4 -ml-1">
+                  {step.number}
+                </span>
+
+                {/* Icon */}
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-400/10 text-amber-400 mb-5 group-hover:bg-amber-400/15 transition-colors">
+                  <step.icon className="w-5 h-5" />
+                </div>
+
+                {/* Text */}
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Bumblebee peeking on mobile */}
+        <motion.div
+          className="md:hidden flex justify-center mt-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <BumblebeeMascot size="md" flipped />
         </motion.div>
       </div>
     </section>

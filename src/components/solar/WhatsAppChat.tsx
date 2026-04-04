@@ -82,10 +82,10 @@ export default function WhatsAppChat() {
       {/* Floating Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center overflow-hidden ${
+        className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center overflow-hidden ${
           isOpen
-            ? 'bg-gray-800 hover:bg-gray-700 text-white'
-            : 'bg-green-500 hover:bg-green-600 glow-amber'
+            ? 'bg-zinc-800 hover:bg-zinc-700 text-white'
+            : 'bg-green-500 hover:bg-green-400'
         }`}
         size="icon"
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
@@ -95,11 +95,11 @@ export default function WhatsAppChat() {
 
       {/* Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] h-[500px] max-h-[calc(100vh-8rem)] bg-[#111] border border-white/[0.1] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-20 right-6 z-50 w-[350px] max-w-[calc(100vw-3rem)] h-[480px] max-h-[calc(100vh-8rem)] bg-zinc-900/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-3 bg-green-600 text-white">
-            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
-              <img src="/logo-sm.png" alt="Solar Ireland" className="w-6 h-6 object-contain" />
+          <div className="flex items-center gap-3 px-5 py-3.5 bg-green-600 text-white">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+              <img src="/logo-sm.png" alt="Solar Ireland" className="w-5 h-5 object-contain" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm">Solar Ireland</p>

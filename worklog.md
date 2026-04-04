@@ -105,3 +105,32 @@ Stage Summary:
 - Navbar transitions from transparent to solid on scroll
 - Two real customer install photos showcased in "Our Work" section
 - New files: public/install-1.jpg, public/install-2.jpg, src/components/solar/CustomerInstalls.tsx. Updated: Navbar.tsx, Hero.tsx, page.tsx.
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Premium design overhaul — fix bumblebee eyes, eliminate generic look
+
+Work Log:
+- User feedback: site looks generic/template-like, bumblebee eyes still wrong
+- Generated fresh high-quality bumblebee mascot via AI image generation (1024x1024) with proper cute eyes (white highlights, expressive, symmetric) — rated 9/10
+- Created size variants: hero (220px), md (140px), sm (48px), favicon (32px), flip (180px)
+- Complete CSS overhaul: added glass-card, honeycomb-bg, noise-bg, amber-line, glow effects
+- Darker background tones (0.07 base), refined amber gradients, better contrast ratios
+- Redesigned Hero: left-aligned text (not centered), cinematic multi-layer gradients, "Your Energy. Your Asset." tagline, bumblebee as subtle desktop element off to the right, green dot service areas
+- Redesigned How It Works: uppercase section labels, "01/02/03" numbering, glass-card design with connector arrows, bumblebee only on mobile below
+- Redesigned Why Solar: stat numbers in top-right of each card (Up to 70%, €1,800, 3+ tonnes, Better), trust badges line at bottom
+- Redesigned GrantInfo: amber accent line on card, tighter layout, external link icon on SEAI link
+- Redesigned CustomerInstalls: asymmetric 3:2 column grid, no rounded badges just clean uppercase captions
+- Redesigned FAQ: tighter spacing, amber accent chevron, smoother accordion animation
+- Redesigned BrandBanner: amber divider line below, reduced opacity logo
+- Redesigned Navbar: uppercase tracking nav links, smaller CTA pill button, refined backdrop blur
+- Redesigned Footer: amber divider line above, refined typography and hover states
+- Refined WhatsAppChat: slightly smaller, backdrop-blur panel, cleaner proportions
+- ESLint passes, dev server compiles cleanly
+
+Stage Summary:
+- Bumblebee completely replaced with AI-generated version — proper cute eyes with highlights, no more creepy/dead eyes
+- Entire site redesigned from generic template look to premium dark theme with custom design elements
+- New design language: glass-morphism cards, honeycomb backgrounds, noise textures, amber gradient accents, uppercase tracking labels, left-aligned hero, asymmetric image grids, stat-forward benefit cards
+- Bumblebee used subtly: Hero desktop (right side), HowItWorks mobile (below cards), BillAnalyser loading — not crammed into cards
