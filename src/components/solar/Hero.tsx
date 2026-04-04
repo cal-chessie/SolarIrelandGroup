@@ -1,33 +1,47 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useInView, animate } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { MessageCircle, ArrowRight, Shield, Zap, Euro, Sun, Clock, CheckCircle2, Star, ChevronDown } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
 
 /* ═══════════════════════════════════════════
-   ANIMATED COUNTER
+   ANIMATED COUNTER — lightweight RAF, no Framer Motion pipeline
    ═══════════════════════════════════════════ */
 function AnimatedCounter({ value, prefix = '', suffix = '', decimals = 0 }: { value: number; prefix?: string; suffix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-20px' });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => {
-    if (decimals > 0) return v.toFixed(decimals);
-    return Math.round(v).toString();
-  });
+  const started = useRef(false);
 
-  if (isInView) {
-    animate(count, value, { duration: 2, ease: 'easeOut' });
-  }
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || started.current) return;
 
-  return (
-    <span ref={ref}>
-      {prefix}
-      <motion.span>{rounded}</motion.span>
-      {suffix}
-    </span>
-  );
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          obs.disconnect();
+          const duration = 2000;
+          const start = performance.now();
+          const step = (now: number) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // easeOut
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = eased * value;
+            el.textContent = prefix + (decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString()) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value, prefix, suffix, decimals]);
+
+  return <span ref={ref}>{prefix}0{suffix}</span>;
 }
 
 /* ═══════════════════════════════════════════
