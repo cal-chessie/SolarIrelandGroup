@@ -72,7 +72,7 @@ const steps = [
    ANIMATED COUNTER
    ═══════════════════════════════════════════ */
 function AnimatedStat({ value, unit, label }: { value: string; unit: string; label: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
   const prefix = value.match(/^[^0-9]*/)?.[0] || '';
@@ -80,20 +80,23 @@ function AnimatedStat({ value, unit, label }: { value: string; unit: string; lab
   const hasNumber = !isNaN(numericValue) && numericValue > 0;
 
   const count = useMotionValue(0);
-  const display = useTransform(count, (v) => {
-    if (hasNumber) return `${prefix}${Math.round(v)}${suffix}`;
-    return value;
-  });
+  const rounded = useTransform(count, (v) => Math.round(v));
 
   if (isInView && hasNumber) {
     animate(count, numericValue, { duration: 1.5, ease: 'easeOut' });
   }
 
   return (
-    <div className="text-center mt-6 pt-5 border-t border-white/[0.06]">
-      <span ref={ref} className="text-2xl sm:text-3xl font-black text-white tabular-nums">
-        {hasNumber ? display : value}
-      </span>
+    <div ref={ref} className="text-center mt-6 pt-5 border-t border-white/[0.06]">
+      {hasNumber ? (
+        <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">
+          {prefix}
+          <motion.span>{rounded}</motion.span>
+          {suffix}
+        </span>
+      ) : (
+        <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">{value}</span>
+      )}
       {unit && <span className="text-lg font-semibold text-gray-400 ml-1">{unit}</span>}
       <p className="text-xs text-gray-600 mt-1">{label}</p>
     </div>
