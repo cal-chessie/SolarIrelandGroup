@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { motion, useInView, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, CheckCircle2, Camera, Wrench, PartyPopper } from 'lucide-react';
 import BumblebeeMascot from './BumblebeeMascot';
 
@@ -16,7 +15,6 @@ const steps = [
     description:
       'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds — giving you a personalised savings estimate before you even talk to us.',
     icon: Upload,
-    iconAlt: Camera,
     accent: 'from-amber-400 to-orange-500',
     accentBg: 'bg-amber-400/10',
     accentBorder: 'hover:border-amber-400/25',
@@ -27,6 +25,7 @@ const steps = [
       'No sign-up required',
     ],
     stat: { value: '~30', unit: 'seconds', label: 'to get your results' },
+    cta: { href: '#calculator', text: 'Try the AI Analyser', icon: Camera, gradient: 'from-amber-500 to-amber-400', shadow: 'hover:shadow-amber-500/20' },
   },
   {
     number: '02',
@@ -35,7 +34,6 @@ const steps = [
     description:
       "We visit your home to assess your roof, shading, and energy usage. You'll get an honest recommendation tailored to your home — no pressure, no hard sell. Most surveys take under 45 minutes.",
     icon: Home,
-    iconAlt: Shield,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
     accentBorder: 'hover:border-emerald-400/25',
@@ -46,6 +44,7 @@ const steps = [
       'Zero cost, zero pressure',
     ],
     stat: { value: '~45', unit: 'minutes', label: 'for a full survey' },
+    cta: { href: 'https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20solar%20survey.', text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',
@@ -54,7 +53,6 @@ const steps = [
     description:
       'Our RECI-registered team installs your system in a single day. We handle the SEAI grant paperwork and ESB grid connection. You start generating clean energy — and savings — from day one.',
     icon: Zap,
-    iconAlt: Wrench,
     accent: 'from-sky-400 to-blue-500',
     accentBg: 'bg-sky-400/10',
     accentBorder: 'hover:border-sky-400/25',
@@ -65,120 +63,72 @@ const steps = [
       'Saving from day one',
     ],
     stat: { value: '€1,800', unit: '', label: 'SEAI grant included' },
+    cta: { href: 'https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20solar%20panels.', text: 'Get a Quote', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
 
 /* ═══════════════════════════════════════════
-   ANIMATED COUNTER
+   CALENDAR ICON
    ═══════════════════════════════════════════ */
-function AnimatedStat({ value, unit, label }: { value: string; unit: string; label: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
-  const prefix = value.match(/^[^0-9]*/)?.[0] || '';
-  const suffix = value.match(/[^0-9]*$/)?.[0] || '';
-  const hasNumber = !isNaN(numericValue) && numericValue > 0;
-
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v));
-
-  if (isInView && hasNumber) {
-    animate(count, numericValue, { duration: 1.5, ease: 'easeOut' });
-  }
-
+function CalendarIcon({ className }: { className?: string }) {
   return (
-    <div ref={ref} className="text-center mt-6 pt-5 border-t border-white/[0.06]">
-      {hasNumber ? (
-        <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">
-          {prefix}
-          <motion.span>{rounded}</motion.span>
-          {suffix}
-        </span>
-      ) : (
-        <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">{value}</span>
-      )}
-      {unit && <span className="text-lg font-semibold text-gray-400 ml-1">{unit}</span>}
-      <p className="text-xs text-gray-600 mt-1">{label}</p>
-    </div>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 2v4" /><path d="M16 2v4" />
+      <rect width="18" height="18" x="3" y="4" rx="2" />
+      <path d="M3 10h18" />
+    </svg>
   );
 }
 
 /* ═══════════════════════════════════════════
-   STEP CARD
+   STEP CARD — CSS expand/collapse, no Framer Motion
    ═══════════════════════════════════════════ */
 function StepCard({
   step,
   index,
   isActive,
-  onActivate,
+  onToggle,
 }: {
   step: (typeof steps)[0];
   index: number;
   isActive: boolean;
-  onActivate: () => void;
+  onToggle: () => void;
 }) {
   const StepIcon = step.icon;
-  const StepIconAlt = step.iconAlt;
+  const CtaIcon = step.cta.icon;
+  const contentRef = useRef<HTMLDivElement>(null);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay: index * 0.12 }}
-      className="relative"
-    >
+    <div className="relative">
       {/* Mobile: vertical connector line */}
       {index < steps.length - 1 && (
         <div className="md:hidden absolute left-6 top-[72px] w-px h-[calc(100%-48px)] bg-gradient-to-b from-white/10 via-white/5 to-transparent" />
       )}
 
       <div
-        onClick={onActivate}
+        onClick={onToggle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
         className={`
           relative rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 cursor-pointer
-          transition-all duration-500 ease-out overflow-hidden
+          transition-all duration-300 ease-out overflow-hidden
           ${isActive
-            ? `bg-white/[0.06] border border-white/[0.1] shadow-xl shadow-black/20`
-            : `glass-card ${step.accentBorder}`
+            ? 'bg-white/[0.06] border border-white/[0.1] shadow-xl shadow-black/20'
+            : `bg-white/[0.02] border border-white/[0.06] ${step.accentBorder}`
           }
           group
         `}
       >
-        {/* Active glow effect */}
-        <AnimatePresence>
-          {isActive && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className={`absolute inset-0 bg-gradient-to-br ${step.accent} opacity-[0.03] pointer-events-none`}
-            />
-          )}
-        </AnimatePresence>
+        {/* Active glow */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${step.accent} transition-opacity duration-300 pointer-events-none ${isActive ? 'opacity-[0.03]' : 'opacity-0'}`} />
 
-        {/* Step number badge */}
+        {/* Step number badge + chevron */}
         <div className="flex items-start justify-between mb-5 sm:mb-6">
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Animated icon container */}
-            <div className={`relative ${step.accentBg} rounded-xl sm:rounded-2xl p-3 sm:p-3.5 transition-all duration-300 ${isActive ? 'scale-105' : ''}`}>
-              <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-              >
-                <StepIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-              </motion.div>
-              {/* Pulse ring on active */}
-              {isActive && (
-                <motion.div
-                  layoutId={`pulse-${step.number}`}
-                  className={`absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br ${step.accent} opacity-20 blur-md`}
-                  animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.1, 0.2] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              )}
+            <div className={`${step.accentBg} rounded-xl sm:rounded-2xl p-3 sm:p-3.5 transition-transform duration-200 ${isActive ? 'scale-105' : 'group-hover:scale-105'}`}>
+              <StepIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
             </div>
-
             <div>
               <span className="block text-[11px] font-bold text-white/20 tracking-widest uppercase">
                 Step {step.number}
@@ -189,14 +139,10 @@ function StepCard({
             </div>
           </div>
 
-          {/* Expand indicator */}
-          <motion.div
-            animate={{ rotate: isActive ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 group-hover:text-gray-400 group-hover:border-white/[0.12] transition-colors mt-1"
-          >
+          {/* Expand chevron */}
+          <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 group-hover:text-gray-400 group-hover:border-white/[0.12] transition-all duration-200 mt-1 ${isActive ? 'rotate-90 text-gray-400 border-white/[0.12]' : ''}`}>
             <ChevronRight className="w-4 h-4" />
-          </motion.div>
+          </div>
         </div>
 
         {/* Subtitle pill */}
@@ -208,119 +154,67 @@ function StepCard({
         </div>
 
         {/* Description */}
-        <p className="text-sm sm:text-[15px] text-gray-400 leading-relaxed mb-5 sm:mb-6">
+        <p className="text-sm sm:text-[15px] text-gray-400 leading-relaxed mb-4">
           {step.description}
         </p>
 
-        {/* Expandable features */}
-        <AnimatePresence mode="wait">
-          {isActive && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-              className="overflow-hidden"
+        {/* ─── Expandable section — CSS max-height transition ─── */}
+        <div
+          ref={contentRef}
+          className="grid transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden"
+          style={{
+            gridTemplateRows: isActive ? '1fr' : '0fr',
+            opacity: isActive ? 1 : 0,
+            transitionDelay: isActive ? '0s' : '0s',
+          }}
+        >
+          <div className="min-h-0">
+            {/* Feature checklist */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2 pt-2">
+              {step.features.map((feature, fi) => (
+                <div
+                  key={fi}
+                  className="flex items-center gap-2 py-1.5"
+                  style={{
+                    transitionDelay: isActive ? `${fi * 60}ms` : '0ms',
+                  }}
+                >
+                  <div className={`w-5 h-5 rounded-md ${step.accentBg} flex items-center justify-center shrink-0`}>
+                    <CheckCircle2 className="w-3 h-3 text-green-400" />
+                  </div>
+                  <span className="text-xs sm:text-sm text-gray-300">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Stat */}
+            <div className="text-center mt-4 pt-5 border-t border-white/[0.06]">
+              <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">{step.stat.value}</span>
+              {step.stat.unit && <span className="text-lg font-semibold text-gray-400 ml-1">{step.stat.unit}</span>}
+              <p className="text-xs text-gray-600 mt-1">{step.stat.label}</p>
+            </div>
+
+            {/* CTA button */}
+            <a
+              href={step.cta.href}
+              target={step.cta.href.startsWith('http') ? '_blank' : undefined}
+              rel={step.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              onClick={(e) => e.stopPropagation()}
+              className={`mt-5 sm:mt-6 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r ${step.cta.gradient} text-black text-sm font-semibold ${step.cta.shadow} hover:shadow-lg transition-all active:scale-[0.98]`}
             >
-              {/* Feature checklist */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2">
-                {step.features.map((feature, fi) => {
-                  const featureIcon = [Camera, Clock, Shield, Leaf][fi] || CheckCircle2;
-                  const FeatureIcon = featureIcon;
-                  return (
-                    <motion.div
-                      key={fi}
-                      initial={{ opacity: 0, x: fi % 2 === 0 ? -10 : 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: fi * 0.08 }}
-                      className="flex items-center gap-2 py-1.5"
-                    >
-                      <div className={`w-5 h-5 rounded-md ${step.accentBg} flex items-center justify-center shrink-0`}>
-                        <CheckCircle2 className="w-3 h-3 text-green-400" />
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-300">{feature}</span>
-                    </motion.div>
-                  );
-                })}
-              </div>
+              <CtaIcon className="w-4 h-4" />
+              {step.cta.text}
+            </a>
+          </div>
+        </div>
 
-              {/* Animated stat */}
-              <AnimatedStat value={step.stat.value} unit={step.stat.unit} label={step.stat.label} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Quick CTA when collapsed */}
-        {!isActive && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center gap-1.5 text-xs text-gray-600 group-hover:text-gray-400 transition-colors"
-          >
-            <span>Tap to see details</span>
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-          </motion.div>
-        )}
-
-        {/* CTA when expanded */}
-        <AnimatePresence>
-          {isActive && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ delay: 0.3 }}
-              className="mt-5 sm:mt-6"
-            >
-              {index === 0 && (
-                <a
-                  href="#calculator"
-                  className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-black text-sm font-semibold hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98]"
-                >
-                  <Camera className="w-4 h-4" />
-                  Try the AI Analyser
-                </a>
-              )}
-              {index === 1 && (
-                <a
-                  href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20solar%20survey."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-black text-sm font-semibold hover:shadow-lg hover:shadow-emerald-500/20 transition-all active:scale-[0.98]"
-                >
-                  <Calendar className="w-4 h-4" />
-                  Book Free Survey
-                </a>
-              )}
-              {index === 2 && (
-                <a
-                  href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20solar%20panels."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-400 text-black text-sm font-semibold hover:shadow-lg hover:shadow-sky-500/20 transition-all active:scale-[0.98]"
-                >
-                  <Wrench className="w-4 h-4" />
-                  Get a Quote
-                </a>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* "Tap to see details" — only when collapsed */}
+        <div className={`flex items-center gap-1.5 text-xs text-gray-600 group-hover:text-gray-400 transition-colors ${isActive ? 'hidden' : ''}`}>
+          <span>Tap to see details</span>
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+        </div>
       </div>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   CALENDAR ICON (simple inline SVG)
-   ═══════════════════════════════════════════ */
-function Calendar({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 2v4" /><path d="M16 2v4" />
-      <rect width="18" height="18" x="3" y="4" rx="2" />
-      <path d="M3 10h18" />
-    </svg>
+    </div>
   );
 }
 
@@ -330,18 +224,12 @@ function Calendar({ className }: { className?: string }) {
 function TimelineConnector({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="hidden md:flex absolute top-0 left-0 right-0 h-full pointer-events-none">
-      <div className="relative flex-1 flex items-center">
-        <div className="w-full flex items-center justify-center">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent relative">
-            <motion.div
-              layoutId="timeline-progress"
-              className="absolute left-0 top-0 h-full bg-gradient-to-r from-amber-400/40 via-emerald-400/40 to-sky-400/40"
-              animate={{
-                width: `${((activeIndex + 1) / steps.length) * 100}%`,
-              }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-            />
-          </div>
+      <div className="relative flex-1 flex items-center justify-center">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent relative">
+          <div
+            className="absolute left-0 top-0 h-full bg-gradient-to-r from-amber-400/40 via-emerald-400/40 to-sky-400/40 transition-all duration-500 ease-out"
+            style={{ width: `${((activeIndex + 1) / steps.length) * 100}%` }}
+          />
         </div>
       </div>
     </div>
@@ -355,14 +243,15 @@ function ProgressDots({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="flex md:hidden items-center justify-center gap-2 mt-8">
       {steps.map((_, i) => (
-        <motion.div
+        <div
           key={i}
-          animate={{
-            width: i === activeIndex ? 24 : 8,
+          className={`h-2 rounded-full transition-all duration-300 ease-out ${
+            i === activeIndex ? 'w-6 bg-amber-400' : 'w-2 bg-white/10'
+          }`}
+          style={{
             backgroundColor: i <= activeIndex ? '#facc15' : 'rgba(255,255,255,0.1)',
+            width: i === activeIndex ? 24 : 8,
           }}
-          transition={{ duration: 0.3 }}
-          className="h-2 rounded-full"
         />
       ))}
     </div>
@@ -374,33 +263,18 @@ function ProgressDots({ activeIndex }: { activeIndex: number }) {
    ═══════════════════════════════════════════ */
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headerInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="how-it-works" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
-      {/* Background ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto relative z-10" ref={sectionRef}>
+    <section id="how-it-works" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* ─── Section header ─── */}
-        <motion.div
-          className="text-center mb-14 sm:mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={headerInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6"
-          >
+        <div className="text-center mb-14 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
               How it works
             </span>
-          </motion.div>
+          </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
             Three steps to
@@ -413,15 +287,10 @@ export default function HowItWorks() {
           </p>
 
           {/* Bumblebee on header */}
-          <motion.div
-            className="flex justify-center mt-6"
-            initial={{ opacity: 0, y: 10 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <div className="flex justify-center mt-6">
             <BumblebeeMascot size="md" flipped />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* ─── Steps grid ─── */}
         <div className="relative">
@@ -434,7 +303,7 @@ export default function HowItWorks() {
                 step={step}
                 index={i}
                 isActive={activeStep === i}
-                onActivate={() => setActiveStep(activeStep === i ? null : i)}
+                onToggle={() => setActiveStep(activeStep === i ? null : i)}
               />
             ))}
           </div>
@@ -444,14 +313,8 @@ export default function HowItWorks() {
         <ProgressDots activeIndex={activeStep ?? 0} />
 
         {/* ─── Bottom trust bar ─── */}
-        <motion.div
-          className="mt-14 sm:mt-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="glass-card rounded-2xl sm:rounded-3xl px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 justify-between">
+        <div className="mt-14 sm:mt-20">
+          <div className="rounded-2xl sm:rounded-3xl px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 justify-between bg-white/[0.02] border border-white/[0.06]">
             {/* Trust signals */}
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-10">
               <div className="flex items-center gap-2.5">
@@ -495,7 +358,7 @@ export default function HowItWorks() {
               <ArrowRight className="w-3.5 h-3.5 text-gray-500" />
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
