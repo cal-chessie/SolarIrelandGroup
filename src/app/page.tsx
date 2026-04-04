@@ -5,6 +5,7 @@ import Hero from '@/components/solar/Hero';
 import BrandBanner from '@/components/solar/BrandBanner';
 import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
+import CustomerInstalls from '@/components/solar/CustomerInstalls';
 import GrantInfo from '@/components/solar/GrantInfo';
 import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
@@ -24,6 +25,9 @@ export default function Home() {
         </div>
         <div id="why-solar">
           <WhySolar />
+        </div>
+        <div id="our-work">
+          <CustomerInstalls />
         </div>
         <div id="grant-info">
           <GrantInfo />

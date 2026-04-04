@@ -1,19 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'Why Solar', href: '#why-solar' },
-  { label: 'Grant Info', href: '#grant-info' },
+  { label: 'Our Work', href: '#our-work' },
   { label: 'Bill Analyser', href: '#calculator' },
   { label: 'FAQ', href: '#faq' },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const scrollTo = (href: string) => {
     setIsOpen(false);
@@ -24,7 +33,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-lg border-b border-white/[0.06]">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        scrolled
+          ? 'bg-black/90 backdrop-blur-lg border-b border-white/[0.06]'
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <button
@@ -41,7 +56,7 @@ export default function Navbar() {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
             >
               {link.label}
             </button>

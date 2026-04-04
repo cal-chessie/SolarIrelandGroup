@@ -83,3 +83,25 @@ Stage Summary:
 - FB cover image used as brand banner section with gradient overlay
 - Bumblebee eyes cleaned with sharpening and contrast enhancement
 - New files: public/logo-transparent.png, public/logo-lg.png, public/logo-md.png, public/logo-sm.png, public/logo-favicon.png, public/fb-cover.png, src/components/solar/BrandBanner.tsx
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Add customer install photos, regenerate hero with black panels, transparent navbar
+
+Work Log:
+- Analysed two customer install photos (30-AUG.png: tiled roof home with greenery; 4.png: two-story white house with flush-mount)
+- Generated new hero image with modern all-black frameless solar panels on Irish home, green countryside, warm golden light
+- Updated Navbar: transparent when at top (over hero), becomes solid black with backdrop blur on scroll (scroll event listener, threshold 60px)
+- Updated Hero: background image extends behind navbar using -top-16 positioning, lighter initial gradient overlay (from-black/50)
+- Built CustomerInstalls section with both real install photos, hover zoom effect, gradient captions
+- Added "Our Work" to nav links and placed CustomerInstalls between WhySolar and GrantInfo sections
+- Copied install photos to public/install-1.jpg and public/install-2.jpg
+- ESLint passes, dev server compiles cleanly
+
+Stage Summary:
+- Hero now features modern all-black frameless solar panels
+- Hero image extends behind transparent navbar, creating seamless full-bleed effect
+- Navbar transitions from transparent to solid on scroll
+- Two real customer install photos showcased in "Our Work" section
+- New files: public/install-1.jpg, public/install-2.jpg, src/components/solar/CustomerInstalls.tsx. Updated: Navbar.tsx, Hero.tsx, page.tsx.

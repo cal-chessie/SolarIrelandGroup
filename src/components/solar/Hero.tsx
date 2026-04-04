@@ -8,17 +8,17 @@ import BumblebeeMascot from './BumblebeeMascot';
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0 z-0">
+      {/* Background image with overlay - extends behind navbar */}
+      <div className="absolute -top-16 left-0 right-0 bottom-0 z-0">
         <img
           src="/hero-solar.jpg"
-          alt="Solar panels on an Irish home"
+          alt="Modern black frameless solar panels on an Irish home"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-[#0a0a0a]" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-24 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-24 pb-16 text-center">
         {/* Bumblebee mascot floating at top */}
         <motion.div
           className="mb-4"
