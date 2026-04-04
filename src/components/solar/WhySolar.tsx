@@ -352,7 +352,7 @@ function GenerationChart() {
           ))}
         </div>
 
-        <div className="flex items-end justify-between gap-[3px] sm:gap-2 h-[160px] sm:h-[200px] relative">
+        <div className="flex justify-between gap-[3px] sm:gap-2 h-[160px] sm:h-[200px] relative">
           {monthlyGen.map((d, i) => {
             const heightPercent = (d.gen / maxGen) * 100;
             const intensity = d.gen / maxGen;
@@ -362,12 +362,12 @@ function GenerationChart() {
             return (
               <div
                 key={d.month}
-                className="flex-1 flex flex-col items-center gap-2 cursor-pointer select-none"
+                className="flex-1 flex flex-col items-center gap-2 cursor-pointer select-none h-full"
                 onMouseEnter={() => setHoveredMonth(i)}
                 onMouseLeave={() => setHoveredMonth(null)}
               >
                 {/* Bar wrapper */}
-                <div className="w-full flex-1 flex items-end relative">
+                <div className="w-full flex-1 relative min-h-0">
                   {/* Tooltip */}
                   {isHovered && (
                     <motion.div
@@ -384,9 +384,9 @@ function GenerationChart() {
                   )}
                   {/* Bar */}
                   <motion.div
-                    className={`w-full rounded-t-sm sm:rounded-t-md transition-all duration-200 ${
+                    className={`w-full absolute bottom-0 left-0 right-0 rounded-t-sm sm:rounded-t-md transition-colors duration-200 ${
                       isHovered
-                        ? 'bg-amber-400'
+                        ? 'bg-amber-400 shadow-lg shadow-amber-400/20'
                         : intensity > 0.85
                           ? 'bg-amber-400/50'
                           : intensity > 0.6
@@ -394,7 +394,7 @@ function GenerationChart() {
                             : intensity > 0.35
                               ? 'bg-amber-400/25'
                               : 'bg-amber-400/15'
-                    } ${isHovered ? 'shadow-lg shadow-amber-400/20' : ''}`}
+                    }`}
                     initial={{ height: 0 }}
                     whileInView={{ height: `${heightPercent}%` }}
                     viewport={{ once: true }}
