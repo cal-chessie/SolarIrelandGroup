@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
+import BumblebeeMascot from './BumblebeeMascot';
 
 export default function Hero() {
   return (
@@ -18,6 +19,16 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-24 text-center">
+        {/* Bumblebee mascot floating at top */}
+        <motion.div
+          className="mb-4"
+          initial={{ opacity: 0, y: -30, scale: 0.5 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <BumblebeeMascot size="lg" />
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -45,9 +56,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
         >
-          We install solar PV systems on homes across Ireland. Get a free,
-          no-obligation survey and an honest quote &mdash; no pressure, no
-          gimmicks.
+          Upload your electricity bill and our AI will show you exactly what
+          solar will save you. We then handle everything &mdash; free survey,
+          installation, and your full SEAI grant application.
         </motion.p>
 
         <motion.div
@@ -61,9 +72,9 @@ export default function Hero() {
             className="bg-amber-400 hover:bg-amber-500 text-black font-semibold px-8 py-6 text-lg rounded-xl glow-amber"
             asChild
           >
-            <a href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20a%20free%20solar%20survey%20please." target="_blank" rel="noopener noreferrer">
+            <a href="#calculator">
               <MessageCircle className="mr-2 h-5 w-5" />
-              Get a Free Quote
+              Analyse My Bill
             </a>
           </Button>
           <Button

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BumblebeeMascot from './BumblebeeMascot';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -82,15 +83,15 @@ export default function WhatsAppChat() {
       {/* Floating Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300 ${
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center overflow-hidden ${
           isOpen
             ? 'bg-gray-800 hover:bg-gray-700 text-white'
-            : 'bg-green-500 hover:bg-green-600 text-white glow-amber'
+            : 'bg-green-500 hover:bg-green-600 glow-amber'
         }`}
         size="icon"
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
-        {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+        {isOpen ? <X className="w-6 h-6" /> : <BumblebeeMascot size="sm" animate={false} />}
       </Button>
 
       {/* Chat Panel */}
@@ -98,8 +99,8 @@ export default function WhatsAppChat() {
         <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] h-[500px] max-h-[calc(100vh-8rem)] bg-[#111] border border-white/[0.1] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
           <div className="flex items-center gap-3 px-4 py-3 bg-green-600 text-white">
-            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-              <MessageCircle className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+              <BumblebeeMascot size="sm" animate={false} />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm">Solar Ireland</p>

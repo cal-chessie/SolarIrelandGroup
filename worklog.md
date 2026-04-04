@@ -30,3 +30,33 @@ Stage Summary:
 - Dark theme with amber (#FACC15) accents
 - Mobile responsive design
 - Files: src/components/solar/ (7 components), src/app/page.tsx, src/app/api/chat/route.ts, src/app/layout.tsx, src/app/globals.css
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Integrate bumblebee mascot and AI Bill Analyser widget
+
+Work Log:
+- Analysed uploaded bumblebee photo (cartoon bumblebee on white background holding blue battery object)
+- Analysed uploaded screenshot (existing Solar Ireland site with AI Bill Analyser widget)
+- Removed white background from bumblebee using Python PIL (numpy thresholding on white pixels)
+- Created multiple sizes: hero (200px), md (120px), sm (40px), favicon (32px), flipped variant
+- Built BumblebeeMascot component with animated floating/bobbing motion (Framer Motion)
+- Integrated bumblebee throughout: Hero section, Navbar logo, HowItWorks step 1, Footer logo, WhatsAppChat widget, BillAnalyser loading state, favicon
+- Built AI Bill Analyser widget with two modes: Upload Bill (drag-drop with VLM analysis) and Enter Manually
+- Upload mode accepts image/PDF of electricity bills and sends to /api/analyse-bill for AI OCR
+- Manual mode has fields: Monthly Bill, Annual Usage, Home Type, Provider dropdowns
+- Results display: Annual Saving, Payback Period, SEAI Grant, 25-Year Value, Solar Recommendation
+- Built /api/analyse-bill endpoint using VLM (z-ai-web-dev-sdk) to read electricity bills via vision AI
+- Manual entry mode calculates savings using realistic 2026 Irish solar metrics
+- Results include pre-filled WhatsApp link with bill data for easy lead capture
+- Replaced SavingsCalculator with BillAnalyser as the main calculator section
+- Updated HowItWorks to lead with "Upload Your Bill" step featuring bumblebee mascot
+- Updated Hero CTA to scroll to Bill Analyser instead of WhatsApp
+- ESLint passes, dev server compiles cleanly, API returns 200
+
+Stage Summary:
+- Bumblebee mascot fully integrated as site identity across 7 touchpoints
+- AI Bill Analyser widget replaces simple calculator — matches original design from screenshot
+- VLM-powered bill reading: upload ESB/Electric Ireland/Bord Gáis/SSE Airtricity bills for instant AI analysis
+- New files: public/bumblebee.png (transparent), public/bumblebee-hero.png, public/bumblebee-md.png, public/bumblebee-sm.png, public/bumblebee-favicon.png, public/bumblebee-flip.png, src/components/solar/BumblebeeMascot.tsx, src/components/solar/BillAnalyser.tsx, src/app/api/analyse-bill/route.ts

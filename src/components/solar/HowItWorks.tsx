@@ -1,26 +1,30 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ClipboardCheck, FileText, Zap } from 'lucide-react';
+import { ClipboardCheck, FileText, Zap, Upload } from 'lucide-react';
+import BumblebeeMascot from './BumblebeeMascot';
 
 const steps = [
+  {
+    icon: Upload,
+    title: 'Upload Your Bill',
+    description:
+      'Upload your electricity bill or enter your details into our AI Bill Analyser. Our AI reads your bill and instantly shows you what solar panels could save you.',
+    mascot: true,
+  },
   {
     icon: ClipboardCheck,
     title: 'Free Home Survey',
     description:
       'We visit your home to assess your roof space, orientation, shading, and current energy usage. There is no charge and no obligation to proceed.',
-  },
-  {
-    icon: FileText,
-    title: 'Honest Quote & Design',
-    description:
-      'You receive a detailed, transparent proposal outlining the recommended system size, expected generation, and a full breakdown of costs. No hidden fees, no pressure.',
+    mascot: false,
   },
   {
     icon: Zap,
     title: 'Installation & Handover',
     description:
       'Our SEAI-registered team installs your system, typically completed within one day. We handle everything including the grant application paperwork.',
+    mascot: false,
   },
 ];
 
@@ -73,6 +77,11 @@ export default function HowItWorks() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-400/10 text-amber-400 mb-5">
                 <step.icon className="w-7 h-7" />
               </div>
+              {step.mascot && (
+                <div className="mb-4">
+                  <BumblebeeMascot size="md" flipped />
+                </div>
+              )}
               <span className="absolute top-4 right-4 text-5xl font-bold text-white/[0.04]">
                 {index + 1}
               </span>

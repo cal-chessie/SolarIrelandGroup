@@ -1,6 +1,7 @@
 'use client';
 
 import { MessageCircle, Mail, MapPin } from 'lucide-react';
+import BumblebeeMascot from './BumblebeeMascot';
 
 export default function Footer() {
   return (
@@ -10,11 +11,7 @@ export default function Footer() {
           {/* Company */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img
-                src="/solar-icon.svg"
-                alt="Solar Ireland"
-                className="w-8 h-8"
-              />
+              <BumblebeeMascot size="sm" animate={false} />
               <span className="font-bold text-lg">Solar Ireland</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">

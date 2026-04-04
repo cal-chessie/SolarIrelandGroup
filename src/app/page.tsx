@@ -5,7 +5,7 @@ import Hero from '@/components/solar/Hero';
 import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
 import GrantInfo from '@/components/solar/GrantInfo';
-import SavingsCalculator from '@/components/solar/SavingsCalculator';
+import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
@@ -27,7 +27,7 @@ export default function Home() {
           <GrantInfo />
         </div>
         <div id="calculator">
-          <SavingsCalculator />
+          <BillAnalyser />
         </div>
         <div id="faq">
           <FAQ />

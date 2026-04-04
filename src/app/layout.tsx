@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Solar Ireland" }],
   icons: {
-    icon: "/solar-icon.svg",
+    icon: "/bumblebee-favicon.png",
   },
   openGraph: {
     title: "Solar Ireland | Solar Panel Installation",

@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BumblebeeMascot from './BumblebeeMascot';
 
 const navLinks = [
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'Why Solar', href: '#why-solar' },
   { label: 'Grant Info', href: '#grant-info' },
-  { label: 'Calculator', href: '#calculator' },
+  { label: 'Bill Analyser', href: '#calculator' },
   { label: 'FAQ', href: '#faq' },
 ];
 
@@ -26,12 +27,12 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-lg border-b border-white/[0.06]">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo with Bumblebee */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2"
         >
-          <img src="/solar-icon.svg" alt="Solar Ireland" className="w-8 h-8" />
+          <BumblebeeMascot size="sm" animate={false} />
           <span className="font-bold text-white">Solar Ireland</span>
         </button>
 
@@ -53,15 +54,9 @@ export default function Navbar() {
           <Button
             size="sm"
             className="bg-amber-400 hover:bg-amber-500 text-black font-semibold rounded-lg"
-            asChild
+            onClick={() => scrollTo('#calculator')}
           >
-            <a
-              href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20a%20free%20solar%20survey."
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Free Quote
-            </a>
+            Analyse My Bill
           </Button>
         </div>
 
@@ -91,15 +86,9 @@ export default function Navbar() {
             <Button
               size="sm"
               className="w-full bg-amber-400 hover:bg-amber-500 text-black font-semibold rounded-lg"
-              asChild
+              onClick={() => scrollTo('#calculator')}
             >
-              <a
-                href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20a%20free%20solar%20survey."
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Get a Free Quote
-              </a>
+              Analyse My Bill
             </Button>
           </div>
         </div>
