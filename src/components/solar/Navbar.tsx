@@ -192,7 +192,7 @@ function MobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/70 md:hidden transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
@@ -422,7 +422,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-30 transition-all duration-500 ${
           scrolled
-            ? 'bg-black/85 backdrop-blur-xl border-b border-white/[0.05]'
+            ? 'bg-black/95 border-b border-white/[0.05]'
             : 'bg-transparent border-b border-transparent'
         }`}
       >

@@ -182,10 +182,15 @@
 @layer utilities {
   /* Amber gradient text */
   .text-gradient {
-    background: linear-gradient(135deg, #facc15 0%, #fbbf24 40%, #f59e0b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #facc15;
+  }
+
+  /* Hero section — GPU layer isolation */
+  .hero-section {
+    isolation: isolate;
+  }
+  .hero-section .hero-bg {
+    content-visibility: auto;
   }
 
   /* Amber glow effects */
@@ -284,79 +289,11 @@
    KEYFRAME ANIMATIONS
    ═══════════════════════════════════════════ */
 @keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-/* Slow spin for icons (sun, euro) */
-@keyframes icon-spin-slow {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(15deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-15deg); }
-  100% { transform: rotate(0deg); }
-}
-.icon-spin-slow {
-  display: inline-flex;
-  animation: icon-spin-slow 3s ease-in-out infinite;
-}
-
-/* Scroll indicator bounce */
-@keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
-.hero-scroll-bounce {
-  animation: scroll-bounce 1.5s ease-in-out infinite;
-}
-
-/* Hero glow rings — CSS only, GPU-composited (no filter:blur) */
-@keyframes glow-pulse-inner {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-@keyframes glow-pulse-outer {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-.hero-glow-ring--inner {
-  animation: glow-pulse-inner 3s ease-in-out infinite;
-  background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, rgba(250,204,21,0.02) 40%, transparent 70%);
-  box-shadow: 0 0 60px 20px rgba(250,204,21,0.04);
-  will-change: transform;
-}
-.hero-glow-ring--outer {
-  animation: glow-pulse-outer 4s ease-in-out 1s infinite;
-  background: radial-gradient(circle, rgba(250,204,21,0.04) 0%, rgba(250,204,21,0.01) 40%, transparent 70%);
-  box-shadow: 0 0 80px 30px rgba(250,204,21,0.03);
-  will-change: transform;
-}
-
-/* Hero CTA hover — pure CSS */
-.hero-cta {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.hero-cta:hover {
-  transform: scale(1.03);
-}
-.hero-cta:active {
-  transform: scale(0.97);
-}
-
-/* Stat pill hover — pure CSS */
-.stat-pill {
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-.stat-pill:hover {
-  transform: scale(1.03) translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Bumblebee float — pure CSS, no Framer Motion */
+/* Bumblebee float — used in below-fold sections only */
 @keyframes bumblebee-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   25% { transform: translateY(-8px) rotate(3deg); }
@@ -367,24 +304,21 @@
   animation: bumblebee-float 3s ease-in-out infinite;
 }
 
-/* WhatsApp FAB — fade in with delay, no Framer Motion */
-@keyframes fab-entrance {
-  0% { transform: scale(0); opacity: 0; }
-  60% { transform: scale(1.1); opacity: 1; }
-  80% { transform: scale(0.95); }
-  100% { transform: scale(1); }
-}
+/* WhatsApp FAB — simple fade in, delayed */
 .whatsapp-fab {
   opacity: 0;
   animation: fab-entrance 0.5s ease-out 2s forwards;
-  will-change: transform, opacity;
+}
+@keyframes fab-entrance {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-/* Chat message entrance animation */
+/* Chat message entrance */
+.chat-msg-appear {
+  animation: chat-msg-enter 0.2s ease-out both;
+}
 @keyframes chat-msg-enter {
   0% { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
-}
-.chat-msg-appear {
-  animation: chat-msg-enter 0.2s ease-out both;
 }
