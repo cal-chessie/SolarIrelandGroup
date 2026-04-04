@@ -134,3 +134,28 @@ Stage Summary:
 - Entire site redesigned from generic template look to premium dark theme with custom design elements
 - New design language: glass-morphism cards, honeycomb backgrounds, noise textures, amber gradient accents, uppercase tracking labels, left-aligned hero, asymmetric image grids, stat-forward benefit cards
 - Bumblebee used subtly: Hero desktop (right side), HowItWorks mobile (below cards), BillAnalyser loading — not crammed into cards
+
+---
+Task ID: 8
+Agent: Main Agent
+Task: Fix Hero shuttering on page load — 5th attempt (external causes)
+
+Work Log:
+- Investigated ALL components that mount on page load for Framer Motion usage
+- ScrollProgress.tsx — clean, no Framer Motion, passive scroll ✅
+- Navbar.tsx — PRIMARY CULPRIT: imports motion, AnimatePresence, useMotionValue, useTransform, animate. HamburgerIcon has 3 motion.span elements that animate on mount. AnimatePresence always mounted. layoutId initializes layout animation system.
+- WhatsAppChat.tsx — SECONDARY CULPRIT: imports motion, AnimatePresence. Two AnimatePresence blocks mounted at all times.
+- Hero.tsx — clean, no Framer Motion ✅
+- BumblebeeMascot.tsx — simple img with CSS float ✅
+- SectionReveal.tsx — dead code, not imported anywhere ✅
+- Found filter:blur(16px) and filter:blur(24px) on continuously animated Hero glow rings — CPU repaints every frame
+- Fix 1: Rewrote Navbar.tsx completely — zero Framer Motion. CSS transitions for hamburger morphing, mobile menu slide/opacity, staggered nav items, desktop active indicator
+- Fix 2: Rewrote WhatsAppChat.tsx completely — zero Framer Motion. CSS transitions for notification toast, chat panel open/close, chat messages use CSS @keyframes
+- Fix 3: Replaced Hero glow ring filter:blur() with radial-gradient backgrounds + box-shadow + will-change:transform for GPU compositing
+- Build verified: compiles successfully with zero errors
+
+Stage Summary:
+- Root cause was Framer Motion bootstrapping its entire animation system from Navbar + WhatsAppChat simultaneously during page hydration, plus CPU-expensive filter:blur() on Hero glow rings
+- Three files rewritten: Navbar.tsx, WhatsAppChat.tsx, globals.css
+- Hero.tsx updated: removed Tailwind bg classes from glow ring divs
+- All animations in initial viewport now use pure CSS — zero JS animation libraries

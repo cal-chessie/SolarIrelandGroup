@@ -314,22 +314,26 @@
   animation: scroll-bounce 1.5s ease-in-out infinite;
 }
 
-/* Hero glow rings — CSS only, no Framer Motion */
+/* Hero glow rings — CSS only, GPU-composited (no filter:blur) */
 @keyframes glow-pulse-inner {
-  0%, 100% { transform: scale(1); opacity: 0.4; }
-  50% { transform: scale(1.15); opacity: 0.7; }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
 }
 @keyframes glow-pulse-outer {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.2); opacity: 0.5; }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 .hero-glow-ring--inner {
   animation: glow-pulse-inner 3s ease-in-out infinite;
-  filter: blur(16px);
+  background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, rgba(250,204,21,0.02) 40%, transparent 70%);
+  box-shadow: 0 0 60px 20px rgba(250,204,21,0.04);
+  will-change: transform;
 }
 .hero-glow-ring--outer {
   animation: glow-pulse-outer 4s ease-in-out 1s infinite;
-  filter: blur(24px);
+  background: radial-gradient(circle, rgba(250,204,21,0.04) 0%, rgba(250,204,21,0.01) 40%, transparent 70%);
+  box-shadow: 0 0 80px 30px rgba(250,204,21,0.03);
+  will-change: transform;
 }
 
 /* Hero CTA hover — pure CSS */
@@ -373,4 +377,14 @@
 .whatsapp-fab {
   opacity: 0;
   animation: fab-entrance 0.5s ease-out 2s forwards;
+  will-change: transform, opacity;
+}
+
+/* Chat message entrance animation */
+@keyframes chat-msg-enter {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.chat-msg-appear {
+  animation: chat-msg-enter 0.2s ease-out both;
 }

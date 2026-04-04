@@ -190,8 +190,8 @@ export default function Hero() {
             <div className="flex flex-col items-center gap-6">
               {/* Bumblebee with CSS glow rings */}
               <div className="relative group cursor-pointer">
-                <div className="hero-glow-ring hero-glow-ring--inner absolute -inset-8 rounded-full bg-amber-400/[0.04]" />
-                <div className="hero-glow-ring hero-glow-ring--outer absolute -inset-14 rounded-full bg-amber-400/[0.02]" />
+                <div className="hero-glow-ring hero-glow-ring--inner absolute -inset-8 rounded-full" />
+                <div className="hero-glow-ring hero-glow-ring--outer absolute -inset-14 rounded-full" />
                 <div className="relative">
                   <BumblebeeMascot size="hero" />
                 </div>
