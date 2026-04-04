@@ -9,29 +9,29 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-end sm:items-center justify-center overflow-hidden">
       {/* Background image — extends behind navbar */}
-      <div className="absolute -top-20 left-0 right-0 bottom-0">
+      <div className="absolute -top-24 left-0 right-0 bottom-0">
         <img
           src="/hero-solar.jpg"
           alt="Modern black frameless solar panels on an Irish home"
-          className="w-full h-full object-cover scale-105"
+          className="w-full h-full object-cover"
         />
-        {/* Multi-layer gradient for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+        {/* Single gradient: solid dark at top (behind navbar), lighter in middle, dark at bottom */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,black,rgba(0,0,0,0.3)_40%,black)]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pt-32 pb-20 sm:pb-24">
+        {/* Bumblebee — positioned relative to full container, not text column */}
+        <motion.div
+          className="hidden lg:block absolute right-8 xl:right-16 top-0"
+          initial={{ opacity: 0, scale: 0.6, x: 40 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+        >
+          <BumblebeeMascot size="hero" />
+        </motion.div>
+
         <div className="max-w-2xl">
-          {/* Bumblebee — subtle, off to the side on desktop */}
-          <motion.div
-            className="hidden lg:block absolute -right-4 top-8"
-            initial={{ opacity: 0, scale: 0.6, x: 40 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-          >
-            <BumblebeeMascot size="hero" />
-          </motion.div>
 
           {/* Badge */}
           <motion.div
