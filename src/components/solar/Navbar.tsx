@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import BumblebeeMascot from './BumblebeeMascot';
 
 const navLinks = [
   { label: 'How It Works', href: '#how-it-works' },
@@ -27,13 +26,13 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-lg border-b border-white/[0.06]">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo with Bumblebee */}
+        {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2"
         >
-          <BumblebeeMascot size="sm" animate={false} />
-          <span className="font-bold text-white">Solar Ireland</span>
+          <img src="/logo-sm.png" alt="Solar Ireland" className="h-9 w-auto" />
+          <span className="font-bold text-white hidden sm:inline">Solar Ireland</span>
         </button>
 
         {/* Desktop Links */}

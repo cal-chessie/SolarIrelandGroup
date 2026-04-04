@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import BumblebeeMascot from './BumblebeeMascot';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -91,7 +90,7 @@ export default function WhatsAppChat() {
         size="icon"
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
-        {isOpen ? <X className="w-6 h-6" /> : <BumblebeeMascot size="sm" animate={false} />}
+        {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </Button>
 
       {/* Chat Panel */}
@@ -100,7 +99,7 @@ export default function WhatsAppChat() {
           {/* Header */}
           <div className="flex items-center gap-3 px-4 py-3 bg-green-600 text-white">
             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
-              <BumblebeeMascot size="sm" animate={false} />
+              <img src="/logo-sm.png" alt="Solar Ireland" className="w-6 h-6 object-contain" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm">Solar Ireland</p>

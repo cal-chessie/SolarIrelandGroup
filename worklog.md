@@ -60,3 +60,26 @@ Stage Summary:
 - AI Bill Analyser widget replaces simple calculator — matches original design from screenshot
 - VLM-powered bill reading: upload ESB/Electric Ireland/Bord Gáis/SSE Airtricity bills for instant AI analysis
 - New files: public/bumblebee.png (transparent), public/bumblebee-hero.png, public/bumblebee-md.png, public/bumblebee-sm.png, public/bumblebee-favicon.png, public/bumblebee-flip.png, src/components/solar/BumblebeeMascot.tsx, src/components/solar/BillAnalyser.tsx, src/app/api/analyse-bill/route.ts
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Use official Solar Ireland logo + clean up bumblebee eyes
+
+Work Log:
+- Analysed uploaded Solar Ireland LOGO.jpeg (yellow circular ring on black background) and FB cover (1640x924 brand banner with logo, tagline, bumblebee, honeycomb)
+- Processed logo: removed black background, created transparent PNG in 4 sizes (logo-lg 200px, logo-md 120px, logo-sm 48px, logo-favicon 32px)
+- Cleaned bumblebee eyes: applied double sharpening pass, contrast boost on head region (y:80-220), regenerated all size variants
+- Replaced placeholder bumblebee with official logo in: Navbar, Footer, WhatsAppChat header, browser favicon
+- Bumblebee mascot still used in: Hero section (animated), HowItWorks step 1 (flipped), BillAnalyser loading state
+- Created BrandBanner component using FB cover image with overlaid logo and tagline "Sun-Powered Solutions, Made in Ireland"
+- Added BrandBanner between Hero and HowItWorks sections
+- Updated layout.tsx favicon to use official logo
+- ESLint passes, dev server compiles cleanly
+
+Stage Summary:
+- Official Solar Ireland logo (yellow ring) now used in all branding touchpoints: navbar, footer, chat widget, favicon
+- Bumblebee mascot preserved as character/mascot element in content sections (not replacing logo)
+- FB cover image used as brand banner section with gradient overlay
+- Bumblebee eyes cleaned with sharpening and contrast enhancement
+- New files: public/logo-transparent.png, public/logo-lg.png, public/logo-md.png, public/logo-sm.png, public/logo-favicon.png, public/fb-cover.png, src/components/solar/BrandBanner.tsx
