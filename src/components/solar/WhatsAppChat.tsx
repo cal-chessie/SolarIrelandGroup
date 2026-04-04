@@ -358,8 +358,8 @@ export default function WhatsAppChat() {
                 className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
               >
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                    <img src="/logo-sm.png" alt="Solar Ireland" className="w-7 h-7 object-contain" />
+                  <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+                    <img src="/logo-sm.png" alt="Solar Ireland" className="w-10 h-10 object-contain" />
                   </div>
                   <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0f0f0f]" />
                 </div>
@@ -382,11 +382,11 @@ export default function WhatsAppChat() {
                 {/* ─── Header ─── */}
                 <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                      <img src="/logo-sm.png" alt="Solar Ireland" className="w-7 h-7 object-contain" />
+                    <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+                      <img src="/logo-sm.png" alt="Solar Ireland" className="w-10 h-10 object-contain" />
                     </div>
                     {/* Online indicator */}
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-white">Solar Ireland</p>
