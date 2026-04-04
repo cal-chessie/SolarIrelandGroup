@@ -9,16 +9,8 @@ import {
   Wrench,
   Zap,
   HelpCircle,
-  MessageCircle,
-  ArrowRight,
   X,
   Sparkles,
-  Shield,
-  Clock,
-  Sun,
-  Battery,
-  FileText,
-  Home,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════
@@ -504,48 +496,7 @@ export default function FAQ() {
           </AnimatePresence>
         </div>
 
-        {/* ─── Still have questions? CTA ─── */}
-        <motion.div
-          className="mt-12 sm:mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-amber-400/10 flex items-center justify-center mx-auto mb-4">
-              <MessageCircle className="w-6 h-6 text-amber-400" />
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
-              Still have questions?
-            </h3>
-            <p className="text-sm text-gray-500 max-w-sm mx-auto mb-6 leading-relaxed">
-              We&apos;d love to help. Chat with us on WhatsApp for a quick answer, or get a free survey for a detailed assessment of your home.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <motion.a
-                href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-400 text-black font-bold text-sm shadow-lg shadow-green-500/15 w-full sm:w-auto justify-center"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp Us
-              </motion.a>
-              <motion.a
-                href="#calculator"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors w-full sm:w-auto justify-center"
-              >
-                Try the AI Bill Analyser
-                <ArrowRight className="w-4 h-4 text-gray-600" />
-              </motion.a>
-            </div>
-          </div>
-        </motion.div>
+
       </div>
     </section>
   );
