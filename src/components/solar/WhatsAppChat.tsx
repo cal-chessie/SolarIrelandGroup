@@ -322,18 +322,15 @@ export default function WhatsAppChat() {
           FLOATING BUTTON
           ═══════════════════════════════════════ */}
       {!isOpen && (
-        <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 2 }}
+        <button
           onClick={handleOpen}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-xl shadow-green-500/20 bg-green-500 hover:bg-green-400 transition-colors flex items-center justify-center group"
+          className="whatsapp-fab fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-xl shadow-green-500/20 bg-green-500 hover:bg-green-400 transition-colors flex items-center justify-center group"
           aria-label="Open chat"
         >
           <MessageCircle className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
           {/* Subtle pulse ring */}
           <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20" />
-        </motion.button>
+        </button>
       )}
 
       {/* ═══════════════════════════════════════

@@ -351,3 +351,26 @@
   transform: scale(1.03) translateY(-2px);
   border-color: rgba(255, 255, 255, 0.15);
 }
+
+/* Bumblebee float — pure CSS, no Framer Motion */
+@keyframes bumblebee-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(3deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  75% { transform: translateY(-8px) rotate(-3deg); }
+}
+.bumblebee-float {
+  animation: bumblebee-float 3s ease-in-out infinite;
+}
+
+/* WhatsApp FAB — fade in with delay, no Framer Motion */
+@keyframes fab-entrance {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  80% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+.whatsapp-fab {
+  opacity: 0;
+  animation: fab-entrance 0.5s ease-out 2s forwards;
+}

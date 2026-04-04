@@ -1,11 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 interface BumblebeeMascotProps {
   size?: 'sm' | 'md' | 'lg' | 'hero';
   flipped?: boolean;
-  className?: string;
+  className?: '';
   animate?: boolean;
 }
 
@@ -25,7 +23,6 @@ export default function BumblebeeMascot({
   const config = sizeMap[size];
   const src = flipped ? '/bumblebee-flip.png' : config.src;
 
-  // Adjust flipped size to match
   const sizeClass =
     size === 'hero'
       ? 'w-48 h-48 sm:w-56 sm:h-56'
@@ -47,20 +44,11 @@ export default function BumblebeeMascot({
   }
 
   return (
-    <motion.img
+    <img
       src={src}
       alt="Solar Ireland Bumblebee Mascot"
-      className={`${sizeClass} ${className}`}
+      className={`bumblebee-float ${sizeClass} ${className}`}
       style={{ imageRendering: 'auto' }}
-      animate={{
-        y: [0, -8, 0],
-        rotate: [0, 3, -3, 0],
-      }}
-      transition={{
-        duration: 3,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      }}
     />
   );
 }
