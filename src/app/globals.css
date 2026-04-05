@@ -937,10 +937,15 @@
   opacity: 0;
   animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both;
 }
-/* el-7: Trust line */
+/* el-7: Secondary actions */
 .exit-intent-el-7 {
   opacity: 0;
   animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.74s both;
+}
+/* el-8: Trust line */
+.exit-intent-el-8 {
+  opacity: 0;
+  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.82s both;
 }
 
 @keyframes exit-el-rise {

@@ -170,21 +170,30 @@ export default function ExitIntent() {
           <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         </div>
 
+        {/* ── Logo + Close row ── */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
+          <img
+            src="/logo-sm.png"
+            alt="Solar Ireland"
+            width={90}
+            height={28}
+            className="exit-intent-el exit-intent-el-0 h-6 sm:h-7 w-auto opacity-80"
+          />
+          <button
+            onClick={close}
+            className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+            aria-label="Close"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
         {/* Ambient glow behind content */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
-        {/* Close button */}
-        <button
-          onClick={close}
-          className="exit-intent-el exit-intent-el-1 absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
-          aria-label="Close"
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
-
-        <div className="relative p-6 sm:p-8 pt-5">
+        <div className="relative p-6 sm:p-8 pt-4">
           {/* ─── Live social proof bar ─── */}
-          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
+          <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
@@ -196,7 +205,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Headline ─── */}
-          <div className="exit-intent-el exit-intent-el-1 mb-6">
+          <div className="exit-intent-el exit-intent-el-2 mb-6">
             <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
               Wait — don&apos;t leave{' '}
               <span className="text-gradient">€1,800</span>
@@ -213,7 +222,7 @@ export default function ExitIntent() {
           {/* ─── Feature cards ─── */}
           <div className="space-y-2.5 mb-6">
             {/* Project Portal */}
-            <div className="exit-intent-el exit-intent-el-2 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-500/[0.05] border border-amber-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
               </div>
@@ -229,7 +238,7 @@ export default function ExitIntent() {
             </div>
 
             {/* Team Chat */}
-            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+            <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Users className="w-[18px] h-[18px] text-green-400" />
               </div>
@@ -246,7 +255,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Trust badges row ─── */}
-          <div className="exit-intent-el exit-intent-el-4 flex items-center gap-2 mb-6 flex-wrap">
+          <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-6 flex-wrap">
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
               { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
@@ -264,7 +273,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Primary CTA ─── */}
-          <div className="exit-intent-el exit-intent-el-5">
+          <div className="exit-intent-el exit-intent-el-6">
             <a
               href={whatsappUrl}
               target="_blank"
@@ -281,7 +290,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Secondary actions ─── */}
-          <div className="exit-intent-el exit-intent-el-6 flex items-center gap-2.5 mt-3">
+          <div className="exit-intent-el exit-intent-el-7 flex items-center gap-2.5 mt-3">
             <a
               href="#calculator"
               onClick={handleCTA}
@@ -299,7 +308,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Micro trust line ─── */}
-          <div className="exit-intent-el exit-intent-el-7 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
+          <div className="exit-intent-el exit-intent-el-8 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
             <span className="flex items-center gap-1 text-[10px] text-gray-600">
               <Shield className="w-3 h-3" />
               {SOLAR_DATA.certifications[0]}
