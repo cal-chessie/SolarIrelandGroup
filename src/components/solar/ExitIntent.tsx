@@ -12,22 +12,47 @@ import {
   Shield,
   Phone,
   Clock,
+  Star,
+  TrendingUp,
+  Eye,
 } from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /* ═══════════════════════════════════════════════════════════════
-   EXIT INTENT — Smart last-chance popup
-   ─────────────────────────────────────────────────────────────
-   Triggers once per SESSION when the mouse exits the viewport
-   top edge (classic exit intent signal). Uses sessionStorage
-   so it reappears on new visits but not page reloads.
+   EXIT INTENT — World-class last-chance popup
+   ═══════════════════════════════════════════════════════════════
+   Triggers once per SESSION. 4 detection methods:
+     1. Mouse leaves viewport (desktop)
+     2. Tab switch away + back (mobile)
+     3. Scroll-away (scroll down 400px+ then race up)
+     4. 90s idle fallback
    ═══════════════════════════════════════════════════════════════ */
 
-const SESSION_KEY = 'solar-ireland-exit-intent-seen';
+const SESSION_KEY = 'solar-ireland-exit-seen';
 
+/* ─── Fake "live" viewer count ─── */
+function useLiveViewers() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    // Start between 8-14 viewers
+    setCount(Math.floor(Math.random() * 7) + 8);
+    const iv = setInterval(() => {
+      setCount((c) => Math.max(3, Math.min(24, c + Math.floor(Math.random() * 5) - 2)));
+    }, 4000);
+    return () => clearInterval(iv);
+  }, []);
+  return count;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+   ═══════════════════════════════════════════════════════════════ */
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const hasTriggered = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const liveViewers = useLiveViewers();
 
   /* ─── Fire the popup (once) ─── */
   const trigger = useCallback(() => {
@@ -37,17 +62,15 @@ export default function ExitIntent() {
   }, []);
 
   useEffect(() => {
-    // Skip if already dismissed this session
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
-    /* ── 1. Desktop: mouse leaves the viewport (top edge) ── */
+    /* 1. Desktop: mouse leaves viewport top */
     const onMouseLeave = (e: MouseEvent) => {
-      // e.clientY < 0 means mouse went above the viewport
       if (e.clientY < 0) trigger();
     };
     document.documentElement.addEventListener('mouseleave', onMouseLeave);
 
-    /* ── 2. Mobile: tab switch away and back ── */
+    /* 2. Mobile: tab switch away + back */
     let tabHidden = false;
     const onVisChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -59,13 +82,12 @@ export default function ExitIntent() {
     };
     document.addEventListener('visibilitychange', onVisChange);
 
-    /* ── 3. Scroll-away: user scrolled down then rapidly scrolls up (leaving signal) ── */
+    /* 3. Scroll-away: scrolled 400px+ then race to top */
     let maxScroll = 0;
     let scrollTimer: ReturnType<typeof setTimeout>;
     const onScroll = () => {
       const st = window.scrollY;
       if (st > maxScroll) maxScroll = st;
-      // If they scrolled 400px+ down and now race back up to top
       if (maxScroll > 400 && st < 100) {
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
@@ -76,10 +98,8 @@ export default function ExitIntent() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    /* ── 4. Fallback: show after 90 seconds idle on page ── */
-    const idleTimer = setTimeout(() => {
-      trigger();
-    }, 90000);
+    /* 4. Fallback: 90s idle */
+    const idleTimer = setTimeout(trigger, 90000);
 
     return () => {
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
@@ -90,13 +110,33 @@ export default function ExitIntent() {
     };
   }, [trigger]);
 
-  /* ─── Close handler — mark as seen in sessionStorage ─── */
+  /* ─── Scroll lock when open ─── */
+  useEffect(() => {
+    if (!show) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [show]);
+
+  /* ─── Escape key ─── */
+  useEffect(() => {
+    if (!show) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
+
+  /* ─── Close handler ─── */
   const close = useCallback(() => {
     setShow(false);
     sessionStorage.setItem(SESSION_KEY, '1');
   }, []);
 
-  /* ─── CTA click handler — close + open WhatsApp ─── */
   const handleCTA = useCallback(() => {
     close();
   }, [close]);
@@ -106,149 +146,171 @@ export default function ExitIntent() {
   const whatsappUrl = buildWhatsAppUrl({
     source: 'exit-intent',
     customMessage:
-      "Hi Solar Ireland! I was checking out your site and I'm interested in solar panels. I'd love to learn about your project portal and get a free survey.",
+      "Hi Solar Ireland! I was on your site and I'm really interested in solar panels. I'd love to hear about the project portal and get a free roof survey.",
   });
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Special offer before you leave"
     >
-      {/* Backdrop — fade in */}
+      {/* ── Backdrop ── */}
+      <div className="exit-intent-backdrop absolute inset-0 bg-black/70" onClick={close} />
+
+      {/* ── Card ── */}
       <div
-        className="exit-intent-backdrop absolute inset-0 bg-black/60"
-        onClick={close}
-      />
+        ref={cardRef}
+        className="exit-intent-card relative w-full max-w-[480px] rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
+      >
+        {/* Animated top accent bar with shimmer sweep */}
+        <div className="relative h-1 w-full overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
+          <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        </div>
 
-      {/* Card — slide up from below */}
-      <div className="exit-intent-card relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-[#111111] border border-white/[0.08] shadow-2xl shadow-black/50 overflow-hidden">
-        {/* ─── Top accent bar ─── */}
-        <div className="h-1 w-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400" />
+        {/* Ambient glow behind content */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
-        {/* ─── Close button ─── */}
+        {/* Close button */}
         <button
           onClick={close}
-          className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/[0.08] transition-colors duration-200"
-          aria-label="Close popup"
+          className="exit-intent-el exit-intent-el-1 absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+          aria-label="Close"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5" />
         </button>
 
-        <div className="p-6 sm:p-8">
-          {/* ─── Header ─── */}
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-400/[0.08] border border-amber-400/[0.12] mb-4">
-              <Sun className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-[0.12em]">
-                Before You Go
-              </span>
-            </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-2">
-              Your solar journey starts with a{' '}
-              <span className="text-gradient">free 5-minute chat</span>
+        <div className="relative p-6 sm:p-8 pt-5">
+          {/* ─── Live social proof bar ─── */}
+          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+            </span>
+            <Eye className="w-3 h-3 text-green-400/70" />
+            <span className="text-[11px] text-green-400/90 font-medium">
+              <span className="font-bold">{liveViewers}</span> people looking at solar right now
+            </span>
+          </div>
+
+          {/* ─── Headline ─── */}
+          <div className="exit-intent-el exit-intent-el-1 mb-6">
+            <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
+              Wait — don&apos;t leave{' '}
+              <span className="text-gradient">€1,800</span>
+              <br />
+              on the table
             </h3>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              No pressure, no jargon. Tell us about your home and we&apos;ll give
-              you an honest answer on whether solar makes sense for you.
+            <p className="text-sm text-gray-500 leading-relaxed">
+              The SEAI grant drops this into your account. Combined with savings of
+              {' '}<span className="text-gray-400 font-medium">€1,100+/year</span>,
+              your system literally pays for itself.
             </p>
           </div>
 
-          {/* ─── Feature Cards ─── */}
-          <div className="space-y-3 mb-6">
+          {/* ─── Feature cards ─── */}
+          <div className="space-y-2.5 mb-6">
             {/* Project Portal */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-              <div className="w-9 h-9 rounded-lg bg-amber-400/[0.08] flex items-center justify-center shrink-0 mt-0.5">
-                <LayoutDashboard className="w-4 h-4 text-amber-400" />
+            <div className="exit-intent-el exit-intent-el-2 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-500/[0.05] border border-amber-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-white mb-0.5">
+                <h4 className="text-[13px] font-bold text-white mb-0.5">
                   Track Your Project in Real Time
                 </h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Your personal project portal lets you follow every step — from
-                  survey to installation to commissioning. Always know exactly
-                  where things stand.
+                  Your personal portal shows every milestone — survey, design, install,
+                  commissioning. You&apos;re never left wondering what&apos;s happening.
                 </p>
               </div>
             </div>
 
             {/* Team Chat */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-              <div className="w-9 h-9 rounded-lg bg-green-400/[0.08] flex items-center justify-center shrink-0 mt-0.5">
-                <Users className="w-4 h-4 text-green-400" />
+            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-[18px] h-[18px] text-green-400" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-white mb-0.5">
+                <h4 className="text-[13px] font-bold text-white mb-0.5">
                   Talk Directly With the Team
                 </h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  No call centres. Chat directly with your dedicated project
-                  manager and installation team — real people who know your roof.
+                  Message your project manager and installers directly. No call centres,
+                  no tickets — just real people who know your name and your roof.
                 </p>
               </div>
             </div>
-
-            {/* Quick highlights */}
-            <div className="grid grid-cols-3 gap-2 pt-1">
-              {[
-                { icon: Shield, label: 'SEAI Registered' },
-                { icon: Clock, label: '1-Day Install' },
-                { icon: Phone, label: 'Free Survey' },
-              ].map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg bg-white/[0.015] border border-white/[0.04]"
-                >
-                  <Icon className="w-3.5 h-3.5 text-gray-500" />
-                  <span className="text-[9px] text-gray-500 text-center leading-tight">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* ─── CTA Buttons ─── */}
-          <div className="space-y-2.5">
+          {/* ─── Trust badges row ─── */}
+          <div className="exit-intent-el exit-intent-el-4 flex items-center gap-2 mb-6 flex-wrap">
+            {[
+              { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
+              { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
+              { icon: Star, label: '4.9★ Rated', color: 'text-yellow-400/70' },
+              { icon: TrendingUp, label: '€38k+ 25yr Savings', color: 'text-sky-400/70' },
+            ].map(({ icon: Icon, label, color }) => (
+              <div
+                key={label}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]"
+              >
+                <Icon className={`w-3 h-3 ${color}`} />
+                <span className="text-[10px] text-gray-500 font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* ─── Primary CTA ─── */}
+          <div className="exit-intent-el exit-intent-el-5">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleCTA}
-              className="flex items-center justify-center gap-2.5 w-full px-6 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
+              className="exit-intent-cta flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-[15px] shadow-lg shadow-green-500/25 hover:shadow-green-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden"
             >
-              <MessageCircle className="w-4.5 h-4.5" />
-              Chat With Us Now
-              <ArrowRight className="w-4 h-4" />
+              {/* Shimmer sweep on CTA */}
+              <span className="absolute inset-0 exit-intent-cta-shimmer" />
+              <MessageCircle className="w-[18px] h-[18px] relative z-10" />
+              <span className="relative z-10">Get Your Free Survey</span>
+              <ArrowRight className="w-4 h-4 relative z-10" />
             </a>
-
-            <div className="flex gap-2.5">
-              <a
-                href="#calculator"
-                onClick={handleCTA}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors"
-              >
-                <Zap className="w-4 h-4 text-amber-400" />
-                Quick Calculator
-              </a>
-              <button
-                onClick={close}
-                className="px-5 py-3.5 rounded-xl text-sm text-gray-600 hover:text-gray-400 transition-colors"
-              >
-                Maybe later
-              </button>
-            </div>
           </div>
 
-          {/* ─── Trust line ─── */}
-          <p className="text-center text-[10px] text-gray-600 mt-4">
-            <span className="inline-flex items-center gap-1">
+          {/* ─── Secondary actions ─── */}
+          <div className="exit-intent-el exit-intent-el-6 flex items-center gap-2.5 mt-3">
+            <a
+              href="#calculator"
+              onClick={handleCTA}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-200"
+            >
+              <Zap className="w-4 h-4 text-amber-400" />
+              <span className="text-[13px]">Quick Calculator</span>
+            </a>
+            <button
+              onClick={close}
+              className="px-5 py-3 rounded-xl text-[13px] text-gray-600 hover:text-gray-400 transition-colors duration-200"
+            >
+              Maybe later
+            </button>
+          </div>
+
+          {/* ─── Micro trust line ─── */}
+          <div className="exit-intent-el exit-intent-el-7 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
+            <span className="flex items-center gap-1 text-[10px] text-gray-600">
               <Shield className="w-3 h-3" />
-              SEAI Registered · RECI Certified · No spam, ever
+              {SOLAR_DATA.certifications[0]}
             </span>
-          </p>
+            <span className="text-gray-800">·</span>
+            <span className="text-[10px] text-gray-600">
+              {SOLAR_DATA.certifications[1]}
+            </span>
+            <span className="text-gray-800">·</span>
+            <span className="text-[10px] text-gray-600">No spam</span>
+          </div>
         </div>
       </div>
     </div>

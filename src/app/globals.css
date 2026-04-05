@@ -845,33 +845,111 @@
 }
 
 /* ═══════════════════════════════════════════
-   EXIT INTENT KEYFRAMES — GPU-safe
+   EXIT INTENT KEYFRAMES — GPU-safe, world-class
    ═══════════════════════════════════════════ */
 
-/* Backdrop — simple fade in (opacity only, GPU-composited) */
+/* Backdrop — fast fade */
 .exit-intent-backdrop {
-  animation: exit-backdrop-in 0.3s ease-out both;
+  animation: exit-backdrop-in 0.25s ease-out both;
 }
 @keyframes exit-backdrop-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-/* Card — spring slide up from below */
+/* Card — dramatic spring slide up */
 .exit-intent-card {
-  animation: exit-card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: exit-card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  will-change: transform, opacity;
 }
 @keyframes exit-card-enter {
   0% {
     opacity: 0;
-    transform: translateY(40px) scale(0.96);
+    transform: translateY(60px) scale(0.92);
   }
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Top accent bar shimmer — continuous sweep */
+.exit-intent-shimmer-bar {
+  animation: exit-accent-shimmer 2.5s ease-in-out 0.5s infinite;
+}
+@keyframes exit-accent-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* CTA button shimmer — delayed sweep */
+.exit-intent-cta-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.15) 60%,
+    transparent 100%
+  );
+  animation: exit-cta-sweep 2.8s ease-in-out 1.2s infinite;
+  pointer-events: none;
+}
+@keyframes exit-cta-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* ─── Staggered element entrances ─── */
+/* Each element slides up + fades in with increasing delay */
+/* el-0: Live social proof pill */
+.exit-intent-el-0 {
+  opacity: 0;
+  animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+/* el-1: Close button + Headline */
+.exit-intent-el-1 {
+  opacity: 0;
+  animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+/* el-2: Feature card 1 — Project Portal */
+.exit-intent-el-2 {
+  opacity: 0;
+  animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+/* el-3: Feature card 2 — Team Chat */
+.exit-intent-el-3 {
+  opacity: 0;
+  animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both;
+}
+/* el-4: Trust badges */
+.exit-intent-el-4 {
+  opacity: 0;
+  animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+}
+/* el-5: Primary CTA */
+.exit-intent-el-5 {
+  opacity: 0;
+  animation: exit-el-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.56s both;
+}
+/* el-6: Secondary actions */
+.exit-intent-el-6 {
+  opacity: 0;
+  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both;
+}
+/* el-7: Trust line */
+.exit-intent-el-7 {
+  opacity: 0;
+  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.74s both;
+}
+
+@keyframes exit-el-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
