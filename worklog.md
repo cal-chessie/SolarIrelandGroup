@@ -184,3 +184,30 @@ Created three new shared files and updated eight existing components:
 - **WhatsAppChat.tsx**: QUICK_ACTIONS messages reference SOLAR_DATA.grant.label and SOLAR_DATA.system.avgSizeKwp, added #bill-analyser and #grant-info contextual greetings, chat WhatsApp link uses buildWhatsAppUrl({ source: 'chat-widget' })
 
 Build: ESLint passes with zero errors, Next.js build compiles successfully, dev server returns 200.
+
+---
+Task ID: 10
+Agent: Main Agent
+Task: Build GDPR Cookie Consent Banner (Top 10 item #2)
+
+Work Log:
+- Audited all 85+ files across the project to identify world-class improvement opportunities
+- Identified GDPR cookie consent as critical legal requirement missing from the site
+- Built CookieConsent.tsx — full-featured GDPR-compliant cookie consent banner
+- Features: compact initial banner (Accept All / Reject All / Manage), expandable granular settings with 3 categories (Necessary/Analytics/Marketing), toggle switches, GDPR "Always On" badge for necessary cookies, expandable category details with example tags
+- After consent: floating cookie icon (bottom-left) lets users change preferences anytime
+- Exported useCookieConsent() hook for other components to check consent status
+- Stores preferences in localStorage with 365-day expiry
+- Dispatches CustomEvent 'cookie-consent-update' for real-time consent changes across components
+- Zero CSS filter properties — all animations GPU-composited (transform + opacity)
+- Added 6 new CSS keyframe animations to globals.css (banner enter, button stagger, settings enter, FAB appear, FAB gentle pulse)
+- Integrated into layout.tsx as a site-wide component
+- Build verified: Next.js build compiles successfully with zero errors
+
+Stage Summary:
+- World-class GDPR cookie consent banner implemented
+- Files created: src/components/CookieConsent.tsx
+- Files updated: src/app/globals.css (cookie animations), src/app/layout.tsx (CookieConsent integration)
+- GDPR compliant: opt-in (no pre-checked boxes), granular per-category consent, easy to withdraw, clear plain English
+- Matching dark theme with amber (#FACC15) accents
+- useCookieConsent() hook available for analytics/marketing script conditional loading
