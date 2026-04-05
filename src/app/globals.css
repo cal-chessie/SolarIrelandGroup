@@ -616,3 +616,139 @@
     box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.06);
   }
 }
+
+/* ═══════════════════════════════════════════
+   QUICK SAVINGS CALCULATOR KEYFRAMES — GPU-safe
+   ═══════════════════════════════════════════ */
+
+/* Home type button selection — pop in */
+.quick-calc-check-pop {
+  animation: quick-check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes quick-check-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Calculate button — subtle pulse glow */
+.quick-calc-calc-btn {
+  position: relative;
+  overflow: hidden;
+}
+.quick-calc-calc-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.2) 60%,
+    transparent 100%
+  );
+  animation: cta-shimmer 3s ease-in-out 1s infinite;
+  pointer-events: none;
+}
+
+/* Reset button — gentle slide */
+.quick-calc-reset-btn {
+  animation: quick-reset-in 0.3s ease-out both;
+}
+@keyframes quick-reset-in {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Results panel reveal */
+.quick-calc-results {
+  animation: quick-results-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes quick-results-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stat cards stagger */
+.quick-calc-stat-card:nth-child(1) {
+  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.quick-calc-stat-card:nth-child(2) {
+  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.quick-calc-stat-card:nth-child(3) {
+  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+.quick-calc-stat-card:nth-child(4) {
+  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+@keyframes quick-stat-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* WhatsApp CTA — subtle pulse shadow */
+.quick-calc-cta-whatsapp {
+  position: relative;
+  overflow: hidden;
+}
+.quick-calc-cta-whatsapp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 40%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.15) 60%,
+    transparent 100%
+  );
+  animation: cta-shimmer 4s ease-in-out 2s infinite;
+  pointer-events: none;
+}
+
+/* Bar fill animation — width transition via max-width trick */
+.quick-calc-bar-fill {
+  animation: quick-bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes quick-bar-grow {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}

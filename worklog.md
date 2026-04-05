@@ -211,3 +211,34 @@ Stage Summary:
 - GDPR compliant: opt-in (no pre-checked boxes), granular per-category consent, easy to withdraw, clear plain English
 - Matching dark theme with amber (#FACC15) accents
 - useCookieConsent() hook available for analytics/marketing script conditional loading
+
+---
+Task ID: 11
+Agent: Main Agent
+Task: Build Quick Savings Calculator Widget (Top 10 item #3)
+
+Work Log:
+- Built QuickSavingsCalculator.tsx — a lightning-fast, 3-click, zero-API savings calculator
+- Step 1: Custom-styled bill slider (€50-€500/mo) with live animated counter display, amber gradient fill, glow thumb, step markers
+- Step 2: Home type selector (Apartment/Terrace, Semi-Detached, Detached) with icon cards, amber selection indicator, animated check dot
+- Step 3: "Show My Savings" CTA with shimmer sweep animation → instant results reveal
+- Client-side calculation engine: uses SOLAR_DATA constants (900 kWh/kWp, €0.21/kWh export, €1,800 grant, 0.29 kg CO2/kWh), estimates self-consumption ratio from bill size, computes system cost, payback, 25yr savings with degradation + inflation
+- Results panel: hero annual savings number with animated counter, bill reduction %, system/panels/payback mini-stats
+- 4 stat cards (bill after solar, 25yr savings, CO2 offset, energy generated) with staggered entrance animations
+- Expandable breakdown: cost breakdown table (install cost, grant, cost after grant, payback) + savings sources with animated bar charts (self-consumed vs export)
+- Dual CTAs: "Get Your Free Quote" (green WhatsApp button with buildWhatsAppUrl + full calculator context) + "Detailed AI Analysis" (scrolls to BillAnalyser)
+- AnimatedValue component: RAF-based counter with easing, supports subsequent value changes (re-animates from previous)
+- Reset button to start over
+- Trust signals row: "Takes 5 seconds", "100% free", "SEAI accurate"
+- Zero Framer Motion — all CSS animations (GPU-composited)
+- Added 10 new CSS keyframe animations to globals.css (check pop, calc button shimmer, reset slide, results reveal, stat card stagger, bar fill grow, WhatsApp CTA shimmer)
+- Integrated into page.tsx between GrantInfo and BillAnalyser as a lazy-loaded dynamic component
+- Build verified: Next.js build compiles with zero errors
+
+Stage Summary:
+- Quick 3-click savings calculator that captures visitors who won't upload a bill
+- Files created: src/components/solar/QuickSavingsCalculator.tsx
+- Files updated: src/app/globals.css (calculator animations), src/app/page.tsx (lazy-load integration)
+- Placement: GrantInfo → QuickSavingsCalculator → BillAnalyser → FAQ
+- All data sourced from SOLAR_DATA single source of truth
+- WhatsApp CTA passes full calculator context (bill, home type, savings, system size) for lead capture

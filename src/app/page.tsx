@@ -28,6 +28,10 @@ const GrantInfo = dynamic(() => import('@/components/solar/GrantInfo'), {
   loading: () => <SectionSkeleton id="grant-info" title="Grants & Support" />,
 });
 
+const QuickSavingsCalculator = dynamic(() => import('@/components/solar/QuickSavingsCalculator'), {
+  loading: () => <SectionSkeleton id="quick-calculator" title="How Much Could You Save?" />,
+});
+
 const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
   loading: () => (
     <section id="calculator" className="py-20 px-4 bg-[#0a0a0a]">
@@ -118,6 +122,7 @@ export default function Home() {
         <WhySolar />
         <CustomerInstalls />
         <GrantInfo />
+        <QuickSavingsCalculator />
         <BillAnalyser />
         <FAQ />
       </main>
