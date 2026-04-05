@@ -46,3 +46,30 @@ Stage Summary:
 - Web App Manifest with proper icons and theme colors
 - Edge middleware for HTTPS redirect, canonical URL enforcement, anti-hotlinking
 - Build verified: ✓ Compiled successfully
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: NO.11 — Final Pass, Dead Code Removal & Load Lightening
+
+Work Log:
+- Audited every file import chain across the entire codebase using grep
+- Identified 6 dead solar components (InstallationMap 903 lines, SavingsCalculator 217 lines, SectionReveal 41 lines, PageLoader 76 lines, BrandBanner 39 lines, SolarCTA 104 lines) = ~1,380 lines
+- Deleted 43 dead shadcn UI components (kept only button.tsx, toast.tsx, toaster.tsx which are used)
+- Deleted dead hooks (use-mobile.ts) and libs (db.ts, restored utils.ts since button/toast depend on it)
+- Deleted dead API route (/api/route.ts — just a "Hello, world!" placeholder)
+- Stripped ~100 lines of dead CSS from globals.css (map keyframes, unused utilities like section-fade, gradient-border, shimmer, glow-amber, scroll-divider)
+- Deleted 7 dead public assets (bumblebee-mascot.png, bumblebee.png, logo-transparent.png, logo.svg, solar-icon.svg, brand-banner.png, logo-md.png)
+- Removed ~40 dead npm packages from package.json (dnd-kit, prisma, next-auth, recharts, react-hook-form, zustand, @tanstack/*, 25+ radix-ui packages, mdxeditor, and many more)
+- Removed dead db:* scripts from package.json
+- Restored /src/lib/utils.ts (3 lines) — required by button.tsx and toast.tsx
+
+Stage Summary:
+- 54 packages removed (bun install confirmed)
+- ~1,500+ lines of dead code deleted
+- 7 dead images deleted from public/
+- 5 dead source files deleted (hooks, libs, API)
+- 49 dead component files deleted (6 solar + 43 UI)
+- CSS trimmed by ~100 lines
+- Build verified: ✓ Compiled successfully in 6.0s
+- Page generation: 8 pages in 441ms
