@@ -367,12 +367,12 @@ export default function CustomerInstalls() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl leading-[1.1]">
-                Real installs on
+                Solar that's already
                 <br />
-                <span className="text-gradient">real Irish homes.</span>
+                <span className="text-gradient">paying for itself.</span>
               </h2>
               <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-md leading-relaxed">
-                Every system we install is unique. Here are some of our recent projects — real homes, real savings, real Irish weather.
+                No mockups, no stock photos — these are actual Solar Ireland installations on homes across the country. See the panels, the savings, and the difference our customers are seeing on their energy bills every single month.
               </p>
             </div>
 
@@ -452,7 +452,7 @@ export default function CustomerInstalls() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <p className="text-sm text-gray-500 mb-4">Want to see what solar would look like on your roof?</p>
+          <p className="text-sm text-gray-500 mb-4">Your home could be next — find out what you'd save with solar.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <motion.a
               href="#calculator"
