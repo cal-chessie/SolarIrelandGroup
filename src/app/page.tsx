@@ -24,6 +24,10 @@ const CustomerInstalls = dynamic(() => import('@/components/solar/CustomerInstal
   loading: () => <SectionSkeleton id="our-work" title="Our Work" />,
 });
 
+const InstallationMap = dynamic(() => import('@/components/solar/InstallationMap'), {
+  loading: () => <SectionSkeleton id="coverage" title="Solar Across Ireland" />,
+});
+
 const GrantInfo = dynamic(() => import('@/components/solar/GrantInfo'), {
   loading: () => <SectionSkeleton id="grant-info" title="Grants & Support" />,
 });
@@ -121,6 +125,7 @@ export default function Home() {
         <HowItWorks />
         <WhySolar />
         <CustomerInstalls />
+        <InstallationMap />
         <GrantInfo />
         <QuickSavingsCalculator />
         <BillAnalyser />

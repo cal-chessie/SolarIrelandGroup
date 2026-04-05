@@ -44,4 +44,9 @@ export const SOLAR_DATA = {
   },
   certifications: ['SEAI Registered', 'RECI Certified', 'NSAI Compliant', 'Safe Electric'],
   serviceAreas: ['Connacht', 'Leinster', 'Munster'],
+  coverage: {
+    totalCounties: 23,
+    provinces: 3,
+    label: '23 counties across Ireland',
+  },
 } as const;

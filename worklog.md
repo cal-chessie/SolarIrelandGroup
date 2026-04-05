@@ -242,3 +242,37 @@ Stage Summary:
 - Placement: GrantInfo → QuickSavingsCalculator → BillAnalyser → FAQ
 - All data sourced from SOLAR_DATA single source of truth
 - WhatsApp CTA passes full calculator context (bill, home type, savings, system size) for lead capture
+
+---
+Task ID: 12
+Agent: Main Agent
+Task: Build Interactive Installation Map (Top 10 item #4)
+
+Work Log:
+- Built InstallationMap.tsx — an interactive SVG map of Ireland showing Solar Ireland's coverage
+- Created simplified but recognizable Ireland outline as SVG path (viewBox 0 0 280 380)
+- Mapped 12 cities to accurate geographic coordinates: Dublin, Kildare, Galway, Cork, Limerick, Waterford, Sligo, Tralee, Westport, Wexford, Kilkenny, Dundalk
+- Self-drawing outline animation: SVG stroke-dasharray/dashoffset triggered on scroll via IntersectionObserver
+- Province zone highlights: 3 radial gradient circles (Connacht=green, Leinster=amber, Munster=sky) clipped to Ireland outline using SVG clipPath
+- Province labels: floating uppercase text at approximate province centers (CONNACHT, LEINSTER, MUNSTER) with fade-in after outline draws
+- Interactive install pins: 2 real installations highlighted (Galway 5.4kWp, Kildare 4.2kWp) with pin-drop animation, amber glow, pulsing ring, and city label
+- Service area city dots: smaller colored dots for 10 reference cities, color-coded by province
+- Hover tooltips: positioned at SVG coordinate percentages, showing city name, province, and install details
+- Stats sidebar: hero stat card (23 counties), 3 province cards with county counts/key cities/install highlights, certifications row
+- AnimatedNumber component: RAF-based counter for the 23 counties stat
+- CTA section: "Check My Area" WhatsApp button using buildWhatsAppUrl({ source: 'coverage-map' }) + Calculator link
+- Subtle grid background on the SVG for a tech/data feel
+- Zero CSS filter properties — all GPU-composited (transform + opacity + SVG animations)
+- Added 6 new CSS keyframe animations to globals.css (map-pin-drop, map-pin-pulse, map-dot-in, map-tooltip-in, map-card-in stagger)
+- Updated solar-data.ts with coverage object (totalCounties: 23, provinces: 3)
+- Integrated into page.tsx between CustomerInstalls and GrantInfo as a lazy-loaded dynamic component
+- Build verified: Next.js build compiles with zero errors
+
+Stage Summary:
+- Interactive Ireland installation coverage map
+- Files created: src/components/solar/InstallationMap.tsx
+- Files updated: src/app/globals.css (map animations), src/app/page.tsx (lazy-load integration), src/lib/solar-data.ts (coverage data)
+- Placement: CustomerInstalls → InstallationMap → GrantInfo → QuickSavingsCalculator → BillAnalyser → FAQ
+- Real installation data: Galway (5.4kWp, Jan 2025) and Kildare (4.2kWp, Nov 2024) from CustomerInstalls
+- 23 counties coverage across Connacht, Leinster, and Munster — no fake numbers
+- Self-drawing SVG outline, pulsing install pins, interactive hover tooltips, province zone highlights
