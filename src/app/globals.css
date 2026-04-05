@@ -349,6 +349,27 @@
     height: 1px;
   }
 
+  /* Scroll-triggered section divider — line sweeps in from center */
+  .scroll-divider {
+    position: relative;
+    height: 1px;
+    overflow: hidden;
+  }
+  .scroll-divider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(250, 204, 21, 0.3), transparent);
+    animation: scroll-divider-sweep 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes scroll-divider-sweep {
+    0% { left: 50%; width: 0; }
+    100% { left: 0; width: 100%; }
+  }
+
   /* Subtle section fade divider */
   .section-fade {
     background: linear-gradient(

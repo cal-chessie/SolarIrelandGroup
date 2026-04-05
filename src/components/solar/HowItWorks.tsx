@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, CheckCircle2, Camera, Wrench, PartyPopper } from 'lucide-react';
+import { motion } from 'framer-motion';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -248,47 +249,92 @@ export default function HowItWorks() {
       <div className="max-w-6xl mx-auto relative z-10">
         {/* ─── Section header ─── */}
         <div className="text-center mb-14 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
-              How it works
-            </span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
+                How it works
+              </span>
+            </div>
+          </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
+          <motion.h2
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
             Three steps to
             <br />
             <span className="text-gradient">lower bills.</span>
-          </h2>
+          </motion.h2>
 
-          <p className="mt-5 sm:mt-6 text-gray-500 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+          <motion.p
+            className="mt-5 sm:mt-6 text-gray-500 text-sm sm:text-base max-w-md mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+          >
             From photo to savings in three simple steps. No jargon, no pressure — just honest solar advice.
-          </p>
+          </motion.p>
 
           {/* Bumblebee on header */}
-          <div className="flex justify-center mt-6">
+          <motion.div
+            className="flex justify-center mt-6"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+          >
             <BumblebeeMascot size="md" flipped />
-          </div>
+          </motion.div>
         </div>
 
         {/* ─── Steps grid ─── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {steps.map((step, i) => (
-            <StepCard
+            <motion.div
               key={step.number}
-              step={step}
-              index={i}
-              isActive={activeStep === i}
-              onToggle={() => setActiveStep(activeStep === i ? null : i)}
-            />
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <StepCard
+                step={step}
+                index={i}
+                isActive={activeStep === i}
+                onToggle={() => setActiveStep(activeStep === i ? null : i)}
+              />
+            </motion.div>
           ))}
         </div>
 
         {/* Mobile progress dots */}
-        <ProgressDots activeIndex={activeStep ?? 0} />
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <ProgressDots activeIndex={activeStep ?? 0} />
+        </motion.div>
 
         {/* ─── Bottom trust bar ─── */}
-        <div className="mt-14 sm:mt-20">
+        <motion.div
+          className="mt-14 sm:mt-20"
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="rounded-2xl sm:rounded-3xl px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 justify-between bg-white/[0.02] border border-white/[0.06]">
             {/* Trust signals */}
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-10">
@@ -333,7 +379,7 @@ export default function HowItWorks() {
               <ArrowRight className="w-3.5 h-3.5 text-gray-500" />
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

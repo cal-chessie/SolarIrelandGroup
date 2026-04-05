@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { motion } from 'framer-motion';
 
 /* ═══════════════════════════════════════════════════════════════
    CALCULATION ENGINE — all client-side, no API calls
@@ -667,21 +668,48 @@ export default function QuickSavingsCalculator() {
       <div className="max-w-3xl mx-auto">
         {/* ─── Section Header ─── */}
         <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
-            <Zap className="w-3.5 h-3.5" />
-            Instant Results
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            How Much Could You{' '}
-            <span className="text-gradient">Save?</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Two clicks. No signup. No bill upload needed. See your estimated
-            savings right now.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
+              <Zap className="w-3.5 h-3.5" />
+              Instant Results
+            </span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+              How Much Could You{' '}
+              <span className="text-gradient">Save?</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="text-gray-400 text-lg max-w-xl mx-auto">
+              Two clicks. No signup. No bill upload needed. See your estimated
+              savings right now.
+            </p>
+          </motion.div>
         </div>
 
         {/* ─── Calculator Card ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 25, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
         <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20">
           <div className="p-6 sm:p-8 space-y-8">
             {/* Step 1: Bill Slider */}
@@ -749,8 +777,15 @@ export default function QuickSavingsCalculator() {
             </div>
           )}
         </div>
+        </motion.div>
 
         {/* ─── Trust signals below card ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
         <div className="grid grid-cols-3 gap-3 mt-6">
           {[
             { icon: Clock, label: 'Takes 5 seconds', sub: 'No signup needed' },
@@ -780,8 +815,15 @@ export default function QuickSavingsCalculator() {
             );
           })}
         </div>
+        </motion.div>
 
         {/* Link to detailed analyser */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
         <p className="text-center text-xs text-gray-600 mt-4">
           Want a personalised AI-powered report?{' '}
           <a
@@ -791,6 +833,7 @@ export default function QuickSavingsCalculator() {
             Upload your bill →
           </a>
         </p>
+        </motion.div>
       </div>
     </section>
   );
