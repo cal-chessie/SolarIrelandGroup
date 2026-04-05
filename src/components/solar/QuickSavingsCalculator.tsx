@@ -60,61 +60,69 @@ function calculateSavings(monthlyBill: number, homeId: string) {
   const home = HOME_PROFILES.find((h) => h.id === homeId) || HOME_PROFILES[1];
   const systemSize = home.avgRoofKwp;
 
-  // Annual generation (kWh) — Ireland average ~900 kWh/kWp
-  const annualGeneration = systemSize * SOLAR_DATA.system.generationPerKwp;
+  // ─── Generation ───
+  // 1070 kWh/kWp/year — SEAI TMY data for south-facing Irish roof at 35° tilt
+  // Matches the BillAnalyser API exactly so numbers are consistent across the site
+  const annualGeneration = systemSize * 1070;
 
-  // Estimate unit rate from bill
-  // Standing charge ~€200/yr, so usable bill = annualBill - 200
-  const usableBill = Math.max(annualBill - 200, 200);
-  const estimatedUsage = usableBill / 0.38; // avg Irish rate ~€0.38/kWh
-  const unitRate = annualBill / Math.max(estimatedUsage + 527, 1000); // 527 standing kWh equiv
+  // ─── Estimate usage from bill ───
+  // Real Irish standing charge: ~€130/yr (€10.80/mo avg across providers)
+  // Real Irish unit rate: ~€0.42/kWh (2026 avg across Electric Ireland, ESB, SSE, etc.)
+  const standingChargeAnnual = 130;
+  const unitRate = 0.42;
+  const energyBill = Math.max(annualBill - standingChargeAnnual, 100);
+  const estimatedUsage = Math.round(energyBill / unitRate);
 
-  // Self-consumption ratio: higher bill = higher self-consumption
-  // If you use more than you generate, you self-consume nearly all of it
-  const selfConsumption = Math.min(annualGeneration / Math.max(estimatedUsage, 1), 0.85);
-  const adjustedSelfConsumption = Math.max(selfConsumption, 0.35);
+  // ─── Self-consumption ───
+  // Irish homes typically self-consume 40-55% of generated solar.
+  // We use 50% flat — matches the BillAnalyser API methodology exactly.
+  // (Higher in summer when generation exceeds usage, lower in winter)
+  const selfConsumed = Math.min(annualGeneration * 0.5, estimatedUsage * 0.5);
+  const exported = annualGeneration - selfConsumed;
 
-  // Annual savings from self-consumed solar
-  const selfConsumedKwh = annualGeneration * adjustedSelfConsumption;
-  const annualSaving = Math.round(selfConsumedKwh * unitRate);
-
-  // Export earnings (CEG)
-  const exportedKwh = annualGeneration - selfConsumedKwh;
-  const annualExport = Math.round(exportedKwh * SOLAR_DATA.export.ratePerKwh);
-
+  // ─── Savings ───
+  const annualSaving = Math.round(selfConsumed * unitRate);
+  const annualExport = Math.round(exported * SOLAR_DATA.export.ratePerKwh);
   const totalAnnualBenefit = annualSaving + annualExport;
 
-  // System cost
+  // ─── System cost ───
   const installCost = systemSize * 1500 + 2000;
   const costAfterGrant = installCost - SOLAR_DATA.grant.amount;
 
-  // Payback
+  // ─── Payback ───
   const paybackYears = Math.max(
     Math.round((costAfterGrant / totalAnnualBenefit) * 10) / 10,
-    3.5
+    4
   );
 
-  // 25-year savings (with 0.5% annual degradation, 3% price inflation)
+  // ─── Bill reduction % ───
+  // Solar only reduces your energy charges, NOT standing charges.
+  // So compare savings against energy-only bill, not total bill.
+  const energyBillReduction = Math.round(
+    (totalAnnualBenefit / Math.max(energyBill, 1)) * 100
+  );
+  // Cap at 70% — even with a perfect system you can't offset 100% of energy costs
+  // (night-time usage, winter short days, shading all reduce output)
+  const billReduction = Math.min(energyBillReduction, 70);
+
+  // ─── 25-year savings ───
+  // 0.5% annual panel degradation, 3% electricity price inflation
   let total25yr = 0;
-  let annualGen = annualGeneration;
-  let rate = unitRate;
+  let yearlyOutput = annualGeneration;
+  let currentPrice = unitRate;
   for (let yr = 1; yr <= 25; yr++) {
-    annualGen *= 0.995; // panel degradation
-    rate *= 1.03; // price inflation
-    const sc = Math.min(annualGen, estimatedUsage) * adjustedSelfConsumption;
-    const exp = annualGen - sc;
-    total25yr += sc * rate + exp * SOLAR_DATA.export.ratePerKwh;
+    const selfUsed = Math.min(yearlyOutput * 0.5, estimatedUsage * 0.5);
+    const exp = yearlyOutput - selfUsed;
+    total25yr += selfUsed * currentPrice + exp * SOLAR_DATA.export.ratePerKwh;
+    yearlyOutput *= 0.995;
+    currentPrice *= 1.03;
   }
   total25yr = Math.round(total25yr);
 
-  // CO2 savings (Ireland grid: ~0.29 kg CO2/kWh)
+  // ─── Carbon ───
+  // Ireland grid: 0.29 kg CO2/kWh (2024 EPA data)
   const co2PerYear = Math.round(annualGeneration * 0.29);
   const treesEquiv = Math.round(co2PerYear / 22); // 1 tree absorbs ~22kg CO2/yr
-
-  // Bill reduction %
-  const billReduction = Math.round(
-    (totalAnnualBenefit / annualBill) * 100
-  );
 
   return {
     systemSize,
@@ -130,6 +138,8 @@ function calculateSavings(monthlyBill: number, homeId: string) {
     treesEquiv,
     billReduction,
     panelsEstimate: Math.round(systemSize * 2.8), // ~2.8 panels per kWp
+    estimatedUsage,
+    unitRate,
   };
 }
 
@@ -380,9 +390,9 @@ function ResultsPanel({
         <p className="text-sm text-gray-400 mt-2">
           That's{' '}
           <span className="text-amber-400 font-semibold">
-            {results.billReduction}% off
+            up to {results.billReduction}% off
           </span>{' '}
-          your €{(monthlyBill * 12).toLocaleString()}/yr bill
+          your energy bill
         </p>
 
         {/* Mini stat row */}
