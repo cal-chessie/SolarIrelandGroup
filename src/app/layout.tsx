@@ -174,7 +174,7 @@ export const metadata: Metadata = {
 
   /* ─── Facebook ─── */
   facebook: {
-    appId: undefined,
+    appId: "",
   },
 
   /* ─── Verification ─── (add real keys when available) ─── */
@@ -665,21 +665,12 @@ export default function RootLayout({
         {/* ─── DNS Prefetch for Performance ─── */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
         {/* ─── Preconnect for Critical Third Parties ─── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* ─── Preload Critical Assets ─── */}
-        <link rel="preload" as="image" href="/hero-solar.jpg" type="image/jpeg" />
         <link rel="preload" as="image" href="/logo-sm.png" type="image/png" />
-        <link rel="preload" as="font" href="/fonts/Geist-Regular.woff2" type="font/woff2" crossOrigin="anonymous" />
-
-        {/* ─── Feed Autodiscovery ─── */}
-        <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} RSS Feed`} href={`${SITE_URL}/feed.xml`} />
 
         {/* ═══════════════════════════════════════════════════════
             JSON-LD STRUCTURED DATA — Full Suite

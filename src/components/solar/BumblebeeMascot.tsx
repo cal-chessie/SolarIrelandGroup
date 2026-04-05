@@ -3,7 +3,7 @@
 interface BumblebeeMascotProps {
   size?: 'sm' | 'md' | 'lg' | 'hero';
   flipped?: boolean;
-  className?: '';
+  className?: string;
   animate?: boolean;
 }
 
