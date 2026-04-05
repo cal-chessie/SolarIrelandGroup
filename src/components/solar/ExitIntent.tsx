@@ -8,9 +8,8 @@ import {
   ArrowRight,
   LayoutDashboard,
   Users,
-  Sun,
   Shield,
-  Phone,
+
   Clock,
   Star,
   TrendingUp,

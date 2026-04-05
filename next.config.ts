@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
 
   /* ═══════════════════════════════════════════════════════════════
-     SEO — Image Optimization & Canonical URLs
+     IMAGE OPTIMIZATION
      ═══════════════════════════════════════════════════════════════ */
   images: {
     remotePatterns: [
@@ -20,19 +20,13 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     SEO — Powered By Header (remove for production)
+     SEO — Remove X-Powered-By header
      ═══════════════════════════════════════════════════════════════ */
   poweredByHeader: false,
 
-  /* ═══════════════════════════════════════════════════════════════
-     TRAILING SLASHES — enforce consistent URLs for SEO
-     ═══════════════════════════════════════════════════════════════ */
   trailingSlash: false,
 
   /* ═══════════════════════════════════════════════════════════════
@@ -41,7 +35,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Apply to ALL routes
         source: "/(.*)",
         headers: [
           {
@@ -66,10 +59,6 @@ const nextConfig: NextConfig = {
               "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()",
           },
           {
-            key: "X-DNS-Prefetch-Control",
-            value: "on",
-          },
-          {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
           },
@@ -78,25 +67,6 @@ const nextConfig: NextConfig = {
             value: "none",
           },
           {
-            // Content-Security-Policy for Google ranking signals + security
-            key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https:;",
-              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.facebook.net https://*.wa.me https://api.wa.me",
-              "frame-src https://www.google.com https://www.facebook.com",
-              "object-src 'none'",
-              "base-uri 'self'",
-              "form-action 'self' https://*.wa.me https://api.wa.me",
-              "frame-ancestors 'none'",
-              "upgrade-insecure-requests",
-            ].join("; "),
-          },
-          {
-            // Cross-Origin headers
             key: "Cross-Origin-Opener-Policy",
             value: "same-origin",
           },
@@ -104,19 +74,9 @@ const nextConfig: NextConfig = {
             key: "Cross-Origin-Resource-Policy",
             value: "same-origin",
           },
-          {
-            key: "Cross-Origin-Embedder-Policy",
-            value: "credentialless",
-          },
-          {
-            // Cache control for static assets
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
         ],
       },
       {
-        // Specific headers for API routes
         source: "/api/:path*",
         headers: [
           {
@@ -134,7 +94,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Specific headers for _next static files
         source: "/_next/:path*",
         headers: [
           {
@@ -144,7 +103,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Headers for sitemap and robots
         source: "/sitemap.xml",
         headers: [
           {

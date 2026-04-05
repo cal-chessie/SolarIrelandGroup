@@ -155,14 +155,14 @@ function SwipeGallery({
           <button
             onClick={goPrev}
             disabled={activeIndex === 0}
-            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
+            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <button
             onClick={goNext}
             disabled={activeIndex === installs.length - 1}
-            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
+            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
           >
             <ArrowRight className="w-4 h-4" />
           </button>
@@ -309,7 +309,7 @@ function Lightbox({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
+        className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4 sm:p-8"
         onClick={onClose}
       >
         <motion.button
@@ -317,7 +317,7 @@ function Lightbox({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/[0.1] flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 border border-white/[0.1] flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
         >
           <X className="w-5 h-5" />
         </motion.button>

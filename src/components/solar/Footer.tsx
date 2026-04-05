@@ -106,7 +106,7 @@ function PreFooterCTA() {
             href={`tel:${SOLAR_DATA.provider.phone}`}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm text-white text-sm hover:bg-white/10 transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/40 text-white text-sm hover:bg-white/10 transition-colors whitespace-nowrap"
           >
             <Phone className="w-4 h-4" />
             Call Now

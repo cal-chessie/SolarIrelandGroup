@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import CookieConsent from "@/components/CookieConsent";
 import ExitIntent from "@/components/solar/ExitIntent";
 
@@ -758,7 +757,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <Toaster />
         <CookieConsent />
         <ExitIntent />
       </body>

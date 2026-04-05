@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, CheckCircle2, Camera, Wrench, PartyPopper } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BumblebeeMascot from './BumblebeeMascot';
