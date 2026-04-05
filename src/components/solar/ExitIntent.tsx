@@ -28,58 +28,67 @@ const SESSION_KEY = 'solar-ireland-exit-intent-seen';
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const hasTriggered = useRef(false);
-  const isMobile = useRef(false);
 
-  /* ─── Detect exit intent (mouse leaving viewport top) ─── */
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  /* ─── Fire the popup (once) ─── */
+  const trigger = useCallback(() => {
     if (hasTriggered.current) return;
-    // Only trigger if mouse moves above the viewport quickly
-    if (e.clientY <= 0 && e.movementY < 0) {
-      hasTriggered.current = true;
-      // Small delay so it feels natural, not jarring
-      setTimeout(() => setShow(true), 400);
-    }
-  }, []);
-
-  /* ─── Detect mobile back button / tab switch ─── */
-  const handleVisibilityChange = useCallback(() => {
-    if (
-      !hasTriggered.current &&
-      document.visibilityState === 'hidden' &&
-      isMobile.current
-    ) {
-      hasTriggered.current = true;
-      // Show when they come back
-      const handler = () => {
-        setShow(true);
-        document.removeEventListener('visibilitychange', handler);
-      };
-      setTimeout(handler, 500);
-    }
+    hasTriggered.current = true;
+    setTimeout(() => setShow(true), 350);
   }, []);
 
   useEffect(() => {
-    // Skip if already seen this session
-    if (sessionStorage.getItem(SESSION_KEY)) {
-      hasTriggered.current = true;
-      return;
-    }
+    // Skip if already dismissed this session
+    if (sessionStorage.getItem(SESSION_KEY)) return;
 
-    isMobile.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    /* ── 1. Desktop: mouse leaves the viewport (top edge) ── */
+    const onMouseLeave = (e: MouseEvent) => {
+      // e.clientY < 0 means mouse went above the viewport
+      if (e.clientY < 0) trigger();
+    };
+    document.documentElement.addEventListener('mouseleave', onMouseLeave);
 
-    // Desktop: mouse leave detection
-    if (!isMobile.current) {
-      document.addEventListener('mouseout', handleMouseMove);
-    }
+    /* ── 2. Mobile: tab switch away and back ── */
+    let tabHidden = false;
+    const onVisChange = () => {
+      if (document.visibilityState === 'hidden') {
+        tabHidden = true;
+      } else if (tabHidden) {
+        tabHidden = false;
+        trigger();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisChange);
 
-    // Mobile: tab switch / back button
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    /* ── 3. Scroll-away: user scrolled down then rapidly scrolls up (leaving signal) ── */
+    let maxScroll = 0;
+    let scrollTimer: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      const st = window.scrollY;
+      if (st > maxScroll) maxScroll = st;
+      // If they scrolled 400px+ down and now race back up to top
+      if (maxScroll > 400 && st < 100) {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          maxScroll = 0;
+          trigger();
+        }, 300);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* ── 4. Fallback: show after 90 seconds idle on page ── */
+    const idleTimer = setTimeout(() => {
+      trigger();
+    }, 90000);
 
     return () => {
-      document.removeEventListener('mouseout', handleMouseMove);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.documentElement.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('visibilitychange', onVisChange);
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(scrollTimer);
+      clearTimeout(idleTimer);
     };
-  }, [handleMouseMove, handleVisibilityChange]);
+  }, [trigger]);
 
   /* ─── Close handler — mark as seen in sessionStorage ─── */
   const close = useCallback(() => {
