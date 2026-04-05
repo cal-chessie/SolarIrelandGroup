@@ -97,8 +97,8 @@ export default function ExitIntent() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    /* 4. Fallback: 90s idle */
-    const idleTimer = setTimeout(trigger, 90000);
+    /* 4. Fallback: 15s idle (shorter for preview/testing) */
+    const idleTimer = setTimeout(trigger, 15000);
 
     return () => {
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
@@ -171,15 +171,15 @@ export default function ExitIntent() {
 
         {/* ── Logo + Close row ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
-          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-2">
+          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3">
             <img
               src="/logo-sm.png"
               alt="Solar Ireland"
-              width={90}
-              height={28}
-              className="h-6 sm:h-7 w-auto opacity-80"
+              width={120}
+              height={36}
+              className="h-9 sm:h-10 w-auto opacity-90"
             />
-            <span className="font-bold text-white text-sm tracking-wide opacity-80">
+            <span className="font-bold text-white text-base tracking-wide opacity-90">
               Solar Ireland
             </span>
           </div>

@@ -432,8 +432,8 @@ export default function Navbar() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-2.5 active:scale-95 transition-transform"
           >
-            <img src="/logo-sm.png" alt="Solar Ireland" className="h-10 w-auto" />
-            <span className="font-bold text-white hidden sm:inline text-base tracking-wide">
+            <img src="/logo-sm.png" alt="Solar Ireland" className="h-12 w-auto" />
+            <span className="font-bold text-white hidden sm:inline text-lg tracking-wide">
               Solar Ireland
             </span>
           </button>
