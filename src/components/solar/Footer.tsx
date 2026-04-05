@@ -29,12 +29,12 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
    ═══════════════════════════════════════════════════════ */
 
 const quickLinks = [
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Why Solar', href: '#why-solar' },
-  { label: 'Our Work', href: '#our-work' },
-  { label: 'Grant Info', href: '#grant-info' },
-  { label: 'Bill Analyser', href: '#calculator' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Services', href: '/services' },
+  { label: 'Counties', href: '/counties' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'How It Works', href: '/#how-it-works' },
 ];
 
 const services = [
@@ -392,10 +392,10 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="#" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
+            <a href="/privacy" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
+            <a href="/privacy" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
               Terms of Service
             </a>
             <BackToTop />

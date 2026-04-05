@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();
 
   return [
+    /* ─── Main pages ─── */
     {
       url: SITE_URL,
       lastModified: now,
@@ -20,46 +21,53 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${SITE_URL}/#how-it-works`,
+      url: `${SITE_URL}/services`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
-      url: `${SITE_URL}/#why-solar`,
+      url: `${SITE_URL}/counties`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
-      url: `${SITE_URL}/#our-work`,
+      url: `${SITE_URL}/blog`,
       lastModified: now,
       changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}/#grant-info`,
+      url: `${SITE_URL}/contact`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    /* ─── Homepage sections (hash fragments, lower priority) ─── */
     {
       url: `${SITE_URL}/#calculator`,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/#quick-calculator`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      priority: 0.6,
     },
     {
       url: `${SITE_URL}/#faq`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.9,
+      priority: 0.6,
     },
   ];
 }

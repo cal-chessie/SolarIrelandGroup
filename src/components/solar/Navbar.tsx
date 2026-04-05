@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Menu,
   X,
@@ -15,6 +16,11 @@ import {
   Mail,
   Sparkles,
   ChevronRight,
+  BookOpen,
+  Wrench,
+  MapPin,
+  Users,
+  MessageSquare,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════
@@ -22,52 +28,68 @@ import {
    ═══════════════════════════════════════════ */
 const navLinks = [
   {
-    label: 'How It Works',
-    href: '#how-it-works',
-    icon: Sparkles,
+    label: 'Services',
+    href: '/services',
+    icon: Wrench,
     color: 'amber',
-    description: 'Three steps to lower bills',
+    description: 'Solar PV, batteries, EV charging',
     gradient: 'from-amber-400/20 to-orange-400/10',
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',
     borderHover: 'hover:border-amber-400/20',
+    isPage: true,
   },
   {
-    label: 'Why Solar',
-    href: '#why-solar',
-    icon: TrendingUp,
-    color: 'emerald',
-    description: 'Savings, grants & benefits',
-    gradient: 'from-emerald-400/20 to-teal-400/10',
-    iconBg: 'bg-emerald-400/10',
-    iconColor: 'text-emerald-400',
-    borderHover: 'hover:border-emerald-400/20',
-  },
-  {
-    label: 'Our Work',
-    href: '#our-work',
-    icon: Camera,
-    color: 'violet',
-    description: 'Real Irish installations',
-    gradient: 'from-violet-400/20 to-purple-400/10',
-    iconBg: 'bg-violet-400/10',
-    iconColor: 'text-violet-400',
-    borderHover: 'hover:border-violet-400/20',
-  },
-  {
-    label: 'Grants',
-    href: '#grant-info',
-    icon: Euro,
+    label: 'Counties',
+    href: '/counties',
+    icon: MapPin,
     color: 'sky',
-    description: '€1,800 SEAI grant explained',
+    description: 'Solar across all 32 counties',
     gradient: 'from-sky-400/20 to-blue-400/10',
     iconBg: 'bg-sky-400/10',
     iconColor: 'text-sky-400',
     borderHover: 'hover:border-sky-400/20',
+    isPage: true,
+  },
+  {
+    label: 'Blog',
+    href: '/blog',
+    icon: BookOpen,
+    color: 'emerald',
+    description: 'Solar tips, guides & news',
+    gradient: 'from-emerald-400/20 to-teal-400/10',
+    iconBg: 'bg-emerald-400/10',
+    iconColor: 'text-emerald-400',
+    borderHover: 'hover:border-emerald-400/20',
+    isPage: true,
+  },
+  {
+    label: 'About',
+    href: '/about',
+    icon: Users,
+    color: 'violet',
+    description: 'Our story & team',
+    gradient: 'from-violet-400/20 to-purple-400/10',
+    iconBg: 'bg-violet-400/10',
+    iconColor: 'text-violet-400',
+    borderHover: 'hover:border-violet-400/20',
+    isPage: true,
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+    icon: MessageSquare,
+    color: 'rose',
+    description: 'Get in touch',
+    gradient: 'from-rose-400/20 to-pink-400/10',
+    iconBg: 'bg-rose-400/10',
+    iconColor: 'text-rose-400',
+    borderHover: 'hover:border-rose-400/20',
+    isPage: true,
   },
   {
     label: 'AI Bill Analyser',
-    href: '#calculator',
+    href: '/#calculator',
     icon: Zap,
     color: 'amber',
     description: 'Upload your bill, see savings',
@@ -79,7 +101,7 @@ const navLinks = [
   },
   {
     label: 'FAQ',
-    href: '#faq',
+    href: '/#faq',
     icon: HelpCircle,
     color: 'rose',
     description: 'Common questions answered',
@@ -162,17 +184,39 @@ function MobileMenu({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const scrollTo = useCallback(
+  const navigateTo = useCallback(
     (href: string) => {
       onClose();
       setTimeout(() => {
-        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+        if (href.startsWith('/')) {
+          // Page link — navigate
+          if (href.includes('#')) {
+            // Hash link on a page (e.g. /#calculator)
+            const [path, hash] = href.split('#');
+            if (path === '/' || path === '') {
+              // Same page anchor
+              document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              window.location.href = href;
+            }
+          } else {
+            window.location.href = href;
+          }
+        } else if (href.startsWith('#')) {
+          document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 300);
     },
     [onClose]
   );
 
-  const sectionId = (href: string) => href.replace('#', '');
+  const sectionId = (href: string) => href.replace('/#', '').replace('#', '');
+  const isActive = (href: string) => {
+    if (href.startsWith('/') && !href.startsWith('/#')) {
+      return typeof window !== 'undefined' && window.location.pathname === href;
+    }
+    return activeSection === sectionId(href);
+  };
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -231,12 +275,12 @@ function MobileMenu({
           <div className="px-4 py-4 space-y-1.5">
             {navLinks.map((link, i) => {
               const Icon = link.icon;
-              const isActive = activeSection === sectionId(link.href);
+              const linkActive = isActive(link.href);
 
               return (
                 <button
                   key={link.href}
-                  onClick={() => scrollTo(link.href)}
+                  onClick={() => navigateTo(link.href)}
                   style={{
                     transitionDelay: isOpen ? `${60 + i * 40}ms` : '0ms',
                   }}
@@ -249,15 +293,15 @@ function MobileMenu({
                         : '-translate-x-5 opacity-0'
                     }
                     ${
-                      isActive
+                      linkActive
                         ? 'bg-white/[0.06] border border-white/[0.1]'
                         : `border border-transparent hover:bg-white/[0.03]`
                     }
-                    ${link.highlight && !isActive ? 'hover:bg-amber-400/[0.04] hover:border-amber-400/15' : ''}
+                    ${link.highlight && !linkActive ? 'hover:bg-amber-400/[0.04] hover:border-amber-400/15' : ''}
                   `}
                 >
                   {/* Active indicator dot */}
-                  {isActive && (
+                  {linkActive && (
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-8 rounded-r-full bg-amber-400 transition-all duration-300" />
                   )}
 
@@ -266,7 +310,7 @@ function MobileMenu({
                     className={`
                       shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200
                       ${link.iconBg}
-                      ${isActive ? 'scale-110' : 'group-hover:scale-105'}
+                      ${linkActive ? 'scale-110' : 'group-hover:scale-105'}
                     `}
                   >
                     <Icon className={`w-5 h-5 ${link.iconColor}`} />
@@ -277,7 +321,7 @@ function MobileMenu({
                     <div className="flex items-center gap-2">
                       <span
                         className={`text-[15px] font-semibold transition-colors ${
-                          isActive ? 'text-white' : 'text-gray-300 group-hover:text-white'
+                          linkActive ? 'text-white' : 'text-gray-300 group-hover:text-white'
                         }`}
                       >
                         {link.label}
@@ -296,7 +340,7 @@ function MobileMenu({
                   {/* Arrow */}
                   <ChevronRight
                     className={`w-4 h-4 shrink-0 transition-all duration-200 ${
-                      isActive
+                      linkActive
                         ? 'text-amber-400 translate-x-0'
                         : 'text-gray-700 -translate-x-1 group-hover:translate-x-0 group-hover:text-gray-500'
                     }`}
@@ -318,7 +362,7 @@ function MobileMenu({
           >
             {/* Primary CTA */}
             <button
-              onClick={() => scrollTo('#calculator')}
+              onClick={() => navigateTo('/#calculator')}
               className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
             >
               <Zap className="w-4 h-4" />
@@ -404,8 +448,20 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  const navigateTo = (href: string) => {
+    if (href.startsWith('/') && !href.startsWith('/#')) {
+      window.location.href = href;
+    } else if (href.startsWith('/#')) {
+      // Hash link — navigate to homepage then scroll
+      const hash = href.slice(2);
+      if (window.location.pathname === '/') {
+        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = href;
+      }
+    } else if (href.startsWith('#')) {
+      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   // Close on escape
@@ -441,11 +497,13 @@ export default function Navbar() {
           {/* Desktop nav links */}
           <div className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
+                ? (typeof window !== 'undefined' && window.location.pathname === link.href)
+                : activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <button
                   key={link.href}
-                  onClick={() => scrollTo(link.href)}
+                  onClick={() => navigateTo(link.href)}
                   className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 ${
                     isActive ? 'text-white' : 'text-gray-400 hover:text-white'
                   }`}
@@ -462,7 +520,7 @@ export default function Navbar() {
           {/* Desktop CTA */}
           <div className="hidden md:block">
             <button
-              onClick={() => scrollTo('#calculator')}
+              onClick={() => navigateTo('/#calculator')}
               className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20"
             >
               Analyse Bill
