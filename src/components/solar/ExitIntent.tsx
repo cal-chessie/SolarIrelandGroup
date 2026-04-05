@@ -172,13 +172,18 @@ export default function ExitIntent() {
 
         {/* ── Logo + Close row ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
-          <img
-            src="/logo-sm.png"
-            alt="Solar Ireland"
-            width={90}
-            height={28}
-            className="exit-intent-el exit-intent-el-0 h-6 sm:h-7 w-auto opacity-80"
-          />
+          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-2">
+            <img
+              src="/logo-sm.png"
+              alt="Solar Ireland"
+              width={90}
+              height={28}
+              className="h-6 sm:h-7 w-auto opacity-80"
+            />
+            <span className="font-bold text-white text-sm tracking-wide opacity-80">
+              Solar Ireland
+            </span>
+          </div>
           <button
             onClick={close}
             className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
