@@ -843,3 +843,35 @@
     transform: translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════
+   EXIT INTENT KEYFRAMES — GPU-safe
+   ═══════════════════════════════════════════ */
+
+/* Backdrop — simple fade in (opacity only, GPU-composited) */
+.exit-intent-backdrop {
+  animation: exit-backdrop-in 0.3s ease-out both;
+}
+@keyframes exit-backdrop-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Card — spring slide up from below */
+.exit-intent-card {
+  animation: exit-card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes exit-card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
