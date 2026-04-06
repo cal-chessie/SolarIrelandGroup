@@ -92,29 +92,62 @@ function MotionElement(tag: string, props: MotionProps) {
   const useScrollTrigger = !!props.whileInView && !props.animate;
 
   useEffect(() => {
-    if (!useScrollTrigger || !ref.current) return;
-    const el = ref.current as HTMLElement;
+    if (!useScrollTrigger) return;
+
+    // Use a callback ref pattern to handle cases where ref isn't set yet
+    // (common with dynamically imported / lazy-loaded components)
+    let el = ref.current as HTMLElement | null;
+
     const once = props.viewport?.once !== false;
 
     const observer = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
           setInView(true);
-          if (once) observer.unobserve(el);
+          if (once) observer.unobserve(e.target);
         } else if (!once) {
           setInView(false);
         }
       },
       { rootMargin: props.viewport?.margin || '0px' },
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+
+    function startObserving() {
+      el = ref.current as HTMLElement | null;
+      if (el) {
+        observer.observe(el);
+      } else {
+        // Retry after a frame if ref isn't available yet (dynamic import timing)
+        const raf = requestAnimationFrame(() => {
+          el = ref.current as HTMLElement | null;
+          if (el) observer.observe(el);
+        });
+        return () => cancelAnimationFrame(raf);
+      }
+    }
+
+    const cleanup = startObserving();
+    return () => {
+      observer.disconnect();
+      if (typeof cleanup === 'function') cleanup();
+    };
   }, [useScrollTrigger, props.viewport?.once, props.viewport?.margin]);
 
   const animType = getAnimType(props);
   const duration = props.transition?.duration || 0.6;
   const delay = props.transition?.delay || 0;
-  const shouldAnimate = mounted && (props.animate === 'visible' || (useScrollTrigger && inView));
+
+  // Determine if animation should be active:
+  // 1. animate="visible" (string variant name pattern from parent)
+  // 2. whileInView + actually in view (scroll-triggered)
+  // 3. animate is an object (e.g. { opacity: 1, y: 0 }) — always animate after mount
+  // 4. animate is a function returning an object — animate after mount
+  const hasObjectAnimate = props.animate != null && typeof props.animate !== 'string';
+  const shouldAnimate = mounted && (
+    props.animate === 'visible' ||
+    hasObjectAnimate ||
+    (useScrollTrigger && inView)
+  );
 
   // Build className
   let animClass = '';

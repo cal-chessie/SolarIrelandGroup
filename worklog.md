@@ -109,3 +109,24 @@ Stage Summary:
 - Created persistent daemonized startup wrapper to prevent future downtime
 - All previously reported issues (blank blog, missing Bill Analyser, broken images, blank sections) are resolved
 - Site is fully operational at http://localhost:81 via Caddy proxy
+---
+Task ID: 2
+Agent: Main
+Task: Fix motion.tsx causing elements to stay invisible (motion-hidden)
+
+Work Log:
+- Diagnosed root cause: `src/lib/motion.tsx` had a bug in `shouldAnimate` condition
+- When `animate` prop was an object (e.g. `animate={{ opacity: 1, y: 0 }}`), the condition `props.animate === 'visible'` returned false
+- Also, `useScrollTrigger` was false when `animate` was provided, so scroll-triggered elements also stayed hidden
+- Components using `initial={{ opacity: 0 }}` + `animate={{ opacity: 1 }}` pattern (FAQ, GrantInfo, etc.) were permanently invisible
+- Found 16 elements stuck at `motion-hidden` in FAQ section alone
+- Fix 1: Added `hasObjectAnimate` check — when `animate` is an object, `shouldAnimate` becomes true after mount
+- Fix 2: Added RAF retry for IntersectionObserver when `ref.current` is null (dynamic import timing issue)
+- Rebuilt production bundle, restarted server
+- Verified: 0 motion-hidden elements at bottom of page, all sections rendering correctly
+- VLM confirmed: Calculator (home type buttons + slider), Bill Analyser (upload area), FAQ (search + categories + questions) all visible
+
+Stage Summary:
+- Fixed `/home/z/my-project/src/lib/motion.tsx` — two bugs patched
+- All previously reported broken sections now render correctly
+- FAQ, Calculator, Bill Analyser, Grants, Footer all confirmed working via VLM audit
