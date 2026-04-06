@@ -6,6 +6,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 import type { MetadataRoute } from "next";
+import { getAllArticleSlugs } from "@/lib/blog-data";
 
 const SITE_URL = "https://solarireland.com";
 
@@ -69,5 +70,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    /* ─── Blog articles ─── */
+    ...getAllArticleSlugs().map((slug) => ({
+      url: `${SITE_URL}/blog/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

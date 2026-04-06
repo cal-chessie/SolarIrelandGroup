@@ -75,3 +75,37 @@ Work Log:
 
 Stage Summary:
 - All pages built and linked, build clean, server stability issues (platform PID limit) noted
+
+---
+## Task ID: 1
+Agent: full-stack-developer
+Task: Build blog post infrastructure — shared data, individual article pages, update listing & sitemap
+
+Work Log:
+- Created `/src/lib/blog-data.ts` — Shared blog data module with:
+  - TypeScript types: ContentSection (8 section types), Article interface
+  - 9 full articles with rich structured content (paragraphs, headings, callouts, bullet/numbered lists, tables, dividers, CTAs)
+  - Each article 1000-2000 words of real Irish solar content
+  - Helper functions: getArticleBySlug(), getRelatedArticles(), getAllArticleSlugs()
+- Created `/src/app/blog/[slug]/page.tsx` — World-class blog post template with:
+  - Dynamic routing via useParams(), not-found handling
+  - Breadcrumb navigation (Home > Blog > Article Title)
+  - Article header with category badge, title, excerpt, author avatar, date, read time
+  - Sticky sidebar table of contents (desktop only, auto-generated from heading sections, intersection observer for active tracking, smooth scroll)
+  - ContentRenderer component mapping all 8 content section types to styled React components
+  - Callout boxes with 4 variants: tip (emerald), warning (amber), info (sky), stat (violet) — glass-card style
+  - Tables with alternating row styling, responsive horizontal scroll on mobile
+  - Amber gradient dividers, CTA buttons with hover scale
+  - Framer Motion fadeUp animations (whileInView) for all sections
+  - Related Articles section (3 articles from same category, fallback to other categories)
+  - Newsletter signup CTA section
+  - Return to blog link
+  - Spring easing: cubic-bezier(0.16, 1, 0.3, 1) for all animations
+  - No CSS filters, GPU-composited animations only (transform + opacity)
+- Updated `/src/app/blog/page.tsx` — Replaced inline article data with import from @/lib/blog-data, removed local Article interface and 9 article objects
+- Updated `/src/app/sitemap.ts` — Added all 9 blog article URLs via getAllArticleSlugs() with priority 0.7
+
+Stage Summary:
+- Blog post infrastructure complete: shared data module, dynamic article pages, updated listing, sitemap updated
+- Build verified: all pages compile successfully (14 total including 9 dynamic blog routes)
+- Zero new lint errors introduced (pre-existing 6 errors in CookieConsent, ExitIntent, Navbar unchanged)

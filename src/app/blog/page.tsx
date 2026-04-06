@@ -29,6 +29,7 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
+import { articles, type Article } from '@/lib/blog-data';
 
 /* ═══════════════════════════════════════════════════════════════
    ANIMATION HELPERS
@@ -56,122 +57,8 @@ const categories = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════
-   ARTICLE DATA
+   ARTICLE DATA — imported from shared blog-data module
    ═══════════════════════════════════════════════════════════════ */
-interface Article {
-  slug: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  date: string;
-  readTime: string;
-  featured?: boolean;
-  iconBg: string;
-  iconColor: string;
-}
-
-const articles: Article[] = [
-  {
-    slug: 'complete-guide-seai-solar-grant-2026',
-    title: 'The Complete Guide to the SEAI Solar Grant in 2026',
-    excerpt:
-      'Everything you need to know about the €1,800 SEAI solar panel grant — eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.',
-    category: 'grants',
-    date: '15 Jan 2026',
-    readTime: '12 min read',
-    featured: true,
-    iconBg: 'bg-amber-400/10',
-    iconColor: 'text-amber-400',
-  },
-  {
-    slug: 'how-much-do-solar-panels-cost-ireland-2026',
-    title: 'How Much Do Solar Panels Cost in Ireland? (2026 Prices)',
-    excerpt:
-      'A transparent breakdown of solar panel costs in Ireland for 2026 — from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.',
-    category: 'savings',
-    date: '12 Jan 2026',
-    readTime: '8 min read',
-    iconBg: 'bg-emerald-400/10',
-    iconColor: 'text-emerald-400',
-  },
-  {
-    slug: 'solar-panels-in-winter-do-they-work',
-    title: 'Solar Panels in Winter: Do They Actually Work?',
-    excerpt:
-      'A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you — panels still generate 30-50% of their summer output during the darker months.',
-    category: 'guides',
-    date: '8 Jan 2026',
-    readTime: '6 min read',
-    iconBg: 'bg-sky-400/10',
-    iconColor: 'text-sky-400',
-  },
-  {
-    slug: 'clean-export-guarantee-explained',
-    title: 'Clean Export Guarantee Explained: Get Paid for Your Excess Solar',
-    excerpt:
-      'The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here\'s how it works, what you\'ll earn, and which suppliers offer the best rates.',
-    category: 'grants',
-    date: '4 Jan 2026',
-    readTime: '7 min read',
-    iconBg: 'bg-amber-400/10',
-    iconColor: 'text-amber-400',
-  },
-  {
-    slug: 'east-vs-south-vs-west-facing-roofs-solar',
-    title: 'East vs South vs West-Facing Roofs: Which Is Best for Solar?',
-    excerpt:
-      'Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.',
-    category: 'guides',
-    date: '28 Dec 2025',
-    readTime: '9 min read',
-    iconBg: 'bg-violet-400/10',
-    iconColor: 'text-violet-400',
-  },
-  {
-    slug: 'battery-storage-is-it-worth-the-extra-cost',
-    title: 'Battery Storage: Is It Worth the Extra Cost?',
-    excerpt:
-      'Solar batteries cost €4,000-€8,000 — but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.',
-    category: 'savings',
-    date: '22 Dec 2025',
-    readTime: '10 min read',
-    iconBg: 'bg-emerald-400/10',
-    iconColor: 'text-emerald-400',
-  },
-  {
-    slug: 'planning-permission-solar-panels-ireland',
-    title: 'Planning Permission for Solar Panels in Ireland — What You Need to Know',
-    excerpt:
-      'Good news — most domestic solar installations in Ireland don\'t need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.',
-    category: 'guides',
-    date: '18 Dec 2025',
-    readTime: '5 min read',
-    iconBg: 'bg-rose-400/10',
-    iconColor: 'text-rose-400',
-  },
-  {
-    slug: 'longi-vs-jinko-vs-trina-best-solar-panels',
-    title: 'LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?',
-    excerpt:
-      'We compare the top three tier-1 solar panel brands used in Ireland — efficiency, warranties, real-world performance, and which one delivers the best value for your home.',
-    category: 'technology',
-    date: '12 Dec 2025',
-    readTime: '8 min read',
-    iconBg: 'bg-sky-400/10',
-    iconColor: 'text-sky-400',
-  },
-  {
-    slug: 'solar-panels-dublin-ultimate-guide',
-    title: 'Solar Panels in Dublin: The Ultimate 2026 Guide',
-    excerpt:
-      'Everything Dublin homeowners need to know about going solar — from grant eligibility and installation costs to the best panels for Dublin\'s weather and typical roof types.',
-    category: 'county',
-    date: '6 Dec 2025',
-    readTime: '11 min read',
-    iconBg: 'bg-orange-400/10',
-    iconColor: 'text-orange-400',
-  },
-];
 
 /* ═══════════════════════════════════════════════════════════════
    CATEGORY ICON HELPER
