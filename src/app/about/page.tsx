@@ -1,7 +1,6 @@
 'use client';
 
-import { motion, useInView } from '@/lib/motion';
-import { useRef } from 'react';
+import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
   ChevronRight,
@@ -149,15 +148,12 @@ function SectionHeader({
   title: string;
   description?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
-
   return (
     <motion.div
-      ref={ref}
       className="text-center mb-12 sm:mb-16"
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
       variants={fadeUp}
       transition={{ duration: 0.6 }}
     >

@@ -386,7 +386,7 @@ export default function BillAnalyser() {
     <section id="calculator" className="py-20 px-4 bg-[#0a0a0a] scroll-mt-20">
       <div className="max-w-5xl mx-auto">
         {/* ─── Section Header ─── */}
-        <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.6 }}>
+        <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.6 }}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <Sparkles className="w-3.5 h-3.5" /> AI Powered
           </span>
@@ -397,7 +397,7 @@ export default function BillAnalyser() {
         </motion.div>
 
         <motion.div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20"
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.6, delay: 0.15 }}>
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.6, delay: 0.15 }}>
 
           <AnimatePresence mode="wait">
             {/* ═══════════════════════════════════════

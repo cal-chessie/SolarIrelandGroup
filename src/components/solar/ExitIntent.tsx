@@ -26,7 +26,7 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
      1. Mouse leaves viewport (desktop)
      2. Tab switch away + back (mobile)
      3. Scroll-away (scroll down 400px+ then race up)
-     4. 90s idle fallback
+     4. 25s idle fallback
    ═══════════════════════════════════════════════════════════════ */
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
@@ -98,8 +98,8 @@ export default function ExitIntent() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    /* 4. Fallback: 15s idle (shorter for preview/testing) */
-    const idleTimer = setTimeout(trigger, 15000);
+    /* 4. Fallback: 25s idle */
+    const idleTimer = setTimeout(trigger, 25000);
 
     return () => {
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
@@ -120,17 +120,6 @@ export default function ExitIntent() {
     };
   }, [show]);
 
-  /* ─── Escape key ─── */
-  useEffect(() => {
-    if (!show) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show]);
-
   /* ─── Close handler ─── */
   const close = useCallback(() => {
     setShow(false);
@@ -140,6 +129,16 @@ export default function ExitIntent() {
   const handleCTA = useCallback(() => {
     close();
   }, [close]);
+
+  /* ─── Escape key ─── */
+  useEffect(() => {
+    if (!show) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [show, close]);
 
   if (!show) return null;
 
@@ -156,8 +155,8 @@ export default function ExitIntent() {
       aria-modal="true"
       aria-label="Special offer before you leave"
     >
-      {/* ── Backdrop ── */}
-      <div className="exit-intent-backdrop absolute inset-0 bg-black/70" onClick={close} />
+      {/* ── Backdrop — semi-transparent overlay (no CSS filter) ── */}
+      <div className="exit-intent-backdrop absolute inset-0 bg-black/60" onClick={close} />
 
       {/* ── Card ── */}
       <div
@@ -277,8 +276,16 @@ export default function ExitIntent() {
             ))}
           </div>
 
+          {/* ─── Urgency element ─── */}
+          <div className="exit-intent-el exit-intent-el-6 flex items-center justify-center gap-1.5 mb-4">
+            <Clock className="w-3 h-3 text-amber-400/60" />
+            <span className="text-[11px] text-gray-500">
+              Limited availability this month
+            </span>
+          </div>
+
           {/* ─── Primary CTA ─── */}
-          <div className="exit-intent-el exit-intent-el-6">
+          <div className="exit-intent-el exit-intent-el-7">
             <a
               href={whatsappUrl}
               target="_blank"
@@ -295,7 +302,7 @@ export default function ExitIntent() {
           </div>
 
           {/* ─── Secondary actions ─── */}
-          <div className="exit-intent-el exit-intent-el-7 flex items-center gap-2.5 mt-3">
+          <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
             <a
               href="#calculator"
               onClick={handleCTA}
@@ -306,14 +313,14 @@ export default function ExitIntent() {
             </a>
             <button
               onClick={close}
-              className="px-5 py-3 rounded-xl text-[13px] text-gray-600 hover:text-gray-400 transition-colors duration-200"
+              className="px-5 py-3 rounded-xl text-[13px] text-gray-500 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
             >
               Maybe later
             </button>
           </div>
 
           {/* ─── Micro trust line ─── */}
-          <div className="exit-intent-el exit-intent-el-8 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
+          <div className="exit-intent-el exit-intent-el-9 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
             <span className="flex items-center gap-1 text-[10px] text-gray-600">
               <Shield className="w-3 h-3" />
               {SOLAR_DATA.certifications[0]}

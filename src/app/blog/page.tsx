@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
@@ -43,6 +43,12 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
+/* ─── Category article count helper ─── */
+function getCategoryCount(catId: string): number {
+  if (catId === 'all') return articles.length;
+  return articles.filter((a) => a.category === catId).length;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    CATEGORY DATA
    ═══════════════════════════════════════════════════════════════ */
@@ -55,10 +61,6 @@ const categories = [
   { id: 'savings', label: 'Savings', icon: TrendingUp },
   { id: 'technology', label: 'Technology', icon: Zap },
 ];
-
-/* ═══════════════════════════════════════════════════════════════
-   ARTICLE DATA — imported from shared blog-data module
-   ═══════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════
    CATEGORY ICON HELPER
@@ -93,6 +95,8 @@ export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [pillPulse, setPillPulse] = useState<string | null>(null);
 
   // Filter articles by category
   const filteredArticles = useMemo(() => {
@@ -112,23 +116,41 @@ export default function BlogPage() {
   );
 
   const gridRef = useRef<HTMLDivElement>(null);
+  const transitioningRef = useRef(false);
 
-  // Scroll to grid when page changes
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  // Scroll to grid when page changes (with fade transition)
+  const handlePageChange = useCallback((page: number) => {
+    if (transitioningRef.current || page === currentPage) return;
+    transitioningRef.current = true;
+    setIsTransitioning(true);
     setTimeout(() => {
-      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-  };
+      setCurrentPage(page);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        transitioningRef.current = false;
+        gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }, 200);
+  }, [currentPage]);
 
-  // Reset page on category change
-  const handleCategoryChange = (catId: string) => {
-    setActiveCategory(catId);
-    setCurrentPage(1);
+  // Reset page on category change (with fade transition + pill pulse)
+  const handleCategoryChange = useCallback((catId: string) => {
+    if (transitioningRef.current || catId === activeCategory) return;
+    transitioningRef.current = true;
+    setIsTransitioning(true);
+    setPillPulse(catId);
     setTimeout(() => {
-      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-  };
+      setActiveCategory(catId);
+      setCurrentPage(1);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        transitioningRef.current = false;
+        gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }, 200);
+    // Clear pill pulse after animation completes
+    setTimeout(() => setPillPulse(null), 500);
+  }, [activeCategory]);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,12 +207,12 @@ export default function BlogPage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                 Solar Tips, Guides{' '}
                 <span className="text-gradient">&amp; News</span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                 Honest, jargon-free advice about solar panels in Ireland. From grant guides
                 to cost breakdowns — everything you need to make an informed decision about
                 going solar.
@@ -202,7 +224,7 @@ export default function BlogPage() {
         {/* ═══════════════════════════════════════
             CATEGORY FILTER PILLS
             ═══════════════════════════════════════ */}
-        <section className="sticky top-16 z-20 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-white/[0.04]">
+        <section className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={stagger}
@@ -214,20 +236,30 @@ export default function BlogPage() {
               {categories.map((cat) => {
                 const Icon = cat.icon;
                 const isActive = activeCategory === cat.id;
+                const isPulsing = pillPulse === cat.id;
+                const count = getCategoryCount(cat.id);
                 return (
                   <motion.button
                     key={cat.id}
                     variants={fadeUp}
                     transition={{ duration: 0.3 }}
                     onClick={() => handleCategoryChange(cat.id)}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 ${
+                    className={`relative flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-transform duration-200 ${
                       isActive
                         ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/15'
                         : 'bg-white/[0.04] text-gray-400 hover:bg-white/[0.08] hover:text-white border border-white/[0.06]'
-                    }`}
+                    } ${isPulsing ? 'blog-pill-pulse' : ''}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {cat.label}
+                    {/* Article count badge */}
+                    <span className={`ml-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-[10px] font-bold px-1 ${
+                      isActive
+                        ? 'bg-black/15 text-black'
+                        : 'bg-white/[0.06] text-gray-500'
+                    }`}>
+                      {count}
+                    </span>
                   </motion.button>
                 );
               })}
@@ -258,7 +290,7 @@ export default function BlogPage() {
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
                           <Sun className="w-16 h-16 text-amber-400/30 mx-auto mb-3" />
-                          <p className="text-xs text-amber-400/40 font-medium uppercase tracking-wider">Featured Article</p>
+                          <p className="text-xs text-amber-400/40 font-medium uppercase tracking-[0.05em]">Featured Article</p>
                         </div>
                       </div>
                       {/* Decorative grid pattern */}
@@ -272,7 +304,7 @@ export default function BlogPage() {
                     {/* Content */}
                     <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
                       <div className="flex items-center gap-3 mb-4">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.05em] ${
                           getCategoryColor(featuredArticle.category).bg
                         } ${getCategoryColor(featuredArticle.category).text} border ${
                           getCategoryColor(featuredArticle.category).border
@@ -286,7 +318,7 @@ export default function BlogPage() {
                         </span>
                       </div>
 
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors leading-tight">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors leading-tight">
                         {featuredArticle.title}
                       </h2>
 
@@ -317,9 +349,17 @@ export default function BlogPage() {
             ═══════════════════════════════════════ */}
         <section ref={gridRef} className="pb-16 sm:pb-24 scroll-mt-32">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Transition wrapper — fades grid out/in during page/category changes */}
+            <div
+              className={`transition-all duration-200 ease-out ${
+                isTransitioning
+                  ? 'opacity-0 translate-y-2'
+                  : 'opacity-100 translate-y-0'
+              }`}
+            >
             {paginatedArticles.length > 0 ? (
               <motion.div
-                key={currentPage}
+                key={`${activeCategory}-${currentPage}`}
                 variants={stagger}
                 initial="hidden"
                 animate="visible"
@@ -349,7 +389,7 @@ export default function BlogPage() {
                         </div>
                         {/* Category badge overlay */}
                         <div className="absolute top-3 left-3">
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-black/60 text-gray-300 border border-white/[0.08]`}>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-[0.05em] bg-black/60 text-gray-300 border border-white/[0.08]`}>
                             {(() => { const CatIcon = getCategoryIcon(article.category); return <CatIcon className="w-2.5 h-2.5" />; })()}
                             {article.category}
                           </span>
@@ -358,10 +398,10 @@ export default function BlogPage() {
 
                       {/* Content */}
                       <div className="p-5">
-                        <h3 className="text-base font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
+                        <h3 className="text-base sm:text-lg font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
                           {article.title}
                         </h3>
-                        <p className="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-2">
+                        <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed mb-4 line-clamp-2">
                           {article.excerpt}
                         </p>
                         <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
@@ -386,58 +426,72 @@ export default function BlogPage() {
                 className="text-center py-20"
               >
                 <BookOpen className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">No articles found</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="text-xl font-semibold text-gray-400 mb-2 leading-tight">No articles found</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   Try selecting a different category.
                 </p>
               </motion.div>
             )}
+            </div>
 
             {/* ═══════════════════════════════════════
                 PAGINATION
                 ═══════════════════════════════════════ */}
             {totalPages > 1 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex items-center justify-center gap-3 mt-12"
+              <div
+                className={`transition-all duration-200 ease-out ${
+                  isTransitioning ? 'opacity-0' : 'opacity-100'
+                }`}
               >
-                <button
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="flex items-center justify-center gap-2 sm:gap-3 mt-12"
                 >
-                  <ChevronLeft className="w-4 h-4" />
-                  Previous
-                </button>
+                  {/* Previous button */}
+                  <button
+                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1 || isTransitioning}
+                    className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-xs sm:text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span className="hidden sm:inline">Previous</span>
+                  </button>
 
-                <div className="flex items-center gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all ${
-                        currentPage === page
-                          ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/15'
-                          : 'bg-white/[0.04] text-gray-400 hover:bg-white/[0.08] hover:text-white'
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                </div>
+                  {/* Page number buttons — scrollable on mobile */}
+                  <div
+                    className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-[60vw] sm:max-w-none px-1"
+                    style={{ scrollbarWidth: 'none' }}
+                  >
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        disabled={isTransitioning}
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 ${
+                          currentPage === page
+                            ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/15'
+                            : 'bg-white/[0.04] text-gray-400 hover:bg-white/[0.08] hover:text-white'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
 
-                <button
-                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                >
-                  Next
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </motion.div>
+                  {/* Next button */}
+                  <button
+                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages || isTransitioning}
+                    className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-xs sm:text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </motion.div>
+              </div>
             )}
           </div>
         </section>
@@ -461,7 +515,7 @@ export default function BlogPage() {
                 </span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
                 Stay Updated on Solar <span className="text-gradient">Savings</span>
               </h2>
               <p className="text-sm sm:text-base text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
@@ -503,7 +557,7 @@ export default function BlogPage() {
                 </form>
               )}
 
-              <p className="text-[10px] text-gray-700 mt-4">
+              <p className="text-[11px] sm:text-xs text-gray-700 mt-4 leading-snug">
                 We respect your privacy. Unsubscribe anytime. ~500 subscribers.
               </p>
             </motion.div>

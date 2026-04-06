@@ -12,6 +12,10 @@ import ScrollProgress from '@/components/solar/ScrollProgress';
    and prevents it from initializing during hydration.
    ═══════════════════════════════════════════════════════════════ */
 
+const StatsBar = dynamic(() => import('@/components/solar/StatsBar'), {
+  loading: () => <StatsBarSkeleton />,
+});
+
 const HowItWorks = dynamic(() => import('@/components/solar/HowItWorks'), {
   loading: () => <SectionSkeleton id="how-it-works" title="How It Works" />,
 });
@@ -60,6 +64,26 @@ const Footer = dynamic(() => import('@/components/solar/Footer'), {
 /* ═══════════════════════════════════════════════════════════════
    LOADING SKELETONS — lightweight, zero Framer Motion
    ═══════════════════════════════════════════════════════════════ */
+
+function StatsBarSkeleton() {
+  return (
+    <section className="relative z-10 -mt-6 sm:-mt-8 pb-8 sm:pb-12 px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto rounded-2xl border border-white/[0.06] bg-black/40 p-4 sm:p-6">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center gap-3 sm:gap-4 px-3 py-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/[0.04]" />
+              <div className="min-w-0">
+                <div className="h-6 sm:h-7 bg-white/[0.04] rounded w-20 mb-2" />
+                <div className="h-3 bg-white/[0.03] rounded w-28" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function SectionSkeleton({ id, title }: { id: string; title: string }) {
   return (
@@ -118,6 +142,7 @@ export default function Home() {
 
       <main>
         <Hero />
+        <StatsBar />
         <HowItWorks />
         <WhySolar />
         <CustomerInstalls />

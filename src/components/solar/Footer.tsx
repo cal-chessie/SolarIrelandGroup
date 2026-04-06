@@ -13,6 +13,7 @@ import {
   ChevronUp,
   Sun,
   ShieldCheck,
+  Shield,
   Zap,
   CheckCircle2,
   Star,
@@ -59,6 +60,62 @@ const certifications = [
   { icon: Star, label: 'NSAI Compliant (ET101)', color: 'text-violet-400' },
   { icon: Sun, label: 'Microgeneration Certified', color: 'text-orange-400' },
 ];
+
+const trustBadges = [
+  { icon: ShieldCheck, label: 'SEAI Registered', color: 'text-green-400', bg: 'bg-green-400/10' },
+  { icon: CheckCircle2, label: 'RECI Certified', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+  { icon: Clock, label: '1-Day Install', color: 'text-sky-400', bg: 'bg-sky-400/10' },
+  { icon: Shield, label: '25-Year Warranty', color: 'text-violet-400', bg: 'bg-violet-400/10' },
+];
+
+/* ═══════════════════════════════════════════════════════
+   JSON-LD SCHEMA — LocalBusiness
+   ═══════════════════════════════════════════════════════ */
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Solar Ireland',
+  url: 'https://solarireland.com',
+  logo: 'https://solarireland.com/logo-sm.webp',
+  telephone: SOLAR_DATA.provider.phone,
+  email: SOLAR_DATA.provider.email,
+  description:
+    'SEAI-registered solar panel installers covering all 32 counties of Ireland. Residential & commercial solar PV, battery storage, and SEAI grant assistance.',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Dublin',
+    addressLocality: 'Dublin',
+    addressRegion: 'Leinster',
+    postalCode: '',
+    addressCountry: 'IE',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '53.3498',
+    longitude: '-6.2603',
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '09:00',
+      closes: '14:00',
+    },
+  ],
+  areaServed: {
+    '@type': 'Country',
+    name: 'Ireland',
+  },
+  priceRange: '€€',
+  image: 'https://solarireland.com/og-image.jpg',
+  sameAs: [],
+};
 
 /* ═══════════════════════════════════════════════════════
    PRE-FOOTER CTA BANNER
@@ -150,7 +207,6 @@ function ContactCard({
   color: string;
 }) {
   const isExternal = href.startsWith('http');
-  const Tag = isExternal ? 'a' : 'a';
 
   return (
     <motion.a
@@ -188,6 +244,51 @@ function BackToTop() {
     >
       <ChevronUp className="w-4 h-4" />
     </motion.button>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   TRUST BADGES ROW
+   ═══════════════════════════════════════════════════════ */
+function TrustBadgesRow() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="pb-10 sm:pb-12"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-5 sm:p-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          {trustBadges.map((badge, i) => (
+            <motion.div
+              key={badge.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="flex items-center justify-center gap-3 cursor-default"
+            >
+              <div
+                className={`w-10 h-10 rounded-xl ${badge.bg} flex items-center justify-center shrink-0`}
+              >
+                <badge.icon className={`w-5 h-5 ${badge.color}`} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-white leading-tight">
+                  {badge.label}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -235,7 +336,7 @@ export default function Footer() {
               aftercare — no pressure, no hard sell, no jargon.
             </p>
 
-            {/* Social links */}
+            {/* Social links — nofollow since these are placeholder URLs */}
             <div className="flex items-center gap-2.5">
               {[
                 { icon: Facebook, href: '#', label: 'Facebook' },
@@ -245,8 +346,7 @@ export default function Footer() {
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   whileHover={{ y: -2, scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.12] transition-all"
@@ -328,6 +428,24 @@ export default function Footer() {
                 color="bg-sky-400/10 text-sky-400"
               />
             </div>
+
+            {/* Working hours */}
+            <div className="mt-4 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-3.5 h-3.5 text-gray-500" />
+                <p className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold">
+                  Working Hours
+                </p>
+              </div>
+              <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
+                <span className="text-gray-300 font-medium">Mon–Fri:</span> 8am–6pm
+                <span className="mx-1.5 text-white/[0.08]">|</span>
+                <span className="text-gray-300 font-medium">Sat:</span> 9am–2pm
+                <span className="mx-1.5 text-white/[0.08]">|</span>
+                <span className="text-gray-300 font-medium">Sun:</span>{' '}
+                <span className="text-gray-500">Closed</span>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -374,7 +492,7 @@ export default function Footer() {
           <div className="flex items-center gap-2 mb-5">
             <ShieldCheck className="w-4 h-4 text-amber-400/50" />
             <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
-              Certifications & Compliance
+              Certifications &amp; Compliance
             </span>
           </div>
           <div className="flex flex-wrap gap-2.5">
@@ -383,6 +501,9 @@ export default function Footer() {
             ))}
           </div>
         </motion.div>
+
+        {/* ─── Trust badges row (above legal strip) ─── */}
+        <TrustBadgesRow />
 
         {/* ─── Bottom legal strip ─── */}
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -395,16 +516,24 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="/privacy" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
+            <a
+              href="/privacy"
+              className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors"
+            >
               Privacy Policy
-            </a>
-            <a href="/privacy" className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors">
-              Terms of Service
             </a>
             <BackToTop />
           </div>
         </div>
       </div>
+
+      {/* ─── JSON-LD Structured Data: LocalBusiness ─── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema),
+        }}
+      />
     </footer>
   );
 }

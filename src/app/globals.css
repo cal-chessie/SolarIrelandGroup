@@ -778,6 +778,11 @@
   opacity: 0;
   animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.82s both;
 }
+/* el-9: Trust line (after urgency element) */
+.exit-intent-el-9 {
+  opacity: 0;
+  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.90s both;
+}
 
 @keyframes exit-el-rise {
   0% {
@@ -829,7 +834,7 @@
 /* Fallback: if JS never hydrates, content becomes visible after 8s */
 .motion-hidden {
   opacity: 0;
-  animation: motion-reveal-fallback 0.01s 8s forwards;
+  animation: motion-reveal-fallback 0.01s 2s forwards;
 }
 
 @keyframes motion-reveal-fallback {
@@ -908,4 +913,24 @@
 /* ─── Fade switch (for AnimatePresence mode="wait") ─── */
 .motion-fade-switch-enter {
   animation: motion-fade-in 0.3s ease both;
+}
+
+/* ═══════════════════════════════════════════
+   BLOG — Pill pulse & page transition
+   ═══════════════════════════════════════════ */
+
+/* Category pill scale pulse when clicked */
+.blog-pill-pulse {
+  animation: blog-pill-scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes blog-pill-scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

@@ -104,11 +104,12 @@ function MotionElement(tag: string, props: MotionProps) {
       const rect = el.getBoundingClientRect();
       const margin = props.viewport?.margin || '0px';
       const marginVal = Math.abs(parseInt(margin) || 0);
+      // Match IntersectionObserver behavior: negative margin shrinks viewport
       if (
-        rect.top < window.innerHeight + marginVal &&
-        rect.bottom > -marginVal &&
-        rect.left < window.innerWidth + marginVal &&
-        rect.right > -marginVal
+        rect.top < window.innerHeight - marginVal &&
+        rect.bottom > marginVal &&
+        rect.left < window.innerWidth - marginVal &&
+        rect.right > marginVal
       ) {
         wasInViewportOnMount.current = true;
         // Also set inView for whileInView elements
@@ -146,14 +147,19 @@ function MotionElement(tag: string, props: MotionProps) {
       el = ref.current as HTMLElement | null;
       if (el) {
         observer.observe(el);
-      } else {
-        // Retry after a frame if ref isn't available yet (dynamic import timing)
-        const raf = requestAnimationFrame(() => {
-          el = ref.current as HTMLElement | null;
-          if (el) observer.observe(el);
-        });
-        return () => cancelAnimationFrame(raf);
+        return undefined;
       }
+      // Retry up to 10 frames if ref isn't available yet (dynamic import timing)
+      let attempts = 0;
+      const raf = requestAnimationFrame(function retry() {
+        el = ref.current as HTMLElement | null;
+        if (el || ++attempts > 10) {
+          if (el) observer.observe(el);
+          return;
+        }
+        requestAnimationFrame(retry);
+      });
+      return () => cancelAnimationFrame(raf);
     }
 
     const cleanup = startObserving();
@@ -315,11 +321,12 @@ export function useInView(
     // Synchronous viewport check on mount to prevent flash/delay
     const rect = el.getBoundingClientRect();
     const marginVal = Math.abs(parseInt(options?.margin || '0px') || 0);
+    // Match IntersectionObserver behavior: negative margin shrinks viewport
     const inViewNow =
-      rect.top < window.innerHeight + marginVal &&
-      rect.bottom > -marginVal &&
-      rect.left < window.innerWidth + marginVal &&
-      rect.right > -marginVal;
+      rect.top < window.innerHeight - marginVal &&
+      rect.bottom > marginVal &&
+      rect.left < window.innerWidth - marginVal &&
+      rect.right > marginVal;
     if (inViewNow) {
       setIsInView(true);
       return; // No need for observer if already in view (once=true default)
