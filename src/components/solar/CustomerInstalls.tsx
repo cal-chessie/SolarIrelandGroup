@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence, useInView, PanInfo } from '@/lib/motion';
 import {
   MapPin,
@@ -26,7 +27,7 @@ import {
 const installs = [
   {
     id: 1,
-    src: '/install-1.jpg',
+    src: '/install-1.webp',
     alt: 'Solar panel installation on a modern Irish home with tiled roof',
     location: 'Galway, Connacht',
     roofType: 'Tiled roof',
@@ -44,7 +45,7 @@ const installs = [
   },
   {
     id: 2,
-    src: '/install-2.jpg',
+    src: '/install-2.webp',
     alt: 'Solar PV system on a two-story Irish house',
     location: 'Kildare, Leinster',
     roofType: 'Slate roof',
@@ -106,9 +107,12 @@ function SwipeGallery({
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="relative cursor-grab active:cursor-grabbing"
           >
-            <img
+            <Image
               src={installs[activeIndex].src}
               alt={installs[activeIndex].alt}
+              width={800}
+              height={480}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 700px"
               className="w-full h-[280px] sm:h-[400px] lg:h-[480px] object-cover"
               draggable={false}
             />

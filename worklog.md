@@ -41,3 +41,30 @@ Stage Summary:
 - All 14 pages returning HTTP 200
 - Build compiles successfully, no errors
 - Zero framer-motion references in production build
+---
+Task ID: 1
+Agent: Main
+Task: #1 Image Optimisation — Convert all images to WebP, switch to Next.js Image component
+
+Work Log:
+- Audited all 12 images in public/ — found install-1.jpg and install-2.jpg were actually PNGs (misnamed), totaling 1.3MB + 672KB
+- Converted all heavy images to WebP using sharp at optimal quality settings
+- Updated all component references: Hero, CustomerInstalls, Navbar, Footer, WhatsAppChat, ExitIntent, BumblebeeMascot
+- Replaced <img> tags with Next.js <Image> component (auto-optimization, lazy loading, proper sizes)
+- Added priority to hero background image, proper sizes hints for responsive images
+- Deleted old heavy originals (install-1.jpg, install-2.jpg)
+- Kept PNG favicons for browser compatibility, kept OG image originals for social platform compatibility
+- Updated preload link in layout.tsx to use WebP
+- VLM verification confirmed all images render correctly with no broken images
+
+Stage Summary:
+- install-1: 1,314KB → 128KB (90% saved)
+- install-2: 669KB → 48KB (93% saved)
+- fb-cover: 639KB → 60KB (91% saved)
+- hero-solar: 169KB → 144KB (16% saved)
+- bumblebee-hero: 55KB → 20KB (64% saved)
+- bumblebee-flip: 39KB → 16KB (59% saved)
+- bumblebee-md: 28KB → 12KB (57% saved)
+- logo-lg: 16KB → 12KB (25% saved)
+- Total webp assets: ~444KB (down from ~2,935KB = 85% reduction)
+- All components using Next.js Image for auto-optimization

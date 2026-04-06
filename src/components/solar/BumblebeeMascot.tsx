@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 interface BumblebeeMascotProps {
   size?: 'sm' | 'md' | 'lg' | 'hero';
   flipped?: boolean;
@@ -8,10 +10,10 @@ interface BumblebeeMascotProps {
 }
 
 const sizeMap = {
-  sm: { src: '/bumblebee-sm.png', className: 'w-8 h-8' },
-  md: { src: '/bumblebee-md.png', className: 'w-24 h-24' },
-  lg: { src: '/bumblebee-hero.png', className: 'w-36 h-36' },
-  hero: { src: '/bumblebee-hero.png', className: 'w-48 h-48 sm:w-56 sm:h-56' },
+  sm: { src: '/bumblebee-sm.webp', w: 32, h: 32 },
+  md: { src: '/bumblebee-md.webp', w: 96, h: 96 },
+  lg: { src: '/bumblebee-hero.webp', w: 144, h: 144 },
+  hero: { src: '/bumblebee-hero.webp', w: 224, h: 224 },
 };
 
 export default function BumblebeeMascot({
@@ -21,7 +23,7 @@ export default function BumblebeeMascot({
   animate = true,
 }: BumblebeeMascotProps) {
   const config = sizeMap[size];
-  const src = flipped ? '/bumblebee-flip.png' : config.src;
+  const src = flipped ? '/bumblebee-flip.webp' : config.src;
 
   const sizeClass =
     size === 'hero'
@@ -34,9 +36,11 @@ export default function BumblebeeMascot({
 
   if (!animate) {
     return (
-      <img
+      <Image
         src={src}
         alt="Solar Ireland Bumblebee Mascot"
+        width={config.w}
+        height={config.h}
         className={`${sizeClass} ${className}`}
         style={{ imageRendering: 'auto' }}
       />
@@ -44,9 +48,11 @@ export default function BumblebeeMascot({
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt="Solar Ireland Bumblebee Mascot"
+      width={config.w}
+      height={config.h}
       className={`bumblebee-float ${sizeClass} ${className}`}
       style={{ imageRendering: 'auto' }}
     />

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import {
   Menu,
@@ -261,7 +262,7 @@ function MobileMenu({
           {/* Menu header */}
           <div className="flex items-center justify-between px-5 h-16 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
-              <img src="/logo-sm.png" alt="Solar Ireland" className="h-7 w-auto" />
+              <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={28} />
               <span className="font-bold text-white text-sm tracking-wide">Solar Ireland</span>
             </div>
             <button
@@ -491,7 +492,7 @@ export default function Navbar() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-2.5 active:scale-95 transition-transform"
           >
-            <img src="/logo-sm.png" alt="Solar Ireland" className="h-12 w-auto" />
+            <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-12 w-auto" width={48} height={48} />
             <span className="font-bold text-white hidden sm:inline text-lg tracking-wide">
               Solar Ireland
             </span>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
 import { useRef } from 'react';
 import {
@@ -217,10 +218,12 @@ export default function Footer() {
           {/* ─── Company column ─── */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-2.5 mb-4">
-              <img
-                src="/logo-sm.png"
+              <Image
+                src="/logo-sm.webp"
                 alt="Solar Ireland"
                 className="h-9 w-auto"
+                width={36}
+                height={36}
               />
               <span className="font-bold text-lg text-white tracking-tight">
                 Solar Ireland

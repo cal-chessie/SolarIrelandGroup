@@ -670,7 +670,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
 
         {/* ─── Preload Critical Assets ─── */}
-        <link rel="preload" as="image" href="/logo-sm.png" type="image/png" />
+        <link rel="preload" as="image" href="/logo-sm.webp" type="image/webp" />
 
         {/* ═══════════════════════════════════════════════════════
             JSON-LD STRUCTURED DATA — Full Suite

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import {
   X,
   MessageCircle,
@@ -172,8 +173,8 @@ export default function ExitIntent() {
         {/* ── Logo + Close row ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
           <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3">
-            <img
-              src="/logo-sm.png"
+            <Image
+              src="/logo-sm.webp"
               alt="Solar Ireland"
               width={120}
               height={36}

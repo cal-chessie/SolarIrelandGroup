@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import {
   MessageCircle,
   ArrowRight,
@@ -156,14 +157,13 @@ export default function Hero() {
           ═══════════════════════════════════════ */}
       <div className="absolute inset-0" aria-hidden="true">
         {/* Hero image */}
-        <img
-          src="/hero-solar.jpg"
+        <Image
+          src="/hero-solar.webp"
           alt=""
-          width={1920}
-          height={1080}
-          className="hero-bg w-full h-full object-cover"
-          fetchPriority="high"
-          decoding="async"
+          fill
+          sizes="100vw"
+          className="hero-bg object-cover"
+          priority
         />
         {/* Gradient overlay */}
         <div className="hero-bg absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#0a0a0a]" />
@@ -274,8 +274,8 @@ export default function Hero() {
                 className="hero-fade-up transition-transform duration-500 ease-out"
                 style={{ animationDelay: '0.4s', willChange: 'transform' }}
               >
-                <img
-                  src="/bumblebee-hero.png"
+                <Image
+                  src="/bumblebee-hero.webp"
                   alt="Solar Ireland Bumblebee"
                   width={224}
                   height={224}
