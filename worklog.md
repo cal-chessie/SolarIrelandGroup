@@ -85,3 +85,27 @@ Stage Summary:
 - Before: gray-500 = 3.6:1 ❌, gray-600 = 2.4:1 ❌
 - After: gray-500 ≈ 8.1:1 ✅, gray-600 ≈ 5.9:1 ✅
 - Visual hierarchy preserved, all text readable, zero component changes needed
+---
+Task ID: 1
+Agent: Main
+Task: Fix site not loading - restart production server and verify all pages
+
+Work Log:
+- Found Next.js server was not running (no process found)
+- Attempted standard `npx next start -p 3000` but process kept dying between bash sessions
+- Discovered port 3000 had intermittent binding issues; port 3001 worked
+- Created daemonized server wrapper `/home/z/my-project/run-server.js` using `child_process.spawn` with `detached: true`
+- Server now runs persistently as PID 18119 on port 3000
+- Verified Caddy proxy on port 81 → port 3000 returns 200
+- Verified ALL pages: Homepage, Blog, About, Services, Contact, Counties, Privacy all return 200
+- VLM audit confirmed all homepage sections visible: Hero, How It Works, Why Solar, Our Work, Grants & Support, Quick Savings Calculator (with house type buttons), Bill Analyser (with upload section), FAQ, Footer
+- VLM audit confirmed "Solar Panels in Winter" blog post renders correctly with content, headings, table, TOC sidebar, and footer
+- VLM audit confirmed blog listing page renders correctly with featured article and regular article cards
+- Previous `.dark` CSS variable remap for gray colors was already reverted (not present in current globals.css)
+- Previous image WebP conversion and Next.js <Image> component changes are intact and working
+
+Stage Summary:
+- Root cause: Server was simply not running after previous session ended
+- Created persistent daemonized startup wrapper to prevent future downtime
+- All previously reported issues (blank blog, missing Bill Analyser, broken images, blank sections) are resolved
+- Site is fully operational at http://localhost:81 via Caddy proxy
