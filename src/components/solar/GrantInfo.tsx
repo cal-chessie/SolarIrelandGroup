@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from '@/lib/motion';
 import {
   CheckCircle2,
@@ -33,10 +33,14 @@ function AnimatedGrant({ show }: { show: boolean }) {
   const inView = useInView(ref, { once: true, margin: '-20px' });
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => Math.round(v).toString());
+  const hasAnimated = useRef(false);
 
-  if ((show && inView) || (show && count.get() === 0)) {
-    animate(count, SOLAR_DATA.grant.amount, { duration: 1.8, ease: 'easeOut' });
-  }
+  useEffect(() => {
+    if (show && inView && !hasAnimated.current) {
+      hasAnimated.current = true;
+      animate(count, SOLAR_DATA.grant.amount, { duration: 1.8, ease: 'easeOut' });
+    }
+  }, [show, inView, count]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -428,10 +432,14 @@ function GrantHero({ isInView }: { isInView: boolean }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => Math.round(v).toString());
   const show = isInView && selfInView;
+  const hasAnimated = useRef(false);
 
-  if (show) {
-    animate(count, SOLAR_DATA.grant.amount, { duration: 2, ease: 'easeOut' });
-  }
+  useEffect(() => {
+    if (show && !hasAnimated.current) {
+      hasAnimated.current = true;
+      animate(count, SOLAR_DATA.grant.amount, { duration: 2, ease: 'easeOut' });
+    }
+  }, [show, count]);
 
   return (
     <motion.div
