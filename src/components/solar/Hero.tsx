@@ -89,19 +89,17 @@ function StatPill({
   const value = useCounter(target, 2200, loaded);
 
   return (
-    <div className="stat-pill group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300">
+    <div className="stat-pill group flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300 overflow-hidden">
       <div
         className={`w-10 h-10 rounded-xl ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}
       >
         <Icon className="w-4.5 h-4.5" />
       </div>
-      <div className="min-w-0">
-        <p className="text-[15px] font-bold text-white leading-none tabular-nums">
-          {prefix}
-          {value.toLocaleString()}
-          {suffix}
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-bold text-white leading-tight tabular-nums">
+          {prefix}<span className="tabular-nums">{value.toLocaleString()}</span>{suffix}
         </p>
-        <p className="text-[11px] text-gray-400 mt-1.5 leading-tight">{label}</p>
+        <p className="text-[11px] text-gray-400 mt-0.5 leading-tight">{label}</p>
       </div>
     </div>
   );
