@@ -64,3 +64,32 @@ Stage Summary:
 - Flash fix: comprehensive solution in src/lib/motion.tsx prevents ALL animation flash
 - Key change: wasInViewportOnMount ref + unified viewport check on mount for all animation types
 - GrantHero component (€1,800 header): no longer flashes
+
+---
+Task ID: 12
+Agent: full-stack-developer
+Task: Counties page personality + SEO overhaul
+
+Work Log:
+- Read existing counties page, layout, motion, solar-data, globals.css
+- Rewrote hero section with warm, direct, Irish tone — "Solar Panels for Every Irish Home"
+- Added personal subtext about local installers knowing your area
+- Added `tagline` field to all 32 county data objects with locally-flavoured descriptions
+- Displayed tagline on county cards between status badge and stats grid
+- Added "Why Local Matters" section with 4 glass-card sections (amber/emerald/sky/violet)
+- Added SEO-rich H2 subtitles per province in ProvinceHeader component
+- Added 8-question FAQ section with accordion pattern (click-to-expand, motion-accordion)
+- Added FAQPage JSON-LD structured data with all 8 questions/answers
+- Added BreadcrumbList JSON-LD in layout.tsx (Home → County Directory)
+- Added ItemList JSON-LD for all 32 counties as ListItems
+- Enhanced metadata in layout.tsx: canonical URL, 24 keywords, OpenGraph with image, twitter card, alternates with hreflang en-IE/en-GB
+- Updated title to "Solar Panels Ireland by County | Local Installers in All 32 Counties"
+- Fixed bottom CTA from "Can't find your county?" to "Ready to Go Solar?"
+- Build: successful, all 14 routes generating
+- Verification: /counties returns 200, FAQPage + ItemList + BreadcrumbList JSON-LD all present in HTML
+- No lint errors from counties files (pre-existing lint issues in motion.tsx unchanged)
+
+Stage Summary:
+- Personality: warm Irish tone throughout, local county taglines on every card, "Why Local Matters" section
+- SEO: 3 JSON-LD schemas (BreadcrumbList, FAQPage, ItemList), enhanced metadata with canonical/keywords/OG/twitter/hreflang, county-specific H2 subtitles
+- Build: successful, page verified at /counties (200)

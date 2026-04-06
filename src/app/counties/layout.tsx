@@ -1,13 +1,65 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Solar Panels Ireland | 32 County Solar Installers Directory',
+  title: 'Solar Panels Ireland by County | Local Installers in All 32 Counties',
   description:
-    'Find solar panel installers in all 32 counties of Ireland. Solar Ireland is the parent brand connecting local county sites with expert installation, SEAI grants, and free surveys nationwide.',
+    'Find trusted local solar panel installers in every county in Ireland. From Dublin to Donegal, Cork to Cavan — compare prices, SEAI grants, generation estimates and get a free solar survey near you. Solar Ireland covers all 32 counties with SEAI-registered installations.',
+  keywords: [
+    'solar panels Ireland',
+    'solar panel installers by county',
+    'solar panels Dublin',
+    'solar panels Cork',
+    'solar panels Galway',
+    'solar panels Kerry',
+    'solar panels Limerick',
+    'solar panels Donegal',
+    'solar panels Wicklow',
+    'solar panels Kildare',
+    'solar panels Meath',
+    'solar panels Wexford',
+    'solar panels Waterford',
+    'solar panels Tipperary',
+    'solar panels Mayo',
+    'solar panels Kilkenny',
+    'solar panel installation Ireland',
+    'SEAI grant solar panels',
+    'solar PV Ireland',
+    'solar energy Ireland by county',
+    'free solar survey Ireland',
+    'solar panel cost Ireland',
+    'local solar installers',
+    '32 counties solar panels',
+  ],
+  alternates: {
+    canonical: 'https://solarireland.com/counties',
+    languages: {
+      'en-IE': 'https://solarireland.com/counties',
+      'en-GB': 'https://solarireland.com/counties',
+    },
+  },
   openGraph: {
-    title: 'Solar Panels Ireland | 32 County Solar Installers Directory',
+    title: 'Solar Panels Ireland by County | Local Installers in All 32 Counties',
     description:
-      'Find solar panel installers in all 32 counties of Ireland. Local expertise, tailored pricing, and SEAI-registered installations from Dublin to Donegal.',
+      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free solar survey near you.',
+    url: 'https://solarireland.com/counties',
+    siteName: 'Solar Ireland',
+    locale: 'en_IE',
+    type: 'website',
+    images: [
+      {
+        url: 'https://solarireland.com/og-counties.png',
+        width: 1200,
+        height: 630,
+        alt: 'Solar Ireland — Solar Panel Installers in All 32 Counties',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Solar Panels Ireland by County | Local Installers in All 32 Counties',
+    description:
+      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free survey.',
+    images: ['https://solarireland.com/og-counties.png'],
   },
 };
 
@@ -16,5 +68,33 @@ export default function CountiesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: 'https://solarireland.com',
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'County Directory',
+                item: 'https://solarireland.com/counties',
+              },
+            ],
+          }),
+        }}
+      />
+      {children}
+    </>
+  );
 }
