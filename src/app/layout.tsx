@@ -668,6 +668,7 @@ export default function RootLayout({
 
         {/* ─── Preconnect for Critical Third Parties ─── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* ─── Preload Critical Assets ─── */}
         <link rel="preload" as="image" href="/logo-sm.webp" type="image/webp" />

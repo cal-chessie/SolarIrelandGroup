@@ -85,7 +85,29 @@ function MotionElement(tag: string, props: MotionProps) {
   const [inView, setInView] = useState(false);
 
   // Ensure animations start only after client mount (SSR-safe)
-  useEffect(() => { setMounted(true); }, []);
+  // On mount, immediately check if element is already in viewport
+  // to prevent the visible→hidden→visible flash
+  useEffect(() => {
+    setMounted(true);
+    // Synchronous viewport check on mount for scroll-triggered elements
+    if (props.whileInView && !props.animate) {
+      const el = ref.current as HTMLElement | null;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const margin = props.viewport?.margin || '0px';
+        // Parse margin (e.g. "-60px" → 60)
+        const marginVal = Math.abs(parseInt(margin) || 0);
+        if (
+          rect.top < window.innerHeight + marginVal &&
+          rect.bottom > -marginVal &&
+          rect.left < window.innerWidth + marginVal &&
+          rect.right > -marginVal
+        ) {
+          setInView(true);
+        }
+      }
+    }
+  }, []);
 
   const useScrollTrigger = !!props.whileInView && !props.animate;
 
@@ -152,14 +174,24 @@ function MotionElement(tag: string, props: MotionProps) {
   // Content renders fully visible for SEO and no flash.
   // After mount:
   //   - Immediate animations (animate="visible"): CSS animation class plays (fill-mode:both handles start state)
-  //   - Scroll-triggered (whileInView): motion-hidden until scrolled into view
+  //   - Scroll-triggered (whileInView): only hide if below viewport (not above)
   let animClass = '';
   if (animType && mounted) {
     if (shouldAnimate) {
       animClass = `motion-${animType}`;
     } else if (useScrollTrigger && !inView) {
-      // Scroll-triggered elements not yet in view: hide them
-      animClass = 'motion-hidden';
+      // Scroll-triggered elements not yet in view:
+      // Only hide if element is BELOW the viewport (user hasn't scrolled to it yet)
+      // If element is ABOVE viewport, it was already seen — just show it immediately
+      const el = ref.current as HTMLElement | null;
+      let hide = false;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        hide = rect.top >= window.innerHeight;
+      }
+      if (hide) {
+        animClass = 'motion-hidden';
+      }
     }
   }
 
@@ -263,6 +295,20 @@ export function useInView(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Synchronous viewport check on mount to prevent flash/delay
+    const rect = el.getBoundingClientRect();
+    const marginVal = Math.abs(parseInt(options?.margin || '0px') || 0);
+    const inViewNow =
+      rect.top < window.innerHeight + marginVal &&
+      rect.bottom > -marginVal &&
+      rect.left < window.innerWidth + marginVal &&
+      rect.right > -marginVal;
+    if (inViewNow) {
+      setIsInView(true);
+      return; // No need for observer if already in view (once=true default)
+    }
+
     const once = options?.once !== false;
     const observer = new IntersectionObserver(
       ([e]) => {

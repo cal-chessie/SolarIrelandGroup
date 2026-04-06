@@ -19,3 +19,25 @@ Stage Summary:
 - All 6 previously broken areas (Services, Blog, About, Contact, SEAI TMY graph, Price chart) should now be working
 - Animations are subtler (16px vs 24px travel distance) reducing perceived jumpiness
 - Server running on port 3000, Caddy proxying from port 81
+---
+Task ID: 1
+Agent: Main Agent
+Task: Fix site not loading and glitchy/jumpy text behavior
+
+Work Log:
+- Discovered server was completely down (returning 000 status codes)
+- Found run-server.js had port mismatch: was using port 3000 but Caddyfile expects 3001
+- Fixed run-server.js to use port 3001
+- Analyzed motion.tsx library for cause of "glitchy" text
+- Found root cause: SSR renders content visible → React mounts → motion-hidden (opacity:0) applied → IntersectionObserver fires → content animates back in. This creates visible flash/jump
+- Fixed MotionElement to do synchronous viewport check on mount, preventing hidden→visible flash for elements already in viewport
+- Fixed useInView hook with same synchronous viewport check pattern (fixes SEAI TMY graph bars staying at 0%)
+- Added fonts.gstatic.com preconnect to layout.tsx to reduce font swap (FOUT) flash
+- Rebuilt production bundle and verified all pages return 200 with content
+
+Stage Summary:
+- Server port fixed: 3000 → 3001 in run-server.js
+- Motion library flash fixed in src/lib/motion.tsx (MotionElement + useInView)
+- Font preconnect added to src/app/layout.tsx
+- All pages verified: /, /services, /about, /blog, /contact all return 200 with content
+
