@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const log = fs.openSync('/tmp/next-server.log', 'a');
-const child = spawn('npx', ['next', 'start', '-p', '3001', '-H', '0.0.0.0'], {
+const child = spawn('npx', ['next', 'start', '-p', '3000', '-H', '0.0.0.0'], {
   cwd: '/home/z/my-project',
   detached: true,
   stdio: ['ignore', log, log],
