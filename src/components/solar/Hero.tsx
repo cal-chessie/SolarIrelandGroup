@@ -89,19 +89,19 @@ function StatPill({
   const value = useCounter(target, 2200, loaded);
 
   return (
-    <div className="stat-pill group flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300">
+    <div className="stat-pill group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300">
       <div
-        className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}
+        className={`w-10 h-10 rounded-xl ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}
       >
-        <Icon className="w-4 h-4" />
+        <Icon className="w-4.5 h-4.5" />
       </div>
-      <div>
-        <p className="text-sm font-bold text-white leading-none tabular-nums">
+      <div className="min-w-0">
+        <p className="text-[15px] font-bold text-white leading-none tabular-nums">
           {prefix}
           {value.toLocaleString()}
           {suffix}
         </p>
-        <p className="text-[10px] text-gray-500 mt-1">{label}</p>
+        <p className="text-[11px] text-gray-400 mt-1.5 leading-tight">{label}</p>
       </div>
     </div>
   );
@@ -302,7 +302,7 @@ export default function Hero() {
 
               {/* Stat pills — animated counters */}
               <div
-                className="hero-fade-up grid grid-cols-2 gap-2.5 w-full max-w-[280px]"
+                className="hero-fade-up grid grid-cols-2 gap-3 w-full max-w-xs"
                 style={{ animationDelay: '0.7s' }}
               >
                 <StatPill icon={Euro} label="Avg. annual saving" target={SOLAR_DATA.savings.avgAnnual} prefix="€" suffix="/yr" color="bg-green-400/10 text-green-400" loaded={loaded} />
@@ -316,17 +316,17 @@ export default function Hero() {
 
         {/* ─── Service Areas ─── */}
         <div
-          className="hero-fade-up mt-16 sm:mt-20 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs text-gray-300"
+          className="hero-fade-up mt-14 sm:mt-16 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2.5 text-xs text-gray-300"
           style={{ animationDelay: '0.9s' }}
         >
           {SOLAR_DATA.serviceAreas.map((area) => (
-            <span key={area} className="flex items-center gap-1.5">
+            <span key={area} className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400/70" />
               {area}
             </span>
           ))}
           <span className="text-white/15">|</span>
-          <span className="flex items-center gap-1.5">
+          <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400/70" />
             Free surveys nationwide
           </span>
