@@ -895,15 +895,3 @@
 .motion-fade-switch-enter {
   animation: motion-fade-in 0.3s ease both;
 }
-
-/* ═══════════════════════════════════════════════════════
-   WCAG AA CONTRAST FIX — unlayered CSS (beats all @layer)
-   ─────────────────────────────────────────────────────
-   Default gray-500 (#6b7280) on #0a0a0a = 3.6:1 — FAILS
-   Default gray-600 (#4b5563) on #0a0a0a = 2.4:1 — FAILS
-   Remap each step up to pass 4.5:1+ while keeping hierarchy
-   ═══════════════════════════════════════════════════════ */
-.dark .text-gray-300 { color: #d4d4d4 !important; }
-.dark .text-gray-400 { color: #b8b8b8 !important; }
-.dark .text-gray-500 { color: #9e9e9e !important; }
-.dark .text-gray-600 { color: #858585 !important; }
