@@ -34,7 +34,7 @@ const QuickSavingsCalculator = dynamic(() => import('@/components/solar/QuickSav
 
 const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
   loading: () => (
-    <section id="calculator" className="py-20 px-4 bg-[#0a0a0a]">
+    <section id="calculator" className="py-20 px-4 bg-[#0a0a0a] scroll-mt-20">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">

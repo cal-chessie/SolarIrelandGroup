@@ -383,7 +383,7 @@ export default function BillAnalyser() {
   const costAfter = analysis ? annualCost - analysis.totalAnnualBenefit : 0;
 
   return (
-    <section id="calculator" className="py-20 px-4 bg-[#0a0a0a]">
+    <section id="calculator" className="py-20 px-4 bg-[#0a0a0a] scroll-mt-20">
       <div className="max-w-5xl mx-auto">
         {/* ─── Section Header ─── */}
         <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.6 }}>

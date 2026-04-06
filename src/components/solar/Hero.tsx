@@ -150,7 +150,7 @@ export default function Hero() {
   return (
     <section
       className="hero-section relative min-h-screen flex items-center overflow-hidden"
-      style={{ contain: 'layout style' }}
+      style={{ contain: 'layout' }}
     >
       {/* ═══════════════════════════════════════
           BACKGROUND LAYERS
@@ -224,8 +224,8 @@ export default function Hero() {
               style={{ animationDelay: '0.65s' }}
             >
               {/* Primary CTA — shimmer sweep */}
-              <a
-                href="#calculator"
+              <button
+                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
                 className="hero-cta-shimmer inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm tracking-wide shadow-xl shadow-amber-400/20 w-full sm:w-auto justify-center relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center gap-2.5">
@@ -233,7 +233,7 @@ export default function Hero() {
                   Analyse My Bill — Free
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>
-              </a>
+              </button>
               {/* Secondary CTA */}
               <a
                 href={buildWhatsAppUrl({ source: 'hero' })}

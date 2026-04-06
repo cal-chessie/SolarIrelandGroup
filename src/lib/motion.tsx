@@ -11,9 +11,15 @@
    • AnimatePresence (simplified — no exit animations)
    ═══════════════════════════════════════════════════════════════ */
 
-import {
+import React, {
   useRef, useEffect, useState, Children, type ReactNode, type CSSProperties,
 } from 'react';
+
+/* ─── Variant Propagation Context ─────────────────────── */
+const MotionContext = React.createContext<{
+  parentAnimate: string | StyleObj | null;
+  parentVariants: Record<string, any> | null;
+}>({ parentAnimate: null, parentVariants: null });
 
 /* ─── Types ─────────────────────────────────────── */
 type StyleObj = Record<string, number | string>;
@@ -81,6 +87,7 @@ function getAnimType(props: MotionProps): string | null {
 function MotionElement(tag: string, props: MotionProps) {
   const localRef = useRef<HTMLElement>(null);
   const ref = props.ref || localRef;
+  const parentCtx = React.useContext(MotionContext);
   const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
   // Track if element was already visible on first mount — if so, never animate (prevents flash)
@@ -165,8 +172,10 @@ function MotionElement(tag: string, props: MotionProps) {
   // 2. whileInView + actually in view (scroll-triggered)
   // 3. animate is a non-empty object (e.g. { opacity: 1, y: 0 }) — animate after mount
   const hasObjectAnimate = props.animate != null && typeof props.animate !== 'string' && Object.keys(props.animate as object).length > 0;
+  // Support variant propagation: if no explicit animate, inherit from parent context
+  const effectiveAnimate = props.animate ?? (typeof parentCtx.parentAnimate === 'string' ? parentCtx.parentAnimate : null);
   const wantAnimate = mounted && (
-    props.animate === 'visible' ||
+    effectiveAnimate === 'visible' ||
     hasObjectAnimate ||
     (useScrollTrigger && inView)
   );
@@ -188,8 +197,10 @@ function MotionElement(tag: string, props: MotionProps) {
   if (animType && mounted && !wasInViewportOnMount.current) {
     if (shouldAnimate) {
       animClass = `motion-${animType}`;
-    } else if (!inView) {
-      // Below viewport and not yet triggered — hide until scroll
+    } else if (!inView && useScrollTrigger) {
+      // Only apply motion-hidden for elements with their own whileInView observer.
+      // Elements relying on parent variant propagation don't have their own observer,
+      // so they should just be visible immediately (no animation, but not hidden).
       animClass = 'motion-hidden';
     }
   }
@@ -248,16 +259,22 @@ function MotionElement(tag: string, props: MotionProps) {
 
   const Element = tag as any;
 
+  // Determine what to pass to children via context
+  const ctxAnimate = props.animate ?? parentCtx?.parentAnimate ?? null;
+  const ctxVariants = props.variants ?? null;
+
   return (
-    <Element
-      ref={ref}
-      className={finalClassName}
-      style={motionStyle}
-      {...hoverAttrs}
-      {...rest}
-    >
-      {processedChildren}
-    </Element>
+    <MotionContext.Provider value={{ parentAnimate: ctxAnimate, parentVariants: ctxVariants }}>
+      <Element
+        ref={ref}
+        className={finalClassName}
+        style={motionStyle}
+        {...hoverAttrs}
+        {...rest}
+      >
+        {processedChildren}
+      </Element>
+    </MotionContext.Provider>
   );
 }
 
