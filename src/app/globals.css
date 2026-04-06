@@ -789,3 +789,109 @@
     transform: translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   MOTION LITE — CSS keyframes for framer-motion replacement
+   These power the <motion.div> component from src/lib/motion.tsx
+   ═══════════════════════════════════════════════════════ */
+
+@keyframes motion-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes motion-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes motion-fade-scale-up {
+  from { opacity: 0; transform: translateY(24px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes motion-slide-in {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-fade-rotate {
+  from { opacity: 0; transform: rotate(-3deg); }
+  to   { opacity: 1; transform: rotate(0deg); }
+}
+
+/* Hidden initial state (SSR-safe — matches server + client first paint) */
+.motion-hidden {
+  opacity: 0;
+}
+
+/* Animated classes — triggered via IntersectionObserver or immediate */
+.motion-fade-up {
+  animation: motion-fade-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.motion-fade-in {
+  animation: motion-fade-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.motion-scale-in {
+  animation: motion-scale-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.motion-fade-scale-up {
+  animation: motion-fade-scale-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.motion-slide-in {
+  animation: motion-slide-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.motion-fade-rotate {
+  animation: motion-fade-rotate var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── whileHover — CSS :hover transitions ─── */
+[data-motion-hover-scale] {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-motion-hover-scale]:hover {
+  transform: scale(var(--hover-scale, 1.02));
+}
+[data-motion-hover-scale]:hover {
+  transform: translateY(calc(var(--hover-y, 0) * -1px)) scale(var(--hover-scale, 1.02));
+}
+
+[data-motion-hover-y] {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-motion-hover-y]:not([data-motion-hover-scale]):hover {
+  transform: translateY(calc(var(--hover-y, 2) * -1px));
+}
+
+/* ─── whileTap — CSS :active transitions ─── */
+[data-motion-tap-scale] {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-motion-tap-scale]:active {
+  transform: scale(var(--tap-scale, 0.97)) !important;
+}
+
+/* ─── Accordion collapse (CSS grid technique for AnimatePresence) ─── */
+.motion-accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+.motion-accordion.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.motion-accordion > div {
+  overflow: hidden;
+}
+
+/* ─── Fade switch (for AnimatePresence mode="wait") ─── */
+.motion-fade-switch-enter {
+  animation: motion-fade-in 0.3s ease both;
+}

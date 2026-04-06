@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
   ChevronRight,

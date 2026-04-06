@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
   ChevronRight,

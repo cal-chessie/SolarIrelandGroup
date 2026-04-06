@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { motion } from 'framer-motion';
+import { motion } from '@/lib/motion';
 
 /* ═══════════════════════════════════════════════════════════════
    CALCULATION ENGINE — all client-side, no API calls

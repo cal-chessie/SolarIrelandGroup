@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useInView, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, useInView, PanInfo } from '@/lib/motion';
 import {
   MapPin,
   Zap,

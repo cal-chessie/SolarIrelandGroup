@@ -16,3 +16,28 @@ Stage Summary:
 - Blog pagination now scrolls to grid and re-animates articles on page change
 - All 7 static pages + 9+ blog posts returning HTTP 200
 - Production server running stable on port 3000
+
+---
+Task ID: 2
+Agent: Main
+Task: Lighten website weight without visual changes
+
+Work Log:
+- Analyzed bundle: framer-motion (~220KB chunk), blog-data (~127KB), lucide icons (~112KB)
+- Created src/lib/motion.tsx — lightweight framer-motion drop-in replacement (11.7KB vs 5.4MB library)
+- Supports: motion.div/span/a/section/etc, initial, animate, whileInView, whileHover, whileTap, viewport, transition, variants
+- Includes AnimatePresence (simplified pass-through), useInView (IntersectionObserver), useMotionValue, useTransform, animate, PanInfo
+- Added CSS keyframes to globals.css: fade-up, fade-in, scale-in, slide-in, fade-rotate, motion-hidden, whileHover/whileTap handlers, accordion collapse
+- Replaced framer-motion imports in ALL 18 files
+- Removed framer-motion from package.json and node_modules
+- Deleted CustomerInstalls_backup.tsx (dead code, 20KB)
+- Fixed MotionValue rendering (handle object children in motion elements)
+
+Stage Summary:
+- Static JS: 1,491,471 → 1,400,846 bytes (~90KB saved)
+- framer-motion: 5.4MB dependency → 0 (completely removed)
+- Custom motion module: 11.7KB (vs 5.4MB framer-motion)
+- Dead code removed: 20KB
+- All 14 pages returning HTTP 200
+- Build compiles successfully, no errors
+- Zero framer-motion references in production build

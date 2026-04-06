@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from '@/lib/motion';
 import {
   CheckCircle2,
   ExternalLink,
