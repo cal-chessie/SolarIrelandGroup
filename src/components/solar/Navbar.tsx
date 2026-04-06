@@ -177,10 +177,12 @@ function MobileMenu({
   isOpen,
   onClose,
   activeSection,
+  pathname,
 }: {
   isOpen: boolean;
   onClose: () => void;
   activeSection: string;
+  pathname: string;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -213,7 +215,7 @@ function MobileMenu({
   const sectionId = (href: string) => href.replace('/#', '').replace('#', '');
   const isActive = (href: string) => {
     if (href.startsWith('/') && !href.startsWith('/#')) {
-      return typeof window !== 'undefined' && window.location.pathname === href;
+      return pathname === href || pathname.startsWith(href + '/');
     }
     return activeSection === sectionId(href);
   };
@@ -440,6 +442,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const activeSection = useActiveSection();
+  const pathname = usePathname();
 
   // Track scroll for navbar background
   useEffect(() => {
@@ -498,7 +501,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
-                ? (typeof window !== 'undefined' && window.location.pathname === link.href)
+                ? (pathname === link.href || pathname.startsWith(link.href + '/'))
                 : activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <button
@@ -543,6 +546,7 @@ export default function Navbar() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         activeSection={activeSection}
+        pathname={pathname}
       />
     </>
   );
