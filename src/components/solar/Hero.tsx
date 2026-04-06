@@ -89,17 +89,17 @@ function StatPill({
   const value = useCounter(target, 2200, loaded);
 
   return (
-    <div className="stat-pill group flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300 overflow-hidden">
+    <div className="stat-pill group flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/30 border border-white/[0.08] hover:border-white/[0.18] transition-all duration-300">
       <div
-        className={`w-10 h-10 rounded-xl ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}
+        className={`w-8 h-8 rounded-lg ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}
       >
-        <Icon className="w-4.5 h-4.5" />
+        <Icon className="w-3.5 h-3.5" />
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold text-white leading-tight tabular-nums">
-          {prefix}<span className="tabular-nums">{value.toLocaleString()}</span>{suffix}
+      <div className="min-w-0">
+        <p className="text-sm font-bold text-white leading-none tabular-nums">
+          {prefix}{value.toLocaleString()}<span className="text-[11px] font-semibold text-gray-300">{suffix}</span>
         </p>
-        <p className="text-[11px] text-gray-400 mt-0.5 leading-tight">{label}</p>
+        <p className="text-[10px] text-gray-500 mt-1 leading-tight">{label}</p>
       </div>
     </div>
   );
@@ -300,7 +300,7 @@ export default function Hero() {
 
               {/* Stat pills — animated counters */}
               <div
-                className="hero-fade-up grid grid-cols-2 gap-3 w-full max-w-xs"
+                className="hero-fade-up grid grid-cols-2 gap-2.5 w-full max-w-sm"
                 style={{ animationDelay: '0.7s' }}
               >
                 <StatPill icon={Euro} label="Avg. annual saving" target={SOLAR_DATA.savings.avgAnnual} prefix="€" suffix="/yr" color="bg-green-400/10 text-green-400" loaded={loaded} />
