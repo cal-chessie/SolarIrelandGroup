@@ -130,3 +130,25 @@ Stage Summary:
 - Fixed `/home/z/my-project/src/lib/motion.tsx` — two bugs patched
 - All previously reported broken sections now render correctly
 - FAQ, Calculator, Bill Analyser, Grants, Footer all confirmed working via VLM audit
+---
+Task ID: 1
+Agent: Main
+Task: Fix reported breakages - services, blog, about, contact, SEAI graph, chart bars
+
+Work Log:
+- Diagnosed that port 81 reverse proxy was serving stale build (old BUILD_ID)
+- Found root cause of "empty" subpages: `.motion-hidden` class sets `opacity: 0` with no JS fallback
+- Found root cause of "SEAI graph not loading": motion library doesn't support width/height CSS animations - bars stuck at 0
+- Found root cause of "price bars same length": same issue - motion.div width/height props ignored
+- Added CSS fallback animation to `.motion-hidden` (reveals content after 3s if JS fails)
+- Added `@media (scripting: none)` rule for no-JS browsers
+- Replaced PriceChart bars: motion.div → regular div with CSS transitions + useInView hook
+- Replaced GenerationChart bars: motion.div → regular div with CSS transitions + useInView hook
+- Rebuilt production build, killed stale server processes, restarted on port 3000
+- Verified port 81 proxy serves new build ID
+
+Stage Summary:
+- Key fix: `.motion-hidden` now has a 3s CSS fallback animation that reveals content even if JS hydration fails
+- Key fix: Chart bars now use CSS transitions (`transition-all`) instead of broken motion.div width/height
+- Both charts use `useInView` hook from motion library to trigger bar animations when scrolled into view
+- Fresh build vYDPsZG_GWOOsfAQeHL4L deployed and verified on both port 3000 and port 81

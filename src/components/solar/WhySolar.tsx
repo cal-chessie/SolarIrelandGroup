@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { motion } from '@/lib/motion';
+import { motion, useInView } from '@/lib/motion';
 import {
   PiggyBank,
   TrendingUp,
@@ -193,9 +193,12 @@ function StatCard({
    ═══════════════════════════════════════════════════════ */
 function PriceChart() {
   const maxPrice = Math.max(...priceData.map((d) => d.price));
+  const chartRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(chartRef, { once: true, margin: '-60px' });
 
   return (
     <motion.div
+      ref={chartRef}
       className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8"
       initial={{ opacity: 0, y: 25 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -239,8 +242,8 @@ function PriceChart() {
 
                 {/* Bar track */}
                 <div className="flex-1 h-7 sm:h-8 rounded-lg bg-white/[0.03] overflow-hidden relative">
-                  <motion.div
-                    className={`h-full rounded-lg ${
+                  <div
+                    className={`h-full rounded-lg transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
                       isCrisis
                         ? 'bg-gradient-to-r from-red-500/80 to-red-400/50'
                         : isCurrent
@@ -249,26 +252,19 @@ function PriceChart() {
                             ? 'bg-gradient-to-r from-amber-500/35 to-amber-500/15'
                             : 'bg-gradient-to-r from-amber-500/50 to-amber-500/25'
                     }`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${widthPercent}%` }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.8,
-                      delay: i * 0.07,
-                      ease: [0.25, 0.46, 0.45, 0.94],
+                    style={{
+                      width: isInView ? `${widthPercent}%` : '0%',
+                      transitionDelay: `${i * 70}ms`,
                     }}
                   />
                   {/* Crisis badge */}
-                  {isCrisis && (
-                    <motion.span
-                      initial={{ opacity: 0, x: 10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.07 + 0.5 }}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-bold text-red-400 uppercase tracking-wider hidden sm:inline"
+                  {isCrisis && isInView && (
+                    <span
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-bold text-red-400 uppercase tracking-wider hidden sm:inline motion-fade-in"
+                      style={{ animationDelay: `${i * 70 + 500}ms` }}
                     >
                       Peak
-                    </motion.span>
+                    </span>
                   )}
                 </div>
 
@@ -315,9 +311,12 @@ function GenerationChart() {
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
   const maxGen = Math.max(...monthlyGen.map((d) => d.gen));
   const annualTotal = monthlyGen.reduce((sum, d) => sum + d.gen, 0);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(chartRef, { once: true, margin: '-60px' });
 
   return (
     <motion.div
+      ref={chartRef}
       className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8"
       initial={{ opacity: 0, y: 25 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -398,8 +397,8 @@ function GenerationChart() {
                     </motion.div>
                   )}
                   {/* Bar */}
-                  <motion.div
-                    className={`w-full absolute bottom-0 left-0 right-0 rounded-t-sm sm:rounded-t-md transition-colors duration-200 ${
+                  <div
+                    className={`w-full absolute bottom-0 left-0 right-0 rounded-t-sm sm:rounded-t-md transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] transition-colors duration-200 ${
                       isHovered
                         ? 'bg-amber-400 shadow-lg shadow-amber-400/20'
                         : intensity > 0.85
@@ -410,13 +409,9 @@ function GenerationChart() {
                               ? 'bg-amber-400/25'
                               : 'bg-amber-400/15'
                     }`}
-                    initial={{ height: 0 }}
-                    whileInView={{ height: `${heightPercent}%` }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.6,
-                      delay: i * 0.05,
-                      ease: [0.25, 0.46, 0.45, 0.94],
+                    style={{
+                      height: isInView ? `${heightPercent}%` : '0%',
+                      transitionDelay: `${i * 50}ms`,
                     }}
                   />
                 </div>
