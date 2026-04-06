@@ -41,8 +41,6 @@ interface MotionProps {
 function getAnimType(props: MotionProps): string | null {
   // Check inline styles first (initial={{ opacity: 0, y: 30 }})
   const init = typeof props.initial === 'object' ? props.initial : {};
-  const target = typeof props.whileInView === 'object' ? props.whileInView
-    : typeof props.animate === 'object' ? props.animate : {};
 
   const hasY = init.y != null && init.y !== 0;
   const hasX = init.x != null && init.x !== 0;
@@ -59,7 +57,7 @@ function getAnimType(props: MotionProps): string | null {
 
   // Check variants ({ hidden: { opacity: 0, y: 24 } })
   const hidden = props.variants?.hidden;
-  if (hidden) {
+  if (hidden && typeof hidden === 'object') {
     if (hidden.y != null && hidden.y !== 0) {
       if (hidden.scale != null && hidden.scale !== 1) return 'fade-scale-up';
       return 'fade-up';
@@ -150,9 +148,19 @@ function MotionElement(tag: string, props: MotionProps) {
   );
 
   // Build className
+  // IMPORTANT: During SSR (mounted=false), we do NOT apply motion-hidden.
+  // Content renders fully visible for SEO and no flash.
+  // After mount:
+  //   - Immediate animations (animate="visible"): CSS animation class plays (fill-mode:both handles start state)
+  //   - Scroll-triggered (whileInView): motion-hidden until scrolled into view
   let animClass = '';
-  if (animType) {
-    animClass = shouldAnimate ? `motion-${animType}` : 'motion-hidden';
+  if (animType && mounted) {
+    if (shouldAnimate) {
+      animClass = `motion-${animType}`;
+    } else if (useScrollTrigger && !inView) {
+      // Scroll-triggered elements not yet in view: hide them
+      animClass = 'motion-hidden';
+    }
   }
 
   // Build style
