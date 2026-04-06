@@ -41,3 +41,26 @@ Stage Summary:
 - Font preconnect added to src/app/layout.tsx
 - All pages verified: /, /services, /about, /blog, /contact all return 200 with content
 
+---
+Task ID: 1
+Agent: Main Agent
+Task: Fix site not loading + eliminate all flashing/jumpy elements
+
+Work Log:
+- Checked server status: running on port 3001, responding 200 on all routes
+- Did clean rebuild (rm -rf .next + next build) — compiled successfully, 14 pages
+- Identified root cause of ALL flashing: motion.tsx was applying CSS animation classes (e.g. motion-fade-up) with fill-mode:both to elements already visible in viewport. fill-mode:both immediately sets opacity:0 before animation starts, causing visible→invisible→visible flash
+- Previous fix only handled whileInView elements; missed initial/animate elements like GrantHero
+- Fixed motion.tsx with comprehensive flash prevention:
+  - Added wasInViewportOnMount ref to track if element was visible on first client mount
+  - Synchronous viewport check runs for ALL elements (not just whileInView) in mount useEffect
+  - If wasInViewportOnMount=true: NO animation class ever applied → stays visible, zero flash
+  - If below viewport: motion-hidden applied, then animation plays when scrolled into view
+  - Fixed hasObjectAnimate to reject empty objects {} (was treating {} as "animate")
+- Rebuilt and restarted — all pages serving correctly
+
+Stage Summary:
+- Server: running on port 3001, all routes returning 200
+- Flash fix: comprehensive solution in src/lib/motion.tsx prevents ALL animation flash
+- Key change: wasInViewportOnMount ref + unified viewport check on mount for all animation types
+- GrantHero component (€1,800 header): no longer flashes

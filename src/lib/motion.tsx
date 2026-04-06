@@ -83,26 +83,29 @@ function MotionElement(tag: string, props: MotionProps) {
   const ref = props.ref || localRef;
   const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
+  // Track if element was already visible on first mount — if so, never animate (prevents flash)
+  const wasInViewportOnMount = useRef(false);
 
   // Ensure animations start only after client mount (SSR-safe)
   // On mount, immediately check if element is already in viewport
   // to prevent the visible→hidden→visible flash
   useEffect(() => {
     setMounted(true);
-    // Synchronous viewport check on mount for scroll-triggered elements
-    if (props.whileInView && !props.animate) {
-      const el = ref.current as HTMLElement | null;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        const margin = props.viewport?.margin || '0px';
-        // Parse margin (e.g. "-60px" → 60)
-        const marginVal = Math.abs(parseInt(margin) || 0);
-        if (
-          rect.top < window.innerHeight + marginVal &&
-          rect.bottom > -marginVal &&
-          rect.left < window.innerWidth + marginVal &&
-          rect.right > -marginVal
-        ) {
+    // Synchronous viewport check on mount
+    const el = ref.current as HTMLElement | null;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const margin = props.viewport?.margin || '0px';
+      const marginVal = Math.abs(parseInt(margin) || 0);
+      if (
+        rect.top < window.innerHeight + marginVal &&
+        rect.bottom > -marginVal &&
+        rect.left < window.innerWidth + marginVal &&
+        rect.right > -marginVal
+      ) {
+        wasInViewportOnMount.current = true;
+        // Also set inView for whileInView elements
+        if (props.whileInView) {
           setInView(true);
         }
       }
@@ -160,38 +163,34 @@ function MotionElement(tag: string, props: MotionProps) {
   // Determine if animation should be active:
   // 1. animate="visible" (string variant name pattern from parent)
   // 2. whileInView + actually in view (scroll-triggered)
-  // 3. animate is an object (e.g. { opacity: 1, y: 0 }) — always animate after mount
-  // 4. animate is a function returning an object — animate after mount
-  const hasObjectAnimate = props.animate != null && typeof props.animate !== 'string';
-  const shouldAnimate = mounted && (
+  // 3. animate is a non-empty object (e.g. { opacity: 1, y: 0 }) — animate after mount
+  const hasObjectAnimate = props.animate != null && typeof props.animate !== 'string' && Object.keys(props.animate as object).length > 0;
+  const wantAnimate = mounted && (
     props.animate === 'visible' ||
     hasObjectAnimate ||
     (useScrollTrigger && inView)
   );
 
+  // CRITICAL FLASH PREVENTION:
+  // If element was already in viewport on first mount, NEVER apply animation.
+  // Animation CSS uses fill-mode:both which immediately sets opacity:0,
+  // causing a visible→invisible→visible flash for above-the-fold content.
+  // wasInViewportOnMount is set synchronously in the mount useEffect.
+  const shouldAnimate = wantAnimate && !wasInViewportOnMount.current;
+
   // Build className
-  // IMPORTANT: During SSR (mounted=false), we do NOT apply motion-hidden.
-  // Content renders fully visible for SEO and no flash.
+  // During SSR (mounted=false): no animation classes — content renders fully visible.
   // After mount:
-  //   - Immediate animations (animate="visible"): CSS animation class plays (fill-mode:both handles start state)
-  //   - Scroll-triggered (whileInView): only hide if below viewport (not above)
+  //   - If was in viewport on mount: no class → stays visible, zero flash
+  //   - If below viewport & triggered: apply animation class (fade-up etc)
+  //   - If below viewport & NOT yet triggered: hide with motion-hidden
   let animClass = '';
-  if (animType && mounted) {
+  if (animType && mounted && !wasInViewportOnMount.current) {
     if (shouldAnimate) {
       animClass = `motion-${animType}`;
-    } else if (useScrollTrigger && !inView) {
-      // Scroll-triggered elements not yet in view:
-      // Only hide if element is BELOW the viewport (user hasn't scrolled to it yet)
-      // If element is ABOVE viewport, it was already seen — just show it immediately
-      const el = ref.current as HTMLElement | null;
-      let hide = false;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        hide = rect.top >= window.innerHeight;
-      }
-      if (hide) {
-        animClass = 'motion-hidden';
-      }
+    } else if (!inView) {
+      // Below viewport and not yet triggered — hide until scroll
+      animClass = 'motion-hidden';
     }
   }
 
