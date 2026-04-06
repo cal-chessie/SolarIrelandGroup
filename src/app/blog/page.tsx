@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -111,10 +111,23 @@ export default function BlogPage() {
     currentPage * ARTICLES_PER_PAGE,
   );
 
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to grid when page changes
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    setTimeout(() => {
+      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
   // Reset page on category change
   const handleCategoryChange = (catId: string) => {
     setActiveCategory(catId);
     setCurrentPage(1);
+    setTimeout(() => {
+      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -302,14 +315,14 @@ export default function BlogPage() {
         {/* ═══════════════════════════════════════
             ARTICLE GRID
             ═══════════════════════════════════════ */}
-        <section className="pb-16 sm:pb-24">
+        <section ref={gridRef} className="pb-16 sm:pb-24 scroll-mt-32">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {paginatedArticles.length > 0 ? (
               <motion.div
+                key={currentPage}
                 variants={stagger}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-40px' }}
+                animate="visible"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {paginatedArticles.map((article, index) => (
@@ -392,7 +405,7 @@ export default function BlogPage() {
                 className="flex items-center justify-center gap-3 mt-12"
               >
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                   className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
@@ -404,7 +417,7 @@ export default function BlogPage() {
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
                       key={page}
-                      onClick={() => setCurrentPage(page)}
+                      onClick={() => handlePageChange(page)}
                       className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all ${
                         currentPage === page
                           ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/15'
@@ -417,7 +430,7 @@ export default function BlogPage() {
                 </div>
 
                 <button
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                   className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-gray-400 hover:bg-white/[0.08] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
