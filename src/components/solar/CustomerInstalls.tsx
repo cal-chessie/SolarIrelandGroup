@@ -372,7 +372,7 @@ export default function CustomerInstalls() {
                 <span className="text-gradient">paying for itself.</span>
               </h2>
               <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-md leading-relaxed">
-                No mockups, no stock photos — these are actual Solar Ireland installations on homes across the country. See the panels, the savings, and the difference our customers are seeing on their energy bills every single month.
+                Real installations on real Irish homes. Every panel you see here is cutting electricity bills and earning export payments for families across the country.
               </p>
             </div>
 
