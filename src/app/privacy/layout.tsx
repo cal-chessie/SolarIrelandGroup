@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy',
+  title: 'Privacy Policy | Solar Ireland — GDPR Compliant Data Protection',
   description:
-    'How Solar Ireland collects, uses, and protects your personal data in compliance with GDPR and Irish data protection law. Learn about your privacy rights.',
+    'How Solar Ireland collects, uses, and protects your personal data in compliance with GDPR, the Data Protection Act 2018, and Irish data protection law. Learn about your 9 enforceable privacy rights.',
   openGraph: {
     title: 'Privacy Policy | Solar Ireland',
     description:
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Privacy Policy | Solar Ireland',
     description:
-      'How Solar Ireland collects, uses, and protects your personal data.',
+      'GDPR-compliant privacy policy. Learn about your data rights.',
   },
   alternates: {
     canonical: 'https://solarireland.com/privacy',
