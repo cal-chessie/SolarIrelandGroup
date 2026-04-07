@@ -102,9 +102,11 @@
     @apply bg-background text-foreground;
   }
 
-  /* Smooth scrolling for anchor links */
+  /* Smooth scrolling disabled globally — fights with IntersectionObserver
+     scroll-triggered animations and causes jank. Handled via JS for anchor
+     clicks only (see Navbar component). */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
   /* Amber-tinted text selection */
@@ -851,21 +853,27 @@
 
 /* Animated classes — triggered via IntersectionObserver or immediate */
 .motion-fade-up {
+  will-change: transform, opacity;
   animation: motion-fade-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-in {
+  will-change: transform, opacity;
   animation: motion-fade-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-scale-in {
+  will-change: transform, opacity;
   animation: motion-scale-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-scale-up {
+  will-change: transform, opacity;
   animation: motion-fade-scale-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-slide-in {
+  will-change: transform, opacity;
   animation: motion-slide-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-rotate {
+  will-change: transform, opacity;
   animation: motion-fade-rotate var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 

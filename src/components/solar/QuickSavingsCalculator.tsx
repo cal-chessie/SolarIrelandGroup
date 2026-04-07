@@ -219,7 +219,8 @@ function BillSlider({
   onChange: (v: number) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
+  const draggingRef = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
   const pct = ((value - 50) / (500 - 50)) * 100;
 
   const calcValue = useCallback((clientX: number) => {
@@ -232,19 +233,36 @@ function BillSlider({
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    dragging.current = true;
+    const el = e.currentTarget as HTMLElement;
+    el.setPointerCapture(e.pointerId);
+    draggingRef.current = true;
+    setIsDragging(true);
     onChange(calcValue(e.clientX));
   }, [calcValue, onChange]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (!dragging.current) return;
+    if (!draggingRef.current) return;
+    e.preventDefault();
     onChange(calcValue(e.clientX));
   }, [calcValue, onChange]);
 
-  const handlePointerUp = useCallback(() => {
-    dragging.current = false;
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    if (draggingRef.current) {
+      draggingRef.current = false;
+      setIsDragging(false);
+      try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
+    }
   }, []);
+
+  const handlePointerCancel = useCallback(() => {
+    draggingRef.current = false;
+    setIsDragging(false);
+  }, []);
+
+  // No CSS transition during drag for instant 1:1 tracking.
+  // Transition only applies on track-click (snap) for a polished feel.
+  const dragTransition = isDragging ? 'none' : 'left 150ms cubic-bezier(0.16, 1, 0.3, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1)';
+  const fillTransition = isDragging ? 'none' : 'width 150ms cubic-bezier(0.16, 1, 0.3, 1)';
 
   return (
     <div className="w-full">
@@ -255,25 +273,25 @@ function BillSlider({
             €
             <AnimatedValue
               value={value}
-              duration={400}
+              duration={isDragging ? 0 : 400}
             />
           </span>
           <span className="text-xl text-gray-400 font-medium">/month</span>
         </div>
         <p className="text-sm text-gray-500 mt-1">
-          Drag to set your electricity bill
+          {isDragging ? 'Release to set value' : 'Drag to set your electricity bill'}
         </p>
       </div>
 
       {/* Slider — 48px touch target on mobile, pointer events */}
       <div
         ref={trackRef}
-        className="relative h-12 sm:h-3 rounded-full bg-white/[0.06] cursor-pointer touch-none select-none"
+        className={`relative h-12 sm:h-3 rounded-full bg-white/[0.06] select-none ${isDragging ? 'cursor-grabbing' : 'cursor-pointer touch-none'}`}
         style={{ touchAction: 'none' }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         role="slider"
         aria-label="Monthly electricity bill amount"
         aria-valuemin={50}
@@ -285,7 +303,7 @@ function BillSlider({
         <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-3">
           <div
             className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400"
-            style={{ width: `${pct}%`, transition: 'width 75ms ease-out' }}
+            style={{ width: `${pct}%`, transition: fillTransition }}
           />
           {[0, 25, 50, 75, 100].map((mark) => (
             <div
@@ -295,10 +313,14 @@ function BillSlider({
             />
           ))}
         </div>
-        {/* Thumb */}
+        {/* Thumb — scale up on drag for tactile feedback */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 sm:w-6 sm:h-6 rounded-full bg-amber-400 shadow-lg shadow-amber-400/30 border-2 border-black"
-          style={{ left: `${pct}%`, transition: 'left 75ms ease-out' }}
+          className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full bg-amber-400 border-2 border-black shadow-lg ${
+            isDragging
+              ? 'w-8 h-8 sm:w-7 sm:h-7 scale-110 shadow-amber-400/50'
+              : 'w-7 h-7 sm:w-6 sm:h-6 shadow-amber-400/30'
+          }`}
+          style={{ left: `${pct}%`, transition: dragTransition }}
         />
       </div>
 

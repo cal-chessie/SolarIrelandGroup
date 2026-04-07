@@ -430,8 +430,8 @@ export default function CookieConsent() {
           {/* Gradient fade at top */}
           <div className="pointer-events-none h-12 bg-gradient-to-t from-black/40 to-transparent" />
 
-          {/* Backdrop */}
-          <div className="absolute inset-0 -top-12 bg-black/40" />
+          {/* Backdrop — pointer-events-none so it doesn't block page interaction */}
+          <div className="pointer-events-none absolute inset-0 -top-12 bg-black/40" />
 
           {/* Banner content */}
           <div className="relative mx-auto max-w-2xl px-4 pb-6">

@@ -27,3 +27,27 @@ Stage Summary:
 - Build clean, all 7 pages rendering correctly
 - Mobile and desktop verified via browser automation
 - Zero remaining issues in final scan
+---
+Task ID: 1
+Agent: Main
+Task: Fix scroll jumpiness + calculator slider + cookie backdrop
+
+Work Log:
+- Analyzed full codebase for scroll animation issues and slider bugs
+- Found `scroll-behavior: smooth` on `html` was fighting with IntersectionObserver animations causing jank
+- Changed to `scroll-behavior: auto` — JS-based smooth scroll already handles anchor links
+- Added `will-change: transform, opacity` to all 6 motion animation CSS classes for GPU layer promotion
+- Rewrote BillSlider: replaced `useRef(false)` drag tracking with dual `useRef + useState` pattern to fix stale closure bug
+- Removed CSS transitions during active drag (`transition: none`) for instant 1:1 thumb tracking
+- Re-added transitions only on track-click (snap) with 150ms ease-out
+- Added thumb scale-up on drag for tactile feedback
+- Added "Release to set value" helper text during drag
+- Fixed AnimatedValue to skip animation during drag (duration=0)
+- Fixed cookie consent backdrop blocking interactions with `pointer-events-none`
+
+Stage Summary:
+- Scroll: No more jank from CSS smooth scroll conflicting with IO-triggered animations
+- Slider: Instant 1:1 pointer tracking during drag, polished snap on click, mobile-friendly
+- Cookie banner backdrop no longer blocks page interactions
+- All files: globals.css, QuickSavingsCalculator.tsx, CookieConsent.tsx
+- Build clean, server running on port 3000
