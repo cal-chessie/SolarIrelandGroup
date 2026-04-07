@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect, memo } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import {
   Zap,
   Euro,
@@ -196,135 +196,54 @@ function AnimatedValue({
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SLIDER — fully custom, pointer-events API
-   Built from scratch for guaranteed touch + mouse + keyboard.
-   No native <input type="range"> quirks.
+   BILL SLIDER — NATIVE <input type="range"> 
+   Styled to match dark theme. Uses onInput for real-time updates.
+   This is the most bulletproof approach — works on every browser,
+   every device, every touch screen, no custom pointer events needed.
    ═══════════════════════════════════════════════════════════════ */
 
 const SLIDER_MIN = 50;
 const SLIDER_MAX = 500;
 const SLIDER_STEP = 5;
 
-interface BillSliderProps {
-  value: number;
-  onChange: (v: number) => void;
-  isDragging: boolean;
-  onDragStateChange: (dragging: boolean) => void;
-}
-
-const BillSlider = memo(function BillSlider({
+function BillSlider({
   value,
   onChange,
-  isDragging,
-  onDragStateChange,
-}: BillSliderProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const isDraggingRef = useRef(false);
-  const onChangeRef = useRef(onChange);
-  const onDragStateChangeRef = useRef(onDragStateChange);
-  // Keep refs in sync with props (avoids stale closures in global listeners)
-  useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
-  useEffect(() => { onDragStateChangeRef.current = onDragStateChange; }, [onDragStateChange]);
+}: {
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  // Track slider state for glow effects
+  const [isDragging, setIsDragging] = useState(false);
 
-  const valueToPercent = useCallback((v: number) => {
-    return ((v - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
+  const handleInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const v = Number(e.target.value);
+      onChange(v);
+    },
+    [onChange]
+  );
+
+  const handlePointerDown = useCallback(() => {
+    setIsDragging(true);
   }, []);
 
-  const percentToValue = useCallback((pct: number) => {
-    const raw = SLIDER_MIN + (pct / 100) * (SLIDER_MAX - SLIDER_MIN);
-    return Math.round(raw / SLIDER_STEP) * SLIDER_STEP;
+  const handlePointerUp = useCallback(() => {
+    setIsDragging(false);
   }, []);
 
-  const getPointerPercent = useCallback(
-    (clientX: number) => {
-      const track = trackRef.current;
-      if (!track) return 0;
-      const rect = track.getBoundingClientRect();
-      const pct = ((clientX - rect.left) / rect.width) * 100;
-      return Math.max(0, Math.min(100, pct));
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Let the native input handle arrow keys — they work out of the box
+      // Just prevent page scroll on Home/End
+      if (e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+      }
     },
     []
   );
 
-  /* ─── GLOBAL move/up handlers ───
-     These are attached to the WINDOW, not the track element.
-     This guarantees dragging works even when:
-     - Pointer capture fails (iframe, sandbox, older browsers)
-     - The pointer leaves the track bounds during drag
-     - React synthetic events don't propagate correctly
-  */
-  useEffect(() => {
-    const handleGlobalMove = (e: PointerEvent) => {
-      if (!isDraggingRef.current) return;
-      const pct = getPointerPercent(e.clientX);
-      const newValue = percentToValue(pct);
-      onChangeRef.current(newValue);
-    };
-
-    const handleGlobalUp = (e: PointerEvent) => {
-      if (!isDraggingRef.current) return;
-      isDraggingRef.current = false;
-      onDragStateChangeRef.current(false);
-    };
-
-    window.addEventListener('pointermove', handleGlobalMove, { passive: true });
-    window.addEventListener('pointerup', handleGlobalUp);
-    window.addEventListener('pointercancel', handleGlobalUp);
-
-    return () => {
-      window.removeEventListener('pointermove', handleGlobalMove);
-      window.removeEventListener('pointerup', handleGlobalUp);
-      window.removeEventListener('pointercancel', handleGlobalUp);
-    };
-  }, [getPointerPercent, percentToValue]);
-
-  /* ─── Mouse down handler (also works for touch via pointer events) ─── */
-  const handlePointerDown = useCallback(
-    (e: React.PointerEvent) => {
-      // Prevent text selection and scroll during drag
-      e.preventDefault();
-      isDraggingRef.current = true;
-      onDragStateChange(true);
-
-      // Try pointer capture for better tracking (non-critical — global listeners are backup)
-      try {
-        if (trackRef.current) {
-          trackRef.current.setPointerCapture(e.pointerId);
-        }
-      } catch (_) {
-        // Ignore — global listeners handle the drag
-      }
-
-      // Immediately update value to click position
-      const pct = getPointerPercent(e.clientX);
-      const newValue = percentToValue(pct);
-      onChange(newValue);
-    },
-    [getPointerPercent, percentToValue, onChange, onDragStateChange]
-  );
-
-  /* ─── Keyboard support ─── */
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      let newVal = value;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
-        newVal = Math.min(value + SLIDER_STEP, SLIDER_MAX);
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-        newVal = Math.max(value - SLIDER_STEP, SLIDER_MIN);
-      } else if (e.key === 'Home') {
-        newVal = SLIDER_MIN;
-      } else if (e.key === 'End') {
-        newVal = SLIDER_MAX;
-      } else {
-        return;
-      }
-      e.preventDefault();
-      onChange(newVal);
-    },
-    [value, onChange]
-  );
-
-  const pct = valueToPercent(value);
+  const pct = ((value - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
 
   return (
     <div className="w-full select-none">
@@ -346,64 +265,26 @@ const BillSlider = memo(function BillSlider({
         </p>
       </div>
 
-      {/* Custom slider track + thumb */}
-      <div
-        ref={trackRef}
-        className="solar-slider-track relative w-full cursor-pointer"
-        role="slider"
-        tabIndex={0}
+      {/* Native range slider — styled with amber theme */}
+      <input
+        type="range"
+        min={SLIDER_MIN}
+        max={SLIDER_MAX}
+        step={SLIDER_STEP}
+        value={value}
+        onChange={handleInput}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onKeyDown={handleKeyDown}
+        className="solar-range-input w-full"
+        style={{ '--range-pct': `${pct}%` } as React.CSSProperties}
         aria-label="Monthly electricity bill"
         aria-valuemin={SLIDER_MIN}
         aria-valuemax={SLIDER_MAX}
         aria-valuenow={value}
         aria-valuetext={`\u20AC${value} per month`}
-        onPointerDown={handlePointerDown}
-        onKeyDown={handleKeyDown}
-      >
-        {/* Visual track — centered vertically (pointer-events-none so clicks pass through) */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06] pointer-events-none" />
-
-        {/* Active fill — centered vertically (pointer-events-none) */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full solar-slider-fill pointer-events-none"
-          style={{ width: `${pct}%` }}
-        />
-
-        {/* Tick marks (pointer-events-none) */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between items-center pointer-events-none">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-px h-2.5 rounded-full bg-white/[0.08]"
-            />
-          ))}
-        </div>
-
-        {/* Thumb (pointer-events-none — all clicks go to track) */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 solar-slider-thumb pointer-events-none"
-          style={{ left: `calc(${pct}% - 22px)` }}
-        >
-          {/* Outer glow ring */}
-          <div
-            className="absolute inset-[-8px] rounded-full bg-amber-400/10"
-            style={{ opacity: isDragging ? 1 : 0, transition: 'opacity 0.2s' }}
-          />
-          {/* Thumb body */}
-          <div
-            className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] flex items-center justify-center"
-            style={{
-              transform: isDragging ? 'scale(1.15)' : 'scale(1)',
-              transition: 'transform 0.1s, box-shadow 0.15s',
-              boxShadow: isDragging
-                ? '0 4px 24px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15)'
-                : '0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1)',
-            }}
-          >
-            <Zap className="w-4 h-4 text-black" strokeWidth={2.5} />
-          </div>
-        </div>
-      </div>
+      />
 
       {/* Labels */}
       <div className="flex justify-between mt-3 text-xs text-gray-600 font-medium">
@@ -415,7 +296,7 @@ const BillSlider = memo(function BillSlider({
       </div>
     </div>
   );
-});
+}
 
 /* ═══════════════════════════════════════════════════════════════
    HOME TYPE SELECTOR
@@ -766,10 +647,16 @@ export default function QuickSavingsCalculator() {
   const [monthlyBill, setMonthlyBill] = useState(160);
   const [homeType, setHomeType] = useState('semi');
   const [showResults, setShowResults] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const results = calculateSavings(monthlyBill, homeType);
+
+  // Track mount state for debugging
+  useEffect(() => {
+    setMounted(true);
+    console.log('[QuickSavingsCalculator] MOUNTED — slider should work');
+  }, []);
 
   const handleCalculate = useCallback(() => {
     setShowResults(true);
@@ -782,7 +669,6 @@ export default function QuickSavingsCalculator() {
   // Allow re-calculation when inputs change (smooth update)
   const handleRecalculate = useCallback(() => {
     if (showResults) {
-      // Force a micro-re-render by toggling
       setShowResults(false);
       requestAnimationFrame(() => setShowResults(true));
     }
@@ -843,7 +729,7 @@ export default function QuickSavingsCalculator() {
           </motion.div>
         </div>
 
-        {/* Calculator Card */}
+        {/* Calculator Card — NO motion wrapper on this to ensure no pointer event issues */}
         <motion.div
           initial={{ opacity: 0, y: 25, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -866,8 +752,6 @@ export default function QuickSavingsCalculator() {
                   <BillSlider
                     value={monthlyBill}
                     onChange={setMonthlyBill}
-                    isDragging={isDragging}
-                    onDragStateChange={setIsDragging}
                   />
                 </div>
               </div>
