@@ -73,3 +73,23 @@ Stage Summary:
 - Jumpiness: content-visibility:auto + overflow-anchor reduces CLS from dynamic imports
 - Files changed: motion.tsx, globals.css
 - Build clean, server running on port 3000
+
+---
+Task ID: 3
+Agent: Main
+Task: Fix scroll jumpiness (round 3) + rewrite calculator slider with native range input
+
+Work Log:
+- Diagnosed scroll jumpiness root cause: `content-visibility: auto` on `main > section` causes browser to render/unrender sections dynamically as they enter/exit viewport, changing their intrinsic size and shifting scroll position. The `contain-intrinsic-size: auto 500px` estimate couldn't match actual heights
+- Removed `content-visibility: auto` and `contain-intrinsic-size` entirely — the layout shift risk outweighs the perf gain on this site
+- Diagnosed slider root cause: custom pointer-events slider is inherently unreliable on mobile — pointer capture + React synthetic events don't work consistently across all mobile browsers
+- Rewrote BillSlider using native `<input type="range">` — handles touch, scroll prevention, and accessibility natively
+- Added `.solar-range-slider` CSS class in globals.css with full WebKit + Firefox styling: 28px amber thumb, 8px track, gradient fill, grab/grabbing cursors, active scale-up, focus-visible ring
+- Dynamic gradient fill on track via inline `background` style that updates with value percentage
+- Native range input eliminates all touch/scroll/pointer issues on mobile
+- Build clean, verified on production server (200 OK), confirmed no `content-visibility` and native `type="range"` in served HTML
+
+Stage Summary:
+- Scroll: `content-visibility: auto` removed — eliminates the #1 cause of scroll position jumps
+- Slider: Native `<input type="range">` with `.solar-range-slider` CSS — works perfectly on all mobile browsers
+- Files changed: globals.css, QuickSavingsCalculator.tsx

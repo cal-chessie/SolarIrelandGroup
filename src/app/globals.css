@@ -115,14 +115,9 @@
     overflow-anchor: auto;
   }
 
-  /* CLS prevention: below-fold sections get content-visibility:auto
-     so the browser can skip rendering them until near the viewport.
-     contain-intrinsic-size gives the browser a height estimate so
-     it doesn't collapse the space when content is off-screen. */
-  main > section {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
-  }
+  /* NOTE: content-visibility:auto removed — it causes scroll position
+     jumps when sections render/unrender as they enter/exit viewport.
+     The layout shift is worse than the minor perf gain on this site. */
 
   /* Amber-tinted text selection */
   ::selection {
@@ -929,6 +924,96 @@
 /* ─── Fade switch (for AnimatePresence mode="wait") ─── */
 .motion-fade-switch-enter {
   animation: motion-fade-in 0.3s ease both;
+}
+
+/* ═══════════════════════════════════════════
+   CALCULATOR SLIDER — native <input type="range">
+   Uses native browser handling for touch, accessibility,
+   and scroll prevention. Custom styled to match dark theme.
+   ═══════════════════════════════════════════ */
+
+.solar-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* Track fill — WebKit */
+.solar-range-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+}
+
+/* Thumb — WebKit */
+.solar-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #facc15;
+  border: 3px solid #0a0a0a;
+  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1);
+  cursor: grab;
+  margin-top: -10px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.solar-range-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  box-shadow: 0 2px 16px rgba(250, 204, 21, 0.5), 0 0 0 2px rgba(250, 204, 21, 0.2);
+  transform: scale(1.1);
+}
+
+.solar-range-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 2px 12px rgba(250, 204, 21, 0.4), 0 0 0 2px rgba(250, 204, 21, 0.15);
+}
+
+/* Track fill — Firefox */
+.solar-range-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+}
+
+.solar-range-slider::-moz-range-progress {
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #f59e0b, #facc15);
+}
+
+/* Thumb — Firefox */
+.solar-range-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #facc15;
+  border: 3px solid #0a0a0a;
+  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1);
+  cursor: grab;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.solar-range-slider::-moz-range-thumb:active {
+  cursor: grabbing;
+  box-shadow: 0 2px 16px rgba(250, 204, 21, 0.5), 0 0 0 2px rgba(250, 204, 21, 0.2);
+  transform: scale(1.1);
+}
+
+/* Focus ring — keyboard users */
+.solar-range-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.5), 0 2px 8px rgba(250, 204, 21, 0.3);
+}
+
+.solar-range-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.5), 0 2px 8px rgba(250, 204, 21, 0.3);
 }
 
 /* ═══════════════════════════════════════════
