@@ -218,8 +218,33 @@ function BillSlider({
   value: number;
   onChange: (v: number) => void;
 }) {
-  // Map bill range €50-€500 to percentage 0-100
+  const trackRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
   const pct = ((value - 50) / (500 - 50)) * 100;
+
+  const calcValue = useCallback((clientX: number) => {
+    const track = trackRef.current;
+    if (!track) return value;
+    const rect = track.getBoundingClientRect();
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    return Math.round((50 + (x / rect.width) * 450) / 5) * 5;
+  }, [value]);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    dragging.current = true;
+    onChange(calcValue(e.clientX));
+  }, [calcValue, onChange]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    onChange(calcValue(e.clientX));
+  }, [calcValue, onChange]);
+
+  const handlePointerUp = useCallback(() => {
+    dragging.current = false;
+  }, []);
 
   return (
     <div className="w-full">
@@ -240,45 +265,40 @@ function BillSlider({
         </p>
       </div>
 
-      {/* Custom slider track */}
-      <div className="relative h-3 rounded-full bg-white/[0.06] cursor-pointer group">
-        {/* Filled portion */}
-        <div
-          className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-100 ease-out"
-          style={{ width: `${pct}%` }}
-        />
-
-        {/* Step markers */}
-        {[0, 25, 50, 75, 100].map((mark) => (
+      {/* Slider — 48px touch target on mobile, pointer events */}
+      <div
+        ref={trackRef}
+        className="relative h-12 sm:h-3 rounded-full bg-white/[0.06] cursor-pointer touch-none select-none"
+        style={{ touchAction: 'none' }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        role="slider"
+        aria-label="Monthly electricity bill amount"
+        aria-valuemin={50}
+        aria-valuemax={500}
+        aria-valuenow={value}
+        aria-valuetext={`€${value} per month`}
+      >
+        {/* Visual track centered in touch area */}
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-3">
           <div
-            key={mark}
-            className="absolute top-1/2 -translate-y-1/2 w-px h-3 bg-white/[0.06]"
-            style={{ left: `${mark}%` }}
+            className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400"
+            style={{ width: `${pct}%`, transition: 'width 75ms ease-out' }}
           />
-        ))}
-
-        {/* Native range input (invisible but functional) */}
-        <input
-          type="range"
-          min={50}
-          max={500}
-          step={5}
-          value={value}
-          onChange={(e) => onChange(parseInt(e.target.value, 10))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-          aria-label="Monthly electricity bill amount"
-        />
-
+          {[0, 25, 50, 75, 100].map((mark) => (
+            <div
+              key={mark}
+              className="absolute top-1/2 -translate-y-1/2 w-px h-3 bg-white/[0.06]"
+              style={{ left: `${mark}%` }}
+            />
+          ))}
+        </div>
         {/* Thumb */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-amber-400 shadow-lg shadow-amber-400/30 border-2 border-black transition-all duration-100 ease-out group-hover:scale-110 group-active:scale-95"
-          style={{ left: `${pct}%` }}
-        />
-
-        {/* Glow on thumb */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-amber-400/20 pointer-events-none transition-all duration-100"
-          style={{ left: `${pct}%` }}
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 sm:w-6 sm:h-6 rounded-full bg-amber-400 shadow-lg shadow-amber-400/30 border-2 border-black"
+          style={{ left: `${pct}%`, transition: 'left 75ms ease-out' }}
         />
       </div>
 

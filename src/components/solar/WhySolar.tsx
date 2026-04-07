@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from '@/lib/motion';
+import { motion } from '@/lib/motion';
 import {
   PiggyBank,
   TrendingUp,
@@ -193,18 +193,21 @@ function StatCard({
    ═══════════════════════════════════════════════════════ */
 function PriceChart() {
   const maxPrice = Math.max(...priceData.map((d) => d.price));
-  const chartRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(chartRef, { once: true, margin: '-60px' });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = document.getElementById('price-chart-bars');
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      ref={chartRef}
-      className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8"
-      initial={{ opacity: 0, y: 25 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6 }}
-    >
+    <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
@@ -225,7 +228,7 @@ function PriceChart() {
       </div>
 
       {/* Horizontal bars — newest year at top */}
-      <div className="space-y-2.5 sm:space-y-3">
+      <div id="price-chart-bars" className="space-y-2.5 sm:space-y-3">
         {[...priceData].reverse().map((d, i) => {
           const widthPercent = (d.price / maxPrice) * 100;
           const isCrisis = d.year === 2022;
@@ -253,12 +256,12 @@ function PriceChart() {
                             : 'bg-gradient-to-r from-amber-500/50 to-amber-500/25'
                     }`}
                     style={{
-                      width: isInView ? `${widthPercent}%` : '0%',
+                      width: visible ? `${widthPercent}%` : '0%',
                       transitionDelay: `${i * 70}ms`,
                     }}
                   />
                   {/* Crisis badge */}
-                  {isCrisis && isInView && (
+                  {isCrisis && visible && (
                     <span
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-bold text-red-400 uppercase tracking-wider hidden sm:inline motion-fade-in"
                       style={{ animationDelay: `${i * 70 + 500}ms` }}
@@ -300,7 +303,7 @@ function PriceChart() {
           system becomes.
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -309,20 +312,23 @@ function PriceChart() {
    ═══════════════════════════════════════════════════════ */
 function GenerationChart() {
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
+  const [visible, setVisible] = useState(false);
   const maxGen = Math.max(...monthlyGen.map((d) => d.gen));
   const annualTotal = monthlyGen.reduce((sum, d) => sum + d.gen, 0);
-  const chartRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(chartRef, { once: true, margin: '-60px' });
+
+  useEffect(() => {
+    const el = document.getElementById('gen-chart-bars');
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      ref={chartRef}
-      className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8"
-      initial={{ opacity: 0, y: 25 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6 }}
-    >
+    <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-col sm:flex-row gap-3">
         <div>
@@ -366,7 +372,7 @@ function GenerationChart() {
           ))}
         </div>
 
-        <div className="flex justify-between gap-[3px] sm:gap-2 h-[160px] sm:h-[200px] relative">
+        <div id="gen-chart-bars" className="flex justify-between gap-[3px] sm:gap-2 h-[160px] sm:h-[200px] relative">
           {monthlyGen.map((d, i) => {
             const heightPercent = (d.gen / maxGen) * 100;
             const intensity = d.gen / maxGen;
@@ -410,7 +416,7 @@ function GenerationChart() {
                               : 'bg-amber-400/15'
                     }`}
                     style={{
-                      height: isInView ? `${heightPercent}%` : '0%',
+                      height: visible ? `${heightPercent}%` : '0%',
                       transitionDelay: `${i * 50}ms`,
                     }}
                   />
@@ -443,7 +449,7 @@ function GenerationChart() {
           panels work on light, not heat, so they perform well in Irish weather.
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
