@@ -109,6 +109,21 @@
     scroll-behavior: auto;
   }
 
+  /* CLS prevention: anchor scroll position when dynamic components
+     load and change the page height above the viewport. */
+  main {
+    overflow-anchor: auto;
+  }
+
+  /* CLS prevention: below-fold sections get content-visibility:auto
+     so the browser can skip rendering them until near the viewport.
+     contain-intrinsic-size gives the browser a height estimate so
+     it doesn't collapse the space when content is off-screen. */
+  main > section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
   /* Amber-tinted text selection */
   ::selection {
     background-color: rgba(250, 204, 21, 0.25);
@@ -832,48 +847,41 @@
   to   { opacity: 1; transform: rotate(0deg); }
 }
 
-/* Hidden initial state — only applied after mount for scroll-triggered elements */
-/* Fallback: if JS never hydrates, content becomes visible after 8s */
+/* Hidden initial state — applied IMMEDIATELY (even during SSR)
+   for scroll-triggered elements to prevent visible→hidden flash.
+   useLayoutEffect removes this class before first paint for
+   elements already in the viewport. */
 .motion-hidden {
   opacity: 0;
-  animation: motion-reveal-fallback 0.01s 2s forwards;
 }
 
-@keyframes motion-reveal-fallback {
-  to { opacity: 1; }
-}
-
-/* If no scripting at all, show immediately */
+/* No-JS fallback: show content if scripting is disabled */
 @media (scripting: none) {
   .motion-hidden {
     opacity: 1;
-    animation: none;
   }
 }
 
-/* Animated classes — triggered via IntersectionObserver or immediate */
+/* Animated classes — triggered via IntersectionObserver or immediate
+   NO will-change here — too many elements with will-change eats GPU memory
+   on mobile. The animations only use transform+opacity which are already
+   compositor-friendly in modern browsers. */
 .motion-fade-up {
-  will-change: transform, opacity;
   animation: motion-fade-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-in {
-  will-change: transform, opacity;
   animation: motion-fade-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-scale-in {
-  will-change: transform, opacity;
   animation: motion-scale-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-scale-up {
-  will-change: transform, opacity;
   animation: motion-fade-scale-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-slide-in {
-  will-change: transform, opacity;
   animation: motion-slide-in var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .motion-fade-rotate {
-  will-change: transform, opacity;
   animation: motion-fade-rotate var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 

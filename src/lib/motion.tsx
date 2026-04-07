@@ -9,10 +9,18 @@
    • initial, animate, whileInView, viewport, transition, variants
    • whileHover, whileTap (CSS :hover/:active)
    • AnimatePresence (simplified — no exit animations)
+
+   FLASH PREVENTION STRATEGY:
+   Scroll-triggered elements start with `motion-hidden` class immediately
+   (even during SSR) so they render as opacity:0 from the start.
+   useLayoutEffect checks viewport BEFORE the first browser paint:
+   - In-viewport elements: class removed → visible, zero flash
+   - Below-viewport elements: keep hidden → IO triggers animation later
+   No-JS fallback handled by @media (scripting: none) in CSS.
    ═══════════════════════════════════════════════════════════════ */
 
 import React, {
-  useRef, useEffect, useState, Children, type ReactNode, type CSSProperties,
+  useRef, useLayoutEffect, useEffect, useState, Children, type ReactNode, type CSSProperties,
 } from 'react';
 
 /* ─── Variant Propagation Context ─────────────────────── */
@@ -83,6 +91,22 @@ function getAnimType(props: MotionProps): string | null {
   return null;
 }
 
+/* ─── Viewport Check (shared logic) ────────────── */
+function isInViewport(
+  el: HTMLElement,
+  margin: string,
+): boolean {
+  const rect = el.getBoundingClientRect();
+  const marginVal = Math.abs(parseInt(margin) || 0);
+  // Negative margin shrinks the effective viewport (IntersectionObserver behavior)
+  return (
+    rect.top < window.innerHeight - marginVal &&
+    rect.bottom > marginVal &&
+    rect.left < window.innerWidth - marginVal &&
+    rect.right > marginVal
+  );
+}
+
 /* ─── Motion Element ───────────────────────────── */
 function MotionElement(tag: string, props: MotionProps) {
   const localRef = useRef<HTMLElement>(null);
@@ -90,29 +114,27 @@ function MotionElement(tag: string, props: MotionProps) {
   const parentCtx = React.useContext(MotionContext);
   const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
-  // Track if element was already visible on first mount — if so, never animate (prevents flash)
+  // Track if element was already visible on first mount — if so, never animate
   const wasInViewportOnMount = useRef(false);
 
-  // Ensure animations start only after client mount (SSR-safe)
-  // On mount, immediately check if element is already in viewport
-  // to prevent the visible→hidden→visible flash
-  useEffect(() => {
+  const useScrollTrigger = !!props.whileInView && !props.animate;
+
+  /*
+   * useLayoutEffect fires synchronously after DOM mutations but BEFORE
+   * the browser paints. This means:
+   * - SSR HTML has motion-hidden class → elements invisible
+   * - useLayoutEffect checks viewport → if visible, removes hidden → first paint shows them
+   * - If below fold → stays hidden → IO handles animation later
+   *
+   * This eliminates the visible→hidden→animated flash.
+   */
+  useLayoutEffect(() => {
     setMounted(true);
-    // Synchronous viewport check on mount
     const el = ref.current as HTMLElement | null;
     if (el) {
-      const rect = el.getBoundingClientRect();
       const margin = props.viewport?.margin || '0px';
-      const marginVal = Math.abs(parseInt(margin) || 0);
-      // Match IntersectionObserver behavior: negative margin shrinks viewport
-      if (
-        rect.top < window.innerHeight - marginVal &&
-        rect.bottom > marginVal &&
-        rect.left < window.innerWidth - marginVal &&
-        rect.right > marginVal
-      ) {
+      if (isInViewport(el, margin)) {
         wasInViewportOnMount.current = true;
-        // Also set inView for whileInView elements
         if (props.whileInView) {
           setInView(true);
         }
@@ -120,15 +142,11 @@ function MotionElement(tag: string, props: MotionProps) {
     }
   }, []);
 
-  const useScrollTrigger = !!props.whileInView && !props.animate;
-
+  /* IntersectionObserver for scroll-triggered animations */
   useEffect(() => {
     if (!useScrollTrigger) return;
 
-    // Use a callback ref pattern to handle cases where ref isn't set yet
-    // (common with dynamically imported / lazy-loaded components)
     let el = ref.current as HTMLElement | null;
-
     const once = props.viewport?.once !== false;
 
     const observer = new IntersectionObserver(
@@ -174,11 +192,7 @@ function MotionElement(tag: string, props: MotionProps) {
   const delay = props.transition?.delay || 0;
 
   // Determine if animation should be active:
-  // 1. animate="visible" (string variant name pattern from parent)
-  // 2. whileInView + actually in view (scroll-triggered)
-  // 3. animate is a non-empty object (e.g. { opacity: 1, y: 0 }) — animate after mount
   const hasObjectAnimate = props.animate != null && typeof props.animate !== 'string' && Object.keys(props.animate as object).length > 0;
-  // Support variant propagation: if no explicit animate, inherit from parent context
   const effectiveAnimate = props.animate ?? (typeof parentCtx.parentAnimate === 'string' ? parentCtx.parentAnimate : null);
   const wantAnimate = mounted && (
     effectiveAnimate === 'visible' ||
@@ -186,39 +200,65 @@ function MotionElement(tag: string, props: MotionProps) {
     (useScrollTrigger && inView)
   );
 
-  // CRITICAL FLASH PREVENTION:
-  // If element was already in viewport on first mount, NEVER apply animation.
-  // Animation CSS uses fill-mode:both which immediately sets opacity:0,
-  // causing a visible→invisible→visible flash for above-the-fold content.
-  // wasInViewportOnMount is set synchronously in the mount useEffect.
+  // Never animate elements that were in viewport on mount (prevents flash)
   const shouldAnimate = wantAnimate && !wasInViewportOnMount.current;
 
-  // Build className
-  // During SSR (mounted=false): no animation classes — content renders fully visible.
-  // After mount:
-  //   - If was in viewport on mount: no class → stays visible, zero flash
-  //   - If below viewport & triggered: apply animation class (fade-up etc)
-  //   - If below viewport & NOT yet triggered: hide with motion-hidden
+  /*
+   * Build className — FLASH-FREE LOGIC:
+   *
+   * 1. Scroll-triggered elements (whileInView, no explicit animate):
+   *    - BEFORE mount (including SSR): motion-hidden → invisible from the start
+   *    - AFTER mount, in viewport: no class → visible (wasInViewportOnMount)
+   *    - AFTER mount, below fold + IO fired: motion-{type} → animated in
+   *    - AFTER mount, below fold + IO not yet: motion-hidden → stays invisible
+   *
+   * 2. Variant-propagated children (animate="visible" from parent, no own IO):
+   *    - Always visible — no class applied (they don't have their own observer)
+   *
+   * 3. Elements with explicit animate object: play after mount if above fold
+   */
+  /*
+   * Build className + inline style — FLASH-FREE LOGIC:
+   *
+   * Scroll-triggered elements (whileInView) get opacity:0 via INLINE STYLE.
+   * This is critical because:
+   * - Inline styles survive SSR streaming (unlike CSS classes which can be
+   *   lost in Next.js RSC flight data)
+   * - opacity:0 prevents the visible→invisible flash when the component
+   *   mounts client-side after a dynamic import
+   * - useLayoutEffect removes the opacity before first paint for in-viewport elements
+   */
   let animClass = '';
-  if (animType && mounted && !wasInViewportOnMount.current) {
-    if (shouldAnimate) {
+  let startHidden = false;
+  if (animType) {
+    if (useScrollTrigger) {
+      if (mounted && wasInViewportOnMount.current) {
+        // Was in viewport on mount: show immediately, skip animation
+        animClass = '';
+      } else if (shouldAnimate) {
+        // IO triggered: play animation
+        animClass = `motion-${animType}`;
+      } else {
+        // Not yet triggered: stay hidden via both class and inline style
+        animClass = 'motion-hidden';
+        startHidden = true;
+      }
+    } else if (shouldAnimate) {
+      // Non-scroll-triggered but wants to animate (variant propagation, etc.)
       animClass = `motion-${animType}`;
-    } else if (!inView && useScrollTrigger) {
-      // Only apply motion-hidden for elements with their own whileInView observer.
-      // Elements relying on parent variant propagation don't have their own observer,
-      // so they should just be visible immediately (no animation, but not hidden).
-      animClass = 'motion-hidden';
     }
   }
 
-  // Build style
+  // Build style — use inline opacity:0 for SSR flash prevention
   const motionStyle: CSSProperties = shouldAnimate && animType
     ? {
         ...props.style,
         animationDuration: `${duration}s`,
         animationDelay: `${delay}s`,
       }
-    : props.style;
+    : startHidden
+      ? { ...props.style, opacity: 0 }
+      : props.style;
 
   // Build hover/tap data attributes for CSS
   const hoverAttrs: Record<string, string> = {};
@@ -314,19 +354,16 @@ export function useInView(
 ): boolean {
   const [isInView, setIsInView] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Synchronous viewport check on mount to prevent flash/delay
-    const rect = el.getBoundingClientRect();
     const marginVal = Math.abs(parseInt(options?.margin || '0px') || 0);
-    // Match IntersectionObserver behavior: negative margin shrinks viewport
     const inViewNow =
-      rect.top < window.innerHeight - marginVal &&
-      rect.bottom > marginVal &&
-      rect.left < window.innerWidth - marginVal &&
-      rect.right > marginVal;
+      el.getBoundingClientRect().top < window.innerHeight - marginVal &&
+      el.getBoundingClientRect().bottom > marginVal &&
+      el.getBoundingClientRect().left < window.innerWidth - marginVal &&
+      el.getBoundingClientRect().right > marginVal;
     if (inViewNow) {
       setIsInView(true);
       return; // No need for observer if already in view (once=true default)

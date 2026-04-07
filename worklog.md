@@ -51,3 +51,25 @@ Stage Summary:
 - Cookie banner backdrop no longer blocks page interactions
 - All files: globals.css, QuickSavingsCalculator.tsx, CookieConsent.tsx
 - Build clean, server running on port 3000
+
+---
+Task ID: 2
+Agent: Main
+Task: Fix scroll jumpiness and flashing (round 2 — deep fix)
+
+Work Log:
+- Identified root cause of flashing: SSR renders motion elements visible, then useEffect applies motion-hidden (opacity:0), causing visible→invisible→animated flash
+- Identified root cause of jumpiness: 9 dynamic imports with skeleton→real content height mismatch causes CLS
+- Rewrote motion.tsx: useLayoutEffect instead of useEffect for viewport check (fires before paint)
+- Added inline opacity:0 style for scroll-triggered elements (survives SSR streaming)
+- Removed CSS fallback animation from .motion-hidden (was causing premature reveal)
+- Added content-visibility:auto with contain-intrinsic-size:auto 500px to all sections (CLS prevention)
+- Added overflow-anchor:auto to main (scroll position stability during dynamic loading)
+- Removed will-change from motion animation classes (too many GPU layers = mobile jank)
+- Kept scroll-behavior:auto (no CSS smooth scroll fighting IO)
+
+Stage Summary:
+- Flash: inline opacity:0 + useLayoutEffect eliminates visible→invisible flash
+- Jumpiness: content-visibility:auto + overflow-anchor reduces CLS from dynamic imports
+- Files changed: motion.tsx, globals.css
+- Build clean, server running on port 3000
