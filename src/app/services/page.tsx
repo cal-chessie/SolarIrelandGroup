@@ -27,6 +27,7 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
+import { SOLAR_DATA } from '@/lib/solar-data';
 
 /* ═══════════════════════════════════════════════════════════════
    ANIMATION HELPERS
@@ -439,7 +440,7 @@ export default function ServicesPage() {
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-white text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.2] transition-all"
                 >
                   <Phone className="w-4 h-4" />
-                  01 234 5678
+                  {SOLAR_DATA.provider.phoneDisplay}
                 </a>
               </div>
 

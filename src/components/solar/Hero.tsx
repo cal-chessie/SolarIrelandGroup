@@ -186,7 +186,7 @@ export default function Hero() {
           </div>
 
           {/* ─── Right Side: Bumblebee (smaller) ─── */}
-          <div className="flex-shrink-0 lg:mt-4 hidden sm:block">
+          <div className="flex-shrink-0 lg:mt-4">
             <div
               ref={bumblebeeRef}
               className="hero-fade-up transition-transform duration-500 ease-out"
@@ -197,7 +197,7 @@ export default function Hero() {
                 alt="Solar Ireland Bumblebee"
                 width={160}
                 height={160}
-                className={`w-36 h-36 md:w-44 md:h-44 ${loaded ? 'bumblebee-float' : ''}`}
+                className={`w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 ${loaded ? 'bumblebee-float' : ''}`}
               />
             </div>
           </div>

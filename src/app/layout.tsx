@@ -133,7 +133,7 @@ export const metadata: Metadata = {
   },
 
   /* ─── Manifest ─── */
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
 
   /* ─── Open Graph (Facebook, LinkedIn, etc.) ─── */
   openGraph: {

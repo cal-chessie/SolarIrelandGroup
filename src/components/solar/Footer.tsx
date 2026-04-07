@@ -113,8 +113,12 @@ const localBusinessSchema = {
     name: 'Ireland',
   },
   priceRange: '€€',
-  image: 'https://solarireland.com/og-image.jpg',
-  sameAs: [],
+  image: 'https://solarireland.com/hero-solar.webp',
+  sameAs: [
+    'https://www.facebook.com/solarireland',
+    'https://www.instagram.com/solarireland',
+    'https://www.linkedin.com/company/solarireland',
+  ],
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -336,17 +340,17 @@ export default function Footer() {
               aftercare — no pressure, no hard sell, no jargon.
             </p>
 
-            {/* Social links — nofollow since these are placeholder URLs */}
+            {/* Social links */}
             <div className="flex items-center gap-2.5">
               {[
-                { icon: Facebook, href: '#', label: 'Facebook' },
-                { icon: Instagram, href: '#', label: 'Instagram' },
-                { icon: Linkedin, href: '#', label: 'LinkedIn' },
+                { icon: Facebook, href: 'https://www.facebook.com/solarireland', label: 'Facebook' },
+                { icon: Instagram, href: 'https://www.instagram.com/solarireland', label: 'Instagram' },
+                { icon: Linkedin, href: 'https://www.linkedin.com/company/solarireland', label: 'LinkedIn' },
               ].map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  rel="nofollow noopener noreferrer"
+                  rel="noopener noreferrer"
                   whileHover={{ y: -2, scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.12] transition-all"
