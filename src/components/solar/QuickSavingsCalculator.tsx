@@ -321,7 +321,7 @@ const BillSlider = memo(function BillSlider({
       {/* Custom slider track + thumb */}
       <div
         ref={trackRef}
-        className="solar-slider-track relative w-full cursor-pointer touch-none"
+        className="solar-slider-track relative w-full cursor-pointer"
         role="slider"
         tabIndex={0}
         aria-label="Monthly electricity bill"
@@ -335,17 +335,17 @@ const BillSlider = memo(function BillSlider({
         onPointerCancel={handlePointerUp}
         onKeyDown={handleKeyDown}
       >
-        {/* Background track */}
-        <div className="absolute inset-0 h-2 rounded-full bg-white/[0.06]" />
+        {/* Visual track — centered vertically in the 44px hit area */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06]" />
 
-        {/* Active fill */}
+        {/* Active fill — centered vertically */}
         <div
-          className="absolute top-0 left-0 h-2 rounded-full solar-slider-fill"
+          className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full solar-slider-fill"
           style={{ width: `${pct}%` }}
         />
 
         {/* Tick marks */}
-        <div className="absolute inset-0 flex justify-between items-center px-0 pointer-events-none">
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between items-center pointer-events-none">
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
@@ -360,24 +360,24 @@ const BillSlider = memo(function BillSlider({
           style={{ left: `calc(${pct}% - 22px)` }}
         >
           {/* Outer glow ring */}
-          <div className="absolute inset-[-8px] rounded-full bg-amber-400/10 transition-opacity duration-200 opacity-0 group-active:opacity-100 pointer-events-none"
-            style={{ opacity: isDragging ? 1 : 0 }}
+          <div
+            className="absolute inset-[-8px] rounded-full bg-amber-400/10 pointer-events-none"
+            style={{ opacity: isDragging ? 1 : 0, transition: 'opacity 0.2s' }}
           />
           {/* Thumb body */}
-          <div className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] shadow-lg shadow-amber-400/30 flex items-center justify-center transition-transform duration-100 pointer-events-none"
+          <div
+            className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] flex items-center justify-center pointer-events-none"
             style={{
-              transform: isDragging ? 'scale(1.12)' : 'scale(1)',
+              transform: isDragging ? 'scale(1.15)' : 'scale(1)',
+              transition: 'transform 0.1s, box-shadow 0.15s',
               boxShadow: isDragging
-                ? '0 4px 20px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15)'
-                : '0 2px 8px rgba(250, 204, 21, 0.3)',
+                ? '0 4px 24px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15)'
+                : '0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1)',
             }}
           >
             <Zap className="w-4 h-4 text-black" strokeWidth={2.5} />
           </div>
         </div>
-
-        {/* Click target expansion — invisible area for easy interaction */}
-        <div className="absolute inset-y-[-16px] inset-x-0" />
       </div>
 
       {/* Labels */}
