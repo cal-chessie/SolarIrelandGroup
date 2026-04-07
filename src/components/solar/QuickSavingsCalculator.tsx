@@ -220,6 +220,11 @@ const BillSlider = memo(function BillSlider({
 }: BillSliderProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
+  const onChangeRef = useRef(onChange);
+  const onDragStateChangeRef = useRef(onDragStateChange);
+  // Keep refs in sync with props (avoids stale closures in global listeners)
+  useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
+  useEffect(() => { onDragStateChangeRef.current = onDragStateChange; }, [onDragStateChange]);
 
   const valueToPercent = useCallback((v: number) => {
     return ((v - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
@@ -241,14 +246,56 @@ const BillSlider = memo(function BillSlider({
     []
   );
 
+  /* ─── GLOBAL move/up handlers ───
+     These are attached to the WINDOW, not the track element.
+     This guarantees dragging works even when:
+     - Pointer capture fails (iframe, sandbox, older browsers)
+     - The pointer leaves the track bounds during drag
+     - React synthetic events don't propagate correctly
+  */
+  useEffect(() => {
+    const handleGlobalMove = (e: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      const pct = getPointerPercent(e.clientX);
+      const newValue = percentToValue(pct);
+      onChangeRef.current(newValue);
+    };
+
+    const handleGlobalUp = (e: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      onDragStateChangeRef.current(false);
+    };
+
+    window.addEventListener('pointermove', handleGlobalMove, { passive: true });
+    window.addEventListener('pointerup', handleGlobalUp);
+    window.addEventListener('pointercancel', handleGlobalUp);
+
+    return () => {
+      window.removeEventListener('pointermove', handleGlobalMove);
+      window.removeEventListener('pointerup', handleGlobalUp);
+      window.removeEventListener('pointercancel', handleGlobalUp);
+    };
+  }, [getPointerPercent, percentToValue]);
+
+  /* ─── Mouse down handler (also works for touch via pointer events) ─── */
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
+      // Prevent text selection and scroll during drag
       e.preventDefault();
-      e.stopPropagation();
-      (e.target as HTMLElement).setPointerCapture(e.pointerId);
       isDraggingRef.current = true;
       onDragStateChange(true);
 
+      // Try pointer capture for better tracking (non-critical — global listeners are backup)
+      try {
+        if (trackRef.current) {
+          trackRef.current.setPointerCapture(e.pointerId);
+        }
+      } catch (_) {
+        // Ignore — global listeners handle the drag
+      }
+
+      // Immediately update value to click position
       const pct = getPointerPercent(e.clientX);
       const newValue = percentToValue(pct);
       onChange(newValue);
@@ -256,26 +303,7 @@ const BillSlider = memo(function BillSlider({
     [getPointerPercent, percentToValue, onChange, onDragStateChange]
   );
 
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent) => {
-      if (!isDraggingRef.current) return;
-      const pct = getPointerPercent(e.clientX);
-      const newValue = percentToValue(pct);
-      onChange(newValue);
-    },
-    [getPointerPercent, percentToValue, onChange]
-  );
-
-  const handlePointerUp = useCallback(
-    (e: React.PointerEvent) => {
-      if (!isDraggingRef.current) return;
-      isDraggingRef.current = false;
-      onDragStateChange(false);
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    },
-    [onDragStateChange]
-  );
-
+  /* ─── Keyboard support ─── */
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       let newVal = value;
@@ -330,21 +358,18 @@ const BillSlider = memo(function BillSlider({
         aria-valuenow={value}
         aria-valuetext={`\u20AC${value} per month`}
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
         onKeyDown={handleKeyDown}
       >
-        {/* Visual track — centered vertically in the 44px hit area */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06]" />
+        {/* Visual track — centered vertically (pointer-events-none so clicks pass through) */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06] pointer-events-none" />
 
-        {/* Active fill — centered vertically */}
+        {/* Active fill — centered vertically (pointer-events-none) */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full solar-slider-fill"
+          className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full solar-slider-fill pointer-events-none"
           style={{ width: `${pct}%` }}
         />
 
-        {/* Tick marks */}
+        {/* Tick marks (pointer-events-none) */}
         <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between items-center pointer-events-none">
           {Array.from({ length: 10 }).map((_, i) => (
             <div
@@ -354,19 +379,19 @@ const BillSlider = memo(function BillSlider({
           ))}
         </div>
 
-        {/* Thumb */}
+        {/* Thumb (pointer-events-none — all clicks go to track) */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 solar-slider-thumb"
+          className="absolute top-1/2 -translate-y-1/2 solar-slider-thumb pointer-events-none"
           style={{ left: `calc(${pct}% - 22px)` }}
         >
           {/* Outer glow ring */}
           <div
-            className="absolute inset-[-8px] rounded-full bg-amber-400/10 pointer-events-none"
+            className="absolute inset-[-8px] rounded-full bg-amber-400/10"
             style={{ opacity: isDragging ? 1 : 0, transition: 'opacity 0.2s' }}
           />
           {/* Thumb body */}
           <div
-            className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] flex items-center justify-center pointer-events-none"
+            className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] flex items-center justify-center"
             style={{
               transform: isDragging ? 'scale(1.15)' : 'scale(1)',
               transition: 'transform 0.1s, box-shadow 0.15s',
