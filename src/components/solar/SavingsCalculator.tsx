@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from '@/lib/motion';
 import { Calculator, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

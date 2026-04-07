@@ -50,6 +50,7 @@ const STATS = [
     icon: Clock,
     label: 'Payback Period',
     target: SOLAR_DATA.savings.paybackYears,
+    prefix: '',
     suffix: ' years',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',

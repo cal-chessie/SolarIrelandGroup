@@ -927,93 +927,52 @@
 }
 
 /* ═══════════════════════════════════════════
-   CALCULATOR SLIDER — native <input type="range">
-   Uses native browser handling for touch, accessibility,
-   and scroll prevention. Custom styled to match dark theme.
+   CALCULATOR SLIDER — fully custom pointer-events slider
+   No native <input type="range"> — built with Pointer Events API
+   for guaranteed cross-browser touch + mouse + keyboard support.
    ═══════════════════════════════════════════ */
 
-.solar-range-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 8px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
+/* Track — the full-width clickable/draggable area */
+.solar-slider-track {
+  height: 44px;        /* generous touch target (WCAG 2.5.5: 44px min) */
+  display: flex;
+  align-items: center;
+  touch-action: none;  /* prevent scroll while dragging */
+  -webkit-user-select: none;
+  user-select: none;
   outline: none;
   cursor: pointer;
-  touch-action: none;
 }
 
-/* Track fill — WebKit */
-.solar-range-slider::-webkit-slider-runnable-track {
-  height: 8px;
-  border-radius: 9999px;
+/* Amber gradient fill — left of thumb */
+.solar-slider-fill {
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  transition: none;    /* instant response to drag */
+  pointer-events: none;
 }
 
-/* Thumb — WebKit */
-.solar-range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #facc15;
-  border: 3px solid #0a0a0a;
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1);
-  cursor: grab;
-  margin-top: -10px;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+/* Thumb — positioned absolutely via JS left calc */
+.solar-slider-thumb {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* pass-through to track */
+  transition: none;      /* no CSS lag on drag */
+  z-index: 2;
 }
 
-.solar-range-slider::-webkit-slider-thumb:active {
-  cursor: grabbing;
-  box-shadow: 0 2px 16px rgba(250, 204, 21, 0.5), 0 0 0 2px rgba(250, 204, 21, 0.2);
-  transform: scale(1.1);
+/* Focus ring — keyboard users only */
+.solar-slider-track:focus-visible {
+  outline: 2px solid rgba(250, 204, 21, 0.5);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-.solar-range-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 2px 12px rgba(250, 204, 21, 0.4), 0 0 0 2px rgba(250, 204, 21, 0.15);
-}
-
-/* Track fill — Firefox */
-.solar-range-slider::-moz-range-track {
-  height: 8px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: none;
-}
-
-.solar-range-slider::-moz-range-progress {
-  height: 8px;
-  border-radius: 9999px;
-  background: linear-gradient(to right, #f59e0b, #facc15);
-}
-
-/* Thumb — Firefox */
-.solar-range-slider::-moz-range-thumb {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #facc15;
-  border: 3px solid #0a0a0a;
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3), 0 0 0 1px rgba(250, 204, 21, 0.1);
-  cursor: grab;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
-}
-
-.solar-range-slider::-moz-range-thumb:active {
-  cursor: grabbing;
-  box-shadow: 0 2px 16px rgba(250, 204, 21, 0.5), 0 0 0 2px rgba(250, 204, 21, 0.2);
-  transform: scale(1.1);
-}
-
-/* Focus ring — keyboard users */
-.solar-range-slider:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.5), 0 2px 8px rgba(250, 204, 21, 0.3);
-}
-
-.solar-range-slider:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.5), 0 2px 8px rgba(250, 204, 21, 0.3);
+/* Remove focus outline for mouse/pointer users */
+.solar-slider-track:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* ═══════════════════════════════════════════

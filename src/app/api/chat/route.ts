@@ -97,9 +97,9 @@ export async function POST(request: Request) {
 - Website: solarireland.com`;
 
     const chatMessages = [
-      { role: 'system', content: systemPrompt },
+      { role: 'system' as const, content: systemPrompt },
       ...messages.map((m: { role: string; content: string }) => ({
-        role: m.role,
+        role: m.role as 'user' | 'assistant',
         content: m.content,
       })),
     ];

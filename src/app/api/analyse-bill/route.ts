@@ -147,6 +147,7 @@ export async function POST(request: Request) {
       const zai = await ZAI.create();
 
       const visionResponse = await zai.chat.completions.createVision({
+        model: 'default',
         messages: [
           {
             role: 'user',

@@ -1,3 +1,6 @@
+export default function Loading() {
+return (
+<>
 <section className="relative overflow-hidden">
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
@@ -34,3 +37,6 @@
     </div>
   </div>
 </section>
+</>
+);
+}

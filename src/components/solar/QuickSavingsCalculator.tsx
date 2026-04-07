@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect, memo } from 'react';
 import {
   Zap,
   Euro,
@@ -15,6 +15,8 @@ import {
   Warehouse,
   RotateCcw,
   ChevronDown,
+  Check,
+  Sparkles,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -28,7 +30,7 @@ interface HomeProfile {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  avgRoofKwp: number;    // typical usable roof capacity
+  avgRoofKwp: number;
   description: string;
 }
 
@@ -38,21 +40,21 @@ const HOME_PROFILES: HomeProfile[] = [
     label: 'Apartment / Terrace',
     icon: Building2,
     avgRoofKwp: 2.5,
-    description: 'Smaller roof, 6-8 panels',
+    description: '6\u20138 panels',
   },
   {
     id: 'semi',
     label: 'Semi-Detached',
     icon: Home,
     avgRoofKwp: 4,
-    description: 'Standard roof, 10-12 panels',
+    description: '10\u201312 panels',
   },
   {
     id: 'detached',
     label: 'Detached',
     icon: Warehouse,
     avgRoofKwp: 6,
-    description: 'Large roof, 14-16 panels',
+    description: '14\u201316 panels',
   },
 ];
 
@@ -60,54 +62,33 @@ function calculateSavings(monthlyBill: number, homeId: string) {
   const annualBill = monthlyBill * 12;
   const home = HOME_PROFILES.find((h) => h.id === homeId) || HOME_PROFILES[1];
   const systemSize = home.avgRoofKwp;
-
-  // ─── Generation ───
-  // 1070 kWh/kWp/year — SEAI TMY data for south-facing Irish roof at 35° tilt
-  // Matches the BillAnalyser API exactly so numbers are consistent across the site
   const annualGeneration = systemSize * 1070;
 
-  // ─── Estimate usage from bill ───
-  // Real Irish standing charge: ~€130/yr (€10.80/mo avg across providers)
-  // Real Irish unit rate: ~€0.42/kWh (2026 avg across Electric Ireland, ESB, SSE, etc.)
   const standingChargeAnnual = 130;
   const unitRate = 0.42;
   const energyBill = Math.max(annualBill - standingChargeAnnual, 100);
   const estimatedUsage = Math.round(energyBill / unitRate);
 
-  // ─── Self-consumption ───
-  // Irish homes typically self-consume 40-55% of generated solar.
-  // We use 50% flat — matches the BillAnalyser API methodology exactly.
-  // (Higher in summer when generation exceeds usage, lower in winter)
   const selfConsumed = Math.min(annualGeneration * 0.5, estimatedUsage * 0.5);
   const exported = annualGeneration - selfConsumed;
 
-  // ─── Savings ───
   const annualSaving = Math.round(selfConsumed * unitRate);
   const annualExport = Math.round(exported * SOLAR_DATA.export.ratePerKwh);
   const totalAnnualBenefit = annualSaving + annualExport;
 
-  // ─── System cost ───
   const installCost = systemSize * 1500 + 2000;
   const costAfterGrant = installCost - SOLAR_DATA.grant.amount;
 
-  // ─── Payback ───
   const paybackYears = Math.max(
     Math.round((costAfterGrant / totalAnnualBenefit) * 10) / 10,
     4
   );
 
-  // ─── Bill reduction % ───
-  // Solar only reduces your energy charges, NOT standing charges.
-  // So compare savings against energy-only bill, not total bill.
   const energyBillReduction = Math.round(
     (totalAnnualBenefit / Math.max(energyBill, 1)) * 100
   );
-  // Cap at 70% — even with a perfect system you can't offset 100% of energy costs
-  // (night-time usage, winter short days, shading all reduce output)
   const billReduction = Math.min(energyBillReduction, 70);
 
-  // ─── 25-year savings ───
-  // 0.5% annual panel degradation, 3% electricity price inflation
   let total25yr = 0;
   let yearlyOutput = annualGeneration;
   let currentPrice = unitRate;
@@ -120,10 +101,8 @@ function calculateSavings(monthlyBill: number, homeId: string) {
   }
   total25yr = Math.round(total25yr);
 
-  // ─── Carbon ───
-  // Ireland grid: 0.29 kg CO2/kWh (2024 EPA data)
   const co2PerYear = Math.round(annualGeneration * 0.29);
-  const treesEquiv = Math.round(co2PerYear / 22); // 1 tree absorbs ~22kg CO2/yr
+  const treesEquiv = Math.round(co2PerYear / 22);
 
   return {
     systemSize,
@@ -138,14 +117,14 @@ function calculateSavings(monthlyBill: number, homeId: string) {
     co2PerYear,
     treesEquiv,
     billReduction,
-    panelsEstimate: Math.round(systemSize * 2.8), // ~2.8 panels per kWp
+    panelsEstimate: Math.round(systemSize * 2.8),
     estimatedUsage,
     unitRate,
   };
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ANIMATED COUNTER — RAF-based, GPU-safe
+   ANIMATED COUNTER — RAF-based, no flicker
    ═══════════════════════════════════════════════════════════════ */
 
 function AnimatedValue({
@@ -153,45 +132,54 @@ function AnimatedValue({
   prefix = '',
   suffix = '',
   decimals = 0,
-  duration = 1200,
+  duration = 800,
+  instant = false,
 }: {
   value: number;
   prefix?: string;
   suffix?: string;
   decimals?: number;
   duration?: number;
+  instant?: boolean;
 }) {
-  const [display, setDisplay] = useState(0);
-  const hasAnimated = useRef(false);
-  const prevValue = useRef(0);
+  const [display, setDisplay] = useState(value);
+  const rafRef = useRef<number>(0);
+  const prevRef = useRef(value);
 
   useEffect(() => {
-    if (!hasAnimated.current) {
-      hasAnimated.current = true;
-      const start = performance.now();
-      const from = 0;
-      const step = (now: number) => {
-        const t = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - t, 3);
-        setDisplay(from + (value - from) * ease);
-        if (t < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
+    if (instant) {
+      setDisplay(value);
+      prevRef.current = value;
       return;
     }
 
-    // Subsequent changes: animate from previous value
-    const from = prevValue.current;
+    const from = prevRef.current;
+    if (from === value) return;
+
     const start = performance.now();
-    const step = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
+    const dur = duration;
+    let cancelled = false;
+
+    const tick = (now: number) => {
+      if (cancelled) return;
+      const t = Math.min((now - start) / dur, 1);
       const ease = 1 - Math.pow(1 - t, 3);
       setDisplay(from + (value - from) * ease);
-      if (t < 1) requestAnimationFrame(step);
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        prevRef.current = value;
+      }
     };
-    requestAnimationFrame(step);
-    prevValue.current = value;
-  }, [value, duration]);
+
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [value, duration, instant]);
 
   const formatted = display.toFixed(decimals).replace(
     /\B(?=(\d{3})+(?!\d))/g,
@@ -208,83 +196,201 @@ function AnimatedValue({
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BILL SLIDER — native <input type="range"> for reliable touch
-   Native range input handles touch, accessibility, and scroll
-   prevention natively across all mobile browsers. Custom CSS in
-   globals.css (.solar-range-slider) provides the dark theme styling.
+   SLIDER — fully custom, pointer-events API
+   Built from scratch for guaranteed touch + mouse + keyboard.
+   No native <input type="range"> quirks.
    ═══════════════════════════════════════════════════════════════ */
 
-function BillSlider({
-  value,
-  onChange,
-}: {
+const SLIDER_MIN = 50;
+const SLIDER_MAX = 500;
+const SLIDER_STEP = 5;
+
+interface BillSliderProps {
   value: number;
   onChange: (v: number) => void;
-}) {
-  const [isDragging, setIsDragging] = useState(false);
+  isDragging: boolean;
+  onDragStateChange: (dragging: boolean) => void;
+}
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(Number(e.target.value));
-  }, [onChange]);
+const BillSlider = memo(function BillSlider({
+  value,
+  onChange,
+  isDragging,
+  onDragStateChange,
+}: BillSliderProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
 
-  const pct = ((value - 50) / (500 - 50)) * 100;
+  const valueToPercent = useCallback((v: number) => {
+    return ((v - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
+  }, []);
+
+  const percentToValue = useCallback((pct: number) => {
+    const raw = SLIDER_MIN + (pct / 100) * (SLIDER_MAX - SLIDER_MIN);
+    return Math.round(raw / SLIDER_STEP) * SLIDER_STEP;
+  }, []);
+
+  const getPointerPercent = useCallback(
+    (clientX: number) => {
+      const track = trackRef.current;
+      if (!track) return 0;
+      const rect = track.getBoundingClientRect();
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      return Math.max(0, Math.min(100, pct));
+    },
+    []
+  );
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      (e.target as HTMLElement).setPointerCapture(e.pointerId);
+      isDraggingRef.current = true;
+      onDragStateChange(true);
+
+      const pct = getPointerPercent(e.clientX);
+      const newValue = percentToValue(pct);
+      onChange(newValue);
+    },
+    [getPointerPercent, percentToValue, onChange, onDragStateChange]
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      const pct = getPointerPercent(e.clientX);
+      const newValue = percentToValue(pct);
+      onChange(newValue);
+    },
+    [getPointerPercent, percentToValue, onChange]
+  );
+
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      onDragStateChange(false);
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    },
+    [onDragStateChange]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      let newVal = value;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+        newVal = Math.min(value + SLIDER_STEP, SLIDER_MAX);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        newVal = Math.max(value - SLIDER_STEP, SLIDER_MIN);
+      } else if (e.key === 'Home') {
+        newVal = SLIDER_MIN;
+      } else if (e.key === 'End') {
+        newVal = SLIDER_MAX;
+      } else {
+        return;
+      }
+      e.preventDefault();
+      onChange(newVal);
+    },
+    [value, onChange]
+  );
+
+  const pct = valueToPercent(value);
 
   return (
-    <div className="w-full">
+    <div className="w-full select-none">
       {/* Big number display */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-baseline gap-1">
-          <span className="text-5xl sm:text-6xl font-bold text-white">
-            €
+        <div className="inline-flex items-baseline gap-0.5">
+          <span className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+            &euro;
+          </span>
+          <span className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">
             <AnimatedValue
               value={value}
-              duration={isDragging ? 0 : 400}
+              duration={isDragging ? 120 : 600}
             />
           </span>
-          <span className="text-xl text-gray-400 font-medium">/month</span>
         </div>
-        <p className="text-sm text-gray-500 mt-1">
-          {isDragging ? 'Release to set value' : 'Drag to set your electricity bill'}
+        <p className="text-base text-gray-500 mt-2 font-medium">
+          per month electricity bill
         </p>
       </div>
 
-      {/* Native range input — the only reliable cross-browser touch slider */}
-      <div className="relative px-1 py-4">
-        <input
-          type="range"
-          min={50}
-          max={500}
-          step={5}
-          value={value}
-          onChange={handleChange}
-          className="solar-range-slider w-full"
-          style={{
-            /* WebKit: gradient fill via background on the input itself */
-            background: `linear-gradient(to right, #f59e0b 0%, #facc15 ${pct}%, rgba(255,255,255,0.06) ${pct}%)`,
-          }}
-          aria-label="Monthly electricity bill amount"
-          aria-valuemin={50}
-          aria-valuemax={500}
-          aria-valuenow={value}
-          aria-valuetext={`€${value} per month`}
-          onTouchStart={() => setIsDragging(true)}
-          onTouchEnd={() => setIsDragging(false)}
-          onMouseDown={() => setIsDragging(true)}
-          onMouseUp={() => setIsDragging(false)}
+      {/* Custom slider track + thumb */}
+      <div
+        ref={trackRef}
+        className="solar-slider-track relative w-full cursor-pointer touch-none"
+        role="slider"
+        tabIndex={0}
+        aria-label="Monthly electricity bill"
+        aria-valuemin={SLIDER_MIN}
+        aria-valuemax={SLIDER_MAX}
+        aria-valuenow={value}
+        aria-valuetext={`\u20AC${value} per month`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onKeyDown={handleKeyDown}
+      >
+        {/* Background track */}
+        <div className="absolute inset-0 h-2 rounded-full bg-white/[0.06]" />
+
+        {/* Active fill */}
+        <div
+          className="absolute top-0 left-0 h-2 rounded-full solar-slider-fill"
+          style={{ width: `${pct}%` }}
         />
+
+        {/* Tick marks */}
+        <div className="absolute inset-0 flex justify-between items-center px-0 pointer-events-none">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-px h-2.5 rounded-full bg-white/[0.08]"
+            />
+          ))}
+        </div>
+
+        {/* Thumb */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 solar-slider-thumb"
+          style={{ left: `calc(${pct}% - 22px)` }}
+        >
+          {/* Outer glow ring */}
+          <div className="absolute inset-[-8px] rounded-full bg-amber-400/10 transition-opacity duration-200 opacity-0 group-active:opacity-100 pointer-events-none"
+            style={{ opacity: isDragging ? 1 : 0 }}
+          />
+          {/* Thumb body */}
+          <div className="w-11 h-11 rounded-full bg-amber-400 border-[3px] border-[#0a0a0a] shadow-lg shadow-amber-400/30 flex items-center justify-center transition-transform duration-100 pointer-events-none"
+            style={{
+              transform: isDragging ? 'scale(1.12)' : 'scale(1)',
+              boxShadow: isDragging
+                ? '0 4px 20px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15)'
+                : '0 2px 8px rgba(250, 204, 21, 0.3)',
+            }}
+          >
+            <Zap className="w-4 h-4 text-black" strokeWidth={2.5} />
+          </div>
+        </div>
+
+        {/* Click target expansion — invisible area for easy interaction */}
+        <div className="absolute inset-y-[-16px] inset-x-0" />
       </div>
 
       {/* Labels */}
-      <div className="flex justify-between mt-1 text-xs text-gray-600 px-1">
-        <span>€50</span>
-        <span>€150</span>
-        <span>€275</span>
-        <span>€400</span>
-        <span>€500</span>
+      <div className="flex justify-between mt-3 text-xs text-gray-600 font-medium">
+        <span>&euro;50</span>
+        <span>&euro;150</span>
+        <span>&euro;275</span>
+        <span>&euro;400</span>
+        <span>&euro;500</span>
       </div>
     </div>
   );
-}
+});
 
 /* ═══════════════════════════════════════════════════════════════
    HOME TYPE SELECTOR
@@ -308,9 +414,8 @@ function HomeTypeSelector({
             type="button"
             onClick={() => onChange(home.id)}
             className={`
-              quick-calc-home-btn
-              relative flex flex-col items-center gap-2 p-4 rounded-xl
-              border transition-all duration-300 cursor-pointer
+              relative flex flex-col items-center gap-2.5 p-4 sm:p-5 rounded-xl
+              border transition-all duration-300 cursor-pointer outline-none
               ${isActive
                 ? 'bg-amber-400/10 border-amber-400/30 shadow-lg shadow-amber-400/5'
                 : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04]'
@@ -342,7 +447,9 @@ function HomeTypeSelector({
               </p>
             </div>
             {isActive && (
-              <span className="absolute -top-1.5 right-2 w-2.5 h-2.5 rounded-full bg-amber-400 quick-calc-check-pop" />
+              <span className="absolute -top-1.5 right-2 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center quick-calc-check-pop">
+                <Check className="w-3 h-3 text-black" strokeWidth={3} />
+              </span>
             )}
           </button>
         );
@@ -352,7 +459,29 @@ function HomeTypeSelector({
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RESULTS DISPLAY — animated reveal
+   LIVE RESULTS — shows in real-time as slider moves
+   ═══════════════════════════════════════════════════════════════ */
+
+function LivePreview({
+  results,
+}: {
+  results: ReturnType<typeof calculateSavings>;
+}) {
+  return (
+    <div className="flex items-center justify-between pt-4 pb-1 border-t border-white/[0.04]">
+      <div className="flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-amber-400" />
+        <span className="text-xs text-gray-500">Annual savings</span>
+      </div>
+      <span className="text-lg font-bold text-amber-400">
+        &euro;<AnimatedValue value={results.totalAnnualBenefit} duration={300} instant />
+      </span>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FULL RESULTS PANEL
    ═══════════════════════════════════════════════════════════════ */
 
 function ResultsPanel({
@@ -367,21 +496,18 @@ function ResultsPanel({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="quick-calc-results space-y-4">
-      {/* ─── Hero Number: Annual Savings ─── */}
-      <div className="text-center py-6 rounded-2xl bg-gradient-to-b from-amber-400/[0.08] to-transparent border border-amber-400/10">
-        <p className="text-xs uppercase tracking-[0.15em] text-amber-400/70 font-semibold mb-2">
+    <div className="quick-calc-results space-y-5">
+      {/* Hero Number */}
+      <div className="text-center py-8 rounded-2xl bg-gradient-to-b from-amber-400/[0.08] to-transparent border border-amber-400/10">
+        <p className="text-xs uppercase tracking-[0.15em] text-amber-400/70 font-semibold mb-3">
           You could save every year
         </p>
         <p className="text-5xl sm:text-6xl font-bold text-white">
-          €
-          <AnimatedValue
-            value={results.totalAnnualBenefit}
-            duration={1400}
-          />
+          &euro;
+          <AnimatedValue value={results.totalAnnualBenefit} duration={1200} />
         </p>
-        <p className="text-sm text-gray-400 mt-2">
-          That's{' '}
+        <p className="text-sm text-gray-400 mt-3">
+          That&apos;s{' '}
           <span className="text-amber-400 font-semibold">
             up to {results.billReduction}% off
           </span>{' '}
@@ -389,23 +515,11 @@ function ResultsPanel({
         </p>
 
         {/* Mini stat row */}
-        <div className="flex items-center justify-center gap-4 mt-5">
+        <div className="flex items-center justify-center gap-5 mt-6">
           {[
-            {
-              icon: Zap,
-              label: 'System',
-              value: `${results.systemSize}kWp`,
-            },
-            {
-              icon: Sun,
-              label: 'Panels',
-              value: `~${results.panelsEstimate}`,
-            },
-            {
-              icon: Clock,
-              label: 'Payback',
-              value: `${results.paybackYears}yr`,
-            },
+            { icon: Zap, label: 'System', value: `${results.systemSize}kWp` },
+            { icon: Sun, label: 'Panels', value: `~${results.panelsEstimate}` },
+            { icon: Clock, label: 'Payback', value: `${results.paybackYears}yr` },
           ].map((stat) => {
             const Icon = stat.icon;
             return (
@@ -415,9 +529,7 @@ function ResultsPanel({
               >
                 <Icon className="w-3.5 h-3.5 text-gray-500" />
                 <span>
-                  <span className="text-white font-semibold">
-                    {stat.value}
-                  </span>{' '}
+                  <span className="text-white font-semibold">{stat.value}</span>{' '}
                   {stat.label}
                 </span>
               </div>
@@ -426,31 +538,28 @@ function ResultsPanel({
         </div>
       </div>
 
-      {/* ─── Stat Grid ─── */}
+      {/* Stat Grid */}
       <div className="grid grid-cols-2 gap-3">
         {[
           {
             icon: Euro,
             label: 'Bill after solar',
-            value: `€${(
-              monthlyBill * 12 -
-              results.totalAnnualBenefit
-            ).toLocaleString()}/yr`,
+            value: `\u20AC${(monthlyBill * 12 - results.totalAnnualBenefit).toLocaleString()}/yr`,
             color: 'text-green-400',
             bgColor: 'bg-green-400/10',
-            sub: `Save €${results.annualSaving.toLocaleString()} + earn €${results.annualExport.toLocaleString()} export`,
+            sub: `Save \u20AC${results.annualSaving.toLocaleString()} + earn \u20AC${results.annualExport.toLocaleString()} export`,
           },
           {
             icon: TrendingUp,
             label: '25-year savings',
-            value: `€${(Math.round(results.total25yr / 1000))}k+`,
+            value: `\u20AC${Math.round(results.total25yr / 1000)}k+`,
             color: 'text-amber-400',
             bgColor: 'bg-amber-400/10',
             sub: `After ${SOLAR_DATA.grant.label} grant + install costs`,
           },
           {
             icon: Leaf,
-            label: 'CO₂ offset per year',
+            label: 'CO\u2082 offset / year',
             value: `${results.co2PerYear.toLocaleString()}kg`,
             color: 'text-emerald-400',
             bgColor: 'bg-emerald-400/10',
@@ -479,9 +588,7 @@ function ResultsPanel({
                   {stat.label}
                 </span>
               </div>
-              <p className={`text-xl font-bold ${stat.color}`}>
-                {stat.value}
-              </p>
+              <p className={`text-xl font-bold ${stat.color}`}>{stat.value}</p>
               <p className="text-[10px] text-gray-600 mt-1 leading-relaxed">
                 {stat.sub}
               </p>
@@ -490,7 +597,7 @@ function ResultsPanel({
         })}
       </div>
 
-      {/* ─── Expandable Details ─── */}
+      {/* Expandable Details */}
       <button
         type="button"
         onClick={() => setShowDetails(!showDetails)}
@@ -517,17 +624,17 @@ function ResultsPanel({
                 Cost Breakdown
               </h4>
               {[
-                { label: 'Estimated install cost', value: `€${results.installCost.toLocaleString()}`, dim: false },
-                { label: `Less ${SOLAR_DATA.grant.label} SEAI grant`, value: `-€${SOLAR_DATA.grant.amount.toLocaleString()}`, dim: false, color: 'text-amber-400' },
-                { label: 'Cost after grant', value: `€${results.costAfterGrant.toLocaleString()}`, bold: true, color: 'text-white' },
-                { label: 'Annual benefit', value: `€${results.totalAnnualBenefit.toLocaleString()}/yr`, bold: true, color: 'text-green-400' },
+                { label: 'Estimated install cost', value: `\u20AC${results.installCost.toLocaleString()}` },
+                { label: `Less ${SOLAR_DATA.grant.label} SEAI grant`, value: `-\u20AC${SOLAR_DATA.grant.amount.toLocaleString()}`, color: 'text-amber-400' },
+                { label: 'Cost after grant', value: `\u20AC${results.costAfterGrant.toLocaleString()}`, bold: true, color: 'text-white' },
+                { label: 'Annual benefit', value: `\u20AC${results.totalAnnualBenefit.toLocaleString()}/yr`, bold: true, color: 'text-green-400' },
                 { label: 'Simple payback', value: `${results.paybackYears} years`, bold: true, color: 'text-amber-400' },
               ].map((row) => (
                 <div key={row.label} className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">{row.label}</span>
                   <span
                     className={`text-sm font-semibold ${
-                      row.color || (row.dim ? 'text-gray-600' : 'text-gray-300')
+                      row.color || 'text-gray-300'
                     } ${row.bold ? 'font-bold' : ''}`}
                   >
                     {row.value}
@@ -541,13 +648,12 @@ function ResultsPanel({
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 Where Your Savings Come From
               </h4>
-              <div className="space-y-2">
-                {/* Bar: self-consumption */}
+              <div className="space-y-2.5">
                 <div>
-                  <div className="flex justify-between text-xs mb-1">
+                  <div className="flex justify-between text-xs mb-1.5">
                     <span className="text-gray-400">Self-consumed solar</span>
                     <span className="text-green-400 font-semibold">
-                      €{results.annualSaving.toLocaleString()}
+                      \u20AC{results.annualSaving.toLocaleString()}
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
@@ -562,12 +668,11 @@ function ResultsPanel({
                     />
                   </div>
                 </div>
-                {/* Bar: export */}
                 <div>
-                  <div className="flex justify-between text-xs mb-1">
+                  <div className="flex justify-between text-xs mb-1.5">
                     <span className="text-gray-400">Clean Export Guarantee</span>
                     <span className="text-amber-400 font-semibold">
-                      €{results.annualExport.toLocaleString()}
+                      \u20AC{results.annualExport.toLocaleString()}
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
@@ -588,13 +693,13 @@ function ResultsPanel({
         </div>
       </div>
 
-      {/* ─── CTAs ─── */}
+      {/* CTAs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
         <a
           href={buildWhatsAppUrl({
             source: 'quick-calculator',
             monthlyBill,
-            homeType: HOME_PROFILES.find(h => h.id === homeType)?.label || 'Semi-Detached',
+            homeType: HOME_PROFILES.find((h) => h.id === homeType)?.label || 'Semi-Detached',
             annualSaving: results.totalAnnualBenefit,
             paybackYears: results.paybackYears,
             total25yrSaving: results.total25yr,
@@ -620,7 +725,7 @@ function ResultsPanel({
 
       {/* Disclaimer */}
       <p className="text-[10px] text-gray-600 text-center leading-relaxed">
-        Estimates based on SEAI grant rates, Met Éireann solar irradiance data for Ireland,
+        Estimates based on SEAI grant rates, Met &Eacute;ireann solar irradiance data for Ireland,
         and average self-consumption ratios. Actual savings depend on roof orientation, shading,
         and your consumption patterns. A free site survey gives you exact figures.
       </p>
@@ -636,6 +741,7 @@ export default function QuickSavingsCalculator() {
   const [monthlyBill, setMonthlyBill] = useState(160);
   const [homeType, setHomeType] = useState('semi');
   const [showResults, setShowResults] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const results = calculateSavings(monthlyBill, homeType);
@@ -648,6 +754,23 @@ export default function QuickSavingsCalculator() {
     setShowResults(false);
   }, []);
 
+  // Allow re-calculation when inputs change (smooth update)
+  const handleRecalculate = useCallback(() => {
+    if (showResults) {
+      // Force a micro-re-render by toggling
+      setShowResults(false);
+      requestAnimationFrame(() => setShowResults(true));
+    }
+  }, [showResults]);
+
+  // When home type changes while results are showing, update smoothly
+  useEffect(() => {
+    if (showResults) {
+      handleRecalculate();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [homeType]);
+
   return (
     <section
       id="quick-calculator"
@@ -658,7 +781,7 @@ export default function QuickSavingsCalculator() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 amber-line" />
 
       <div className="max-w-3xl mx-auto">
-        {/* ─── Section Header ─── */}
+        {/* Section Header */}
         <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -695,136 +818,138 @@ export default function QuickSavingsCalculator() {
           </motion.div>
         </div>
 
-        {/* ─── Calculator Card ─── */}
+        {/* Calculator Card */}
         <motion.div
           initial={{ opacity: 0, y: 25, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20">
-          <div className="p-6 sm:p-8 space-y-8">
-            {/* Step 1: Bill Slider */}
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-black text-xs font-bold">
-                  1
-                </span>
-                <h3 className="text-sm font-semibold text-white">
-                  Your Monthly Electricity Bill
-                </h3>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20">
+            <div className="p-6 sm:p-8 space-y-8">
+              {/* Step 1: Bill Slider */}
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-black text-xs font-bold">
+                    1
+                  </span>
+                  <h3 className="text-sm font-semibold text-white">
+                    Your Monthly Electricity Bill
+                  </h3>
+                </div>
+                <div className="mt-4">
+                  <BillSlider
+                    value={monthlyBill}
+                    onChange={setMonthlyBill}
+                    isDragging={isDragging}
+                    onDragStateChange={setIsDragging}
+                  />
+                </div>
               </div>
-              <BillSlider value={monthlyBill} onChange={setMonthlyBill} />
-            </div>
 
-            {/* Step 2: Home Type */}
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <span
-                  className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-colors ${
-                    showResults
-                      ? 'bg-amber-400/20 text-amber-400'
-                      : 'bg-white/[0.06] text-gray-600'
-                  }`}
+              {/* Live preview while sliding (before clicking calculate) */}
+              {!showResults && (
+                <LivePreview results={results} />
+              )}
+
+              {/* Step 2: Home Type */}
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <span
+                    className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-colors ${
+                      showResults
+                        ? 'bg-amber-400/20 text-amber-400'
+                        : 'bg-white/[0.06] text-gray-600'
+                    }`}
+                  >
+                    2
+                  </span>
+                  <h3 className="text-sm font-semibold text-white">
+                    Your Home Type
+                  </h3>
+                </div>
+                <HomeTypeSelector selected={homeType} onChange={setHomeType} />
+              </div>
+
+              {/* Step 3: Calculate / Reset */}
+              {!showResults ? (
+                <button
+                  type="button"
+                  onClick={handleCalculate}
+                  className="quick-calc-calc-btn w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-base shadow-xl shadow-amber-400/20 hover:shadow-amber-400/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 cursor-pointer"
                 >
-                  2
-                </span>
-                <h3 className="text-sm font-semibold text-white">
-                  Your Home Type
-                </h3>
-              </div>
-              <HomeTypeSelector
-                selected={homeType}
-                onChange={setHomeType}
-              />
+                  <Euro className="w-5 h-5" />
+                  Show Full Breakdown
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="quick-calc-reset-btn w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-sm hover:bg-white/[0.06] hover:text-white transition-all duration-200 cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Adjust Values
+                </button>
+              )}
             </div>
 
-            {/* Step 3: Calculate / Reset */}
-            {!showResults ? (
-              <button
-                type="button"
-                onClick={handleCalculate}
-                className="quick-calc-calc-btn w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-base shadow-xl shadow-amber-400/20 hover:shadow-amber-400/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 cursor-pointer"
-              >
-                <Euro className="w-5 h-5" />
-                Show My Savings
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleReset}
-                className="quick-calc-reset-btn w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-sm hover:bg-white/[0.06] hover:text-white transition-all duration-200 cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Start Over
-              </button>
+            {/* Results */}
+            {showResults && (
+              <div className="border-t border-white/[0.06] p-6 sm:p-8 bg-white/[0.01]">
+                <ResultsPanel
+                  results={results}
+                  monthlyBill={monthlyBill}
+                  homeType={homeType}
+                />
+              </div>
             )}
           </div>
-
-          {/* ─── Results (animated reveal) ─── */}
-          {showResults && (
-            <div className="border-t border-white/[0.06] p-6 sm:p-8 bg-white/[0.01]">
-              <ResultsPanel results={results} monthlyBill={monthlyBill} homeType={homeType} />
-            </div>
-          )}
-        </div>
         </motion.div>
 
-        {/* ─── Trust signals below card ─── */}
+        {/* Trust signals */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-        <div className="grid grid-cols-3 gap-3 mt-6">
-          {[
-            { icon: Clock, label: 'Takes 5 seconds', sub: 'No signup needed' },
-            {
-              icon: Euro,
-              label: '100% free',
-              sub: 'No hidden costs',
-            },
-            {
-              icon: Sun,
-              label: 'SEAI accurate',
-              sub: 'Based on real data',
-            },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.label}
-                className="flex flex-col items-center text-center p-3 rounded-xl bg-white/[0.01] border border-white/[0.04]"
-              >
-                <Icon className="w-4 h-4 text-gray-500 mb-1.5" />
-                <p className="text-[11px] text-gray-300 font-medium">
-                  {item.label}
-                </p>
-                <p className="text-[10px] text-gray-600">{item.sub}</p>
-              </div>
-            );
-          })}
-        </div>
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            {[
+              { icon: Clock, label: 'Takes 5 seconds', sub: 'No signup needed' },
+              { icon: Euro, label: '100% free', sub: 'No hidden costs' },
+              { icon: Sun, label: 'SEAI accurate', sub: 'Based on real data' },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center text-center p-3 rounded-xl bg-white/[0.01] border border-white/[0.04]"
+                >
+                  <Icon className="w-4 h-4 text-gray-500 mb-1.5" />
+                  <p className="text-[11px] text-gray-300 font-medium">{item.label}</p>
+                  <p className="text-[10px] text-gray-600">{item.sub}</p>
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
 
-        {/* Link to detailed analyser */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-        <p className="text-center text-xs text-gray-600 mt-4">
-          Want a personalised AI-powered report?{' '}
-          <a
-            href="#calculator"
-            className="text-amber-400/70 hover:text-amber-400 underline underline-offset-2 transition-colors"
-          >
-            Upload your bill →
-          </a>
-        </p>
+          <p className="text-center text-xs text-gray-600 mt-4">
+            Want a personalised AI-powered report?{' '}
+            <a
+              href="#calculator"
+              className="text-amber-400/70 hover:text-amber-400 underline underline-offset-2 transition-colors"
+            >
+              Upload your bill &rarr;
+            </a>
+          </p>
         </motion.div>
       </div>
     </section>
