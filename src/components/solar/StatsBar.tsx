@@ -128,7 +128,7 @@ function StatCard({
    ═══════════════════════════════════════════════════════════════ */
 export default function StatsBar() {
   return (
-    <section className="relative z-10 -mt-6 sm:-mt-8 pb-8 sm:pb-12 px-4 sm:px-6">
+    <section className="hidden sm:block relative z-10 -mt-6 sm:-mt-8 pb-8 sm:pb-12 px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

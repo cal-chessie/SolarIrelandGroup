@@ -120,6 +120,7 @@ function AnimatedCounter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -129,6 +130,7 @@ function AnimatedCounter({
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
+          setVisible(true);
           obs.disconnect();
           const duration = 2000;
           const start = performance.now();
@@ -137,7 +139,7 @@ function AnimatedCounter({
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = eased * value;
-            el.textContent = prefix + (decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString()) + suffix;
+            el.textContent = prefix + (decimals > 0 ? current.toFixed(decimals) : Math.round(current).toLocaleString()) + suffix;
             if (progress < 1) requestAnimationFrame(step);
           };
           requestAnimationFrame(step);
@@ -149,7 +151,7 @@ function AnimatedCounter({
     return () => obs.disconnect();
   }, [value, prefix, suffix, decimals]);
 
-  return <span ref={ref}>{prefix}0{suffix}</span>;
+  return <span ref={ref} className={!visible ? 'opacity-0' : ''}>{prefix}0{suffix}</span>;
 }
 
 /* ═══════════════════════════════════════════════════════

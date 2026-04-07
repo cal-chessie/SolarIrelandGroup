@@ -173,7 +173,7 @@ export default function Hero() {
                 {[
                   { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
                   { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
-                  { icon: Star, label: '5-Year Warranty', color: 'text-sky-400' },
+                  { icon: Star, label: '25-Year Warranty', color: 'text-sky-400' },
                 ].map((item, i) => (
                   <div key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-300">
                     <item.icon className={`w-3.5 h-3.5 ${item.color}`} />

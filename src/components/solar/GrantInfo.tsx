@@ -32,19 +32,21 @@ function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-20px' });
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v).toString());
+  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
   const hasAnimated = useRef(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (show && inView && !hasAnimated.current) {
       hasAnimated.current = true;
+      setVisible(true);
       animate(count, SOLAR_DATA.grant.amount, { duration: 1.8, ease: 'easeOut' });
     }
   }, [show, inView, count]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      €<motion.span>{rounded}</motion.span>
+      €<motion.span className={!visible ? 'opacity-0' : ''}>{rounded}</motion.span>
     </span>
   );
 }
@@ -430,13 +432,15 @@ function GrantHero({ isInView }: { isInView: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const selfInView = useInView(ref, { once: true, margin: '-40px' });
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v).toString());
+  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
   const show = isInView && selfInView;
   const hasAnimated = useRef(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (show && !hasAnimated.current) {
       hasAnimated.current = true;
+      setVisible(true);
       animate(count, SOLAR_DATA.grant.amount, { duration: 2, ease: 'easeOut' });
     }
   }, [show, count]);
@@ -458,7 +462,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
 
       <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
         Up to{' '}
-        <span className="text-gradient tabular-nums">€<motion.span>{rounded}</motion.span></span>
+        <span className="text-gradient tabular-nums">€<motion.span className={!visible ? 'opacity-0' : ''}>{rounded}</motion.span></span>
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">

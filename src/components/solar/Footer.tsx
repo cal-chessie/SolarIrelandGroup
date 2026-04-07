@@ -221,7 +221,7 @@ function ContactCard({
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-[10px] text-gray-600 uppercase tracking-wider">{label}</p>
-        <p className="text-sm text-gray-300 font-medium group-hover:text-white transition-colors truncate">
+        <p className="text-sm text-gray-300 font-medium group-hover:text-white transition-colors truncate text-ellipsis" dir="ltr">
           {value}
         </p>
       </div>

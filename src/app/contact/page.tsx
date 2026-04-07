@@ -233,8 +233,10 @@ function ContactForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Name */}
               <div className="relative">
+                <label htmlFor="contact-name" className="sr-only">Your full name</label>
                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   placeholder="Your full name"
@@ -247,8 +249,10 @@ function ContactForm() {
 
               {/* Email */}
               <div className="relative">
+                <label htmlFor="contact-email" className="sr-only">Email address</label>
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
                   placeholder="your@email.com"
@@ -261,8 +265,10 @@ function ContactForm() {
 
               {/* Phone */}
               <div className="relative">
+                <label htmlFor="contact-phone" className="sr-only">Phone number</label>
                 <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
+                  id="contact-phone"
                   type="tel"
                   name="phone"
                   placeholder="08X XXX XXXX"
@@ -274,8 +280,10 @@ function ContactForm() {
 
               {/* County */}
               <div className="relative">
+                <label htmlFor="contact-county" className="sr-only">Select your county</label>
                 <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none z-10" />
                 <select
+                  id="contact-county"
                   name="county"
                   value={formData.county}
                   onChange={handleChange}
@@ -295,8 +303,10 @@ function ContactForm() {
 
             {/* Message */}
             <div className="relative">
+              <label htmlFor="contact-message" className="sr-only">Your message</label>
               <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-600 pointer-events-none" />
               <textarea
+                id="contact-message"
                 name="message"
                 placeholder="Tell us about your home, roof type, or any questions you have..."
                 rows={4}
