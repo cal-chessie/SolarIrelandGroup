@@ -74,7 +74,7 @@ const counties: CountyData[] = [
 
   // ─── Connacht ───
   { name: 'Galway', provinces: ['Connacht'], domain: 'solargalway.com', status: 'active', costMin: 4500, costMax: 7000, generationKwh: 3450, population: '279K', tagline: 'City of the Tribes — urban and county, we cover it all' },
-  { name: 'Mayo', provinces: ['Connacht'], domain: 'solar mayo.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3400, population: '137K', tagline: 'Wild Mayo — big skies, open roofs, endless potential' },
+  { name: 'Mayo', provinces: ['Connacht'], domain: 'solarmayo.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3400, population: '137K', tagline: 'Wild Mayo — big skies, open roofs, endless potential' },
   { name: 'Roscommon', provinces: ['Connacht'], domain: 'solarroscommon.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3380, population: '72K', tagline: 'Heart of the west — where every watt counts' },
   { name: 'Sligo', provinces: ['Connacht'], domain: 'solarsligo.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3390, population: '70K', tagline: 'Yeats Country catching rays on every rooftop' },
   { name: 'Leitrim', provinces: ['Connacht'], domain: 'solarleitrim.com', status: 'coming-soon', costMin: 4300, costMax: 6500, generationKwh: 3350, population: '35K', tagline: 'The lovely county — small in size, big on green energy' },

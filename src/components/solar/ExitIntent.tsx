@@ -14,7 +14,6 @@ import {
   Clock,
   Star,
   TrendingUp,
-  Eye,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -31,19 +30,7 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
 
-/* ─── Fake "live" viewer count ─── */
-function useLiveViewers() {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    // Start between 8-14 viewers
-    setCount(Math.floor(Math.random() * 7) + 8);
-    const iv = setInterval(() => {
-      setCount((c) => Math.max(3, Math.min(24, c + Math.floor(Math.random() * 5) - 2)));
-    }, 4000);
-    return () => clearInterval(iv);
-  }, []);
-  return count;
-}
+/* ─── Trust text (replaced fake live viewer count) ─── */
 
 /* ═══════════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -52,7 +39,7 @@ export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const hasTriggered = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const liveViewers = useLiveViewers();
+
 
   /* ─── Fire the popup (once) ─── */
   const trigger = useCallback(() => {
@@ -196,15 +183,14 @@ export default function ExitIntent() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative p-6 sm:p-8 pt-4">
-          {/* ─── Live social proof bar ─── */}
+          {/* ─── Trust indicator ─── */}
           <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
             </span>
-            <Eye className="w-3 h-3 text-green-400/70" />
             <span className="text-[11px] text-green-400/90 font-medium">
-              <span className="font-bold">{liveViewers}</span> people looking at solar right now
+              SEAI-registered installer — trusted by 200+ Irish homeowners
             </span>
           </div>
 

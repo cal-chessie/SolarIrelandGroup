@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
   ],
 
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
-  reactStrictMode: false,
+  reactStrictMode: true,
 
   /* ═══════════════════════════════════════════════════════════════
      IMAGE OPTIMIZATION

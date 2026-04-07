@@ -514,9 +514,9 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-700">
             <span>&copy; {new Date().getFullYear()} Solar Ireland. All rights reserved.</span>
             <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>Company Reg: 123456</span>
+            <span>Company Reg: TBC</span>
             <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>ROI Tax Reg: 1234567TH</span>
+            <span>ROI Tax Reg: TBC</span>
           </div>
 
           <div className="flex items-center gap-4">
