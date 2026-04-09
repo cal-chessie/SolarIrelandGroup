@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Solar Ireland | Solar Panel Installation",
     short_name: "Solar Ireland",
     description:
-      "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,100/year with a €1,800 SEAI grant.",
+      "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,100/year with a €1,800 SEAI grant (Republic of Ireland).",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0a",

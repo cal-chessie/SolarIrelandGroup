@@ -57,7 +57,7 @@ const STATS = [
   },
   {
     icon: Sun,
-    label: 'SEAI Grant',
+    label: 'SEAI Grant (ROI)',
     target: SOLAR_DATA.grant.amount,
     prefix: '€',
     suffix: '',

@@ -185,10 +185,10 @@ export default function ExitIntent() {
               Wait — don&apos;t leave{' '}
               <span className="text-gradient">€1,800</span>
               <br />
-              on the table
+              <span className="text-gradient">on the table (ROI)</span>
             </h3>
             <p className="text-sm text-gray-500 leading-relaxed">
-              The SEAI grant drops this into your account. Combined with savings of
+              The SEAI grant (Republic of Ireland only) drops this into your account. Combined with savings of
               {' '}<span className="text-gray-400 font-medium">€1,100+/year</span>,
               your system literally pays for itself.
             </p>

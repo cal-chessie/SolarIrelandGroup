@@ -389,7 +389,7 @@ export default function BookSurveyClient() {
                         <Award className="w-7 h-7 text-amber-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">€1,800 SEAI Grant</h3>
+                        <h3 className="text-white font-bold">€1,800 SEAI Grant (ROI)</h3>
                         <p className="text-sm text-gray-500">We handle all grant paperwork for you</p>
                       </div>
                     </div>

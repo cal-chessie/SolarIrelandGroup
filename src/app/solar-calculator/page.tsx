@@ -140,7 +140,7 @@ function FAQSchema() {
         name: 'What is the payback period for solar panels in Ireland?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'With the €1,800 SEAI grant, most solar panel systems in Ireland pay for themselves in 5 to 7 years. After that, the panels continue generating free electricity for their 25+ year lifespan, delivering total savings of €30,000 to €60,000 over 25 years depending on electricity price increases.',
+          text: 'With the €1,800 SEAI grant (Republic of Ireland), most solar panel systems in Ireland pay for themselves in 5 to 7 years. After that, the panels continue generating free electricity for their 25+ year lifespan, delivering total savings of €30,000 to €60,000 over 25 years depending on electricity price increases.',
         },
       },
       {
@@ -148,7 +148,7 @@ function FAQSchema() {
         name: 'How does the SEAI solar grant work?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'The SEAI (Sustainable Energy Authority of Ireland) offers a €1,800 grant towards solar panel installation. You must be an owner-occupier of a home built before 2021 with a BER rating of C3 or lower. The grant is deducted directly from your installation cost by your SEAI-registered installer, so you don\'t need to pay upfront and claim it back.',
+          text: 'The SEAI (Sustainable Energy Authority of Ireland) offers a €1,800 grant towards solar panel installation in the Republic of Ireland (26 counties). You must be an owner-occupier of a home built before 2021 with a BER rating of C3 or lower. The grant is deducted directly from your installation cost by your SEAI-registered installer, so you don\'t need to pay upfront and claim it back.',
         },
       },
     ],

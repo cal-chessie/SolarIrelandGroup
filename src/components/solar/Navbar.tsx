@@ -463,7 +463,7 @@ function MobileMenu({
                   <div className="w-8 h-8 rounded-lg bg-sky-400/10 flex items-center justify-center mx-auto mb-1.5">
                     <Euro className="w-4 h-4 text-sky-400" />
                   </div>
-                  <p className="text-[10px] font-semibold text-gray-400">€1,800 Grant</p>
+                  <p className="text-[10px] font-semibold text-gray-400">€1,800 Grant (ROI)</p>
                 </div>
                 <div className="text-center">
                   <div className="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center mx-auto mb-1.5">

@@ -71,7 +71,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only — Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -377,7 +377,7 @@ export default function FAQ() {
             {
               "@type": "Question",
               name: "How much do solar panels cost in Ireland in 2026?",
-              acceptedAnswer: { "@type": "Answer", text: "A typical residential solar PV system costs between €4,500 and €7,500 before the €1,800 SEAI grant. After the grant, you are looking at approximately €2,700 to €5,700 out of pocket." },
+              acceptedAnswer: { "@type": "Answer", text: "A typical residential solar PV system costs between €4,500 and €7,500 before the €1,800 SEAI grant (Republic of Ireland only). After the grant, you are looking at approximately €2,700 to €5,700 out of pocket." },
             },
             {
               "@type": "Question",
@@ -387,12 +387,12 @@ export default function FAQ() {
             {
               "@type": "Question",
               name: "How long is the solar panel payback period?",
-              acceptedAnswer: { "@type": "Answer", text: "Most homeowners see a full payback within 5 to 7 years after the €1,800 SEAI grant. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty." },
+              acceptedAnswer: { "@type": "Answer", text: "Most homeowners see a full payback within 5 to 7 years after the €1,800 SEAI grant (Republic of Ireland). After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty." },
             },
             {
               "@type": "Question",
               name: "What is the SEAI grant and am I eligible?",
-              acceptedAnswer: { "@type": "Answer", text: "The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels. To be eligible, you must be the owner-occupier of a home built before 2021 with a BER rating of C3 or lower." },
+              acceptedAnswer: { "@type": "Answer", text: "The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels. This grant is available in the Republic of Ireland (26 counties) only. To be eligible, you must be the owner-occupier of a home built before 2021 with a BER rating of C3 or lower." },
             },
             {
               "@type": "Question",

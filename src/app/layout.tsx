@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://solarireland.com";
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
-  "SEAI-registered solar panel installers serving homes across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,100/year with a €1,800 SEAI grant.";
+  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,100/year with a €1,800 SEAI grant (Republic of Ireland only).";
 const SITE_KEYWORDS = [
   "solar panels Ireland",
   "solar panel installation Ireland",
@@ -504,7 +504,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Installation Day",
-      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. The €1,800 SEAI grant is deducted from your final bill.",
+      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. The €1,800 SEAI grant (Republic of Ireland) is deducted from your final bill.",
       position: 3,
     },
   ],
@@ -516,7 +516,7 @@ const financialProductSchema = {
   "@type": "FinancialProduct",
   name: "SEAI Solar PV Grant",
   description:
-    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in Ireland. The grant is available to owner-occupiers of homes built before 2021.",
+    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to owner-occupiers of homes built before 2021.",
   url: "https://www.seai.ie/grants/home-energy-grants/solar-pv/",
   provider: {
     "@type": "Organization",

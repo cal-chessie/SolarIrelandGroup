@@ -68,9 +68,9 @@ const benefits = [
     icon: TrendingUp,
     title: '€1,800 SEAI Grant',
     stat: '€1,800',
-    statLabel: 'government grant',
+    statLabel: 'government grant (ROI)',
     description:
-      'The SEAI Solar PV scheme pays up to €1,800 towards your installation in 2026. Available to owner-occupiers of homes built before 2021 with a BER rating of C3 or lower. Our team handles the full grant application on your behalf — all included in the price.',
+      'The SEAI Solar PV scheme pays up to €1,800 towards your installation in 2026. Available to owner-occupiers in the Republic of Ireland (26 counties) with homes built before 2021 and a BER rating of C3 or lower. Our team handles the full grant application on your behalf — all included in the price.',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
     border: 'hover:border-amber-400/15',

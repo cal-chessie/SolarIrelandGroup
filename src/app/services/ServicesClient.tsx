@@ -436,7 +436,7 @@ export default function ServicesPage() {
                   { icon: Shield, label: 'SEAI Registered', color: 'text-green-400' },
                   { icon: Star, label: '25-Year Warranty', color: 'text-amber-400' },
                   { icon: Clock, label: '1-Day Install', color: 'text-sky-400' },
-                  { icon: Euro, label: '€1,800 Grant', color: 'text-emerald-400' },
+                  { icon: Euro, label: '€1,800 Grant (ROI)', color: 'text-emerald-400' },
                 ].map((badge) => (
                   <div key={badge.label} className="flex items-center gap-2">
                     <badge.icon className={`w-4 h-4 ${badge.color}`} />

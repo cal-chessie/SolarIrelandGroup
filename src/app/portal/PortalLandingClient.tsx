@@ -186,7 +186,7 @@ export default function PortalLandingClient() {
                 {
                   icon: '💰',
                   title: 'Grant Tracker',
-                  desc: 'Monitor your SEAI grant application status and see when your €1,800 payment is on its way.',
+                  desc: 'Monitor your SEAI grant application status and see when your €1,800 payment (ROI) is on its way.',
                   color: 'green',
                 },
                 {

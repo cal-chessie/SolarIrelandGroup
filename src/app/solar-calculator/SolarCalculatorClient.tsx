@@ -75,7 +75,7 @@ function CalculatorHero() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
           {[
-            { icon: Euro, label: '€1,800 SEAI Grant', sub: 'Automatically included' },
+            { icon: Euro, label: '€1,800 SEAI Grant (ROI)', sub: 'Automatically included' },
             { icon: Clock, label: '5-7 Year Payback', sub: 'After grant deduction' },
             { icon: TrendingUp, label: '€40k+ Over 25 Years', sub: 'Rising energy prices' },
             { icon: Leaf, label: '2,500+ kg CO₂/yr', sub: 'Environmental impact' },

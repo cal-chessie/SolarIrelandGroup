@@ -163,7 +163,7 @@ function FinancingHero() {
             { icon: CreditCard, label: 'From 0% Deposit', sub: 'Many green loans' },
             { icon: Percent, label: '5.5–7.9% APR', sub: 'Green loan rates' },
             { icon: TrendingUp, label: 'Cash-Flow Positive', sub: 'Savings > repayments' },
-            { icon: Shield, label: '€1,800 Grant Included', sub: 'Reduces your loan' },
+            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'Reduces your loan' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -187,7 +187,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'Transparent Pricing', desc: 'No hidden fees' },
-    { icon: Euro, label: '€1,800 Grant Applied', desc: 'Automatic deduction' },
+    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'Automatic deduction' },
     { icon: BadgeCheck, label: 'Green Loan Friendly', desc: 'Work with all major lenders' },
   ];
 
@@ -715,7 +715,7 @@ function FinancingFAQ() {
     },
     {
       q: 'How does the SEAI grant work with financing?',
-      a: `The €1,800 SEAI grant is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, if you choose a €6,000 system, the grant brings it down to €4,200 — so you only need to borrow €4,200. You never have to pay the full amount and wait for a refund.`,
+      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, if you choose a €6,000 system, the grant brings it down to €4,200 — so you only need to borrow €4,200. You never have to pay the full amount and wait for a refund.`,
     },
     {
       q: 'Is it better to pay upfront or finance solar panels?',

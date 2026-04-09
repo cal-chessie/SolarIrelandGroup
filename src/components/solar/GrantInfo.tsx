@@ -434,7 +434,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
       <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
         <Euro className="w-3 h-3 text-amber-400" />
         <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
-          SEAI Grant
+          SEAI Grant — Republic of Ireland
         </span>
       </div>
 
@@ -444,7 +444,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        The Irish government pays you to go solar. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
+        The Irish government pays you to go solar — available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
       </p>
     </motion.div>
   );
@@ -452,7 +452,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
 
 function KeyFactsRow() {
   const facts = [
-    { label: 'Grant amount', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-amber-400', bg: 'bg-amber-400/10' },
+    { label: 'SEAI Grant (ROI)', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-violet-400', bg: 'bg-violet-400/10' },
     { label: 'Min. system', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER required', value: 'C3 or lower', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
