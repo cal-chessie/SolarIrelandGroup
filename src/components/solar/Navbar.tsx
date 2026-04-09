@@ -22,7 +22,6 @@ import {
   CalendarCheck,
   CreditCard,
 } from 'lucide-react';
-import { SOLAR_DATA } from '@/lib/solar-data';
 
 const SOCIAL_LINKS = [
   { href: 'https://www.facebook.com/solarireland', label: 'Facebook', color: 'hover:text-[#1877F2] hover:border-[#1877F2]/30' },
