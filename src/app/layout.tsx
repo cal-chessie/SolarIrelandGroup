@@ -1,12 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import ExitIntent from "@/components/solar/ExitIntent";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -543,7 +549,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-IE" className="dark" suppressHydrationWarning dir="ltr" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
+    <html lang="en-IE" className="dark" suppressHydrationWarning dir="ltr">
       <head>
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
@@ -609,7 +615,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Skip to main content — visible on keyboard focus */}
         <a
