@@ -3,25 +3,23 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import {
-  X,
-  Zap,
-  HelpCircle,
-  Euro,
-  ArrowRight,
-  Shield,
-  Phone,
-  Mail,
-  Sparkles,
-  ChevronRight,
-  BookOpen,
-  Wrench,
-  MapPin,
-  Users,
-  MessageSquare,
-  CalendarCheck,
-  CreditCard,
-} from 'lucide-react';
+import X from 'lucide-react/dist/esm/icons/x.js';
+import Zap from 'lucide-react/dist/esm/icons/zap.js';
+import HelpCircle from 'lucide-react/dist/esm/icons/help-circle.js';
+import Euro from 'lucide-react/dist/esm/icons/euro.js';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right.js';
+import Shield from 'lucide-react/dist/esm/icons/shield.js';
+import Phone from 'lucide-react/dist/esm/icons/phone.js';
+import Mail from 'lucide-react/dist/esm/icons/mail.js';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles.js';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right.js';
+import BookOpen from 'lucide-react/dist/esm/icons/book-open.js';
+import Wrench from 'lucide-react/dist/esm/icons/wrench.js';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin.js';
+import Users from 'lucide-react/dist/esm/icons/users.js';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square.js';
+import CalendarCheck from 'lucide-react/dist/esm/icons/calendar-check.js';
+import CreditCard from 'lucide-react/dist/esm/icons/credit-card.js';
 
 const SOCIAL_LINKS = [
   { href: 'https://www.facebook.com/solarireland', label: 'Facebook', color: 'hover:text-[#1877F2] hover:border-[#1877F2]/30' },

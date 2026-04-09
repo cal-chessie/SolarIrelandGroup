@@ -213,3 +213,28 @@ Stage Summary:
 - Caddy proxy on port 81 forwarding to port 3000
 - Gateway/main.py connects through Caddy
 - Preview link should be working: https://preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai/
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Fix persistent ExitIntent.tsx Eye icon HMR error
+
+Work Log:
+- Investigated why Eye icon error persisted despite ExitIntent.tsx not importing Eye
+- Root cause: lucide-react barrel export (lucide-react.js) does `import * as index from './icons/index.js'` which imports ALL 1500+ icons
+- Turbopack was caching this barrel import and Eye module was referenced in the HMR module graph
+- Even after clearing .next cache, the barrel would pull Eye back in on next compile
+- Fix: Changed both ExitIntent.tsx and Navbar.tsx to import icons from direct ESM paths instead of barrel:
+  - OLD: `import { X, Zap, ... } from 'lucide-react'`
+  - NEW: `import X from 'lucide-react/dist/esm/icons/x.js'`
+- Verified all 22 individual icon .js files exist before switching
+- Killed all processes, nuked .next + node_modules/.cache + .turbo
+- Restarted via dev.sh - health check passed
+- Verified: no eye.js in compiled .next output at all
+- All routes return 200, server stable, zero errors in logs
+
+Stage Summary:
+- ExitIntent.tsx: switched 10 imports to direct ESM paths
+- Navbar.tsx: switched 17 imports to direct ESM paths  
+- No more barrel import = no more Eye icon in module graph = no more HMR error
+- Server running stable on port 3000 via dev.sh
