@@ -193,3 +193,23 @@ Stage Summary:
 - FIXED: Cleared stale .next HMR cache that had corrupted ExitIntent.tsx module (Eye icon that no longer exists)
 - FIXED: Removed proxy.ts that was crashing the production server on every request
 - Server running in production mode on port 3000, all routes working
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Ensure server stays alive and accessible via preview link
+
+Work Log:
+- Discovered `.zscripts/dev.sh` runs `bun run dev` which uses `next dev -p 3000 -H ::`
+- Previous `src/proxy.ts` was causing BOTH turbopack dev AND production servers to crash on request
+- Confirmed deleting `src/proxy.ts` resolved the root cause of all server crashes
+- Ran `.zscripts/dev.sh` properly — health check passed, all routes return 200
+- Verified Caddy proxy on port 81 works correctly
+- Tested all 10 main routes: /, /blog, /services, /about, /contact, /book-survey, /solar-calculator, /counties, /financing, /portal — all HTTP 200
+- Server stable with zero errors in output
+
+Stage Summary:
+- Server running via .zscripts/dev.sh (PID 1025) on port 3000
+- Caddy proxy on port 81 forwarding to port 3000
+- Gateway/main.py connects through Caddy
+- Preview link should be working: https://preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai/
