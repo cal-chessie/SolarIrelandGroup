@@ -362,19 +362,19 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
       </div>
 
       {installs.length > 1 && (
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {installs.map((inst, i) => (
             <button
               key={inst.id}
               onClick={() => onViewGallery(i)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-medium transition-all ${
+              className={`flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all ${
                 inst.id === install.id
                   ? 'bg-amber-400/10 border border-amber-400/20 text-amber-400'
                   : 'bg-white/[0.02] border border-white/[0.04] text-gray-600 hover:text-gray-400 hover:bg-white/[0.04]'
               }`}
             >
-              <HomeIcon className="w-3 h-3" />
-              Install {i + 1}
+              <HomeIcon className="w-3 h-3 shrink-0" />
+              <span className="truncate">{i + 1}</span>
             </button>
           ))}
         </div>
