@@ -1,8 +1,10 @@
 #!/bin/bash
 cd /home/z/my-project
+echo "Ensuring production build exists..."
+[ -d .next ] || npx next build
 while true; do
-  echo "Starting server at $(date)"
-  npx next dev -p 3000 -H :: &
+  echo "Starting PRODUCTION server at $(date)"
+  npx next start -p 3000 -H 0.0.0.0 &
   SERVER_PID=$!
   # Keepalive: ping localhost every 5 seconds
   while kill -0 $SERVER_PID 2>/dev/null; do
@@ -11,5 +13,4 @@ while true; do
   done
   echo "Server died at $(date), restarting..."
   sleep 2
-  rm -rf .next
 done
