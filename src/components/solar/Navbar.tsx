@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
-// Full mobile nav — all pages + sections
+// Mobile nav — all pages + sections
 const mobileLinks = [
   {
     label: 'Services',
@@ -152,43 +152,13 @@ const mobileLinks = [
   },
 ];
 
-// Desktop nav — 6 links with Portal
+// Desktop nav — keep to 5 links max to prevent overlap
 const desktopNavLinks = [
-  {
-    label: 'Services',
-    href: '/services',
-    isBookSurvey: false,
-  },
-  {
-    label: 'Counties',
-    href: '/counties',
-    isBookSurvey: false,
-  },
-  {
-    label: 'Calculator',
-    href: '/solar-calculator',
-    isBookSurvey: false,
-  },
-  {
-    label: 'Financing',
-    href: '/financing',
-    isBookSurvey: false,
-  },
-  {
-    label: 'Book Survey',
-    href: '/book-survey',
-    isBookSurvey: true,
-  },
-  {
-    label: 'Blog',
-    href: '/blog',
-    isBookSurvey: false,
-  },
-  {
-    label: 'Portal',
-    href: '/portal',
-    isBookSurvey: false,
-  },
+  { label: 'Services', href: '/services' },
+  { label: 'Calculator', href: '/solar-calculator' },
+  { label: 'Financing', href: '/financing' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
@@ -301,6 +271,7 @@ function MobileMenu({
 
   return (
     <>
+      {/* Backdrop */}
       <div
         className={`fixed inset-0 z-40 bg-black/70 md:hidden transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -309,6 +280,7 @@ function MobileMenu({
         aria-hidden="true"
       />
 
+      {/* Panel */}
       <div
         ref={panelRef}
         id="mobile-menu"
@@ -325,7 +297,8 @@ function MobileMenu({
         aria-hidden={!isOpen}
       >
         <div className="min-h-full bg-[#0a0a0a] border-b border-white/[0.06]">
-          <div className="flex items-center justify-between px-5 h-16 border-b border-white/[0.05]">
+          {/* Mobile header bar */}
+          <div className="flex items-center justify-between px-5 h-14 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
               <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={28} />
               <span className="font-bold text-white text-sm tracking-wide">Solar Ireland</span>
@@ -339,7 +312,8 @@ function MobileMenu({
             </button>
           </div>
 
-          <div className="px-4 py-4 space-y-1.5">
+          {/* Mobile nav links */}
+          <div className="px-4 py-4 space-y-1">
             {mobileLinks.map((link, i) => {
               const Icon = link.icon;
               const linkActive = isActive(link.href);
@@ -349,10 +323,10 @@ function MobileMenu({
                   key={link.href}
                   onClick={() => navigateTo(link.href)}
                   style={{
-                    transitionDelay: isOpen ? `${60 + i * 40}ms` : '0ms',
+                    transitionDelay: isOpen ? `${50 + i * 30}ms` : '0ms',
                   }}
                   className={`
-                    w-full text-left rounded-2xl p-4 flex items-center gap-4
+                    w-full text-left rounded-xl px-4 py-3 flex items-center gap-3.5
                     transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] group relative overflow-hidden
                     ${
                       isOpen
@@ -368,35 +342,35 @@ function MobileMenu({
                   `}
                 >
                   {linkActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-8 rounded-r-full bg-amber-400 transition-all duration-300" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-7 rounded-r-full bg-amber-400 transition-all duration-300" />
                   )}
 
                   <div
                     className={`
-                      shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200
+                      shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200
                       ${link.iconBg}
                       ${linkActive ? 'scale-110' : 'group-hover:scale-105'}
                     `}
                   >
-                    <Icon className={`w-5 h-5 ${link.iconColor}`} />
+                    <Icon className={`w-[18px] h-[18px] ${link.iconColor}`} />
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`text-[15px] font-semibold transition-colors ${
+                        className={`text-sm font-semibold transition-colors ${
                           linkActive ? 'text-white' : 'text-gray-300 group-hover:text-white'
                         }`}
                       >
                         {link.label}
                       </span>
                       {link.highlight && (
-                        <span className="px-1.5 py-0.5 rounded-md bg-amber-400/15 text-[9px] font-bold text-amber-400 uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 rounded bg-amber-400/15 text-[9px] font-bold text-amber-400 uppercase tracking-wider">
                           AI
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-gray-600 mt-0.5 block">
+                    <span className="text-[11px] text-gray-500 mt-0.5 block">
                       {link.description}
                     </span>
                   </div>
@@ -415,6 +389,7 @@ function MobileMenu({
 
           <div className="mx-4 h-px bg-white/[0.05]" />
 
+          {/* CTA buttons */}
           <div
             className={`px-4 py-5 transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
               isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
@@ -423,7 +398,7 @@ function MobileMenu({
           >
             <button
               onClick={() => navigateTo('/#calculator')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
             >
               <Zap className="w-4 h-4" />
               Analyse My Bill
@@ -432,7 +407,7 @@ function MobileMenu({
 
             <button
               onClick={() => navigateTo('/book-survey')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
             >
               <CalendarCheck className="w-4 h-4" />
               Book Free Survey
@@ -461,14 +436,15 @@ function MobileMenu({
             </div>
           </div>
 
+          {/* Trust badges */}
           <div
             className={`px-4 pb-6 transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
               isOpen ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ transitionDelay: isOpen ? '550ms' : '0ms' }}
           >
-            <div className="rounded-2xl bg-white/[0.02] border border-white/[0.04] p-4">
-              <div className="grid grid-cols-4 gap-3">
+            <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+              <div className="grid grid-cols-4 gap-2">
                 <div className="text-center">
                   <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center mx-auto mb-1.5">
                     <Shield className="w-4 h-4 text-green-400" />
@@ -541,11 +517,12 @@ function MobileMenu({
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState('');
   const activeSection = useActiveSection();
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -578,77 +555,73 @@ export default function Navbar() {
       <nav
         role="banner"
         aria-label="Site navigation"
-        className={`fixed top-0 left-0 right-0 z-30 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 ${
           scrolled
-            ? 'bg-black/95 border-b border-white/[0.05]'
+            ? 'bg-black/95 border-b border-white/[0.06] shadow-lg shadow-black/20'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Logo */}
           <button
-            onClick={() => { if (pathname !== '/') { window.location.href = '/'; } else { window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
-            className="flex items-center gap-2.5 active:scale-95 transition-transform"
+            onClick={() => {
+              if (pathname !== '/') {
+                window.location.href = '/';
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="flex items-center gap-2 shrink-0 active:scale-95 transition-transform"
           >
-            <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-12 w-auto" width={48} height={48} />
-            <span className="font-bold text-white hidden sm:inline text-lg tracking-wide">
+            <Image
+              src="/logo-sm.webp"
+              alt="Solar Ireland"
+              className="h-10 w-auto sm:h-11"
+              width={44}
+              height={44}
+              priority
+            />
+            <span className="font-bold text-white hidden sm:inline text-base lg:text-lg tracking-wide">
               Solar Ireland
             </span>
           </button>
 
-          {/* Desktop nav — 5 links only */}
-          <div className="hidden md:flex items-center gap-7">
+          {/* Desktop nav links — 5 items, won't overlap */}
+          <div className="hidden lg:flex items-center gap-6">
             {desktopNavLinks.map((link) => {
-              const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
-                ? (pathname === link.href || pathname.startsWith(link.href + '/'))
-                : activeSection === link.href.replace('/#', '').replace('#', '');
+              const isActive =
+                pathname === link.href || pathname.startsWith(link.href + '/');
               return (
                 <button
                   key={link.href}
                   onClick={() => navigateTo(link.href)}
-                  className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 ${
-                    link.isBookSurvey
-                      ? 'text-green-400 font-semibold'
-                      : link.href === '/portal'
-                      ? 'text-sky-400 font-semibold'
-                      : isActive
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-white'
+                  className={`text-[13px] font-medium tracking-wide transition-colors relative py-1 whitespace-nowrap ${
+                    isActive ? 'text-white' : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   {link.label}
-                  {isActive && !link.isBookSurvey && link.href !== '/portal' && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400 transition-all duration-300" />
-                  )}
-                  {link.isBookSurvey && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-green-400/60 transition-all duration-300" />
-                  )}
-                  {link.href === '/portal' && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-sky-400/60 transition-all duration-300" />
+                  {isActive && (
+                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400 rounded-full" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          {/* Desktop CTA buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={() => navigateTo('/#calculator')}
-              className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20"
-            >
-              Analyse Bill
-            </button>
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center gap-2.5">
             <button
               onClick={() => navigateTo('/book-survey')}
-              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20"
+              className="bg-green-400 hover:bg-green-300 text-black font-bold text-[13px] px-5 py-2 rounded-full tracking-wide active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
-              Book Free Survey
+              Get Free Quote
             </button>
           </div>
 
+          {/* Hamburger — shows on < lg */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90"
+            className="lg:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90 ml-auto"
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
