@@ -2,16 +2,18 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import X from 'lucide-react/dist/esm/icons/x.js';
-import MessageCircle from 'lucide-react/dist/esm/icons/message-circle.js';
-import Zap from 'lucide-react/dist/esm/icons/zap.js';
-import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right.js';
-import LayoutDashboard from 'lucide-react/dist/esm/icons/layout-dashboard.js';
-import Users from 'lucide-react/dist/esm/icons/users.js';
-import Shield from 'lucide-react/dist/esm/icons/shield.js';
-import Clock from 'lucide-react/dist/esm/icons/clock.js';
-import Star from 'lucide-react/dist/esm/icons/star.js';
-import TrendingUp from 'lucide-react/dist/esm/icons/trending-up.js';
+import {
+  X,
+  MessageCircle,
+  Zap,
+  ArrowRight,
+  LayoutDashboard,
+  Users,
+  Shield,
+  Clock,
+  Star,
+  TrendingUp,
+} from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 

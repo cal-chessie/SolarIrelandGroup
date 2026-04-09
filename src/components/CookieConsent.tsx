@@ -1,13 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
-import Cookie from 'lucide-react/dist/esm/icons/cookie.js';
-import X from 'lucide-react/dist/esm/icons/x.js';
-import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right.js';
-import Shield from 'lucide-react/dist/esm/icons/shield.js';
-import BarChart3 from 'lucide-react/dist/esm/icons/bar-chart-3.js';
-import Megaphone from 'lucide-react/dist/esm/icons/megaphone.js';
-import Check from 'lucide-react/dist/esm/icons/check.js';
+import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 
 
 type CookieCategory = 'necessary' | 'analytics' | 'marketing';
