@@ -152,13 +152,15 @@ const mobileLinks = [
   },
 ];
 
-// Desktop nav — keep to 5 links max to prevent overlap
+// Desktop nav — all 7 links with proper styling
 const desktopNavLinks = [
-  { label: 'Services', href: '/services' },
-  { label: 'Calculator', href: '/solar-calculator' },
-  { label: 'Financing', href: '/financing' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Services', href: '/services', isBookSurvey: false },
+  { label: 'Counties', href: '/counties', isBookSurvey: false },
+  { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
+  { label: 'Financing', href: '/financing', isBookSurvey: false },
+  { label: 'Book Survey', href: '/book-survey', isBookSurvey: true },
+  { label: 'Blog', href: '/blog', isBookSurvey: false },
+  { label: 'Portal', href: '/portal', isBookSurvey: false },
 ];
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
@@ -586,42 +588,61 @@ export default function Navbar() {
             </span>
           </button>
 
-          {/* Desktop nav links — 5 items, won't overlap */}
-          <div className="hidden lg:flex items-center gap-6">
+          {/* Desktop nav — 7 links */}
+          <div className="hidden lg:flex items-center gap-5">
             {desktopNavLinks.map((link) => {
-              const isActive =
-                pathname === link.href || pathname.startsWith(link.href + '/');
+              const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
+                ? (pathname === link.href || pathname.startsWith(link.href + '/'))
+                : activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <button
                   key={link.href}
                   onClick={() => navigateTo(link.href)}
-                  className={`text-[13px] font-medium tracking-wide transition-colors relative py-1 whitespace-nowrap ${
-                    isActive ? 'text-white' : 'text-gray-400 hover:text-white'
+                  className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
+                    link.isBookSurvey
+                      ? 'text-green-400 font-semibold'
+                      : link.href === '/portal'
+                      ? 'text-sky-400 font-semibold'
+                      : isActive
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   {link.label}
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400 rounded-full" />
+                  {isActive && !link.isBookSurvey && link.href !== '/portal' && (
+                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400 transition-all duration-300" />
+                  )}
+                  {link.isBookSurvey && (
+                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-green-400/60 transition-all duration-300" />
+                  )}
+                  {link.href === '/portal' && (
+                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-sky-400/60 transition-all duration-300" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-2.5">
+          {/* Desktop CTA buttons */}
+          <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={() => navigateTo('/#calculator')}
+              className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20 whitespace-nowrap"
+            >
+              Analyse Bill
+            </button>
             <button
               onClick={() => navigateTo('/book-survey')}
-              className="bg-green-400 hover:bg-green-300 text-black font-bold text-[13px] px-5 py-2 rounded-full tracking-wide active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
+              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
-              Get Free Quote
+              Book Free Survey
             </button>
           </div>
 
-          {/* Hamburger — shows on < lg */}
+          {/* Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90 ml-auto"
+            className="lg:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90"
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
