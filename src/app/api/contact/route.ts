@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-/* ═══════════════════════════════════════════════════════════════
-   CONTACT FORM API ROUTE
-   Accepts POST with form data and stores it for processing.
-   ═══════════════════════════════════════════════════════════════ */
-
 interface ContactFormData {
   name: string;
   email: string;
@@ -17,7 +12,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as ContactFormData;
 
-    // Basic server-side validation
     const { name, email, message } = body;
 
     if (!name || typeof name !== 'string' || name.trim().length < 2) {
@@ -41,8 +35,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // In production, this would send to a CRM, email service, or webhook.
-    // For now, we log and acknowledge receipt.
     console.log('[Contact Form] New submission received:', {
       name: name.trim(),
       email: email.trim(),

@@ -18,32 +18,24 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════════════════════
-   EXIT INTENT — World-class last-chance popup
-   ═══════════════════════════════════════════════════════════════
-   Triggers once per SESSION. 4 detection methods:
-     1. Mouse leaves viewport (desktop)
-     2. Tab switch away + back (mobile)
-     3. Scroll-away (scroll down 400px+ then race up)
-     4. 25s idle fallback
-   ═══════════════════════════════════════════════════════════════ */
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
+const PAGE_VISITS_KEY = 'solar-ireland-page-visits';
+const MIN_TIME_ON_PAGE_MS = 30_000;
 
-/* ─── Trust text (replaced fake live viewer count) ─── */
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const hasTriggered = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const pageLoadTimeRef = useRef(0);
 
 
-  /* ─── Fire the popup (once) ─── */
   const trigger = useCallback(() => {
     if (hasTriggered.current) return;
+    const pageVisits = parseInt(sessionStorage.getItem(PAGE_VISITS_KEY) || '0', 10);
+    const timeOnPage = Date.now() - pageLoadTimeRef.current;
+    if (pageVisits < 2 && timeOnPage < MIN_TIME_ON_PAGE_MS) return;
     hasTriggered.current = true;
     setTimeout(() => setShow(true), 350);
   }, []);
@@ -51,13 +43,18 @@ export default function ExitIntent() {
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
-    /* 1. Desktop: mouse leaves viewport top */
+    // Increment page visit counter for this session
+    const visits = parseInt(sessionStorage.getItem(PAGE_VISITS_KEY) || '0', 10) + 1;
+    sessionStorage.setItem(PAGE_VISITS_KEY, visits.toString());
+
+    // Record when this page loaded
+    pageLoadTimeRef.current = Date.now();
+
     const onMouseLeave = (e: MouseEvent) => {
       if (e.clientY < 0) trigger();
     };
     document.documentElement.addEventListener('mouseleave', onMouseLeave);
 
-    /* 2. Mobile: tab switch away + back */
     let tabHidden = false;
     const onVisChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -69,7 +66,6 @@ export default function ExitIntent() {
     };
     document.addEventListener('visibilitychange', onVisChange);
 
-    /* 3. Scroll-away: scrolled 400px+ then race to top */
     let maxScroll = 0;
     let scrollTimer: ReturnType<typeof setTimeout>;
     const onScroll = () => {
@@ -85,8 +81,7 @@ export default function ExitIntent() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    /* 4. Fallback: 25s idle */
-    const idleTimer = setTimeout(trigger, 25000);
+    const idleTimer = setTimeout(trigger, MIN_TIME_ON_PAGE_MS);
 
     return () => {
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
@@ -97,7 +92,6 @@ export default function ExitIntent() {
     };
   }, [trigger]);
 
-  /* ─── Scroll lock when open ─── */
   useEffect(() => {
     if (!show) return;
     const prev = document.body.style.overflow;
@@ -107,7 +101,6 @@ export default function ExitIntent() {
     };
   }, [show]);
 
-  /* ─── Close handler ─── */
   const close = useCallback(() => {
     setShow(false);
     sessionStorage.setItem(SESSION_KEY, '1');
@@ -117,7 +110,6 @@ export default function ExitIntent() {
     close();
   }, [close]);
 
-  /* ─── Escape key ─── */
   useEffect(() => {
     if (!show) return;
     const onKey = (e: KeyboardEvent) => {
@@ -142,21 +134,17 @@ export default function ExitIntent() {
       aria-modal="true"
       aria-label="Special offer before you leave"
     >
-      {/* ── Backdrop — semi-transparent overlay (no CSS filter) ── */}
       <div className="exit-intent-backdrop absolute inset-0 bg-black/60" onClick={close} />
 
-      {/* ── Card ── */}
       <div
         ref={cardRef}
         className="exit-intent-card relative w-full max-w-[480px] rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
       >
-        {/* Animated top accent bar with shimmer sweep */}
         <div className="relative h-1 w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
           <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         </div>
 
-        {/* ── Logo + Close row ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
           <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3">
             <Image
@@ -179,11 +167,9 @@ export default function ExitIntent() {
           </button>
         </div>
 
-        {/* Ambient glow behind content */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative p-6 sm:p-8 pt-4">
-          {/* ─── Trust indicator ─── */}
           <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -194,7 +180,6 @@ export default function ExitIntent() {
             </span>
           </div>
 
-          {/* ─── Headline ─── */}
           <div className="exit-intent-el exit-intent-el-2 mb-6">
             <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
               Wait — don&apos;t leave{' '}
@@ -209,9 +194,7 @@ export default function ExitIntent() {
             </p>
           </div>
 
-          {/* ─── Feature cards ─── */}
           <div className="space-y-2.5 mb-6">
-            {/* Project Portal */}
             <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-500/[0.05] border border-amber-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
@@ -227,7 +210,6 @@ export default function ExitIntent() {
               </div>
             </div>
 
-            {/* Team Chat */}
             <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Users className="w-[18px] h-[18px] text-green-400" />
@@ -244,7 +226,6 @@ export default function ExitIntent() {
             </div>
           </div>
 
-          {/* ─── Trust badges row ─── */}
           <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-6 flex-wrap">
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
@@ -262,7 +243,6 @@ export default function ExitIntent() {
             ))}
           </div>
 
-          {/* ─── Urgency element ─── */}
           <div className="exit-intent-el exit-intent-el-6 flex items-center justify-center gap-1.5 mb-4">
             <Clock className="w-3 h-3 text-amber-400/60" />
             <span className="text-[11px] text-gray-500">
@@ -270,7 +250,6 @@ export default function ExitIntent() {
             </span>
           </div>
 
-          {/* ─── Primary CTA ─── */}
           <div className="exit-intent-el exit-intent-el-7">
             <a
               href={whatsappUrl}
@@ -279,7 +258,6 @@ export default function ExitIntent() {
               onClick={handleCTA}
               className="exit-intent-cta flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-[15px] shadow-lg shadow-green-500/25 hover:shadow-green-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden"
             >
-              {/* Shimmer sweep on CTA */}
               <span className="absolute inset-0 exit-intent-cta-shimmer" />
               <MessageCircle className="w-[18px] h-[18px] relative z-10" />
               <span className="relative z-10">Get Your Free Survey</span>
@@ -287,7 +265,6 @@ export default function ExitIntent() {
             </a>
           </div>
 
-          {/* ─── Secondary actions ─── */}
           <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
             <a
               href="#calculator"
@@ -305,7 +282,6 @@ export default function ExitIntent() {
             </button>
           </div>
 
-          {/* ─── Micro trust line ─── */}
           <div className="exit-intent-el exit-intent-el-9 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
             <span className="flex items-center gap-1 text-[10px] text-gray-600">
               <Shield className="w-3 h-3" />

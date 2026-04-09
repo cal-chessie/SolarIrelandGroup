@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import ZAI from 'z-ai-web-dev-sdk';
 
-// ─── Irish Energy Provider Rates (2026) ───
 const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; standingCharge: number; exportRate: number }> = {
   'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
   'ESB': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
@@ -17,8 +16,6 @@ const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; stand
 
 const DEFAULT_RATES = { dayRate: 0.42, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.21 };
 
-// ─── Monthly Solar Generation Profile (kWh per kWp) ───
-// Based on SEAI TMY data for typical south-facing Irish roof at 35° tilt
 const MONTHLY_YIELD_PER_KWP = [
   42,  // Jan
   62,  // Feb
@@ -36,8 +33,6 @@ const MONTHLY_YIELD_PER_KWP = [
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-// ─── CO2 emission factor ───
-// Ireland grid: 0.296 kg CO2/kWh (2024 EPA data, slight reduction assumed by 2026)
 const CO2_FACTOR = 0.29;
 
 interface BillExtraction {
@@ -54,7 +49,6 @@ interface BillExtraction {
 }
 
 interface AnalysisResult {
-  // Bill info
   provider: string;
   monthlyBill: number;
   annualUsage: number;
@@ -62,29 +56,24 @@ interface AnalysisResult {
   unitRate: number;
   standingCharge: number;
 
-  // VLM info
   confidence: number;
   extractedFields: string[];
   billingPeriod: string | null;
 
-  // Recommended system
   recommendedSystem: number;
   installCost: number;
   seaiGrant: number;
   costAfterGrant: number;
 
-  // Savings
   annualSaving: number;
   annualExportEarning: number;
   totalAnnualBenefit: number;
   paybackYears: number;
   roiPercent: number;
 
-  // 25 year projection
   total25YearSavings: number;
   co2Saved25Years: number;
 
-  // Monthly breakdown
   monthlyProfile: {
     month: string;
     generation: number;
@@ -95,7 +84,6 @@ interface AnalysisResult {
     exportEarning: number;
   }[];
 
-  // System comparisons
   systemComparisons: {
     size: number;
     generation: number;
@@ -106,13 +94,11 @@ interface AnalysisResult {
     grant: number;
   }[];
 
-  // Battery assessment
   batteryWorthwhile: boolean;
   batteryReason: string;
   estimatedBatteryCost: number;
   batteryPaybackYears: number;
 
-  // Carbon
   annualCo2Saved: number;
   treesEquiv25Years: number;
 }
@@ -199,7 +185,6 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       unitRate = billData.unitRate;
       standingCharge = billData.standingCharge;
 
-      // Track what was successfully extracted
       extractedFields = [];
       confidence = 0;
       if (billData.provider) { extractedFields.push('Provider'); confidence += 20; }
@@ -240,7 +225,6 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
 }
 
 function getProviderRates(provider: string) {
-  // Fuzzy match provider name
   const key = Object.keys(PROVIDER_RATES).find(
     k => provider.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(provider.toLowerCase())
   );
@@ -260,30 +244,26 @@ function runFullAnalysis(
 ): AnalysisResult {
   const rates = getProviderRates(provider);
 
-  // Use provider's known rate, or derive from bill
   const effectiveRate = unitRate || rates.dayRate;
   const effectiveStanding = standingCharge || rates.standingCharge;
 
-  // Monthly consumption split
   const monthlyUsage = annualUsage / 12;
   const avgDayConsumption = monthlyUsage * 0.65; // 65% during day
   const avgNightConsumption = monthlyUsage * 0.35; // 35% night
 
-  // ─── System sizing: test multiple sizes and find optimal ROI ───
   const systemComparisons: AnalysisResult['systemComparisons'] = [];
   let bestPayback = Infinity;
   let recommendedSystem = 4;
 
   for (const size of [2, 3, 4, 5, 6, 7]) {
     const gen = size * 1070; // total annual generation
-    const selfConsumed = Math.min(gen * 0.5, annualUsage * 0.5); // 50% self-consumption
+    const selfConsumed = Math.min(gen * 0.65, annualUsage * 0.65); // 65% self-consumption
     const exported = gen - selfConsumed;
 
     const saving = selfConsumed * effectiveRate;
     const exportEarning = exported * rates.exportRate;
     const totalBenefit = saving + exportEarning;
 
-    // SEAI grant: €1,800 for systems ≥ 2kWp (2026)
     const grant = size >= 2 ? 1800 : 0;
     const installCost = size * 1500 + 2000; // base + per kWp
     const netCost = installCost - grant;
@@ -308,11 +288,10 @@ function runFullAnalysis(
 
   const best = systemComparisons.find(c => c.size === recommendedSystem) || systemComparisons[2];
 
-  // ─── Monthly profile for recommended system ───
   const monthlyProfile = MONTH_NAMES.map((month, i) => {
     const generation = recommendedSystem * MONTHLY_YIELD_PER_KWP[i];
     const consumption = monthlyUsage;
-    const selfConsumed = Math.min(generation * 0.5, consumption * 0.65);
+    const selfConsumed = Math.min(generation * 0.65, consumption * 0.75);
     const exported = Math.max(0, generation - selfConsumed);
     const saving = selfConsumed * effectiveRate;
     const exportEarning = exported * rates.exportRate;
@@ -328,9 +307,6 @@ function runFullAnalysis(
     };
   });
 
-  // ─── Battery assessment ───
-  // A battery is worthwhile when self-consumption ratio is low (< 40%)
-  // and the household has reasonable day usage
   const selfConsumptionRatio = best.annualSaving / (best.annualSaving + best.annualExport);
   const batteryWorthwhile = selfConsumptionRatio < 0.45 && annualUsage > 3500;
   const estimatedBatteryCost = 4500; // 5kWh battery + installation
@@ -344,18 +320,15 @@ function runFullAnalysis(
     ? `Your self-consumption is ~${Math.round(selfConsumptionRatio * 100)}%, meaning you're exporting a lot of energy. A battery could capture ~€${batteryExtraSaving}/year more of that, paying for itself in ~${batteryPaybackYears} years.`
     : `Your self-consumption is already strong at ~${Math.round(selfConsumptionRatio * 100)}%. A battery wouldn't add enough benefit to justify the €${estimatedBatteryCost.toLocaleString()} cost.`;
 
-  // ─── Carbon savings ───
   const annualCo2Saved = Math.round(best.generation * CO2_FACTOR);
   const total25YearCo2Saved = Math.round(annualCo2Saved * 22.5); // accounting for degradation
-  // Average tree absorbs ~22kg CO2/year in Ireland
   const treesEquiv25Years = Math.round(total25YearCo2Saved / (22 * 25));
 
-  // ─── 25-year total (with 0.5% annual degradation + 3% electricity price increase) ───
   let total25YearSavings = 0;
   let yearlyOutput = best.generation;
   let currentPrice = effectiveRate;
   for (let i = 0; i < 25; i++) {
-    const selfUsed = Math.min(yearlyOutput * 0.5, annualUsage * 0.5);
+    const selfUsed = Math.min(yearlyOutput * 0.65, annualUsage * 0.65);
     const exp = yearlyOutput - selfUsed;
     total25YearSavings += selfUsed * currentPrice + exp * rates.exportRate;
     yearlyOutput *= 0.995;

@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   ],
 
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
   reactStrictMode: true,
@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors *",
+            value: "frame-ancestors 'self' https://*.space.z.ai https://preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
           },
           {
             key: "X-XSS-Protection",
@@ -70,11 +70,29 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Cross-Origin-Opener-Policy",
-            value: "same-origin-allow-popups",
+            value: "unsafe-none",
           },
           {
             key: "Cross-Origin-Resource-Policy",
             value: "cross-origin",
+          },
+        ],
+      },
+      {
+        // HTML pages — never cache so updates always show immediately
+        source: "/((?!api|_next|favicon|robots|sitemap|manifest).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate, proxy-revalidate",
+          },
+          {
+            key: "Pragma",
+            value: "no-cache",
+          },
+          {
+            key: "Expires",
+            value: "0",
           },
         ],
       },
@@ -100,7 +118,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: "public, max-age=300, must-revalidate",
           },
         ],
       },

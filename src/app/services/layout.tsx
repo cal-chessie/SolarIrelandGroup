@@ -63,6 +63,48 @@ export default function ServicesLayout({
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            '@id': 'https://solarireland.com/services',
+            name: 'Solar Panel Services Ireland',
+            description: 'Full-service solar panel installation across Ireland. Solar PV, battery storage, EV charger installation, SEAI grant assistance, BER assessment, and ongoing maintenance.',
+            url: 'https://solarireland.com/services',
+            inLanguage: 'en-IE',
+            isPartOf: { '@id': 'https://solarireland.com/#website' },
+            about: { '@id': 'https://solarireland.com/#business' },
+            primaryImageOfPage: {
+              '@type': 'ImageObject',
+              url: 'https://solarireland.com/hero-solar.jpg',
+              width: 1920,
+              height: 1080,
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Solar Ireland Services',
+            description: 'Complete range of solar panel and clean energy services for Irish homes.',
+            numberOfItems: 6,
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Residential Solar PV Installation', url: 'https://solarireland.com/services#solar-pv' },
+              { '@type': 'ListItem', position: 2, name: 'Battery Storage Installation', url: 'https://solarireland.com/services#battery-storage' },
+              { '@type': 'ListItem', position: 3, name: 'EV Charger Installation', url: 'https://solarireland.com/services#ev-charging' },
+              { '@type': 'ListItem', position: 4, name: 'SEAI Grant Assistance', url: 'https://solarireland.com/services#seai-grant' },
+              { '@type': 'ListItem', position: 5, name: 'BER Assessment', url: 'https://solarireland.com/services#ber-assessment' },
+              { '@type': 'ListItem', position: 6, name: 'Maintenance & Monitoring', url: 'https://solarireland.com/services#maintenance' },
+            ],
+          }),
+        }}
+      />
       {children}
     </>
   );

@@ -5,14 +5,7 @@ import { Euro, Clock, Zap, Sun } from 'lucide-react';
 import { motion } from '@/lib/motion';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
-/* ═══════════════════════════════════════════════════════════════
-   STATS BAR — Animated stat counters strip
-   ─────────────────────────────────────────────────────────────
-   GPU-composited animations only (transform + opacity)
-   Spring easing: cubic-bezier(0.16, 1, 0.3, 1)
-   ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Animated counter hook ─── */
 function useStatCounter(target: number, duration = 2000, start = false) {
   const [value, setValue] = useState(0);
   const hasRun = useRef(false);
@@ -24,7 +17,6 @@ function useStatCounter(target: number, duration = 2000, start = false) {
     const startTime = performance.now();
     const tick = (now: number) => {
       const t = Math.min((now - startTime) / duration, 1);
-      // ease-out cubic
       const ease = 1 - Math.pow(1 - t, 3);
       setValue(Math.round(target * ease));
       if (t < 1) requestAnimationFrame(tick);
@@ -35,7 +27,6 @@ function useStatCounter(target: number, duration = 2000, start = false) {
   return value;
 }
 
-/* ─── Stat definitions ─── */
 const STATS = [
   {
     icon: Euro,
@@ -75,7 +66,6 @@ const STATS = [
   },
 ];
 
-/* ─── Individual Stat Card ─── */
 function StatCard({
   icon: Icon,
   label,
@@ -105,7 +95,6 @@ function StatCard({
       transition={{ duration: 0.6, ease: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
       className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 sm:py-5 rounded-xl glass-card"
     >
-      {/* Icon */}
       <div
         className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg ${bg} flex items-center justify-center shrink-0`}
         style={{ willChange: 'transform' }}
@@ -113,7 +102,6 @@ function StatCard({
         <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${color}`} />
       </div>
 
-      {/* Value + Label */}
       <div className="min-w-0">
         <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-none tabular-nums">
           {prefix}{value.toLocaleString()}<span className="text-sm sm:text-base font-semibold text-gray-400">{suffix}</span>
@@ -124,9 +112,6 @@ function StatCard({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   STATS BAR COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 export default function StatsBar() {
   return (
     <section className="hidden sm:block relative z-10 -mt-6 sm:-mt-8 pb-8 sm:pb-12 px-4 sm:px-6">

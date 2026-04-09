@@ -15,9 +15,6 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════
-   FAQ DATA WITH CATEGORIES
-   ═══════════════════════════════════════════ */
 interface FAQItem {
   id: number;
   question: string;
@@ -114,7 +111,7 @@ const faqs: FAQItem[] = [
     id: 9,
     question: 'How much electricity will I generate?',
     answer:
-      'In Ireland, a well-positioned system generates roughly 850 to 950 kWh per kilowatt-peak (kWp) per year. A typical 4 kWp system would produce around 3,400 to 3,800 kWh annually. Actual output depends on your roof orientation, pitch, and shading. Modern panels are remarkably efficient — even on overcast Irish days they generate meaningful power. A properly sized system can cover 40-60% of a typical household\'s annual electricity needs.',
+      'In Ireland, a well-positioned system generates roughly 850 to 950 kWh per kilowatt-peak (kWp) per year. A typical 4 kWp system would produce around 3,400 to 3,800 kWh annually. Actual output depends on your roof orientation, pitch, and shading. Modern panels are remarkably efficient — even on overcast Irish days they generate meaningful power. A properly sized system can cover 60-70% of a typical household\'s annual electricity needs.',
     category: 'technical',
     keywords: ['generate', 'generation', 'output', 'kwh', 'power', 'electricity', 'produce', 'kwp'],
   },
@@ -130,7 +127,7 @@ const faqs: FAQItem[] = [
     id: 11,
     question: 'Do you offer battery storage?',
     answer:
-      'Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption from around 40-50% to 80%+. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they\'re worth considering if you\'re out during the day, have an EV, or want to maximise your energy independence. We discuss battery options during the survey.',
+      'Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to 85%+. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they\'re worth considering if you\'re out during the day, have an EV, or want to maximise your energy independence. We discuss battery options during the survey.',
     category: 'technical',
     keywords: ['battery', 'storage', 'tesla', 'powerwall', 'store', 'night', 'evening'],
   },
@@ -144,9 +141,6 @@ const faqs: FAQItem[] = [
   },
 ];
 
-/* ═══════════════════════════════════════════
-   FAQ ITEM COMPONENT
-   ═══════════════════════════════════════════ */
 function FAQItemCard({
   faq,
   isOpen,
@@ -160,7 +154,6 @@ function FAQItemCard({
 }) {
   const catConfig = categories.find((c) => c.key === faq.category)!;
 
-  // Related FAQs (same category, different item)
   const related = faqs
     .filter((f) => f.category === faq.category && f.id !== faq.id)
     .slice(0, 2);
@@ -187,7 +180,7 @@ function FAQItemCard({
           <div className={`shrink-0 w-7 h-7 rounded-lg ${catConfig.bg} flex items-center justify-center mt-0.5 sm:mt-0`}>
             <catConfig.icon className={`w-3.5 h-3.5 ${catConfig.color}`} />
           </div>
-          <span className={`font-medium pr-2 text-sm sm:text-[15px] leading-snug transition-colors ${
+          <span className={`speakable-question font-medium pr-2 text-sm sm:text-[15px] leading-snug transition-colors ${
             isOpen ? 'text-white' : 'text-gray-300 group-hover:text-white'
           }`}>
             {faq.question}
@@ -211,12 +204,10 @@ function FAQItemCard({
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           >
             <div className="overflow-hidden">
-              {/* Answer */}
               <div className="px-5 sm:px-6 pb-4">
                 <div className="pl-10">
-                  <p className="text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                  <p className="speakable-answer text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
 
-                  {/* Related questions */}
                   {related.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-white/[0.05]">
                       <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Related questions</p>
@@ -243,9 +234,6 @@ function FAQItemCard({
   );
 }
 
-/* ═══════════════════════════════════════════
-   SEARCH INPUT
-   ═══════════════════════════════════════════ */
 function SearchInput({
   value,
   onChange,
@@ -288,9 +276,6 @@ function SearchInput({
   );
 }
 
-/* ═══════════════════════════════════════════
-   CATEGORY TABS
-   ═══════════════════════════════════════════ */
 function CategoryTabs({
   active,
   onChange,
@@ -332,9 +317,6 @@ function CategoryTabs({
   );
 }
 
-/* ═══════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════ */
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
@@ -342,23 +324,19 @@ export default function FAQ() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
-  // Category counts
   const categoryCounts = useMemo(() => {
     const counts: Record<CategoryKey, number> = { all: faqs.length, costs: 0, grants: 0, install: 0, technical: 0 };
     faqs.forEach((f) => { counts[f.category]++; });
     return counts;
   }, []);
 
-  // Filtered FAQs
   const filteredFAQs = useMemo(() => {
     let result = faqs;
 
-    // Filter by category
     if (activeCategory !== 'all') {
       result = result.filter((f) => f.category === activeCategory);
     }
 
-    // Filter by search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(
@@ -386,12 +364,93 @@ export default function FAQ() {
   };
 
   return (
+    <>
+    <script
+      type="application/ld+json"
+      id="schema-faq"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "@id": "https://solarireland.com/#faq",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "How much do solar panels cost in Ireland in 2026?",
+              acceptedAnswer: { "@type": "Answer", text: "A typical residential solar PV system costs between €4,500 and €7,500 before the €1,800 SEAI grant. After the grant, you are looking at approximately €2,700 to €5,700 out of pocket." },
+            },
+            {
+              "@type": "Question",
+              name: "How much could I save with solar panels?",
+              acceptedAnswer: { "@type": "Answer", text: "A typical 3-bed semi-detached home with a 4 kWp system can save between €800 and €1,400 per year on electricity bills. Over 25 years, total savings typically range from €30,000 to €50,000." },
+            },
+            {
+              "@type": "Question",
+              name: "How long is the solar panel payback period?",
+              acceptedAnswer: { "@type": "Answer", text: "Most homeowners see a full payback within 5 to 7 years after the €1,800 SEAI grant. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty." },
+            },
+            {
+              "@type": "Question",
+              name: "What is the SEAI grant and am I eligible?",
+              acceptedAnswer: { "@type": "Answer", text: "The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels. To be eligible, you must be the owner-occupier of a home built before 2021 with a BER rating of C3 or lower." },
+            },
+            {
+              "@type": "Question",
+              name: "How long does solar panel installation take?",
+              acceptedAnswer: { "@type": "Answer", text: "The physical installation is completed in a single day. Scaffolding goes up first thing, our RECI-registered team mounts and wires the panels, and the system is fully commissioned before we leave." },
+            },
+            {
+              "@type": "Question",
+              name: "Do I need planning permission for solar panels in Ireland?",
+              acceptedAnswer: { "@type": "Answer", text: "In the vast majority of cases, no. Solar panels are considered permitted development. Panels must not extend more than 50cm from the roof surface, and total area must not exceed 12 square metres." },
+            },
+            {
+              "@type": "Question",
+              name: "What about cloudy days and winter in Ireland?",
+              acceptedAnswer: { "@type": "Answer", text: "Solar panels still generate on cloudy days — typically 10-25% of rated output. Winter production is lower but summer surplus offsets the winter deficit." },
+            },
+            {
+              "@type": "Question",
+              name: "Do you offer battery storage in Ireland?",
+              acceptedAnswer: { "@type": "Answer", text: "Yes. A battery stores excess daytime generation for evening use, increasing self-consumption to 85%+. A typical 5 kWh battery costs around €4,000-€5,000 installed." },
+            },
+            {
+              "@type": "Question",
+              name: "What happens to electricity I don't use?",
+              acceptedAnswer: { "@type": "Answer", text: "Excess electricity is automatically exported to the grid under the Clean Export Guarantee scheme, earning you €0.21/kWh from your supplier via smart meter credit." },
+            },
+            {
+              "@type": "Question",
+              name: "Will solar panels work on my roof?",
+              acceptedAnswer: { "@type": "Answer", text: "Solar panels work on most Irish roof types. South-facing at 30-40° pitch is optimal, but east/west roofs still produce 80-85% of south-facing output." },
+            },
+          ],
+        }),
+      }}
+    />
+    <script
+      type="application/ld+json"
+      id="schema-speakable"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".speakable-question", ".speakable-answer"],
+            "xpath": [
+              "//section[@id='faq']//button[contains(@class,'speakable-question')]",
+              "//section[@id='faq']//p[contains(@class,'speakable-answer')]"
+            ]
+          },
+          "url": "https://solarireland.com/#faq"
+        }),
+      }}
+    />
     <section id="faq" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
-      {/* Ambient glow */}
       <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-violet-500/[0.015] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto relative z-10" ref={sectionRef}>
-        {/* ─── Section header ─── */}
         <motion.div
           className="text-center mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 20 }}
@@ -415,7 +474,6 @@ export default function FAQ() {
           </p>
         </motion.div>
 
-        {/* ─── Search ─── */}
         <motion.div
           className="mb-4"
           initial={{ opacity: 0, y: 15 }}
@@ -430,7 +488,6 @@ export default function FAQ() {
           />
         </motion.div>
 
-        {/* ─── Category tabs ─── */}
         <motion.div
           className="mb-6"
           initial={{ opacity: 0, y: 10 }}
@@ -440,7 +497,6 @@ export default function FAQ() {
           <CategoryTabs active={activeCategory} onChange={(k) => { setActiveCategory(k); setOpenIndex(null); }} counts={categoryCounts} />
         </motion.div>
 
-        {/* ─── Active filter indicator ─── */}
         {(activeCategory !== 'all' || searchQuery) && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
@@ -463,7 +519,6 @@ export default function FAQ() {
           </motion.div>
         )}
 
-        {/* ─── FAQ list ─── */}
         <div className="space-y-2">
           <AnimatePresence mode="popLayout">
             {filteredFAQs.length > 0 ? (
@@ -497,7 +552,6 @@ export default function FAQ() {
         </div>
 
 
-        {/* ─── Still have questions? ─── */}
         <motion.div
           className="mt-8 text-center"
           initial={{ opacity: 0 }}
@@ -520,5 +574,6 @@ export default function FAQ() {
 
       </div>
     </section>
+    </>
   );
 }

@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════
-   BLOG ARTICLE DATA — Solar Ireland
-   Shared between /blog listing and /blog/[slug] individual pages.
-   ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Content Section Types ─── */
 export type ContentSection =
   | { type: 'paragraph'; text: string }
   | { type: 'heading'; level: 2 | 3; text: string }
@@ -14,7 +9,6 @@ export type ContentSection =
   | { type: 'divider' }
   | { type: 'cta'; text: string; href: string };
 
-/* ─── Article Interface ─── */
 export interface Article {
   slug: string;
   title: string;
@@ -29,13 +23,7 @@ export interface Article {
   content: ContentSection[];
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ALL 15 ARTICLES
-   ═══════════════════════════════════════════════════════════════ */
 export const articles: Article[] = [
-  /* ─────────────────────────────────────────────
-     1. SEAI Grant Guide (Featured)
-     ───────────────────────────────────────────── */
   {
     slug: 'complete-guide-seai-solar-grant-2026',
     title: 'The Complete Guide to the SEAI Solar Grant in 2026',
@@ -50,7 +38,7 @@ export const articles: Article[] = [
     iconColor: 'text-amber-400',
     content: [
       { type: 'heading', level: 2, text: 'What Is the SEAI Solar Panel Grant?' },
-      { type: 'paragraph', text: 'The Sustainable Energy Authority of Ireland (SEAI) offers a government-backed grant to help homeowners offset the cost of installing solar photovoltaic (PV) panels. In 2026, the grant remains one of the most generous incentives available to Irish households looking to reduce their electricity bills and carbon footprint. The current grant amount stands at €1,800 for a typical domestic solar PV installation, making solar power more accessible than ever before.' },
+      { type: 'paragraph', text: 'The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to owner-occupiers of homes built before 2021 and is paid directly to your installer after completion — no waiting for a refund.' },
       { type: 'paragraph', text: 'The grant is part of Ireland\'s broader National Development Plan, which aims to have 70% of electricity generated from renewable sources by 2030. Solar PV is a cornerstone of this strategy, and the SEAI grant is designed to accelerate adoption across the country. Since the scheme launched, tens of thousands of Irish homeowners have successfully applied and received funding for their solar installations.' },
       { type: 'callout', variant: 'stat', title: 'Key Statistic', body: 'Over 65,000 Irish homes have received the SEAI solar grant since its inception, with uptake accelerating by 40% year-on-year since 2024.' },
       { type: 'heading', level: 2, text: 'Who Is Eligible for the Grant?' },
@@ -124,9 +112,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     2. Solar Panel Costs
-     ───────────────────────────────────────────── */
   {
     slug: 'how-much-do-solar-panels-cost-ireland-2026',
     title: 'How Much Do Solar Panels Cost in Ireland? (2026 Prices)',
@@ -140,7 +125,7 @@ export const articles: Article[] = [
     iconColor: 'text-emerald-400',
     content: [
       { type: 'heading', level: 2, text: 'Average Solar Panel Costs in Ireland (2026)' },
-      { type: 'paragraph', text: 'One of the first questions every Irish homeowner asks when considering solar is: "How much will it actually cost?" The answer depends on several factors, but we believe in complete transparency. Below is a comprehensive breakdown of current solar panel prices in Ireland for 2026, including installation, the SEAI grant, and the real factors that affect your final out-of-pocket cost.' },
+      { type: 'paragraph', text: 'Solar panels in Ireland cost between **€4,200 and €14,200 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs approximately €4,200–€6,200, a 6kWp system costs €6,700–€9,200, and a 10kWp system with battery costs €10,200–€14,200. Prices have fallen roughly 20–30% over the past five years as the market has matured, making 2026 the most affordable time to go solar.' },
       { type: 'paragraph', text: 'The Irish solar market has matured significantly over the past few years. Increased competition, improvements in panel efficiency, and streamlined installation processes have all contributed to a steady decline in prices. A standard residential solar PV system now costs roughly 20–30% less than it did just five years ago.' },
       { type: 'callout', variant: 'stat', title: 'Price Range Overview', body: 'The average cost of a solar panel system in Ireland in 2026 ranges from €6,000 for a small 4kWp system to €16,000 for a large 10kWp system with battery storage. After the €1,800 SEAI grant, your net cost drops to between €4,200 and €14,200.' },
       { type: 'heading', level: 2, text: 'Cost Breakdown by System Size' },
@@ -192,9 +177,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     3. Solar Panels in Winter
-     ───────────────────────────────────────────── */
   {
     slug: 'solar-panels-in-winter-do-they-work',
     title: 'Solar Panels in Winter: Do They Actually Work?',
@@ -208,7 +190,7 @@ export const articles: Article[] = [
     iconColor: 'text-sky-400',
     content: [
       { type: 'heading', level: 2, text: 'The Myth vs The Reality' },
-      { type: 'paragraph', text: 'If there is one question we hear more than any other at Solar Ireland, it is this: "But what about winter? Don\'t solar panels stop working when it\'s cloudy?" It is a perfectly reasonable concern — Ireland is not exactly known for its blue skies. But the reality is very different from the myth, and modern solar technology is far more effective in low-light conditions than most people realise.' },
+      { type: 'paragraph', text: '**Yes, solar panels absolutely work during Irish winters.** A typical 6kWp system generates approximately 30–50% of its summer output between November and February — producing 150–250 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland\'s climate.' },
       { type: 'paragraph', text: 'Solar panels do not need direct sunlight to generate electricity. They work on daylight, not sunshine. Even on a completely overcast Irish winter day, your panels will still produce a meaningful amount of power. Think of it this way: you can still get sunburned on a cloudy day — the UV radiation is still there, just diffused. Solar panels work on a similar principle.' },
       { type: 'callout', variant: 'stat', title: 'Winter Output in Ireland', body: 'A typical 6kWp solar PV system in Ireland generates approximately 30–50% of its summer output during the winter months (November through February). While this is less than summer, it still contributes meaningfully to your electricity needs.' },
       { type: 'heading', level: 2, text: 'How Much Do Solar Panels Generate in Winter?' },
@@ -256,9 +238,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     4. Clean Export Guarantee
-     ───────────────────────────────────────────── */
   {
     slug: 'clean-export-guarantee-explained',
     title: 'Clean Export Guarantee Explained: Get Paid for Your Excess Solar',
@@ -272,7 +251,7 @@ export const articles: Article[] = [
     iconColor: 'text-amber-400',
     content: [
       { type: 'heading', level: 2, text: 'What Is the Clean Export Guarantee?' },
-      { type: 'paragraph', text: 'The Clean Export Guarantee (CEG) is a government-backed scheme that ensures homeowners with solar panels receive a fair payment for any surplus electricity they export to the national grid. Launched in 2022, it replaced the older feed-in tariff scheme and represents a significant improvement for Irish solar customers.' },
+      { type: 'paragraph', text: 'The Clean Export Guarantee (CEG) pays Irish homeowners **€0.21 per kilowatt-hour** for surplus solar electricity exported to the grid. This government-backed scheme, launched in 2022, requires energy suppliers to pay you for every unit of excess solar power your panels generate. For a typical 6kWp system, CEG earnings add €250–€378 per year on top of your bill savings — and the payment appears automatically as a credit on your electricity bill via your smart meter.' },
       { type: 'paragraph', text: 'Under the CEG, energy suppliers are required to offer a payment rate for every kilowatt-hour (kWh) of electricity you export. The scheme is designed to make solar panels financially viable for everyone — not just those who can use all of their generated electricity during the day. It effectively turns the national grid into your battery, giving you credit for the power you share with your neighbours.' },
       { type: 'callout', variant: 'stat', title: 'Current CEG Rate', body: 'The minimum CEG rate in 2026 is €0.21 per kWh, set by the Commission for Regulation of Utilities (CRU). Some suppliers offer higher rates as part of competitive tariffs, so it pays to shop around.' },
       { type: 'heading', level: 2, text: 'How the CEG Works in Practice' },
@@ -324,9 +303,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     5. East vs South vs West Roofs
-     ───────────────────────────────────────────── */
   {
     slug: 'east-vs-south-vs-west-facing-roofs-solar',
     title: 'East vs South vs West-Facing Roofs: Which Is Best for Solar?',
@@ -395,9 +371,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     6. Battery Storage
-     ───────────────────────────────────────────── */
   {
     slug: 'battery-storage-is-it-worth-the-extra-cost',
     title: 'Battery Storage: Is It Worth the Extra Cost?',
@@ -467,9 +440,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     7. Planning Permission
-     ───────────────────────────────────────────── */
   {
     slug: 'planning-permission-solar-panels-ireland',
     title: 'Planning Permission for Solar Panels in Ireland — What You Need to Know',
@@ -529,9 +499,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     8. Panel Comparison: LONGi vs Jinko vs Trina
-     ───────────────────────────────────────────── */
   {
     slug: 'longi-vs-jinko-vs-trina-best-solar-panels',
     title: 'LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?',
@@ -612,9 +579,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     9. Solar Panels Dublin Guide
-     ───────────────────────────────────────────── */
   {
     slug: 'solar-panels-dublin-ultimate-guide',
     title: 'Solar Panels in Dublin: The Ultimate 2026 Guide',
@@ -699,9 +663,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     10. SEAI Grant Stays at €1,800 for 2026
-     ───────────────────────────────────────────── */
   {
     slug: 'seai-grant-stay-e1800-2026-what-it-means',
     title: 'SEAI Grant Stays at €1,800 for 2026 — What It Means for You',
@@ -757,9 +718,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     11. Solar Panels + Heat Pumps
-     ───────────────────────────────────────────── */
   {
     slug: 'solar-panels-and-heat-pumps-perfect-partnership',
     title: 'Solar Panels and Heat Pumps: The Perfect Partnership',
@@ -836,9 +794,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     12. Smart Meter Required for Solar
-     ───────────────────────────────────────────── */
   {
     slug: 'smart-meter-required-solar-panels-ireland',
     title: 'Is a Smart Meter Required for Solar Panels in Ireland?',
@@ -910,9 +865,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     13. How Many Solar Panels Do I Need?
-     ───────────────────────────────────────────── */
   {
     slug: 'how-many-solar-panels-do-i-need-ireland',
     title: 'How Many Solar Panels Do I Need in Ireland?',
@@ -991,9 +943,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     14. Best Time of Year for Solar Installation
-     ───────────────────────────────────────────── */
   {
     slug: 'best-time-of-year-to-get-solar-panels-ireland',
     title: 'Best Time of Year to Get Solar Panels in Ireland',
@@ -1076,9 +1025,6 @@ export const articles: Article[] = [
     ],
   },
 
-  /* ─────────────────────────────────────────────
-     15. Solar Panels for Rental Properties
-     ───────────────────────────────────────────── */
   {
     slug: 'solar-panels-rental-property-landlord-guide',
     title: 'Solar Panels for Rental Properties: A Landlord\'s Guide',
@@ -1151,16 +1097,10 @@ export const articles: Article[] = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   HELPER: Get a single article by slug
-   ═══════════════════════════════════════════════════════════════ */
 export function getArticleBySlug(slug: string): Article | undefined {
   return articles.find((a) => a.slug === slug);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   HELPER: Get related articles (same category, different slug)
-   ═══════════════════════════════════════════════════════════════ */
 export function getRelatedArticles(currentSlug: string, limit: number = 3): Article[] {
   const current = getArticleBySlug(currentSlug);
   if (!current) return articles.slice(0, limit);
@@ -1171,16 +1111,12 @@ export function getRelatedArticles(currentSlug: string, limit: number = 3): Arti
 
   if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
 
-  // Fill remaining slots with other articles
   const others = articles.filter(
     (a) => a.slug !== currentSlug && !sameCategory.includes(a)
   );
   return [...sameCategory, ...others].slice(0, limit);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   HELPER: Get all slugs for sitemap generation
-   ═══════════════════════════════════════════════════════════════ */
 export function getAllArticleSlugs(): string[] {
   return articles.map((a) => a.slug);
 }

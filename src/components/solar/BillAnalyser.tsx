@@ -41,9 +41,6 @@ import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════
-   TYPES
-   ═══════════════════════════════════════════════ */
 interface MonthlyProfile {
   month: string;
   generation: number;
@@ -95,9 +92,6 @@ interface AnalysisResult {
   treesEquiv25Years: number;
 }
 
-/* ═══════════════════════════════════════════════
-   CONSTANTS
-   ═══════════════════════════════════════════════ */
 const HOME_TYPES = ['Detached', 'Semi-detached', 'Terraced', 'Apartment', 'Bungalow'];
 const PROVIDERS = [
   'ESB', 'Electric Ireland', 'Bord Gáis Energy', 'SSE Airtricity',
@@ -125,16 +119,12 @@ const ANALYSIS_STEPS = [
   { label: 'Building your savings report', icon: Sparkles, duration: 500 },
 ];
 
-// Quick-start presets based on typical Irish households
 const PRESETS = [
   { label: 'Average 3-bed', bill: 160, usage: 4800, home: 'Semi-detached', provider: 'Electric Ireland', icon: Home, desc: '3-4 people, typical usage' },
   { label: 'High usage', bill: 280, usage: 7500, home: 'Detached', provider: 'Electric Ireland', icon: Zap, desc: 'Electric heating, EV, etc.' },
   { label: 'Low usage', bill: 90, usage: 2800, home: 'Apartment', provider: 'Panda', icon: Lightbulb, desc: '1-2 people, efficient home' },
 ];
 
-/* ═══════════════════════════════════════════════
-   ANIMATED COUNTER
-   ═══════════════════════════════════════════════ */
 function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: { value: number; prefix?: string; suffix?: string; decimals?: number }) {
   const [display, setDisplay] = useState(0);
   const hasAnimated = useRef(false);
@@ -160,9 +150,6 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
   return <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${color}`}><Shield className="w-3 h-3" />{label}</span>;
 }
 
-/* ═══════════════════════════════════════════════
-   MONTHLY BAR CHART
-   ═══════════════════════════════════════════════ */
 function MonthlyChart({ profile }: { profile: MonthlyProfile[] }) {
   const maxVal = Math.max(...profile.map(m => Math.max(m.generation, m.consumption)));
   const chartHeight = 180;
@@ -195,9 +182,6 @@ function MonthlyChart({ profile }: { profile: MonthlyProfile[] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   COST METER
-   ═══════════════════════════════════════════════ */
 function CostMeter({ before, after }: { before: number; after: number }) {
   const pct = Math.round((1 - after / before) * 100);
   return (
@@ -211,9 +195,6 @@ function CostMeter({ before, after }: { before: number; after: number }) {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   SYSTEM COMPARISON CARDS
-   ═══════════════════════════════════════════════ */
 function SystemComparisonCards({ comparisons, recommended }: { comparisons: SystemComparison[]; recommended: number }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -237,16 +218,12 @@ function SystemComparisonCards({ comparisons, recommended }: { comparisons: Syst
   );
 }
 
-/* ═══════════════════════════════════════════════
-   SCANNING ANIMATION (shown after file uploaded, before API call)
-   ═══════════════════════════════════════════════ */
 function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
   return (
     <div className="relative flex flex-col items-center justify-center py-10">
       {billPreview && (
         <div className="relative mb-6 max-w-xs w-full">
           <img src={billPreview} alt="Scanning bill" className="w-full rounded-xl border border-white/[0.06] object-contain max-h-48 opacity-60" />
-          {/* Scanning line animation */}
           <motion.div
             className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
             initial={{ top: '10%' }}
@@ -275,9 +252,6 @@ function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════════ */
 export default function BillAnalyser() {
   const [mode, setMode] = useState<'upload' | 'manual'>('upload');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -291,7 +265,6 @@ export default function BillAnalyser() {
   const [showBattery, setShowBattery] = useState(false);
   const [billPreviewOpen, setBillPreviewOpen] = useState(false);
 
-  // Manual fields
   const [monthlyBill, setMonthlyBill] = useState('');
   const [annualUsage, setAnnualUsage] = useState('');
   const [homeType, setHomeType] = useState('Semi-detached');
@@ -314,7 +287,6 @@ export default function BillAnalyser() {
       reader.onload = (e) => setBillPreview(e.target?.result as string);
       reader.readAsDataURL(file);
     }
-    // Show scanning state immediately
     setIsAnalyzing(true);
     setAnalysis(null);
     setAnalysisStep(0);
@@ -339,7 +311,6 @@ export default function BillAnalyser() {
   const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setDragOver(true); }, []);
   const handleDragLeave = useCallback(() => setDragOver(false), []);
 
-  // Auto-estimate usage from home type + occupants
   const estimateUsage = (home: string, occ: string) => {
     const base: Record<string, number> = { 'Apartment': 2500, 'Terraced': 3500, 'Semi-detached': 4200, 'Detached': 5200, 'Bungalow': 4500 };
     const mult = { '1': 0.7, '2': 0.85, '3': 1, '4': 1.2, '5': 1.4, '6': 1.6 };
@@ -385,7 +356,6 @@ export default function BillAnalyser() {
   return (
     <section id="calculator" className="py-20 px-4 bg-[#0a0a0a] scroll-mt-20">
       <div className="max-w-5xl mx-auto">
-        {/* ─── Section Header ─── */}
         <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.6 }}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <Sparkles className="w-3.5 h-3.5" /> AI Powered
@@ -400,12 +370,11 @@ export default function BillAnalyser() {
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.6, delay: 0.15 }}>
 
           <AnimatePresence mode="wait">
-            {/* ═══════════════════════════════════════
+            {/* 
                 INPUT STATE — THE INTAKE
-                ═══════════════════════════════════════ */}
+                 */}
             {!analysis && !isAnalyzing && (
               <motion.div key="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                {/* ─── Step indicator at top ─── */}
                 <div className="px-6 py-4 border-b border-white/[0.06] bg-white/[0.01]">
                   <div className="flex items-center justify-center gap-0">
                     {[
@@ -427,7 +396,6 @@ export default function BillAnalyser() {
                 </div>
 
                 <div className="p-6 sm:p-8">
-                  {/* ─── Mode Toggle ─── */}
                   <div className="flex items-center justify-center gap-1 mb-8 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
                     <button onClick={() => { setMode('upload'); reset(); }}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'upload' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
@@ -439,12 +407,11 @@ export default function BillAnalyser() {
                     </button>
                   </div>
 
-                  {/* ═══════════════════════════
+                  {/* 
                       UPLOAD MODE
-                      ═══════════════════════════ */}
+                       */}
                   {mode === 'upload' && (
                     <div className="space-y-5">
-                      {/* Drag & drop zone */}
                       <div
                         onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
                         onClick={() => fileInputRef.current?.click()}
@@ -456,7 +423,6 @@ export default function BillAnalyser() {
                         <input ref={fileInputRef} type="file" accept="image/*,.pdf" className="hidden"
                           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
 
-                        {/* Animated icon */}
                         <motion.div
                           className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ${dragOver ? 'bg-amber-400/20 scale-110' : 'bg-white/[0.04] group-hover:bg-amber-400/10'}`}
                           animate={!dragOver ? { y: [0, -4, 0] } : { scale: [1, 1.05, 1] }}
@@ -472,7 +438,6 @@ export default function BillAnalyser() {
                           or <span className="text-amber-400 underline underline-offset-2">browse files</span> — photo, scan or PDF
                         </p>
 
-                        {/* Camera button (mobile) */}
                         <button
                           onClick={(e) => { e.stopPropagation(); cameraInputRef.current?.click(); }}
                           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-sm text-gray-300 transition-colors border border-white/[0.08]"
@@ -482,7 +447,6 @@ export default function BillAnalyser() {
                         <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" className="hidden"
                           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
 
-                        {/* Provider chips */}
                         <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
                           <span className="text-[10px] text-gray-600 uppercase tracking-wider mr-1">Works with:</span>
                           {['Electric Ireland', 'ESB', 'Bord Gáis', 'SSE Airtricity', 'Energia', 'Panda'].map(p => (
@@ -491,7 +455,6 @@ export default function BillAnalyser() {
                         </div>
                       </div>
 
-                      {/* Trust signals */}
                       <div className="grid grid-cols-3 gap-3">
                         {[
                           { icon: Lock, label: 'Bill data stays private', sub: 'Processed & deleted' },
@@ -506,14 +469,12 @@ export default function BillAnalyser() {
                         ))}
                       </div>
 
-                      {/* Divider */}
                       <div className="flex items-center gap-4">
                         <div className="flex-1 h-px bg-white/[0.06]" />
                         <span className="text-xs text-gray-600">or try a quick example</span>
                         <div className="flex-1 h-px bg-white/[0.06]" />
                       </div>
 
-                      {/* Quick-start presets */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {PRESETS.map((preset) => {
                           const PresetIcon = preset.icon;
@@ -539,12 +500,11 @@ export default function BillAnalyser() {
                     </div>
                   )}
 
-                  {/* ═══════════════════════════
+                  {/* 
                       MANUAL MODE
-                      ═══════════════════════════ */}
+                       */}
                   {mode === 'manual' && (
                     <div className="space-y-6 max-w-2xl mx-auto">
-                      {/* Occupants quick-select (affects usage estimate) */}
                       <div>
                         <label className="block text-sm text-gray-400 mb-3">How many people live in your home?</label>
                         <div className="flex gap-2">
@@ -560,7 +520,6 @@ export default function BillAnalyser() {
                         </div>
                       </div>
 
-                      {/* Primary fields — big and bold */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
@@ -586,7 +545,6 @@ export default function BillAnalyser() {
                         </div>
                       </div>
 
-                      {/* Secondary fields */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="block text-sm text-gray-400">Home Type</label>
@@ -614,7 +572,6 @@ export default function BillAnalyser() {
                         </div>
                       </div>
 
-                      {/* Preset shortcuts */}
                       <div>
                         <p className="text-[11px] text-gray-600 mb-2 uppercase tracking-wider">Quick presets</p>
                         <div className="flex flex-wrap gap-2">
@@ -629,7 +586,6 @@ export default function BillAnalyser() {
                         </div>
                       </div>
 
-                      {/* Submit */}
                       <div className="pt-2">
                         <Button onClick={handleManualAnalyse} disabled={!monthlyBill || !annualUsage}
                           className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
@@ -640,7 +596,6 @@ export default function BillAnalyser() {
                     </div>
                   )}
 
-                  {/* Disclaimer */}
                   <p className="mt-6 text-[11px] text-gray-600 text-center leading-relaxed">
                     Estimates based on SEAI grant rates, Met Éireann solar irradiance data, and your reported usage.
                     Actual savings depend on roof orientation, shading, and consumption patterns. A free site survey gives you exact figures.
@@ -649,18 +604,18 @@ export default function BillAnalyser() {
               </motion.div>
             )}
 
-            {/* ═══════════════════════════════════════
+            {/* 
                 SCANNING STATE (file just uploaded)
-                ═══════════════════════════════════════ */}
+                 */}
             {isAnalyzing && billPreviewOpen && analysisStep > 0 && analysisStep < ANALYSIS_STEPS.length && (
               <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 sm:p-8">
                 <ScanningOverlay billPreview={billPreview} />
               </motion.div>
             )}
 
-            {/* ═══════════════════════════════════════
+            {/* 
                 LOADING STATE (API processing)
-                ═══════════════════════════════════════ */}
+                 */}
             {isAnalyzing && (!billPreviewOpen || analysisStep >= ANALYSIS_STEPS.length) && (
               <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 sm:p-12">
                 <div className="flex flex-col items-center">
@@ -684,12 +639,11 @@ export default function BillAnalyser() {
               </motion.div>
             )}
 
-            {/* ═══════════════════════════════════════
+            {/* 
                 RESULTS STATE
-                ═══════════════════════════════════════ */}
+                 */}
             {analysis && !isAnalyzing && (
               <motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                {/* Bill summary bar */}
                 <div className="px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
@@ -722,7 +676,6 @@ export default function BillAnalyser() {
                 </div>
 
                 <div className="p-6 sm:p-8 space-y-8">
-                  {/* Hero Numbers */}
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-400/[0.03] border border-amber-400/20 p-5">
                       <Euro className="w-5 h-5 text-amber-400 mb-3" />
@@ -750,7 +703,6 @@ export default function BillAnalyser() {
                     </div>
                   </div>
 
-                  {/* Export + Grant + ROI strip */}
                   <div className="flex flex-wrap gap-3">
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-400/10 border border-green-400/15 text-sm">
                       <Zap className="w-4 h-4 text-green-400" /><span className="text-gray-400">Export earnings:</span><span className="text-green-400 font-semibold">€{analysis.annualExportEarning}/yr</span>
@@ -763,28 +715,24 @@ export default function BillAnalyser() {
                     </span>
                   </div>
 
-                  {/* Cost Before/After */}
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
                     <p className="text-xs text-gray-500 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
                   </div>
 
-                  {/* Monthly Chart */}
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Sun className="w-4 h-4 text-amber-400" /> Monthly Solar Generation vs Your Usage</h4>
                     <MonthlyChart profile={analysis.monthlyProfile} />
                     <p className="text-xs text-gray-500 mt-3">Based on SEAI Typical Meteorological Year data for Ireland. Actual output depends on roof orientation and shading.</p>
                   </div>
 
-                  {/* System Comparison */}
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
                     <p className="text-xs text-gray-500 mt-3">The {analysis.recommendedSystem}kWp system gives you the best return on investment. A site survey will confirm your roof can fit your preferred size.</p>
                   </div>
 
-                  {/* Battery */}
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
                     <button onClick={() => setShowBattery(!showBattery)} className="w-full flex items-center justify-between p-5 hover:bg-white/[0.02] transition-colors">
                       <div className="flex items-center gap-3">
@@ -812,7 +760,6 @@ export default function BillAnalyser() {
                     )}
                   </div>
 
-                  {/* Detailed Breakdown */}
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
                     <button onClick={() => setShowDetails(!showDetails)} className="w-full flex items-center justify-between p-5 hover:bg-white/[0.02] transition-colors">
                       <span className="text-sm font-semibold flex items-center gap-2"><Info className="w-4 h-4 text-gray-500" /> Detailed Calculation Breakdown</span>
@@ -847,7 +794,6 @@ export default function BillAnalyser() {
                     )}
                   </div>
 
-                  {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <Button className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-bold py-4 rounded-xl shadow-lg shadow-amber-400/20" asChild>
                       <a href={buildWhatsAppUrl({
@@ -865,7 +811,7 @@ export default function BillAnalyser() {
                       </a>
                     </Button>
                     <Button variant="outline" onClick={() => {
-                      const summary = `Solar Ireland Bill Analysis\n${'═'.repeat(35)}\nProvider: ${analysis.provider}\nMonthly Bill: €${analysis.monthlyBill}\nAnnual Usage: ${analysis.annualUsage.toLocaleString()} kWh\nRecommended: ${analysis.recommendedSystem} kWp\nAnnual Saving: €${analysis.annualSaving.toLocaleString()}\nExport Earnings: €${analysis.annualExportEarning.toLocaleString()}/yr\nTotal Benefit: €${analysis.totalAnnualBenefit.toLocaleString()}/yr\nPayback: ${analysis.paybackYears} years\nCost After Grant: €${analysis.costAfterGrant.toLocaleString()}\n25-Year Value: €${analysis.total25YearSavings.toLocaleString()}\nCO₂ Saved: ${analysis.annualCo2Saved.toLocaleString()} kg/yr`;
+                      const summary = `Solar Ireland Bill Analysis\n${''.repeat(35)}\nProvider: ${analysis.provider}\nMonthly Bill: €${analysis.monthlyBill}\nAnnual Usage: ${analysis.annualUsage.toLocaleString()} kWh\nRecommended: ${analysis.recommendedSystem} kWp\nAnnual Saving: €${analysis.annualSaving.toLocaleString()}\nExport Earnings: €${analysis.annualExportEarning.toLocaleString()}/yr\nTotal Benefit: €${analysis.totalAnnualBenefit.toLocaleString()}/yr\nPayback: ${analysis.paybackYears} years\nCost After Grant: €${analysis.costAfterGrant.toLocaleString()}\n25-Year Value: €${analysis.total25YearSavings.toLocaleString()}\nCO₂ Saved: ${analysis.annualCo2Saved.toLocaleString()} kg/yr`;
                       navigator.clipboard.writeText(summary);
                     }} className="flex-1 border-white/[0.08] text-gray-300 hover:bg-white/[0.04] hover:text-white py-4 rounded-xl">
                       <Download className="mr-2 w-4 h-4" /> Copy Report
@@ -879,7 +825,6 @@ export default function BillAnalyser() {
             )}
           </AnimatePresence>
 
-          {/* Error */}
           {error && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               className="mx-6 mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 flex items-start gap-2">

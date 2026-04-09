@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { articles, getArticleBySlug } from '@/lib/blog-data';
 import BlogPostClient from './BlogPostClient';
 
+const SITE_URL = 'https://solarireland.com';
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -23,27 +25,173 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: article.title,
     description: article.excerpt,
     alternates: {
-      canonical: `https://solarireland.com/blog/${slug}`,
+      canonical: `${SITE_URL}/blog/${slug}`,
     },
     openGraph: {
       title: ogTitle,
       description: ogDescription,
       type: 'article',
       publishedTime: article.date,
+      modifiedTime: article.date,
       authors: [article.author],
-      url: `https://solarireland.com/blog/${slug}`,
+      url: `${SITE_URL}/blog/${slug}`,
       siteName: 'Solar Ireland',
       locale: 'en_IE',
+      images: [
+        {
+          url: `${SITE_URL}/og-blog.png`,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+          type: 'image/png',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: ogTitle,
       description: ogDescription,
+      images: [`${SITE_URL}/og-blog.png`],
     },
+  };
+}
+
+function getArticleSchema(slug: string) {
+  const article = getArticleBySlug(slug);
+  if (!article) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    author: {
+      '@type': 'Person',
+      name: article.author,
+      jobTitle: 'Solar Energy Consultant',
+      url: SITE_URL,
+      worksFor: {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: 'Solar Ireland',
+        url: SITE_URL,
+      },
+      sameAs: [
+        'https://www.linkedin.com/in/cal-oreilly',
+      ],
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Solar Ireland',
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/logo-lg.png`,
+        width: 512,
+        height: 512,
+      },
+    },
+    datePublished: article.date,
+    dateModified: article.date,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/blog/${slug}`,
+    },
+    image: `${SITE_URL}/og-blog.png`,
+    wordCount: article.content.reduce((acc, s) => {
+      if (s.type === 'paragraph') return acc + s.text.length;
+      if (s.type === 'heading') return acc + s.text.length;
+      if (s.type === 'callout') return acc + s.title.length + s.body.length;
+      if ((s.type === 'bulletList' || s.type === 'numberedList') && Array.isArray(s.items)) return acc + s.items.reduce((a: number, i: string) => a + i.length, 0);
+      if (s.type === 'table') return acc + s.headers.reduce((a: number, h: string) => a + h.length, 0) + s.rows.flat().reduce((a: number, r: string) => a + r.length, 0);
+      if (s.type === 'cta') return acc + s.text.length;
+      return acc;
+    }, 0),
+    articleSection: article.category.charAt(0).toUpperCase() + article.category.slice(1),
+    inLanguage: 'en-IE',
+  };
+}
+
+function getFaqSchema(slug: string) {
+  const article = getArticleBySlug(slug);
+  if (!article) return null;
+
+  const qaPairs: { question: string; answer: string }[] = [];
+  for (let i = 0; i < article.content.length; i++) {
+    const section = article.content[i];
+    if (section.type === 'heading' && section.level === 2 && qaPairs.length < 5) {
+      // Look for the next paragraph after this heading
+      for (let j = i + 1; j < Math.min(i + 3, article.content.length); j++) {
+        if (article.content[j].type === 'paragraph') {
+          qaPairs.push({
+            question: section.text,
+            answer: (article.content[j] as { type: 'paragraph'; text: string }).text.slice(0, 300), // First 300 chars
+          });
+          break;
+        }
+      }
+    }
+  }
+
+  if (qaPairs.length === 0) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${SITE_URL}/blog/${slug}#faq`,
+    mainEntity: qaPairs.map(qa => ({
+      '@type': 'Question',
+      name: qa.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: qa.answer,
+      },
+    })),
+  };
+}
+
+function getBreadcrumbSchema(slug: string) {
+  const article = getArticleBySlug(slug);
+  if (!article) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${SITE_URL}/blog/${slug}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: article.title, item: `${SITE_URL}/blog/${slug}` },
+    ],
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  return <BlogPostClient slug={slug} />;
+  const articleSchema = getArticleSchema(slug);
+  const faqSchema = getFaqSchema(slug);
+  const breadcrumbSchema = getBreadcrumbSchema(slug);
+
+  return (
+    <>
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      )}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
+      <BlogPostClient slug={slug} />
+    </>
+  );
 }

@@ -7,9 +7,6 @@ import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════
-   STEP DATA
-   ═══════════════════════════════════════════ */
 const steps = [
   {
     number: '01',
@@ -70,9 +67,6 @@ const steps = [
   },
 ];
 
-/* ═══════════════════════════════════════════
-   CALENDAR ICON
-   ═══════════════════════════════════════════ */
 function CalendarIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -83,9 +77,6 @@ function CalendarIcon({ className }: { className?: string }) {
   );
 }
 
-/* ═══════════════════════════════════════════
-   STEP CARD — CSS expand/collapse, no Framer Motion
-   ═══════════════════════════════════════════ */
 function StepCard({
   step,
   index,
@@ -118,10 +109,8 @@ function StepCard({
           group
         `}
       >
-        {/* Active glow */}
         <div className={`absolute inset-0 bg-gradient-to-br ${step.accent} transition-opacity duration-300 pointer-events-none ${isActive ? 'opacity-[0.03]' : 'opacity-0'}`} />
 
-        {/* Step number badge + chevron */}
         <div className="flex items-start justify-between mb-5 sm:mb-6">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className={`${step.accentBg} rounded-xl sm:rounded-2xl p-3 sm:p-3.5 transition-transform duration-200 ${isActive ? 'scale-105' : 'group-hover:scale-105'}`}>
@@ -137,13 +126,11 @@ function StepCard({
             </div>
           </div>
 
-          {/* Expand chevron */}
           <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 group-hover:text-gray-400 group-hover:border-white/[0.12] transition-all duration-200 mt-1 ${isActive ? 'rotate-90 text-gray-400 border-white/[0.12]' : ''}`}>
             <ChevronRight className="w-4 h-4" />
           </div>
         </div>
 
-        {/* Subtitle pill */}
         <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${step.accentBg} mb-4`}>
           {index === 0 && <Camera className="w-3 h-3 text-amber-400" />}
           {index === 1 && <Shield className="w-3 h-3 text-emerald-400" />}
@@ -151,12 +138,10 @@ function StepCard({
           <span className="text-[11px] font-medium text-gray-400">{step.subtitle}</span>
         </div>
 
-        {/* Description */}
         <p className="text-sm sm:text-[15px] text-gray-400 leading-relaxed mb-4">
           {step.description}
         </p>
 
-        {/* ─── Expandable section — CSS max-height transition ─── */}
         <div
           ref={contentRef}
           className="grid transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden"
@@ -167,7 +152,6 @@ function StepCard({
           }}
         >
           <div className="min-h-0">
-            {/* Feature checklist */}
             <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2 pt-2">
               {step.features.map((feature, fi) => (
                 <div
@@ -185,14 +169,12 @@ function StepCard({
               ))}
             </div>
 
-            {/* Stat */}
             <div className="text-center mt-4 pt-5 border-t border-white/[0.06]">
               <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">{step.stat.value}</span>
               {step.stat.unit && <span className="text-lg font-semibold text-gray-400 ml-1">{step.stat.unit}</span>}
               <p className="text-xs text-gray-600 mt-1">{step.stat.label}</p>
             </div>
 
-            {/* CTA button */}
             <a
               href={step.cta.href}
               target={step.cta.href.startsWith('http') ? '_blank' : undefined}
@@ -206,7 +188,6 @@ function StepCard({
           </div>
         </div>
 
-        {/* "Tap to see details" — only when collapsed */}
         <div className={`flex items-center gap-1.5 text-xs text-gray-600 group-hover:text-gray-400 transition-colors ${isActive ? 'hidden' : ''}`}>
           <span>Tap to see details</span>
           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
@@ -216,9 +197,6 @@ function StepCard({
   );
 }
 
-/* ═══════════════════════════════════════════
-   PROGRESS DOTS (mobile)
-   ═══════════════════════════════════════════ */
 function ProgressDots({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="flex md:hidden items-center justify-center gap-2 mt-8">
@@ -238,16 +216,12 @@ function ProgressDots({ activeIndex }: { activeIndex: number }) {
   );
 }
 
-/* ═══════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════ */
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState<number | null>(null);
 
   return (
     <section id="how-it-works" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* ─── Section header ─── */}
         <div className="text-center mb-14 sm:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -285,7 +259,6 @@ export default function HowItWorks() {
             From photo to savings in three simple steps. No jargon, no pressure — just honest solar advice.
           </motion.p>
 
-          {/* Bumblebee on header */}
           <motion.div
             className="flex justify-center mt-6"
             initial={{ opacity: 0, y: 25 }}
@@ -297,7 +270,6 @@ export default function HowItWorks() {
           </motion.div>
         </div>
 
-        {/* ─── Steps grid ─── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {steps.map((step, i) => (
             <motion.div
@@ -317,7 +289,6 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        {/* Mobile progress dots */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -327,7 +298,6 @@ export default function HowItWorks() {
           <ProgressDots activeIndex={activeStep ?? 0} />
         </motion.div>
 
-        {/* ─── Bottom trust bar ─── */}
         <motion.div
           className="mt-14 sm:mt-20"
           initial={{ opacity: 0, y: 25 }}
@@ -336,7 +306,6 @@ export default function HowItWorks() {
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="rounded-2xl sm:rounded-3xl px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 justify-between bg-white/[0.02] border border-white/[0.06]">
-            {/* Trust signals */}
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center">
@@ -369,7 +338,6 @@ export default function HowItWorks() {
               </div>
             </div>
 
-            {/* CTA */}
             <a
               href="#calculator"
               className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-white hover:bg-white/[0.1] hover:border-amber-400/20 transition-all active:scale-[0.98]"

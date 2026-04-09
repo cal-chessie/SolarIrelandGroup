@@ -21,9 +21,6 @@ import {
   Shield,
 } from 'lucide-react';
 
-/* ═══════════════════════════════════════════
-   INSTALL DATA — real installs with specs
-   ═══════════════════════════════════════════ */
 const installs = [
   {
     id: 1,
@@ -63,9 +60,6 @@ const installs = [
   },
 ];
 
-/* ═══════════════════════════════════════════
-   SWIPE GALLERY
-   ═══════════════════════════════════════════ */
 function SwipeGallery({
   activeIndex,
   onSelect,
@@ -117,11 +111,9 @@ function SwipeGallery({
               draggable={false}
             />
 
-            {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/20" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 
-            {/* Badge */}
             {installs[activeIndex].badge && (
               <div className="absolute top-4 left-4">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400/90 text-black text-[10px] font-bold uppercase tracking-wider">
@@ -131,7 +123,6 @@ function SwipeGallery({
               </div>
             )}
 
-            {/* Bottom info overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
               <div className="flex items-end justify-between">
                 <div>
@@ -153,7 +144,6 @@ function SwipeGallery({
         </AnimatePresence>
       </div>
 
-      {/* Nav arrows (desktop) */}
       {installs.length > 1 && (
         <>
           <button
@@ -173,7 +163,6 @@ function SwipeGallery({
         </>
       )}
 
-      {/* Dot indicators */}
       {installs.length > 1 && (
         <div className="flex items-center justify-center gap-2 mt-4">
           {installs.map((_, i) => (
@@ -193,9 +182,6 @@ function SwipeGallery({
   );
 }
 
-/* ═══════════════════════════════════════════
-   SPEC CARD — details about the install
-   ═══════════════════════════════════════════ */
 function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof installs)[0]; onViewGallery: (i: number) => void; onOpenLightbox: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-40px' });
@@ -223,7 +209,6 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
       transition={{ duration: 0.6, delay: 0.15 }}
       className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col"
     >
-      {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
           <h3 className="text-lg sm:text-xl font-bold text-white">{install.location}</h3>
@@ -237,7 +222,6 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         </button>
       </div>
 
-      {/* Key specs grid */}
       <div className="grid grid-cols-2 gap-3 mb-6">
         {specs.map((spec) => {
           const SpecIcon = spec.icon;
@@ -255,7 +239,6 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         })}
       </div>
 
-      {/* Detail list */}
       <div className="space-y-2.5 mb-6 flex-1">
         {details.map((detail) => (
           <div key={detail.label} className="flex items-center justify-between py-1.5 border-b border-white/[0.03] last:border-0">
@@ -265,13 +248,11 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         ))}
       </div>
 
-      {/* Install date badge */}
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] mb-5">
         <Calendar className="w-3.5 h-3.5 text-gray-600" />
         <span className="text-xs text-gray-500">Installed <span className="text-gray-300 font-medium">{install.installed}</span></span>
       </div>
 
-      {/* Gallery nav */}
       {installs.length > 1 && (
         <div className="flex items-center gap-2">
           {installs.map((inst, i) => (
@@ -294,9 +275,6 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
   );
 }
 
-/* ═══════════════════════════════════════════
-   LIGHTBOX
-   ═══════════════════════════════════════════ */
 function Lightbox({
   src,
   alt,
@@ -341,20 +319,15 @@ function Lightbox({
   );
 }
 
-/* ═══════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════ */
 export default function CustomerInstalls() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   return (
     <section id="our-work" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Subtle ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-amber-500/[0.015] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* ─── Section header ─── */}
         <motion.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -380,7 +353,6 @@ export default function CustomerInstalls() {
               </p>
             </div>
 
-            {/* Quick stats (desktop) */}
             <motion.div
               className="hidden sm:flex items-center gap-6"
               initial={{ opacity: 0, y: 15 }}
@@ -401,14 +373,11 @@ export default function CustomerInstalls() {
           </div>
         </motion.div>
 
-        {/* ─── Main content: Gallery + Spec card side by side on desktop ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6 lg:gap-8 items-start">
-          {/* Gallery — takes 3 columns on desktop */}
           <div className="lg:col-span-3">
             <SwipeGallery activeIndex={activeIndex} onSelect={setActiveIndex} />
           </div>
 
-          {/* Spec card — takes 2 columns on desktop */}
           <div className="lg:col-span-2">
             <AnimatePresence mode="wait">
               <SpecCard
@@ -421,7 +390,6 @@ export default function CustomerInstalls() {
           </div>
         </div>
 
-        {/* ─── Trust indicators row ─── */}
         <motion.div
           className="mt-12 sm:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3"
           initial={{ opacity: 0, y: 20 }}
@@ -448,7 +416,6 @@ export default function CustomerInstalls() {
           })}
         </motion.div>
 
-        {/* ─── CTA ─── */}
         <motion.div
           className="mt-10 sm:mt-14 text-center"
           initial={{ opacity: 0, y: 15 }}
@@ -482,7 +449,6 @@ export default function CustomerInstalls() {
         </motion.div>
       </div>
 
-      {/* ─── Lightbox overlay ─── */}
       {lightboxOpen && (
         <Lightbox
           src={installs[activeIndex].src}

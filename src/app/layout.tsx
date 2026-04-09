@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import ExitIntent from "@/components/solar/ExitIntent";
 
-/* ═══════════════════════════════════════════════════════════════
-   FONTS
-   ═══════════════════════════════════════════════════════════════ */
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,9 +17,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   CONSTANTS
-   ═══════════════════════════════════════════════════════════════ */
+
 const SITE_URL = "https://solarireland.com";
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
@@ -54,9 +50,6 @@ const SITE_KEYWORDS = [
   "solar panel payback period Ireland",
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   VIEWPORT — Separate export for Next.js 14+ App Router
-   ═══════════════════════════════════════════════════════════════ */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -68,29 +61,26 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   COMPREHENSIVE SEO METADATA — World-Class 2026 Edition
-   ═══════════════════════════════════════════════════════════════ */
 export const metadata: Metadata = {
-  /* ─── Title Template (inherited by all pages) ─── */
+
   title: {
     default: "Solar Ireland | #1 Rated Solar Panel Installers | SEAI Registered | Free AI Bill Analysis",
     template: "%s | Solar Ireland",
   },
 
-  /* ─── Description ─── */
+
   description: SITE_DESCRIPTION,
 
-  /* ─── Keywords (still relevant for Bing/Yahoo) ─── */
+
   keywords: SITE_KEYWORDS,
 
-  /* ─── Authors & Creator ─── */
+
   authors: [{ name: "Solar Ireland", url: SITE_URL }],
   creator: "Solar Ireland",
   publisher: "Solar Ireland",
   metadataBase: new URL(SITE_URL),
 
-  /* ─── Alternates (hreflang) ─── */
+
   alternates: {
     canonical: SITE_URL,
     languages: {
@@ -100,7 +90,7 @@ export const metadata: Metadata = {
     },
   },
 
-  /* ─── Robots ─── */
+
   robots: {
     index: true,
     follow: true,
@@ -114,7 +104,7 @@ export const metadata: Metadata = {
     },
   },
 
-  /* ─── Icons ─── */
+
   icons: {
     icon: [
       { url: "/logo-favicon.png", sizes: "32x32", type: "image/png" },
@@ -132,10 +122,10 @@ export const metadata: Metadata = {
     ],
   },
 
-  /* ─── Manifest ─── */
+
   manifest: "/manifest.webmanifest",
 
-  /* ─── Open Graph (Facebook, LinkedIn, etc.) ─── */
+
   openGraph: {
     type: "website",
     locale: "en_IE",
@@ -162,7 +152,7 @@ export const metadata: Metadata = {
     ],
   },
 
-  /* ─── Twitter Card ─── */
+
   twitter: {
     card: "summary_large_image",
     title: "Solar Ireland | Save €1,100/Year with Solar Panels",
@@ -172,19 +162,17 @@ export const metadata: Metadata = {
     creator: "@solarireland",
   },
 
-  /* ─── Facebook ─── */
+
   facebook: {
     appId: "",
   },
 
-  /* ─── Verification ─── (add real keys when available) ─── */
+
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-    // yandex: "",
-    // bing: "",
   },
 
-  /* ─── Other Meta ─── */
+
   category: "Home Improvement",
   classification: "Solar Energy - Residential Installation",
   other: {
@@ -198,11 +186,8 @@ export const metadata: Metadata = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   JSON-LD STRUCTURED DATA — Full Suite for Google Rich Results
-   ═══════════════════════════════════════════════════════════════ */
 
-/* ─── 1. Organization / Brand ─── */
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -223,6 +208,7 @@ const organizationSchema = {
   sameAs: [
     "https://www.facebook.com/solarireland",
     "https://www.instagram.com/solarireland",
+    "https://www.tiktok.com/@solarireland",
     "https://www.linkedin.com/company/solarireland",
   ],
   foundingDate: "2023",
@@ -245,7 +231,7 @@ const organizationSchema = {
   ],
 };
 
-/* ─── 2. LocalBusiness — Primary entity ─── */
+
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
@@ -302,6 +288,11 @@ const localBusinessSchema = {
       name: "Connacht",
       containedInPlace: { "@type": "Country", name: "Ireland" },
     },
+    {
+      "@type": "AdministrativeArea",
+      name: "Ulster",
+      containedInPlace: { "@type": "Country", name: "Ireland" },
+    },
   ],
   aggregateRating: {
     "@type": "AggregateRating",
@@ -345,7 +336,7 @@ const localBusinessSchema = {
   },
 };
 
-/* ─── 3. WebPage + BreadcrumbList ─── */
+
 const webPageSchema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -370,9 +361,6 @@ const webPageSchema = {
         width: 1920,
         height: 1080,
       },
-      mainEntity: {
-        "@id": `${SITE_URL}/#faq`,
-      },
       potentialAction: {
         "@type": "ReadAction",
         target: SITE_URL,
@@ -387,14 +375,6 @@ const webPageSchema = {
         "@id": `${SITE_URL}/#organization`,
       },
       inLanguage: "en-IE",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-        },
-        "query-input": "required name=search_term_string",
-      },
     },
     {
       "@type": "BreadcrumbList",
@@ -417,96 +397,7 @@ const webPageSchema = {
   ],
 };
 
-/* ─── 4. FAQPage Schema (Google FAQ Rich Results) ─── */
-const faqPageSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${SITE_URL}/#faq`,
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "How much do solar panels cost in Ireland in 2026?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A typical residential solar PV system costs between €4,500 and €7,500 before the €1,800 SEAI grant. After the grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes — no hidden costs, no surprises.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How much could I save with solar panels?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A typical 3-bed semi-detached home with a 4 kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. Over 25 years, total savings typically range from €30,000 to €50,000. Use our AI Bill Analyser for a personalised savings calculation based on your actual electricity usage.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How long is the solar panel payback period?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Most homeowners see a full payback within 5 to 7 years after the €1,800 SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is the SEAI grant and am I eligible?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels on your home. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion. We verify your eligibility during the free survey and handle the entire application on your behalf.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How long does solar panel installation take?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The physical installation is completed in a single day for a standard residential system. The scaffolding goes up first thing in the morning, our RECI-registered team mounts and wires the panels during the day, and the system is fully commissioned before we leave. We also handle the ESB Networks grid connection notification.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do I need planning permission for solar panels in Ireland?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "In the vast majority of cases, no. Solar panels are considered permitted development in Ireland. The panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements during the free survey.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What about cloudy days and winter in Ireland?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Solar panels still generate electricity on cloudy days — typically 10-25% of their rated output compared to a sunny day. While winter production is lower (roughly 30-40% of summer output), the system is sized to maximise annual generation. Any shortfall is automatically covered by the grid. Most homeowners find that their summer surplus offsets the winter deficit.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do you offer battery storage in Ireland?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption from around 40-50% to 80%+. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they are worth considering if you are out during the day or want to maximise energy independence.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What happens to electricity I don't use?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB Clean Export Guarantee scheme, your electricity supplier pays you €0.21/kWh for exported energy. For a typical 4 kWp system, this can add €200-€400 per year to your savings. The export payment appears as a credit on your electricity bill through your smart meter.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Will solar panels work on my roof?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Solar panels work on most Irish roof types — tiled, slate, and metal. South-facing roofs with a pitch of 30-40 degrees are optimal, but east/west-facing roofs still produce excellent results (typically 80-85% of a south-facing output). During the free survey, we assess your roof orientation, pitch, shading, and structural suitability to give you an honest recommendation.",
-      },
-    },
-  ],
-};
 
-/* ─── 5. Service Schema ─── */
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -578,7 +469,7 @@ const serviceSchema = {
   },
 };
 
-/* ─── 6. HowTo Schema (for "How It Works" section) ─── */
+
 const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
@@ -619,7 +510,7 @@ const howToSchema = {
   ],
 };
 
-/* ─── 7. FinancialProduct Schema (for Solar Investment) ─── */
+
 const financialProductSchema = {
   "@context": "https://schema.org",
   "@type": "FinancialProduct",
@@ -651,9 +542,7 @@ const financialProductSchema = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   ROOT LAYOUT
-   ═══════════════════════════════════════════════════════════════ */
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -662,27 +551,16 @@ export default function RootLayout({
   return (
     <html lang="en-IE" className="dark" suppressHydrationWarning dir="ltr">
       <head>
-        {/* ─── DNS Prefetch for Performance ─── */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        {/* ─── Preconnect for Critical Third Parties ─── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* ─── Preload Critical Assets ─── */}
         <link rel="preload" as="image" href="/logo-sm.webp" type="image/webp" />
 
-        {/* ═══════════════════════════════════════════════════════
-            JSON-LD STRUCTURED DATA — Full Suite
-            Google uses this for:
-            - Rich results (FAQ, HowTo, LocalBusiness, Service)
-            - Knowledge Panel (Organization)
-            - Breadcrumb navigation
-            - Search actions
-            ═══════════════════════════════════════════════════════ */}
 
-        {/* Organization + Brand */}
+
         <script
           type="application/ld+json"
           id="schema-organization"
@@ -691,7 +569,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* LocalBusiness — Primary entity for Google Maps + Local Search */}
+
         <script
           type="application/ld+json"
           id="schema-local-business"
@@ -700,7 +578,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* WebPage + WebSite + BreadcrumbList */}
+
         <script
           type="application/ld+json"
           id="schema-webpage"
@@ -709,16 +587,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* FAQPage — Google FAQ Rich Results */}
-        <script
-          type="application/ld+json"
-          id="schema-faq"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqPageSchema),
-          }}
-        />
 
-        {/* Service — Google Service Rich Results */}
         <script
           type="application/ld+json"
           id="schema-service"
@@ -727,7 +596,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* HowTo — Google How-To Rich Results */}
+
         <script
           type="application/ld+json"
           id="schema-howto"
@@ -736,7 +605,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* FinancialProduct — SEAI Grant */}
+
         <script
           type="application/ld+json"
           id="schema-financial"
@@ -748,9 +617,38 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* Skip to main content — visible on keyboard focus */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-400 focus:text-black focus:text-sm focus:font-bold focus:shadow-lg focus:shadow-amber-400/20 focus:outline-2 focus:outline-offset-2 focus:outline-amber-400"
+        >
+          Skip to main content
+        </a>
+        <div id="main-content" role="main" tabIndex={-1} className="outline-none focus:outline-none">
+          {children}
+        </div>
         <CookieConsent />
         <ExitIntent />
+
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                  page_path: window.location.pathname,
+                  cookie_flags: 'SameSite=None;Secure',
+                });
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

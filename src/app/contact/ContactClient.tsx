@@ -27,9 +27,6 @@ import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════════════════ */
 
 const counties = [
   'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal',
@@ -100,9 +97,6 @@ const provinces = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   ANIMATION HELPERS
-   ═══════════════════════════════════════════════════════ */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -115,9 +109,6 @@ const staggerContainer = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════
-   BREADCRUMB
-   ═══════════════════════════════════════════════════════ */
 function Breadcrumb({ items }: { items: { label: string; href?: string }[] }) {
   return (
     <nav className="flex items-center gap-1.5 text-sm text-gray-500" aria-label="Breadcrumb">
@@ -137,9 +128,6 @@ function Breadcrumb({ items }: { items: { label: string; href?: string }[] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   CONTACT FORM
-   ═══════════════════════════════════════════════════════ */
 function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -167,7 +155,6 @@ function ContactForm() {
       }
       setSubmitted(true);
     } catch {
-      // Still show success for now — form is informational
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -243,7 +230,6 @@ function ContactForm() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Name */}
               <div className="relative">
                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
@@ -257,7 +243,6 @@ function ContactForm() {
                 />
               </div>
 
-              {/* Email */}
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
@@ -271,7 +256,6 @@ function ContactForm() {
                 />
               </div>
 
-              {/* Phone */}
               <div className="relative">
                 <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
                 <input
@@ -284,7 +268,6 @@ function ContactForm() {
                 />
               </div>
 
-              {/* County */}
               <div className="relative">
                 <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none z-10" />
                 <select
@@ -305,7 +288,6 @@ function ContactForm() {
               </div>
             </div>
 
-            {/* Message */}
             <div className="relative">
               <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-600 pointer-events-none" />
               <textarea
@@ -319,7 +301,6 @@ function ContactForm() {
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -349,9 +330,6 @@ function ContactForm() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   CONTACT PAGE
-   ═══════════════════════════════════════════════════════ */
 export default function ContactClient() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -359,11 +337,10 @@ export default function ContactClient() {
       <Navbar />
 
       <main className="pt-16">
-        {/* ═══════════════════════════════════════════════
+        {/* 
             HERO SECTION
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="relative overflow-hidden">
-          {/* Ambient orbs */}
           <div className="absolute top-20 -right-32 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
@@ -399,13 +376,12 @@ export default function ContactClient() {
             </motion.div>
           </div>
 
-          {/* Bottom amber line */}
           <div className="amber-line" />
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             CONTACT METHODS GRID
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -454,13 +430,12 @@ export default function ContactClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             CONTACT FORM + SIDEBAR
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
-              {/* Form — takes 3 columns */}
               <motion.div
                 className="lg:col-span-3"
                 initial={{ opacity: 0, y: 24 }}
@@ -471,7 +446,6 @@ export default function ContactClient() {
                 <ContactForm />
               </motion.div>
 
-              {/* Sidebar — takes 2 columns */}
               <motion.div
                 className="lg:col-span-2 space-y-5"
                 initial={{ opacity: 0, y: 24 }}
@@ -479,7 +453,6 @@ export default function ContactClient() {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: 0.15 }}
               >
-                {/* Office Hours */}
                 <div className="glass-card rounded-2xl p-6">
                   <div className="flex items-center gap-2 mb-5">
                     <div className="w-9 h-9 rounded-lg bg-amber-400/10 flex items-center justify-center">
@@ -508,7 +481,6 @@ export default function ContactClient() {
                   </div>
                 </div>
 
-                {/* Quick response promise */}
                 <div className="glass-card rounded-2xl p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-9 h-9 rounded-lg bg-sky-400/10 flex items-center justify-center">
@@ -531,7 +503,6 @@ export default function ContactClient() {
                   </ul>
                 </div>
 
-                {/* Direct WhatsApp CTA */}
                 <a
                   href={buildWhatsAppUrl({ source: 'contact-sidebar' })}
                   target="_blank"
@@ -556,9 +527,9 @@ export default function ContactClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             SERVING ALL 32 COUNTIES
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -568,7 +539,6 @@ export default function ContactClient() {
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.7 }}
             >
-              {/* Decorative orbs */}
               <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
               <div className="relative z-10">
@@ -627,9 +597,9 @@ export default function ContactClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             FAQ TEASER
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div

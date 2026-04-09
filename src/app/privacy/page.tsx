@@ -30,9 +30,6 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION DATA — all privacy policy content in one place
-   ═══════════════════════════════════════════════════════════════ */
 
 interface Section {
   id: string;
@@ -45,7 +42,6 @@ interface Section {
 function PrivacyContent() {
   return (
     <>
-      {/* ═══ 1. INTRODUCTION ═══ */}
       <p className="text-gray-400 leading-relaxed mb-4">
         Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. We are committed to protecting
@@ -68,7 +64,6 @@ function PrivacyContent() {
         and discontinue use of our services.
       </p>
 
-      {/* ═══ 2. INFORMATION WE COLLECT ═══ */}
       <Subsection>Personal Data You Provide Directly</Subsection>
       <p className="text-gray-400 leading-relaxed mb-3">
         When you request a quote, book a survey, or engage our services, we may collect the following
@@ -122,7 +117,6 @@ function PrivacyContent() {
         confidentiality protocols.
       </p>
 
-      {/* ═══ 3. HOW WE USE YOUR INFORMATION ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         We use your personal data for specific, legitimate purposes. Here is a detailed breakdown of
         how your information is used across our business operations:
@@ -167,7 +161,6 @@ function PrivacyContent() {
         ))}
       </div>
 
-      {/* ═══ 4. LEGAL BASIS ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         Under GDPR, every processing activity must have a valid legal basis. We process your personal data
         under one or more of the following legal grounds, depending on the specific purpose:
@@ -210,7 +203,6 @@ function PrivacyContent() {
         ))}
       </div>
 
-      {/* ═══ 5. DATA SHARING ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         We treat your data with the utmost confidentiality. We may share your personal data with the
         following categories of third parties only when necessary to deliver our services or comply with
@@ -272,7 +264,6 @@ function PrivacyContent() {
         </p>
       </div>
 
-      {/* ═══ 6. COOKIES & TRACKING ═══ */}
       <Subsection>Essential Cookies</Subsection>
       <p className="text-gray-400 leading-relaxed mb-3">
         These cookies are strictly necessary for the website to function and cannot be disabled.
@@ -327,7 +318,6 @@ function PrivacyContent() {
         preferences on each one.
       </p>
 
-      {/* ═══ 7. YOUR RIGHTS ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         Under GDPR, you have powerful rights over your personal data. We are committed to making
         it easy for you to exercise these rights. Here is a complete list of your rights and how
@@ -408,7 +398,6 @@ function PrivacyContent() {
         </p>
       </div>
 
-      {/* ═══ 8. DATA RETENTION ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         We follow a data minimisation approach and retain your personal data only for as long as necessary
         to fulfil the specific purposes for which it was collected. Once a retention period expires, data
@@ -473,7 +462,6 @@ function PrivacyContent() {
         obligations that require us to retain the data for a minimum period.
       </p>
 
-      {/* ═══ 9. SECURITY ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         We implement a comprehensive, multi-layered security programme to protect your personal data
         against unauthorised access, alteration, disclosure, or destruction. Our security measures
@@ -512,7 +500,6 @@ function PrivacyContent() {
         </a>.
       </p>
 
-      {/* ═══ 10. THIRD-PARTY SERVICES ═══ */}
       <p className="text-gray-400 leading-relaxed mb-3">
         Our website and services integrate with the following third-party platforms. Each is
         independently responsible for their own GDPR compliance and data protection practices.
@@ -567,7 +554,6 @@ function PrivacyContent() {
         processing, please contact us and we will investigate and take appropriate action.
       </p>
 
-      {/* ═══ 11. CHILDREN'S PRIVACY ═══ */}
       <p className="text-gray-400 leading-relaxed mb-4">
         Our website and services are exclusively directed at adults aged 18 and over. Solar Ireland
         provides residential and commercial solar panel installation services that require entering into
@@ -593,7 +579,6 @@ function PrivacyContent() {
         and we will take prompt action to remove the information.
       </p>
 
-      {/* ═══ 12. CHANGES ═══ */}
       <p className="text-gray-400 leading-relaxed mb-4">
         We may update this Privacy Policy from time to time to reflect changes in our business
         practices, changes in applicable data protection legislation or guidance, the introduction
@@ -613,7 +598,6 @@ function PrivacyContent() {
         changes to this policy constitutes your acceptance of the updated terms.
       </p>
 
-      {/* ═══ 13. CONTACT US ═══ */}
       <p className="text-gray-400 leading-relaxed mb-4">
         If you have any questions, concerns, or requests about this Privacy Policy or how we handle
         your personal data, we would love to hear from you. Our team is always happy to help and
@@ -654,9 +638,6 @@ function PrivacyContent() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   COMPONENTS
-   ═══════════════════════════════════════════════════════════════ */
 
 function Subsection({ children }: { children: ReactNode }) {
   return (
@@ -666,9 +647,6 @@ function Subsection({ children }: { children: ReactNode }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   COLLAPSIBLE SECTION WRAPPER
-   ═══════════════════════════════════════════════════════════════ */
 
 function CollapsibleSection({
   id,
@@ -730,9 +708,6 @@ function CollapsibleSection({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   BACK TO TOP BUTTON
-   ═══════════════════════════════════════════════════════════════ */
 
 function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -756,9 +731,6 @@ function BackToTop() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   TABLE OF CONTENTS WITH PROGRESS
-   ═══════════════════════════════════════════════════════════════ */
 
 const TOC_SECTIONS = [
   { id: 'introduction', label: 'Introduction' },
@@ -814,7 +786,6 @@ function TableOfContents() {
 
   return (
     <>
-      {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="lg:hidden sticky top-20 z-20 w-full flex items-center justify-between gap-3 px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.06] mb-8 transition-colors hover:bg-white/[0.06] cursor-pointer"
@@ -831,7 +802,6 @@ function TableOfContents() {
         </div>
       </button>
 
-      {/* TOC Sidebar */}
       <nav
         className={`lg:sticky lg:top-20 transition-all duration-300 print:hidden ${
           mobileOpen
@@ -841,7 +811,6 @@ function TableOfContents() {
         aria-label="Table of Contents"
       >
         <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5 lg:p-6">
-          {/* Progress bar */}
           <div className="mb-5">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
@@ -891,9 +860,6 @@ function TableOfContents() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   KEY TAKEAWAYS CARD
-   ═══════════════════════════════════════════════════════════════ */
 
 function KeyTakeaways() {
   const items = [
@@ -943,9 +909,6 @@ function KeyTakeaways() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FAQ ACCORDION
-   ═══════════════════════════════════════════════════════════════ */
 
 function PrivacyFAQ() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -1011,9 +974,6 @@ function PrivacyFAQ() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN PAGE COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 
 export default function PrivacyPolicyPage() {
   const [mounted, setMounted] = useState(false);
@@ -1025,7 +985,6 @@ export default function PrivacyPolicyPage() {
       <Navbar />
 
       <main className="pt-16 print:pt-0">
-        {/* ─── Hero ─── */}
         <header className="relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-20 right-1/4 w-[300px] h-[200px] bg-blue-400/[0.02] rounded-full blur-[100px] pointer-events-none" />
@@ -1063,7 +1022,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </header>
 
-        {/* ─── Breadcrumb ─── */}
         <div className="border-b border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-5 sm:px-8 py-3">
             <nav className="flex items-center gap-2 text-xs text-gray-600">
@@ -1074,7 +1032,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
 
-        {/* ─── Key Takeaways ─── */}
         <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-10 sm:pt-14">
           <div className="mb-2">
             <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-gray-500 mb-1">
@@ -1084,15 +1041,12 @@ export default function PrivacyPolicyPage() {
           <KeyTakeaways />
         </div>
 
-        {/* ─── Content Area ─── */}
         <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-10 sm:pb-14">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-14">
-            {/* Sidebar */}
             <aside className="lg:w-64 shrink-0">
               <TableOfContents />
             </aside>
 
-            {/* Main content */}
             <div className="flex-1 min-w-0">
               <div className="rounded-2xl bg-white/[0.015] border border-white/[0.05] p-6 sm:p-8 lg:p-10">
                 <div className="space-y-0">
@@ -1216,7 +1170,6 @@ export default function PrivacyPolicyPage() {
                 </div>
               </div>
 
-              {/* FAQ Section */}
               {mounted && (
                 <div className="mt-10">
                   <div className="rounded-2xl bg-white/[0.015] border border-white/[0.05] p-6 sm:p-8 lg:p-10">
@@ -1245,11 +1198,6 @@ export default function PrivacyPolicyPage() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION CONTENT COMPONENTS
-   Each section is extracted so the CollapsibleSection can
-   lazy-render content without pulling in the entire page.
-   ═══════════════════════════════════════════════════════════════ */
 
 function PrivacyContentIntro() {
   return (

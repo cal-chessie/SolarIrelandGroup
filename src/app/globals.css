@@ -91,9 +91,7 @@
   --chart-5: oklch(0.645 0.246 16.439);
 }
 
-/* ═══════════════════════════════════════════
-   BASE LAYER — resets, smooth scroll, selection
-   ═══════════════════════════════════════════ */
+  /* BASE LAYER */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -130,7 +128,7 @@
     color: #fff;
   }
 
-  /* Custom scrollbar — dark, minimal, matching theme */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -151,7 +149,7 @@
     scrollbar-color: rgba(255, 255, 255, 0.1) #0a0a0a;
   }
 
-  /* Focus visible styles — amber ring for keyboard users */
+  /* Focus visible styles */
   :focus-visible {
     outline: 2px solid rgba(250, 204, 21, 0.5);
     outline-offset: 2px;
@@ -164,16 +162,14 @@
   }
 }
 
-/* ═══════════════════════════════════════════
-   UTILITY LAYER — custom effects & patterns
-   ═══════════════════════════════════════════ */
+  /* UTILITY LAYER */
 @layer utilities {
   /* Amber gradient text */
   .text-gradient {
     color: #facc15;
   }
 
-  /* Hero section — GPU layer isolation */
+  /* Hero section */
   .hero-section {
     isolation: isolate;
   }
@@ -204,7 +200,7 @@
     z-index: 0;
   }
 
-  /* Glass card — solid semi-transparent bg (NO backdrop-filter — causes CPU repaints) */
+  /* Glass card */
   .glass-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -215,9 +211,7 @@
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  /* ═══════════════════════════════════════════
-     HERO ANIMATIONS — GPU-safe (transform + opacity only)
-     ═══════════════════════════════════════════ */
+  /* HERO ANIMATIONS */
 
   /* Staggered fade-up entrance */
   .hero-fade-up {
@@ -227,7 +221,7 @@
     will-change: transform, opacity;
   }
 
-  /* CTA shimmer sweep — pseudo-element with transform (GPU-safe) */
+  /* CTA shimmer sweep */
   .hero-cta-shimmer {
     position: relative;
     overflow: hidden;
@@ -251,7 +245,7 @@
     pointer-events: none;
   }
 
-  /* Animated gradient orbs — slow drift (GPU-safe) */
+  /* Animated gradient orbs */
   .hero-orb {
     will-change: transform, opacity;
     animation: orb-drift 12s ease-in-out infinite;
@@ -273,9 +267,7 @@
     animation: scroll-bob 2s ease-in-out infinite;
   }
 
-  /* ═══════════════════════════════════════════
-     WHATSAPP WIDGET ANIMATIONS
-     ═══════════════════════════════════════════ */
+/* WHATSAPP WIDGET ANIMATIONS */
 
   /* FAB pulsing ring */
   .whatsapp-fab-ring {
@@ -330,10 +322,8 @@
   }
 }
 
-/* ═══════════════════════════════════════════
-   KEYFRAME ANIMATIONS
-   ═══════════════════════════════════════════ */
-/* Bumblebee float — used in below-fold sections only */
+/* KEYFRAME ANIMATIONS */
+  /* Bumblebee float */
 @keyframes bumblebee-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   25% { transform: translateY(-8px) rotate(3deg); }
@@ -344,7 +334,7 @@
   animation: bumblebee-float 3s ease-in-out infinite;
 }
 
-/* WhatsApp FAB — simple fade in, delayed */
+  /* WhatsApp FAB */
 .whatsapp-fab {
   opacity: 0;
   animation: fab-entrance 0.5s ease-out 2s forwards;
@@ -354,11 +344,9 @@
   100% { opacity: 1; }
 }
 
-/* ═══════════════════════════════════════════
-   HERO KEYFRAMES — GPU-composited only
-   ═══════════════════════════════════════════ */
+  /* HERO KEYFRAMES */
 
-/* Staggered fade-up entrance — transform + opacity */
+  /* Staggered fade-up entrance */
 @keyframes hero-rise {
   0% {
     opacity: 0;
@@ -370,13 +358,13 @@
   }
 }
 
-/* CTA shimmer sweep — uses translateX (GPU-safe) */
+  /* CTA shimmer sweep */
 @keyframes cta-shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
 }
 
-/* Ambient orb drift — slow transform movement */
+  /* Ambient orb drift */
 @keyframes orb-drift {
   0%, 100% {
     opacity: 0;
@@ -400,11 +388,9 @@
   50% { transform: translateY(6px); }
 }
 
-/* ═══════════════════════════════════════════
-   WHATSAPP KEYFRAMES
-   ═══════════════════════════════════════════ */
+/* WHATSAPP KEYFRAMES */
 
-/* FAB pulsing ring — transform scale only */
+  /* FAB pulsing ring */
 @keyframes fab-ring-pulse {
   0% {
     transform: scale(1);
@@ -470,11 +456,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════
-   COOKIE CONSENT KEYFRAMES — GPU-safe
-   ═══════════════════════════════════════════ */
+  /* COOKIE CONSENT KEYFRAMES */
 
-/* Banner card entrance — slides up with spring */
+  /* Banner card entrance */
 .cookie-banner-card {
   animation: cookie-banner-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -525,7 +509,7 @@
   }
 }
 
-/* Floating cookie settings button — subtle appear + gentle pulse */
+  /* Floating cookie settings button */
 .cookie-settings-fab {
   opacity: 0;
   animation:
@@ -551,11 +535,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════
-   QUICK SAVINGS CALCULATOR KEYFRAMES — GPU-safe
-   ═══════════════════════════════════════════ */
+  /* QUICK SAVINGS CALCULATOR KEYFRAMES */
 
-/* Home type button selection — pop in */
+  /* Home type button selection */
 .quick-calc-check-pop {
   animation: quick-check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
@@ -570,7 +552,7 @@
   }
 }
 
-/* Calculate button — subtle pulse glow */
+  /* Calculate button */
 .quick-calc-calc-btn {
   position: relative;
   overflow: hidden;
@@ -594,7 +576,7 @@
   pointer-events: none;
 }
 
-/* Reset button — gentle slide */
+  /* Reset button */
 .quick-calc-reset-btn {
   animation: quick-reset-in 0.3s ease-out both;
 }
@@ -648,7 +630,7 @@
   }
 }
 
-/* WhatsApp CTA — subtle pulse shadow */
+  /* WhatsApp CTA */
 .quick-calc-cta-whatsapp {
   position: relative;
   overflow: hidden;
@@ -672,7 +654,7 @@
   pointer-events: none;
 }
 
-/* Bar fill animation — width transition via max-width trick */
+  /* Bar fill animation */
 .quick-calc-bar-fill {
   animation: quick-bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -687,11 +669,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════
-   EXIT INTENT KEYFRAMES — GPU-safe, world-class
-   ═══════════════════════════════════════════ */
+  /* EXIT INTENT KEYFRAMES */
 
-/* Backdrop — fast fade */
+  /* Backdrop */
 .exit-intent-backdrop {
   animation: exit-backdrop-in 0.25s ease-out both;
 }
@@ -700,7 +680,7 @@
   100% { opacity: 1; }
 }
 
-/* Card — dramatic spring slide up */
+  /* Card */
 .exit-intent-card {
   animation: exit-card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
   will-change: transform, opacity;
@@ -716,7 +696,7 @@
   }
 }
 
-/* Top accent bar shimmer — continuous sweep */
+  /* Top accent bar shimmer */
 .exit-intent-shimmer-bar {
   animation: exit-accent-shimmer 2.5s ease-in-out 0.5s infinite;
 }
@@ -725,7 +705,7 @@
   100% { transform: translateX(200%); }
 }
 
-/* CTA button shimmer — delayed sweep */
+  /* CTA button shimmer */
 .exit-intent-cta-shimmer {
   background: linear-gradient(
     90deg,
@@ -743,7 +723,7 @@
   100% { transform: translateX(200%); }
 }
 
-/* ─── Staggered element entrances ─── */
+/* Staggered element entrances */
 /* Each element slides up + fades in with increasing delay */
 /* el-0: Live social proof pill */
 .exit-intent-el-0 {
@@ -755,12 +735,12 @@
   opacity: 0;
   animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
-/* el-2: Feature card 1 — Project Portal */
+  /* el-2: Feature card 1 */
 .exit-intent-el-2 {
   opacity: 0;
   animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
 }
-/* el-3: Feature card 2 — Team Chat */
+  /* el-3: Feature card 2 */
 .exit-intent-el-3 {
   opacity: 0;
   animation: exit-el-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both;
@@ -807,10 +787,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════
+/* 
    MOTION LITE — CSS keyframes for framer-motion replacement
    These power the <motion.div> component from src/lib/motion.tsx
-   ═══════════════════════════════════════════════════════ */
+    */
 
 @keyframes motion-fade-up {
   from { opacity: 0; transform: translateY(16px); }
@@ -857,10 +837,52 @@
   }
 }
 
-/* Animated classes — triggered via IntersectionObserver or immediate
-   NO will-change here — too many elements with will-change eats GPU memory
-   on mobile. The animations only use transform+opacity which are already
-   compositor-friendly in modern browsers. */
+/* Reduced motion: respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-hidden {
+    opacity: 1;
+  }
+
+  .hero-fade-up,
+  .motion-fade-up,
+  .motion-fade-in,
+  .motion-scale-in,
+  .motion-fade-scale-up,
+  .motion-slide-in,
+  .motion-fade-rotate {
+    opacity: 1;
+    transform: none;
+  }
+
+  .bumblebee-float,
+  .hero-orb,
+  .scroll-bounce,
+  .whatsapp-fab-ring,
+  .wa-pulse,
+  .wa-fade-in,
+  .wa-unread-badge {
+    animation: none;
+  }
+
+  .whatsapp-fab {
+    opacity: 1;
+  }
+
+  .cookie-settings-fab {
+    opacity: 1;
+  }
+}
+
+  /* Animated classes — triggered via IntersectionObserver or immediate */
 .motion-fade-up {
   animation: motion-fade-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -880,7 +902,7 @@
   animation: motion-fade-rotate var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ─── whileHover — CSS :hover transitions ─── */
+  /* whileHover */
 [data-motion-hover-scale] {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -898,7 +920,7 @@
   transform: translateY(calc(var(--hover-y, 2) * -1px));
 }
 
-/* ─── whileTap — CSS :active transitions ─── */
+  /* whileTap */
 [data-motion-tap-scale] {
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -906,7 +928,7 @@
   transform: scale(var(--tap-scale, 0.97)) !important;
 }
 
-/* ─── Accordion collapse (CSS grid technique for AnimatePresence) ─── */
+/* Accordion collapse (CSS grid technique for AnimatePresence) */
 .motion-accordion {
   display: grid;
   grid-template-rows: 0fr;
@@ -921,17 +943,12 @@
   overflow: hidden;
 }
 
-/* ─── Fade switch (for AnimatePresence mode="wait") ─── */
+/* Fade switch (for AnimatePresence mode="wait") */
 .motion-fade-switch-enter {
   animation: motion-fade-in 0.3s ease both;
 }
 
-/* ═══════════════════════════════════════════
-   CALCULATOR SLIDER — native <input type="range">
-   Bulletproof cross-browser approach. The native input handles
-   all pointer/touch/keyboard events. Styled to match dark theme.
-   Uses CSS custom property --range-pct for the progress fill.
-   ═══════════════════════════════════════════ */
+  /*  */
 
 /* The range input itself */
 .solar-range-input {
@@ -946,9 +963,9 @@
   outline: none;
 }
 
-/* ─── Track styling ─── */
+/* Track styling */
 
-/* Webkit (Chrome, Safari, Edge) — progress fill via CSS variable */
+  /* Webkit (Chrome, Safari, Edge) */
 .solar-range-input::-webkit-slider-runnable-track {
   width: 100%;
   height: 8px;
@@ -962,7 +979,7 @@
   );
 }
 
-/* Firefox — uses ::moz-range-progress natively */
+  /* Firefox */
 .solar-range-input::-moz-range-track {
   width: 100%;
   height: 8px;
@@ -978,7 +995,7 @@
   height: 8px;
 }
 
-/* ─── Thumb styling — visible amber thumb with glow ─── */
+  /* Thumb styling */
 
 /* Webkit (Chrome, Safari, Edge) */
 .solar-range-input::-webkit-slider-thumb {
@@ -1027,20 +1044,27 @@
   transform: scale(1.15);
 }
 
-/* ─── Focus ring — keyboard users only ─── */
+  /* Focus ring — high-visibility for keyboard users */
 .solar-range-input:focus-visible {
-  outline: 2px solid rgba(250, 204, 21, 0.5);
+  outline: 2.5px solid rgba(250, 204, 21, 0.8);
   outline-offset: 4px;
   border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.2), 0 0 0 8px rgba(250, 204, 21, 0.08);
+}
+
+.solar-range-input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.4), 0 2px 8px rgba(250, 204, 21, 0.4);
+}
+
+.solar-range-input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.4), 0 2px 8px rgba(250, 204, 21, 0.4);
 }
 
 .solar-range-input:focus:not(:focus-visible) {
   outline: none;
 }
 
-/* ═══════════════════════════════════════════
-   BLOG — Pill pulse & page transition
-   ═══════════════════════════════════════════ */
+  /* BLOG */
 
 /* Category pill scale pulse when clicked */
 .blog-pill-pulse {

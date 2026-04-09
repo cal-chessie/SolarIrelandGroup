@@ -25,9 +25,6 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════
-   ANIMATED GRANT COUNTER
-   ═══════════════════════════════════════════ */
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-20px' });
@@ -51,9 +48,6 @@ function AnimatedGrant({ show }: { show: boolean }) {
   );
 }
 
-/* ═══════════════════════════════════════════
-   ELIGIBILITY CHECKER
-   ═══════════════════════════════════════════ */
 type CheckResult = 'yes' | 'no' | 'unsure' | null;
 
 interface CheckStep {
@@ -127,7 +121,6 @@ function EligibilityChecker() {
     setIsRevealed(false);
   };
 
-  // Determine eligibility
   const hasNo = Object.values(answers).some((v) => v === 'no');
   const hasUnsure = Object.values(answers).some((v) => v === 'unsure');
   const eligible = isComplete && !hasNo;
@@ -135,7 +128,6 @@ function EligibilityChecker() {
 
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl overflow-hidden">
-      {/* Header */}
       <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
         <div className="flex items-start justify-between mb-6">
           <div>
@@ -152,7 +144,6 @@ function EligibilityChecker() {
           )}
         </div>
 
-        {/* Progress bar */}
         {!isComplete && (
           <div className="flex items-center gap-2 mb-6">
             {checkSteps.map((s, i) => (
@@ -181,7 +172,6 @@ function EligibilityChecker() {
         )}
       </div>
 
-      {/* Steps / Result */}
       <div className="px-6 sm:px-8 pb-6 sm:pb-8">
         <AnimatePresence mode="wait">
           {!isComplete ? (
@@ -192,7 +182,6 @@ function EligibilityChecker() {
               exit={{ opacity: 0, x: -30 }}
               transition={{ duration: 0.3 }}
             >
-              {/* Question */}
               <div className="flex items-start gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
                   <StepIcon className="w-5 h-5 text-amber-400" />
@@ -203,7 +192,6 @@ function EligibilityChecker() {
                 </div>
               </div>
 
-              {/* Options */}
               <div className="space-y-2">
                 {step.options.map((opt) => (
                   <button
@@ -217,7 +205,6 @@ function EligibilityChecker() {
                 ))}
               </div>
 
-              {/* Already answered steps */}
               {currentStep > 0 && (
                 <div className="mt-5 pt-4 border-t border-white/[0.04] space-y-2">
                   {checkSteps.slice(0, currentStep).map((prev) => {
@@ -241,7 +228,6 @@ function EligibilityChecker() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
             >
-              {/* Result card */}
               {!isRevealed ? (
                 <button
                   onClick={() => setIsRevealed(true)}
@@ -326,9 +312,6 @@ function EligibilityChecker() {
   );
 }
 
-/* ═══════════════════════════════════════════
-   GRANT TIMELINE
-   ═══════════════════════════════════════════ */
 const timelineSteps = [
   {
     icon: ClipboardCheck,
@@ -392,7 +375,6 @@ function GrantTimeline() {
               transition={{ duration: 0.4, delay: i * 0.1 }}
               className="flex gap-4"
             >
-              {/* Left: icon + connector */}
               <div className="flex flex-col items-center">
                 <div className={`w-10 h-10 rounded-xl ${step.bg} flex items-center justify-center shrink-0`}>
                   <StepIcon className={`w-5 h-5 ${step.color}`} />
@@ -402,7 +384,6 @@ function GrantTimeline() {
                 )}
               </div>
 
-              {/* Right: content */}
               <div className={`pb-6 ${isLast ? 'pb-0' : ''}`}>
                 <div className="flex items-start justify-between gap-3">
                   <h4 className="text-sm font-semibold text-white">{step.title}</h4>
@@ -425,9 +406,6 @@ function GrantTimeline() {
   );
 }
 
-/* ═══════════════════════════════════════════
-   GRANT HERO — big animated €1,800
-   ═══════════════════════════════════════════ */
 function GrantHero({ isInView }: { isInView: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const selfInView = useInView(ref, { once: true, margin: '-40px' });
@@ -472,9 +450,6 @@ function GrantHero({ isInView }: { isInView: boolean }) {
   );
 }
 
-/* ═══════════════════════════════════════════
-   KEY FACTS CARD — horizontal row
-   ═══════════════════════════════════════════ */
 function KeyFactsRow() {
   const facts = [
     { label: 'Grant amount', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-amber-400', bg: 'bg-amber-400/10' },
@@ -501,23 +476,17 @@ function KeyFactsRow() {
   );
 }
 
-/* ═══════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════ */
 export default function GrantInfo() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-60px' });
 
   return (
     <section id="grant-info" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
-      {/* Ambient glow */}
       <div className="absolute top-1/3 left-0 w-[600px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10" ref={sectionRef}>
-        {/* ─── Hero with animated grant amount ─── */}
         <GrantHero isInView={isInView} />
 
-        {/* ─── Key facts — full-width row ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -528,9 +497,7 @@ export default function GrantInfo() {
           <KeyFactsRow />
         </motion.div>
 
-        {/* ─── Two-column: Eligibility checker + Timeline ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
-          {/* Left: Eligibility checker */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -540,7 +507,6 @@ export default function GrantInfo() {
             <EligibilityChecker />
           </motion.div>
 
-          {/* Right: Timeline */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -551,7 +517,6 @@ export default function GrantInfo() {
           </motion.div>
         </div>
 
-        {/* ─── Disclaimer + SEAI link ─── */}
         <motion.div
           className="mt-10 sm:mt-12 flex items-start gap-3 glass-card rounded-xl p-4 sm:p-5"
           initial={{ opacity: 0, y: 15 }}

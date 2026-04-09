@@ -3,7 +3,6 @@ import { SOLAR_DATA } from './solar-data';
 export function buildWhatsAppUrl(context: {
   source?: string;
   customMessage?: string;
-  // Optional bill analyser data
   annualSaving?: number;
   paybackYears?: number;
   total25yrSaving?: number;
@@ -12,9 +11,7 @@ export function buildWhatsAppUrl(context: {
   homeType?: string;
   recommendedSystem?: number;
   provider?: string;
-  // Optional grant checker data
   eligible?: boolean;
-  // Quick action data
   quickAction?: string;
 }) {
   const phone = SOLAR_DATA.provider.whatsapp;

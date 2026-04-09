@@ -70,7 +70,6 @@ export default function CountiesLayout({
 }) {
   return (
     <>
-      {/* BreadcrumbList JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

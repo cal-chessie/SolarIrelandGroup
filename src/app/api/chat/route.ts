@@ -1,17 +1,7 @@
 import { NextResponse } from 'next/server';
 import ZAI from 'z-ai-web-dev-sdk';
 
-export async function POST(request: Request) {
-  try {
-    const { messages } = await request.json();
-
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json({ message: 'Please send a message.' }, { status: 400 });
-    }
-
-    const zai = await ZAI.create();
-
-    const systemPrompt = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
+const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
 
 ## Your Knowledge Base (2026 — Ireland only)
 
@@ -54,7 +44,6 @@ export async function POST(request: Request) {
 - Use **SEAI** (Sustainable Energy Authority of Ireland) — NEVER mention OFGEM, EST, or UK government schemes
 - Irish homes typically use **MCBs and RCDs** in consumer units (not "fuse boxes")
 - Voltage in Ireland is **230V single-phase / 400V three-phase** at **50Hz**
-- If you're unsure whether something is an Irish or UK standard, default to Irish or say you'll confirm with the team
 
 **System Sizing:**
 - 2-3 kWp: small apartment or very low usage
@@ -96,13 +85,51 @@ export async function POST(request: Request) {
 - Email: cal@solarireland.com
 - Website: solarireland.com`;
 
+export async function POST(request: Request) {
+  try {
+    const { messages, stream } = await request.json();
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json({ message: 'Please send a message.' }, { status: 400 });
+    }
+
+    const zai = await ZAI.create();
+
     const chatMessages = [
-      { role: 'system' as const, content: systemPrompt },
+      { role: 'system' as const, content: SYSTEM_PROMPT },
       ...messages.map((m: { role: string; content: string }) => ({
         role: m.role as 'user' | 'assistant',
         content: m.content,
       })),
     ];
+
+    if (stream) {
+      const completion = await zai.chat.completions.create({
+        messages: chatMessages,
+        max_tokens: 500,
+        temperature: 0.7,
+      });
+
+      const content =
+        completion.choices?.[0]?.message?.content ||
+        'Sorry, I couldn\'t generate a response. Please try again.';
+
+      const CHUNK_SIZE = 3;
+      let body = '';
+      for (let i = 0; i < content.length; i += CHUNK_SIZE) {
+        const chunk = content.slice(i, i + CHUNK_SIZE);
+        body += JSON.stringify({ content: chunk }) + '\n';
+      }
+      body += JSON.stringify({ done: true }) + '\n';
+
+      return new Response(body, {
+        headers: {
+          'Content-Type': 'application/x-ndjson',
+          'Cache-Control': 'no-cache',
+          'Transfer-Encoding': 'chunked',
+        },
+      });
+    }
 
     const completion = await zai.chat.completions.create({
       messages: chatMessages,

@@ -1,13 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   DYNAMIC ROBOTS.TXT — Next.js App Router
-   ═══════════════════════════════════════════════════════════════
-   This overrides the static /public/robots.txt file.
-   Best practices for 2026:
-   - Allow all major search bots
-   - Reference sitemap
-   - Block AI scrapers (optional but recommended)
-   - Block admin/api paths
-   ═══════════════════════════════════════════════════════════════ */
 
 import type { MetadataRoute } from "next";
 
@@ -63,7 +53,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
       {
-        // Block common AI scrapers that don't contribute to search ranking
         userAgent: "GPTBot",
         disallow: "/",
       },

@@ -19,9 +19,6 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════════════
-   DATA — all Irish-specific, zero carbon messaging
-   ═══════════════════════════════════════════════════════ */
 
 const stats = [
   { icon: Euro, label: 'Avg. annual saving', value: SOLAR_DATA.savings.avgAnnual, prefix: '€', suffix: '/yr', color: 'text-green-400', bg: 'bg-green-400/10' },
@@ -30,7 +27,6 @@ const stats = [
   { icon: Sun, label: 'Panel warranty', value: SOLAR_DATA.system.panelWarranty, prefix: '', suffix: '+ yrs', color: 'text-violet-400', bg: 'bg-violet-400/10' },
 ];
 
-// Irish residential electricity prices (all-in per kWh, incl. VAT, PSO levy, standing charges)
 const priceData = [
   { year: 2019, price: 0.24 },
   { year: 2020, price: 0.25 },
@@ -41,7 +37,6 @@ const priceData = [
   { year: 2025, price: 0.31 },
 ];
 
-// Monthly solar generation in Ireland (SEAI TMY Dublin, kWh per kWp installed)
 const monthlyGen = [
   { month: 'Jan', gen: 29 },
   { month: 'Feb', gen: 48 },
@@ -104,9 +99,6 @@ const benefits = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   ANIMATED COUNTER — lightweight RAF, no Framer Motion pipeline
-   ═══════════════════════════════════════════════════════ */
 function AnimatedCounter({
   value,
   prefix = '',
@@ -154,9 +146,6 @@ function AnimatedCounter({
   return <span ref={ref} className={!visible ? 'opacity-0' : ''}>{prefix}0{suffix}</span>;
 }
 
-/* ═══════════════════════════════════════════════════════
-   STAT CARD — animated number on scroll
-   ═══════════════════════════════════════════════════════ */
 function StatCard({
   icon: Icon,
   label,
@@ -190,9 +179,6 @@ function StatCard({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   ENERGY PRICE CHART — the "problem" visual
-   ═══════════════════════════════════════════════════════ */
 function PriceChart() {
   const maxPrice = Math.max(...priceData.map((d) => d.price));
   const [visible, setVisible] = useState(false);
@@ -210,7 +196,6 @@ function PriceChart() {
 
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-5 h-5 rounded-md bg-red-400/10 flex items-center justify-center">
@@ -229,7 +214,6 @@ function PriceChart() {
         </p>
       </div>
 
-      {/* Horizontal bars — newest year at top */}
       <div id="price-chart-bars" className="space-y-2.5 sm:space-y-3">
         {[...priceData].reverse().map((d, i) => {
           const widthPercent = (d.price / maxPrice) * 100;
@@ -240,12 +224,10 @@ function PriceChart() {
           return (
             <div key={d.year} className="group">
               <div className="flex items-center gap-3">
-                {/* Year label */}
                 <span className="text-[11px] sm:text-xs text-gray-500 w-10 text-right font-mono shrink-0">
                   {d.year}
                 </span>
 
-                {/* Bar track */}
                 <div className="flex-1 h-7 sm:h-8 rounded-lg bg-white/[0.03] overflow-hidden relative">
                   <div
                     className={`h-full rounded-lg transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
@@ -262,7 +244,6 @@ function PriceChart() {
                       transitionDelay: `${i * 70}ms`,
                     }}
                   />
-                  {/* Crisis badge */}
                   {isCrisis && visible && (
                     <span
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-bold text-red-400 uppercase tracking-wider hidden sm:inline motion-fade-in"
@@ -273,7 +254,6 @@ function PriceChart() {
                   )}
                 </div>
 
-                {/* Price label */}
                 <span
                   className={`text-[11px] sm:text-xs font-mono w-11 sm:w-12 shrink-0 tabular-nums ${
                     isCrisis
@@ -291,7 +271,6 @@ function PriceChart() {
         })}
       </div>
 
-      {/* Summary callout */}
       <div className="mt-6 pt-4 border-t border-white/[0.04] flex items-start gap-3">
         <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center shrink-0 mt-0.5">
           <ShieldCheck className="w-4 h-4 text-green-400" />
@@ -309,9 +288,6 @@ function PriceChart() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   MONTHLY GENERATION CHART — the "proof" visual
-   ═══════════════════════════════════════════════════════ */
 function GenerationChart() {
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
@@ -331,7 +307,6 @@ function GenerationChart() {
 
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-      {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-col sm:flex-row gap-3">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -352,7 +327,6 @@ function GenerationChart() {
           </p>
         </div>
 
-        {/* Annual badge */}
         <div className="px-3.5 py-2 rounded-xl bg-amber-400/[0.08] border border-amber-400/[0.12] shrink-0 self-start">
           <p className="text-[10px] text-gray-500 mb-0.5">4kWp system annual output</p>
           <p className="text-sm sm:text-base font-bold text-amber-400 tabular-nums">
@@ -361,9 +335,7 @@ function GenerationChart() {
         </div>
       </div>
 
-      {/* Bar chart */}
       <div className="relative">
-        {/* Horizontal grid lines */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
           {[100, 75, 50, 25].map((pct) => (
             <div
@@ -388,9 +360,7 @@ function GenerationChart() {
                 onMouseEnter={() => setHoveredMonth(i)}
                 onMouseLeave={() => setHoveredMonth(null)}
               >
-                {/* Bar wrapper */}
                 <div className="w-full flex-1 relative min-h-0">
-                  {/* Tooltip */}
                   {isHovered && (
                     <motion.div
                       initial={{ opacity: 0, y: 5, scale: 0.9 }}
@@ -404,7 +374,6 @@ function GenerationChart() {
                       <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400 rotate-45" />
                     </motion.div>
                   )}
-                  {/* Bar */}
                   <div
                     className={`w-full absolute bottom-0 left-0 right-0 rounded-t-sm sm:rounded-t-md transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] transition-colors duration-200 ${
                       isHovered
@@ -424,7 +393,6 @@ function GenerationChart() {
                   />
                 </div>
 
-                {/* Month label */}
                 <span
                   className={`text-[8px] sm:text-[10px] font-medium transition-colors duration-200 ${
                     isHovered ? 'text-amber-400' : 'text-gray-600'
@@ -438,7 +406,6 @@ function GenerationChart() {
         </div>
       </div>
 
-      {/* Bottom insight */}
       <div className="mt-6 pt-4 border-t border-white/[0.04] flex items-start gap-3">
         <div className="w-8 h-8 rounded-lg bg-sky-400/10 flex items-center justify-center shrink-0 mt-0.5">
           <Info className="w-4 h-4 text-sky-400" />
@@ -455,9 +422,6 @@ function GenerationChart() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   BENEFIT CARD — expandable on click
-   ═══════════════════════════════════════════════════════ */
 function BenefitCard({
   benefit,
   index,
@@ -480,7 +444,6 @@ function BenefitCard({
       transition={{ duration: 0.5, delay: index * 0.1 }}
       onClick={() => setExpanded(!expanded)}
     >
-      {/* Top row: icon + stat */}
       <div className="flex items-start justify-between mb-4">
         <div
           className={`w-11 h-11 rounded-xl ${benefit.bg} flex items-center justify-center`}
@@ -497,12 +460,10 @@ function BenefitCard({
         </div>
       </div>
 
-      {/* Title */}
       <h3 className="text-base sm:text-lg font-bold text-white mb-1">
         {benefit.title}
       </h3>
 
-      {/* Expandable description */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
           expanded ? 'max-h-60 opacity-100 mt-2' : 'max-h-0 opacity-0'
@@ -513,7 +474,6 @@ function BenefitCard({
         </p>
       </div>
 
-      {/* Toggle hint */}
       <div className="flex items-center gap-1.5 mt-3">
         <span className="text-[10px] text-gray-600">
           {expanded ? 'Tap to collapse' : 'Tap for details'}
@@ -530,21 +490,15 @@ function BenefitCard({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════════════════ */
 export default function WhySolar() {
   return (
     <section id="why-solar" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative">
-      {/* Honeycomb background */}
       <div className="absolute inset-0 honeycomb-bg" />
 
-      {/* Ambient glows */}
       <div className="absolute top-1/3 left-0 w-[500px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-amber-400/[0.015] rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* ─── Section header ─── */}
         <motion.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -570,19 +524,16 @@ export default function WhySolar() {
           </p>
         </motion.div>
 
-        {/* ─── Stats row ─── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-14">
           {stats.map((stat) => (
             <StatCard key={stat.label} {...stat} />
           ))}
         </div>
 
-        {/* ─── Energy Price Rise Chart ─── */}
         <div className="mb-10 sm:mb-14">
           <PriceChart />
         </div>
 
-        {/* ─── Benefits grid ─── */}
         <div className="mb-10 sm:mb-14">
           <motion.h3
             className="text-lg sm:text-xl font-bold text-white mb-5"
@@ -599,12 +550,10 @@ export default function WhySolar() {
           </div>
         </div>
 
-        {/* ─── Monthly Generation Chart ─── */}
         <div className="mb-10 sm:mb-14">
           <GenerationChart />
         </div>
 
-        {/* ─── Microgeneration earnings callout ─── */}
         <motion.div
           className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-sky-500/[0.08] to-sky-400/[0.04] border border-sky-400/[0.1] p-5 sm:p-7 mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 20 }}
@@ -632,7 +581,6 @@ export default function WhySolar() {
           </div>
         </motion.div>
 
-        {/* ─── CTA strip ─── */}
         <motion.div
           className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-400/10 to-amber-500/[0.04] border border-amber-400/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5"
           initial={{ opacity: 0, y: 20 }}
@@ -674,7 +622,6 @@ export default function WhySolar() {
           </div>
         </motion.div>
 
-        {/* ─── Trust line ─── */}
         <motion.div
           className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[11px] sm:text-xs text-gray-600"
           initial={{ opacity: 0 }}

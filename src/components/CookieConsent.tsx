@@ -3,9 +3,6 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 
-/* ═══════════════════════════════════════════════════════════════
-   TYPES & CONSTANTS
-   ═══════════════════════════════════════════════════════════════ */
 
 type CookieCategory = 'necessary' | 'analytics' | 'marketing';
 
@@ -54,9 +51,6 @@ const CATEGORIES: CookieCategoryConfig[] = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   LOCAL STORAGE HELPERS
-   ═══════════════════════════════════════════════════════════════ */
 
 function getStoredConsent(): ConsentState | null {
   if (typeof window === 'undefined') return null;
@@ -64,7 +58,6 @@ function getStoredConsent(): ConsentState | null {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const data = JSON.parse(raw) as ConsentState;
-    // Check if consent has expired
     const ageMs = Date.now() - data.timestamp;
     const maxAgeMs = CONSENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
     if (ageMs > maxAgeMs) {
@@ -82,7 +75,6 @@ function saveConsent(consent: ConsentState): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
   } catch {
-    // localStorage might be blocked
   }
 }
 
@@ -92,11 +84,6 @@ function dispatchConsentEvent(consent: ConsentState): void {
     new CustomEvent('cookie-consent-update', { detail: consent })
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   CUSTOM HOOK — useCookieConsent
-   Can be used by other components to check consent status
-   ═══════════════════════════════════════════════════════════════ */
 
 export function useCookieConsent(): {
   hasConsented: boolean;
@@ -127,9 +114,6 @@ export function useCookieConsent(): {
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   TOGGLE SWITCH COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 
 function ToggleSwitch({
   enabled,
@@ -173,9 +157,6 @@ function ToggleSwitch({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CATEGORY ROW COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 
 function CategoryRow({
   category,
@@ -198,7 +179,6 @@ function CategoryRow({
         }
       `}
     >
-      {/* Category header row */}
       <div className="flex items-center gap-3 p-3 sm:p-4">
         <div
           className={`
@@ -243,7 +223,6 @@ function CategoryRow({
         </div>
       </div>
 
-      {/* Expandable details */}
       <div
         className={`
           grid transition-all duration-500 ease-out
@@ -272,10 +251,6 @@ function CategoryRow({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FLOATING COOKIE SETTINGS BUTTON
-   Shown after consent is given — lets users change preferences
-   ═══════════════════════════════════════════════════════════════ */
 
 function FloatingCookieButton({ onClick }: { onClick: () => void }) {
   return (
@@ -300,9 +275,6 @@ function FloatingCookieButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN COOKIE CONSENT BANNER
-   ═══════════════════════════════════════════════════════════════ */
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -311,25 +283,21 @@ export default function CookieConsent() {
   const [showSettingsOnly, setShowSettingsOnly] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
-  // Category toggle states (default: necessary ON, others OFF — GDPR opt-in)
   const [categories, setCategories] = useState<Record<CookieCategory, boolean>>({
     necessary: true,
     analytics: false,
     marketing: false,
   });
 
-  // Check for existing consent on mount
   useEffect(() => {
     const existing = getStoredConsent();
     setIsHydrated(true);
 
     if (existing?.accepted) {
-      // Already consented — show floating button only
       setCategories(existing.categories);
       setIsDismissed(true);
       setVisible(false);
     } else {
-      // No consent yet — show banner (slight delay for smooth page load)
       const timer = setTimeout(() => {
         setVisible(true);
       }, 1200);
@@ -337,7 +305,6 @@ export default function CookieConsent() {
     }
   }, []);
 
-  // Listen for open-settings event from floating button
   useEffect(() => {
     const handler = () => {
       setShowSettingsOnly(true);
@@ -366,7 +333,6 @@ export default function CookieConsent() {
     dispatchConsentEvent(consent);
     setCategories(allEnabled);
     setIsDismissed(true);
-    // Animate out
     setTimeout(() => setVisible(false), 300);
   }, []);
 
@@ -410,12 +376,10 @@ export default function CookieConsent() {
     setShowSettings(false);
   }, []);
 
-  // Don't render during SSR — wait for hydration
   if (!isHydrated) return null;
 
   return (
     <>
-      {/* ─── MAIN CONSENT BANNER ─── */}
       {!isDismissed && visible && (
         <div
           className={`
@@ -427,13 +391,10 @@ export default function CookieConsent() {
           aria-label="Cookie consent"
           aria-modal="false"
         >
-          {/* Gradient fade at top */}
           <div className="pointer-events-none h-12 bg-gradient-to-t from-black/40 to-transparent" />
 
-          {/* Backdrop — pointer-events-none so it doesn't block page interaction */}
           <div className="pointer-events-none absolute inset-0 -top-12 bg-black/40" />
 
-          {/* Banner content */}
           <div className="relative mx-auto max-w-2xl px-4 pb-6">
             <div
               className={`
@@ -444,7 +405,6 @@ export default function CookieConsent() {
                 transition-all duration-500 ease-out
               `}
             >
-              {/* Header row */}
               <div className="flex items-start gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 mt-0.5">
                   <Cookie className="w-5 h-5" />
@@ -463,7 +423,6 @@ export default function CookieConsent() {
                     <span className="text-amber-400/70">Necessary cookies</span> keep the site working.
                   </p>
                 </div>
-                {/* Close on settings-only mode */}
                 {showSettingsOnly && (
                   <button
                     onClick={handleCloseSettingsOnly}
@@ -475,7 +434,6 @@ export default function CookieConsent() {
                 )}
               </div>
 
-              {/* ─── COMPACT VIEW (before settings expanded) ─── */}
               {!showSettings && !showSettingsOnly && (
                 <div
                   className="
@@ -532,7 +490,6 @@ export default function CookieConsent() {
                 </div>
               )}
 
-              {/* ─── EXPANDED SETTINGS VIEW ─── */}
               {(showSettings || showSettingsOnly) && (
                 <div
                   className="
@@ -540,7 +497,6 @@ export default function CookieConsent() {
                     mt-5 space-y-2.5
                   "
                 >
-                  {/* Category toggles */}
                   {CATEGORIES.map((cat) => (
                     <CategoryRow
                       key={cat.id}
@@ -550,7 +506,6 @@ export default function CookieConsent() {
                     />
                   ))}
 
-                  {/* Action buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <button
                       type="button"
@@ -601,14 +556,13 @@ export default function CookieConsent() {
                     )}
                   </div>
 
-                  {/* Policy links */}
                   <p className="text-center text-[11px] text-white/20 pt-1">
                     By consenting, you agree to our{' '}
-                    <a href="#" className="underline underline-offset-2 hover:text-white/40 transition-colors">
+                    <a href="/privacy" className="underline underline-offset-2 hover:text-white/40 transition-colors">
                       Privacy Policy
                     </a>{' '}
                     and{' '}
-                    <a href="#" className="underline underline-offset-2 hover:text-white/40 transition-colors">
+                    <a href="/cookies" className="underline underline-offset-2 hover:text-white/40 transition-colors">
                       Cookie Policy
                     </a>
                     .
@@ -620,7 +574,6 @@ export default function CookieConsent() {
         </div>
       )}
 
-      {/* ─── FLOATING SETTINGS BUTTON (shown after consent) ─── */}
       {isHydrated && isDismissed && !showSettingsOnly && (
         <FloatingCookieButton
           onClick={() => {

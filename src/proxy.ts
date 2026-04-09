@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   PROXY — Canonical URL Redirects
-   ═══════════════════════════════════════════════════════════════
-   Runs on the Edge before every request.
-   Only handles redirects that next.config headers() cannot.
-   Security headers are set in next.config.ts.
-   ═══════════════════════════════════════════════════════════════ */
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -13,24 +5,32 @@ export function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const hostname = url.hostname;
 
-  /* ─── 1. Canonical URL: redirect www to non-www ─── */
   if (hostname.startsWith("www.")) {
     url.hostname = hostname.replace(/^www\./, "");
     return NextResponse.redirect(url, 301);
   }
 
-  /* ─── 2. Remove trailing slashes (except root) ─── */
   if (url.pathname !== "/" && url.pathname.endsWith("/")) {
     url.pathname = url.pathname.slice(0, -1);
     return NextResponse.redirect(url, 301);
   }
 
-  return NextResponse.next();
+  // Force no-cache on HTML pages so proxy never serves stale content
+  const response = NextResponse.next();
+  const { pathname } = request.nextUrl;
+  if (
+    !pathname.startsWith('/api') &&
+    !pathname.startsWith('/_next')
+  ) {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    response.headers.set('Surrogate-Control', 'no-store');
+  }
+
+  return response;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MATCHER — Skip static files
-   ═══════════════════════════════════════════════════════════════ */
 export const config = {
   matcher: [
     "/((?!_next/static|_next/image|favicon.ico|logo-favicon|bumblebee-favicon|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",

@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
+import { ChevronDown, List } from 'lucide-react';
 import {
   ChevronRight,
   Calendar,
@@ -25,9 +26,6 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { getArticleBySlug, getRelatedArticles, type ContentSection } from '@/lib/blog-data';
 
-/* ═══════════════════════════════════════════════════════════════
-   ANIMATION HELPERS
-   ═══════════════════════════════════════════════════════════════ */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -35,9 +33,6 @@ const fadeUp = {
 
 const SPRING_EASE = [0.16, 1, 0.3, 1] as const;
 
-/* ═══════════════════════════════════════════════════════════════
-   CATEGORY HELPERS
-   ═══════════════════════════════════════════════════════════════ */
 const categoryConfig: Record<string, { bg: string; text: string; border: string; label: string }> = {
   grants: { bg: 'bg-amber-400/10', text: 'text-amber-400', border: 'border-amber-400/20', label: 'Grants' },
   guides: { bg: 'bg-sky-400/10', text: 'text-sky-400', border: 'border-sky-400/20', label: 'Guides' },
@@ -51,9 +46,6 @@ function getCategoryConfig(cat: string) {
   return categoryConfig[cat] || { bg: 'bg-gray-400/10', text: 'text-gray-400', border: 'border-gray-400/20', label: cat };
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   TABLE OF CONTENTS — auto-generated from headings
-   ═══════════════════════════════════════════════════════════════ */
 interface TOCItem {
   id: string;
   text: string;
@@ -70,9 +62,6 @@ function buildTOC(content: ContentSection[]): TOCItem[] {
     }));
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CALLOUT VARIANT STYLES
-   ═══════════════════════════════════════════════════════════════ */
 const calloutStyles: Record<string, { bg: string; border: string; icon: React.ComponentType<{ className?: string }>; iconColor: string }> = {
   tip: { bg: 'bg-emerald-400/[0.06]', border: 'border-emerald-400/20', icon: LightbulbIcon, iconColor: 'text-emerald-400' },
   warning: { bg: 'bg-amber-400/[0.06]', border: 'border-amber-400/20', icon: AlertTriangle, iconColor: 'text-amber-400' },
@@ -80,9 +69,54 @@ const calloutStyles: Record<string, { bg: string; border: string; icon: React.Co
   stat: { bg: 'bg-violet-400/[0.06]', border: 'border-violet-400/20', icon: BarChart3, iconColor: 'text-violet-400' },
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   CONTENT RENDERER — maps content sections to React
-   ═══════════════════════════════════════════════════════════════ */
+/* ─── Mobile collapsible TOC ─── */
+function MobileTOC({ items }: { items: TOCItem[] }) {
+  const [open, setOpen] = useState(false);
+  const handleClick = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setOpen(false);
+  }, []);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="xl:hidden mb-6">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2.5 w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.05] transition-all"
+        aria-expanded={open}
+      >
+        <List className="w-4 h-4 text-amber-400 shrink-0" />
+        <span className="flex-1 text-left font-medium">On This Page</span>
+        <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="mt-2 rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 overflow-hidden"
+        >
+          <ul className="space-y-1.5">
+            {items.map((item) => (
+              <li key={item.id}>
+                <button
+                  onClick={() => handleClick(item.id)}
+                  className={`w-full text-left text-xs leading-relaxed transition-colors py-1.5 ${
+                    item.level === 3 ? 'pl-4 text-gray-500' : 'pl-1 text-gray-400 hover:text-amber-400'
+                  }`}
+                >
+                  {item.text}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 function ContentRenderer({ content }: { content: ContentSection[] }) {
   let headingIdx = 0;
 
@@ -288,9 +322,6 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   STICKY TABLE OF CONTENTS (Desktop only)
-   ═══════════════════════════════════════════════════════════════ */
 function StickyTOC({ items }: { items: TOCItem[] }) {
   const [activeId, setActiveId] = useState('');
 
@@ -354,9 +385,6 @@ function StickyTOC({ items }: { items: TOCItem[] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   NEWSLETTER SECTION
-   ═══════════════════════════════════════════════════════════════ */
 function NewsletterSection() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -433,9 +461,6 @@ function NewsletterSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   RELATED ARTICLES
-   ═══════════════════════════════════════════════════════════════ */
 function RelatedArticles({ currentSlug }: { currentSlug: string }) {
   const related = useMemo(() => getRelatedArticles(currentSlug, 3), [currentSlug]);
 
@@ -506,9 +531,6 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   404 — Article Not Found
-   ═══════════════════════════════════════════════════════════════ */
 function NotFound() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -547,14 +569,10 @@ function NotFound() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN BLOG POST CLIENT COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 export default function BlogPostClient({ slug }: { slug: string }) {
   const article = useMemo(() => getArticleBySlug(slug), [slug]);
   const tocItems = useMemo(() => (article ? buildTOC(article.content) : []), [article]);
 
-  // Scroll to top on slug change
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [slug]);
@@ -571,9 +589,9 @@ export default function BlogPostClient({ slug }: { slug: string }) {
       <Navbar />
 
       <main className="pt-16">
-        {/* ═══════════════════════════════════════
+        {/* 
             BREADCRUMB
-            ═══════════════════════════════════════ */}
+             */}
         <div className="border-b border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.nav
@@ -598,11 +616,10 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           </div>
         </div>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             ARTICLE HEADER
-            ═══════════════════════════════════════ */}
+             */}
         <section className="relative overflow-hidden">
-          {/* Background decoration */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-10 left-1/4 w-[400px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[100px]" />
           </div>
@@ -614,7 +631,6 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               animate="visible"
               transition={{ duration: 0.5 }}
             >
-              {/* Category badge */}
               <span
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${catConfig.bg} ${catConfig.text} border ${catConfig.border} mb-5`}
               >
@@ -670,18 +686,17 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             ARTICLE BODY + SIDEBAR TOC
-            ═══════════════════════════════════════ */}
+             */}
         <section className="pb-12 sm:pb-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex gap-10 lg:gap-16">
-              {/* Article body */}
               <div className="flex-1 min-w-0 max-w-[72ch]">
+                <MobileTOC items={tocItems} />
                 <ContentRenderer content={article.content} />
               </div>
 
-              {/* Sticky TOC sidebar (desktop) */}
               <aside className="hidden xl:block w-64 shrink-0">
                 <StickyTOC items={tocItems} />
               </aside>
@@ -689,9 +704,9 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             RETURN TO BLOG LINK
-            ═══════════════════════════════════════ */}
+             */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -708,16 +723,16 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           </Link>
         </motion.div>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             RELATED ARTICLES
-            ═══════════════════════════════════════ */}
+             */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
           <RelatedArticles currentSlug={slug} />
         </div>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             NEWSLETTER
-            ═══════════════════════════════════════ */}
+             */}
         <NewsletterSection />
       </main>
 

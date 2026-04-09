@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   SOLAR DATA — Single Source of Truth
-   ─────────────────────────────────────────────────────────────
-   All hardcoded numbers used across the Solar Ireland website.
-   If a number changes (e.g. SEAI grant amount), update it HERE
-   and every component picks it up automatically.
-   ═══════════════════════════════════════════════════════════════ */
 
 export const SOLAR_DATA = {
   grant: {
@@ -15,11 +8,11 @@ export const SOLAR_DATA = {
     processTime: '4-8 weeks',
   },
   savings: {
-    avgAnnual: 1100,
-    label: '€1,100/yr',
-    paybackYears: 6,
-    total25yr: 38000,
-    label25yr: '€38k+',
+    avgAnnual: 1400,
+    label: '€1,400/yr',
+    paybackYears: 5,
+    total25yr: 48000,
+    label25yr: '€48k+',
   },
   export: {
     ratePerKwh: 0.21,
@@ -29,7 +22,7 @@ export const SOLAR_DATA = {
   },
   system: {
     avgSizeKwp: 4,
-    generationPerKwp: 900, // kWh per kWp per year in Ireland
+    generationPerKwp: 1050, // kWh per kWp per year in Ireland
     panelWarranty: 25,
     installTime: '1 day',
     warrantyLabel: '25+ years',
@@ -42,11 +35,17 @@ export const SOLAR_DATA = {
     website: 'solarireland.com',
     whatsapp: '353873958424',
   },
+  social: {
+    facebook: 'https://www.facebook.com/solarireland',
+    instagram: 'https://www.instagram.com/solarireland',
+    linkedin: 'https://www.linkedin.com/company/solarireland',
+    tiktok: 'https://www.tiktok.com/@solarireland',
+  },
   certifications: ['SEAI Registered', 'RECI Certified', 'NSAI Compliant', 'Safe Electric'],
-  serviceAreas: ['Connacht', 'Leinster', 'Munster'],
+  serviceAreas: ['Connacht', 'Leinster', 'Munster', 'Ulster'],
   coverage: {
-    totalCounties: 23,
-    provinces: 3,
-    label: '23 counties across Ireland',
+    totalCounties: 32,
+    provinces: 4,
+    label: 'All 32 counties across Ireland',
   },
 } as const;

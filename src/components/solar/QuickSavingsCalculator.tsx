@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import {
   Zap,
   Euro,
   Clock,
-  TrendingUp,
+  TrendingDown,
   Leaf,
   Sun,
   ArrowRight,
@@ -13,603 +13,514 @@ import {
   Home,
   Building2,
   Warehouse,
-  RotateCcw,
   ChevronDown,
   Check,
   Sparkles,
+  PanelTop,
+  BatteryCharging,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { motion } from '@/lib/motion';
 
-/* ═══════════════════════════════════════════════════════════════
-   CALCULATION ENGINE — all client-side, no API calls
-   ═══════════════════════════════════════════════════════════════ */
 
-interface HomeProfile {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  avgRoofKwp: number;
-  description: string;
-}
+const _CALC_VER = 'v2.7-updated-apr2026'; // cache-bust: forces new chunk hash on every meaningful update
 
-const HOME_PROFILES: HomeProfile[] = [
-  {
-    id: 'apartment',
-    label: 'Apartment / Terrace',
-    icon: Building2,
-    avgRoofKwp: 2.5,
-    description: '6\u20138 panels',
-  },
-  {
-    id: 'semi',
-    label: 'Semi-Detached',
-    icon: Home,
-    avgRoofKwp: 4,
-    description: '10\u201312 panels',
-  },
-  {
-    id: 'detached',
-    label: 'Detached',
-    icon: Warehouse,
-    avgRoofKwp: 6,
-    description: '14\u201316 panels',
-  },
+const UNIT_RATE = 0.34;          // €/kWh average incl. VAT across providers
+const STANDING_CHARGE_ANNUAL = 200; // €/year — Irish standing charges 2025/2026
+const GENERATION_PER_KWP = 1000;  // kWh/kWp/yr — well-optimized south-facing Irish roof
+const PANEL_WATTS = 440;          // Modern panel wattage
+const COST_PER_KWP = 1600;       // €/kWp installed (includes inverter, mounting, labour)
+const BASE_INSTALL_COST = 1800;  // Fixed costs (scaffolding, design, commissioning, etc.)
+const CEG_RATE = SOLAR_DATA.export.ratePerKwh; // €0.21/kWh — Clean Export Guarantee
+const SEAI_GRANT = SOLAR_DATA.grant.amount;    // €1,800
+const CO2_PER_KWH = 0.29;        // kg CO2 per kWh (EirGrid 2024 figure for Ireland)
+const TREES_PER_YEAR_KG = 22;    // kg CO2 absorbed per tree per year
+
+const MONTHLY_GEN_FACTOR: Record<string, number> = {
+  Jan: 0.38, Feb: 0.55, Mar: 0.82, Apr: 1.05,
+  May: 1.28, Jun: 1.38, Jul: 1.32, Aug: 1.18,
+  Sep: 0.95, Oct: 0.72, Nov: 0.45, Dec: 0.32,
+};
+const AVG_MONTHLY_FACTOR = Object.values(MONTHLY_GEN_FACTOR).reduce((a, b) => a + b, 0) / 12;
+
+
+const HOME_PROFILES = [
+  { id: 'apartment', label: 'Apartment / Terrace', icon: Building2, minKwp: 1.5, maxKwp: 9.7, description: '4–22 panels' },
+  { id: 'semi',      label: 'Semi-Detached',       icon: Home,     minKwp: 2.5, maxKwp: 9.7, description: '6–22 panels' },
+  { id: 'detached',  label: 'Detached',            icon: Warehouse, minKwp: 3,   maxKwp: 9.7, description: '8–22 panels' },
 ];
+
 
 function calculateSavings(monthlyBill: number, homeId: string) {
   const annualBill = monthlyBill * 12;
   const home = HOME_PROFILES.find((h) => h.id === homeId) || HOME_PROFILES[1];
-  const systemSize = home.avgRoofKwp;
-  const annualGeneration = systemSize * 1070;
 
-  const standingChargeAnnual = 130;
-  const unitRate = 0.42;
-  const energyBill = Math.max(annualBill - standingChargeAnnual, 100);
-  const estimatedUsage = Math.round(energyBill / unitRate);
+  const energyCost = Math.max(annualBill - STANDING_CHARGE_ANNUAL, 100);
+  const annualUsage = Math.round(energyCost / UNIT_RATE);
 
-  const selfConsumed = Math.min(annualGeneration * 0.5, estimatedUsage * 0.5);
-  const exported = annualGeneration - selfConsumed;
+  const targetGeneration = annualUsage * 0.85;
+  let idealKwp = targetGeneration / GENERATION_PER_KWP;
+  idealKwp = Math.round(idealKwp * 2) / 2;
+  const systemSizeKwp = Math.max(home.minKwp, Math.min(idealKwp, home.maxKwp));
 
-  const annualSaving = Math.round(selfConsumed * unitRate);
-  const annualExport = Math.round(exported * SOLAR_DATA.export.ratePerKwh);
-  const totalAnnualBenefit = annualSaving + annualExport;
+  const panels = Math.round(systemSizeKwp * (1000 / PANEL_WATTS));
 
-  const installCost = systemSize * 1500 + 2000;
-  const costAfterGrant = installCost - SOLAR_DATA.grant.amount;
+  const annualGeneration = Math.round(systemSizeKwp * GENERATION_PER_KWP);
 
-  const paybackYears = Math.max(
-    Math.round((costAfterGrant / totalAnnualBenefit) * 10) / 10,
-    4
-  );
+  const sizeRatio = annualUsage / Math.max(annualUsage + annualGeneration, 1);
+  const selfConsumptionRatio = Math.min(0.80, 0.48 + 0.38 * sizeRatio);
 
-  const energyBillReduction = Math.round(
-    (totalAnnualBenefit / Math.max(energyBill, 1)) * 100
-  );
-  const billReduction = Math.min(energyBillReduction, 70);
+  const selfConsumedKwh = Math.round(annualGeneration * selfConsumptionRatio);
+  const exportedKwh = annualGeneration - selfConsumedKwh;
 
-  let total25yr = 0;
-  let yearlyOutput = annualGeneration;
-  let currentPrice = unitRate;
+  const annualSavingFromSelfUse = Math.round(selfConsumedKwh * UNIT_RATE);
+  const annualExportEarnings = Math.round(exportedKwh * CEG_RATE);
+  const totalAnnualBenefit = annualSavingFromSelfUse + annualExportEarnings;
+
+  const annualBillAfterSolar = Math.max(annualBill - totalAnnualBenefit, STANDING_CHARGE_ANNUAL);
+  const monthlyBillAfterSolar = Math.round((annualBillAfterSolar / 12) * 100) / 100;
+  const monthlySavings = Math.round((monthlyBill - monthlyBillAfterSolar) * 100) / 100;
+  const billReductionPct = Math.round((totalAnnualBenefit / annualBill) * 100);
+
+  const installCost = Math.round(systemSizeKwp * COST_PER_KWP + BASE_INSTALL_COST);
+  const costAfterGrant = installCost - SEAI_GRANT;
+  const paybackYears = Math.max(Math.round((costAfterGrant / totalAnnualBenefit) * 10) / 10, 4);
+
+  let total25yrSavings = 0;
+  let yearlyGen = annualGeneration;
+  let currentUnitRate = UNIT_RATE;
   for (let yr = 1; yr <= 25; yr++) {
-    const selfUsed = Math.min(yearlyOutput * 0.5, estimatedUsage * 0.5);
-    const exp = yearlyOutput - selfUsed;
-    total25yr += selfUsed * currentPrice + exp * SOLAR_DATA.export.ratePerKwh;
-    yearlyOutput *= 0.995;
-    currentPrice *= 1.03;
+    const self = Math.min(yearlyGen * selfConsumptionRatio, annualUsage * selfConsumptionRatio);
+    const exp = yearlyGen - self;
+    total25yrSavings += Math.round(self * currentUnitRate + exp * CEG_RATE);
+    yearlyGen *= 0.995;       // 0.5% annual degradation
+    currentUnitRate *= 1.03;   // 3% annual price rise
   }
-  total25yr = Math.round(total25yr);
 
-  const co2PerYear = Math.round(annualGeneration * 0.29);
-  const treesEquiv = Math.round(co2PerYear / 22);
+  const co2PerYear = Math.round(annualGeneration * CO2_PER_KWH);
+  const treesEquiv = Math.round(co2PerYear / TREES_PER_YEAR_KG);
+
+  const energyIndependence = Math.round((selfConsumedKwh / annualUsage) * 100);
+
+  const monthlyGeneration = Object.entries(MONTHLY_GEN_FACTOR).map(([month, factor]) => ({
+    month,
+    generation: Math.round((annualGeneration / 12) * (factor / AVG_MONTHLY_FACTOR)),
+    factor,
+  }));
 
   return {
-    systemSize,
-    annualGeneration,
-    annualSaving,
-    annualExport,
-    totalAnnualBenefit,
-    installCost,
-    costAfterGrant,
-    paybackYears,
-    total25yr,
-    co2PerYear,
-    treesEquiv,
-    billReduction,
-    panelsEstimate: Math.round(systemSize * 2.8),
-    estimatedUsage,
-    unitRate,
+    annualBill, annualUsage, unitRate: UNIT_RATE, standingCharge: STANDING_CHARGE_ANNUAL,
+    systemSizeKwp, panels, annualGeneration,
+    selfConsumedKwh, exportedKwh, selfConsumptionRatio: Math.round(selfConsumptionRatio * 100),
+    energyIndependence,
+    annualSavingFromSelfUse, annualExportEarnings, totalAnnualBenefit,
+    annualBillAfterSolar, monthlyBillAfterSolar, monthlySavings, billReductionPct,
+    installCost, costAfterGrant, paybackYears, total25yrSavings,
+    co2PerYear, treesEquiv,
+    monthlyGeneration,
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ANIMATED COUNTER — RAF-based, no flicker
-   ═══════════════════════════════════════════════════════════════ */
 
-function AnimatedValue({
-  value,
-  prefix = '',
-  suffix = '',
-  decimals = 0,
-  duration = 800,
-  instant = false,
-}: {
-  value: number;
-  prefix?: string;
-  suffix?: string;
-  decimals?: number;
-  duration?: number;
-  instant?: boolean;
-}) {
-  const [display, setDisplay] = useState(value);
-  const rafRef = useRef<number>(0);
-  const prevRef = useRef(value);
-
-  useEffect(() => {
-    if (instant) {
-      setDisplay(value);
-      prevRef.current = value;
-      return;
-    }
-
-    const from = prevRef.current;
-    if (from === value) return;
-
-    const start = performance.now();
-    const dur = duration;
-    let cancelled = false;
-
-    const tick = (now: number) => {
-      if (cancelled) return;
-      const t = Math.min((now - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setDisplay(from + (value - from) * ease);
-      if (t < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        prevRef.current = value;
-      }
-    };
-
-    cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(rafRef.current);
-    };
-  }, [value, duration, instant]);
-
-  const formatted = display.toFixed(decimals).replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    ','
-  );
-
-  return (
-    <span className="tabular-nums">
-      {prefix}
-      {formatted}
-      {suffix}
-    </span>
-  );
+function fmtEur(n: number): string {
+  return '€' + Math.round(n).toLocaleString();
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   BILL SLIDER — NATIVE <input type="range"> 
-   Styled to match dark theme. Uses onInput for real-time updates.
-   This is the most bulletproof approach — works on every browser,
-   every device, every touch screen, no custom pointer events needed.
-   ═══════════════════════════════════════════════════════════════ */
+function fmtEurDecimal(n: number): string {
+  return '€' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 
-const SLIDER_MIN = 50;
-const SLIDER_MAX = 500;
-const SLIDER_STEP = 5;
 
-function BillSlider({
-  value,
-  onChange,
-}: {
-  value: number;
-  onChange: (v: number) => void;
-}) {
-  // Track slider state for glow effects
-  const [isDragging, setIsDragging] = useState(false);
+export default function QuickSavingsCalculator() {
+  const [monthlyBill, setMonthlyBill] = useState(160);
+  const [homeType, setHomeType] = useState('semi');
+  const [showDetails, setShowDetails] = useState(false);
 
-  const handleInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const v = Number(e.target.value);
-      onChange(v);
-    },
-    [onChange]
-  );
+  const r = calculateSavings(monthlyBill, homeType);
 
-  const handlePointerDown = useCallback(() => {
-    setIsDragging(true);
+  const handleBillChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setMonthlyBill(Number(e.target.value));
   }, []);
-
-  const handlePointerUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Let the native input handle arrow keys — they work out of the box
-      // Just prevent page scroll on Home/End
-      if (e.key === 'Home' || e.key === 'End') {
-        e.preventDefault();
-      }
-    },
-    []
-  );
-
-  const pct = ((value - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
 
   return (
-    <div className="w-full select-none">
-      {/* Big number display */}
-      <div className="text-center mb-6">
-        <div className="inline-flex items-baseline gap-0.5">
-          <span className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">
-            &euro;
+    <section id="quick-calculator" className="py-20 px-4 bg-[#0a0a0a] relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 amber-line" />
+
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-10">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
+            <Zap className="w-3.5 h-3.5" />
+            Solar Savings Calculator
           </span>
-          <span className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">
-            <AnimatedValue
-              value={value}
-              duration={isDragging ? 120 : 600}
-            />
-          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+            How Much Could You{' '}
+            <span className="text-gradient">Save?</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+            Move the slider, pick your home type, and see your savings
+            update instantly. Based on real Irish data.
+          </p>
         </div>
-        <p className="text-base text-gray-500 mt-2 font-medium">
-          per month electricity bill
+
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20">
+          <div className="p-6 sm:p-8 space-y-8">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-black text-xs font-bold">1</span>
+                <h3 className="text-sm font-semibold text-white">Your Monthly Electricity Bill</h3>
+              </div>
+
+              <div className="mt-4">
+                <div className="text-center mb-4">
+                  <span className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+                    &euro;{monthlyBill}
+                  </span>
+                  <p className="text-base text-gray-500 mt-2 font-medium">per month electricity bill</p>
+                </div>
+
+                <input
+                  type="range"
+                  min={50}
+                  max={500}
+                  step={5}
+                  value={monthlyBill}
+                  onChange={handleBillChange}
+                  className="solar-range-input w-full"
+                  style={{ '--range-pct': `${((monthlyBill - 50) / 450) * 100}%` } as React.CSSProperties}
+                  aria-label="Monthly electricity bill"
+                />
+
+                <div className="flex justify-between mt-2 text-xs text-gray-600 font-medium">
+                  <span>&euro;50</span>
+                  <span>&euro;150</span>
+                  <span>&euro;275</span>
+                  <span>&euro;400</span>
+                  <span>&euro;500</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.06] text-gray-600 text-xs font-bold">2</span>
+                <h3 className="text-sm font-semibold text-white">Your Home Type</h3>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {HOME_PROFILES.map((home) => {
+                  const Icon = home.icon;
+                  const isActive = homeType === home.id;
+                  return (
+                    <button
+                      key={home.id}
+                      type="button"
+                      onClick={() => setHomeType(home.id)}
+                      className={`relative flex flex-col items-center gap-2.5 p-4 sm:p-5 rounded-xl border transition-all duration-300 cursor-pointer outline-none ${
+                        isActive
+                          ? 'bg-amber-400/10 border-amber-400/30 shadow-lg shadow-amber-400/5'
+                          : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04]'
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        isActive ? 'bg-amber-400/15 text-amber-400' : 'bg-white/[0.04] text-gray-500'
+                      }`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="text-center">
+                        <p className={`text-sm font-semibold transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>
+                          {home.label}
+                        </p>
+                        <p className="text-[10px] text-gray-600 mt-0.5">{home.description}</p>
+                      </div>
+                      {isActive && (
+                        <span className="absolute -top-1.5 right-2 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center">
+                          <Check className="w-3 h-3 text-black" strokeWidth={3} />
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/[0.06] p-6 sm:p-8 bg-white/[0.01]">
+            <ResultsPanel results={r} monthlyBill={monthlyBill} homeType={homeType} showDetails={showDetails} setShowDetails={setShowDetails} />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3 mt-6">
+          {[
+            { icon: Clock, label: 'Takes 5 seconds', sub: 'No signup needed' },
+            { icon: Euro, label: '100% free', sub: 'No hidden costs' },
+            { icon: Sun, label: 'SEAI accurate', sub: 'Based on real data' },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.label} className="flex flex-col items-center text-center p-3 rounded-xl bg-white/[0.01] border border-white/[0.04]">
+                <Icon className="w-4 h-4 text-gray-500 mb-1.5" />
+                <p className="text-[11px] text-gray-300 font-medium">{item.label}</p>
+                <p className="text-[10px] text-gray-600">{item.sub}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <p className="text-center text-xs text-gray-600 mt-4">
+          Want a personalised AI-powered report?{' '}
+          <a href="#calculator" className="text-amber-400/70 hover:text-amber-400 underline underline-offset-2 transition-colors">
+            Upload your bill &rarr;
+          </a>
         </p>
       </div>
-
-      {/* Native range slider — styled with amber theme */}
-      <input
-        type="range"
-        min={SLIDER_MIN}
-        max={SLIDER_MAX}
-        step={SLIDER_STEP}
-        value={value}
-        onChange={handleInput}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        onKeyDown={handleKeyDown}
-        className="solar-range-input w-full"
-        style={{ '--range-pct': `${pct}%` } as React.CSSProperties}
-        aria-label="Monthly electricity bill"
-        aria-valuemin={SLIDER_MIN}
-        aria-valuemax={SLIDER_MAX}
-        aria-valuenow={value}
-        aria-valuetext={`\u20AC${value} per month`}
-      />
-
-      {/* Labels */}
-      <div className="flex justify-between mt-3 text-xs text-gray-600 font-medium">
-        <span>&euro;50</span>
-        <span>&euro;150</span>
-        <span>&euro;275</span>
-        <span>&euro;400</span>
-        <span>&euro;500</span>
-      </div>
-    </div>
+    </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   HOME TYPE SELECTOR
-   ═══════════════════════════════════════════════════════════════ */
-
-function HomeTypeSelector({
-  selected,
-  onChange,
-}: {
-  selected: string;
-  onChange: (id: string) => void;
-}) {
-  return (
-    <div className="grid grid-cols-3 gap-3">
-      {HOME_PROFILES.map((home) => {
-        const Icon = home.icon;
-        const isActive = selected === home.id;
-        return (
-          <button
-            key={home.id}
-            type="button"
-            onClick={() => onChange(home.id)}
-            className={`
-              relative flex flex-col items-center gap-2.5 p-4 sm:p-5 rounded-xl
-              border transition-all duration-300 cursor-pointer outline-none
-              ${isActive
-                ? 'bg-amber-400/10 border-amber-400/30 shadow-lg shadow-amber-400/5'
-                : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04]'
-              }
-            `}
-          >
-            <div
-              className={`
-                w-12 h-12 rounded-xl flex items-center justify-center
-                transition-all duration-300
-                ${isActive
-                  ? 'bg-amber-400/15 text-amber-400'
-                  : 'bg-white/[0.04] text-gray-500'
-                }
-              `}
-            >
-              <Icon className="w-5 h-5" />
-            </div>
-            <div className="text-center">
-              <p
-                className={`text-sm font-semibold transition-colors ${
-                  isActive ? 'text-white' : 'text-gray-400'
-                }`}
-              >
-                {home.label}
-              </p>
-              <p className="text-[10px] text-gray-600 mt-0.5">
-                {home.description}
-              </p>
-            </div>
-            {isActive && (
-              <span className="absolute -top-1.5 right-2 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center quick-calc-check-pop">
-                <Check className="w-3 h-3 text-black" strokeWidth={3} />
-              </span>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   LIVE RESULTS — shows in real-time as slider moves
-   ═══════════════════════════════════════════════════════════════ */
-
-function LivePreview({
-  results,
-}: {
-  results: ReturnType<typeof calculateSavings>;
-}) {
-  return (
-    <div className="flex items-center justify-between pt-4 pb-1 border-t border-white/[0.04]">
-      <div className="flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-amber-400" />
-        <span className="text-xs text-gray-500">Annual savings</span>
-      </div>
-      <span className="text-lg font-bold text-amber-400">
-        &euro;<AnimatedValue value={results.totalAnnualBenefit} duration={300} instant />
-      </span>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   FULL RESULTS PANEL
-   ═══════════════════════════════════════════════════════════════ */
 
 function ResultsPanel({
-  results,
+  results: r,
   monthlyBill,
   homeType,
+  showDetails,
+  setShowDetails,
 }: {
   results: ReturnType<typeof calculateSavings>;
   monthlyBill: number;
   homeType: string;
+  showDetails: boolean;
+  setShowDetails: (v: boolean) => void;
 }) {
-  const [showDetails, setShowDetails] = useState(false);
-
   return (
-    <div className="quick-calc-results space-y-5">
-      {/* Hero Number */}
+    <div className="space-y-5">
       <div className="text-center py-8 rounded-2xl bg-gradient-to-b from-amber-400/[0.08] to-transparent border border-amber-400/10">
-        <p className="text-xs uppercase tracking-[0.15em] text-amber-400/70 font-semibold mb-3">
-          You could save every year
+        <p className="text-xs uppercase tracking-[0.15em] text-amber-400/70 font-semibold mb-4">
+          Estimated Annual Savings
         </p>
-        <p className="text-5xl sm:text-6xl font-bold text-white">
-          &euro;
-          <AnimatedValue value={results.totalAnnualBenefit} duration={1200} />
+        <p className="text-5xl sm:text-6xl font-bold text-white mb-3">
+          {fmtEur(r.totalAnnualBenefit)}
         </p>
-        <p className="text-sm text-gray-400 mt-3">
+        <p className="text-sm text-gray-400 mb-6">
           That&apos;s{' '}
-          <span className="text-amber-400 font-semibold">
-            up to {results.billReduction}% off
-          </span>{' '}
-          your energy bill
+          <span className="text-amber-400 font-semibold">~{fmtEur(r.monthlySavings)}/month</span>{' '}
+          back in your pocket
         </p>
 
-        {/* Mini stat row */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6">
+          <div className="text-center">
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Bill Before</p>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-400 line-through decoration-red-400/60">
+              {fmtEurDecimal(monthlyBill)}
+            </p>
+            <p className="text-[10px] text-gray-600">per month</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full bg-green-400/15 flex items-center justify-center">
+              <TrendingDown className="w-5 h-5 text-green-400" />
+            </div>
+            <span className="text-xs font-bold text-green-400 mt-1">-{r.billReductionPct}%</span>
+          </div>
+
+          <div className="text-center">
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Bill After Solar</p>
+            <p className="text-2xl sm:text-3xl font-bold text-green-400">
+              {fmtEurDecimal(r.monthlyBillAfterSolar)}
+            </p>
+            <p className="text-[10px] text-gray-600">per month</p>
+          </div>
+        </div>
+
         <div className="flex items-center justify-center gap-5 mt-6">
           {[
-            { icon: Zap, label: 'System', value: `${results.systemSize}kWp` },
-            { icon: Sun, label: 'Panels', value: `~${results.panelsEstimate}` },
-            { icon: Clock, label: 'Payback', value: `${results.paybackYears}yr` },
+            { icon: PanelTop, label: 'System', value: `${r.systemSizeKwp}kWp` },
+            { icon: Sun, label: 'Panels', value: `${r.panels}` },
+            { icon: Clock, label: 'Payback', value: `${r.paybackYears}yr` },
           ].map((stat) => {
             const Icon = stat.icon;
             return (
-              <div
-                key={stat.label}
-                className="flex items-center gap-1.5 text-xs text-gray-400"
-              >
+              <div key={stat.label} className="flex items-center gap-1.5 text-xs text-gray-400">
                 <Icon className="w-3.5 h-3.5 text-gray-500" />
-                <span>
-                  <span className="text-white font-semibold">{stat.value}</span>{' '}
-                  {stat.label}
-                </span>
+                <span><span className="text-white font-semibold">{stat.value}</span> {stat.label}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Stat Grid */}
       <div className="grid grid-cols-2 gap-3">
         {[
           {
             icon: Euro,
-            label: 'Bill after solar',
-            value: `\u20AC${(monthlyBill * 12 - results.totalAnnualBenefit).toLocaleString()}/yr`,
+            label: 'Monthly saving',
+            value: fmtEur(r.monthlySavings),
             color: 'text-green-400',
             bgColor: 'bg-green-400/10',
-            sub: `Save \u20AC${results.annualSaving.toLocaleString()} + earn \u20AC${results.annualExport.toLocaleString()} export`,
+            sub: `${fmtEur(r.annualSavingFromSelfUse)} self-use + ${fmtEur(r.annualExportEarnings)} export`,
           },
           {
-            icon: TrendingUp,
-            label: '25-year savings',
-            value: `\u20AC${Math.round(results.total25yr / 1000)}k+`,
+            icon: TrendingDown,
+            label: 'Bill after solar',
+            value: `${fmtEurDecimal(r.monthlyBillAfterSolar)}/mo`,
+            color: 'text-emerald-400',
+            bgColor: 'bg-emerald-400/10',
+            sub: `Down from ${fmtEurDecimal(monthlyBill)}/mo — save ${r.billReductionPct}%`,
+          },
+          {
+            icon: BatteryCharging,
+            label: 'Energy independence',
+            value: `${r.energyIndependence}%`,
             color: 'text-amber-400',
             bgColor: 'bg-amber-400/10',
-            sub: `After ${SOLAR_DATA.grant.label} grant + install costs`,
+            sub: `${r.selfConsumptionRatio}% self-consumed, ${fmtEur(r.exportedKwh)}kWh exported`,
           },
           {
             icon: Leaf,
             label: 'CO\u2082 offset / year',
-            value: `${results.co2PerYear.toLocaleString()}kg`,
+            value: `${r.co2PerYear.toLocaleString()}kg`,
             color: 'text-emerald-400',
             bgColor: 'bg-emerald-400/10',
-            sub: `Equivalent to ${results.treesEquiv} trees planted`,
-          },
-          {
-            icon: Zap,
-            label: 'Energy generated',
-            value: `${results.annualGeneration.toLocaleString()}kWh`,
-            color: 'text-sky-400',
-            bgColor: 'bg-sky-400/10',
-            sub: `Export surplus at ${SOLAR_DATA.export.label}`,
+            sub: `Equivalent to ${r.treesEquiv} trees planted`,
           },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <div
-              key={stat.label}
-              className="quick-calc-stat-card rounded-xl bg-white/[0.02] border border-white/[0.06] p-4"
-            >
+            <div key={stat.label} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className={`w-7 h-7 rounded-lg ${stat.bgColor} flex items-center justify-center`}>
                   <Icon className={`w-3.5 h-3.5 ${stat.color}`} />
                 </div>
-                <span className="text-[11px] text-gray-500 uppercase tracking-wider">
-                  {stat.label}
-                </span>
+                <span className="text-[11px] text-gray-500 uppercase tracking-wider">{stat.label}</span>
               </div>
               <p className={`text-xl font-bold ${stat.color}`}>{stat.value}</p>
-              <p className="text-[10px] text-gray-600 mt-1 leading-relaxed">
-                {stat.sub}
-              </p>
+              <p className="text-[10px] text-gray-600 mt-1 leading-relaxed">{stat.sub}</p>
             </div>
           );
         })}
       </div>
 
-      {/* Expandable Details */}
       <button
         type="button"
         onClick={() => setShowDetails(!showDetails)}
         className="w-full flex items-center justify-center gap-2 py-2.5 text-xs text-gray-500 hover:text-amber-400 transition-colors cursor-pointer"
       >
-        <span>{showDetails ? 'Hide breakdown' : 'Show full breakdown'}</span>
-        <ChevronDown
-          className={`w-3.5 h-3.5 transition-transform duration-300 ${
-            showDetails ? 'rotate-180' : ''
-          }`}
-        />
+        <span>{showDetails ? 'Hide full breakdown' : 'Show full breakdown'}</span>
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showDetails ? 'rotate-180' : ''}`} />
       </button>
 
-      <div
-        className={`grid transition-all duration-500 ease-out ${
-          showDetails ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-        }`}
-      >
+      <div className={`grid transition-all duration-500 ease-out ${showDetails ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
         <div className="overflow-hidden">
-          <div className="space-y-2 pb-2">
-            {/* Cost breakdown */}
+          <div className="space-y-3 pb-2">
+
             <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
-              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Cost Breakdown
-              </h4>
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Cost &amp; Payback</h4>
               {[
-                { label: 'Estimated install cost', value: `\u20AC${results.installCost.toLocaleString()}` },
-                { label: `Less ${SOLAR_DATA.grant.label} SEAI grant`, value: `-\u20AC${SOLAR_DATA.grant.amount.toLocaleString()}`, color: 'text-amber-400' },
-                { label: 'Cost after grant', value: `\u20AC${results.costAfterGrant.toLocaleString()}`, bold: true, color: 'text-white' },
-                { label: 'Annual benefit', value: `\u20AC${results.totalAnnualBenefit.toLocaleString()}/yr`, bold: true, color: 'text-green-400' },
-                { label: 'Simple payback', value: `${results.paybackYears} years`, bold: true, color: 'text-amber-400' },
+                { label: 'Estimated install cost', value: fmtEur(r.installCost) },
+                { label: `Less ${SOLAR_DATA.grant.label} SEAI grant`, value: `-${SOLAR_DATA.grant.label}`, color: 'text-amber-400' },
+                { label: 'Cost after grant', value: fmtEur(r.costAfterGrant), bold: true, color: 'text-white' },
+                { label: 'Annual benefit', value: `${fmtEur(r.totalAnnualBenefit)}/yr`, bold: true, color: 'text-green-400' },
+                { label: 'Simple payback', value: `${r.paybackYears} years`, bold: true, color: 'text-amber-400' },
+                { label: '25-year savings (est.)', value: `${fmtEur(r.total25yrSavings)}+`, bold: true, color: 'text-green-400' },
               ].map((row) => (
                 <div key={row.label} className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">{row.label}</span>
-                  <span
-                    className={`text-sm font-semibold ${
-                      row.color || 'text-gray-300'
-                    } ${row.bold ? 'font-bold' : ''}`}
-                  >
-                    {row.value}
-                  </span>
+                  <span className={`text-sm font-semibold ${row.color || 'text-gray-300'} ${row.bold ? 'font-bold' : ''}`}>{row.value}</span>
+                </div>
+              ))}
+              <p className="text-[10px] text-gray-600 leading-relaxed pt-1">
+                25-year figure accounts for 3% annual electricity price rises and 0.5% per year panel degradation.
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Where Your Savings Come From</h4>
+              <div className="space-y-2.5">
+                <div>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="text-gray-400">Self-consumed solar ({r.selfConsumptionRatio}%)</span>
+                    <span className="text-green-400 font-semibold">{fmtEur(r.annualSavingFromSelfUse)}/yr</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-500" style={{ width: `${(r.annualSavingFromSelfUse / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
+                  </div>
+                  <p className="text-[10px] text-gray-600 mt-1">{fmtEur(r.selfConsumedKwh)} kWh used directly — powering your home for free during the day</p>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="text-gray-400">Clean Export Guarantee ({SOLAR_DATA.export.label})</span>
+                    <span className="text-amber-400 font-semibold">{fmtEur(r.annualExportEarnings)}/yr</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500" style={{ width: `${(r.annualExportEarnings / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
+                  </div>
+                  <p className="text-[10px] text-gray-600 mt-1">{fmtEur(r.exportedKwh)} kWh exported — surplus energy sold back to the grid</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Estimated Monthly Generation</h4>
+              <p className="text-[10px] text-gray-600">Ireland has strong seasonal variation — you&apos;ll generate 4x more in summer than winter.</p>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {r.monthlyGeneration.map((m) => {
+                  const maxGen = Math.max(...r.monthlyGeneration.map(x => x.generation));
+                  const pct = Math.round((m.generation / maxGen) * 100);
+                  const isSummer = m.factor >= 1.0;
+                  return (
+                    <div key={m.month} className="text-center">
+                      <p className="text-[10px] text-gray-500 mb-1">{m.month}</p>
+                      <div className="h-16 rounded-lg bg-white/[0.04] relative overflow-hidden">
+                        <div
+                          className={`absolute bottom-0 left-0 right-0 rounded-lg transition-all duration-500 ${
+                            isSummer ? 'bg-gradient-to-t from-amber-500 to-amber-400' : 'bg-gradient-to-t from-amber-500/40 to-amber-400/40'
+                          }`}
+                          style={{ height: `${pct}%` }}
+                        />
+                        <span className="absolute inset-0 flex items-end justify-center pb-1 text-[9px] font-semibold text-white/90">
+                          {m.generation}
+                        </span>
+                      </div>
+                      <p className="text-[9px] text-gray-600 mt-0.5">kWh</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Annual Bill Breakdown</h4>
+              {[
+                { label: 'Current annual bill', value: fmtEur(r.annualBill), color: 'text-gray-300' },
+                { label: 'Standing charges (unchanged)', value: fmtEur(r.standingCharge), color: 'text-gray-500', note: 'Solar does not reduce standing charges' },
+                { label: 'Current energy cost', value: fmtEur(r.annualUsage * r.unitRate), color: 'text-gray-300' },
+                { label: 'Less: solar self-use saving', value: `-${fmtEur(r.annualSavingFromSelfUse)}`, color: 'text-green-400' },
+                { label: 'Less: CEG export earnings', value: `-${fmtEur(r.annualExportEarnings)}`, color: 'text-amber-400' },
+                { label: 'Bill after solar', value: `${fmtEur(r.annualBillAfterSolar)}/yr`, color: 'text-green-400', bold: true },
+                { label: 'Monthly equivalent', value: `${fmtEurDecimal(r.monthlyBillAfterSolar)}/mo`, color: 'text-green-400', bold: true },
+              ].map((row) => (
+                <div key={row.label}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{row.label}</span>
+                    <span className={`text-sm font-semibold ${row.color} ${row.bold ? 'font-bold' : ''}`}>{row.value}</span>
+                  </div>
+                  {row.note && <p className="text-[9px] text-gray-600 mt-0.5">{row.note}</p>}
                 </div>
               ))}
             </div>
 
-            {/* Savings sources */}
-            <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
-              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Where Your Savings Come From
-              </h4>
-              <div className="space-y-2.5">
-                <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400">Self-consumed solar</span>
-                    <span className="text-green-400 font-semibold">
-                      \u20AC{results.annualSaving.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-400 quick-calc-bar-fill"
-                      style={{
-                        width: `${Math.min(
-                          (results.annualSaving / results.totalAnnualBenefit) * 100,
-                          100
-                        )}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400">Clean Export Guarantee</span>
-                    <span className="text-amber-400 font-semibold">
-                      \u20AC{results.annualExport.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 quick-calc-bar-fill"
-                      style={{
-                        width: `${Math.min(
-                          (results.annualExport / results.totalAnnualBenefit) * 100,
-                          100
-                        )}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* CTAs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
         <a
           href={buildWhatsAppUrl({
             source: 'quick-calculator',
             monthlyBill,
             homeType: HOME_PROFILES.find((h) => h.id === homeType)?.label || 'Semi-Detached',
-            annualSaving: results.totalAnnualBenefit,
-            paybackYears: results.paybackYears,
-            total25yrSaving: results.total25yr,
-            recommendedSystem: results.systemSize,
+            annualSaving: r.totalAnnualBenefit,
+            paybackYears: r.paybackYears,
+            total25yrSaving: r.total25yrSavings,
+            recommendedSystem: r.systemSizeKwp,
           })}
           target="_blank"
           rel="noopener noreferrer"
@@ -629,238 +540,12 @@ function ResultsPanel({
         </a>
       </div>
 
-      {/* Disclaimer */}
       <p className="text-[10px] text-gray-600 text-center leading-relaxed">
         Estimates based on SEAI grant rates, Met &Eacute;ireann solar irradiance data for Ireland,
-        and average self-consumption ratios. Actual savings depend on roof orientation, shading,
-        and your consumption patterns. A free site survey gives you exact figures.
+        a {r.unitRate}&cent;/kWh unit rate, and {fmtEur(r.standingCharge)}/yr standing charges.
+        Actual savings depend on roof orientation, shading, and your consumption patterns.
+        A free site survey gives you exact figures.
       </p>
     </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
-
-export default function QuickSavingsCalculator() {
-  const [monthlyBill, setMonthlyBill] = useState(160);
-  const [homeType, setHomeType] = useState('semi');
-  const [showResults, setShowResults] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  const results = calculateSavings(monthlyBill, homeType);
-
-  // Track mount state for debugging
-  useEffect(() => {
-    setMounted(true);
-    console.log('[QuickSavingsCalculator] MOUNTED — slider should work');
-  }, []);
-
-  const handleCalculate = useCallback(() => {
-    setShowResults(true);
-  }, []);
-
-  const handleReset = useCallback(() => {
-    setShowResults(false);
-  }, []);
-
-  // Allow re-calculation when inputs change (smooth update)
-  const handleRecalculate = useCallback(() => {
-    if (showResults) {
-      setShowResults(false);
-      requestAnimationFrame(() => setShowResults(true));
-    }
-  }, [showResults]);
-
-  // When home type changes while results are showing, update smoothly
-  useEffect(() => {
-    if (showResults) {
-      handleRecalculate();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [homeType]);
-
-  return (
-    <section
-      id="quick-calculator"
-      ref={sectionRef}
-      className="py-20 px-4 bg-[#0a0a0a] relative"
-    >
-      {/* Section divider */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 amber-line" />
-
-      <div className="max-w-3xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-10">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
-              <Zap className="w-3.5 h-3.5" />
-              Instant Results
-            </span>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              How Much Could You{' '}
-              <span className="text-gradient">Save?</span>
-            </h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              Two clicks. No signup. No bill upload needed. See your estimated
-              savings right now.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Calculator Card — NO motion wrapper on this to ensure no pointer event issues */}
-        <motion.div
-          initial={{ opacity: 0, y: 25, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20">
-            <div className="p-6 sm:p-8 space-y-8">
-              {/* Step 1: Bill Slider */}
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-black text-xs font-bold">
-                    1
-                  </span>
-                  <h3 className="text-sm font-semibold text-white">
-                    Your Monthly Electricity Bill
-                  </h3>
-                </div>
-                <div className="mt-4">
-                  <BillSlider
-                    value={monthlyBill}
-                    onChange={setMonthlyBill}
-                  />
-                </div>
-              </div>
-
-              {/* Live preview while sliding (before clicking calculate) */}
-              {!showResults && (
-                <LivePreview results={results} />
-              )}
-
-              {/* Step 2: Home Type */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <span
-                    className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-colors ${
-                      showResults
-                        ? 'bg-amber-400/20 text-amber-400'
-                        : 'bg-white/[0.06] text-gray-600'
-                    }`}
-                  >
-                    2
-                  </span>
-                  <h3 className="text-sm font-semibold text-white">
-                    Your Home Type
-                  </h3>
-                </div>
-                <HomeTypeSelector selected={homeType} onChange={setHomeType} />
-              </div>
-
-              {/* Step 3: Calculate / Reset */}
-              {!showResults ? (
-                <button
-                  type="button"
-                  onClick={handleCalculate}
-                  className="quick-calc-calc-btn w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-base shadow-xl shadow-amber-400/20 hover:shadow-amber-400/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 cursor-pointer"
-                >
-                  <Euro className="w-5 h-5" />
-                  Show Full Breakdown
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="quick-calc-reset-btn w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-sm hover:bg-white/[0.06] hover:text-white transition-all duration-200 cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  Adjust Values
-                </button>
-              )}
-            </div>
-
-            {/* Results */}
-            {showResults && (
-              <div className="border-t border-white/[0.06] p-6 sm:p-8 bg-white/[0.01]">
-                <ResultsPanel
-                  results={results}
-                  monthlyBill={monthlyBill}
-                  homeType={homeType}
-                />
-              </div>
-            )}
-          </div>
-        </motion.div>
-
-        {/* Trust signals */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            {[
-              { icon: Clock, label: 'Takes 5 seconds', sub: 'No signup needed' },
-              { icon: Euro, label: '100% free', sub: 'No hidden costs' },
-              { icon: Sun, label: 'SEAI accurate', sub: 'Based on real data' },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.label}
-                  className="flex flex-col items-center text-center p-3 rounded-xl bg-white/[0.01] border border-white/[0.04]"
-                >
-                  <Icon className="w-4 h-4 text-gray-500 mb-1.5" />
-                  <p className="text-[11px] text-gray-300 font-medium">{item.label}</p>
-                  <p className="text-[10px] text-gray-600">{item.sub}</p>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-center text-xs text-gray-600 mt-4">
-            Want a personalised AI-powered report?{' '}
-            <a
-              href="#calculator"
-              className="text-amber-400/70 hover:text-amber-400 underline underline-offset-2 transition-colors"
-            >
-              Upload your bill &rarr;
-            </a>
-          </p>
-        </motion.div>
-      </div>
-    </section>
   );
 }

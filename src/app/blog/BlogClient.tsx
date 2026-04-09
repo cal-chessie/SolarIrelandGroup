@@ -31,9 +31,6 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { articles, type Article } from '@/lib/blog-data';
 
-/* ═══════════════════════════════════════════════════════════════
-   ANIMATION HELPERS
-   ═══════════════════════════════════════════════════════════════ */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -43,15 +40,11 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
-/* ─── Category article count helper ─── */
 function getCategoryCount(catId: string): number {
   if (catId === 'all') return articles.length;
   return articles.filter((a) => a.category === catId).length;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CATEGORY DATA
-   ═══════════════════════════════════════════════════════════════ */
 const categories = [
   { id: 'all', label: 'All', icon: BookOpen },
   { id: 'grants', label: 'Grants', icon: Euro },
@@ -62,9 +55,6 @@ const categories = [
   { id: 'technology', label: 'Technology', icon: Zap },
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   CATEGORY ICON HELPER
-   ═══════════════════════════════════════════════════════════════ */
 function getCategoryIcon(categoryId: string) {
   const cat = categories.find((c) => c.id === categoryId);
   return cat?.icon || BookOpen;
@@ -82,14 +72,8 @@ function getCategoryColor(categoryId: string) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ARTICLES PER PAGE
-   ═══════════════════════════════════════════════════════════════ */
 const ARTICLES_PER_PAGE = 6;
 
-/* ═══════════════════════════════════════════════════════════════
-   PAGE COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
 export default function BlogClient() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,17 +82,14 @@ export default function BlogClient() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [pillPulse, setPillPulse] = useState<string | null>(null);
 
-  // Filter articles by category
   const filteredArticles = useMemo(() => {
     if (activeCategory === 'all') return articles;
     return articles.filter((a) => a.category === activeCategory);
   }, [activeCategory]);
 
-  // Separate featured from regular
   const featuredArticle = filteredArticles.find((a) => a.featured) || filteredArticles[0];
   const regularArticles = filteredArticles.filter((a) => a.slug !== featuredArticle?.slug);
 
-  // Pagination
   const totalPages = Math.ceil(regularArticles.length / ARTICLES_PER_PAGE);
   const paginatedArticles = regularArticles.slice(
     (currentPage - 1) * ARTICLES_PER_PAGE,
@@ -118,7 +99,6 @@ export default function BlogClient() {
   const gridRef = useRef<HTMLDivElement>(null);
   const transitioningRef = useRef(false);
 
-  // Scroll to grid when page changes (with fade transition)
   const handlePageChange = useCallback((page: number) => {
     if (transitioningRef.current || page === currentPage) return;
     transitioningRef.current = true;
@@ -133,7 +113,6 @@ export default function BlogClient() {
     }, 200);
   }, [currentPage]);
 
-  // Reset page on category change (with fade transition + pill pulse)
   const handleCategoryChange = useCallback((catId: string) => {
     if (transitioningRef.current || catId === activeCategory) return;
     transitioningRef.current = true;
@@ -148,7 +127,6 @@ export default function BlogClient() {
         gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 50);
     }, 200);
-    // Clear pill pulse after animation completes
     setTimeout(() => setPillPulse(null), 500);
   }, [activeCategory]);
 
@@ -167,18 +145,16 @@ export default function BlogClient() {
       <Navbar />
 
       <main className="pt-16">
-        {/* ═══════════════════════════════════════
+        {/* 
             HERO SECTION
-            ═══════════════════════════════════════ */}
+             */}
         <section className="relative overflow-hidden">
-          {/* Background decoration */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-20 right-1/4 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full blur-[100px]" />
             <div className="absolute bottom-0 left-1/3 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full blur-[80px]" />
           </div>
 
           <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
-            {/* Breadcrumb */}
             <motion.nav
               variants={fadeUp}
               initial="hidden"
@@ -221,9 +197,9 @@ export default function BlogClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             CATEGORY FILTER PILLS
-            ═══════════════════════════════════════ */}
+             */}
         <section className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -252,7 +228,6 @@ export default function BlogClient() {
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {cat.label}
-                    {/* Article count badge */}
                     <span className={`ml-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-[10px] font-bold px-1 ${
                       isActive
                         ? 'bg-black/15 text-black'
@@ -267,9 +242,9 @@ export default function BlogClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             FEATURED ARTICLE
-            ═══════════════════════════════════════ */}
+             */}
         {featuredArticle && (
           <section className="py-12 sm:py-16">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,7 +260,6 @@ export default function BlogClient() {
                   className="group block glass-card rounded-2xl overflow-hidden"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-2">
-                    {/* Image placeholder */}
                     <div className="relative h-64 sm:h-80 lg:h-auto bg-gradient-to-br from-amber-400/[0.08] via-amber-500/[0.04] to-transparent overflow-hidden">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
@@ -293,7 +267,6 @@ export default function BlogClient() {
                           <p className="text-xs text-amber-400/40 font-medium uppercase tracking-[0.05em]">Featured Article</p>
                         </div>
                       </div>
-                      {/* Decorative grid pattern */}
                       <div className="absolute inset-0 opacity-5" style={{
                         backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
                         backgroundSize: '40px 40px',
@@ -301,7 +274,6 @@ export default function BlogClient() {
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/50 lg:block hidden" />
                     </div>
 
-                    {/* Content */}
                     <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
                       <div className="flex items-center gap-3 mb-4">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.05em] ${
@@ -344,12 +316,11 @@ export default function BlogClient() {
           </section>
         )}
 
-        {/* ═══════════════════════════════════════
+        {/* 
             ARTICLE GRID
-            ═══════════════════════════════════════ */}
+             */}
         <section ref={gridRef} className="pb-16 sm:pb-24 scroll-mt-32">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Transition wrapper — fades grid out/in during page/category changes */}
             <div
               className={`transition-all duration-200 ease-out ${
                 isTransitioning
@@ -375,7 +346,6 @@ export default function BlogClient() {
                       href={`/blog/${article.slug}`}
                       className="group block glass-card rounded-2xl overflow-hidden h-full"
                     >
-                      {/* Image placeholder */}
                       <div className="relative h-48 bg-gradient-to-br from-white/[0.03] to-white/[0.01] overflow-hidden">
                         <div className="absolute inset-0 flex items-center justify-center">
                           {(() => {
@@ -387,7 +357,6 @@ export default function BlogClient() {
                             );
                           })()}
                         </div>
-                        {/* Category badge overlay */}
                         <div className="absolute top-3 left-3">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-[0.05em] bg-black/60 text-gray-300 border border-white/[0.08]`}>
                             {(() => { const CatIcon = getCategoryIcon(article.category); return <CatIcon className="w-2.5 h-2.5" />; })()}
@@ -396,7 +365,6 @@ export default function BlogClient() {
                         </div>
                       </div>
 
-                      {/* Content */}
                       <div className="p-5">
                         <h3 className="text-base sm:text-lg font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
                           {article.title}
@@ -434,9 +402,9 @@ export default function BlogClient() {
             )}
             </div>
 
-            {/* ═══════════════════════════════════════
+            {/* 
                 PAGINATION
-                ═══════════════════════════════════════ */}
+                 */}
             {totalPages > 1 && (
               <div
                 className={`transition-all duration-200 ease-out ${
@@ -450,7 +418,6 @@ export default function BlogClient() {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="flex items-center justify-center gap-2 sm:gap-3 mt-12"
                 >
-                  {/* Previous button */}
                   <button
                     onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1 || isTransitioning}
@@ -460,7 +427,6 @@ export default function BlogClient() {
                     <span className="hidden sm:inline">Previous</span>
                   </button>
 
-                  {/* Page number buttons — scrollable on mobile */}
                   <div
                     className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-[60vw] sm:max-w-none px-1"
                     style={{ scrollbarWidth: 'none' }}
@@ -481,7 +447,6 @@ export default function BlogClient() {
                     ))}
                   </div>
 
-                  {/* Next button */}
                   <button
                     onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages || isTransitioning}
@@ -496,9 +461,9 @@ export default function BlogClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════
+        {/* 
             NEWSLETTER SIGNUP
-            ═══════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24 border-t border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div

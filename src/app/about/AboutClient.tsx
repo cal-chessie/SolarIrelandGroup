@@ -28,9 +28,6 @@ import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════════════════ */
 
 const valueProps = [
   {
@@ -99,9 +96,6 @@ const stats = [
   { value: '\u20AC1.1M+', label: 'Customer Savings', icon: Euro },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   ANIMATION HELPERS — GPU-safe only (transform + opacity)
-   ═══════════════════════════════════════════════════════ */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -114,9 +108,6 @@ const staggerContainer = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════
-   BREADCRUMB
-   ═══════════════════════════════════════════════════════ */
 function Breadcrumb({ items }: { items: { label: string; href?: string }[] }) {
   return (
     <nav className="flex items-center gap-1.5 text-sm text-gray-500" aria-label="Breadcrumb">
@@ -136,9 +127,6 @@ function Breadcrumb({ items }: { items: { label: string; href?: string }[] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   SECTION HEADER
-   ═══════════════════════════════════════════════════════ */
 function SectionHeader({
   badge,
   title,
@@ -174,9 +162,6 @@ function SectionHeader({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   ABOUT CLIENT
-   ═══════════════════════════════════════════════════════ */
 export default function AboutClient() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -184,11 +169,10 @@ export default function AboutClient() {
       <Navbar />
 
       <main className="pt-16">
-        {/* ═══════════════════════════════════════════════
+        {/* 
             HERO SECTION
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="relative overflow-hidden">
-          {/* Ambient orb decorations */}
           <div className="absolute top-20 -left-32 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
           <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
@@ -249,17 +233,15 @@ export default function AboutClient() {
             </motion.div>
           </div>
 
-          {/* Bottom amber line */}
           <div className="amber-line" />
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             OUR STORY
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-              {/* Image placeholder */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -279,7 +261,6 @@ export default function AboutClient() {
                     </div>
                   </div>
                 </div>
-                {/* Floating stat card */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -299,7 +280,6 @@ export default function AboutClient() {
                 </motion.div>
               </motion.div>
 
-              {/* Story text */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -357,9 +337,9 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             WHY SOLAR IRELAND
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24 relative">
           <div className="absolute inset-0 honeycomb-bg pointer-events-none" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -398,9 +378,9 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             TEAM SECTION
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
@@ -424,7 +404,6 @@ export default function AboutClient() {
                   whileHover={{ y: -4 }}
                   className="glass-card rounded-2xl p-6 text-center group cursor-default"
                 >
-                  {/* Avatar placeholder */}
                   <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400/20 to-amber-500/10 border-2 border-amber-400/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
                     <span className="text-lg font-bold text-amber-400">{member.initials}</span>
                   </div>
@@ -437,9 +416,9 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             CERTIFICATIONS
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24 relative">
           <div className="amber-line mb-16" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -479,7 +458,6 @@ export default function AboutClient() {
                 );
               })}
 
-              {/* Additional trust card spanning full width */}
               <motion.div
                 variants={fadeUp}
                 transition={{ duration: 0.5 }}
@@ -503,9 +481,9 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             STATS SECTION
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -515,7 +493,6 @@ export default function AboutClient() {
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.7 }}
             >
-              {/* Decorative orbs */}
               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
@@ -557,9 +534,9 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════
+        {/* 
             CTA SECTION
-            ═══════════════════════════════════════════════ */}
+             */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -569,7 +546,6 @@ export default function AboutClient() {
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.7 }}
             >
-              {/* Decorative orbs */}
               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.06] rounded-full pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
 

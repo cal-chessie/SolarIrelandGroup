@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Search,
   MapPin,
@@ -9,7 +9,7 @@ import {
   Euro,
   ArrowRight,
   MessageCircle,
-  Filter,
+
   X,
   Map,
   Globe,
@@ -20,7 +20,6 @@ import {
   Sparkles,
   Phone,
   Building2,
-  Shield,
   FileCheck,
   HeartHandshake,
   Home,
@@ -31,9 +30,6 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-/* ═══════════════════════════════════════════════════════
-   COUNTY DATA — All 32 Counties of Ireland
-   ═══════════════════════════════════════════════════════ */
 
 type Province = 'Leinster' | 'Munster' | 'Connacht' | 'Ulster';
 
@@ -50,7 +46,6 @@ interface CountyData {
 }
 
 const counties: CountyData[] = [
-  // ─── Leinster ───
   { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.com', status: 'active', costMin: 4800, costMax: 7200, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords — terraces to estates, we know every roof' },
   { name: 'Wicklow', provinces: ['Leinster'], domain: 'solarwicklow.com', status: 'active', costMin: 4600, costMax: 7000, generationKwh: 3520, population: '155K', tagline: 'The Garden County — stunning scenery and serious solar potential' },
   { name: 'Wexford', provinces: ['Leinster'], domain: 'solarwexford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3600, population: '156K', tagline: 'Sunny southeast at its finest — Hook Head leads the way' },
@@ -64,7 +59,6 @@ const counties: CountyData[] = [
   { name: 'Laois', provinces: ['Leinster'], domain: 'solarlaois.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3430, population: '85K', tagline: 'Quiet county, bright future — solar energy for every home' },
   { name: 'Kilkenny', provinces: ['Leinster'], domain: 'solarkilkenny.com', status: 'active', costMin: 4400, costMax: 6700, generationKwh: 3500, population: '104K', tagline: 'The Marble City and beyond — medieval charm, modern energy' },
 
-  // ─── Munster ───
   { name: 'Cork', provinces: ['Munster'], domain: 'solarcork.com', status: 'active', costMin: 4600, costMax: 7000, generationKwh: 3580, population: '555K', tagline: 'The Rebel County runs on sunshine' },
   { name: 'Kerry', provinces: ['Munster'], domain: 'solarkerry.com', status: 'active', costMin: 4600, costMax: 7100, generationKwh: 3540, population: '156K', tagline: 'From the Kingdom — wild Atlantic coast, serious solar savings' },
   { name: 'Limerick', provinces: ['Munster'], domain: 'solarlimerick.com', status: 'active', costMin: 4500, costMax: 6900, generationKwh: 3500, population: '205K', tagline: 'Treaty City homes switching on to solar' },
@@ -72,33 +66,28 @@ const counties: CountyData[] = [
   { name: 'Tipperary', provinces: ['Munster'], domain: 'solartipperary.com', status: 'active', costMin: 4400, costMax: 6700, generationKwh: 3480, population: '165K', tagline: 'Premier County homes leading the solar charge' },
   { name: 'Waterford', provinces: ['Munster'], domain: 'solarwaterford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3550, population: '127K', tagline: 'The Déise — crystal city with a green energy vision' },
 
-  // ─── Connacht ───
   { name: 'Galway', provinces: ['Connacht'], domain: 'solargalway.com', status: 'active', costMin: 4500, costMax: 7000, generationKwh: 3450, population: '279K', tagline: 'City of the Tribes — urban and county, we cover it all' },
   { name: 'Mayo', provinces: ['Connacht'], domain: 'solarmayo.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3400, population: '137K', tagline: 'Wild Mayo — big skies, open roofs, endless potential' },
   { name: 'Roscommon', provinces: ['Connacht'], domain: 'solarroscommon.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3380, population: '72K', tagline: 'Heart of the west — where every watt counts' },
   { name: 'Sligo', provinces: ['Connacht'], domain: 'solarsligo.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3390, population: '70K', tagline: 'Yeats Country catching rays on every rooftop' },
   { name: 'Leitrim', provinces: ['Connacht'], domain: 'solarleitrim.com', status: 'coming-soon', costMin: 4300, costMax: 6500, generationKwh: 3350, population: '35K', tagline: 'The lovely county — small in size, big on green energy' },
 
-  // ─── Ulster (Republic + NI) ───
   { name: 'Donegal', provinces: ['Ulster'], domain: 'solardonegal.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3410, population: '167K', tagline: 'From Malin Head to Donegal Town — the north-west shines bright' },
-  { name: 'Cavan', provinces: ['Leinster', 'Ulster'], domain: 'solarcavan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3410, population: '81K', tagline: 'Lakeland County — drumlins and solar panels, a perfect match' },
-  { name: 'Monaghan', provinces: ['Leinster', 'Ulster'], domain: 'solarmonaghan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '68K', tagline: 'The Farney County — border spirit, boundless energy' },
+  { name: 'Cavan', provinces: ['Ulster'], domain: 'solarcavan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3410, population: '81K', tagline: 'Lakeland County — drumlins and solar panels, a perfect match' },
+  { name: 'Monaghan', provinces: ['Ulster'], domain: 'solarmonaghan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '68K', tagline: 'The Farney County — border spirit, boundless energy' },
   { name: 'Antrim', provinces: ['Ulster'], domain: 'solarantrim.com', status: 'coming-soon', costMin: 4600, costMax: 7200, generationKwh: 3450, population: '649K', tagline: 'Giant\'s Causeway coast and city rooftops — solar for all' },
   { name: 'Armagh', provinces: ['Ulster'], domain: 'solararmagh.com', status: 'coming-soon', costMin: 4500, costMax: 7000, generationKwh: 3420, population: '206K', tagline: 'The Orchard County — growing green energy from the ground up' },
   { name: 'Down', provinces: ['Ulster'], domain: 'solardown.com', status: 'coming-soon', costMin: 4600, costMax: 7100, generationKwh: 3440, population: '552K', tagline: 'The Mountains of Mourne meet clean energy on every roof' },
   { name: 'Fermanagh', provinces: ['Ulster'], domain: 'solarfermanagh.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3380, population: '62K', tagline: 'Lake country living — where nature and solar go hand in hand' },
-  { name: 'Londonderry', provinces: ['Ulster'], domain: 'solarderry.com', status: 'coming-soon', costMin: 4500, costMax: 6900, generationKwh: 3400, population: '252K', tagline: 'The Maiden City — historic walls, forward-thinking energy' },
+  { name: 'Derry', provinces: ['Ulster'], domain: 'solarderry.com', status: 'coming-soon', costMin: 4500, costMax: 6900, generationKwh: 3400, population: '252K', tagline: 'The Maiden City — historic walls, forward-thinking energy' },
   { name: 'Tyrone', provinces: ['Ulster'], domain: 'solartyrone.com', status: 'coming-soon', costMin: 4400, costMax: 6800, generationKwh: 3390, population: '193K', tagline: 'From the Sperrins to Strabane — solar across the county' },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   PROVINCE GROUPINGS — Cavan/Monaghan shown in both
-   ═══════════════════════════════════════════════════════ */
 
 const provinceGroups: { province: Province; counties: string[] }[] = [
   {
     province: 'Leinster',
-    counties: ['Dublin', 'Wicklow', 'Wexford', 'Carlow', 'Kildare', 'Meath', 'Louth', 'Monaghan', 'Cavan', 'Longford', 'Westmeath', 'Offaly', 'Laois', 'Kilkenny'],
+    counties: ['Dublin', 'Wicklow', 'Wexford', 'Carlow', 'Kildare', 'Meath', 'Louth', 'Longford', 'Westmeath', 'Offaly', 'Laois', 'Kilkenny'],
   },
   {
     province: 'Munster',
@@ -110,7 +99,7 @@ const provinceGroups: { province: Province; counties: string[] }[] = [
   },
   {
     province: 'Ulster',
-    counties: ['Antrim', 'Armagh', 'Down', 'Fermanagh', 'Londonderry', 'Tyrone', 'Cavan', 'Monaghan', 'Donegal'],
+    counties: ['Antrim', 'Armagh', 'Down', 'Fermanagh', 'Derry', 'Tyrone', 'Cavan', 'Monaghan', 'Donegal'],
   },
 ];
 
@@ -128,9 +117,6 @@ const provinceSeoSubtitles: Record<Province, string> = {
   Ulster: 'Solar panels in Donegal and across Northern Ireland',
 };
 
-/* ═══════════════════════════════════════════════════════
-   FAQ DATA
-   ═══════════════════════════════════════════════════════ */
 
 const faqs = [
   {
@@ -163,13 +149,10 @@ const faqs = [
   },
   {
     question: 'Do you serve Northern Ireland?',
-    answer: 'Yes, we do. Solar Ireland covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Londonderry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
+    answer: 'Yes, we do. Solar Ireland covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Derry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
   },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   WHY LOCAL MATTERS — CARDS DATA
-   ═══════════════════════════════════════════════════════ */
 
 const whyLocalCards = [
   {
@@ -206,9 +189,6 @@ const whyLocalCards = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════
-   COUNTY CARD COMPONENT
-   ═══════════════════════════════════════════════════════ */
 function CountyCard({ county, index }: { county: CountyData; index: number }) {
   const primaryProvince = county.provinces[0];
   const colors = provinceColors[primaryProvince];
@@ -223,17 +203,14 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
       className="group relative rounded-2xl bg-white/[0.02] border border-white/[0.05] p-5 hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300"
       style={{ animationDelay: `${index * 30}ms` }}
     >
-      {/* Province dot */}
       <div className={`absolute top-5 right-5 w-2.5 h-2.5 rounded-full ${colors.dot} opacity-60`} />
 
-      {/* County name + status */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div>
           <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
             {county.name}
           </h3>
           <div className="flex items-center gap-2 mt-1.5">
-            {/* Province badges */}
             {county.provinces.map((prov) => {
               const pColors = provinceColors[prov];
               return (
@@ -247,7 +224,6 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
             })}
           </div>
         </div>
-        {/* Status badge */}
         <span
           className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold ${
             isActive
@@ -264,12 +240,10 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
         </span>
       </div>
 
-      {/* Tagline */}
       <p className="text-xs text-gray-500 mb-4 leading-relaxed italic">
         {county.tagline}
       </p>
 
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="text-center p-2.5 rounded-lg bg-white/[0.03]">
           <div className="flex items-center justify-center gap-1 mb-1">
@@ -296,13 +270,11 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
         </div>
       </div>
 
-      {/* Domain link */}
       <div className="flex items-center gap-1.5 mb-4">
         <Globe className="w-3 h-3 text-gray-600" />
         <span className="text-xs text-gray-500">{county.domain}</span>
       </div>
 
-      {/* Actions */}
       <div className="flex items-center gap-2">
         <a
           href={whatsappUrl}
@@ -324,9 +296,6 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   PROVINCE SECTION HEADER
-   ═══════════════════════════════════════════════════════ */
 function ProvinceHeader({
   province,
   count,
@@ -360,9 +329,6 @@ function ProvinceHeader({
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   FAQ ACCORDION ITEM
-   ═══════════════════════════════════════════════════════ */
 function FaqItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -397,9 +363,6 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   BOTTOM STATS
-   ═══════════════════════════════════════════════════════ */
 function BottomStats() {
   const stats = [
     {
@@ -454,9 +417,6 @@ function BottomStats() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   ITEM LIST JSON-LD BUILDER
-   ═══════════════════════════════════════════════════════ */
 function buildItemListJsonLd() {
   const base = 'https://solarireland.com';
   const items = counties.map((county, index) => ({
@@ -491,16 +451,10 @@ function buildFaqJsonLd() {
   };
 }
 
-/* ═══════════════════════════════════════════════════════
-   COUNTIES DIRECTORY PAGE
-   ═══════════════════════════════════════════════════════ */
 export default function CountiesClient() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeProvince, setActiveProvince] = useState<Province | 'all'>('all');
-  const [activeStatus, setActiveStatus] = useState<'all' | 'active' | 'coming-soon'>('all');
-  const [showFilters, setShowFilters] = useState(false);
 
-  /* ─── Filter logic ─── */
   const filteredCounties = useMemo(() => {
     return counties.filter((county) => {
       const matchesSearch =
@@ -508,22 +462,42 @@ export default function CountiesClient() {
         county.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesProvince =
         activeProvince === 'all' || county.provinces.includes(activeProvince);
-      const matchesStatus =
-        activeStatus === 'all' || county.status === activeStatus;
-      return matchesSearch && matchesProvince && matchesStatus;
+      return matchesSearch && matchesProvince;
     });
-  }, [searchQuery, activeProvince, activeStatus]);
+  }, [searchQuery, activeProvince]);
 
   const activeCount = counties.filter((c) => c.status === 'active').length;
   const comingSoonCount = counties.filter((c) => c.status === 'coming-soon').length;
 
+  const provinceTabs = useMemo(() => {
+    const provinces: Province[] = ['Leinster', 'Munster', 'Connacht', 'Ulster'];
+    return [
+      { key: 'all' as const, label: 'All', count: counties.length },
+      ...provinces.map(prov => ({
+        key: prov,
+        label: prov,
+        count: counties.filter(c => c.provinces.includes(prov)).length,
+      })),
+    ];
+  }, []);
+
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (tabsRef.current) {
+      const activeTab = tabsRef.current.querySelector('[data-active="true"]');
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeProvince]);
+
   const clearFilters = () => {
     setSearchQuery('');
     setActiveProvince('all');
-    setActiveStatus('all');
   };
 
-  const hasActiveFilters = searchQuery || activeProvince !== 'all' || activeStatus !== 'all';
+  const hasActiveFilters = searchQuery || activeProvince !== 'all';
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -531,9 +505,7 @@ export default function CountiesClient() {
       <Navbar />
 
       <main className="pt-16">
-        {/* ─── Hero Section ─── */}
         <header className="relative overflow-hidden">
-          {/* Ambient glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-20 right-0 w-[400px] h-[300px] bg-emerald-400/[0.02] rounded-full blur-[100px] pointer-events-none" />
 
@@ -559,7 +531,6 @@ export default function CountiesClient() {
               €1,800 SEAI grant, there&apos;s never been a better time to go solar.
             </p>
 
-            {/* Quick stats */}
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-amber-400/60" />
@@ -579,7 +550,6 @@ export default function CountiesClient() {
           </div>
         </header>
 
-        {/* ─── Why Local Matters Section ─── */}
         <section className="border-y border-white/[0.04] bg-white/[0.01]">
           <div className="max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
             <div className="text-center mb-8 sm:mb-10">
@@ -610,7 +580,6 @@ export default function CountiesClient() {
           </div>
         </section>
 
-        {/* ─── Breadcrumb ─── */}
         <div className="border-b border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-5 sm:px-8 py-3">
             <nav className="flex items-center gap-2 text-xs text-gray-600">
@@ -621,12 +590,10 @@ export default function CountiesClient() {
           </div>
         </div>
 
-        {/* ─── Search & Filter Bar ─── */}
         <div className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04] backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4">
-            {/* Search row */}
+            {/* Search bar */}
             <div className="flex items-center gap-3">
-              {/* Search input */}
               <div className="flex-1 relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
@@ -634,7 +601,7 @@ export default function CountiesClient() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search counties..."
-                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/30 focus:ring-1 focus:ring-amber-400/10 transition-all"
+                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/30 focus:ring-1 focus:ring-amber-400/10 transition-all"
                 />
                 {searchQuery && (
                   <button
@@ -646,106 +613,57 @@ export default function CountiesClient() {
                 )}
               </div>
 
-              {/* Filter toggle */}
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all active:scale-[0.98] ${
-                  showFilters
-                    ? 'bg-amber-400/10 border-amber-400/20 text-amber-400'
-                    : 'bg-white/[0.04] border-white/[0.06] text-gray-400 hover:bg-white/[0.06] hover:text-white'
-                }`}
-              >
-                <Filter className="w-4 h-4" />
-                <span className="hidden sm:inline">Filters</span>
-                {hasActiveFilters && (
-                  <span className="w-5 h-5 rounded-full bg-amber-400 text-black text-[10px] font-bold flex items-center justify-center">
-                    {(activeProvince !== 'all' ? 1 : 0) + (activeStatus !== 'all' ? 1 : 0)}
-                  </span>
-                )}
-              </button>
-
-              {/* Result count */}
-              <div className="hidden md:flex items-center gap-1.5 text-xs text-gray-600 whitespace-nowrap">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 whitespace-nowrap">
                 <span className="text-gray-400 font-semibold">{filteredCounties.length}</span>
                 <span>result{filteredCounties.length !== 1 ? 's' : ''}</span>
               </div>
             </div>
 
-            {/* Filter panel */}
-            {showFilters && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-3 pt-3 border-t border-white/[0.04]">
-                {/* Province filter */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-gray-600 uppercase tracking-wider mr-1">Province:</span>
-                  {(['all', 'Leinster', 'Munster', 'Connacht', 'Ulster'] as const).map((prov) => {
-                    const isActive = activeProvince === prov;
-                    const colors = prov !== 'all' ? provinceColors[prov] : null;
-                    return (
-                      <button
-                        key={prov}
-                        onClick={() => setActiveProvince(prov)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-[0.97] ${
-                          isActive
-                            ? prov === 'all'
-                              ? 'bg-white/10 border border-white/20 text-white'
-                              : `${colors!.bg} ${colors!.text} border ${colors!.border}`
-                            : 'bg-white/[0.03] border border-white/[0.06] text-gray-500 hover:text-gray-300 hover:bg-white/[0.05]'
-                        }`}
-                      >
-                        {prov === 'all' ? 'All Provinces' : prov}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Status filter */}
-                <div className="flex items-center gap-2 flex-wrap sm:ml-auto">
-                  <span className="text-xs text-gray-600 uppercase tracking-wider mr-1">Status:</span>
-                  {([
-                    { key: 'all' as const, label: 'All' },
-                    { key: 'active' as const, label: 'Active' },
-                    { key: 'coming-soon' as const, label: 'Coming Soon' },
-                  ]).map((opt) => {
-                    const isActive = activeStatus === opt.key;
-                    return (
-                      <button
-                        key={opt.key}
-                        onClick={() => setActiveStatus(opt.key)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-[0.97] ${
-                          isActive
-                            ? opt.key === 'active'
-                              ? 'bg-green-400/10 text-green-400 border border-green-400/20'
-                              : opt.key === 'coming-soon'
-                                ? 'bg-amber-400/10 text-amber-400 border border-amber-400/20'
-                                : 'bg-white/10 border border-white/20 text-white'
-                            : 'bg-white/[0.03] border border-white/[0.06] text-gray-500 hover:text-gray-300 hover:bg-white/[0.05]'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Clear */}
-                {hasActiveFilters && (
+            {/* Province filter tabs */}
+            <div
+              ref={tabsRef}
+              className="flex items-center gap-2 mt-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {provinceTabs.map((tab) => {
+                const isActive = activeProvince === tab.key;
+                return (
                   <button
-                    onClick={clearFilters}
-                    className="flex items-center gap-1 text-xs text-gray-500 hover:text-amber-400 transition-colors"
+                    key={tab.key}
+                    data-active={isActive}
+                    onClick={() => setActiveProvince(tab.key)}
+                    className={`shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all active:scale-[0.97] ${
+                      isActive
+                        ? 'bg-amber-400/15 border border-amber-400/30 text-amber-400'
+                        : 'bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:text-gray-300 hover:bg-white/[0.06] hover:border-white/[0.12]'
+                    }`}
                   >
-                    <X className="w-3 h-3" />
-                    Clear all
+                    {tab.label}
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md ${
+                      isActive
+                        ? 'bg-amber-400/20 text-amber-300'
+                        : 'bg-white/[0.06] text-gray-500'
+                    }`}>
+                      {tab.count}
+                    </span>
                   </button>
-                )}
-              </div>
-            )}
+                );
+              })}
+
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="shrink-0 flex items-center gap-1 px-3 py-2 text-xs text-gray-500 hover:text-amber-400 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* ─── Province Grouped Content ─── */}
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
           {filteredCounties.length === 0 ? (
-            /* ─── Empty state ─── */
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-4">
                 <Search className="w-7 h-7 text-gray-600" />
@@ -764,7 +682,6 @@ export default function CountiesClient() {
             </div>
           ) : (
             <>
-              {/* Group by province */}
               {provinceGroups.map((group) => {
                 const groupCounties = group.counties
                   .map((name) => counties.find((c) => c.name === name)!)
@@ -787,10 +704,8 @@ export default function CountiesClient() {
                 );
               })}
 
-              {/* ─── Bottom Stats ─── */}
               <BottomStats />
 
-              {/* ─── FAQ Section ─── */}
               <section className="mt-16 sm:mt-20">
                 <div className="text-center mb-8 sm:mb-10">
                   <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
@@ -812,7 +727,6 @@ export default function CountiesClient() {
                 </div>
               </section>
 
-              {/* ─── Bottom CTA ─── */}
               <div className="mt-16 sm:mt-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/10 via-amber-500/[0.05] to-transparent border border-amber-400/10 p-8 sm:p-12 text-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[300px] h-[200px] bg-amber-400/[0.04] rounded-full blur-[80px] pointer-events-none" />
                 <div className="relative z-10">
@@ -856,7 +770,6 @@ export default function CountiesClient() {
       <Footer />
       <WhatsAppChat />
 
-      {/* ─── JSON-LD Structured Data ─── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
