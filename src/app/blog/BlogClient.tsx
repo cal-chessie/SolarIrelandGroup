@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ChevronRight,
   Calendar,
@@ -261,12 +262,16 @@ export default function BlogClient() {
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-2">
                     <div className="relative h-64 sm:h-80 lg:h-auto bg-gradient-to-br from-amber-400/[0.08] via-amber-500/[0.04] to-transparent overflow-hidden">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <Sun className="w-16 h-16 text-amber-400/30 mx-auto mb-3" />
-                          <p className="text-xs text-amber-400/40 font-medium uppercase tracking-[0.05em]">Featured Article</p>
+                      {featuredArticle.image ? (
+                        <Image src={featuredArticle.image} alt={featuredArticle.title} fill className="object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <Sun className="w-16 h-16 text-amber-400/30 mx-auto mb-3" />
+                            <p className="text-xs text-amber-400/40 font-medium uppercase tracking-[0.05em]">Featured Article</p>
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div className="absolute inset-0 opacity-5" style={{
                         backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
                         backgroundSize: '40px 40px',
@@ -347,16 +352,20 @@ export default function BlogClient() {
                       className="group block glass-card rounded-2xl overflow-hidden h-full"
                     >
                       <div className="relative h-48 bg-gradient-to-br from-white/[0.03] to-white/[0.01] overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {(() => {
-                            const CatIcon = getCategoryIcon(article.category);
-                            return (
-                              <div className={`w-14 h-14 rounded-2xl ${article.iconBg} flex items-center justify-center`}>
-                                <CatIcon className={`w-7 h-7 ${article.iconColor}`} />
-                              </div>
-                            );
-                          })()}
-                        </div>
+                        {article.image ? (
+                          <Image src={article.image} alt={article.title} fill className="object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            {(() => {
+                              const CatIcon = getCategoryIcon(article.category);
+                              return (
+                                <div className={`w-14 h-14 rounded-2xl ${article.iconBg} flex items-center justify-center`}>
+                                  <CatIcon className={`w-7 h-7 ${article.iconColor}`} />
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        )}
                         <div className="absolute top-3 left-3">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-[0.05em] bg-black/60 text-gray-300 border border-white/[0.08]`}>
                             {(() => { const CatIcon = getCategoryIcon(article.category); return <CatIcon className="w-2.5 h-2.5" />; })()}

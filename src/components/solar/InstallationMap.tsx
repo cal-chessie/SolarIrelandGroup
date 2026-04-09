@@ -187,10 +187,14 @@ const MAP_LOCATIONS: MapLocation[] = [
   { name: 'Navan', x: 306, y: 240, province: 'leinster', isInstall: true, detail: '6.4 kWp · Mar 2025' },
   { name: 'Killarney', x: 76, y: 452, province: 'munster', isInstall: true, detail: '4.5 kWp · Feb 2025' },
   { name: 'Westport', x: 64, y: 230, province: 'connacht', isInstall: true, detail: '5.1 kWp · Jan 2025' },
+  { name: 'Wicklow', x: 346, y: 345, province: 'leinster', isInstall: true, detail: '7.2 kWp · Jan 2025' },
+  { name: 'Donegal', x: 186, y: 108, province: 'ulster', isInstall: true, detail: '3.8 kWp · Dec 2024' },
+  { name: 'Cavan', x: 286, y: 190, province: 'ulster', isInstall: true, detail: '4.0 kWp · Feb 2025' },
+  { name: 'Clare', x: 110, y: 322, province: 'munster', isInstall: true, detail: '4.6 kWp · Mar 2025' },
+  { name: 'Louth', x: 330, y: 206, province: 'leinster', isInstall: true, detail: '5.0 kWp · Jan 2025' },
 
   // ── Service area dots ──
   { name: 'Letterkenny', x: 210, y: 74, province: 'ulster' },
-  { name: 'Donegal', x: 186, y: 108, province: 'ulster' },
   { name: 'Ennis', x: 128, y: 348, province: 'munster' },
   { name: 'Kilkenny', x: 256, y: 372, province: 'leinster' },
   { name: 'Tralee', x: 56, y: 410, province: 'munster' },
@@ -229,7 +233,7 @@ const PROVINCE_META: Record<string, {
     bgClass: 'bg-amber-400/10',
     counties: 12,
     cities: 'Dublin, Kildare, Meath, Wicklow, Wexford',
-    installCount: 3,
+    installCount: 7,
   },
   munster: {
     name: 'Munster',
@@ -238,7 +242,7 @@ const PROVINCE_META: Record<string, {
     bgClass: 'bg-sky-400/10',
     counties: 6,
     cities: 'Cork, Kerry, Limerick, Clare, Waterford',
-    installCount: 3,
+    installCount: 4,
   },
   ulster: {
     name: 'Ulster (ROI)',
@@ -247,7 +251,7 @@ const PROVINCE_META: Record<string, {
     bgClass: 'bg-purple-400/10',
     counties: 3,
     cities: 'Donegal, Cavan, Monaghan',
-    installCount: 0,
+    installCount: 2,
   },
 };
 

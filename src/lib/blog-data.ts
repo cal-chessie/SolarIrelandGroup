@@ -20,6 +20,7 @@ export interface Article {
   author: string;
   iconBg: string;
   iconColor: string;
+  image?: string;
   content: ContentSection[];
 }
 
@@ -36,6 +37,7 @@ export const articles: Article[] = [
     author: 'Cal O\'Reilly',
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',
+    image: '/blog-seai-grant.webp',
     content: [
       { type: 'heading', level: 2, text: 'What Is the SEAI Solar Panel Grant?' },
       { type: 'paragraph', text: 'The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to owner-occupiers of homes built before 2021 and is paid directly to your installer after completion — no waiting for a refund.' },
@@ -123,6 +125,7 @@ export const articles: Article[] = [
     author: 'Cal O\'Reilly',
     iconBg: 'bg-emerald-400/10',
     iconColor: 'text-emerald-400',
+    image: '/blog-solar-costs.webp',
     content: [
       { type: 'heading', level: 2, text: 'Average Solar Panel Costs in Ireland (2026)' },
       { type: 'paragraph', text: 'Solar panels in Ireland cost between **€4,200 and €14,200 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs approximately €4,200–€6,200, a 6kWp system costs €6,700–€9,200, and a 10kWp system with battery costs €10,200–€14,200. Prices have fallen roughly 20–30% over the past five years as the market has matured, making 2026 the most affordable time to go solar.' },
@@ -188,6 +191,7 @@ export const articles: Article[] = [
     author: 'Cal O\'Reilly',
     iconBg: 'bg-sky-400/10',
     iconColor: 'text-sky-400',
+    image: '/blog-solar-winter.webp',
     content: [
       { type: 'heading', level: 2, text: 'The Myth vs The Reality' },
       { type: 'paragraph', text: '**Yes, solar panels absolutely work during Irish winters.** A typical 6kWp system generates approximately 30–50% of its summer output between November and February — producing 150–250 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland\'s climate.' },
@@ -241,6 +245,7 @@ export const articles: Article[] = [
   {
     slug: 'clean-export-guarantee-explained',
     title: 'Clean Export Guarantee Explained: Get Paid for Your Excess Solar',
+    image: '/blog-clean-export.webp',
     excerpt:
       'The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here\'s how it works, what you\'ll earn, and which suppliers offer the best rates.',
     category: 'grants',
@@ -306,6 +311,7 @@ export const articles: Article[] = [
   {
     slug: 'east-vs-south-vs-west-facing-roofs-solar',
     title: 'East vs South vs West-Facing Roofs: Which Is Best for Solar?',
+    image: '/blog-roof-orientation.webp',
     excerpt:
       'Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.',
     category: 'guides',
@@ -374,6 +380,7 @@ export const articles: Article[] = [
   {
     slug: 'battery-storage-is-it-worth-the-extra-cost',
     title: 'Battery Storage: Is It Worth the Extra Cost?',
+    image: '/blog-battery-storage.webp',
     excerpt:
       'Solar batteries cost €4,000-€8,000 — but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.',
     category: 'savings',
@@ -443,6 +450,7 @@ export const articles: Article[] = [
   {
     slug: 'planning-permission-solar-panels-ireland',
     title: 'Planning Permission for Solar Panels in Ireland — What You Need to Know',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'Good news — most domestic solar installations in Ireland don\'t need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.',
     category: 'guides',
@@ -502,6 +510,7 @@ export const articles: Article[] = [
   {
     slug: 'longi-vs-jinko-vs-trina-best-solar-panels',
     title: 'LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'We compare the top three tier-1 solar panel brands used in Ireland — efficiency, warranties, real-world performance, and which one delivers the best value for your home.',
     category: 'technology',
@@ -582,6 +591,7 @@ export const articles: Article[] = [
   {
     slug: 'solar-panels-dublin-ultimate-guide',
     title: 'Solar Panels in Dublin: The Ultimate 2026 Guide',
+    image: '/blog-county-cork.webp',
     excerpt:
       'Everything Dublin homeowners need to know about going solar — from grant eligibility and installation costs to the best panels for Dublin\'s weather and typical roof types.',
     category: 'county',
@@ -666,6 +676,7 @@ export const articles: Article[] = [
   {
     slug: 'seai-grant-stay-e1800-2026-what-it-means',
     title: 'SEAI Grant Stays at €1,800 for 2026 — What It Means for You',
+    image: '/blog-solar-financing.webp',
     excerpt:
       'The government has confirmed the SEAI solar panel grant will remain at €1,800 for 2026. Here is what the announcement means for homeowners, the grant\'s history, and why now is still the time to apply.',
     category: 'news',
@@ -721,6 +732,7 @@ export const articles: Article[] = [
   {
     slug: 'solar-panels-and-heat-pumps-perfect-partnership',
     title: 'Solar Panels and Heat Pumps: The Perfect Partnership',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes — with up to €8,300 in combined SEAI grants available.',
     category: 'guides',
@@ -797,6 +809,7 @@ export const articles: Article[] = [
   {
     slug: 'smart-meter-required-solar-panels-ireland',
     title: 'Is a Smart Meter Required for Solar Panels in Ireland?',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'A smart meter is essential if you want to earn money from your excess solar through the Clean Export Guarantee. Here is how to check if you have one and how to get one installed for free.',
     category: 'guides',
@@ -868,6 +881,7 @@ export const articles: Article[] = [
   {
     slug: 'how-many-solar-panels-do-i-need-ireland',
     title: 'How Many Solar Panels Do I Need in Ireland?',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'A complete guide to sizing your solar system — from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.',
     category: 'guides',
@@ -946,6 +960,7 @@ export const articles: Article[] = [
   {
     slug: 'best-time-of-year-to-get-solar-panels-ireland',
     title: 'Best Time of Year to Get Solar Panels in Ireland',
+    image: '/blog-solar-installation.webp',
     excerpt:
       'Is there an ideal season to install solar panels? We break down month-by-month generation data, seasonal advantages, and SEAI processing times to help you decide when to go solar.',
     category: 'savings',
@@ -1028,6 +1043,7 @@ export const articles: Article[] = [
   {
     slug: 'solar-panels-rental-property-landlord-guide',
     title: 'Solar Panels for Rental Properties: A Landlord\'s Guide',
+    image: '/blog-solar-financing.webp',
     excerpt:
       'Can landlords get the SEAI solar grant? What about tenants? We cover everything property investors need to know about solar panels on rental properties in Ireland, including grants, BER benefits, and rent premiums.',
     category: 'grants',
