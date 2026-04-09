@@ -234,7 +234,7 @@ export default function PortalLandingClient() {
                 Email Us
               </a>
               <a
-                href={SOLAR_DATA.social.facebook}
+                href="https://www.facebook.com/solarireland"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm font-medium hover:bg-white/[0.06] transition-all"

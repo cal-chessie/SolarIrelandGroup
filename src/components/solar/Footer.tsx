@@ -52,8 +52,16 @@ function TikTokIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+
+const FOOTER_SOCIAL = [
+  { icon: FacebookIcon, href: 'https://www.facebook.com/solarireland', label: 'Follow us on Facebook', hoverColor: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/25 hover:text-[#1877F2]' },
+  { icon: InstagramIcon, href: 'https://www.instagram.com/solarireland', label: 'Follow us on Instagram', hoverColor: 'hover:bg-[#E4405F]/10 hover:border-[#E4405F]/25 hover:text-[#E4405F]' },
+  { icon: TikTokIcon, href: 'https://www.tiktok.com/@solarireland', label: 'Follow us on TikTok', hoverColor: 'hover:bg-white/10 hover:border-white/25 hover:text-white' },
+  { icon: LinkedInIcon, href: 'https://www.linkedin.com/company/solarireland', label: 'Follow us on LinkedIn', hoverColor: 'hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/25 hover:text-[#0A66C2]' },
+];
 
 
 const quickLinks = [
@@ -293,12 +301,7 @@ export default function Footer() {
             </p>
 
             <div className="flex items-center gap-2.5">
-              {[
-                { icon: FacebookIcon, href: SOLAR_DATA.social.facebook, label: 'Follow us on Facebook', hoverColor: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/25 hover:text-[#1877F2]' },
-                { icon: InstagramIcon, href: SOLAR_DATA.social.instagram, label: 'Follow us on Instagram', hoverColor: 'hover:bg-[#E4405F]/10 hover:border-[#E4405F]/25 hover:text-[#E4405F]' },
-                { icon: TikTokIcon, href: SOLAR_DATA.social.tiktok, label: 'Follow us on TikTok', hoverColor: 'hover:bg-white/10 hover:border-white/25 hover:text-white' },
-                { icon: LinkedInIcon, href: SOLAR_DATA.social.linkedin, label: 'Follow us on LinkedIn', hoverColor: 'hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/25 hover:text-[#0A66C2]' },
-              ].map((social) => (
+              {FOOTER_SOCIAL.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
