@@ -238,3 +238,21 @@ Stage Summary:
 - Navbar.tsx: switched 17 imports to direct ESM paths  
 - No more barrel import = no more Eye icon in module graph = no more HMR error
 - Server running stable on port 3000 via dev.sh
+
+---
+Task ID: 1
+Agent: main
+Task: Fix Eye icon HMR error by switching from Turbopack dev to production mode
+
+Work Log:
+- Confirmed ExitIntent.tsx does NOT import Eye — error was purely a stale turbopack HMR module graph
+- Killed all running Next.js processes
+- Deleted .next cache completely
+- Ran `npx next build` — compiled successfully with zero errors, all 19 pages generated
+- Started production server with `npx next start -p 3000 -H 0.0.0.0`
+- Verified HTTP 200 response, no errors in server log
+
+Stage Summary:
+- Eye icon HMR error is FIXED by switching from turbopack dev mode to production mode
+- Production mode has no HMR, no turbopack runtime, so the stale module graph issue cannot occur
+- Server running at http://0.0.0.0:3000 and responding correctly
