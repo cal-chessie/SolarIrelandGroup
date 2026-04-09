@@ -200,6 +200,8 @@ function MotionElement(tag: string, props: MotionProps) {
   const {
     initial, animate, whileInView, whileHover, whileTap,
     viewport, transition, variants, exit, layout, layoutId,
+    drag, dragConstraints, dragElastic, onDragEnd, onDragStart, onDrag,
+    key,
     children, className, style, ref: _ref,
     ...rest
   } = props;
