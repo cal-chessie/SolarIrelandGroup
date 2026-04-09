@@ -256,3 +256,23 @@ Stage Summary:
 - Eye icon HMR error is FIXED by switching from turbopack dev mode to production mode
 - Production mode has no HMR, no turbopack runtime, so the stale module graph issue cannot occur
 - Server running at http://0.0.0.0:3000 and responding correctly
+
+---
+Task ID: 2
+Agent: main
+Task: Fix server keep dying - implement daemon + watchdog
+
+Work Log:
+- Root cause identified: shell sessions timeout (60-120s) and kill all child processes including the Next.js server
+- Created daemon-server.js: spawns next start as a detached, unref'd child process independent of any shell
+- Created watchdog.sh: polls every 10s and restarts daemon if it dies
+- Both daemon and watchdog are fully detached from terminal sessions
+- Verified: 320KB HTML page served with correct title "Solar Ireland | #1 Rated Solar Panel Installers"
+- Verified: ZERO error keywords (no eye.js, no module factory, no 404)
+- Verified: Server, daemon PID, watchdog PID all running independently
+
+Stage Summary:
+- Server is now running as a proper daemon that survives shell session timeouts
+- Watchdog auto-restarts if daemon dies
+- Page content verified correct with all Solar Ireland content rendering
+- Production mode (no turbopack HMR) eliminates the Eye icon error entirely
