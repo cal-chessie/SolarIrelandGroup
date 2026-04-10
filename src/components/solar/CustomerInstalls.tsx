@@ -176,25 +176,47 @@ function SwipeGallery({
   onSelect: (index: number) => void;
 }) {
   const constraintsRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const SLIDE_INTERVAL = 4500;
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused) return;
+    setProgress(0);
+    const start = Date.now();
+    const frame = requestAnimationFrame(function tick() {
+      setProgress(Math.min((Date.now() - start) / SLIDE_INTERVAL, 1));
+      if (Date.now() - start < SLIDE_INTERVAL) {
+        requestAnimationFrame(tick);
+      }
+    });
+    const timer = setTimeout(() => {
+      onSelect((activeIndex + 1) % installs.length);
+    }, SLIDE_INTERVAL);
+    return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
+  }, [activeIndex, paused, onSelect]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 60;
-    if (info.offset.x < -threshold && activeIndex < installs.length - 1) {
-      onSelect(activeIndex + 1);
-    } else if (info.offset.x > threshold && activeIndex > 0) {
-      onSelect(activeIndex - 1);
+    if (info.offset.x < -threshold) {
+      onSelect((activeIndex + 1) % installs.length);
+    } else if (info.offset.x > threshold) {
+      onSelect((activeIndex - 1 + installs.length) % installs.length);
     }
   };
 
-  const goNext = () => {
-    if (activeIndex < installs.length - 1) onSelect(activeIndex + 1);
-  };
-  const goPrev = () => {
-    if (activeIndex > 0) onSelect(activeIndex - 1);
-  };
+  const goNext = () => onSelect((activeIndex + 1) % installs.length);
+  const goPrev = () => onSelect((activeIndex - 1 + installs.length) % installs.length);
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+    >
       <div ref={constraintsRef} className="overflow-hidden rounded-2xl sm:rounded-3xl">
         <AnimatePresence mode="wait">
           <motion.div
@@ -231,7 +253,15 @@ function SwipeGallery({
               </div>
             )}
 
-            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+            {/* Auto-slide progress bar */}
+            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/10">
+              <div
+                className="h-full bg-amber-400/80 transition-none"
+                style={{ width: `${progress * 100}%`, transition: paused ? 'width 0.3s' : 'none' }}
+              />
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 pb-4">
               <div className="flex items-end justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -256,15 +286,13 @@ function SwipeGallery({
         <>
           <button
             onClick={goPrev}
-            disabled={activeIndex === 0}
-            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
+            className="flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all z-10"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <button
             onClick={goNext}
-            disabled={activeIndex === installs.length - 1}
-            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all disabled:opacity-0 disabled:pointer-events-none z-10"
+            className="flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all z-10"
           >
             <ArrowRight className="w-4 h-4" />
           </button>
