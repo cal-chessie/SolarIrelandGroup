@@ -176,26 +176,15 @@ function SwipeGallery({
   onSelect: (index: number) => void;
 }) {
   const constraintsRef = useRef<HTMLDivElement>(null);
-  const [paused, setPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
   const SLIDE_INTERVAL = 4500;
 
   // Auto-advance
   useEffect(() => {
-    if (paused) return;
-    setProgress(0);
-    const start = Date.now();
-    const frame = requestAnimationFrame(function tick() {
-      setProgress(Math.min((Date.now() - start) / SLIDE_INTERVAL, 1));
-      if (Date.now() - start < SLIDE_INTERVAL) {
-        requestAnimationFrame(tick);
-      }
-    });
     const timer = setTimeout(() => {
       onSelect((activeIndex + 1) % installs.length);
     }, SLIDE_INTERVAL);
-    return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
-  }, [activeIndex, paused, onSelect]);
+    return () => clearTimeout(timer);
+  }, [activeIndex, onSelect]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 60;
@@ -210,13 +199,7 @@ function SwipeGallery({
   const goPrev = () => onSelect((activeIndex - 1 + installs.length) % installs.length);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
-    >
+    <div className="relative">
       <div ref={constraintsRef} className="overflow-hidden rounded-2xl sm:rounded-3xl">
         <AnimatePresence mode="wait">
           <motion.div
@@ -252,14 +235,6 @@ function SwipeGallery({
                 </span>
               </div>
             )}
-
-            {/* Auto-slide progress bar */}
-            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/10">
-              <div
-                className="h-full bg-amber-400/80 transition-none"
-                style={{ width: `${progress * 100}%`, transition: paused ? 'width 0.3s' : 'none' }}
-              />
-            </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 pb-4">
               <div className="flex items-end justify-between">
