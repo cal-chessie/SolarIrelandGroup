@@ -452,12 +452,12 @@ export default function CustomerInstalls() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl leading-[1.1]">
-                Solar that's already
+                Panels on roofs.
                 <br />
-                <span className="text-gradient">paying for itself.</span>
+                <span className="text-gradient">Money in the bank.</span>
               </h2>
               <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-md leading-relaxed">
-                Real installations on real Irish homes. Every panel you see here is cutting electricity bills and earning export payments for families across the country.
+                From Meath to Donegal, Dublin to Cork — these are the systems we've fitted, the savings our customers are earning, and the energy independence they're enjoying right now.
               </p>
             </div>
 
@@ -475,7 +475,7 @@ export default function CustomerInstalls() {
               <div className="w-px h-10 bg-white/[0.06]" />
               <div className="text-right">
                 <p className="text-2xl font-bold text-amber-400">100%</p>
-                <p className="text-[10px] text-gray-600 uppercase tracking-wider">Irish homes</p>
+                <p className="text-[10px] text-gray-600 uppercase tracking-wider">Satisfaction rate</p>
               </div>
             </motion.div>
           </div>
