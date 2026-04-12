@@ -27,6 +27,12 @@ interface MotionProps {
   exit?: StyleObj;
   layout?: boolean;
   layoutId?: string;
+  drag?: boolean | 'x' | 'y';
+  dragConstraints?: any;
+  dragElastic?: number;
+  onDragEnd?: (event: any, info: any) => void;
+  onDragStart?: (event: any, info: any) => void;
+  onDrag?: (event: any, info: any) => void;
   [key: string]: any;
 }
 
@@ -342,7 +348,7 @@ export function useTransform(
   const derived = useRef<MotionValue | null>(null);
   const [, forceUpdate] = useState(0);
 
-  if (!derived.current) {
+  if (derived.current == null) {
     derived.current = new MotionValue(transform(source.get()) as number);
   }
 
