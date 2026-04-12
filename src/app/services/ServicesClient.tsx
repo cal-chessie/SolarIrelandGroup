@@ -278,8 +278,8 @@ function ServiceCard({
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3 mb-6">
           {service.features.slice(0, 4).map((f) => (
             <div key={f.label} className="flex flex-col min-w-0">
-              <span className="text-[10px] text-gray-600 uppercase tracking-wider truncate">{f.label}</span>
-              <span className="text-sm text-gray-300 font-medium leading-snug break-words">{f.value}</span>
+              <span className="text-[10px] text-gray-600 uppercase tracking-wider whitespace-normal">{f.label}</span>
+              <span className="text-sm text-gray-300 font-medium leading-snug">{f.value}</span>
             </div>
           ))}
         </div>
