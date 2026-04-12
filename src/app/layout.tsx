@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
-import ExitIntent from "@/components/solar/ExitIntent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -628,7 +627,6 @@ export default function RootLayout({
           {children}
         </div>
         <CookieConsent />
-        <ExitIntent />
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
