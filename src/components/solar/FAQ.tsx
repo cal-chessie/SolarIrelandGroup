@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useInView } from '@/lib/motion';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { motion, useInView } from '@/lib/motion';
 import {
   ChevronDown,
   Search,
@@ -153,6 +153,14 @@ function FAQItemCard({
   index: number;
 }) {
   const catConfig = categories.find((c) => c.key === faq.category)!;
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    }
+  }, [isOpen]);
 
   const related = faqs
     .filter((f) => f.category === faq.category && f.id !== faq.id)
@@ -160,10 +168,8 @@ function FAQItemCard({
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
       transition={{ duration: 0.35, delay: index * 0.03 }}
       className={`rounded-2xl overflow-hidden transition-all duration-300 ${
         isOpen
@@ -186,50 +192,43 @@ function FAQItemCard({
             {faq.question}
           </span>
         </div>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          className="shrink-0 w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mt-0.5 sm:mt-0 group-hover:bg-white/[0.08] transition-colors"
+        <div
+          className={`shrink-0 w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mt-0.5 sm:mt-0 group-hover:bg-white/[0.08] transition-transform duration-250 ${isOpen ? 'rotate-180' : ''}`}
         >
           <ChevronDown className={`w-3.5 h-3.5 transition-colors ${isOpen ? 'text-amber-400' : 'text-gray-600'}`} />
-        </motion.div>
+        </div>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="overflow-hidden">
-              <div className="px-5 sm:px-6 pb-4">
-                <div className="pl-10">
-                  <p className="speakable-answer text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+      <div
+        className="overflow-hidden transition-all duration-350 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          maxHeight: isOpen ? `${contentHeight}px` : '0px',
+          opacity: isOpen ? 1 : 0,
+        }}
+      >
+        <div ref={contentRef} className="px-5 sm:px-6 pb-4">
+          <div className="pl-10">
+            <p className="speakable-answer text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
 
-                  {related.length > 0 && (
-                    <div className="mt-4 pt-3 border-t border-white/[0.05]">
-                      <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Related questions</p>
-                      <div className="flex flex-wrap gap-2">
-                        {related.map((r) => (
-                          <span
-                            key={r.id}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.03] text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-default"
-                          >
-                            <catConfig.icon className={`w-2.5 h-2.5 ${catConfig.color} opacity-60`} />
-                            {r.question}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+            {related.length > 0 && (
+              <div className="mt-4 pt-3 border-t border-white/[0.05]">
+                <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Related questions</p>
+                <div className="flex flex-wrap gap-2">
+                  {related.map((r) => (
+                    <span
+                      key={r.id}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.03] text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-default"
+                    >
+                      <catConfig.icon className={`w-2.5 h-2.5 ${catConfig.color} opacity-60`} />
+                      {r.question}
+                    </span>
+                  ))}
                 </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            )}
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -498,10 +497,7 @@ export default function FAQ() {
         </motion.div>
 
         {(activeCategory !== 'all' || searchQuery) && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+          <div
             className="flex items-center justify-between mb-4 px-1"
           >
             <p className="text-xs text-gray-600">
@@ -516,11 +512,10 @@ export default function FAQ() {
             >
               Clear filters
             </button>
-          </motion.div>
+          </div>
         )}
 
         <div className="space-y-2">
-          <AnimatePresence mode="popLayout">
             {filteredFAQs.length > 0 ? (
               filteredFAQs.map((faq, index) => (
                 <FAQItemCard
@@ -535,7 +530,6 @@ export default function FAQ() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
                 className="text-center py-12"
               >
                 <Search className="w-8 h-8 text-gray-700 mx-auto mb-3" />
@@ -548,7 +542,6 @@ export default function FAQ() {
                 </button>
               </motion.div>
             )}
-          </AnimatePresence>
         </div>
 
 
