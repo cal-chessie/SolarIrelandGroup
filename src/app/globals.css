@@ -941,6 +941,7 @@
 }
 .motion-accordion > div {
   overflow: hidden;
+  min-height: 0;
 }
 
 /* Fade switch (for AnimatePresence mode="wait") */
