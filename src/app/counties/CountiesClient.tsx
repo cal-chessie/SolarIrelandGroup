@@ -348,15 +348,17 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
         />
       </button>
       <div
-        className={`motion-accordion ${isOpen ? 'open' : ''}`}
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{
+          maxHeight: isOpen ? '500px' : '0px',
+          opacity: isOpen ? 1 : 0,
+        }}
       >
-        <div>
-          <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
-            <div className="h-px bg-white/[0.05] mb-4" />
-            <p className="text-sm text-gray-400 leading-relaxed">
-              {answer}
-            </p>
-          </div>
+        <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+          <div className="h-px bg-white/[0.05] mb-4" />
+          <p className="text-sm text-gray-400 leading-relaxed">
+            {answer}
+          </p>
         </div>
       </div>
     </div>
