@@ -1,10 +1,10 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Navbar from '@/components/solar/Navbar';
+import Hero from '@/components/solar/Hero';
+import ScrollProgress from '@/components/solar/ScrollProgress';
 
-const Navbar = dynamic(() => import('@/components/solar/Navbar'), { ssr: false });
-const Hero = dynamic(() => import('@/components/solar/Hero'), { ssr: false });
-const ScrollProgress = dynamic(() => import('@/components/solar/ScrollProgress'), { ssr: false });
 const StatsBar = dynamic(() => import('@/components/solar/StatsBar'), { ssr: false });
 const HowItWorks = dynamic(() => import('@/components/solar/HowItWorks'), { ssr: false });
 const WhySolar = dynamic(() => import('@/components/solar/WhySolar'), { ssr: false });
