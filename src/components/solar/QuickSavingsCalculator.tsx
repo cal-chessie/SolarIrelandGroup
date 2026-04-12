@@ -23,7 +23,7 @@ import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 
-const _CALC_VER = 'v2.7-updated-apr2026'; // cache-bust: forces new chunk hash on every meaningful update
+const _CALC_VER = 'v2.8-apr13-2026-cache-fix'; // cache-bust: forces new chunk hash on every meaningful update
 
 const UNIT_RATE = 0.34;          // €/kWh average incl. VAT across providers
 const STANDING_CHARGE_ANNUAL = 200; // €/year — Irish standing charges 2025/2026
