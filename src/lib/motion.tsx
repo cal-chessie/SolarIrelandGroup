@@ -203,13 +203,11 @@ function MotionElement(tag: string, props: MotionProps) {
     if (props.whileTap.scale != null) hoverAttrs['data-motion-tap-scale'] = String(props.whileTap.scale);
   }
 
-  const {
-    initial, animate, whileInView, whileHover, whileTap,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { initial, animate, whileInView, whileHover, whileTap,
     viewport, transition, variants, exit, layout, layoutId,
     drag, dragConstraints, dragElastic, onDragEnd, onDragStart, onDrag,
     children, className, style, ref: _ref,
-    // @ts-expect-error — key is a React special prop, intentionally filtered out
-    key: _key,
     ...rest
   } = props;
 
