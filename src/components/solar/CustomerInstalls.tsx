@@ -204,10 +204,6 @@ function SwipeGallery({
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={handleDragEnd}
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -80 }}
