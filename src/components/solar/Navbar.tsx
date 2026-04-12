@@ -590,7 +590,7 @@ export default function Navbar() {
           </button>
 
           {/* Desktop nav — 7 links */}
-          <div className="hidden lg:flex items-center gap-5">
+          <div className="hidden md:flex items-center gap-5">
             {desktopNavLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
                 ? (pathname === link.href || pathname.startsWith(link.href + '/'))
@@ -625,7 +625,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop CTA buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => navigateTo('/#calculator')}
               className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20 whitespace-nowrap"
@@ -643,7 +643,7 @@ export default function Navbar() {
           {/* Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90"
+            className="md:hidden w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white hover:bg-white/[0.08] transition-colors active:scale-90"
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
