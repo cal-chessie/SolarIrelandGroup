@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
@@ -21,7 +20,6 @@ import {
   Shield,
   Euro,
   Clock,
-  ChevronDown,
 } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
@@ -222,16 +220,7 @@ function ServiceCard({
   service: (typeof mainServices)[0];
   index: number;
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
   const Icon = service.icon;
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
-    }
-  }, [expanded]);
 
   return (
     <motion.div
@@ -244,11 +233,9 @@ function ServiceCard({
           <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shrink-0`}>
             <Icon className={`w-7 h-7 ${service.iconColor}`} />
           </div>
-          {expanded && (
-            <span className="px-3 py-1 rounded-full bg-white/[0.06] text-xs text-gray-400 font-medium whitespace-nowrap">
-              {service.tagline}
-            </span>
-          )}
+          <span className="px-3 py-1 rounded-full bg-white/[0.06] text-xs text-gray-400 font-medium whitespace-nowrap">
+            {service.tagline}
+          </span>
         </div>
 
         <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
@@ -275,82 +262,49 @@ function ServiceCard({
           </div>
         </div>
 
-        <div className="space-y-0 mb-6">
-          {service.features.slice(0, 4).map((f) => (
-            <div key={f.label} className="flex items-baseline justify-between gap-2 py-2 border-b border-white/[0.04] last:border-0">
+        <div className="space-y-0 mb-5">
+          {service.features.map((f) => (
+            <div key={f.label} className="flex items-baseline justify-between gap-2 py-1.5 border-b border-white/[0.04] last:border-0">
               <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0 w-[38%]">{f.label}</span>
               <span className="text-sm text-gray-300 font-medium text-right min-w-0 w-[62%] break-words">{f.value}</span>
             </div>
           ))}
         </div>
 
-        {!expanded && service.features.length > 4 && (
-          <p className="text-xs text-gray-600 mb-4">+ {service.features.length - 4} more specifications below</p>
-        )}
-
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] active:scale-[0.99] transition-all"
-        >
-          <span>{expanded ? 'Show Less' : 'View Full Details'}</span>
-          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
-        </button>
-      </div>
-
-      <div
-        className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
-        style={{
-          maxHeight: expanded ? `${contentHeight}px` : '0px',
-          opacity: expanded ? 1 : 0,
-        }}
-      >
-        <div ref={contentRef} className="px-6 sm:px-8 pb-6 sm:pb-8">
-          <div className="h-px bg-white/[0.06] mb-6" />
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-            {service.features.map((f) => (
-              <div key={f.label} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                <span className="text-[10px] text-gray-600 uppercase tracking-wider block mb-1">{f.label}</span>
-                <span className="text-sm text-gray-200 font-semibold leading-snug break-words">{f.value}</span>
+        <div className="space-y-2 mb-6">
+          {service.highlights.map((h) => (
+            <div key={h} className="flex items-start gap-2">
+              <div className={`w-4 h-4 rounded-full mt-0.5 flex items-center justify-center shrink-0 ${
+                service.color === 'amber' ? 'bg-amber-400/10' :
+                service.color === 'emerald' ? 'bg-emerald-400/10' :
+                'bg-sky-400/10'
+              }`}>
+                <Check className={`w-2.5 h-2.5 ${
+                  service.color === 'amber' ? 'text-amber-400' :
+                  service.color === 'emerald' ? 'text-emerald-400' :
+                  'text-sky-400'
+                }`} />
               </div>
-            ))}
-          </div>
-
-          <div className="space-y-2.5 mb-6">
-            {service.highlights.map((h) => (
-              <div key={h} className="flex items-start gap-2.5">
-                <div className={`w-5 h-5 rounded-full mt-0.5 flex items-center justify-center shrink-0 ${
-                  service.color === 'amber' ? 'bg-amber-400/10' :
-                  service.color === 'emerald' ? 'bg-emerald-400/10' :
-                  'bg-sky-400/10'
-                }`}>
-                  <Check className={`w-3 h-3 ${
-                    service.color === 'amber' ? 'text-amber-400' :
-                    service.color === 'emerald' ? 'text-emerald-400' :
-                    'text-sky-400'
-                  }`} />
-                </div>
-                <span className="text-sm text-gray-400 leading-relaxed">{h}</span>
-              </div>
-            ))}
-          </div>
-
-          <a
-            href="https://wa.me/353873958424?text=Hi%2C%20I%27m%20interested%20in%20a%20free%20quote%20for%20solar%20panels."
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
-              service.color === 'amber'
-                ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
-                : service.color === 'emerald'
-                ? 'bg-emerald-400 hover:bg-emerald-300 text-black shadow-lg shadow-emerald-400/15'
-                : 'bg-sky-400 hover:bg-sky-300 text-black shadow-lg shadow-sky-400/15'
-            }`}
-          >
-            Get a Free Quote
-            <ArrowRight className="w-4 h-4" />
-          </a>
+              <span className="text-xs text-gray-500 leading-relaxed">{h}</span>
+            </div>
+          ))}
         </div>
+
+        <a
+          href="https://wa.me/353873958424?text=Hi%2C%20I%27m%20interested%20in%20a%20free%20quote%20for%20solar%20panels."
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`inline-flex items-center gap-2 w-full justify-center px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
+            service.color === 'amber'
+              ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
+              : service.color === 'emerald'
+              ? 'bg-emerald-400 hover:bg-emerald-300 text-black shadow-lg shadow-emerald-400/15'
+              : 'bg-sky-400 hover:bg-sky-300 text-black shadow-lg shadow-sky-400/15'
+          }`}
+        >
+          Get a Free Quote
+          <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
     </motion.div>
   );
