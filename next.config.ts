@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Prevent Turbopack from tree-shaking lucide-react into hundreds of
-  // individual icon files that corrupt during HMR updates.
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-  },
-
   allowedDevOrigins: [
     "preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
   ],
