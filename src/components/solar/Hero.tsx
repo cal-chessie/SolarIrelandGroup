@@ -178,9 +178,9 @@ export default function Hero() {
               <Image
                 src="/bumblebee-hero.webp"
                 alt="Solar Ireland Bumblebee"
-                width={160}
-                height={160}
-                className={`w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 ${loaded ? 'bumblebee-float' : ''}`}
+                width={384}
+                height={384}
+                className={`w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 ${loaded ? 'bumblebee-float' : ''}`}
               />
             </div>
           </div>
