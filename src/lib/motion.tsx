@@ -207,8 +207,9 @@ function MotionElement(tag: string, props: MotionProps) {
     initial, animate, whileInView, whileHover, whileTap,
     viewport, transition, variants, exit, layout, layoutId,
     drag, dragConstraints, dragElastic, onDragEnd, onDragStart, onDrag,
-    key,
     children, className, style, ref: _ref,
+    // @ts-expect-error — key is a React special prop, intentionally filtered out
+    key: _key,
     ...rest
   } = props;
 
