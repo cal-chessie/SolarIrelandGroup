@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { ABTestProvider } from '@/lib/ab-testing/hooks';
 
 const Navbar = dynamic(() => import('@/components/solar/Navbar'), {
   ssr: false,
@@ -58,23 +59,25 @@ const ExitIntent = dynamic(() => import('@/components/solar/ExitIntent'), { ssr:
 
 export default function HomeClient() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      <ScrollProgress />
-      <Navbar />
-      <main>
-        <Hero />
-        <StatsBar />
-        <HowItWorks />
-        <WhySolar />
-        <CustomerInstalls />
-        <GrantInfo />
-        <QuickSavingsCalculator />
-        <BillAnalyser />
-        <FAQ />
-      </main>
-      <Footer />
-      <WhatsAppChat />
-      <ExitIntent />
-    </div>
+    <ABTestProvider>
+      <div className="min-h-screen bg-[#0a0a0a]">
+        <ScrollProgress />
+        <Navbar />
+        <main>
+          <Hero />
+          <StatsBar />
+          <HowItWorks />
+          <WhySolar />
+          <CustomerInstalls />
+          <GrantInfo />
+          <QuickSavingsCalculator />
+          <BillAnalyser />
+          <FAQ />
+        </main>
+        <Footer />
+        <WhatsAppChat />
+        <ExitIntent />
+      </div>
+    </ABTestProvider>
   );
 }

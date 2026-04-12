@@ -15,9 +15,13 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { useABTest } from '@/lib/ab-testing/hooks';
 
 
 export default function Hero() {
+  const headline = useABTest('hero-headline');
+  const ctaText = useABTest('hero-cta-text');
+  const socialProof = useABTest('social-proof-style');
   const [loaded, setLoaded] = useState(false);
   const bumblebeeRef = useRef<HTMLDivElement>(null);
 
@@ -93,18 +97,36 @@ export default function Hero() {
             </span>
 
             <div className="mt-6 sm:mt-8">
-              <h1
-                className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
-                style={{ animationDelay: '0.2s' }}
-              >
-                <span className="text-white">Your Energy.</span>
-              </h1>
-              <h1
-                className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
-                style={{ animationDelay: '0.35s' }}
-              >
-                <span className="text-gradient">Your Asset.</span>
-              </h1>
+              {headline.variant === 'hero-head-b' ? (
+                <h1
+                  className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
+                  style={{ animationDelay: '0.2s' }}
+                >
+                  <span className="text-white">Stop Renting</span>
+                </h1>
+              ) : (
+                <h1
+                  className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
+                  style={{ animationDelay: '0.2s' }}
+                >
+                  <span className="text-white">Your Energy.</span>
+                </h1>
+              )}
+              {headline.variant === 'hero-head-b' ? (
+                <h1
+                  className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
+                  style={{ animationDelay: '0.35s' }}
+                >
+                  <span className="text-gradient">Your Energy.</span>
+                </h1>
+              ) : (
+                <h1
+                  className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
+                  style={{ animationDelay: '0.35s' }}
+                >
+                  <span className="text-gradient">Your Asset.</span>
+                </h1>
+              )}
             </div>
 
             <p
@@ -120,13 +142,16 @@ export default function Hero() {
               className="hero-fade-up mt-8 sm:mt-10 flex items-center justify-center lg:justify-start gap-2.5"
               style={{ animationDelay: '0.65s' }}
             >
-              {/* PRIMARY CTA — Analyse Bill */}
+              {/* PRIMARY CTA — A/B Tested */}
               <button
-                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  ctaText.trackConversion('cta_click');
+                  document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="hero-cta-shimmer inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-400/15 hover:bg-amber-300 transition-all duration-200 active:scale-[0.98] whitespace-nowrap"
               >
                 <Zap className="w-4 h-4" />
-                Analyse My Bill — Free
+                {ctaText.variant === 'hero-cta-b' ? 'Get Your Free Solar Quote' : 'Analyse My Bill — Free'}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
 
@@ -153,19 +178,36 @@ export default function Hero() {
               className="hero-fade-up mt-8 sm:mt-10"
               style={{ animationDelay: '0.8s' }}
             >
-              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-x-5">
-                {[
-                  { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
-                  { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
-                  { icon: Star, label: '25-Year Warranty', color: 'text-sky-400' },
-                ].map((item, i) => (
-                  <div key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-300">
-                    <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
-                    <span>{item.label}</span>
-                    {i < 2 && <span className="text-white/20 ml-1 hidden sm:inline">·</span>}
-                  </div>
-                ))}
-              </div>
+              {socialProof.variant === 'social-b' ? (
+                /* Variant B: Compact stats row */
+                <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6">
+                  {[
+                    { label: '€1,400/yr', sub: 'Avg. Saving', color: 'text-amber-400' },
+                    { label: '1,200+', sub: 'Happy Customers', color: 'text-green-400' },
+                    { label: '4.9★', sub: 'Google Rating', color: 'text-sky-400' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="text-center lg:text-left">
+                      <p className={`text-sm font-bold ${stat.color}`}>{stat.label}</p>
+                      <p className="text-[10px] text-gray-500">{stat.sub}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Control: Badge + trust row */
+                <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-x-5">
+                  {[
+                    { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
+                    { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
+                    { icon: Star, label: '25-Year Warranty', color: 'text-sky-400' },
+                  ].map((item, i) => (
+                    <div key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-300">
+                      <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
+                      <span>{item.label}</span>
+                      {i < 2 && <span className="text-white/20 ml-1 hidden sm:inline">·</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
