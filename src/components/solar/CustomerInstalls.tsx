@@ -430,22 +430,21 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         <span className="text-[11px] text-gray-500">Installed <span className="text-gray-300 font-medium">{install.installed}</span></span>
       </div>
 
-      {/* Install selector grid */}
+      {/* Install selector — compact pill row */}
       {installs.length > 1 && (
-        <div className="grid grid-cols-4 gap-1.5">
+        <div className="flex items-center justify-center gap-1.5">
           {installs.map((inst, i) => (
             <button
               key={inst.id}
               onClick={() => onViewGallery(i)}
-              className={`flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
+              className={`w-7 h-7 rounded-md text-[10px] font-semibold transition-all ${
                 inst.id === install.id
-                  ? 'bg-amber-400/10 border border-amber-400/20 text-amber-400'
-                  : 'bg-white/[0.02] border border-white/[0.04] text-gray-600 hover:text-gray-400 hover:bg-white/[0.04]'
+                  ? 'bg-amber-400 text-black shadow-sm shadow-amber-400/20'
+                  : 'bg-white/[0.04] text-gray-500 hover:text-white hover:bg-white/[0.08]'
               }`}
               aria-label={`View installation ${i + 1}`}
             >
-              <HomeIcon className="w-2.5 h-2.5 shrink-0" />
-              <span>{i + 1}</span>
+              {i + 1}
             </button>
           ))}
         </div>
