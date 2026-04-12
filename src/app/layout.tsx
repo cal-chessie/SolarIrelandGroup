@@ -619,7 +619,9 @@ export default function RootLayout({
         {/* Skip to main content — visible on keyboard focus */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-400 focus:text-black focus:text-sm focus:font-bold focus:shadow-lg focus:shadow-amber-400/20 focus:outline-2 focus:outline-offset-2 focus:outline-amber-400"
+          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', borderWidth: 0 }}
+          onFocus={(e) => { e.currentTarget.style.cssText = 'position:fixed;top:1rem;left:1rem;z-index:100;padding:0.5rem 1rem;border-radius:0.5rem;background:#facc15;color:#000;font-weight:700;font-size:0.875rem;' }}
+          onBlur={(e) => { e.currentTarget.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;'; }}
         >
           Skip to main content
         </a>
