@@ -1,7 +1,7 @@
 'use client';
 
 import React, {
-  useRef, useLayoutEffect, useEffect, useState, Children, type ReactNode, type CSSProperties,
+  useRef, useEffect, useState, Children, type ReactNode, type CSSProperties,
 } from 'react';
 
 const MotionContext = React.createContext<{
@@ -85,9 +85,11 @@ function isInViewport(
   );
 }
 
-function MotionElement(tag: string, props: MotionProps) {
+function MotionElement(tag: string, rawProps: MotionProps) {
+  // Extract `ref` from props (React strips `key` automatically, so we must NOT access it)
+  const { ref: propsRef, ...props } = rawProps;
   const localRef = useRef<HTMLElement>(null);
-  const ref = props.ref || localRef;
+  const ref = propsRef || localRef;
   const parentCtx = React.useContext(MotionContext);
   const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
@@ -95,7 +97,10 @@ function MotionElement(tag: string, props: MotionProps) {
 
   const useScrollTrigger = !!props.whileInView && !props.animate;
 
-  useLayoutEffect(() => {
+  // Use useEffect (not useLayoutEffect) to avoid hydration mismatches.
+  // useLayoutEffect fires synchronously before hydration commits, causing DOM diffs.
+  // useEffect fires after hydration is complete, so state changes are safe.
+  useEffect(() => {
     setMounted(true);
     const el = ref.current as HTMLElement | null;
     if (el) {
@@ -168,7 +173,7 @@ function MotionElement(tag: string, props: MotionProps) {
 
   let animClass = '';
   let startHidden = false;
-  if (animType) {
+  if (animType && mounted) {
     if (useScrollTrigger) {
       if (mounted && wasInViewportOnMount.current) {
         animClass = '';
@@ -207,9 +212,7 @@ function MotionElement(tag: string, props: MotionProps) {
     initial, animate, whileInView, whileHover, whileTap,
     viewport, transition, variants, exit, layout, layoutId,
     drag, dragConstraints, dragElastic, onDragEnd, onDragStart, onDrag,
-    children, className, style, ref: _ref,
-    // @ts-expect-error — key is a React special prop, intentionally filtered out
-    key: _key,
+    children, className, style, ref: _alreadyExtracted,
     ...rest
   } = props;
 
@@ -276,7 +279,7 @@ export function useInView(
 ): boolean {
   const [isInView, setIsInView] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = ref.current;
     if (!el) return;
 

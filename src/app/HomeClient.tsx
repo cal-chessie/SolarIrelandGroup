@@ -4,16 +4,17 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
 import Hero from '@/components/solar/Hero';
 import ScrollProgress from '@/components/solar/ScrollProgress';
+import StatsBar from '@/components/solar/StatsBar';
+import HowItWorks from '@/components/solar/HowItWorks';
+import WhySolar from '@/components/solar/WhySolar';
+import CustomerInstalls from '@/components/solar/CustomerInstalls';
+import GrantInfo from '@/components/solar/GrantInfo';
+import QuickSavingsCalculator from '@/components/solar/QuickSavingsCalculator';
+import BillAnalyser from '@/components/solar/BillAnalyser';
+import FAQ from '@/components/solar/FAQ';
+import Footer from '@/components/solar/Footer';
 
-const StatsBar = dynamic(() => import('@/components/solar/StatsBar'));
-const HowItWorks = dynamic(() => import('@/components/solar/HowItWorks'));
-const WhySolar = dynamic(() => import('@/components/solar/WhySolar'));
-const CustomerInstalls = dynamic(() => import('@/components/solar/CustomerInstalls'));
-const GrantInfo = dynamic(() => import('@/components/solar/GrantInfo'));
-const QuickSavingsCalculator = dynamic(() => import('@/components/solar/QuickSavingsCalculator'));
-const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'));
-const FAQ = dynamic(() => import('@/components/solar/FAQ'));
-const Footer = dynamic(() => import('@/components/solar/Footer'));
+// Client-only widgets — no SSR needed, no hydration risk
 const WhatsAppChat = dynamic(() => import('@/components/solar/WhatsAppChat'), { ssr: false });
 const ExitIntent = dynamic(() => import('@/components/solar/ExitIntent'), { ssr: false });
 
