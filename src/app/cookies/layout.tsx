@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Cookie Policy | Solar Ireland',
     description:
       'Cookie policy for Solar Ireland. Learn how we use cookies, manage your preferences, and understand your rights.',
-    url: 'https://solarireland.com/cookies',
+    url: 'https://solarireland.org/cookies',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       'Cookie policy for Solar Ireland. Manage your cookie preferences.',
   },
   alternates: {
-    canonical: 'https://solarireland.com/cookies',
+    canonical: 'https://solarireland.org/cookies',
   },
 };
 

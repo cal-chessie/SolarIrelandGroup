@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { articles, getArticleBySlug } from '@/lib/blog-data';
 import BlogPostClient from './BlogPostClient';
 
-const SITE_URL = 'https://solarireland.com';
+const SITE_URL = 'https://solarireland.org';
 
 interface Props {
   params: Promise<{ slug: string }>;

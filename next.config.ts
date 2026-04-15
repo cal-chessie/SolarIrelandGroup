@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "solarireland.com",
+        hostname: "solarireland.org",
       },
     ],
     formats: ["image/avif", "image/webp"],

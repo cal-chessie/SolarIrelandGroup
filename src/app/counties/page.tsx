@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: 'Solar Panel Installation by County | All 32 Counties of Ireland',
   description: 'Solar panel installation available in all 32 counties across Ireland. Find local installers, county-specific pricing, and generation data for your area.',
   alternates: {
-    canonical: 'https://solarireland.com/counties',
+    canonical: 'https://solarireland.org/counties',
   },
   openGraph: {
     title: 'Solar Panels by County | All 32 Counties of Ireland',
     description: 'Solar panel installation available in all 32 counties. Find county-specific pricing, generation data, and local installers.',
-    url: 'https://solarireland.com/counties',
+    url: 'https://solarireland.org/counties',
     type: 'website',
     siteName: 'Solar Ireland',
     locale: 'en_IE',

@@ -8,13 +8,13 @@ export const metadata: Metadata = {
     title: 'Contact Us | Solar Ireland',
     description:
       'Reach Solar Ireland by WhatsApp, phone, or email. Free home surveys and no-obligation quotes for solar panel installation.',
-    url: 'https://solarireland.com/contact',
+    url: 'https://solarireland.org/contact',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
     images: [
       {
-        url: 'https://solarireland.com/og-contact.png',
+        url: 'https://solarireland.org/og-contact.png',
         width: 1200,
         height: 630,
         alt: 'Solar Ireland — Contact Us',
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     title: 'Contact Us | Solar Ireland',
     description:
       'Reach Solar Ireland by WhatsApp, phone, or email. Free home surveys available.',
-    images: ['https://solarireland.com/og-contact.png'],
+    images: ['https://solarireland.org/og-contact.png'],
   },
   alternates: {
-    canonical: 'https://solarireland.com/contact',
+    canonical: 'https://solarireland.org/contact',
   },
 };
 
@@ -51,13 +51,13 @@ export default function ContactLayout({
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://solarireland.com',
+                item: 'https://solarireland.org',
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Contact',
-                item: 'https://solarireland.com/contact',
+                item: 'https://solarireland.org/contact',
               },
             ],
           }),

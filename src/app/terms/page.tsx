@@ -330,7 +330,7 @@ function TermsContentIntro() {
         Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. These Terms and Conditions
         (&quot;Terms&quot;) govern your use of our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.com</span> and the provision of all
+        <span className="text-amber-400 font-medium">solarireland.org</span> and the provision of all
         solar PV installation, battery storage, maintenance, and related services by Solar Ireland.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
@@ -935,10 +935,10 @@ function TermsContentCancellation() {
       <p className="text-gray-400 leading-relaxed mb-4">
         To exercise your right to cancel, you must send written notice to{' '}
         <a
-          href="mailto:cal@solarireland.com"
+          href="mailto:cal@solarireland.org"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.com
+          cal@solarireland.org
         </a>{' '}
         or by registered post to Solar Ireland, [Business Address], Ireland. The notice must clearly
         state your intention to cancel and include your name, address, and contract reference number.
@@ -1020,10 +1020,10 @@ function TermsContentDisputes() {
       <p className="text-gray-400 leading-relaxed mb-4">
         If you have a complaint or dispute, please contact us in the first instance by email at{' '}
         <a
-          href="mailto:cal@solarireland.com"
+          href="mailto:cal@solarireland.org"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.com
+          cal@solarireland.org
         </a>{' '}
         or by phone at [Phone Number]. We aim to acknowledge all complaints within 2 working days and
         provide a substantive response within 10 working days. Many disputes can be resolved quickly
@@ -1084,7 +1084,7 @@ function TermsContentChanges() {
       <p className="text-gray-400 leading-relaxed mb-4">
         We encourage you to review these Terms periodically and to contact us if you have any questions
         about changes. You can always access the latest version of these Terms at{' '}
-        <span className="text-amber-400 font-medium">solarireland.com/terms</span>.
+        <span className="text-amber-400 font-medium">solarireland.org/terms</span>.
       </p>
     </>
   );
@@ -1100,9 +1100,9 @@ function TermsContentContact() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.com', href: 'mailto:cal@solarireland.com' },
+          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: Zap, label: 'Website', value: 'solarireland.com', href: 'https://solarireland.com' },
+          { icon: Zap, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
         ].map((item) => {
           const Icon = item.icon;
           return (

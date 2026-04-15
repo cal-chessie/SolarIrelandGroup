@@ -79,12 +79,12 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 9. Never promise specific savings — always say "typically" or "depends on your usage."
 10. If someone is ready to take the next step, suggest a free site survey. Provide the WhatsApp link: https://wa.me/353873958424
 
-**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human — politely say you'll connect them and suggest WhatsApp (https://wa.me/353873958424) or email cal@solarireland.com.
+**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human — politely say you'll connect them and suggest WhatsApp (https://wa.me/353873958424) or email cal@solarireland.org.
 
 **Contact:**
 - WhatsApp: +353 87 395 8424
-- Email: cal@solarireland.com
-- Website: solarireland.com`;
+- Email: cal@solarireland.org
+- Website: solarireland.org`;
 
 export async function POST(request: Request) {
   try {

@@ -374,7 +374,7 @@ export default function Footer() {
                 icon={Mail}
                 label="Email"
                 value={SOLAR_DATA.provider.email}
-                href="mailto:cal@solarireland.com"
+                href="mailto:cal@solarireland.org"
                 color="bg-amber-400/10 text-amber-400"
               />
               <ContactCard

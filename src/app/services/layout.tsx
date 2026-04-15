@@ -8,13 +8,13 @@ export const metadata: Metadata = {
     title: 'Solar Panel Services Ireland | Solar Ireland',
     description:
       'From residential solar PV and battery storage to EV charging — end-to-end clean energy solutions for Irish homes. Prices from €4,500.',
-    url: 'https://solarireland.com/services',
+    url: 'https://solarireland.org/services',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
     images: [
       {
-        url: 'https://solarireland.com/og-services.png',
+        url: 'https://solarireland.org/og-services.png',
         width: 1200,
         height: 630,
         alt: 'Solar Ireland — Solar Panel Services',
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     title: 'Solar Panel Services Ireland | Solar Ireland',
     description:
       'Solar PV, battery storage, EV charging — end-to-end clean energy for Irish homes.',
-    images: ['https://solarireland.com/og-services.png'],
+    images: ['https://solarireland.org/og-services.png'],
   },
   alternates: {
-    canonical: 'https://solarireland.com/services',
+    canonical: 'https://solarireland.org/services',
   },
 };
 
@@ -51,13 +51,13 @@ export default function ServicesLayout({
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://solarireland.com',
+                item: 'https://solarireland.org',
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Services',
-                item: 'https://solarireland.com/services',
+                item: 'https://solarireland.org/services',
               },
             ],
           }),
@@ -69,16 +69,16 @@ export default function ServicesLayout({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'WebPage',
-            '@id': 'https://solarireland.com/services',
+            '@id': 'https://solarireland.org/services',
             name: 'Solar Panel Services Ireland',
             description: 'Full-service solar panel installation across Ireland. Solar PV, battery storage, EV charger installation, SEAI grant assistance, BER assessment, and ongoing maintenance.',
-            url: 'https://solarireland.com/services',
+            url: 'https://solarireland.org/services',
             inLanguage: 'en-IE',
-            isPartOf: { '@id': 'https://solarireland.com/#website' },
-            about: { '@id': 'https://solarireland.com/#business' },
+            isPartOf: { '@id': 'https://solarireland.org/#website' },
+            about: { '@id': 'https://solarireland.org/#business' },
             primaryImageOfPage: {
               '@type': 'ImageObject',
-              url: 'https://solarireland.com/hero-solar.jpg',
+              url: 'https://solarireland.org/hero-solar.jpg',
               width: 1920,
               height: 1080,
             },
@@ -95,12 +95,12 @@ export default function ServicesLayout({
             description: 'Complete range of solar panel and clean energy services for Irish homes.',
             numberOfItems: 6,
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Residential Solar PV Installation', url: 'https://solarireland.com/services#solar-pv' },
-              { '@type': 'ListItem', position: 2, name: 'Battery Storage Installation', url: 'https://solarireland.com/services#battery-storage' },
-              { '@type': 'ListItem', position: 3, name: 'EV Charger Installation', url: 'https://solarireland.com/services#ev-charging' },
-              { '@type': 'ListItem', position: 4, name: 'SEAI Grant Assistance', url: 'https://solarireland.com/services#seai-grant' },
-              { '@type': 'ListItem', position: 5, name: 'BER Assessment', url: 'https://solarireland.com/services#ber-assessment' },
-              { '@type': 'ListItem', position: 6, name: 'Maintenance & Monitoring', url: 'https://solarireland.com/services#maintenance' },
+              { '@type': 'ListItem', position: 1, name: 'Residential Solar PV Installation', url: 'https://solarireland.org/services#solar-pv' },
+              { '@type': 'ListItem', position: 2, name: 'Battery Storage Installation', url: 'https://solarireland.org/services#battery-storage' },
+              { '@type': 'ListItem', position: 3, name: 'EV Charger Installation', url: 'https://solarireland.org/services#ev-charging' },
+              { '@type': 'ListItem', position: 4, name: 'SEAI Grant Assistance', url: 'https://solarireland.org/services#seai-grant' },
+              { '@type': 'ListItem', position: 5, name: 'BER Assessment', url: 'https://solarireland.org/services#ber-assessment' },
+              { '@type': 'ListItem', position: 6, name: 'Maintenance & Monitoring', url: 'https://solarireland.org/services#maintenance' },
             ],
           }),
         }}

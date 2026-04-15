@@ -527,7 +527,7 @@ function section7_envVariables() {
         ["SUPABASE_SERVICE_ROLE_KEY", "Yes", "Supabase admin key (server only)", "eyJhbGciOi..."],
         ["POSTMARK_SERVER_API_TOKEN", "Yes", "Postmark server API token", "abc123def456"],
         ["POSTMARK_FROM_EMAIL", "Yes", "Sender email address", "hello@solarireland.ie"],
-        ["NEXT_PUBLIC_SITE_URL", "Yes", "Production site URL", "https://solarireland.com"],
+        ["NEXT_PUBLIC_SITE_URL", "Yes", "Production site URL", "https://solarireland.org"],
         ["WHATSAPP_ACCESS_TOKEN", "Yes", "Meta WhatsApp access token", "EAAx..."],
         ["WHATSAPP_PHONE_NUMBER_ID", "Yes", "WhatsApp Business phone number ID", "123456789"],
         ["WHATSAPP_VERIFY_TOKEN", "Yes", "Webhook verification token", "solar_ireland_verify"],
@@ -551,7 +551,7 @@ function section8_domainDns() {
     body("Configuring a custom domain for the Solar Ireland production deployment provides a professional web address, improves search engine ranking, and establishes brand consistency across all customer touchpoints. The process involves configuring the domain in Vercel, setting up DNS records with the domain registrar, provisioning an SSL certificate, and updating authentication redirect URLs in the Supabase configuration. Each step must be completed in sequence to avoid service interruptions."),
 
     h2("8.1 Configuring the Custom Domain in Vercel"),
-    body("Navigate to the Settings tab in the Vercel project dashboard and click on Domains. Enter the custom domain name, such as solarireland.com, and click Add. Vercel will validate the domain and provide the required DNS records. If the domain has not been previously configured with another provider, Vercel can automatically configure the DNS records through its integration with popular domain registrars. For manual configuration, Vercel provides an A record pointing to 76.76.21.21 and a CNAME record pointing to cname.vercel-dns.com. Both records should be added in the domain registrar's DNS management console."),
+    body("Navigate to the Settings tab in the Vercel project dashboard and click on Domains. Enter the custom domain name, such as solarireland.org, and click Add. Vercel will validate the domain and provide the required DNS records. If the domain has not been previously configured with another provider, Vercel can automatically configure the DNS records through its integration with popular domain registrars. For manual configuration, Vercel provides an A record pointing to 76.76.21.21 and a CNAME record pointing to cname.vercel-dns.com. Both records should be added in the domain registrar's DNS management console."),
 
     h2("8.2 DNS Records and SSL Certificate"),
     body("After adding the DNS records, wait for DNS propagation, which typically takes between five minutes and 48 hours depending on the domain registrar and TTL settings. Vercel will automatically provision a free SSL certificate through Let's Encrypt once the DNS records are verified. The SSL certificate status can be monitored in the Vercel domain settings, and a padlock icon will appear in the browser address bar when the certificate is active. Vercel also automatically handles certificate renewal, so no manual intervention is required for ongoing SSL maintenance. Ensure that the domain registrar's DNSSEC settings are compatible with Vercel's configuration to prevent resolution failures."),
@@ -595,7 +595,7 @@ function section10_postDeployChecklist() {
         ["Email Delivery", "Trigger any email-sending action", "Email arrives in inbox (check spam folder)"],
         ["Admin Dashboard", "Log in as admin, visit /admin", "Dashboard loads with charts and data"],
         ["Customer Portal", "Enter a valid reference at /portal", "Portal dashboard displays timeline"],
-        ["SSL Certificate", "Visit https://solarireland.com", "Valid certificate, padlock icon visible"],
+        ["SSL Certificate", "Visit https://solarireland.org", "Valid certificate, padlock icon visible"],
         ["Sitemap", "Visit /sitemap.xml", "XML sitemap with all public pages"],
         ["Google Indexing", "Submit sitemap in Google Search Console", "No errors in coverage report"],
         ["Page Performance", "Run Lighthouse audit on homepage", "Performance score above 90"],

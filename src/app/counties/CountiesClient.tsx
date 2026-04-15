@@ -418,7 +418,7 @@ function BottomStats() {
 }
 
 function buildItemListJsonLd() {
-  const base = 'https://solarireland.com';
+  const base = 'https://solarireland.org';
   const items = counties.map((county, index) => ({
     '@type': 'ListItem',
     position: index + 1,
@@ -753,7 +753,7 @@ export default function CountiesClient() {
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
-                      href="mailto:cal@solarireland.com"
+                      href="mailto:cal@solarireland.org"
                       className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <MapPin className="w-4 h-4" />

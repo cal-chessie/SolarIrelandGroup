@@ -332,7 +332,7 @@ function CookiesContentIntro() {
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
         This Cookie Policy explains how Solar Ireland uses cookies on our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.com</span>. It applies to all visitors
+        <span className="text-amber-400 font-medium">solarireland.org</span>. It applies to all visitors
         and is intended to comply with the General Data Protection Regulation (GDPR), the ePrivacy
         Directive (as transposed into Irish law by the European Communities (Electronic Communications
         Networks and Services) (Privacy and Electronic Communications) Regulations 2011), and guidance
@@ -529,7 +529,7 @@ function CookiesContentThirdParty() {
         {[
           {
             name: 'Google Analytics 4',
-            purpose: 'Website analytics service that helps us understand how visitors interact with solarireland.com. Collects anonymised data about page views, sessions, devices, and navigation. We have configured GA4 with IP anonymisation and disabled advertising data sharing.',
+            purpose: 'Website analytics service that helps us understand how visitors interact with solarireland.org. Collects anonymised data about page views, sessions, devices, and navigation. We have configured GA4 with IP anonymisation and disabled advertising data sharing.',
             link: 'policies.google.com/privacy',
             linkLabel: 'Google Privacy Policy',
           },
@@ -764,7 +764,7 @@ function CookiesContentUpdates() {
       <p className="text-gray-400 leading-relaxed mb-4">
         We encourage you to review this Cookie Policy periodically. You can always access the latest
         version at{' '}
-        <span className="text-amber-400 font-medium">solarireland.com/cookies</span>. If you have
+        <span className="text-amber-400 font-medium">solarireland.org/cookies</span>. If you have
         questions about our use of cookies that are not addressed in this policy, please contact us
         using the details below.
       </p>
@@ -782,9 +782,9 @@ function CookiesContentContact() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.com', href: 'mailto:cal@solarireland.com' },
+          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: Zap, label: 'Website', value: 'solarireland.com', href: 'https://solarireland.com' },
+          { icon: Zap, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
         ].map((item) => {
           const Icon = item.icon;
           return (

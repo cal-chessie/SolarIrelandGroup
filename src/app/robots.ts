@@ -2,7 +2,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = "https://solarireland.com";
+  const siteUrl = "https://solarireland.org";
 
   return {
     rules: [

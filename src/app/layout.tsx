@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 
-const SITE_URL = "https://solarireland.com";
+const SITE_URL = "https://solarireland.org";
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,100/year with a €1,800 SEAI grant (Republic of Ireland only).";
@@ -202,7 +202,7 @@ const organizationSchema = {
   },
   description:
     "SEAI-registered solar panel installation company serving homes and businesses across all 32 counties of Ireland.",
-  email: "cal@solarireland.com",
+  email: "cal@solarireland.org",
   telephone: "+353 87 395 8424",
   sameAs: [
     "https://www.facebook.com/solarireland",
@@ -239,7 +239,7 @@ const localBusinessSchema = {
   image: `${SITE_URL}/hero-solar.jpg`,
   url: SITE_URL,
   telephone: "+353 87 395 8424",
-  email: "cal@solarireland.com",
+  email: "cal@solarireland.org",
   logo: `${SITE_URL}/logo-lg.png`,
   description:
     "SEAI-registered solar panel installation company serving homes across Ireland. Free AI-powered electricity bill analysis, honest quotes, and quality installations with a €1,800 SEAI grant available.",

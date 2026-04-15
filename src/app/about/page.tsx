@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: 'About Solar Ireland | Our Story, Team & Certifications',
   description: 'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
   alternates: {
-    canonical: 'https://solarireland.com/about',
+    canonical: 'https://solarireland.org/about',
   },
   openGraph: {
     title: 'About Solar Ireland | Our Story, Team & Certifications',
     description: 'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
-    url: 'https://solarireland.com/about',
+    url: 'https://solarireland.org/about',
     type: 'website',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -25,17 +25,17 @@ export const metadata: Metadata = {
 const aboutSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  '@id': 'https://solarireland.com/about',
+  '@id': 'https://solarireland.org/about',
   name: 'About Solar Ireland',
   description: 'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties.',
-  url: 'https://solarireland.com/about',
+  url: 'https://solarireland.org/about',
   inLanguage: 'en-IE',
-  isPartOf: { '@id': 'https://solarireland.com/#website' },
+  isPartOf: { '@id': 'https://solarireland.org/#website' },
   mainEntity: {
     '@type': 'Organization',
-    '@id': 'https://solarireland.com/#organization',
+    '@id': 'https://solarireland.org/#organization',
     name: 'Solar Ireland',
-    url: 'https://solarireland.com',
+    url: 'https://solarireland.org',
     foundingDate: '2023',
     numberOfEmployees: {
       '@type': 'QuantitativeValue',
@@ -65,13 +65,13 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://solarireland.com',
+      item: 'https://solarireland.org',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'About',
-      item: 'https://solarireland.com/about',
+      item: 'https://solarireland.org/about',
     },
   ],
 };

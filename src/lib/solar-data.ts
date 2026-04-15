@@ -31,8 +31,8 @@ export const SOLAR_DATA = {
     name: 'Solar Ireland',
     phone: '+353 87 395 8424',
     phoneDisplay: '+353 87 395 8424',
-    email: 'cal@solarireland.com',
-    website: 'solarireland.com',
+    email: 'cal@solarireland.org',
+    website: 'solarireland.org',
     whatsapp: '353873958424',
   },
   social: {

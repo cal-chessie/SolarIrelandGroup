@@ -53,7 +53,7 @@ function PrivacyContent() {
         This Privacy Policy explains what personal data we collect, why we collect it, how we use it,
         how long we keep it, and your rights in relation to your data. It applies to all interactions you
         have with us, including our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.com</span>, our county-specific landing
+        <span className="text-amber-400 font-medium">solarireland.org</span>, our county-specific landing
         pages, WhatsApp Business, email, phone calls, in-person surveys, and any other communication channels
         through which you share information with us.
       </p>
@@ -385,10 +385,10 @@ function PrivacyContent() {
         <p className="text-sm text-gray-500 leading-relaxed">
           To exercise any of your rights, contact our Data Protection Officer at{' '}
           <a
-            href="mailto:cal@solarireland.com"
+            href="mailto:cal@solarireland.org"
             className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
           >
-            cal@solarireland.com
+            cal@solarireland.org
           </a>{' '}
           or write to us at Solar Ireland, [Business Address], Ireland. We will acknowledge your request
           within 5 working days and respond substantively within 30 days. If your request is complex or
@@ -493,10 +493,10 @@ function PrivacyContent() {
         security vulnerability or have concerns about the safety of your data, please contact us
         immediately at{' '}
         <a
-          href="mailto:cal@solarireland.com"
+          href="mailto:cal@solarireland.org"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.com
+          cal@solarireland.org
         </a>.
       </p>
 
@@ -571,10 +571,10 @@ function PrivacyContent() {
         If you are a parent or guardian and believe your child has provided us with personal data,
         please contact us immediately at{' '}
         <a
-          href="mailto:cal@solarireland.com"
+          href="mailto:cal@solarireland.org"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.com
+          cal@solarireland.org
         </a>{' '}
         and we will take prompt action to remove the information.
       </p>
@@ -605,9 +605,9 @@ function PrivacyContent() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.com', href: 'mailto:cal@solarireland.com' },
+          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: ExternalLink, label: 'Website', value: 'solarireland.com', href: 'https://solarireland.com' },
+          { icon: ExternalLink, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
         ].map((item) => {
           const Icon = item.icon;
           return (
@@ -916,7 +916,7 @@ function PrivacyFAQ() {
   const faqs = [
     {
       q: 'How do I request a copy of my personal data?',
-      a: 'Simply email cal@solarireland.com with "Subject Access Request" in the subject line. Include your name and the email address or phone number you used when contacting us. We will verify your identity and provide all your data within 30 days in a readable electronic format, free of charge.',
+      a: 'Simply email cal@solarireland.org with "Subject Access Request" in the subject line. Include your name and the email address or phone number you used when contacting us. We will verify your identity and provide all your data within 30 days in a readable electronic format, free of charge.',
     },
     {
       q: 'Can I get my data deleted?',
@@ -1213,7 +1213,7 @@ function PrivacyContentIntro() {
         This Privacy Policy explains what personal data we collect, why we collect it, how we use it,
         how long we keep it, and your rights in relation to your data. It applies to all interactions you
         have with us, including our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.com</span>, our county-specific landing
+        <span className="text-amber-400 font-medium">solarireland.org</span>, our county-specific landing
         pages, WhatsApp Business, email, phone calls, in-person surveys, and any other communication channels
         through which you share information with us.
       </p>
@@ -1467,8 +1467,8 @@ function PrivacyContentSection7() {
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
           Contact our Data Protection Officer at{' '}
-          <a href="mailto:cal@solarireland.com" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-            cal@solarireland.com
+          <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+            cal@solarireland.org
           </a>. We acknowledge requests within 5 working days and respond substantively within 30 days.
           Complex requests may take up to 90 days with advance notice. We may ask for identification to
           verify your identity before processing your request.
@@ -1542,8 +1542,8 @@ function PrivacyContentSection9() {
       </div>
       <p className="text-gray-400 leading-relaxed mb-6">
         If you become aware of any potential security vulnerability, contact us immediately at{' '}
-        <a href="mailto:cal@solarireland.com" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-          cal@solarireland.com
+        <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+          cal@solarireland.org
         </a>.
       </p>
     </>
@@ -1595,8 +1595,8 @@ function PrivacyContentSection11() {
       <p className="text-gray-400 leading-relaxed mb-6">
         If you are a parent or guardian and believe your child has provided us with personal data,
         please contact us at{' '}
-        <a href="mailto:cal@solarireland.com" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-          cal@solarireland.com
+        <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+          cal@solarireland.org
         </a>{' '}
         and we will take prompt action.
       </p>
@@ -1631,9 +1631,9 @@ function PrivacyContentSection13() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.com', href: 'mailto:cal@solarireland.com' },
+          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: ExternalLink, label: 'Website', value: 'solarireland.com', href: 'https://solarireland.com' },
+          { icon: ExternalLink, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
         ].map((item) => {
           const Icon = item.icon;
           return (
