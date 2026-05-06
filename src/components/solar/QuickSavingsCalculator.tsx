@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackCalculatorUsage } from '@/lib/analytics';
 
 
 const _CALC_VER = 'v2.7-updated-apr2026'; // cache-bust: forces new chunk hash on every meaningful update
@@ -400,7 +401,7 @@ function ResultsPanel({
 
       <button
         type="button"
-        onClick={() => setShowDetails(!showDetails)}
+        onClick={() => { trackCalculatorUsage(); setShowDetails(!showDetails); }}
         className="w-full flex items-center justify-center gap-2 py-2.5 text-xs text-gray-400 hover:text-amber-400 transition-colors cursor-pointer"
       >
         <span>{showDetails ? 'Hide full breakdown' : 'Show full breakdown'}</span>

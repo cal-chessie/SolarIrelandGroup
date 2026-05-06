@@ -40,6 +40,7 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackSurveyBooking } from '@/lib/analytics';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -281,6 +282,7 @@ export default function BookSurveyClient() {
     );
 
     window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
+    trackSurveyBooking();
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);

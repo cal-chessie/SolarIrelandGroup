@@ -30,6 +30,7 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackWhatsAppClick } from '@/lib/analytics';
 
 
 type Province = 'Leinster' | 'Munster' | 'Connacht' | 'Ulster';
@@ -281,6 +282,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackWhatsAppClick('counties-page')}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-500/10 border border-green-500/15 text-green-400 text-xs font-semibold hover:bg-green-500/20 transition-colors active:scale-[0.98]"
         >
           <MessageCircle className="w-3.5 h-3.5" />

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
+import { trackConsentDecision } from '@/lib/analytics';
 
 
 type CookieCategory = 'necessary' | 'analytics' | 'marketing';
@@ -83,6 +84,27 @@ function dispatchConsentEvent(consent: ConsentState): void {
   window.dispatchEvent(
     new CustomEvent('cookie-consent-update', { detail: consent })
   );
+  // Track consent decision in analytics (fires unconditionally for GA4 via gtag)
+  trackConsentDecision(consent.categories.analytics, consent.categories.marketing);
+  // Persist consent to Supabase for GDPR audit trail
+  persistConsentToSupabase(consent);
+}
+
+async function persistConsentToSupabase(consent: ConsentState): Promise<void> {
+  if (typeof window === 'undefined') return;
+  try {
+    await fetch('/api/consent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        consent_state: consent.categories,
+        source_page: window.location.pathname,
+        user_agent: navigator.userAgent,
+      }),
+    });
+  } catch {
+    // Silent — consent is already saved to localStorage
+  }
 }
 
 export function useCookieConsent(): {

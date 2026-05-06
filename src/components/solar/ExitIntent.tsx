@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackExitIntent } from '@/lib/analytics';
 
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
@@ -158,7 +159,7 @@ export default function ExitIntent() {
             </span>
           </div>
           <button
-            onClick={close}
+            onClick={() => { trackExitIntent('dismiss'); close(); }}
             className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
             aria-label="Close"
           >
@@ -254,7 +255,7 @@ export default function ExitIntent() {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={handleCTA}
+              onClick={() => { trackExitIntent('whatsapp-click'); handleCTA(); }}
               className="exit-intent-cta flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-[15px] shadow-lg shadow-green-500/25 hover:shadow-green-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden"
             >
               <span className="absolute inset-0 exit-intent-cta-shimmer" />
@@ -267,14 +268,14 @@ export default function ExitIntent() {
           <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
             <a
               href="#calculator"
-              onClick={handleCTA}
+              onClick={() => { trackExitIntent('calculator-click'); handleCTA(); }}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-200"
             >
               <Zap className="w-4 h-4 text-amber-400" />
               <span className="text-[13px]">Quick Calculator</span>
             </a>
             <button
-              onClick={close}
+              onClick={() => { trackExitIntent('dismiss'); close(); }}
               className="px-5 py-3 rounded-xl text-[13px] text-gray-400 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
             >
               Maybe later

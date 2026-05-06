@@ -26,6 +26,7 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackContactFormSubmit } from '@/lib/analytics';
 
 
 const counties = [
@@ -154,6 +155,7 @@ function ContactForm() {
         throw new Error(data.error || 'Submission failed');
       }
       setSubmitted(true);
+      trackContactFormSubmit();
     } catch {
       setSubmitted(true);
     } finally {

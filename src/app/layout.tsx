@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
+import PostHogProvider from "@/components/PostHogProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -627,6 +628,7 @@ export default function RootLayout({
           {children}
         </div>
         <CookieConsent />
+        <PostHogProvider />
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
@@ -639,9 +641,35 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                  page_path: window.location.pathname,
-                  cookie_flags: 'SameSite=None;Secure',
+
+                // Check consent before configuring GA4
+                try {
+                  var consent = JSON.parse(localStorage.getItem('solar-ireland-cookie-consent') || '{}');
+                  if (consent.categories && consent.categories.analytics) {
+                    gtag('consent', 'update', { analytics_storage: 'granted' });
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                      page_path: window.location.pathname,
+                      cookie_flags: 'SameSite=None;Secure',
+                    });
+                  } else {
+                    gtag('consent', 'default', { analytics_storage: 'denied' });
+                  }
+                } catch (e) {
+                  gtag('consent', 'default', { analytics_storage: 'denied' });
+                }
+
+                // Listen for consent changes
+                window.addEventListener('cookie-consent-update', function(e) {
+                  var state = e.detail;
+                  if (state && state.categories && state.categories.analytics) {
+                    gtag('consent', 'update', { analytics_storage: 'granted' });
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                      page_path: window.location.pathname,
+                      cookie_flags: 'SameSite=None;Secure',
+                    });
+                  } else {
+                    gtag('consent', 'update', { analytics_storage: 'denied' });
+                  }
                 });
               `}
             </Script>
