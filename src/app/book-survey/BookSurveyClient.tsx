@@ -1073,7 +1073,7 @@ export default function BookSurveyClient() {
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
-                      href="tel:+353873958424"
+                      href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm font-medium hover:bg-white/[0.06] transition-all"
                     >
                       <Phone className="w-4 h-4" />

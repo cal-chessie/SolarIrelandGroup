@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import {
   Search,
   MapPin,
@@ -286,7 +287,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
           Get Quote
         </a>
         <a
-          href={`tel:+353873958424`}
+          href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
           className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-xs font-medium hover:bg-white/[0.06] hover:text-white transition-colors active:scale-[0.98]"
         >
           <Phone className="w-3.5 h-3.5" />
@@ -753,7 +754,7 @@ export default function CountiesClient() {
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
-                      href="mailto:cal@solarireland.org"
+                      href={`mailto:${SOLAR_DATA.provider.email}`}
                       className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <MapPin className="w-4 h-4" />

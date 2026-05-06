@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import { usePathname } from 'next/navigation';
 import {
   X,
@@ -435,7 +436,7 @@ function MobileMenu({
                 WhatsApp
               </a>
               <a
-                href="mailto:cal@solarireland.org"
+                href={`mailto:${SOLAR_DATA.provider.email}`}
                 onClick={onClose}
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-xs font-medium text-gray-300 hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
               >

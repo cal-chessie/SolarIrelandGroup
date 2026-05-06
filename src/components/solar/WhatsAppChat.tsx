@@ -425,7 +425,7 @@ export default function WhatsAppChat() {
       if (err instanceof Error && err.name === 'AbortError') return;
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "I'm having trouble connecting right now. You can reach us directly on **WhatsApp** or email cal@solarireland.org.",
+        content: `I'm having trouble connecting right now. You can reach us directly on **WhatsApp** or email ${SOLAR_DATA.provider.email}.`,
         timestamp: new Date(),
         id: genId(),
         rated: null,
@@ -884,7 +884,7 @@ export default function WhatsAppChat() {
                       className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-green-400 hover:bg-green-400/10 transition-colors">
                       <Phone className="w-3 h-3" /> WhatsApp
                     </a>
-                    <a href="mailto:cal@solarireland.org"
+                    <a href={`mailto:${SOLAR_DATA.provider.email}`}
                       className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:bg-white/[0.04] transition-colors">
                       <Mail className="w-3 h-3" /> Email
                     </a>

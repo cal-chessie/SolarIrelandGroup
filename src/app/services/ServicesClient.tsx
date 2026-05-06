@@ -424,7 +424,7 @@ export default function ServicesPage() {
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <a
-                  href="tel:+353873958424"
+                  href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-white text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.2] transition-all"
                 >
                   <Phone className="w-4 h-4" />
@@ -686,7 +686,7 @@ export default function ServicesPage() {
                     <ArrowRight className="w-4 h-4" />
                   </a>
                   <a
-                    href="tel:+353873958424"
+                    href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                     className="inline-flex items-center gap-2.5 px-7 py-4 rounded-full border border-white/[0.15] text-white text-sm font-medium hover:bg-white/[0.05] transition-all"
                   >
                     <Phone className="w-4 h-4" />
