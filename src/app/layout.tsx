@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://solarireland.org";
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
-  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,100/year with a €1,800 SEAI grant (Republic of Ireland only).";
+  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
 const SITE_KEYWORDS = [
   "solar panels Ireland",
   "solar panel installation Ireland",
@@ -130,9 +130,9 @@ export const metadata: Metadata = {
     locale: "en_IE",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Solar Ireland | #1 Rated Solar Panel Installers | Save €1,100/Year",
+    title: "Solar Ireland | #1 Rated Solar Panel Installers | Save €1,400/Year",
     description:
-      "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,100/year with a €1,800 SEAI grant. Serving all 32 counties across Ireland.",
+      "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,400/year with a €1,800 SEAI grant. Serving all 32 counties across Ireland.",
     images: [
       {
         url: "/hero-solar.jpg",
@@ -154,7 +154,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Solar Ireland | Save €1,100/Year with Solar Panels",
+    title: "Solar Ireland | Save €1,400/Year with Solar Panels",
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/hero-solar.jpg"],
@@ -403,7 +403,7 @@ const serviceSchema = {
   "@id": `${SITE_URL}/#service`,
   name: "Residential Solar Panel Installation",
   description:
-    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, SEAI grant application, professional installation by RECI-certified electricians, and post-install BER assessment. Save up to €1,100/year with a €1,800 SEAI grant.",
+    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, SEAI grant application, professional installation by RECI-certified electricians, and post-install BER assessment. Save up to €1,400/year with a €1,800 SEAI grant.",
   url: SITE_URL,
   provider: {
     "@id": `${SITE_URL}/#business`,

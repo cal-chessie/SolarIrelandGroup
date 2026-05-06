@@ -28,6 +28,7 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -336,7 +337,7 @@ function ServiceCard({
           </div>
 
           <a
-            href="https://wa.me/353873958424?text=Hi%2C%20I%27m%20interested%20in%20a%20free%20quote%20for%20solar%20panels."
+            href={buildWhatsAppUrl({ source: 'services', customMessage: "Hi, I'm interested in a free quote for solar panels." })}
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
@@ -414,7 +415,7 @@ export default function ServicesPage() {
 
               <div className="flex flex-wrap items-center gap-4">
                 <a
-                  href="https://wa.me/353873958424?text=Hi%2C%20I%27m%20interested%20in%20a%20free%20quote%20for%20solar%20panels."
+                  href={buildWhatsAppUrl({ source: 'services', customMessage: "Hi, I'm interested in a free quote for solar panels." })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
@@ -631,7 +632,7 @@ export default function ServicesPage() {
                     </div>
 
                     <a
-                      href={`https://wa.me/353873958424?text=Hi%2C%20I%27m%20interested%20in%20the%20${pkg.name}%20solar%20package.`}
+                      href={buildWhatsAppUrl({ source: 'services-package', customMessage: `Hi, I'm interested in the ${pkg.name} solar package.` })}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
@@ -675,7 +676,7 @@ export default function ServicesPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
-                    href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20home%20survey."
+                    href={buildWhatsAppUrl({ source: 'services-survey', customMessage: "Hi, I'd like to book a free home survey." })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { usePathname } from 'next/navigation';
 import {
   X,
@@ -424,7 +425,7 @@ function MobileMenu({
 
             <div className="flex items-center gap-2 mt-3">
               <a
-                href="https://wa.me/353873958424?text=Hi%2C%20I%20have%20a%20question%20about%20solar%20panels."
+                href={buildWhatsAppUrl({ source: 'navbar', customMessage: "Hi, I have a question about solar panels." })}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={onClose}

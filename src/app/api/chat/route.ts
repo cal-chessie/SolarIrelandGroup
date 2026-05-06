@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import ZAI from 'z-ai-web-dev-sdk';
+import { SOLAR_DATA } from '@/lib/solar-data';
+
+const WA_URL = `https://wa.me/${SOLAR_DATA.provider.whatsapp}`;
 
 const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
 
@@ -77,14 +80,14 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 7. If someone asks about other brands or installers, be polite but confident — we're SEAI registered, use premium equipment, and offer free surveys.
 8. Never badmouth competitors. Just highlight our strengths.
 9. Never promise specific savings — always say "typically" or "depends on your usage."
-10. If someone is ready to take the next step, suggest a free site survey. Provide the WhatsApp link: https://wa.me/353873958424
+10. If someone is ready to take the next step, suggest a free site survey. Provide the WhatsApp link: ${WA_URL}
 
-**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human — politely say you'll connect them and suggest WhatsApp (https://wa.me/353873958424) or email cal@solarireland.org.
+**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human — politely say you'll connect them and suggest WhatsApp (${WA_URL}) or email ${SOLAR_DATA.provider.email}.
 
 **Contact:**
-- WhatsApp: +353 87 395 8424
-- Email: cal@solarireland.org
-- Website: solarireland.org`;
+- WhatsApp: ${SOLAR_DATA.provider.phoneDisplay}
+- Email: ${SOLAR_DATA.provider.email}
+- Website: ${SOLAR_DATA.provider.website}`;
 
 export async function POST(request: Request) {
   try {
@@ -140,13 +143,13 @@ export async function POST(request: Request) {
 
     const messageContent =
       completion.choices?.[0]?.message?.content ||
-      'Sorry, I couldn\'t generate a response. Please try again or reach us on [WhatsApp](https://wa.me/353873958424).';
+      `Sorry, I couldn't generate a response. Please try again or reach us on [WhatsApp](${WA_URL}).`;
 
     return NextResponse.json({ message: messageContent });
   } catch (error) {
     console.error('Chat API error:', error);
     return NextResponse.json(
-      { message: 'I\'m having trouble connecting right now. Please try again or reach us on [WhatsApp](https://wa.me/353873958424).' },
+      { message: `I'm having trouble connecting right now. Please try again or reach us on [WhatsApp](${WA_URL}).` },
       { status: 500 }
     );
   }

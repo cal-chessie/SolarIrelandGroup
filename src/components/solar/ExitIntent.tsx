@@ -188,7 +188,7 @@ export default function ExitIntent() {
             </h3>
             <p className="text-sm text-gray-500 leading-relaxed">
               The SEAI grant (Republic of Ireland only) drops this into your account. Combined with savings of
-              {' '}<span className="text-gray-400 font-medium">€1,100+/year</span>,
+              {' '}<span className="text-gray-400 font-medium">€1,400+/year</span>,
               your system literally pays for itself.
             </p>
           </div>

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { motion, AnimatePresence, useInView, PanInfo } from '@/lib/motion';
 import {
   MapPin,
@@ -542,7 +543,7 @@ export default function CustomerInstalls() {
               Get Your Free Estimate
             </motion.a>
             <motion.a
-              href="https://wa.me/353873958424?text=Hi%2C%20I%27d%20like%20to%20see%20examples%20of%20your%20solar%20installations."
+              href={buildWhatsAppUrl({ source: 'customer-installs', customMessage: "Hi, I'd like to see examples of your solar installations." })}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}
