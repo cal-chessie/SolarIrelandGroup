@@ -20,7 +20,6 @@ const MOCK = {
   lead_funnel: { new_contacts_today: 7, contacts_this_week: 34, contacts_this_month: 112, pending_surveys_today: 4 },
   reviews: { average_rating: "4.9", total_reviews: 42, new_reviews_this_month: 8 },
   whatsapp: { conversations: [], qualified: 5, active: 12 },
-  automation: { pending_tasks: 3, failed_tasks: 1, tasks_this_week: 23 },
   recent_leads: {
     contacts: [
       { id: "1", name: "Sean Murphy", email: "sean@email.com", county: "Dublin", status: "new", created_at: "2026-04-11T09:30:00Z", source_page: "/contact" },
@@ -56,6 +55,9 @@ const MOCK = {
     { id: "5", reviewer_name: "Thomas O.", rating: 5, text: "Best investment we've made for our home. Clean, efficient, and the team was a pleasure to deal with. Would recommend to anyone considering solar.", created_at: "2026-04-06T13:00:00Z", source: "google" },
   ],
   automation: {
+    pending_tasks: 3,
+    failed_tasks: 1,
+    tasks_this_week: 23,
     tasks: [
       { id: "1", action_type: "request_review", status: "pending", scheduled_at: "2026-04-11T12:00:00Z", customer_name: "Sean Murphy", created_at: "2026-04-11T09:30:00Z" },
       { id: "2", action_type: "send_whatsapp", status: "pending", scheduled_at: "2026-04-11T10:00:00Z", customer_name: "Aoife Kelly", created_at: "2026-04-11T10:15:00Z" },
@@ -295,7 +297,7 @@ function OverviewTab({ data, allRecent }: { data: DashboardData; allRecent: any[
               <YAxis tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "13px" }}
-                formatter={(value: number) => [value, "Leads"]}
+                formatter={(value: any) => [value, "Leads"] as const}
               />
               <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={56}>
                 <Cell fill="#3b82f6" />
@@ -529,7 +531,7 @@ function WhatsAppTab({ data }: { data: DashboardData }) {
           <BarChart data={scoreData} layout="vertical" margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
             <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
             <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} width={80} />
-            <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "13px" }} formatter={(value: number) => [`${value}/100`, "Score"]} />
+            <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "13px" }} formatter={(value: any) => [`${value}/100`, "Score"] as const} />
             <Bar dataKey="score" radius={[0, 6, 6, 0]} maxBarSize={28}>
               {scoreData.map((entry: any, index: number) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />
@@ -666,7 +668,7 @@ function ReviewsTab({ data }: { data: DashboardData }) {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "13px" }} formatter={(value: number) => [`${value} reviews`, "Count"]} />
+            <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "13px" }} formatter={(value: any) => [`${value} reviews`, "Count"] as const} />
             <Legend iconType="circle" wrapperStyle={{ fontSize: "13px" }} />
           </PieChart>
         </ResponsiveContainer>

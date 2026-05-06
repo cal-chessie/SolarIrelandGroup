@@ -1,0 +1,23 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Fonts
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Documents
+*.pdf binary
+
+# Lock files
+package-lock.json binary
