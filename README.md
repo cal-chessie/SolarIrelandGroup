@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/logo-lg.png" alt="Solar Ireland" width="180" height="180" />
+<img src="public/logo-lg.png" alt="Solar Ireland" width="160" height="181" />
 
 # Solar Ireland
 
