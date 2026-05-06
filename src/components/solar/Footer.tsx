@@ -288,7 +288,7 @@ export default function Footer() {
                 alt="Solar Ireland"
                 className="h-9 w-auto"
                 width={36}
-                height={36}
+                height={41}
               />
               <span className="font-bold text-lg text-white tracking-tight">
                 Solar Ireland

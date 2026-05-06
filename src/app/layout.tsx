@@ -196,8 +196,8 @@ const organizationSchema = {
   logo: {
     "@type": "ImageObject",
     url: `${SITE_URL}/logo-lg.png`,
-    width: 512,
-    height: 512,
+    width: 200,
+    height: 226,
     caption: "Solar Ireland Logo",
   },
   description:

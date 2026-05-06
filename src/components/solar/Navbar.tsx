@@ -310,7 +310,7 @@ function MobileMenu({
           {/* Mobile header bar */}
           <div className="flex items-center justify-between px-5 h-14 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
-              <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={28} />
+              <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={32} />
               <span className="font-bold text-white text-sm tracking-wide">Solar Ireland</span>
             </div>
             <button
@@ -582,7 +582,7 @@ export default function Navbar() {
               alt="Solar Ireland"
               className="h-10 w-auto sm:h-11"
               width={44}
-              height={44}
+              height={50}
               priority
             />
             <span className="font-bold text-white hidden sm:inline text-base lg:text-lg tracking-wide">

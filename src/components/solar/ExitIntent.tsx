@@ -150,7 +150,7 @@ export default function ExitIntent() {
               src="/logo-sm.webp"
               alt="Solar Ireland"
               width={120}
-              height={36}
+              height={135}
               className="h-9 sm:h-10 w-auto opacity-90"
             />
             <span className="font-bold text-white text-base tracking-wide opacity-90">

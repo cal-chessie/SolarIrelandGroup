@@ -584,7 +584,7 @@ export default function WhatsAppChat() {
           >
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={40} />
+                <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
               </div>
               <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0f0f0f]" />
             </div>
@@ -609,7 +609,7 @@ export default function WhatsAppChat() {
                 <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={40} />
+                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
@@ -694,7 +694,7 @@ export default function WhatsAppChat() {
                 <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={40} />
+                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
