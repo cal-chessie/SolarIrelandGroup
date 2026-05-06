@@ -159,7 +159,7 @@ export default function ExitIntent() {
           </div>
           <button
             onClick={close}
-            className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+            className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
             aria-label="Close"
           >
             <X className="w-3.5 h-3.5" />
@@ -186,7 +186,7 @@ export default function ExitIntent() {
               <br />
               <span className="text-gradient">on the table (ROI)</span>
             </h3>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed">
               The SEAI grant (Republic of Ireland only) drops this into your account. Combined with savings of
               {' '}<span className="text-gray-400 font-medium">€1,400+/year</span>,
               your system literally pays for itself.
@@ -199,10 +199,10 @@ export default function ExitIntent() {
                 <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
               </div>
               <div>
-                <h4 className="text-[13px] font-bold text-white mb-0.5">
+                <h3 className="text-[13px] font-bold text-white mb-0.5">
                   Track Your Project in Real Time
-                </h4>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
                   Your personal portal shows every milestone — survey, design, install,
                   commissioning. You&apos;re never left wondering what&apos;s happening.
                 </p>
@@ -214,10 +214,10 @@ export default function ExitIntent() {
                 <Users className="w-[18px] h-[18px] text-green-400" />
               </div>
               <div>
-                <h4 className="text-[13px] font-bold text-white mb-0.5">
+                <h3 className="text-[13px] font-bold text-white mb-0.5">
                   Talk Directly With the Team
-                </h4>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
                   Message your project manager and installers directly. No call centres,
                   no tickets — just real people who know your name and your roof.
                 </p>
@@ -237,14 +237,14 @@ export default function ExitIntent() {
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]"
               >
                 <Icon className={`w-3 h-3 ${color}`} />
-                <span className="text-[10px] text-gray-500 font-medium">{label}</span>
+                <span className="text-[10px] text-gray-400 font-medium">{label}</span>
               </div>
             ))}
           </div>
 
           <div className="exit-intent-el exit-intent-el-6 flex items-center justify-center gap-1.5 mb-4">
             <Clock className="w-3 h-3 text-amber-400/60" />
-            <span className="text-[11px] text-gray-500">
+            <span className="text-[11px] text-gray-400">
               Limited availability this month
             </span>
           </div>
@@ -275,23 +275,23 @@ export default function ExitIntent() {
             </a>
             <button
               onClick={close}
-              className="px-5 py-3 rounded-xl text-[13px] text-gray-500 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
+              className="px-5 py-3 rounded-xl text-[13px] text-gray-400 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
             >
               Maybe later
             </button>
           </div>
 
           <div className="exit-intent-el exit-intent-el-9 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
-            <span className="flex items-center gap-1 text-[10px] text-gray-600">
+            <span className="flex items-center gap-1 text-[10px] text-gray-400">
               <Shield className="w-3 h-3" />
               {SOLAR_DATA.certifications[0]}
             </span>
             <span className="text-gray-800">·</span>
-            <span className="text-[10px] text-gray-600">
+            <span className="text-[10px] text-gray-400">
               {SOLAR_DATA.certifications[1]}
             </span>
             <span className="text-gray-800">·</span>
-            <span className="text-[10px] text-gray-600">No spam</span>
+            <span className="text-[10px] text-gray-400">No spam</span>
           </div>
         </div>
       </div>

@@ -258,12 +258,14 @@ function SwipeGallery({
         <>
           <button
             onClick={goPrev}
+            aria-label="Previous photo"
             className="flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all z-10"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <button
             onClick={goNext}
+            aria-label="Next photo"
             className="flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/[0.08] items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all z-10"
           >
             <ArrowRight className="w-4 h-4" />
@@ -277,6 +279,7 @@ function SwipeGallery({
             <button
               key={i}
               onClick={() => onSelect(i)}
+              aria-label={`Go to photo ${i + 1}`}
               className={`transition-all duration-300 rounded-full ${
                 i === activeIndex
                   ? 'w-6 h-2 bg-amber-400'
@@ -320,11 +323,11 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
       <div className="flex items-start justify-between mb-6">
         <div>
           <h3 className="text-lg sm:text-xl font-bold text-white">{install.location}</h3>
-          <p className="text-xs text-gray-500 mt-0.5">{install.roofType} · {install.orientation}</p>
+          <p className="text-xs text-gray-400 mt-0.5">{install.roofType} · {install.orientation}</p>
         </div>
         <button
           onClick={onOpenLightbox}
-          className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/[0.08] transition-all shrink-0"
+          className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all shrink-0"
         >
           <Maximize2 className="w-4 h-4" />
         </button>
@@ -339,7 +342,7 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
                 <div className={`w-6 h-6 rounded-md ${spec.bg} flex items-center justify-center`}>
                   <SpecIcon className={`w-3 h-3 ${spec.color}`} />
                 </div>
-                <span className="text-[10px] text-gray-600 uppercase tracking-wider">{spec.label}</span>
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider">{spec.label}</span>
               </div>
               <p className="text-sm font-bold text-white">{spec.value}</p>
             </div>
@@ -350,15 +353,15 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
       <div className="space-y-2.5 mb-6 flex-1">
         {details.map((detail) => (
           <div key={detail.label} className="flex items-center justify-between py-1.5 border-b border-white/[0.03] last:border-0">
-            <span className="text-xs text-gray-500">{detail.label}</span>
+            <span className="text-xs text-gray-400">{detail.label}</span>
             <span className="text-xs font-medium text-gray-300">{detail.value}</span>
           </div>
         ))}
       </div>
 
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] mb-5">
-        <Calendar className="w-3.5 h-3.5 text-gray-600" />
-        <span className="text-xs text-gray-500">Installed <span className="text-gray-300 font-medium">{install.installed}</span></span>
+        <Calendar className="w-3.5 h-3.5 text-gray-400" />
+        <span className="text-xs text-gray-400">Installed <span className="text-gray-300 font-medium">{install.installed}</span></span>
       </div>
 
       {installs.length > 1 && (
@@ -370,7 +373,7 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
               className={`flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all ${
                 inst.id === install.id
                   ? 'bg-amber-400/10 border border-amber-400/20 text-amber-400'
-                  : 'bg-white/[0.02] border border-white/[0.04] text-gray-600 hover:text-gray-400 hover:bg-white/[0.04]'
+                  : 'bg-white/[0.02] border border-white/[0.04] text-gray-400 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
             >
               <HomeIcon className="w-3 h-3 shrink-0" />
@@ -456,7 +459,7 @@ export default function CustomerInstalls() {
                 <br />
                 <span className="text-gradient">Money in the bank.</span>
               </h2>
-              <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-md leading-relaxed">
+              <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
                 From Meath to Donegal, Dublin to Cork — these are the systems we've fitted, the savings our customers are earning, and the energy independence they're enjoying right now.
               </p>
             </div>
@@ -470,12 +473,12 @@ export default function CustomerInstalls() {
             >
               <div className="text-right">
                 <p className="text-2xl font-bold text-white">{installs.length}</p>
-                <p className="text-[10px] text-gray-600 uppercase tracking-wider">Recent installs</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Recent installs</p>
               </div>
               <div className="w-px h-10 bg-white/[0.06]" />
               <div className="text-right">
                 <p className="text-2xl font-bold text-amber-400">100%</p>
-                <p className="text-[10px] text-gray-600 uppercase tracking-wider">Satisfaction rate</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Satisfaction rate</p>
               </div>
             </motion.div>
           </div>
@@ -531,7 +534,7 @@ export default function CustomerInstalls() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <p className="text-sm text-gray-500 mb-4">Your home could be next — find out what you'd save with solar.</p>
+          <p className="text-sm text-gray-400 mb-4">Your home could be next — find out what you'd save with solar.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <motion.a
               href="#calculator"
@@ -551,7 +554,7 @@ export default function CustomerInstalls() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors"
             >
               Ask for more photos
-              <ChevronRight className="w-4 h-4 text-gray-600" />
+              <ChevronRight className="w-4 h-4 text-gray-400" />
             </motion.a>
           </div>
         </motion.div>

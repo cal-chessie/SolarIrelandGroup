@@ -203,14 +203,14 @@ function SystemComparisonCards({ comparisons, recommended }: { comparisons: Syst
         return (
           <div key={c.size} className={`relative rounded-xl p-4 text-center transition-all border ${isRec ? 'bg-amber-400/10 border-amber-400/30 ring-1 ring-amber-400/20' : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12]'}`}>
             {isRec && <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-amber-400 text-black text-[10px] font-bold uppercase tracking-wider rounded-full">Best ROI</span>}
-            <p className="text-2xl font-bold text-white">{c.size}<span className="text-sm text-gray-500">kWp</span></p>
-            <p className="text-xs text-gray-500 mt-1">{c.generation.toLocaleString()} kWh/yr</p>
+            <p className="text-2xl font-bold text-white">{c.size}<span className="text-sm text-gray-400">kWp</span></p>
+            <p className="text-xs text-gray-400 mt-1">{c.generation.toLocaleString()} kWh/yr</p>
             <div className="mt-3 pt-3 border-t border-white/[0.06]">
               <p className="text-lg font-bold text-amber-400">€{(c.annualSaving + c.annualExport).toLocaleString()}</p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider">annual benefit</p>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider">annual benefit</p>
             </div>
             <p className="text-xs text-gray-400 mt-2">{c.paybackYears} yr payback</p>
-            <p className="text-[10px] text-gray-600">€{(c.cost - c.grant).toLocaleString()} after grant</p>
+            <p className="text-[10px] text-gray-400">€{(c.cost - c.grant).toLocaleString()} after grant</p>
           </div>
         );
       })}
@@ -387,9 +387,9 @@ export default function BillAnalyser() {
                           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step.n === 1 ? 'bg-amber-400 text-black' : 'bg-white/[0.06] text-gray-500'}`}>
                             {step.n}
                           </div>
-                          <span className={`text-xs hidden sm:inline ${step.n === 1 ? 'text-white font-medium' : 'text-gray-600'}`}>{step.label}</span>
+                          <span className={`text-xs hidden sm:inline ${step.n === 1 ? 'text-white font-medium' : 'text-gray-400'}`}>{step.label}</span>
                         </div>
-                        {i < 2 && <ChevronRight className="w-4 h-4 text-gray-700 mx-2" />}
+                        {i < 2 && <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />}
                       </div>
                     ))}
                   </div>
@@ -420,7 +420,7 @@ export default function BillAnalyser() {
                           : 'border-white/10 hover:border-amber-400/30 hover:bg-white/[0.02]'
                         }`}
                       >
-                        <input ref={fileInputRef} type="file" accept="image/*,.pdf" className="hidden"
+                        <input ref={fileInputRef} type="file" accept="image/*,.pdf" aria-label="Upload electricity bill" className="hidden"
                           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
 
                         <motion.div
@@ -434,7 +434,7 @@ export default function BillAnalyser() {
                         <p className="text-white font-semibold text-lg mb-1">
                           {dragOver ? 'Drop it here!' : 'Drag your bill here'}
                         </p>
-                        <p className="text-sm text-gray-500 text-center mb-4">
+                        <p className="text-sm text-gray-400 text-center mb-4">
                           or <span className="text-amber-400 underline underline-offset-2">browse files</span> — photo, scan or PDF
                         </p>
 
@@ -444,11 +444,11 @@ export default function BillAnalyser() {
                         >
                           <Camera className="w-4 h-4" /> Take a Photo
                         </button>
-                        <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" className="hidden"
+                        <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" aria-label="Take photo of electricity bill" className="hidden"
                           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
 
                         <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
-                          <span className="text-[10px] text-gray-600 uppercase tracking-wider mr-1">Works with:</span>
+                          <span className="text-[10px] text-gray-400 uppercase tracking-wider mr-1">Works with:</span>
                           {['Electric Ireland', 'ESB', 'Bord Gáis', 'SSE Airtricity', 'Energia', 'Panda'].map(p => (
                             <span key={p} className={`px-2.5 py-1 rounded-full text-[10px] font-medium border ${PROVIDER_COLORS[p] || 'bg-white/[0.04] text-gray-500 border-white/[0.06]'}`}>{p}</span>
                           ))}
@@ -464,14 +464,14 @@ export default function BillAnalyser() {
                           <div key={item.label} className="flex flex-col items-center text-center p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                             <item.icon className="w-4 h-4 text-gray-500 mb-1.5" />
                             <p className="text-[11px] text-gray-300 font-medium">{item.label}</p>
-                            <p className="text-[10px] text-gray-600">{item.sub}</p>
+                            <p className="text-[10px] text-gray-400">{item.sub}</p>
                           </div>
                         ))}
                       </div>
 
                       <div className="flex items-center gap-4">
                         <div className="flex-1 h-px bg-white/[0.06]" />
-                        <span className="text-xs text-gray-600">or try a quick example</span>
+                        <span className="text-xs text-gray-400">or try a quick example</span>
                         <div className="flex-1 h-px bg-white/[0.06]" />
                       </div>
 
@@ -489,10 +489,10 @@ export default function BillAnalyser() {
                               </div>
                               <div>
                                 <p className="text-sm font-medium text-white">{preset.label}</p>
-                                <p className="text-[11px] text-gray-500">{preset.desc}</p>
+                                <p className="text-[11px] text-gray-400">{preset.desc}</p>
                                 <p className="text-[11px] text-amber-400/70 mt-0.5">€{preset.bill}/mo · {preset.usage.toLocaleString()} kWh</p>
                               </div>
-                              <ChevronRight className="w-4 h-4 text-gray-700 group-hover:text-amber-400 transition-colors mt-1 ml-auto shrink-0" />
+                              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-amber-400 transition-colors mt-1 ml-auto shrink-0" />
                             </button>
                           );
                         })}
@@ -524,19 +524,19 @@ export default function BillAnalyser() {
                         <div className="space-y-2">
                           <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
                           <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-600">€</span>
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
                             <input id="mb" type="number" placeholder="160" value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <p className="text-[11px] text-gray-600">Found on the front of your electricity bill</p>
+                          <p className="text-[11px] text-gray-400">Found on the front of your electricity bill</p>
                         </div>
                         <div className="space-y-2">
                           <label htmlFor="au" className="block text-sm text-gray-400">Annual Usage</label>
                           <div className="relative">
-                            <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
+                            <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input id="au" type="number" placeholder="4800" value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
                               className="w-full pl-12 pr-14 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
-                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-600">kWh</span>
+                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">kWh</span>
                           </div>
                           <button onClick={() => setAnnualUsage(String(estimateUsage(homeType, occupants)))}
                             className="text-[11px] text-amber-400/70 hover:text-amber-400 transition-colors flex items-center gap-1">
@@ -573,14 +573,14 @@ export default function BillAnalyser() {
                       </div>
 
                       <div>
-                        <p className="text-[11px] text-gray-600 mb-2 uppercase tracking-wider">Quick presets</p>
+                        <p className="text-[11px] text-gray-400 mb-2 uppercase tracking-wider">Quick presets</p>
                         <div className="flex flex-wrap gap-2">
                           {PRESETS.map(preset => (
                             <button key={preset.label} onClick={() => handlePreset(preset)}
                               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-gray-400 hover:text-white bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-all">
                               <preset.icon className="w-3 h-3" />
                               {preset.label}
-                              <span className="text-gray-600">€{preset.bill}</span>
+                              <span className="text-gray-400">€{preset.bill}</span>
                             </button>
                           ))}
                         </div>
@@ -596,7 +596,7 @@ export default function BillAnalyser() {
                     </div>
                   )}
 
-                  <p className="mt-6 text-[11px] text-gray-600 text-center leading-relaxed">
+                  <p className="mt-6 text-[11px] text-gray-400 text-center leading-relaxed">
                     Estimates based on SEAI grant rates, Met Éireann solar irradiance data, and your reported usage.
                     Actual savings depend on roof orientation, shading, and consumption patterns. A free site survey gives you exact figures.
                   </p>
@@ -628,7 +628,7 @@ export default function BillAnalyser() {
                       return (
                         <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.3 }}>
                           <div className={`flex items-center gap-3 p-3 rounded-xl transition-all ${done ? 'bg-amber-400/5 border border-amber-400/10' : active ? 'bg-white/[0.03] border border-white/[0.06]' : 'border border-transparent'}`}>
-                            {done ? <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0" /> : active ? <StepIcon className="w-5 h-5 text-amber-400 shrink-0 animate-pulse" /> : <StepIcon className="w-5 h-5 text-gray-700 shrink-0" />}
+                            {done ? <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0" /> : active ? <StepIcon className="w-5 h-5 text-amber-400 shrink-0 animate-pulse" /> : <StepIcon className="w-5 h-5 text-gray-400 shrink-0" />}
                             <span className={`text-sm ${done ? 'text-amber-400' : active ? 'text-white' : 'text-gray-600'}`}>{step.label}</span>
                           </div>
                         </motion.div>
@@ -650,20 +650,20 @@ export default function BillAnalyser() {
                       <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center"><FileText className="w-5 h-5 text-amber-400" /></div>
                       <div>
                         <p className="font-semibold text-sm">{analysis.provider}</p>
-                        <p className="text-xs text-gray-500">{analysis.annualUsage.toLocaleString()} kWh/yr · {analysis.homeType}</p>
+                        <p className="text-xs text-gray-400">{analysis.annualUsage.toLocaleString()} kWh/yr · {analysis.homeType}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       {mode === 'upload' && <ConfidenceBadge confidence={analysis.confidence} />}
                       <div className="text-right">
                         <p className="font-semibold text-amber-400">€{analysis.monthlyBill}/mo</p>
-                        <p className="text-xs text-gray-500">€{analysis.unitRate.toFixed(3)}/kWh</p>
+                        <p className="text-xs text-gray-400">€{analysis.unitRate.toFixed(3)}/kWh</p>
                       </div>
                     </div>
                   </div>
                   {billPreview && (
                     <div className="mt-3">
-                      <button onClick={() => setBillPreviewOpen(!billPreviewOpen)} className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                      <button onClick={() => setBillPreviewOpen(!billPreviewOpen)} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors">
                         <Info className="w-3 h-3" /> {billPreviewOpen ? 'Hide bill preview' : 'Show bill preview'}
                       </button>
                       {billPreviewOpen && (
@@ -679,27 +679,27 @@ export default function BillAnalyser() {
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-400/[0.03] border border-amber-400/20 p-5">
                       <Euro className="w-5 h-5 text-amber-400 mb-3" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">Annual Saving</p>
+                      <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">Annual Saving</p>
                       <p className="text-3xl font-bold text-amber-400"><AnimatedNumber value={analysis.annualSaving} prefix="€" /></p>
-                      <p className="text-[11px] text-gray-500 mt-1">from self-consumption</p>
+                      <p className="text-[11px] text-gray-400 mt-1">from self-consumption</p>
                     </div>
                     <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
                       <Clock className="w-5 h-5 text-green-400 mb-3" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">Payback Period</p>
+                      <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">Payback Period</p>
                       <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.paybackYears} suffix=" yrs" decimals={1} /></p>
-                      <p className="text-[11px] text-gray-500 mt-1">after SEAI grant</p>
+                      <p className="text-[11px] text-gray-400 mt-1">after SEAI grant</p>
                     </div>
                     <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
                       <TrendingUp className="w-5 h-5 text-blue-400 mb-3" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">25-Year Value</p>
+                      <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">25-Year Value</p>
                       <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.total25YearSavings} prefix="€" /></p>
-                      <p className="text-[11px] text-gray-500 mt-1">with 3% price rise</p>
+                      <p className="text-[11px] text-gray-400 mt-1">with 3% price rise</p>
                     </div>
                     <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
                       <Leaf className="w-5 h-5 text-emerald-400 mb-3" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">CO₂ Saved</p>
+                      <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">CO₂ Saved</p>
                       <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.annualCo2Saved} suffix=" kg" /></p>
-                      <p className="text-[11px] text-gray-500 mt-1">per year · {analysis.treesEquiv25Years} trees equiv</p>
+                      <p className="text-[11px] text-gray-400 mt-1">per year · {analysis.treesEquiv25Years} trees equiv</p>
                     </div>
                   </div>
 
@@ -718,19 +718,19 @@ export default function BillAnalyser() {
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
-                    <p className="text-xs text-gray-500 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
+                    <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
                   </div>
 
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Sun className="w-4 h-4 text-amber-400" /> Monthly Solar Generation vs Your Usage</h4>
                     <MonthlyChart profile={analysis.monthlyProfile} />
-                    <p className="text-xs text-gray-500 mt-3">Based on SEAI Typical Meteorological Year data for Ireland. Actual output depends on roof orientation and shading.</p>
+                    <p className="text-xs text-gray-400 mt-3">Based on SEAI Typical Meteorological Year data for Ireland. Actual output depends on roof orientation and shading.</p>
                   </div>
 
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
-                    <p className="text-xs text-gray-500 mt-3">The {analysis.recommendedSystem}kWp system gives you the best return on investment. A site survey will confirm your roof can fit your preferred size.</p>
+                    <p className="text-xs text-gray-400 mt-3">The {analysis.recommendedSystem}kWp system gives you the best return on investment. A site survey will confirm your roof can fit your preferred size.</p>
                   </div>
 
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
@@ -739,7 +739,7 @@ export default function BillAnalyser() {
                         <Battery className={`w-5 h-5 ${analysis.batteryWorthwhile ? 'text-green-400' : 'text-gray-500'}`} />
                         <div className="text-left">
                           <p className="text-sm font-semibold">Battery Storage Assessment</p>
-                          <p className="text-xs text-gray-500">Should you add a battery to your solar system?</p>
+                          <p className="text-xs text-gray-400">Should you add a battery to your solar system?</p>
                         </div>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.batteryWorthwhile ? 'bg-green-400/10 text-green-400' : 'bg-white/[0.04] text-gray-500'}`}>
@@ -751,9 +751,9 @@ export default function BillAnalyser() {
                         <p className="text-sm text-gray-400 leading-relaxed">{analysis.batteryReason}</p>
                         {analysis.batteryWorthwhile && (
                           <div className="mt-3 grid grid-cols-3 gap-3">
-                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-green-400">€{analysis.estimatedBatteryCost.toLocaleString()}</p><p className="text-[10px] text-gray-500 uppercase">est. cost</p></div>
-                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-white">{analysis.batteryPaybackYears} yrs</p><p className="text-[10px] text-gray-500 uppercase">battery payback</p></div>
-                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-amber-400">5 kWh</p><p className="text-[10px] text-gray-500 uppercase">capacity</p></div>
+                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-green-400">€{analysis.estimatedBatteryCost.toLocaleString()}</p><p className="text-[10px] text-gray-400 uppercase">est. cost</p></div>
+                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-white">{analysis.batteryPaybackYears} yrs</p><p className="text-[10px] text-gray-400 uppercase">battery payback</p></div>
+                            <div className="text-center p-3 rounded-lg bg-white/[0.03]"><p className="text-lg font-bold text-amber-400">5 kWh</p><p className="text-[10px] text-gray-400 uppercase">capacity</p></div>
                           </div>
                         )}
                       </motion.div>

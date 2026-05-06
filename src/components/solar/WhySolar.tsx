@@ -173,7 +173,7 @@ function StatCard({
         <p className="text-base sm:text-xl font-bold text-white leading-tight truncate">
           <AnimatedCounter value={value} prefix={prefix} suffix={suffix} />
         </p>
-        <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{label}</p>
+        <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">{label}</p>
       </div>
     </motion.div>
   );
@@ -208,7 +208,7 @@ function PriceChart() {
         <h3 className="text-lg sm:text-xl font-bold text-white">
           Irish electricity prices keep rising
         </h3>
-        <p className="text-[11px] sm:text-xs text-gray-500 mt-1.5 leading-relaxed">
+        <p className="text-[11px] sm:text-xs text-gray-400 mt-1.5 leading-relaxed">
           Average residential rate per kWh — all-in including VAT, PSO levy, and standing
           charges. Source: CRU, SEAI.
         </p>
@@ -224,7 +224,7 @@ function PriceChart() {
           return (
             <div key={d.year} className="group">
               <div className="flex items-center gap-3">
-                <span className="text-[11px] sm:text-xs text-gray-500 w-10 text-right font-mono shrink-0">
+                <span className="text-[11px] sm:text-xs text-gray-400 w-10 text-right font-mono shrink-0">
                   {d.year}
                 </span>
 
@@ -320,7 +320,7 @@ function GenerationChart() {
           <h3 className="text-lg sm:text-xl font-bold text-white">
             Solar works year-round in Ireland
           </h3>
-          <p className="text-[11px] sm:text-xs text-gray-500 mt-1.5 leading-relaxed">
+          <p className="text-[11px] sm:text-xs text-gray-400 mt-1.5 leading-relaxed">
             Average monthly output per kWp installed — Dublin TMY data. Ireland gets{' '}
             <span className="text-white/70 font-medium">75–85% of the solar
             resource</span> that southern Spain receives.
@@ -328,7 +328,7 @@ function GenerationChart() {
         </div>
 
         <div className="px-3.5 py-2 rounded-xl bg-amber-400/[0.08] border border-amber-400/[0.12] shrink-0 self-start">
-          <p className="text-[10px] text-gray-500 mb-0.5">4kWp system annual output</p>
+          <p className="text-[10px] text-gray-400 mb-0.5">4kWp system annual output</p>
           <p className="text-sm sm:text-base font-bold text-amber-400 tabular-nums">
             ~{(annualTotal * 4).toLocaleString()} kWh
           </p>
@@ -395,7 +395,7 @@ function GenerationChart() {
 
                 <span
                   className={`text-[8px] sm:text-[10px] font-medium transition-colors duration-200 ${
-                    isHovered ? 'text-amber-400' : 'text-gray-600'
+                    isHovered ? 'text-amber-400' : 'text-gray-400'
                   }`}
                 >
                   {d.month}
@@ -454,7 +454,7 @@ function BenefitCard({
           <p className={`text-xl sm:text-2xl font-bold ${benefit.color} leading-none`}>
             {benefit.stat}
           </p>
-          <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-gray-600 mt-1">
+          <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-gray-400 mt-1">
             {benefit.statLabel}
           </p>
         </div>
@@ -475,7 +475,7 @@ function BenefitCard({
       </div>
 
       <div className="flex items-center gap-1.5 mt-3">
-        <span className="text-[10px] text-gray-600">
+        <span className="text-[10px] text-gray-400">
           {expanded ? 'Tap to collapse' : 'Tap for details'}
         </span>
         <motion.span
@@ -623,7 +623,7 @@ export default function WhySolar() {
         </motion.div>
 
         <motion.div
-          className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[11px] sm:text-xs text-gray-600"
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[11px] sm:text-xs text-gray-400"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

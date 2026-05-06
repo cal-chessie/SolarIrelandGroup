@@ -523,7 +523,7 @@ export default function WhatsAppChat() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm text-white font-medium">{notification}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Tap to chat</p>
+            <p className="text-xs text-gray-400 mt-0.5">Tap to chat</p>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); dismissNotif(); }}
@@ -590,7 +590,7 @@ export default function WhatsAppChat() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-white">Solar Ireland</p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-gray-400 truncate">
                 {unreadCount > 0
                   ? `${unreadCount} new message${unreadCount > 1 ? 's' : ''}`
                   : messages.length > 0 ? 'Tap to continue chatting' : 'Ask us anything about solar'}
@@ -651,7 +651,7 @@ export default function WhatsAppChat() {
                           <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center">
                             <Icon className="w-4 h-4 text-amber-400" />
                           </div>
-                          <span className="text-[10px] text-gray-500 font-medium">{item.label}</span>
+                          <span className="text-[10px] text-gray-400 font-medium">{item.label}</span>
                         </div>
                       );
                     })}
@@ -675,7 +675,7 @@ export default function WhatsAppChat() {
                     WhatsApp Us Instead
                   </a>
 
-                  <div className="flex items-center gap-1.5 mt-6 text-[10px] text-gray-600">
+                  <div className="flex items-center gap-1.5 mt-6 text-[10px] text-gray-400">
                     <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -705,7 +705,7 @@ export default function WhatsAppChat() {
                       <p className="text-xs text-green-400">
                         {isLoading || isStreaming ? 'Typing...' : 'Online now'}
                       </p>
-                      <span className="text-xs text-gray-600">&middot; Typically replies instantly</span>
+                      <span className="text-xs text-gray-400">&middot; Typically replies instantly</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-0.5">
@@ -746,7 +746,7 @@ export default function WhatsAppChat() {
 
                   {messages.length <= 1 && hasGreeted && !isStreaming && (
                     <div className="text-center py-2 wa-fade-in">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] text-[10px] text-gray-600">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] text-[10px] text-gray-400">
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -777,19 +777,19 @@ export default function WhatsAppChat() {
                           {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
                         </div>
                         <div className="flex items-center gap-2 mt-1 px-1">
-                          <span className="text-[10px] text-gray-700">{timeAgo(msg.timestamp)}</span>
+                          <span className="text-[10px] text-gray-400">{timeAgo(msg.timestamp)}</span>
                           {msg.role === 'assistant' && messages.indexOf(msg) > 0 && (
                             <div className="flex items-center gap-0.5">
                               <button
                                 onClick={() => rateMessage(msg.id, 'up')}
-                                className={`p-0.5 rounded transition-colors ${msg.rated === 'up' ? 'text-green-400' : 'text-gray-700 hover:text-gray-500'}`}
+                                className={`p-0.5 rounded transition-colors ${msg.rated === 'up' ? 'text-green-400' : 'text-gray-500 hover:text-gray-300'}`}
                                 aria-label="Helpful"
                               >
                                 <ThumbsUp className="w-3 h-3" />
                               </button>
                               <button
                                 onClick={() => rateMessage(msg.id, 'down')}
-                                className={`p-0.5 rounded transition-colors ${msg.rated === 'down' ? 'text-red-400' : 'text-gray-700 hover:text-gray-500'}`}
+                                className={`p-0.5 rounded transition-colors ${msg.rated === 'down' ? 'text-red-400' : 'text-gray-500 hover:text-gray-300'}`}
                                 aria-label="Not helpful"
                               >
                                 <ThumbsDown className="w-3 h-3" />
@@ -885,13 +885,13 @@ export default function WhatsAppChat() {
                       <Phone className="w-3 h-3" /> WhatsApp
                     </a>
                     <a href={`mailto:${SOLAR_DATA.provider.email}`}
-                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:bg-white/[0.04] transition-colors">
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-400 hover:bg-white/[0.04] transition-colors">
                       <Mail className="w-3 h-3" /> Email
                     </a>
                     <div className="flex-1" />
                     {messages.length > 3 && (
                       <button onClick={clearChat}
-                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-600 hover:text-gray-400 hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-400 hover:text-gray-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
                         <RotateCcw className="w-3 h-3" /> New chat
                       </button>
                     )}
@@ -917,7 +917,7 @@ export default function WhatsAppChat() {
                       <Send className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-[9px] text-gray-700 mt-2 text-center">AI assistant &middot; For accurate quotes, get a free site survey</p>
+                  <p className="text-[9px] text-gray-400 mt-2 text-center">AI assistant &middot; For accurate quotes, get a free site survey</p>
                 </div>
 
                 <button onClick={handleClose}

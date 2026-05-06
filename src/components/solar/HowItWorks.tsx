@@ -126,7 +126,7 @@ function StepCard({
             </div>
           </div>
 
-          <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-600 group-hover:text-gray-400 group-hover:border-white/[0.12] transition-all duration-200 mt-1 ${isActive ? 'rotate-90 text-gray-400 border-white/[0.12]' : ''}`}>
+          <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-400 group-hover:text-gray-300 group-hover:border-white/[0.12] transition-all duration-200 mt-1 ${isActive ? 'rotate-90 text-gray-300 border-white/[0.12]' : ''}`}>
             <ChevronRight className="w-4 h-4" />
           </div>
         </div>
@@ -172,7 +172,7 @@ function StepCard({
             <div className="text-center mt-4 pt-5 border-t border-white/[0.06]">
               <span className="text-2xl sm:text-3xl font-black text-white tabular-nums">{step.stat.value}</span>
               {step.stat.unit && <span className="text-lg font-semibold text-gray-400 ml-1">{step.stat.unit}</span>}
-              <p className="text-xs text-gray-600 mt-1">{step.stat.label}</p>
+              <p className="text-xs text-gray-400 mt-1">{step.stat.label}</p>
             </div>
 
             <a
@@ -188,7 +188,7 @@ function StepCard({
           </div>
         </div>
 
-        <div className={`flex items-center gap-1.5 text-xs text-gray-600 group-hover:text-gray-400 transition-colors ${isActive ? 'hidden' : ''}`}>
+        <div className={`flex items-center gap-1.5 text-xs text-gray-400 group-hover:text-gray-300 transition-colors ${isActive ? 'hidden' : ''}`}>
           <span>Tap to see details</span>
           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
         </div>
@@ -250,7 +250,7 @@ export default function HowItWorks() {
           </motion.h2>
 
           <motion.p
-            className="mt-5 sm:mt-6 text-gray-500 text-sm sm:text-base max-w-md mx-auto leading-relaxed"
+            className="mt-5 sm:mt-6 text-gray-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
@@ -313,7 +313,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-white">SEAI Registered</p>
-                  <p className="text-[10px] text-gray-600">Fully certified installer</p>
+                  <p className="text-[10px] text-gray-400">Fully certified installer</p>
                 </div>
               </div>
 
@@ -323,7 +323,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-white">RECI Electricians</p>
-                  <p className="text-[10px] text-gray-600">Irish-certified</p>
+                  <p className="text-[10px] text-gray-400">Irish-certified</p>
                 </div>
               </div>
 
@@ -333,7 +333,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-white">NSAI Compliant</p>
-                  <p className="text-[10px] text-gray-600">I.S. EN 50559 standard</p>
+                  <p className="text-[10px] text-gray-400">I.S. EN 50559 standard</p>
                 </div>
               </div>
             </div>

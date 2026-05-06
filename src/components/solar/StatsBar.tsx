@@ -106,7 +106,7 @@ function StatCard({
         <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-none tabular-nums">
           {prefix}{value.toLocaleString()}<span className="text-sm sm:text-base font-semibold text-gray-400">{suffix}</span>
         </p>
-        <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-tight">{label}</p>
+        <p className="text-[11px] sm:text-xs text-gray-400 mt-1 leading-tight">{label}</p>
       </div>
     </motion.div>
   );

@@ -623,7 +623,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <div id="main-content" role="main" tabIndex={-1} className="outline-none focus:outline-none">
+        <div id="main-content" tabIndex={-1} className="outline-none focus:outline-none">
           {children}
         </div>
         <CookieConsent />

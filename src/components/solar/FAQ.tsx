@@ -191,7 +191,7 @@ function FAQItemCard({
           transition={{ duration: 0.25 }}
           className="shrink-0 w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mt-0.5 sm:mt-0 group-hover:bg-white/[0.08] transition-colors"
         >
-          <ChevronDown className={`w-3.5 h-3.5 transition-colors ${isOpen ? 'text-amber-400' : 'text-gray-600'}`} />
+          <ChevronDown className={`w-3.5 h-3.5 transition-colors ${isOpen ? 'text-amber-400' : 'text-gray-400'}`} />
         </motion.div>
       </button>
 
@@ -210,12 +210,12 @@ function FAQItemCard({
 
                   {related.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-white/[0.05]">
-                      <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Related questions</p>
+                      <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Related questions</p>
                       <div className="flex flex-wrap gap-2">
                         {related.map((r) => (
                           <span
                             key={r.id}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.03] text-[11px] text-gray-500 hover:text-gray-300 transition-colors cursor-default"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.03] text-[11px] text-gray-400 hover:text-gray-300 transition-colors cursor-default"
                           >
                             <catConfig.icon className={`w-2.5 h-2.5 ${catConfig.color} opacity-60`} />
                             {r.question}
@@ -249,7 +249,7 @@ function SearchInput({
 
   return (
     <div className="relative">
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
       <input
         type="text"
         value={value}
@@ -260,7 +260,7 @@ function SearchInput({
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
         {hasValue && (
           <>
-            <span className="text-[11px] text-gray-500 tabular-nums">
+            <span className="text-[11px] text-gray-400 tabular-nums">
               {resultCount}/{totalCount}
             </span>
             <button
@@ -306,7 +306,7 @@ function CategoryTabs({
             <CatIcon className="w-3 h-3" />
             {cat.label}
             {cat.key !== 'all' && (
-              <span className={`text-[10px] ml-0.5 ${isActive ? cat.color : 'text-gray-700'}`}>
+              <span className={`text-[10px] ml-0.5 ${isActive ? cat.color : 'text-gray-500'}`}>
                 {counts[cat.key]}
               </span>
             )}
@@ -469,7 +469,7 @@ export default function FAQ() {
             <br />
             <span className="text-gradient">questions.</span>
           </h2>
-          <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+          <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
             Got a question about solar? Search or browse by category. Can&apos;t find what you&apos;re looking for? Ask us directly.
           </p>
         </motion.div>
@@ -504,7 +504,7 @@ export default function FAQ() {
             exit={{ opacity: 0, height: 0 }}
             className="flex items-center justify-between mb-4 px-1"
           >
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-400">
               Showing <span className="text-gray-400 font-medium">{filteredFAQs.length}</span> question{filteredFAQs.length !== 1 ? 's' : ''}
               {activeCategory !== 'all' && (
                 <span> in <span className="text-gray-400">{categories.find(c => c.key === activeCategory)?.label}</span></span>
@@ -512,7 +512,7 @@ export default function FAQ() {
             </p>
             <button
               onClick={clearFilters}
-              className="text-[11px] text-gray-500 hover:text-amber-400 transition-colors"
+              className="text-[11px] text-gray-400 hover:text-amber-400 transition-colors"
             >
               Clear filters
             </button>
@@ -538,8 +538,8 @@ export default function FAQ() {
                 exit={{ opacity: 0, y: -10 }}
                 className="text-center py-12"
               >
-                <Search className="w-8 h-8 text-gray-700 mx-auto mb-3" />
-                <p className="text-sm text-gray-500">No questions match your search.</p>
+                <Search className="w-8 h-8 text-gray-500 mx-auto mb-3" />
+                <p className="text-sm text-gray-400">No questions match your search.</p>
                 <button
                   onClick={clearFilters}
                   className="text-xs text-amber-400 hover:text-amber-300 mt-2 transition-colors"
@@ -559,7 +559,7 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             Still have questions?{' '}
             <a
               href={buildWhatsAppUrl({ source: 'faq' })}

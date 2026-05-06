@@ -389,7 +389,7 @@ function MobileMenu({
                     className={`w-4 h-4 shrink-0 transition-all duration-200 ${
                       linkActive
                         ? 'text-amber-400 translate-x-0'
-                        : 'text-gray-700 -translate-x-1 group-hover:translate-x-0 group-hover:text-gray-500'
+                        : 'text-gray-400 -translate-x-1 group-hover:translate-x-0 group-hover:text-gray-300'
                     }`}
                   />
                 </button>
@@ -509,7 +509,7 @@ function MobileMenu({
               ))}
             </div>
 
-            <p className="text-[10px] text-gray-700 text-center mt-4">
+            <p className="text-[10px] text-gray-400 text-center mt-4">
               © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installer
             </p>
           </div>

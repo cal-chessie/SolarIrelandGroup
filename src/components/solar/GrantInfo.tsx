@@ -132,12 +132,12 @@ function EligibilityChecker() {
         <div className="flex items-start justify-between mb-6">
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-white">Am I eligible?</h3>
-            <p className="text-xs text-gray-500 mt-1">Quick 3-step eligibility checker</p>
+            <p className="text-xs text-gray-400 mt-1">Quick 3-step eligibility checker</p>
           </div>
           {isComplete && (
             <button
               onClick={reset}
-              className="text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-[11px] text-gray-400 hover:text-gray-300 transition-colors"
             >
               Start again
             </button>
@@ -188,7 +188,7 @@ function EligibilityChecker() {
                 </div>
                 <div>
                   <p className="text-sm sm:text-[15px] font-semibold text-white">{step.question}</p>
-                  <p className="text-xs text-gray-600 mt-1">{step.detail}</p>
+                  <p className="text-xs text-gray-400 mt-1">{step.detail}</p>
                 </div>
               </div>
 
@@ -199,7 +199,7 @@ function EligibilityChecker() {
                     onClick={() => handleAnswer(opt.value)}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] text-sm text-gray-300 hover:text-white hover:bg-white/[0.05] hover:border-white/[0.12] transition-all active:scale-[0.98] text-left"
                   >
-                    <span className="text-gray-600">→</span>
+                    <span className="text-gray-400">→</span>
                     {opt.label}
                   </button>
                 ))}
@@ -213,7 +213,7 @@ function EligibilityChecker() {
                     return (
                       <div key={prev.id} className="flex items-center gap-2.5 text-xs">
                         <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                        <span className="text-gray-500">{prev.question}</span>
+                        <span className="text-gray-400">{prev.question}</span>
                         <span className="text-gray-400 font-medium ml-auto">{prev.options.find(o => o.value === prevAnswer)?.label}</span>
                       </div>
                     );
@@ -240,7 +240,7 @@ function EligibilityChecker() {
                     <Sparkles className="w-8 h-8 text-amber-400 mb-3" />
                   </motion.div>
                   <p className="text-sm font-semibold text-white mb-1">See your result</p>
-                  <p className="text-xs text-gray-600">Tap to reveal</p>
+                  <p className="text-xs text-gray-400">Tap to reveal</p>
                 </button>
               ) : eligible && !ineligible ? (
                 <motion.div
@@ -262,7 +262,7 @@ function EligibilityChecker() {
                     Based on your answers, you appear eligible for the <AnimatedGrant show={isRevealed} /> SEAI Solar PV grant.
                   </p>
                   {hasUnsure && (
-                    <p className="text-xs text-gray-600 mb-4">We&apos;ll confirm everything during your free survey.</p>
+                    <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything during your free survey.</p>
                   )}
                   <motion.a
                     href={buildWhatsAppUrl({ source: 'grant-checker', eligible: true })}
@@ -288,7 +288,7 @@ function EligibilityChecker() {
                   <p className="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed mb-1">
                     Based on your answers, you don&apos;t appear to qualify for the SEAI grant right now.
                   </p>
-                  <p className="text-xs text-gray-600 mb-4">
+                  <p className="text-xs text-gray-400 mb-4">
                     However, solar panels can still save you money without the grant. Get in touch and we&apos;ll give you honest advice.
                   </p>
                   <motion.a
@@ -300,7 +300,7 @@ function EligibilityChecker() {
                     className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
                   >
                     Still interested? Chat with us
-                    <ArrowRight className="w-4 h-4 text-gray-600" />
+                    <ArrowRight className="w-4 h-4 text-gray-400" />
                   </motion.a>
                 </motion.div>
               )}
@@ -359,7 +359,7 @@ function GrantTimeline() {
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       <h3 className="text-lg sm:text-xl font-bold text-white mb-2">How the grant works</h3>
-      <p className="text-xs text-gray-500 mb-6">From survey to savings — we handle the hard parts</p>
+      <p className="text-xs text-gray-400 mb-6">From survey to savings — we handle the hard parts</p>
 
       <div className="space-y-0">
         {timelineSteps.map((step, i) => {
@@ -392,8 +392,8 @@ function GrantTimeline() {
                     {step.duration}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed">{step.description}</p>
-                <div className={`inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md bg-white/[0.02] text-[10px] text-gray-600`}>
+                <p className="text-xs text-gray-400 mt-1 leading-relaxed">{step.description}</p>
+                <div className={`inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md bg-white/[0.02] text-[10px] text-gray-400`}>
                   <Shield className={`w-3 h-3 ${step.color} opacity-50`} />
                   {step.who}
                 </div>
@@ -443,7 +443,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
         <span className="text-gradient tabular-nums">€<motion.span className={!visible ? 'opacity-0' : ''}>{rounded}</motion.span></span>
         {' '}grant for solar PV.
       </h2>
-      <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+      <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
         The Irish government pays you to go solar — available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
       </p>
     </motion.div>
@@ -468,7 +468,7 @@ function KeyFactsRow() {
               <FactIcon className={`w-4 h-4 ${fact.color}`} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-white">{fact.value}</p>
-            <p className="text-[10px] text-gray-600 uppercase tracking-wider mt-0.5">{fact.label}</p>
+            <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-0.5">{fact.label}</p>
           </div>
         );
       })}
@@ -524,8 +524,8 @@ export default function GrantInfo() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.35 }}
         >
-          <Info className="w-4 h-4 text-gray-600 mt-0.5 shrink-0" />
-          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+          <Info className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
             Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and submit the application on your behalf. Visit{' '}
             <a
               href="https://www.seai.ie/grants/home-energy-grants/solar-pv/"

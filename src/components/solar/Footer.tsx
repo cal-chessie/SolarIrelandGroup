@@ -197,12 +197,12 @@ function ContactCard({
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] text-gray-600 uppercase tracking-wider">{label}</p>
+        <p className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</p>
         <p className="text-sm text-gray-300 font-medium group-hover:text-white transition-colors truncate text-ellipsis" dir="ltr">
           {value}
         </p>
       </div>
-      <ExternalLink className="w-3.5 h-3.5 text-gray-700 group-hover:text-gray-400 transition-colors shrink-0" />
+      <ExternalLink className="w-3.5 h-3.5 text-gray-500 group-hover:text-gray-400 transition-colors shrink-0" />
     </motion.a>
   );
 }
@@ -294,7 +294,7 @@ export default function Footer() {
                 Solar Ireland
               </span>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-sm mb-6">
+            <p className="text-sm text-gray-400 leading-relaxed max-w-sm mb-6">
               SEAI-registered solar panel installers covering all 32 counties.
               We provide honest advice, quality installations, and genuine
               aftercare — no pressure, no hard sell, no jargon.
@@ -319,15 +319,15 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400 mb-4">
               Quick Links
-            </h4>
+            </h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="group flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-400 transition-colors py-1"
+                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors py-1"
                   >
                     <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
                     {link.label}
@@ -338,9 +338,9 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400 mb-4">
               What We Do
-            </h4>
+            </h3>
             <ul className="space-y-2.5">
               {services.map((service) => (
                 <li
@@ -350,7 +350,7 @@ export default function Footer() {
                   <p className="text-sm text-gray-400 group-hover:text-white transition-colors font-medium">
                     {service.label}
                   </p>
-                  <p className="text-[11px] text-gray-700 group-hover:text-gray-500 transition-colors mt-0.5">
+                  <p className="text-[11px] text-gray-400 group-hover:text-gray-400 transition-colors mt-0.5">
                     {service.desc}
                   </p>
                 </li>
@@ -359,9 +359,9 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400 mb-4">
               Get in Touch
-            </h4>
+            </h3>
             <div className="space-y-2.5">
               <ContactCard
                 icon={MessageCircle}
@@ -388,8 +388,8 @@ export default function Footer() {
 
             <div className="mt-4 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-3.5 h-3.5 text-gray-500" />
-                <p className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold">
+                <Clock className="w-3.5 h-3.5 text-gray-400" />
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
                   Working Hours
                 </p>
               </div>
@@ -399,7 +399,7 @@ export default function Footer() {
                 <span className="text-gray-300 font-medium">Sat:</span> 9am–2pm
                 <span className="mx-1.5 text-white/[0.08]">|</span>
                 <span className="text-gray-300 font-medium">Sun:</span>{' '}
-                <span className="text-gray-500">Closed</span>
+                <span className="text-gray-400">Closed</span>
               </p>
             </div>
           </div>
@@ -414,7 +414,7 @@ export default function Footer() {
         >
           <div className="flex items-center gap-2 mb-5">
             <MapPin className="w-4 h-4 text-amber-400/50" />
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
               Service Areas
             </span>
           </div>
@@ -427,7 +427,7 @@ export default function Footer() {
                 <div className="w-2 h-2 rounded-full bg-amber-400/50 mt-1.5 shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-white">{area.province}</p>
-                  <p className="text-[11px] text-gray-600 mt-0.5 leading-relaxed">
+                  <p className="text-[11px] text-gray-400 mt-0.5 leading-relaxed">
                     {area.counties}
                   </p>
                 </div>
@@ -445,7 +445,7 @@ export default function Footer() {
         >
           <div className="flex items-center gap-2 mb-5">
             <ShieldCheck className="w-4 h-4 text-amber-400/50" />
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
               Certifications &amp; Compliance
             </span>
           </div>
@@ -459,7 +459,7 @@ export default function Footer() {
         <TrustBadgesRow />
 
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-700">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-400">
             <span>&copy; {new Date().getFullYear()} Solar Ireland. All rights reserved.</span>
             <span className="hidden sm:inline text-white/[0.06]">·</span>
             <span>Company Reg: TBC</span>
@@ -470,19 +470,19 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <a
               href="/privacy"
-              className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors"
+              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
             >
               Privacy Policy
             </a>
             <a
               href="/terms"
-              className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors"
+              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
             >
               Terms &amp; Conditions
             </a>
             <a
               href="/cookies"
-              className="text-[10px] sm:text-[11px] text-gray-700 hover:text-gray-400 transition-colors"
+              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
             >
               Cookie Policy
             </a>
