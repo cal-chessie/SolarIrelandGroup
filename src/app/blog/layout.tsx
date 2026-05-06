@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import { articles } from '@/lib/blog-data';
 
 export const metadata: Metadata = {
-  title: 'Solar Energy Blog',
+  title: 'Solar Energy Blog | Tips, Guides, Grants & News for Irish Homeowners',
   description:
-    'Honest, jargon-free advice about solar panels in Ireland. From SEAI grant guides and cost breakdowns to county spotlights and technology updates — everything you need to go solar.',
+    'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
   openGraph: {
-    title: 'Solar Energy Blog | Solar Ireland',
+    title: 'Solar Energy Blog | Tips, Guides, Grants & News',
     description:
-      'Expert guides on solar panels in Ireland — grants, costs, savings, and installation tips from SEAI-registered installers.',
+      'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
     url: 'https://solarireland.org/blog',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Energy Blog | Solar Ireland',
+    title: 'Solar Ireland Blog | Solar Tips, Guides & News',
     description:
-      'Expert guides on solar panels in Ireland — grants, costs, savings, and installation tips.',
+      'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators.',
     images: ['https://solarireland.org/og-blog.png'],
   },
   alternates: {

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
+  title: 'Contact Solar Ireland | Free Survey, WhatsApp, Phone & Email',
   description:
-    'Get in touch with Solar Ireland — WhatsApp, phone, email, or our contact form. SEAI-registered solar installers covering all 32 counties. Free home surveys available.',
+    'Get in touch with Solar Ireland. WhatsApp, phone, email, or fill in our contact form. Free no-obligation solar survey across all 32 counties.',
   openGraph: {
-    title: 'Contact Us | Solar Ireland',
+    title: 'Contact Solar Ireland | Free Survey, WhatsApp, Phone & Email',
     description:
-      'Reach Solar Ireland by WhatsApp, phone, or email. Free home surveys and no-obligation quotes for solar panel installation.',
+      'Get in touch with Solar Ireland. WhatsApp, phone, email, or contact form. Free no-obligation solar survey.',
     url: 'https://solarireland.org/contact',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Us | Solar Ireland',
+    title: 'Contact Solar Ireland | Free Solar Survey',
     description:
-      'Reach Solar Ireland by WhatsApp, phone, or email. Free home surveys available.',
+      'WhatsApp, phone, email, or contact form. Free solar survey.',
     images: ['https://solarireland.org/og-contact.png'],
   },
   alternates: {

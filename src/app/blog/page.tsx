@@ -1,26 +1,4 @@
-import type { Metadata } from 'next';
 import BlogClient from './BlogClient';
-
-export const metadata: Metadata = {
-  title: 'Solar Energy Blog | Tips, Guides, Grants & News for Irish Homeowners',
-  description: 'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
-  alternates: {
-    canonical: 'https://solarireland.org/blog',
-  },
-  openGraph: {
-    title: 'Solar Energy Blog | Tips, Guides, Grants & News',
-    description: 'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
-    url: 'https://solarireland.org/blog',
-    type: 'website',
-    siteName: 'Solar Ireland',
-    locale: 'en_IE',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Solar Ireland Blog | Solar Tips, Guides & News',
-    description: 'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators.',
-  },
-};
 
 const blogSchema = {
   '@context': 'https://schema.org',
@@ -98,24 +76,6 @@ const blogSchema = {
       about: {
         '@id': 'https://solarireland.org/#business',
       },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': 'https://solarireland.org/blog#breadcrumb',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: 'Home',
-          item: 'https://solarireland.org',
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: 'Blog',
-          item: 'https://solarireland.org/blog',
-        },
-      ],
     },
   ],
 };

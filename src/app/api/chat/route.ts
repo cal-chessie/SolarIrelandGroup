@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import ZAI from 'z-ai-web-dev-sdk';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-const WA_URL = `https://wa.me/${SOLAR_DATA.provider.whatsapp}`;
+const WA_URL = buildWhatsAppUrl({ source: 'chat-ai-escalation' });
 
 const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
 

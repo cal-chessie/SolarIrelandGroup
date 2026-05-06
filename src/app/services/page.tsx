@@ -1,29 +1,4 @@
-import type { Metadata } from 'next';
 import ServicesClient from './ServicesClient';
-
-export const metadata: Metadata = {
-  title: 'Solar Panel Services Ireland | PV, Battery & EV Charging Installation',
-  description:
-    'Complete solar panel services in Ireland — residential PV installation from €4,500, battery storage, EV charger setup, SEAI grant handling, BER assessments & free surveys. All 32 counties.',
-  alternates: {
-    canonical: 'https://solarireland.org/services',
-  },
-  openGraph: {
-    title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
-    description:
-      'Residential solar PV from €4,500, battery storage, EV charging. SEAI grant handled. Serving all 32 counties with 10-year workmanship warranty.',
-    url: 'https://solarireland.org/services',
-    type: 'website',
-    siteName: 'Solar Ireland',
-    locale: 'en_IE',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
-    description:
-      'Residential solar PV from €4,500, battery storage, EV charging. SEAI grant handled. Serving all 32 counties.',
-  },
-};
 
 const servicesSchema = {
   '@context': 'https://schema.org',
@@ -109,24 +84,6 @@ const servicesSchema = {
       about: {
         '@id': 'https://solarireland.org/#business',
       },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': 'https://solarireland.org/services#breadcrumb',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: 'Home',
-          item: 'https://solarireland.org',
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: 'Services',
-          item: 'https://solarireland.org/services',
-        },
-      ],
     },
   ],
 };

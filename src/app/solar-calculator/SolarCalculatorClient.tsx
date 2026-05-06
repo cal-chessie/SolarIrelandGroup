@@ -267,7 +267,7 @@ function FinalCTA() {
                 source: 'calculator-page-cta',
                 monthlyBill: 160,
                 homeType: 'Semi-Detached',
-                annualSaving: 1100,
+                annualSaving: 1400,
                 paybackYears: 5,
                 total25yrSaving: 48000,
                 recommendedSystem: 5.5,

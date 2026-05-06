@@ -124,7 +124,7 @@ function FAQSchema() {
         name: 'How much can I save with solar panels in Ireland?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Most Irish households save between €800 and €1,400 per year with solar panels. A typical 4kWp system on a semi-detached home with a €160/month electricity bill can save around €1,100 annually, including €200-€400 in Clean Export Guarantee earnings. Savings depend on your electricity usage, roof orientation, and self-consumption rate.',
+          text: 'Most Irish households save between €800 and €1,400 per year with solar panels. A typical 4kWp system on a semi-detached home with a €160/month electricity bill can save around €1,400 annually, including €200-€400 in Clean Export Guarantee earnings. Savings depend on your electricity usage, roof orientation, and self-consumption rate.',
         },
       },
       {

@@ -280,7 +280,7 @@ export default function BookSurveyClient() {
       (formData.notes ? `📝 Notes: ${formData.notes}\n` : '')
     );
 
-    window.open(`https://wa.me/${SOLAR_DATA.provider.whatsapp}?text=${message}`, '_blank');
+    window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);

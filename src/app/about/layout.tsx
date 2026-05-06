@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'About Solar Ireland | Our Story, Team & Certifications',
   description:
-    'Meet the Solar Ireland team — SEAI-registered solar panel installers serving all 32 counties. Learn our story, meet the team, and discover why 200+ Irish homeowners trust us.',
+    'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
   openGraph: {
-    title: 'About Us | Solar Ireland',
+    title: 'About Solar Ireland | Our Story, Team & Certifications',
     description:
-      'SEAI-registered solar panel installers serving all 32 counties of Ireland. Honest advice, quality installations, and genuine aftercare.',
+      'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
     url: 'https://solarireland.org/about',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Us | Solar Ireland',
+    title: 'About Solar Ireland | Our Story, Team & Certifications',
     description:
-      'SEAI-registered solar panel installers serving all 32 counties of Ireland.',
+      'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
     images: ['https://solarireland.org/og-about.png'],
   },
   alternates: {

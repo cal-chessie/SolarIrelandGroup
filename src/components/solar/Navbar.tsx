@@ -521,7 +521,6 @@ function MobileMenu({
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileSearch, setMobileSearch] = useState('');
   const activeSection = useActiveSection();
   const pathname = usePathname();
 

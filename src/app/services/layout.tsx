@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Solar Panel Services',
+  title: 'Solar Panel Services Ireland | PV, Battery & EV Charging Installation',
   description:
-    'Full-service solar panel installation across Ireland. Solar PV, battery storage, EV charger installation, SEAI grant assistance, BER assessment, and ongoing maintenance.',
+    'Complete solar panel services in Ireland — residential PV installation from €4,500, battery storage, EV charger setup, SEAI grant handling, BER assessments & free surveys. All 32 counties.',
   openGraph: {
-    title: 'Solar Panel Services Ireland | Solar Ireland',
+    title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
-      'From residential solar PV and battery storage to EV charging — end-to-end clean energy solutions for Irish homes. Prices from €4,500.',
+      'Residential solar PV from €4,500, battery storage, EV charging. SEAI grant handled. Serving all 32 counties with 10-year workmanship warranty.',
     url: 'https://solarireland.org/services',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Panel Services Ireland | Solar Ireland',
+    title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
-      'Solar PV, battery storage, EV charging — end-to-end clean energy for Irish homes.',
+      'Residential solar PV from €4,500, battery storage, EV charging. SEAI grant handled. Serving all 32 counties.',
     images: ['https://solarireland.org/og-services.png'],
   },
   alternates: {

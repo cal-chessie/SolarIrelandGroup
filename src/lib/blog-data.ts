@@ -1033,7 +1033,7 @@ export const articles: Article[] = [
       ]},
       { type: 'paragraph', text: 'This means that if you start the process in early February, you could have your panels installed and generating by late April, with the grant payment arriving by early July. The total end-to-end timeline is approximately 5 months, which is why starting early in the year is so advantageous.' },
       { type: 'heading', level: 2, text: 'The Cost of Waiting' },
-      { type: 'paragraph', text: 'Every month you delay installing solar panels is a month of free electricity you are not getting. With the average Irish household paying approximately €0.40/kWh for electricity, even a modest winter month of 100 kWh generation would save you €40. Over a full year of waiting, that is €1,100 in savings you have permanently lost — not borrowed, but lost forever.' },
+      { type: 'paragraph', text: 'Every month you delay installing solar panels is a month of free electricity you are not getting. With the average Irish household paying approximately €0.40/kWh for electricity, even a modest winter month of 100 kWh generation would save you €40. Over a full year of waiting, that is €1,400 in savings you have permanently lost — not borrowed, but lost forever.' },
       { type: 'callout', variant: 'tip', title: 'Stop Waiting, Start Saving', body: 'The best time to install solar panels was last year. The second best time is today. Whatever month it is, starting the process now means your system will be generating sooner. Every day of delay is a day of missed savings.' },
       { type: 'divider' },
       { type: 'cta', text: 'Start Your Solar Journey Today — Get a Free Quote', href: '/#calculator' },
