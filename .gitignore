@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
 
 # dependencies
 node_modules
@@ -15,6 +15,7 @@ node_modules
 
 # next.js
 /.next/
+/.next-built/
 /out/
 
 # production
@@ -23,32 +24,76 @@ node_modules
 # misc
 .DS_Store
 *.pem
+--timeout
+.stats
+.config
+.accesslog
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
 
 # vercel
 .vercel
 
+# build cache
+/.next-built/
+
+# generated downloads
+/download/
+
+# AI skills (not part of the app)
+/skills/
+
+# dev scripts & server files (not part of the app)
+.zscripts/
+*.sh
+Caddyfile
+ecosystem.config.js
+server.js
+daemon-server.js
+proxy-server.ts
+proxy-server.cjs
+proxy.js
+_proxy-server.js
+run-server.js
+search_solar.cjs
+search_solar.mjs
+
+# generated docs & reports
+SUPABASE_GUIDE.md
+generate-arch-doc.js
+generate-docx.js
+generate_audit.py
+worklog.md
+worklog-update.md
+
+# databases
+/db/
+*.db
+*.db-shm
+*.db-wal
+prisma/
+
+# test results
+/test-results/
+examples/
+mini-services/
+
+# lockfiles (use package-lock.json)
+bun.lock
 
 # typescript
-*.tsbuildinfo
 next-env.d.ts
+*.tsbuildinfo
+
+# local config
 local-*
 .claude
 .z-ai-config
-*.log
-dev.log
-dev.out.log
-test
-prompt
-
-server.log
-# Skills directory
-/skills/
