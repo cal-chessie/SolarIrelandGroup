@@ -52,3 +52,13 @@ prompt
 server.log
 # Skills directory
 /skills/
+db/
+
+# Sandbox/export junk — do not commit
+tarextract/
+extracted/
+*.tar
+SolarIrelandGroup-main.zip
+solar-ireland-final.LANDINGhtml.html
+--timeout
+*.bak

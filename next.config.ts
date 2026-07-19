@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: [
-    "preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
-  ],
-
+  // TODO: remove this once `npx tsc --noEmit` passes — it hides real type errors.
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -45,7 +42,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://*.space.z.ai https://preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
+            value: "frame-ancestors 'self'",
           },
           {
             key: "X-XSS-Protection",
@@ -79,64 +76,11 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // HTML pages — never cache so updates always show immediately
-        source: "/((?!api|_next|favicon|robots|sitemap|manifest).*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store, must-revalidate, proxy-revalidate",
-          },
-          {
-            key: "Pragma",
-            value: "no-cache",
-          },
-          {
-            key: "Expires",
-            value: "0",
-          },
-        ],
-      },
-      {
-        // Next.js Image optimizer — never cache so new images show immediately
-        source: "/_next/image/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store, must-revalidate, proxy-revalidate",
-          },
-          {
-            key: "Pragma",
-            value: "no-cache",
-          },
-          {
-            key: "Expires",
-            value: "0",
-          },
-        ],
-      },
-      {
         source: "/api/:path*",
         headers: [
           {
             key: "Cache-Control",
             value: "no-store, no-cache, must-revalidate, proxy-revalidate",
-          },
-          {
-            key: "Pragma",
-            value: "no-cache",
-          },
-          {
-            key: "Expires",
-            value: "0",
-          },
-        ],
-      },
-      {
-        source: "/_next/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=300, must-revalidate",
           },
         ],
       },

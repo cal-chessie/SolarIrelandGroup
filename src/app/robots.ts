@@ -52,25 +52,29 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "WhatsApp",
         allow: "/",
       },
+      // AI assistants & answer engines — explicitly welcome so the site can be
+      // read, cited, and recommended (AEO/GEO). Blocking these removes you from
+      // ChatGPT, Claude, Perplexity, Gemini, and Copilot answers entirely.
       {
-        userAgent: "GPTBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "ChatGPT-User",
-        disallow: "/",
-      },
-      {
-        userAgent: "CCBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "Google-Extended",
-        disallow: "/",
-      },
-      {
-        userAgent: "anthropic-ai",
-        disallow: "/",
+        userAgent: [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-Web",
+          "anthropic-ai",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Google-Extended",
+          "Applebot",
+          "Applebot-Extended",
+          "Amazonbot",
+          "meta-externalagent",
+          "CCBot",
+          "Bytespider",
+        ],
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
       },
       {
         userAgent: "*",

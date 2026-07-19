@@ -1,5 +1,39 @@
 import { NextResponse } from 'next/server';
-import ZAI from 'z-ai-web-dev-sdk';
+
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
+type ChatMessage = { role: 'system' | 'user' | 'assistant'; content: string };
+
+async function openaiChat(messages: ChatMessage[]): Promise<string | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    console.error('Chat API: OPENAI_API_KEY is not set');
+    return null;
+  }
+
+  const res = await fetch(OPENAI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      messages,
+      max_tokens: 500,
+      temperature: 0.7,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error('Chat API: OpenAI error', res.status, await res.text());
+    return null;
+  }
+
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content ?? null;
+}
 
 const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
 
@@ -94,10 +128,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Please send a message.' }, { status: 400 });
     }
 
-    const zai = await ZAI.create();
-
-    const chatMessages = [
-      { role: 'system' as const, content: SYSTEM_PROMPT },
+    const chatMessages: ChatMessage[] = [
+      { role: 'system', content: SYSTEM_PROMPT },
       ...messages.map((m: { role: string; content: string }) => ({
         role: m.role as 'user' | 'assistant',
         content: m.content,
@@ -105,14 +137,8 @@ export async function POST(request: Request) {
     ];
 
     if (stream) {
-      const completion = await zai.chat.completions.create({
-        messages: chatMessages,
-        max_tokens: 500,
-        temperature: 0.7,
-      });
-
       const content =
-        completion.choices?.[0]?.message?.content ||
+        (await openaiChat(chatMessages)) ||
         'Sorry, I couldn\'t generate a response. Please try again.';
 
       const CHUNK_SIZE = 3;
@@ -132,14 +158,8 @@ export async function POST(request: Request) {
       });
     }
 
-    const completion = await zai.chat.completions.create({
-      messages: chatMessages,
-      max_tokens: 500,
-      temperature: 0.7,
-    });
-
     const messageContent =
-      completion.choices?.[0]?.message?.content ||
+      (await openaiChat(chatMessages)) ||
       'Sorry, I couldn\'t generate a response. Please try again or reach us on [WhatsApp](https://wa.me/353873958424).';
 
     return NextResponse.json({ message: messageContent });

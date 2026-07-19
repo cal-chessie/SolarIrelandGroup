@@ -1,0 +1,19 @@
+# Solar Ireland
+
+> SEAI-registered solar panel installation company serving the Republic of Ireland. Free surveys, honest quotes, SEAI grant handling (€1,800), typical installation in one day. Contact: cal@solarireland.com, WhatsApp +353 87 395 8424.
+
+Solar Ireland installs residential solar PV and battery storage across all 26 counties. Typical 4 kWp system: €6,000–€8,000 before the €1,800 SEAI grant. Payback is typically 5–8 years. Export tariff €0.21/kWh under the microgeneration support scheme. All work by RECI-registered electricians to NSAI I.S. EN 50559 and ET101 standards.
+
+## Key pages
+
+- [Home](https://solarireland.com/): Overview, savings examples, free bill analyser
+- [Solar Calculator](https://solarireland.com/solar-calculator): Instant savings estimate from your electricity bill
+- [Book a Survey](https://solarireland.com/book-survey): Free, no-obligation site survey booking
+- [Services](https://solarireland.com/services): Solar PV, battery storage, EV chargers, grant handling
+- [Counties](https://solarireland.com/counties): Coverage across the Republic of Ireland
+- [Financing](https://solarireland.com/financing): Payment and finance options
+- [Contact](https://solarireland.com/contact): Get in touch
+
+## Guides (blog)
+
+- [Blog index](https://solarireland.com/blog): 17 in-depth guides on SEAI grants, costs, battery storage, planning permission, roof orientation, winter performance, EV charging, and county-specific advice

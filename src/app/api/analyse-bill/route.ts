@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import ZAI from 'z-ai-web-dev-sdk';
+
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_VISION_MODEL = process.env.OPENAI_VISION_MODEL || process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
 const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; standingCharge: number; exportRate: number }> = {
   'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
@@ -130,10 +132,19 @@ export async function POST(request: Request) {
       const base64 = buffer.toString('base64');
       const mimeType = file.type || 'image/jpeg';
 
-      const zai = await ZAI.create();
+      const apiKey = process.env.OPENAI_API_KEY;
+      if (!apiKey) {
+        throw new Error('Bill photo analysis is temporarily unavailable. Please enter your details manually.');
+      }
 
-      const visionResponse = await zai.chat.completions.createVision({
-        model: 'default',
+      const visionRes = await fetch(OPENAI_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+        model: OPENAI_VISION_MODEL,
         messages: [
           {
             role: 'user',
@@ -167,9 +178,16 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
             ],
           },
         ],
-        thinking: { type: 'disabled' },
+        max_tokens: 500,
+        }),
       });
 
+      if (!visionRes.ok) {
+        console.error('Bill analysis: OpenAI error', visionRes.status, await visionRes.text());
+        throw new Error('Could not read the bill image right now. Please try again or enter details manually.');
+      }
+
+      const visionResponse = await visionRes.json();
       const content = visionResponse.choices?.[0]?.message?.content || '';
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {

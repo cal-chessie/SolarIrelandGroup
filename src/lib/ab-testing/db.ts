@@ -1,12 +1,20 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
-const DB_PATH = path.join(process.cwd(), 'db', 'custom.db');
+// On Vercel/serverless the project directory is read-only — use /tmp instead.
+// NOTE: /tmp is ephemeral per lambda instance, so A/B stats won't persist there.
+// Point AB_DB_DIR at a persistent disk (or migrate to a hosted DB) for real data.
+const DB_DIR =
+  process.env.AB_DB_DIR ||
+  (process.env.VERCEL ? path.join('/tmp', 'ab-testing') : path.join(process.cwd(), 'db'));
+const DB_PATH = path.join(DB_DIR, 'custom.db');
 
 let _db: Database.Database | null = null;
 
 function getDb(): Database.Database {
   if (!_db) {
+    fs.mkdirSync(DB_DIR, { recursive: true });
     _db = new Database(DB_PATH);
     _db.pragma('journal_mode = WAL');
     _db.pragma('busy_timeout = 5000');
