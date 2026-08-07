@@ -5,7 +5,6 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import FAQ from '@/components/solar/FAQ';
-import SolarWidget from '@/components/solar/SolarWidget';
 import {
   Zap,
   Euro,
@@ -22,8 +21,32 @@ import {
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
-// The two native calculators (QuickSavingsCalculator + BillAnalyser) are replaced
-// by the single AISolar-powered <SolarWidget /> — bill-first, wired to lead capture.
+const QuickSavingsCalculator = dynamic(
+  () => import('@/components/solar/QuickSavingsCalculator'),
+  {
+    loading: () => (
+      <section className="py-20 px-4 bg-[#0a0a0a]">
+        <div className="max-w-3xl mx-auto">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
+          </div>
+        </div>
+      </section>
+    ),
+  }
+);
+
+const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
+  loading: () => (
+    <section className="py-20 px-4 bg-[#0a0a0a]">
+      <div className="max-w-5xl mx-auto">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
+        </div>
+      </div>
+    </section>
+  ),
+});
 
 
 function CalculatorHero() {
@@ -279,7 +302,9 @@ export default function SolarCalculatorClient() {
       <main>
         <CalculatorHero />
         <TrustBadges />
-        <SolarWidget />
+        <QuickSavingsCalculator />
+        <CalculatorExplainer />
+        <BillAnalyser />
         <DataTransparency />
         <FAQ />
         <FinalCTA />
