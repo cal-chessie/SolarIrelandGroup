@@ -21,7 +21,8 @@ import { trackExitIntent } from '@/lib/analytics';
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
 const PAGE_VISITS_KEY = 'solar-ireland-page-visits';
-const MIN_TIME_ON_PAGE_MS = 30_000;
+const MIN_TIME_ON_PAGE_MS = 25_000; // hard floor before any trigger fires
+const IDLE_FALLBACK_MS = 60_000; // auto-show only after a full minute
 
 
 export default function ExitIntent() {
@@ -33,9 +34,9 @@ export default function ExitIntent() {
 
   const trigger = useCallback(() => {
     if (hasTriggered.current) return;
-    const pageVisits = parseInt(sessionStorage.getItem(PAGE_VISITS_KEY) || '0', 10);
     const timeOnPage = Date.now() - pageLoadTimeRef.current;
-    if (pageVisits < 2 && timeOnPage < MIN_TIME_ON_PAGE_MS) return;
+    // Never fire in the first 25s, regardless of how many pages were visited.
+    if (timeOnPage < MIN_TIME_ON_PAGE_MS) return;
     hasTriggered.current = true;
     setTimeout(() => setShow(true), 350);
   }, []);
@@ -71,7 +72,7 @@ export default function ExitIntent() {
     const onScroll = () => {
       const st = window.scrollY;
       if (st > maxScroll) maxScroll = st;
-      if (maxScroll > 400 && st < 100) {
+      if (maxScroll > 900 && st < 150) {
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
           maxScroll = 0;
@@ -81,7 +82,7 @@ export default function ExitIntent() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    const idleTimer = setTimeout(trigger, MIN_TIME_ON_PAGE_MS);
+    const idleTimer = setTimeout(trigger, IDLE_FALLBACK_MS);
 
     return () => {
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
@@ -138,7 +139,7 @@ export default function ExitIntent() {
 
       <div
         ref={cardRef}
-        className="exit-intent-card relative w-full max-w-[480px] rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
+        className="exit-intent-card relative w-full max-w-[480px] max-h-[92dvh] flex flex-col rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
       >
         <div className="relative h-1 w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
@@ -160,16 +161,16 @@ export default function ExitIntent() {
           </div>
           <button
             onClick={() => { trackExitIntent('dismiss'); close(); }}
-            className="exit-intent-el exit-intent-el-0 w-7 h-7 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all duration-200"
+            className="exit-intent-el exit-intent-el-0 w-9 h-9 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
             aria-label="Close"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
-        <div className="relative p-6 sm:p-8 pt-4">
+        <div className="relative p-6 sm:p-7 pt-4 overflow-y-auto flex-1 min-h-0">
           <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -180,7 +181,7 @@ export default function ExitIntent() {
             </span>
           </div>
 
-          <div className="exit-intent-el exit-intent-el-2 mb-6">
+          <div className="exit-intent-el exit-intent-el-2 mb-4">
             <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
               Wait - don&apos;t leave{' '}
               <span className="text-gradient">€1,800</span>
@@ -194,8 +195,8 @@ export default function ExitIntent() {
             </p>
           </div>
 
-          <div className="space-y-2.5 mb-6">
-            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+          <div className="space-y-2 mb-4">
+            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-500/[0.05] border border-amber-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
               </div>
@@ -210,7 +211,7 @@ export default function ExitIntent() {
               </div>
             </div>
 
-            <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-4 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+            <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Users className="w-[18px] h-[18px] text-green-400" />
               </div>
@@ -226,7 +227,7 @@ export default function ExitIntent() {
             </div>
           </div>
 
-          <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-6 flex-wrap">
+          <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-5 flex-wrap">
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
               { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
@@ -240,13 +241,6 @@ export default function ExitIntent() {
                 <span className="text-[10px] text-gray-400 font-medium">{label}</span>
               </div>
             ))}
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-6 flex items-center justify-center gap-1.5 mb-4">
-            <Clock className="w-3 h-3 text-amber-400/60" />
-            <span className="text-[11px] text-gray-400">
-              Limited availability this month
-            </span>
           </div>
 
           <div className="exit-intent-el exit-intent-el-7">
