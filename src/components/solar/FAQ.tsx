@@ -373,58 +373,16 @@ export default function FAQ() {
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "@id": "https://solarirelandgroup.ie/#faq",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "How much do solar panels cost in Ireland in 2026?",
-              acceptedAnswer: { "@type": "Answer", text: "A typical residential solar PV system costs between €4,500 and €7,500 before the €1,800 SEAI grant (Republic of Ireland only). After the grant, you are looking at approximately €2,700 to €5,700 out of pocket." },
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              // Strip the inline HTML so the schema answer is the plain
+              // text the page actually shows (Google requires a match).
+              text: f.answer.replace(/<[^>]+>/g, "").trim(),
             },
-            {
-              "@type": "Question",
-              name: "How much could I save with solar panels?",
-              acceptedAnswer: { "@type": "Answer", text: "A typical 3-bed semi-detached home with a 4 kWp system can save between €800 and €1,400 per year on electricity bills. Over 25 years, total savings typically range from €30,000 to €50,000." },
-            },
-            {
-              "@type": "Question",
-              name: "How long is the solar panel payback period?",
-              acceptedAnswer: { "@type": "Answer", text: "Most homeowners see a full payback within 5 to 7 years after the €1,800 SEAI grant (Republic of Ireland). After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty." },
-            },
-            {
-              "@type": "Question",
-              name: "What is the SEAI grant and am I eligible?",
-              acceptedAnswer: { "@type": "Answer", text: "The SEAI offers a Solar PV grant of €1,800 towards the cost of installing solar panels. This grant is available in the Republic of Ireland (26 counties) only. To be eligible, you must be the owner-occupier of a home built before 2021 with a BER rating of C3 or lower." },
-            },
-            {
-              "@type": "Question",
-              name: "How long does solar panel installation take?",
-              acceptedAnswer: { "@type": "Answer", text: "The physical installation is completed in a single day. Scaffolding goes up first thing, our RECI-registered team mounts and wires the panels, and the system is fully commissioned before we leave." },
-            },
-            {
-              "@type": "Question",
-              name: "Do I need planning permission for solar panels in Ireland?",
-              acceptedAnswer: { "@type": "Answer", text: "In the vast majority of cases, no. Solar panels are considered permitted development. Panels must not extend more than 50cm from the roof surface, and total area must not exceed 12 square metres." },
-            },
-            {
-              "@type": "Question",
-              name: "What about cloudy days and winter in Ireland?",
-              acceptedAnswer: { "@type": "Answer", text: "Solar panels still generate on cloudy days - typically 10-25% of rated output. Winter production is lower but summer surplus offsets the winter deficit." },
-            },
-            {
-              "@type": "Question",
-              name: "Do you offer battery storage in Ireland?",
-              acceptedAnswer: { "@type": "Answer", text: "Yes. A battery stores excess daytime generation for evening use, increasing self-consumption to 85%+. A typical 5 kWh battery costs around €4,000-€5,000 installed." },
-            },
-            {
-              "@type": "Question",
-              name: "What happens to electricity I don't use?",
-              acceptedAnswer: { "@type": "Answer", text: "Excess electricity is automatically exported to the grid under the Clean Export Guarantee scheme, earning you €0.21/kWh from your supplier via smart meter credit." },
-            },
-            {
-              "@type": "Question",
-              name: "Will solar panels work on my roof?",
-              acceptedAnswer: { "@type": "Answer", text: "Solar panels work on most Irish roof types. South-facing at 30-40° pitch is optimal, but east/west roofs still produce 80-85% of south-facing output." },
-            },
-          ],
+          })),
         }),
       }}
     />
