@@ -112,44 +112,6 @@ function getArticleSchema(slug: string) {
   };
 }
 
-function getFaqSchema(slug: string) {
-  const article = getArticleBySlug(slug);
-  if (!article) return null;
-
-  const qaPairs: { question: string; answer: string }[] = [];
-  for (let i = 0; i < article.content.length; i++) {
-    const section = article.content[i];
-    if (section.type === 'heading' && section.level === 2 && qaPairs.length < 5) {
-      // Look for the next paragraph after this heading
-      for (let j = i + 1; j < Math.min(i + 3, article.content.length); j++) {
-        if (article.content[j].type === 'paragraph') {
-          qaPairs.push({
-            question: section.text,
-            answer: (article.content[j] as { type: 'paragraph'; text: string }).text.slice(0, 300), // First 300 chars
-          });
-          break;
-        }
-      }
-    }
-  }
-
-  if (qaPairs.length === 0) return null;
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    '@id': `${SITE_URL}/blog/${slug}#faq`,
-    mainEntity: qaPairs.map(qa => ({
-      '@type': 'Question',
-      name: qa.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: qa.answer,
-      },
-    })),
-  };
-}
-
 function getBreadcrumbSchema(slug: string) {
   const article = getArticleBySlug(slug);
   if (!article) return null;
@@ -168,7 +130,6 @@ function getBreadcrumbSchema(slug: string) {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const articleSchema = getArticleSchema(slug);
-  const faqSchema = getFaqSchema(slug);
   const breadcrumbSchema = getBreadcrumbSchema(slug);
 
   return (
@@ -177,12 +138,6 @@ export default async function BlogPostPage({ params }: Props) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-        />
-      )}
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
       {breadcrumbSchema && (
