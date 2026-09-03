@@ -109,11 +109,16 @@ export const metadata: Metadata = {
 
   icons: {
     icon: [
-      { url: "/logo-favicon.png", sizes: "32x32", type: "image/png" },
-      { url: "/bumblebee-favicon.png", sizes: "16x16", type: "image/png" },
+      // Browser tab keeps the bee: browsers pick the 16/32px icons for tabs.
+      { url: "/bumblebee-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/bumblebee-favicon.png", sizes: "32x32", type: "image/png" },
+      // Google Search prefers a >=48px square icon, so it picks the Solar
+      // Ireland logo (the gold ring on a dark square) for the result listing.
+      { url: "/logo-icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/logo-icon-96.png", sizes: "96x96", type: "image/png" },
     ],
     apple: [
-      { url: "/logo-favicon.png", sizes: "180x180", type: "image/png" },
+      { url: "/logo-icon-180.png", sizes: "180x180", type: "image/png" },
     ],
     other: [
       {
@@ -184,7 +189,7 @@ export const metadata: Metadata = {
     "apple-mobile-web-app-title": "Solar Ireland",
     "application-name": "Solar Ireland",
     "msapplication-TileColor": "#FACC15",
-    "msapplication-TileImage": "/logo-favicon.png",
+    "msapplication-TileImage": "/logo-icon-96.png",
   },
 };
 
