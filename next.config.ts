@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
 
-  allowedDevOrigins: [
-    "preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
-  ],
-
   reactStrictMode: true,
 
   /* ═══════════════════════════════════════════════════════════════
@@ -47,7 +43,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://*.space.z.ai https://preview-chat-b3724cce-5ce4-4d0d-a5d2-c34f3e279f83.space.z.ai",
+            value: "frame-ancestors 'self'",
           },
           {
             key: "X-XSS-Protection",
