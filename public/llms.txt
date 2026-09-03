@@ -1,0 +1,25 @@
+# Solar Ireland (Solar Ireland Group)
+
+> SEAI-registered solar panel installer serving all 32 counties of Ireland. We install solar PV, battery storage, and EV chargers for homes, handle the full SEAI grant application, and offer a free AI-powered electricity bill analysis that reads your actual usage to estimate your savings.
+
+Solar Ireland is a solar installer based in the Republic of Ireland. Panels carry a 25-year manufacturer warranty and a 10-year installation warranty, and a standard residential system is installed in a single day by a RECI-registered team. Domestic solar has 0% VAT in Ireland, and the SEAI Solar PV grant is EUR 1,800 (Republic of Ireland: owner-occupier homes built before 2021, BER C3 or lower). We also handle the ESB Networks grid connection and the post-install BER assessment.
+
+## Key pages
+- [Home](https://solarirelandgroup.ie/): overview and the free AI bill analysis
+- [Services](https://solarirelandgroup.ie/services): solar PV, battery storage, and EV charging
+- [Solar calculator](https://solarirelandgroup.ie/solar-calculator): estimate annual savings, payback period, and 25-year return
+- [Financing](https://solarirelandgroup.ie/financing): ways to pay for a system
+- [Book a survey](https://solarirelandgroup.ie/book-survey): free, no-obligation home survey
+- [About](https://solarirelandgroup.ie/about): the team and certifications
+- [Blog](https://solarirelandgroup.ie/blog): SEAI grant guides, cost breakdowns, and county guides
+- [Contact](https://solarirelandgroup.ie/contact): get in touch
+
+## Pricing
+- [Pricing](https://solarirelandgroup.ie/pricing.md): system prices and the SEAI grant
+
+## Facts
+- Coverage: all 32 counties; the SEAI grant applies in the 26 Republic of Ireland counties
+- Certifications: SEAI-registered, RECI-registered electricians, wiring to I.S. 10101, ESB Microgeneration Support Scheme
+- The AI bill analysis reads the day and night usage split from your electricity bill; it does not read your roof from a photo or satellite
+- Export: excess generation is paid for by your electricity supplier under the Clean Export Guarantee
+- Contact: sales@solarirelandgroup.ie
