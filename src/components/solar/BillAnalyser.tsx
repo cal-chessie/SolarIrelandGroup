@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence } from '@/lib/motion';
+import { motion, AnimatePresence, usePrefersReducedMotion } from '@/lib/motion';
 import {
   Upload,
   Sparkles,
@@ -216,18 +216,6 @@ function SystemComparisonCards({ comparisons, recommended }: { comparisons: Syst
       })}
     </div>
   );
-}
-
-function usePrefersReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return prefersReduced;
 }
 
 function ScanningOverlay({ billPreview }: { billPreview: string | null }) {

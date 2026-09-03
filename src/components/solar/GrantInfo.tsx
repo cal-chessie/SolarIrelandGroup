@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from '@/lib/motion';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate, usePrefersReducedMotion } from '@/lib/motion';
 import {
   CheckCircle2,
   ExternalLink,
@@ -24,18 +24,6 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-
-function usePrefersReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return prefersReduced;
-}
 
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
