@@ -50,7 +50,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "X-XSS-Protection",
-            value: "1; mode=block",
+            value: "0",
           },
           {
             key: "Referrer-Policy",
@@ -131,6 +131,16 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=300, must-revalidate",
+          },
+        ],
+      },
+      {
+        // Content-hashed build assets are immutable; cache for a year.
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

@@ -313,7 +313,7 @@ export default function BillAnalyser() {
 
   const estimateUsage = (home: string, occ: string) => {
     const base: Record<string, number> = { 'Apartment': 2500, 'Terraced': 3500, 'Semi-detached': 4200, 'Detached': 5200, 'Bungalow': 4500 };
-    const mult = { '1': 0.7, '2': 0.85, '3': 1, '4': 1.2, '5': 1.4, '6': 1.6 };
+    const mult = { '1': 0.7, '2': 0.85, '3': 1, '4': 1.2, '5': 1.4, '6+': 1.6 };
     return Math.round((base[home] || 4200) * (mult[occ] || 1));
   };
 
@@ -397,11 +397,11 @@ export default function BillAnalyser() {
 
                 <div className="p-6 sm:p-8">
                   <div className="flex items-center justify-center gap-1 mb-8 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
-                    <button onClick={() => { setMode('upload'); reset(); }}
+                    <button onClick={() => { setMode('upload'); reset(); }} aria-pressed={mode === 'upload'}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'upload' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Camera className="w-4 h-4" /> Upload Bill
                     </button>
-                    <button onClick={() => { setMode('manual'); reset(); }}
+                    <button onClick={() => { setMode('manual'); reset(); }} aria-pressed={mode === 'manual'}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'manual' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Euro className="w-4 h-4" /> Enter Manually
                     </button>
@@ -509,7 +509,7 @@ export default function BillAnalyser() {
                         <label className="block text-sm text-gray-400 mb-3">How many people live in your home?</label>
                         <div className="flex gap-2">
                           {['1', '2', '3', '4', '5', '6+'].map(n => (
-                            <button key={n} onClick={() => setOccupants(n)}
+                            <button key={n} onClick={() => setOccupants(n)} aria-pressed={occupants === n}
                               className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all border ${occupants === n
                                 ? 'bg-amber-400/10 border-amber-400/30 text-amber-400'
                                 : 'bg-white/[0.02] border-white/[0.06] text-gray-500 hover:border-white/[0.12] hover:text-gray-300'
@@ -550,7 +550,7 @@ export default function BillAnalyser() {
                           <label className="block text-sm text-gray-400">Home Type</label>
                           <div className="flex flex-wrap gap-2">
                             {HOME_TYPES.map(t => (
-                              <button key={t} onClick={() => setHomeType(t)}
+                              <button key={t} onClick={() => setHomeType(t)} aria-pressed={homeType === t}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${homeType === t
                                   ? 'bg-amber-400/10 border-amber-400/30 text-amber-400'
                                   : 'bg-white/[0.02] border-white/[0.06] text-gray-500 hover:border-white/[0.12] hover:text-gray-300'
@@ -562,7 +562,7 @@ export default function BillAnalyser() {
                           <label className="block text-sm text-gray-400">Provider</label>
                           <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto">
                             {PROVIDERS.map(p => (
-                              <button key={p} onClick={() => setProvider(p)}
+                              <button key={p} onClick={() => setProvider(p)} aria-pressed={provider === p}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${provider === p
                                   ? (PROVIDER_COLORS[p] || 'bg-amber-400/10 border-amber-400/30 text-amber-400')
                                   : 'bg-white/[0.02] border-white/[0.06] text-gray-500 hover:border-white/[0.12] hover:text-gray-300'
@@ -617,7 +617,7 @@ export default function BillAnalyser() {
                 LOADING STATE (API processing)
                  */}
             {isAnalyzing && (!billPreviewOpen || analysisStep >= ANALYSIS_STEPS.length) && (
-              <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 sm:p-12">
+              <motion.div key="loading" role="status" aria-live="polite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 sm:p-12">
                 <div className="flex flex-col items-center">
                   <div className="mb-8"><BumblebeeMascot size="hero" /></div>
                   <div className="w-full max-w-md space-y-4">
@@ -643,7 +643,7 @@ export default function BillAnalyser() {
                 RESULTS STATE
                  */}
             {analysis && !isAnalyzing && (
-              <motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              <motion.div key="results" aria-live="polite" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
@@ -826,7 +826,7 @@ export default function BillAnalyser() {
           </AnimatePresence>
 
           {error && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            <motion.div role="alert" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               className="mx-6 mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}
             </motion.div>
