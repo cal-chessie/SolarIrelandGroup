@@ -29,26 +29,6 @@ const bookSchema = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'Action',
-      '@id': 'https://solarirelandgroup.ie/#book-survey-action',
-      name: 'Book Free Solar Survey',
-      description:
-        'Book a free, no-obligation solar survey for your home. A SEAI-registered assessor will visit your property, evaluate your roof, and provide an honest itemised quote with estimated savings.',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://solarirelandgroup.ie/book-survey',
-        inLanguage: 'en-IE',
-        actionPlatform: [
-          'https://schema.org/DesktopWebPlatform',
-          'https://schema.org/MobileWebPlatform',
-        ],
-      },
-      agent: {
-        '@type': 'Organization',
-        '@id': 'https://solarirelandgroup.ie/#organization',
-      },
-    },
-    {
       '@type': 'Service',
       '@id': 'https://solarirelandgroup.ie/#service-survey',
       name: 'Free Home Solar Survey',
@@ -62,6 +42,26 @@ const bookSchema = {
       areaServed: {
         '@type': 'Country',
         name: 'Ireland',
+      },
+      potentialAction: {
+        '@type': 'ReserveAction',
+        '@id': 'https://solarirelandgroup.ie/#book-survey-action',
+        name: 'Book Free Solar Survey',
+        description:
+          'Book a free, no-obligation solar survey for your home. A SEAI-registered assessor will visit your property, evaluate your roof, and provide an honest itemised quote with estimated savings.',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://solarirelandgroup.ie/book-survey',
+          inLanguage: 'en-IE',
+          actionPlatform: [
+            'https://schema.org/DesktopWebPlatform',
+            'https://schema.org/MobileWebPlatform',
+          ],
+        },
+        result: {
+          '@type': 'Reservation',
+          name: 'Free Solar Home Survey',
+        },
       },
       offers: {
         '@type': 'Offer',

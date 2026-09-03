@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     canonical: 'https://solarirelandgroup.ie/counties',
     languages: {
       'en-IE': 'https://solarirelandgroup.ie/counties',
-      'en-GB': 'https://solarirelandgroup.ie/counties',
+      'x-default': 'https://solarirelandgroup.ie/counties',
     },
   },
   openGraph: {
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://solarirelandgroup.ie/og-counties.png',
-        width: 1200,
-        height: 630,
+        width: 1152,
+        height: 864,
         alt: 'Solar Ireland - Solar Panel Installers in All 32 Counties',
       },
     ],

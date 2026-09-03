@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [
         {
           url: `${SITE_URL}/og-blog.png`,
-          width: 1200,
-          height: 630,
+          width: 1344,
+          height: 768,
           alt: article.title,
           type: 'image/png',
         },
@@ -86,7 +86,7 @@ function getArticleSchema(slug: string) {
       url: SITE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/logo-lg.png`,
+        url: `${SITE_URL}/logo-icon-512.png`,
         width: 512,
         height: 512,
       },

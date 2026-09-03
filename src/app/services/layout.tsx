@@ -15,8 +15,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://solarirelandgroup.ie/og-services.png',
-        width: 1200,
-        height: 630,
+        width: 1344,
+        height: 768,
         alt: 'Solar Ireland - Solar Panel Services',
       },
     ],
@@ -79,8 +79,8 @@ export default function ServicesLayout({
             primaryImageOfPage: {
               '@type': 'ImageObject',
               url: 'https://solarirelandgroup.ie/hero-solar.jpg',
-              width: 1920,
-              height: 1080,
+              width: 1344,
+              height: 768,
             },
           }),
         }}

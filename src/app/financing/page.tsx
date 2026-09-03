@@ -26,8 +26,7 @@ export const metadata: Metadata = {
     canonical: PAGE_URL,
     languages: {
       'en-IE': PAGE_URL,
-      'en-GB': PAGE_URL,
-      en: PAGE_URL,
+      'x-default': PAGE_URL,
     },
   },
   openGraph: {
@@ -41,8 +40,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/og-financing.jpg',
-        width: 1200,
-        height: 630,
+        width: 1344,
+        height: 768,
         alt: 'Solar Panel Financing Calculator Ireland',
       },
     ],

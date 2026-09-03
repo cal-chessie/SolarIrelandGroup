@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://solarirelandgroup.ie/og-blog.png',
-        width: 1200,
-        height: 630,
+        width: 1344,
+        height: 768,
         alt: 'Solar Ireland - Solar Energy Blog',
       },
     ],
@@ -47,8 +47,8 @@ const blogPageSchema = {
   primaryImageOfPage: {
     '@type': 'ImageObject',
     url: 'https://solarirelandgroup.ie/og-blog.png',
-    width: 1200,
-    height: 630,
+    width: 1344,
+    height: 768,
   },
 };
 
@@ -84,7 +84,7 @@ const blogFeedSchema = {
     url: 'https://solarirelandgroup.ie',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://solarirelandgroup.ie/logo-lg.png',
+      url: 'https://solarirelandgroup.ie/logo-icon-512.png',
       width: 512,
       height: 512,
     },

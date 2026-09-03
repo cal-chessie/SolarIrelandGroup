@@ -30,8 +30,7 @@ export const metadata: Metadata = {
     canonical: CALC_URL,
     languages: {
       'en-IE': CALC_URL,
-      'en-GB': CALC_URL,
-      'en': CALC_URL,
+      'x-default': CALC_URL,
     },
   },
   openGraph: {
@@ -45,8 +44,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/hero-solar.jpg',
-        width: 1920,
-        height: 1080,
+        width: 1344,
+        height: 768,
         alt: 'Solar panel savings calculator - see how much you can save in Ireland',
         type: 'image/jpeg',
       },
