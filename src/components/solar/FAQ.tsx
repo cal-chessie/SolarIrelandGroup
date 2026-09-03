@@ -47,7 +47,7 @@ const faqs: FAQItem[] = [
     id: 1,
     question: 'How much do solar panels cost in Ireland in 2026?',
     answer:
-      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
+      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
     category: 'costs',
     keywords: ['cost', 'price', 'expensive', 'cheap', 'budget', 'how much', 'money', 'afford'],
   },
@@ -55,7 +55,7 @@ const faqs: FAQItem[] = [
     id: 2,
     question: 'How much could I save with solar panels?',
     answer:
-      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
+      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
     category: 'costs',
     keywords: ['save', 'savings', 'saving', 'return', 'roi', 'payback', 'worth it', 'investment'],
   },
@@ -71,7 +71,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -95,7 +95,7 @@ const faqs: FAQItem[] = [
     id: 7,
     question: 'Do I need planning permission?',
     answer:
-      'In the vast majority of cases, no. Solar panels are considered permitted development in Ireland under certain conditions: the panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements during the free survey.',
+      'In the vast majority of cases, no. Solar panels are considered exempted development in Ireland under certain conditions: the panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements during the free survey.',
     category: 'install',
     keywords: ['planning', 'permission', 'council', 'allowed', 'legal', 'regulations', 'planning permission'],
   },
@@ -135,7 +135,7 @@ const faqs: FAQItem[] = [
     id: 12,
     question: 'What happens to electricity I don\'t use?',
     answer:
-      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
+      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
     category: 'technical',
     keywords: ['export', 'sell', 'excess', 'surplus', 'grid', 'microgeneration', 'credit', 'smart meter', 'esb'],
   },

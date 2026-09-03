@@ -611,7 +611,7 @@ export default async function RootLayout({
         {/* Skip to main content - visible on keyboard focus only */}
         <a
           href="#main-content"
-          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' as const, borderWidth: 0 }}
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-lg focus:bg-amber-400 focus:px-4 focus:py-2 focus:font-semibold focus:text-black focus:shadow-lg"
         >
           Skip to main content
         </a>

@@ -509,6 +509,10 @@ export default function WhatsAppChat() {
            */}
       <div
         onClick={handleOpen}
+        role="button"
+        tabIndex={0}
+        aria-label="Open chat"
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); }}
         className={`fixed bottom-24 right-6 z-50 cursor-pointer max-w-xs transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           notification && !isOpen
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
@@ -580,6 +584,10 @@ export default function WhatsAppChat() {
         {isMinimized ? (
           <div
             onClick={() => { setIsMinimized(false); setUnreadCount(0); }}
+            role="button"
+            tabIndex={0}
+            aria-label="Expand chat"
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setIsMinimized(false); setUnreadCount(0); } }}
             className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
           >
             <div className="relative">
@@ -854,6 +862,7 @@ export default function WhatsAppChat() {
                 {showScrollBtn && (
                   <button
                     onClick={() => scrollToBottom()}
+                    aria-label="Scroll to latest message"
                     className="absolute bottom-24 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-zinc-700/80 border border-white/[0.1] flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 shadow-lg z-10 hover:scale-110"
                   >
                     <ArrowDown className="w-4 h-4" />
@@ -911,6 +920,7 @@ export default function WhatsAppChat() {
                     />
                     <button
                       onClick={() => sendMessage()}
+                      aria-label="Send message"
                       disabled={!input.trim() || isLoading}
                       className="shrink-0 w-10 h-10 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black flex items-center justify-center transition-all duration-200 disabled:shadow-none shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20 hover:scale-105 active:scale-95 cursor-pointer"
                     >

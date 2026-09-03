@@ -775,7 +775,7 @@ export default function BillAnalyser() {
                             ['Recommended system', `${analysis.recommendedSystem} kWp`, 'text-amber-400'],
                             ['Est. annual generation', `${analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh`, 'text-white'],
                             ['Self-consumption saving', `€${analysis.annualSaving.toLocaleString()}/yr`, 'text-white'],
-                            ['Export payment ({SOLAR_DATA.export.label})', `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
+                            [`Export payment (${SOLAR_DATA.export.label})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
                             ['Total annual benefit', `€${analysis.totalAnnualBenefit.toLocaleString()}/yr`, 'text-amber-400 font-bold'],
                             ['System cost (before grant)', `€${analysis.installCost.toLocaleString()}`, 'text-white'],
                             ['SEAI grant', `- €${analysis.seaiGrant.toLocaleString()}`, 'text-blue-400'],

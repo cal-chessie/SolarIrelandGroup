@@ -35,7 +35,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 - Scaffolding required for most installations
 - No planning permission needed for domestic solar (with few exceptions in protected areas)
 - All electrical work carried out by **RECI-registered** electricians
-- All installations comply with **NSAI I.S. EN 50559** (the Irish standard for solar PV)
+- All installations comply with **I.S. 10101** (the Irish national wiring rules)
 - ESB Networks notification required for grid connection — we handle this
 - All DC/AC wiring complies with **ET101** (National Rules for Electrical Installations, Ireland)
 - We handle SEAI grant application on behalf of the customer
