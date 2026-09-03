@@ -372,7 +372,7 @@ export default function FAQ() {
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "@id": "https://solarireland.org/#faq",
+          "@id": "https://solarirelandgroup.ie/#faq",
           mainEntity: [
             {
               "@type": "Question",
@@ -443,7 +443,7 @@ export default function FAQ() {
               "//section[@id='faq']//p[contains(@class,'speakable-answer')]"
             ]
           },
-          "url": "https://solarireland.org/#faq"
+          "url": "https://solarirelandgroup.ie/#faq"
         }),
       }}
     />

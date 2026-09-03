@@ -330,7 +330,7 @@ function TermsContentIntro() {
         Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. These Terms and Conditions
         (&quot;Terms&quot;) govern your use of our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.org</span> and the provision of all
+        <span className="text-amber-400 font-medium">solarirelandgroup.ie</span> and the provision of all
         solar PV installation, battery storage, maintenance, and related services by Solar Ireland.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
@@ -1084,7 +1084,7 @@ function TermsContentChanges() {
       <p className="text-gray-400 leading-relaxed mb-4">
         We encourage you to review these Terms periodically and to contact us if you have any questions
         about changes. You can always access the latest version of these Terms at{' '}
-        <span className="text-amber-400 font-medium">solarireland.org/terms</span>.
+        <span className="text-amber-400 font-medium">solarirelandgroup.ie/terms</span>.
       </p>
     </>
   );
@@ -1102,7 +1102,7 @@ function TermsContentContact() {
         {[
           { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: Zap, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
+          { icon: Zap, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {
           const Icon = item.icon;
           return (

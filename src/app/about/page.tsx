@@ -3,17 +3,17 @@ import AboutClient from './AboutClient';
 const aboutSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  '@id': 'https://solarireland.org/about',
+  '@id': 'https://solarirelandgroup.ie/about',
   name: 'About Solar Ireland',
   description: 'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties.',
-  url: 'https://solarireland.org/about',
+  url: 'https://solarirelandgroup.ie/about',
   inLanguage: 'en-IE',
-  isPartOf: { '@id': 'https://solarireland.org/#website' },
+  isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
   mainEntity: {
     '@type': 'Organization',
-    '@id': 'https://solarireland.org/#organization',
+    '@id': 'https://solarirelandgroup.ie/#organization',
     name: 'Solar Ireland',
-    url: 'https://solarireland.org',
+    url: 'https://solarirelandgroup.ie',
     foundingDate: '2023',
     numberOfEmployees: {
       '@type': 'QuantitativeValue',

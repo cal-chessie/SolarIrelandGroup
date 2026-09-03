@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Terms and Conditions | Solar Ireland',
     description:
       'Terms and conditions for Solar Ireland solar PV installation, battery storage, and SEAI grant services.',
-    url: 'https://solarireland.org/terms',
+    url: 'https://solarirelandgroup.ie/terms',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       'Terms and conditions for solar PV installation and related services in Ireland.',
   },
   alternates: {
-    canonical: 'https://solarireland.org/terms',
+    canonical: 'https://solarirelandgroup.ie/terms',
   },
 };
 

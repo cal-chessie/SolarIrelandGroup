@@ -421,7 +421,7 @@ function BottomStats() {
 }
 
 function buildItemListJsonLd() {
-  const base = 'https://solarireland.org';
+  const base = 'https://solarirelandgroup.ie';
   const items = counties.map((county, index) => ({
     '@type': 'ListItem',
     position: index + 1,

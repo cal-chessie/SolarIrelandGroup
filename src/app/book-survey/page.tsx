@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     'Book your free no-obligation solar survey in under 60 seconds. Our SEAI-registered team will assess your roof, calculate your savings, and provide an honest itemised quote. Available across all 32 counties.',
   alternates: {
-    canonical: 'https://solarireland.org/book-survey',
+    canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
     title: 'Book a Free Solar Survey | Solar Ireland',
     description:
       'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Book in under 60 seconds.',
-    url: 'https://solarireland.org/book-survey',
+    url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -30,13 +30,13 @@ const bookSchema = {
   '@graph': [
     {
       '@type': 'Action',
-      '@id': 'https://solarireland.org/#book-survey-action',
+      '@id': 'https://solarirelandgroup.ie/#book-survey-action',
       name: 'Book Free Solar Survey',
       description:
         'Book a free, no-obligation solar survey for your home. A SEAI-registered assessor will visit your property, evaluate your roof, and provide an honest itemised quote with estimated savings.',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://solarireland.org/book-survey',
+        urlTemplate: 'https://solarirelandgroup.ie/book-survey',
         inLanguage: 'en-IE',
         actionPlatform: [
           'https://schema.org/DesktopWebPlatform',
@@ -45,18 +45,18 @@ const bookSchema = {
       },
       agent: {
         '@type': 'Organization',
-        '@id': 'https://solarireland.org/#organization',
+        '@id': 'https://solarirelandgroup.ie/#organization',
       },
     },
     {
       '@type': 'Service',
-      '@id': 'https://solarireland.org/#service-survey',
+      '@id': 'https://solarirelandgroup.ie/#service-survey',
       name: 'Free Home Solar Survey',
       description:
         'A comprehensive, no-obligation roof and energy assessment. Our assessor evaluates roof orientation, pitch, shading, structural suitability, and electrical setup. You receive an honest itemised quote with estimated annual savings, SEAI grant eligibility, and payback period.',
-      url: 'https://solarireland.org/book-survey',
+      url: 'https://solarirelandgroup.ie/book-survey',
       provider: {
-        '@id': 'https://solarireland.org/#business',
+        '@id': 'https://solarirelandgroup.ie/#business',
       },
       serviceType: 'Solar Panel Site Survey',
       areaServed: {
@@ -78,21 +78,21 @@ const bookSchema = {
     },
     {
       '@type': 'WebPage',
-      '@id': 'https://solarireland.org/book-survey',
+      '@id': 'https://solarirelandgroup.ie/book-survey',
       name: 'Book a Free Solar Survey',
       description:
         'Book your free no-obligation solar survey. SEAI-registered assessors covering all 32 counties of Ireland.',
-      url: 'https://solarireland.org/book-survey',
+      url: 'https://solarirelandgroup.ie/book-survey',
       inLanguage: 'en-IE',
       isPartOf: {
-        '@id': 'https://solarireland.org/#website',
+        '@id': 'https://solarirelandgroup.ie/#website',
       },
       about: {
-        '@id': 'https://solarireland.org/#business',
+        '@id': 'https://solarirelandgroup.ie/#business',
       },
       potentialAction: {
         '@type': 'ReserveAction',
-        target: 'https://solarireland.org/book-survey',
+        target: 'https://solarirelandgroup.ie/book-survey',
         result: {
           '@type': 'Reservation',
           name: 'Free Solar Home Survey',
@@ -101,25 +101,25 @@ const bookSchema = {
     },
     {
       '@type': 'BreadcrumbList',
-      '@id': 'https://solarireland.org/book-survey#breadcrumb',
+      '@id': 'https://solarirelandgroup.ie/book-survey#breadcrumb',
       itemListElement: [
         {
           '@type': 'ListItem',
           position: 1,
           name: 'Home',
-          item: 'https://solarireland.org',
+          item: 'https://solarirelandgroup.ie',
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'Book a Survey',
-          item: 'https://solarireland.org/book-survey',
+          item: 'https://solarirelandgroup.ie/book-survey',
         },
       ],
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://solarireland.org/book-survey#faq',
+      '@id': 'https://solarirelandgroup.ie/book-survey#faq',
       mainEntity: [
         {
           '@type': 'Question',

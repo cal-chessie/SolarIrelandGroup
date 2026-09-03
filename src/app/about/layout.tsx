@@ -8,13 +8,13 @@ export const metadata: Metadata = {
     title: 'About Solar Ireland | Our Story, Team & Certifications',
     description:
       'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
-    url: 'https://solarireland.org/about',
+    url: 'https://solarirelandgroup.ie/about',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
     images: [
       {
-        url: 'https://solarireland.org/og-about.png',
+        url: 'https://solarirelandgroup.ie/og-about.png',
         width: 1200,
         height: 630,
         alt: 'Solar Ireland — About Us',
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     title: 'About Solar Ireland | Our Story, Team & Certifications',
     description:
       'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
-    images: ['https://solarireland.org/og-about.png'],
+    images: ['https://solarirelandgroup.ie/og-about.png'],
   },
   alternates: {
-    canonical: 'https://solarireland.org/about',
+    canonical: 'https://solarirelandgroup.ie/about',
   },
 };
 
@@ -51,13 +51,13 @@ export default function AboutLayout({
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://solarireland.org',
+                item: 'https://solarirelandgroup.ie',
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'About Us',
-                item: 'https://solarireland.org/about',
+                item: 'https://solarirelandgroup.ie/about',
               },
             ],
           }),

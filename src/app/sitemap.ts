@@ -2,7 +2,7 @@
 import type { MetadataRoute } from "next";
 import { getAllArticleSlugs } from "@/lib/blog-data";
 
-const SITE_URL = "https://solarireland.org";
+const SITE_URL = "https://solarirelandgroup.ie";
 
 /* Per-page lastModified dates — update these when you edit a page.
    Google uses these to prioritise crawl frequency. */

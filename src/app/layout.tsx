@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 
-const SITE_URL = "https://solarireland.org";
+const SITE_URL = "https://solarirelandgroup.ie";
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";

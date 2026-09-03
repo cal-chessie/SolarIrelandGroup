@@ -53,7 +53,7 @@ function PrivacyContent() {
         This Privacy Policy explains what personal data we collect, why we collect it, how we use it,
         how long we keep it, and your rights in relation to your data. It applies to all interactions you
         have with us, including our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.org</span>, our county-specific landing
+        <span className="text-amber-400 font-medium">solarirelandgroup.ie</span>, our county-specific landing
         pages, WhatsApp Business, email, phone calls, in-person surveys, and any other communication channels
         through which you share information with us.
       </p>
@@ -607,7 +607,7 @@ function PrivacyContent() {
         {[
           { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: ExternalLink, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
+          { icon: ExternalLink, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {
           const Icon = item.icon;
           return (
@@ -1213,7 +1213,7 @@ function PrivacyContentIntro() {
         This Privacy Policy explains what personal data we collect, why we collect it, how we use it,
         how long we keep it, and your rights in relation to your data. It applies to all interactions you
         have with us, including our website{' '}
-        <span className="text-amber-400 font-medium">solarireland.org</span>, our county-specific landing
+        <span className="text-amber-400 font-medium">solarirelandgroup.ie</span>, our county-specific landing
         pages, WhatsApp Business, email, phone calls, in-person surveys, and any other communication channels
         through which you share information with us.
       </p>
@@ -1633,7 +1633,7 @@ function PrivacyContentSection13() {
         {[
           { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
-          { icon: ExternalLink, label: 'Website', value: 'solarireland.org', href: 'https://solarireland.org' },
+          { icon: ExternalLink, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {
           const Icon = item.icon;
           return (

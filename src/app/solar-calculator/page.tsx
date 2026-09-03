@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 
-const CALC_URL = 'https://solarireland.org/solar-calculator';
+const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 
 export const metadata: Metadata = {
   title: 'Solar Savings Calculator Ireland | How Much Can You Save in 2026?',
@@ -91,7 +91,7 @@ function CalculatorSchema() {
     author: {
       '@type': 'Organization',
       name: 'Solar Ireland',
-      url: 'https://solarireland.org',
+      url: 'https://solarirelandgroup.ie',
     },
     featureList: [
       'Instant annual savings calculation',

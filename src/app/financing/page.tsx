@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 
-const PAGE_URL = 'https://solarireland.org/financing';
+const PAGE_URL = 'https://solarirelandgroup.ie/financing';
 
 export const metadata: Metadata = {
   title: 'Solar Panel Financing Ireland | Payment Plans & Options 2026',
@@ -90,7 +90,7 @@ function FinancingSchema() {
           creator: {
             '@type': 'Organization',
             name: 'Solar Ireland',
-            url: 'https://solarireland.org',
+            url: 'https://solarirelandgroup.ie',
           },
         }),
       }}

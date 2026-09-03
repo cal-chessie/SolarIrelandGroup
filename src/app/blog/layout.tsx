@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     title: 'Solar Energy Blog | Tips, Guides, Grants & News',
     description:
       'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
-    url: 'https://solarireland.org/blog',
+    url: 'https://solarirelandgroup.ie/blog',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
     images: [
       {
-        url: 'https://solarireland.org/og-blog.png',
+        url: 'https://solarirelandgroup.ie/og-blog.png',
         width: 1200,
         height: 630,
         alt: 'Solar Ireland — Solar Energy Blog',
@@ -27,26 +27,26 @@ export const metadata: Metadata = {
     title: 'Solar Ireland Blog | Solar Tips, Guides & News',
     description:
       'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators.',
-    images: ['https://solarireland.org/og-blog.png'],
+    images: ['https://solarirelandgroup.ie/og-blog.png'],
   },
   alternates: {
-    canonical: 'https://solarireland.org/blog',
+    canonical: 'https://solarirelandgroup.ie/blog',
   },
 };
 
 const blogPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  '@id': 'https://solarireland.org/blog',
+  '@id': 'https://solarirelandgroup.ie/blog',
   name: 'Solar Energy Blog',
   description: 'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and installation tips.',
-  url: 'https://solarireland.org/blog',
+  url: 'https://solarirelandgroup.ie/blog',
   inLanguage: 'en-IE',
-  isPartOf: { '@id': 'https://solarireland.org/#website' },
-  publisher: { '@id': 'https://solarireland.org/#organization' },
+  isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
+  publisher: { '@id': 'https://solarirelandgroup.ie/#organization' },
   primaryImageOfPage: {
     '@type': 'ImageObject',
-    url: 'https://solarireland.org/og-blog.png',
+    url: 'https://solarirelandgroup.ie/og-blog.png',
     width: 1200,
     height: 630,
   },
@@ -60,13 +60,13 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://solarireland.org',
+      item: 'https://solarirelandgroup.ie',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Blog',
-      item: 'https://solarireland.org/blog',
+      item: 'https://solarirelandgroup.ie/blog',
     },
   ],
 };
@@ -76,15 +76,15 @@ const blogFeedSchema = {
   '@type': 'Blog',
   name: 'Solar Ireland Blog',
   description: 'Expert solar panel advice for Irish homeowners.',
-  url: 'https://solarireland.org/blog',
+  url: 'https://solarirelandgroup.ie/blog',
   inLanguage: 'en-IE',
   publisher: {
     '@type': 'Organization',
     name: 'Solar Ireland',
-    url: 'https://solarireland.org',
+    url: 'https://solarirelandgroup.ie',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://solarireland.org/logo-lg.png',
+      url: 'https://solarirelandgroup.ie/logo-lg.png',
       width: 512,
       height: 512,
     },
@@ -93,13 +93,13 @@ const blogFeedSchema = {
     '@type': 'BlogPosting',
     headline: article.title,
     description: article.excerpt,
-    url: `https://solarireland.org/blog/${article.slug}`,
+    url: `https://solarirelandgroup.ie/blog/${article.slug}`,
     datePublished: article.date,
     author: {
       '@type': 'Person',
       name: article.author,
     },
-    image: 'https://solarireland.org/og-blog.png',
+    image: 'https://solarirelandgroup.ie/og-blog.png',
   })),
 };
 

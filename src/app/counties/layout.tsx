@@ -31,23 +31,23 @@ export const metadata: Metadata = {
     '32 counties solar panels',
   ],
   alternates: {
-    canonical: 'https://solarireland.org/counties',
+    canonical: 'https://solarirelandgroup.ie/counties',
     languages: {
-      'en-IE': 'https://solarireland.org/counties',
-      'en-GB': 'https://solarireland.org/counties',
+      'en-IE': 'https://solarirelandgroup.ie/counties',
+      'en-GB': 'https://solarirelandgroup.ie/counties',
     },
   },
   openGraph: {
     title: 'Solar Panel Installation by County | All 32 Counties of Ireland',
     description:
       'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free solar survey near you.',
-    url: 'https://solarireland.org/counties',
+    url: 'https://solarirelandgroup.ie/counties',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
     type: 'website',
     images: [
       {
-        url: 'https://solarireland.org/og-counties.png',
+        url: 'https://solarirelandgroup.ie/og-counties.png',
         width: 1200,
         height: 630,
         alt: 'Solar Ireland — Solar Panel Installers in All 32 Counties',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: 'Solar Panel Installation by County | All 32 Counties of Ireland',
     description:
       'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free survey.',
-    images: ['https://solarireland.org/og-counties.png'],
+    images: ['https://solarirelandgroup.ie/og-counties.png'],
   },
 };
 
@@ -81,13 +81,13 @@ export default function CountiesLayout({
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://solarireland.org',
+                item: 'https://solarirelandgroup.ie',
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'County Directory',
-                item: 'https://solarireland.org/counties',
+                item: 'https://solarirelandgroup.ie/counties',
               },
             ],
           }),
