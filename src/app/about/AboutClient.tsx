@@ -75,7 +75,7 @@ const valueProps = [
 ];
 
 const teamMembers = [
-  { initials: 'CM', name: 'Callum McGrath', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland to cut through the noise and give homeowners a better experience.' },
+  { initials: 'CC', name: 'Cal Chesters', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland to cut through the noise and give homeowners a better experience.' },
   { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly - from survey scheduling to SEAI grant applications and aftercare.' },
   { initials: 'JK', name: 'James Kelly', role: 'Senior Electrician (RECI)', bio: 'RECI-certified with extensive experience in solar PV wiring, battery integration, and grid connections.' },
   { initials: 'EO', name: 'Emma O\'Brien', role: 'Customer Care', bio: 'First point of contact for most customers. Emma makes sure every question is answered and every concern addressed.' },
@@ -293,7 +293,7 @@ export default function AboutClient() {
                 </h2>
                 <div className="space-y-4 text-sm sm:text-base text-gray-400 leading-relaxed">
                   <p>
-                    Solar Ireland was founded in 2023 by Callum McGrath after years
+                    Solar Ireland was founded in 2019 by Cal Chesters after years
                     of working in the Irish solar industry and seeing the same problems
                     repeat: pushy sales tactics, confusing pricing, and homeowners left
                     in the dark about what they were actually getting.

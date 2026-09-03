@@ -211,7 +211,7 @@ const organizationSchema = {
     "https://www.tiktok.com/@solarireland",
     "https://www.linkedin.com/company/solarireland",
   ],
-  foundingDate: "2023",
+  foundingDate: "2019",
   numberOfEmployees: {
     "@type": "QuantitativeValue",
     minValue: 5,

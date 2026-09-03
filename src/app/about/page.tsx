@@ -14,7 +14,7 @@ const aboutSchema = {
     '@id': 'https://solarirelandgroup.ie/#organization',
     name: 'Solar Ireland',
     url: 'https://solarirelandgroup.ie',
-    foundingDate: '2023',
+    foundingDate: '2019',
     numberOfEmployees: {
       '@type': 'QuantitativeValue',
       minValue: 5,
