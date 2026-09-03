@@ -176,7 +176,7 @@ export default function ExitIntent() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
             </span>
             <span className="text-[11px] text-green-400/90 font-medium">
-              SEAI-registered installer - trusted by 200+ Irish homeowners
+              SEAI-registered installer covering all 32 counties
             </span>
           </div>
 
@@ -230,7 +230,7 @@ export default function ExitIntent() {
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
               { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
-              { icon: TrendingUp, label: '€38k+ 25yr Savings', color: 'text-sky-400/70' },
+              { icon: TrendingUp, label: '0% VAT on Solar', color: 'text-sky-400/70' },
             ].map(({ icon: Icon, label, color }) => (
               <div
                 key={label}

@@ -90,9 +90,9 @@ const certifications = [
 ];
 
 const stats = [
-  { value: '200+', label: 'Successful Installs', icon: CheckCircle2 },
+  { value: '0%', label: 'VAT on Solar', icon: CheckCircle2 },
   { value: '32', label: 'Counties Served', icon: MapPin },
-  { value: '\u20AC1.1M+', label: 'Customer Savings', icon: Euro },
+  { value: '\u20AC1,800', label: 'SEAI Grant Handled', icon: Euro },
 ];
 
 const fadeUp = {

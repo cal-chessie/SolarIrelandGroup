@@ -16,7 +16,6 @@ import {
   Sun,
   Info,
   LightbulbIcon,
-  Sparkles,
   AlertTriangle,
   BarChart3,
 } from 'lucide-react';
@@ -386,18 +385,6 @@ function StickyTOC({ items }: { items: TOCItem[] }) {
 }
 
 function NewsletterSection() {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 4000);
-    }
-  };
-
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -417,44 +404,17 @@ function NewsletterSection() {
           Stay Updated on Solar <span className="text-gradient">Savings</span>
         </h2>
         <p className="text-sm sm:text-base text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
-          Get the latest solar tips, grant updates, and exclusive offers delivered
-          to your inbox. No spam, unsubscribe anytime.
+          Solar tips, SEAI grant updates, and honest advice for Irish
+          homeowners. Newsletter sign-up is coming soon.
         </p>
-        {subscribed ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-emerald-400/10 border border-emerald-400/20"
-          >
-            <Sparkles className="w-4 h-4 text-emerald-400" />
-            <span className="text-sm font-semibold text-emerald-400">
-              You&apos;re subscribed! Check your inbox.
-            </span>
-          </motion.div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto">
-            <div className="relative flex-1 w-full">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label="Your email address" placeholder="your@email.com"
-                required
-                className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/10 transition-all"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15 whitespace-nowrap"
-            >
-              Subscribe
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
-        )}
+        <div className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08]">
+          <Mail className="w-4 h-4 text-amber-400" />
+          <span className="text-sm font-semibold text-gray-300">
+            Coming soon
+          </span>
+        </div>
         <p className="text-[10px] text-gray-700 mt-4">
-          We respect your privacy. Unsubscribe anytime. ~500 subscribers.
+          We respect your privacy - we will never share your details.
         </p>
       </div>
     </motion.section>
