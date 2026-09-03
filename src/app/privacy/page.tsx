@@ -385,10 +385,10 @@ function PrivacyContent() {
         <p className="text-sm text-gray-500 leading-relaxed">
           To exercise any of your rights, contact our Data Protection Officer at{' '}
           <a
-            href="mailto:cal@solarireland.org"
+            href="mailto:sales@solarirelandgroup.ie"
             className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
           >
-            cal@solarireland.org
+            sales@solarirelandgroup.ie
           </a>{' '}
           or write to us at Solar Ireland, [Business Address], Ireland. We will acknowledge your request
           within 5 working days and respond substantively within 30 days. If your request is complex or
@@ -493,10 +493,10 @@ function PrivacyContent() {
         security vulnerability or have concerns about the safety of your data, please contact us
         immediately at{' '}
         <a
-          href="mailto:cal@solarireland.org"
+          href="mailto:sales@solarirelandgroup.ie"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.org
+          sales@solarirelandgroup.ie
         </a>.
       </p>
 
@@ -571,10 +571,10 @@ function PrivacyContent() {
         If you are a parent or guardian and believe your child has provided us with personal data,
         please contact us immediately at{' '}
         <a
-          href="mailto:cal@solarireland.org"
+          href="mailto:sales@solarirelandgroup.ie"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.org
+          sales@solarirelandgroup.ie
         </a>{' '}
         and we will take prompt action to remove the information.
       </p>
@@ -605,7 +605,7 @@ function PrivacyContent() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
+          { icon: Mail, label: 'Email', value: 'sales@solarirelandgroup.ie', href: 'mailto:sales@solarirelandgroup.ie' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
           { icon: ExternalLink, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {
@@ -916,7 +916,7 @@ function PrivacyFAQ() {
   const faqs = [
     {
       q: 'How do I request a copy of my personal data?',
-      a: 'Simply email cal@solarireland.org with "Subject Access Request" in the subject line. Include your name and the email address or phone number you used when contacting us. We will verify your identity and provide all your data within 30 days in a readable electronic format, free of charge.',
+      a: 'Simply email sales@solarirelandgroup.ie with "Subject Access Request" in the subject line. Include your name and the email address or phone number you used when contacting us. We will verify your identity and provide all your data within 30 days in a readable electronic format, free of charge.',
     },
     {
       q: 'Can I get my data deleted?',
@@ -1467,8 +1467,8 @@ function PrivacyContentSection7() {
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
           Contact our Data Protection Officer at{' '}
-          <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-            cal@solarireland.org
+          <a href="mailto:sales@solarirelandgroup.ie" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+            sales@solarirelandgroup.ie
           </a>. We acknowledge requests within 5 working days and respond substantively within 30 days.
           Complex requests may take up to 90 days with advance notice. We may ask for identification to
           verify your identity before processing your request.
@@ -1542,8 +1542,8 @@ function PrivacyContentSection9() {
       </div>
       <p className="text-gray-400 leading-relaxed mb-6">
         If you become aware of any potential security vulnerability, contact us immediately at{' '}
-        <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-          cal@solarireland.org
+        <a href="mailto:sales@solarirelandgroup.ie" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+          sales@solarirelandgroup.ie
         </a>.
       </p>
     </>
@@ -1595,8 +1595,8 @@ function PrivacyContentSection11() {
       <p className="text-gray-400 leading-relaxed mb-6">
         If you are a parent or guardian and believe your child has provided us with personal data,
         please contact us at{' '}
-        <a href="mailto:cal@solarireland.org" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
-          cal@solarireland.org
+        <a href="mailto:sales@solarirelandgroup.ie" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+          sales@solarirelandgroup.ie
         </a>{' '}
         and we will take prompt action.
       </p>
@@ -1631,7 +1631,7 @@ function PrivacyContentSection13() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
+          { icon: Mail, label: 'Email', value: 'sales@solarirelandgroup.ie', href: 'mailto:sales@solarirelandgroup.ie' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
           { icon: ExternalLink, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {

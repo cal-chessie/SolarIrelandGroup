@@ -782,7 +782,7 @@ function CookiesContentContact() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
+          { icon: Mail, label: 'Email', value: 'sales@solarirelandgroup.ie', href: 'mailto:sales@solarirelandgroup.ie' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
           { icon: Zap, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {

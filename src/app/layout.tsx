@@ -203,7 +203,7 @@ const organizationSchema = {
   },
   description:
     "SEAI-registered solar panel installation company serving homes and businesses across all 32 counties of Ireland.",
-  email: "cal@solarireland.org",
+  email: "sales@solarirelandgroup.ie",
   telephone: "+353 87 395 8424",
   sameAs: [
     "https://www.facebook.com/solarireland",
@@ -240,7 +240,7 @@ const localBusinessSchema = {
   image: `${SITE_URL}/hero-solar.jpg`,
   url: SITE_URL,
   telephone: "+353 87 395 8424",
-  email: "cal@solarireland.org",
+  email: "sales@solarirelandgroup.ie",
   logo: `${SITE_URL}/logo-lg.png`,
   description:
     "SEAI-registered solar panel installation company serving homes across Ireland. Free AI-powered electricity bill analysis, honest quotes, and quality installations with a €1,800 SEAI grant available.",

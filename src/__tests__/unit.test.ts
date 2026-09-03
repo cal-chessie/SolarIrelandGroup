@@ -16,7 +16,7 @@ describe('SOLAR_DATA', () => {
   });
 
   it('has correct provider email', () => {
-    expect(SOLAR_DATA.provider.email).toBe('cal@solarireland.org');
+    expect(SOLAR_DATA.provider.email).toBe('sales@solarirelandgroup.ie');
   });
 
   it('has correct provider phone', () => {

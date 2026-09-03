@@ -935,10 +935,10 @@ function TermsContentCancellation() {
       <p className="text-gray-400 leading-relaxed mb-4">
         To exercise your right to cancel, you must send written notice to{' '}
         <a
-          href="mailto:cal@solarireland.org"
+          href="mailto:sales@solarirelandgroup.ie"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.org
+          sales@solarirelandgroup.ie
         </a>{' '}
         or by registered post to Solar Ireland, [Business Address], Ireland. The notice must clearly
         state your intention to cancel and include your name, address, and contract reference number.
@@ -1020,10 +1020,10 @@ function TermsContentDisputes() {
       <p className="text-gray-400 leading-relaxed mb-4">
         If you have a complaint or dispute, please contact us in the first instance by email at{' '}
         <a
-          href="mailto:cal@solarireland.org"
+          href="mailto:sales@solarirelandgroup.ie"
           className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
         >
-          cal@solarireland.org
+          sales@solarirelandgroup.ie
         </a>{' '}
         or by phone at [Phone Number]. We aim to acknowledge all complaints within 2 working days and
         provide a substantive response within 10 working days. Many disputes can be resolved quickly
@@ -1100,7 +1100,7 @@ function TermsContentContact() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { icon: Mail, label: 'Email', value: 'cal@solarireland.org', href: 'mailto:cal@solarireland.org' },
+          { icon: Mail, label: 'Email', value: 'sales@solarirelandgroup.ie', href: 'mailto:sales@solarirelandgroup.ie' },
           { icon: Phone, label: 'Phone', value: '[Phone Number]', href: 'tel:' },
           { icon: Zap, label: 'Website', value: 'solarirelandgroup.ie', href: 'https://solarirelandgroup.ie' },
         ].map((item) => {
