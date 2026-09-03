@@ -89,7 +89,7 @@ export const articles: Article[] = [
       ]},
       { type: 'callout', variant: 'info', title: 'Time-Saving Tip', body: 'Many SEAI-registered installers will handle the entire grant application process on your behalf, including the BER booking. Ask about this when getting quotes - it can save you significant admin time and ensure nothing gets missed.' },
       { type: 'heading', level: 2, text: '2026 Timelines and Budget' },
-      { type: 'paragraph', text: 'The SEAI solar grant scheme has an annual budget allocated by the government. In recent years, the budget has increased to meet growing demand, but it is still subject to annual review. The 2026 allocation is expected to be €85 million, which should comfortably cover all applications received during the year.' },
+      { type: 'paragraph', text: 'The SEAI solar grant scheme has an annual budget allocated by the government. In recent years, the budget has increased to meet growing demand, but it is still subject to annual review, so it is worth applying earlier in the year rather than leaving it late.' },
       { type: 'paragraph', text: 'However, it is worth applying early in the year rather than waiting. The application process takes approximately 4–6 weeks for pre-approval, plus 6–8 weeks for payment after completion. Starting your journey in spring means you can have your system installed and generating electricity by summer - when solar output in Ireland is at its peak.' },
       { type: 'table', headers: ['Timeline Stage', 'Typical Duration', 'What Happens'], rows: [
         ['Get Quotes', '2–4 weeks', 'Contact installers, compare quotes, choose installer'],
@@ -155,7 +155,7 @@ export const articles: Article[] = [
       { type: 'callout', variant: 'warning', title: 'Watch Out For', body: 'Some very cheap quotes may exclude scaffolding, electrical upgrades, or BER assessment costs. Always ask for a fully itemised quote that breaks down every cost component so you can compare like-for-like between installers.' },
       { type: 'bulletList', items: [
         'BER Assessment: €200–€350 (required for the SEAI grant)',
-        'ECS Registration: €250–€500 (required to connect your system to the grid)',
+        'ESB Networks NC6 connection notification: free for domestic micro-generation (your installer submits it for you)',
         'Smart meter upgrade: Usually free from ESB Networks, but may involve a wait time of 4–8 weeks',
         'Scaffolding: €300–€600 for typical two-storey homes',
         'Ground-mounted systems: €2,000–€5,000 more than roof-mounted equivalents',
@@ -521,7 +521,7 @@ export const articles: Article[] = [
     iconColor: 'text-sky-400',
     content: [
       { type: 'heading', level: 2, text: 'The Big Three: LONGi, Jinko, and Trina' },
-      { type: 'paragraph', text: 'When it comes to choosing solar panels for your Irish home, three manufacturers dominate the market: LONGi, Jinko Solar, and Trina Solar. All three are Chinese Tier-1 manufacturers with global reputations for quality, reliability, and innovation. Between them, they account for an estimated 70–80% of all residential solar panels installed in Ireland.' },
+      { type: 'paragraph', text: 'When it comes to choosing solar panels for your Irish home, three manufacturers dominate the market: LONGi, Jinko Solar, and Trina Solar. All three are Chinese Tier-1 manufacturers with global reputations for quality, reliability, and innovation. Between them, they are among the most widely installed residential solar panels in Ireland.' },
       { type: 'paragraph', text: 'But which one is right for you? While all three produce excellent panels, there are meaningful differences in efficiency, degradation rates, warranty terms, real-world performance in Irish weather conditions, and price. This guide provides an honest, side-by-side comparison to help you make an informed decision.' },
       { type: 'callout', variant: 'info', title: 'What Is a Tier-1 Panel?', body: 'Tier-1 is a classification by Bloomberg New Energy Finance (BNEF) that indicates a manufacturer is vertically integrated, financially stable, and has a proven track record. It is the solar industry\'s gold standard for bankability and reliability.' },
       { type: 'heading', level: 2, text: 'LONGi Hi-MO 6: The Efficiency Leader' },

@@ -19,7 +19,8 @@ Solar Ireland is a solar installer based in the Republic of Ireland. Panels carr
 
 ## Facts
 - Coverage: all 32 counties; the SEAI grant applies in the 26 Republic of Ireland counties
-- Certifications: SEAI-registered, RECI-registered electricians, wiring to I.S. 10101, ESB Microgeneration Support Scheme
+- Certifications: SEAI-registered, RECI-registered electricians, wiring to I.S. 10101
+- Grid connection: notified to ESB Networks under the Microgeneration Support Scheme
 - The AI bill analysis reads the day and night usage split from your electricity bill; it does not read your roof from a photo or satellite
 - Export: excess generation is paid for by your electricity supplier under the Clean Export Guarantee
 - Contact: sales@solarirelandgroup.ie

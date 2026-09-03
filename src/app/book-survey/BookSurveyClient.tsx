@@ -162,7 +162,7 @@ const faqItems = [
   },
   {
     q: 'What areas do you cover?',
-    a: 'We cover all 32 counties across the Republic of Ireland and Northern Ireland. With assessors based in Dublin, Cork, Galway, and Limerick, we can reach most locations within 2-3 working days.',
+    a: 'We cover all 32 counties of Ireland; the €1,800 SEAI grant applies in the 26 Republic of Ireland counties. With assessors based in Dublin, Cork, Galway, and Limerick, we can reach most locations within 2-3 working days.',
   },
   {
     q: 'What happens after I book?',
@@ -349,7 +349,7 @@ export default function BookSurveyClient() {
                 <div className="flex items-center gap-5 sm:gap-6">
                   {[
                     { value: '30-45', unit: 'min', label: 'Survey Duration' },
-                    { value: '2,847', unit: '+', label: 'Surveys Completed' },
+                    { value: '0%', unit: 'VAT', label: 'On Domestic Solar' },
                     { value: '48', unit: 'hrs', label: 'Quote Turnaround' },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center flex-1 min-w-0">
@@ -1187,7 +1187,7 @@ export default function BookSurveyClient() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Trusted by <span className="text-gradient">2,847+</span> Homeowners
+                Trusted by <span className="text-gradient">Irish Homeowners</span>
               </h2>
               <p className="text-gray-400 max-w-lg mx-auto text-lg">
                 Real reviews from real Irish homeowners who went solar with us.

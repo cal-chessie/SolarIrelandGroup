@@ -255,7 +255,7 @@ export default function AboutClient() {
                       <div className="w-20 h-20 rounded-2xl bg-amber-400/10 flex items-center justify-center mx-auto mb-4">
                         <Sun className="w-10 h-10 text-amber-400" />
                       </div>
-                      <p className="text-xl font-bold text-white">Founded 2023</p>
+                      <p className="text-xl font-bold text-white">Founded 2019</p>
                       <p className="text-sm text-gray-500 mt-1">Dublin, Ireland</p>
                     </div>
                   </div>
@@ -305,9 +305,8 @@ export default function AboutClient() {
                   </p>
                   <p>
                     Today, we&apos;re a growing team of certified installers serving
-                    all 32 counties. We&apos;ve completed over 200 installations and
-                    helped our customers save more than &euro;1.1 million on their
-                    electricity bills. And we&apos;re just getting started.
+                    all 32 counties, handling the SEAI grant and the full install
+                    for every customer. And we&apos;re just getting started.
                   </p>
                 </div>
 
