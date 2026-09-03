@@ -55,7 +55,7 @@ const faqs: FAQItem[] = [
     id: 2,
     question: 'How much could I save with solar panels?',
     answer:
-      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
+      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from ${SOLAR_DATA.savings.range25yrLabel}. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
     category: 'costs',
     keywords: ['save', 'savings', 'saving', 'return', 'roi', 'payback', 'worth it', 'investment'],
   },
@@ -393,7 +393,10 @@ export default function FAQ() {
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://solarirelandgroup.ie",
+          // Distinct @id: the real WebPage node (@id = site root) is declared by
+          // <HomeSchema/>; this node only carries the speakable selectors, so it
+          // must not reuse the root @id or the two WebPage nodes collide.
+          "@id": "https://solarirelandgroup.ie/#speakable",
           "speakable": {
             "@type": "SpeakableSpecification",
             "cssSelector": [".speakable-question", ".speakable-answer"],

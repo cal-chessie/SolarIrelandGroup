@@ -11,8 +11,12 @@ export const SOLAR_DATA = {
     avgAnnual: 1400,
     label: '€1,400/yr',
     paybackYears: 5,
+    // Optimistic headline point (energy-price inflation + export income over the
+    // panels' 25yr life). total25yr/label25yr drive the hero stat; range25yrLabel
+    // is the honest hedge used in prose so every 25-year figure reads from HERE.
     total25yr: 48000,
     label25yr: '€48k+',
+    range25yrLabel: '€30,000 to €50,000',
   },
   export: {
     ratePerKwh: 0.21,

@@ -70,21 +70,9 @@ const servicesSchema = {
         priceCurrency: 'EUR',
       },
     },
-    {
-      '@type': 'WebPage',
-      '@id': 'https://solarirelandgroup.ie/services',
-      name: 'Solar Panel Services Ireland',
-      description:
-        'Complete solar panel services in Ireland - residential PV installation, battery storage, EV charger setup, SEAI grant handling & free surveys.',
-      url: 'https://solarirelandgroup.ie/services',
-      inLanguage: 'en-IE',
-      isPartOf: {
-        '@id': 'https://solarirelandgroup.ie/#website',
-      },
-      about: {
-        '@id': 'https://solarirelandgroup.ie/#business',
-      },
-    },
+    // NOTE: the WebPage node for /services (@id .../services) lives in
+    // services/layout.tsx (the richer one, with primaryImageOfPage). It was
+    // removed from here to eliminate a duplicate @id on the same route.
   ],
 };
 

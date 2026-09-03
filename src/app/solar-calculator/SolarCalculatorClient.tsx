@@ -77,7 +77,7 @@ function CalculatorHero() {
           {[
             { icon: Euro, label: '€1,800 SEAI Grant (ROI)', sub: 'Automatically included' },
             { icon: Clock, label: '5-7 Year Payback', sub: 'After grant deduction' },
-            { icon: TrendingUp, label: '€40k+ Over 25 Years', sub: 'Rising energy prices' },
+            { icon: TrendingUp, label: `${SOLAR_DATA.savings.label25yr} Over 25 Years`, sub: 'Rising energy prices' },
             { icon: Leaf, label: '2,500+ kg CO₂/yr', sub: 'Environmental impact' },
           ].map((item) => {
             const Icon = item.icon;

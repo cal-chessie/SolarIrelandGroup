@@ -113,60 +113,14 @@ function CalculatorSchema() {
   );
 }
 
-function FAQSchema() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How much can I save with solar panels in Ireland?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Most Irish households save between €800 and €1,400 per year with solar panels. A typical 4kWp system on a semi-detached home with a €160/month electricity bill can save around €1,400 annually, including €200-€400 in Clean Export Guarantee earnings. Savings depend on your electricity usage, roof orientation, and self-consumption rate.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How many solar panels do I need in Ireland?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Most Irish homes need between 8 and 16 solar panels (3.5kWp to 7kWp systems). The number depends on your electricity usage, available roof space, and budget. Apartments may fit 4-6 panels, while larger detached homes can accommodate up to 22 panels (9.7kWp). Our calculator recommends the optimal number based on your specific situation.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What is the payback period for solar panels in Ireland?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'With the €1,800 SEAI grant (Republic of Ireland), most solar panel systems in Ireland pay for themselves in 5 to 7 years. After that, the panels continue generating free electricity for their 25+ year lifespan, delivering total savings of €30,000 to €60,000 over 25 years depending on electricity price increases.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How does the SEAI solar grant work?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'The SEAI (Sustainable Energy Authority of Ireland) offers a €1,800 grant towards solar panel installation in the Republic of Ireland (26 counties). You must be an owner-occupier of a home built before 2021 with a BER rating of C3 or lower. The grant is deducted directly from your installation cost by your SEAI-registered installer, so you don\'t need to pay upfront and claim it back.',
-        },
-      },
-    ],
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
 export default function SolarCalculatorPage() {
   noStore();
+  // The visible FAQ (and its FAQPage schema) is rendered by <FAQ/> inside
+  // <SolarCalculatorClient/>; a second schema-only FAQPage here would be an
+  // invisible duplicate that contradicts Google's "must match visible content".
   return (
     <>
       <CalculatorSchema />
-      <FAQSchema />
       <SolarCalculatorClient />
     </>
   );

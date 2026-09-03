@@ -434,7 +434,7 @@ function FinancingCalculator() {
                   {[
                     { label: 'System Cost', value: fmt(result.systemCost), sub: 'Before grant', color: 'text-gray-400' },
                     { label: 'After SEAI Grant', value: fmt(result.netCost), sub: `-${SOLAR_DATA.grant.label} applied`, color: 'text-green-400' },
-                    { label: 'Deposit ({depositPercent}%)', value: fmt(result.depositPercent > 0 ? result.depositAmount : 0), sub: depositPercent === 0 ? 'No upfront cost' : 'Paid today', color: 'text-white' },
+                    { label: `Deposit (${depositPercent}%)`, value: fmt(result.depositPercent > 0 ? result.depositAmount : 0), sub: depositPercent === 0 ? 'No upfront cost' : 'Paid today', color: 'text-white' },
                     { label: 'Loan Amount', value: fmt(result.loanAmount), sub: `Over ${term.label} at ${term.rate}%`, color: 'text-sky-400' },
                     { label: 'Monthly Payment', value: fmtDec(result.monthlyPayment), sub: 'Estimated repayment', color: 'text-amber-400' },
                     { label: 'Total Interest', value: fmt(result.totalInterest), sub: 'Cost of borrowing', color: 'text-rose-400' },

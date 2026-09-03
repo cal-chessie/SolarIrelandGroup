@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
-import { articles } from '@/lib/blog-data';
 
+// Metadata only. The blog-index JSON-LD (CollectionPage, Blog feed, breadcrumb)
+// lives in blog/page.tsx so it renders on /blog ONLY. It must NOT sit in this
+// layout, which also wraps every /blog/[slug] article and would otherwise leak
+// the blog-feed and "Home > Blog" breadcrumb (whose @id is /blog, not the
+// article) onto every post.
 export const metadata: Metadata = {
   title: 'Solar Blog: Tips, Guides & SEAI Grants',
   description:
@@ -34,86 +38,10 @@ export const metadata: Metadata = {
   },
 };
 
-const blogPageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  '@id': 'https://solarirelandgroup.ie/blog',
-  name: 'Solar Energy Blog',
-  description: 'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and installation tips.',
-  url: 'https://solarirelandgroup.ie/blog',
-  inLanguage: 'en-IE',
-  isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
-  publisher: { '@id': 'https://solarirelandgroup.ie/#organization' },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: 'https://solarirelandgroup.ie/og-blog.png',
-    width: 1344,
-    height: 768,
-  },
-};
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: 'https://solarirelandgroup.ie',
-    },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: 'Blog',
-      item: 'https://solarirelandgroup.ie/blog',
-    },
-  ],
-};
-
-const blogFeedSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Blog',
-  name: 'Solar Ireland Blog',
-  description: 'Expert solar panel advice for Irish homeowners.',
-  url: 'https://solarirelandgroup.ie/blog',
-  inLanguage: 'en-IE',
-  publisher: {
-    '@type': 'Organization',
-    name: 'Solar Ireland',
-    url: 'https://solarirelandgroup.ie',
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://solarirelandgroup.ie/logo-icon-512.png',
-      width: 512,
-      height: 512,
-    },
-  },
-  blogPost: articles.slice(0, 10).map((article) => ({
-    '@type': 'BlogPosting',
-    headline: article.title,
-    description: article.excerpt,
-    url: `https://solarirelandgroup.ie/blog/${article.slug}`,
-    datePublished: article.date,
-    author: {
-      '@type': 'Person',
-      name: article.author,
-    },
-    image: 'https://solarirelandgroup.ie/og-blog.png',
-  })),
-};
-
 export default function BlogLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogFeedSchema) }} />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

@@ -4,6 +4,21 @@ import BlogPostClient from './BlogPostClient';
 
 const SITE_URL = 'https://solarirelandgroup.ie';
 
+// Derive a rendered <title> that stays <=60 chars. The "%s | Solar Ireland"
+// root template adds 16 chars, which pushes most article titles well past 60,
+// so we set an absolute title instead. We first drop any trailing clause after
+// a colon or dash, then re-add the " | Solar Ireland" brand only if it still
+// fits; otherwise we keep the (already truthful) shortened title on its own.
+function metaTitleForArticle(fullTitle: string): string {
+  const sepAt = fullTitle.search(/:\s|\s[–—-]\s/);
+  let base = (sepAt !== -1 ? fullTitle.slice(0, sepAt) : fullTitle).trim();
+  if (base.length > 60) {
+    base = base.slice(0, 60).replace(/\s+\S*$/, '').trim();
+  }
+  const branded = `${base} | Solar Ireland`;
+  return branded.length <= 60 ? branded : base;
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -22,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogDescription = article.excerpt;
 
   return {
-    title: article.title,
+    // Absolute (bypasses the "%s | Solar Ireland" template) to keep <title> <=60.
+    title: { absolute: metaTitleForArticle(article.title) },
     description: article.excerpt,
     alternates: {
       canonical: `${SITE_URL}/blog/${slug}`,

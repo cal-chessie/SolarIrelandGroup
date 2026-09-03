@@ -22,8 +22,10 @@ const geistMono = Geist_Mono({
 
 const SITE_URL = "https://solarirelandgroup.ie";
 const SITE_NAME = "Solar Ireland";
+// Home/default meta description, kept <=155 chars for full SERP display while
+// retaining the key entities (Solar Ireland, SEAI, solar panel installers).
 const SITE_DESCRIPTION =
-  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
+  "SEAI-registered solar panel installers across all 32 counties of Ireland. Free AI bill analysis and honest quotes. Cut your electricity bill with solar.";
 const SITE_KEYWORDS = [
   "solar panels Ireland",
   "solar panel installation Ireland",
@@ -66,7 +68,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
 
   title: {
-    default: "Solar Ireland | #1 Rated Solar Panel Installers | SEAI Registered | Free AI Bill Analysis",
+    default: "Solar Ireland | SEAI Solar Panel Installers | 32 Counties",
     template: "%s | Solar Ireland",
   },
 
@@ -86,9 +88,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
     languages: {
+      // Republic-of-Ireland English only, plus x-default as the generic
+      // fallback. The old redundant self-aliases (en-GB, generic en) all
+      // pointed at the same ROI URL and were dropped.
       "en-IE": SITE_URL,
-      "en-GB": SITE_URL,
-      "en": SITE_URL,
+      "x-default": SITE_URL,
     },
   },
 
