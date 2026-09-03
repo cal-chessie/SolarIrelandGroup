@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import { motion, AnimatePresence, useInView } from '@/lib/motion';
 import Link from 'next/link';
 import {
@@ -264,7 +264,7 @@ export default function BookSurveyClient() {
     const propType = propertyTypes.find(p => p.value === formData.propertyType)?.label || formData.propertyType;
     const roof = roofTypes.find(r => r.value === formData.roofType)?.label || formData.roofType;
 
-    const message = encodeURIComponent(
+    const message =
       `📅 SOLAR SURVEY BOOKING\n\n` +
       `👤 Name: ${formData.firstName} ${formData.lastName}\n` +
       `📞 Phone: ${formData.phone}\n` +
@@ -278,8 +278,7 @@ export default function BookSurveyClient() {
       `📆 Preferred Date: ${dateStr}\n` +
       `🕐 Preferred Time: ${timeStr}\n` +
       `☀️ Interest: ${interestStr}\n` +
-      (formData.notes ? `📝 Notes: ${formData.notes}\n` : '')
-    );
+      (formData.notes ? `📝 Notes: ${formData.notes}\n` : '');
 
     window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
     trackSurveyBooking();
@@ -1364,15 +1363,17 @@ function InputField({
   type?: string;
   className?: string;
 }) {
+  const id = useId();
   return (
     <div className={className}>
       {label && (
-        <label className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+        <label htmlFor={id} className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
           {Icon && <Icon className="w-3.5 h-3.5 text-gray-500" />}
           {label}
         </label>
       )}
       <input
+        id={id}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -143,7 +143,7 @@ const faqs = [
   },
   {
     question: 'What if my county says "Coming Soon"?',
-    answer: 'If your county is listed as "Coming Soon", it means we\'re actively setting up installation teams in your area and expect to be fully operational within the coming weeks. You can still reach out to us now - we\'ll add you to our waitlist, conduct a free remote roof assessment using satellite imagery, and have your SEAI grant paperwork ready to go so there\'s zero delay once our local team is active. Many of our "Coming Soon" counties already have surveyors in the area, so don\'t hesitate to get in touch.',
+    answer: 'If your county is listed as "Coming Soon", it means we\'re actively setting up installation teams in your area and expect to be fully operational within the coming weeks. You can still reach out to us now - we\'ll add you to our waitlist and have your SEAI grant paperwork ready to go so there\'s zero delay once our local team is active. Many of our "Coming Soon" counties already have surveyors in the area, so don\'t hesitate to get in touch.',
   },
   {
     question: 'Can I get a free solar survey in my area?',

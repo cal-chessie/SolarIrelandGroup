@@ -52,7 +52,7 @@ OUT (ignore): src/app/admin/**, src/app/portal/**, src/app/api/**, src/lib/{admi
 - Two `<h1>` in `src/components/solar/Hero.tsx` (~L96 and ~L102: "Your Energy." / "Your Asset.").
 - Title 89 chars, description 296 chars (both truncate).
 - robots.ts lists only Googlebot/Bingbot/Slurp/DuckDuckBot: no AI-crawler rules; no llms.txt; no pricing.md.
-- next.config CSP `frame-ancestors` includes `https://*.space.z.ai` and a preview-chat origin (dev origins in production CSP).
+- CSP is now issued per-request in `src/middleware.ts` (nonce + strict-dynamic, frame-ancestors 'self'); the preview-tool origins were removed and next.config keeps only the header fallbacks.
 - og:image points at solarireland.org (a different domain).
 - Rich JSON-LD already present (Organization #organization, LocalBusiness #business, WebSite/WebPage/Breadcrumb graph, Service, HowTo, FinancialProduct, FAQPage): confirm it parses and that FAQPage matches the rendered FAQ.
 
