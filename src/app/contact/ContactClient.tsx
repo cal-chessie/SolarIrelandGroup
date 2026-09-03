@@ -241,7 +241,7 @@ function ContactForm() {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Your full name"
+                  aria-label="Your full name" placeholder="Your full name"
                   required
                   value={formData.name}
                   onChange={handleChange}
@@ -254,7 +254,7 @@ function ContactForm() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="your@email.com"
+                  aria-label="Your email address" placeholder="your@email.com"
                   required
                   value={formData.email}
                   onChange={handleChange}
@@ -267,7 +267,7 @@ function ContactForm() {
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="08X XXX XXXX"
+                  aria-label="Your phone number" placeholder="08X XXX XXXX"
                   value={formData.phone}
                   onChange={handleChange}
                   className={`${inputClasses} pl-10`}
@@ -278,6 +278,7 @@ function ContactForm() {
                 <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none z-10" />
                 <select
                   name="county"
+                  aria-label="Your county"
                   value={formData.county}
                   onChange={handleChange}
                   className={`${inputClasses} pl-10 appearance-none cursor-pointer`}
@@ -298,7 +299,7 @@ function ContactForm() {
               <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-600 pointer-events-none" />
               <textarea
                 name="message"
-                placeholder="Tell us about your home, roof type, or any questions you have..."
+                aria-label="Your message" placeholder="Tell us about your home, roof type, or any questions you have..."
                 rows={4}
                 required
                 value={formData.message}

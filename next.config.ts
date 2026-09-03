@@ -98,20 +98,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Next.js Image optimizer — never cache so new images show immediately
+        // Next.js Image optimizer: cache but always revalidate, so unchanged
+        // images serve from cache (304) while any replacement shows at once.
         source: "/_next/image/:path*",
         headers: [
           {
             key: "Cache-Control",
-            value: "no-cache, no-store, must-revalidate, proxy-revalidate",
-          },
-          {
-            key: "Pragma",
-            value: "no-cache",
-          },
-          {
-            key: "Expires",
-            value: "0",
+            value: "public, max-age=0, must-revalidate",
           },
         ],
       },
