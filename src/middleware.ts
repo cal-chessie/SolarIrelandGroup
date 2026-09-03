@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   MIDDLEWARE — Canonical URL Redirects
+   MIDDLEWARE - Canonical URL Redirects
    ═══════════════════════════════════════════════════════════════
    Runs on the Edge before every request.
    Only handles redirects that next.config headers() cannot.
@@ -29,7 +29,7 @@ export function middleware(request: NextRequest) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MATCHER — Skip static files
+   MATCHER - Skip static files
    ═══════════════════════════════════════════════════════════════ */
 export const config = {
   matcher: [

@@ -59,7 +59,7 @@ const benefits = [
     stat: 'Up to 70%',
     statLabel: 'reduction on bills',
     description:
-      'A typical Irish home with a 4kWp system saves €800–€1,200 per year on electricity. As ESB and other supplier prices rise year on year, your savings actually grow — your panels produce the same free energy regardless of what electricity costs on the open market.',
+      'A typical Irish home with a 4kWp system saves €800–€1,200 per year on electricity. As ESB and other supplier prices rise year on year, your savings actually grow - your panels produce the same free energy regardless of what electricity costs on the open market.',
     color: 'text-green-400',
     bg: 'bg-green-400/10',
     border: 'hover:border-green-400/15',
@@ -70,7 +70,7 @@ const benefits = [
     stat: '€1,800',
     statLabel: 'government grant (ROI)',
     description:
-      'The SEAI Solar PV scheme pays up to €1,800 towards your installation in 2026. Available to owner-occupiers in the Republic of Ireland (26 counties) with homes built before 2021 and a BER rating of C3 or lower. Our team handles the full grant application on your behalf — all included in the price.',
+      'The SEAI Solar PV scheme pays up to €1,800 towards your installation in 2026. Available to owner-occupiers in the Republic of Ireland (26 counties) with homes built before 2021 and a BER rating of C3 or lower. Our team handles the full grant application on your behalf - all included in the price.',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
     border: 'hover:border-amber-400/15',
@@ -81,7 +81,7 @@ const benefits = [
     stat: SOLAR_DATA.export.label,
     statLabel: 'microgeneration tariff',
     description:
-      `Under the Clean Export Guarantee, your energy supplier pays you ${SOLAR_DATA.export.label} for every kWh of excess solar energy you export to the national grid. Any energy your home doesn't use during the day is automatically sold — it appears as a credit on your bill.`,
+      `Under the Clean Export Guarantee, your energy supplier pays you ${SOLAR_DATA.export.label} for every kWh of excess solar energy you export to the national grid. Any energy your home doesn't use during the day is automatically sold - it appears as a credit on your bill.`,
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
     border: 'hover:border-sky-400/15',
@@ -92,7 +92,7 @@ const benefits = [
     stat: 'Higher',
     statLabel: 'property value',
     description:
-      "Solar panels significantly improve your Building Energy Rating — a legal requirement when selling or renting a property in Ireland. A better BER makes your home more attractive to buyers and can increase market value. We coordinate the post-install BER assessment as part of our service.",
+      "Solar panels significantly improve your Building Energy Rating - a legal requirement when selling or renting a property in Ireland. A better BER makes your home more attractive to buyers and can increase market value. We coordinate the post-install BER assessment as part of our service.",
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'hover:border-violet-400/15',
@@ -209,7 +209,7 @@ function PriceChart() {
           Irish electricity prices keep rising
         </h3>
         <p className="text-[11px] sm:text-xs text-gray-400 mt-1.5 leading-relaxed">
-          Average residential rate per kWh — all-in including VAT, PSO levy, and standing
+          Average residential rate per kWh - all-in including VAT, PSO levy, and standing
           charges. Source: CRU, SEAI.
         </p>
       </div>
@@ -321,7 +321,7 @@ function GenerationChart() {
             Solar works year-round in Ireland
           </h3>
           <p className="text-[11px] sm:text-xs text-gray-400 mt-1.5 leading-relaxed">
-            Average monthly output per kWp installed — Dublin TMY data. Ireland gets{' '}
+            Average monthly output per kWp installed - Dublin TMY data. Ireland gets{' '}
             <span className="text-white/70 font-medium">75–85% of the solar
             resource</span> that southern Spain receives.
           </p>
@@ -413,7 +413,7 @@ function GenerationChart() {
         <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
           Even in <span className="text-white font-semibold">December</span>, a 4kWp
           system generates roughly{' '}
-          <span className="text-white font-semibold">96 kWh</span> — enough to power
+          <span className="text-white font-semibold">96 kWh</span> - enough to power
           your lights, TV, fridge, and washing machine for the entire month. Solar
           panels work on light, not heat, so they perform well in Irish weather.
         </p>
@@ -519,7 +519,7 @@ export default function WhySolar() {
           </h2>
           <p className="mt-4 text-gray-500 text-sm sm:text-base max-w-lg leading-relaxed">
             Every year, Irish homeowners send thousands of euro to energy suppliers.
-            Solar flips that — generate your own electricity, sell the excess to the
+            Solar flips that - generate your own electricity, sell the excess to the
             grid, and lock in savings for 25+ years.
           </p>
         </motion.div>
@@ -573,7 +573,7 @@ export default function WhySolar() {
                 Under Ireland&apos;s Clean Export Guarantee (CEG), your electricity supplier
                 must pay you for excess solar exported to the grid. Most suppliers
                 currently offer{' '}
-                <span className="text-white font-semibold">{SOLAR_DATA.export.label}</span> — paid
+                <span className="text-white font-semibold">{SOLAR_DATA.export.label}</span> - paid
                 automatically as a credit on your electricity bill. A typical 4kWp
                 system can earn €200–€400 per year from exports alone.
               </p>
@@ -594,7 +594,7 @@ export default function WhySolar() {
             </h3>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
               Upload your electricity bill and get an instant AI-powered savings
-              estimate — completely free.
+              estimate - completely free.
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">

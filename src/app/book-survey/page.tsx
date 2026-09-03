@@ -71,7 +71,7 @@ const bookSchema = {
           '@type': 'PriceSpecification',
           price: '0',
           priceCurrency: 'EUR',
-          name: 'Free — No Obligation',
+          name: 'Free - No Obligation',
         },
         availability: 'https://schema.org/InStock',
       },

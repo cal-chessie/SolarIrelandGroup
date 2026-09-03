@@ -47,7 +47,7 @@ const faqs: FAQItem[] = [
     id: 1,
     question: 'How much do solar panels cost in Ireland in 2026?',
     answer:
-      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes — no hidden costs, no surprises. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
+      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
     category: 'costs',
     keywords: ['cost', 'price', 'expensive', 'cheap', 'budget', 'how much', 'money', 'afford'],
   },
@@ -55,7 +55,7 @@ const faqs: FAQItem[] = [
     id: 2,
     question: 'How much could I save with solar panels?',
     answer:
-      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser — it reads your actual bill and calculates your personalised savings. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
+      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from €30,000 to €50,000. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
     category: 'costs',
     keywords: ['save', 'savings', 'saving', 'return', 'roi', 'payback', 'worth it', 'investment'],
   },
@@ -71,7 +71,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only — Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -79,7 +79,7 @@ const faqs: FAQItem[] = [
     id: 5,
     question: 'How does the SEAI grant application work?',
     answer:
-      `It's straightforward — and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and a post-install BER assessment is completed, SEAI pays the ${SOLAR_DATA.grant.label} grant directly to us, and it's deducted from your final invoice. You don't need to pay the grant amount upfront and wait for a refund.`,
+      `It's straightforward - and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and a post-install BER assessment is completed, SEAI pays the ${SOLAR_DATA.grant.label} grant directly to us, and it's deducted from your final invoice. You don't need to pay the grant amount upfront and wait for a refund.`,
     category: 'grants',
     keywords: ['grant', 'apply', 'application', 'process', 'paperwork', 'how does it work', 'seai'],
   },
@@ -103,7 +103,7 @@ const faqs: FAQItem[] = [
     id: 8,
     question: 'Will solar panels work on my roof?',
     answer:
-      'Solar panels work on most Irish roof types — tiled, slate, and metal. South-facing roofs with a pitch of 30-40 degrees are optimal, but east/west-facing roofs still produce excellent results (typically 80-85% of a south-facing output). During the free survey, we assess your roof orientation, pitch, shading from trees or buildings, and structural suitability to give you an honest recommendation.',
+      'Solar panels work on most Irish roof types - tiled, slate, and metal. South-facing roofs with a pitch of 30-40 degrees are optimal, but east/west-facing roofs still produce excellent results (typically 80-85% of a south-facing output). During the free survey, we assess your roof orientation, pitch, shading from trees or buildings, and structural suitability to give you an honest recommendation.',
     category: 'install',
     keywords: ['roof', 'work', 'suitable', 'type', 'slate', 'tile', 'flat', 'pitch', 'orientation'],
   },
@@ -111,7 +111,7 @@ const faqs: FAQItem[] = [
     id: 9,
     question: 'How much electricity will I generate?',
     answer:
-      'In Ireland, a well-positioned system generates roughly 850 to 950 kWh per kilowatt-peak (kWp) per year. A typical 4 kWp system would produce around 3,400 to 3,800 kWh annually. Actual output depends on your roof orientation, pitch, and shading. Modern panels are remarkably efficient — even on overcast Irish days they generate meaningful power. A properly sized system can cover 60-70% of a typical household\'s annual electricity needs.',
+      'In Ireland, a well-positioned system generates roughly 850 to 950 kWh per kilowatt-peak (kWp) per year. A typical 4 kWp system would produce around 3,400 to 3,800 kWh annually. Actual output depends on your roof orientation, pitch, and shading. Modern panels are remarkably efficient - even on overcast Irish days they generate meaningful power. A properly sized system can cover 60-70% of a typical household\'s annual electricity needs.',
     category: 'technical',
     keywords: ['generate', 'generation', 'output', 'kwh', 'power', 'electricity', 'produce', 'kwp'],
   },
@@ -119,7 +119,7 @@ const faqs: FAQItem[] = [
     id: 10,
     question: 'What about cloudy days and winter?',
     answer:
-      'Solar panels still generate electricity on cloudy days — typically 10-25% of their rated output compared to a sunny day. While winter production is lower (roughly 30-40% of summer output), the system is sized to maximise annual generation. Any shortfall is automatically covered by the grid, and you only pay for what you use. Most homeowners find that their summer surplus offsets the winter deficit, and with a battery you can store excess summer generation for winter evenings.',
+      'Solar panels still generate electricity on cloudy days - typically 10-25% of their rated output compared to a sunny day. While winter production is lower (roughly 30-40% of summer output), the system is sized to maximise annual generation. Any shortfall is automatically covered by the grid, and you only pay for what you use. Most homeowners find that their summer surplus offsets the winter deficit, and with a battery you can store excess summer generation for winter evenings.',
     category: 'technical',
     keywords: ['cloudy', 'winter', 'rain', 'weather', 'ireland', 'sun', 'dark', 'snow', 'season'],
   },
@@ -135,7 +135,7 @@ const faqs: FAQItem[] = [
     id: 12,
     question: 'What happens to electricity I don\'t use?',
     answer:
-      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill — it's all handled automatically through your smart meter. <a href="#why-solar" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
+      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
     category: 'technical',
     keywords: ['export', 'sell', 'excess', 'surplus', 'grid', 'microgeneration', 'credit', 'smart meter', 'esb'],
   },
@@ -407,7 +407,7 @@ export default function FAQ() {
             {
               "@type": "Question",
               name: "What about cloudy days and winter in Ireland?",
-              acceptedAnswer: { "@type": "Answer", text: "Solar panels still generate on cloudy days — typically 10-25% of rated output. Winter production is lower but summer surplus offsets the winter deficit." },
+              acceptedAnswer: { "@type": "Answer", text: "Solar panels still generate on cloudy days - typically 10-25% of rated output. Winter production is lower but summer surplus offsets the winter deficit." },
             },
             {
               "@type": "Question",

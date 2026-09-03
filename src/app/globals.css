@@ -100,7 +100,7 @@
     @apply bg-background text-foreground;
   }
 
-  /* Smooth scrolling disabled globally — fights with IntersectionObserver
+  /* Smooth scrolling disabled globally - fights with IntersectionObserver
      scroll-triggered animations and causes jank. Handled via JS for anchor
      clicks only (see Navbar component). */
   html {
@@ -113,7 +113,7 @@
     overflow-anchor: auto;
   }
 
-  /* NOTE: content-visibility:auto removed — it causes scroll position
+  /* NOTE: content-visibility:auto removed - it causes scroll position
      jumps when sections render/unrender as they enter/exit viewport.
      The layout shift is worse than the minor perf gain on this site. */
 
@@ -788,7 +788,7 @@
 }
 
 /* 
-   MOTION LITE — CSS keyframes for framer-motion replacement
+   MOTION LITE - CSS keyframes for framer-motion replacement
    These power the <motion.div> component from src/lib/motion.tsx
     */
 
@@ -822,7 +822,7 @@
   to   { opacity: 1; transform: rotate(0deg); }
 }
 
-/* Hidden initial state — applied IMMEDIATELY (even during SSR)
+/* Hidden initial state - applied IMMEDIATELY (even during SSR)
    for scroll-triggered elements to prevent visible→hidden flash.
    useLayoutEffect removes this class before first paint for
    elements already in the viewport. */
@@ -882,7 +882,7 @@
   }
 }
 
-  /* Animated classes — triggered via IntersectionObserver or immediate */
+  /* Animated classes - triggered via IntersectionObserver or immediate */
 .motion-fade-up {
   animation: motion-fade-up var(--motion-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -1044,7 +1044,7 @@
   transform: scale(1.15);
 }
 
-  /* Focus ring — high-visibility for keyboard users */
+  /* Focus ring - high-visibility for keyboard users */
 .solar-range-input:focus-visible {
   outline: 2.5px solid rgba(250, 204, 21, 0.8);
   outline-offset: 4px;

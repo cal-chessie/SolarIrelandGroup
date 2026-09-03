@@ -4,7 +4,7 @@ import { getAllArticleSlugs } from "@/lib/blog-data";
 
 const SITE_URL = "https://solarirelandgroup.ie";
 
-/* Per-page lastModified dates — update these when you edit a page.
+/* Per-page lastModified dates - update these when you edit a page.
    Google uses these to prioritise crawl frequency. */
 const PAGE_DATES: Record<string, string> = {
   "/": "2026-04-08T00:00:00+00:00",

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar Panel Services Ireland | PV, Battery & EV Charging Installation',
   description:
-    'Complete solar panel services in Ireland — residential PV installation from €4,500, battery storage, EV charger setup, SEAI grant handling, BER assessments & free surveys. All 32 counties.',
+    'Complete solar panel services in Ireland - residential PV installation from €4,500, battery storage, EV charger setup, SEAI grant handling, BER assessments & free surveys. All 32 counties.',
   openGraph: {
     title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-services.png',
         width: 1200,
         height: 630,
-        alt: 'Solar Ireland — Solar Panel Services',
+        alt: 'Solar Ireland - Solar Panel Services',
       },
     ],
   },

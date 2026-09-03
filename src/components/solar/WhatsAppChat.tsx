@@ -203,7 +203,7 @@ function saveToStorage(messages: Message[], hasGreeted: boolean) {
   try {
     if (typeof window === 'undefined') return;
     localStorage.setItem(LS_KEY, JSON.stringify({ messages, hasGreeted }));
-  } catch { /* silent — quota exceeded etc */ }
+  } catch { /* silent - quota exceeded etc */ }
 }
 
 function clearStorage() {

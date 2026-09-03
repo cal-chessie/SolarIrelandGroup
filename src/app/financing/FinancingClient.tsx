@@ -253,7 +253,7 @@ function FinancingCalculator() {
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Pick your system size, choose your deposit and loan term, and see exactly
-            what you&apos;d pay each month — with the SEAI grant already deducted.
+            what you&apos;d pay each month - with the SEAI grant already deducted.
           </p>
         </div>
 
@@ -322,7 +322,7 @@ function FinancingCalculator() {
               2. Deposit Amount
             </h3>
             <p className="text-xs text-gray-500 mb-5">
-              Choose how much to pay upfront. Many green loans require no deposit — the grant acts as your deposit.
+              Choose how much to pay upfront. Many green loans require no deposit - the grant acts as your deposit.
             </p>
             <div className="flex flex-wrap gap-2">
               {DEPOSIT_OPTIONS.map((d) => (
@@ -569,7 +569,7 @@ function FinancingOptions() {
       items: [
         'Fastest payback: 5–7 years after SEAI grant',
         'Highest 25-year return on investment',
-        'No interest costs — every cent goes to savings',
+        'No interest costs - every cent goes to savings',
         'Best option if you have savings earning less than 7%',
         '€2,700–€8,700 typical out-of-pocket cost after grant',
         'Instant equity increase in your property',
@@ -607,7 +607,7 @@ function FinancingOptions() {
             <span className="text-gradient">Pay for Solar</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Every option has merits — the right one depends on your savings, mortgage situation,
+            Every option has merits - the right one depends on your savings, mortgage situation,
             and whether you want to be cash-flow positive from day one.
           </p>
         </div>
@@ -651,7 +651,7 @@ function HowFinancingWorks() {
     {
       num: '01',
       title: 'Get Your Free Quote',
-      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. The SEAI grant of €1,800 is deducted from the price shown — no extra paperwork required on your end.',
+      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. The SEAI grant of €1,800 is deducted from the price shown - no extra paperwork required on your end.',
     },
     {
       num: '02',
@@ -666,7 +666,7 @@ function HowFinancingWorks() {
     {
       num: '04',
       title: 'Start Saving Immediately',
-      desc: 'Your system starts generating electricity the same day. With a green loan, your monthly savings on electricity often exceed your loan repayment from the very first month — meaning solar costs you nothing extra and actually puts money in your pocket from day one.',
+      desc: 'Your system starts generating electricity the same day. With a green loan, your monthly savings on electricity often exceed your loan repayment from the very first month - meaning solar costs you nothing extra and actually puts money in your pocket from day one.',
     },
   ];
 
@@ -715,15 +715,15 @@ function FinancingFAQ() {
     },
     {
       q: 'How does the SEAI grant work with financing?',
-      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, if you choose a €6,000 system, the grant brings it down to €4,200 — so you only need to borrow €4,200. You never have to pay the full amount and wait for a refund.`,
+      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, if you choose a €6,000 system, the grant brings it down to €4,200 - so you only need to borrow €4,200. You never have to pay the full amount and wait for a refund.`,
     },
     {
       q: 'Is it better to pay upfront or finance solar panels?',
-      a: `It depends on your circumstances. Paying upfront gives the best pure return on investment — a typical payback of 5–7 years — because there are no interest costs. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar still delivers €20,000–€35,000 in net savings over 25 years. If your savings are earning less than 5% in a deposit account, financing at 5.5% while earning 18% ROI on solar makes financial sense.`,
+      a: `It depends on your circumstances. Paying upfront gives the best pure return on investment - a typical payback of 5–7 years - because there are no interest costs. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar still delivers €20,000–€35,000 in net savings over 25 years. If your savings are earning less than 5% in a deposit account, financing at 5.5% while earning 18% ROI on solar makes financial sense.`,
     },
     {
       q: 'What deposit do I need for solar panel finance?',
-      a: `Many green loans in Ireland require no deposit at all — you can borrow 100% of the post-grant cost. The SEAI grant effectively acts as a deposit since it reduces the total installation cost before you even need to borrow. Some lenders offer green loans up to €15,000 with no deposit and flexible repayment terms. Even a small deposit of 10–20% can significantly reduce your monthly repayments and total interest paid.`,
+      a: `Many green loans in Ireland require no deposit at all - you can borrow 100% of the post-grant cost. The SEAI grant effectively acts as a deposit since it reduces the total installation cost before you even need to borrow. Some lenders offer green loans up to €15,000 with no deposit and flexible repayment terms. Even a small deposit of 10–20% can significantly reduce your monthly repayments and total interest paid.`,
     },
     {
       q: 'Can I add solar to my existing mortgage?',
@@ -731,7 +731,7 @@ function FinancingFAQ() {
     },
     {
       q: 'What if I sell my house before the loan is paid off?',
-      a: `Solar panels add significant value to your property — typically €10,000–€15,000 according to the SEAI and BER assessment data. You have a few options: pay off the remaining loan balance from the sale proceeds (the increase in property value usually covers this), transfer the loan to your new property, or the buyer can assume the green loan in some cases. Either way, solar is a net positive for your property value and selling price.`,
+      a: `Solar panels add significant value to your property - typically €10,000–€15,000 according to the SEAI and BER assessment data. You have a few options: pay off the remaining loan balance from the sale proceeds (the increase in property value usually covers this), transfer the loan to your new property, or the buyer can assume the green loan in some cases. Either way, solar is a net positive for your property value and selling price.`,
     },
     {
       q: 'Are there any government-backed green finance schemes?',
@@ -824,7 +824,7 @@ function FinalCTA() {
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
             Get a free, itemised quote with financing breakdown. We&apos;ll show you exactly
-            what you&apos;d pay upfront, monthly, and over 25 years — no hidden fees, no pressure.
+            what you&apos;d pay upfront, monthly, and over 25 years - no hidden fees, no pressure.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

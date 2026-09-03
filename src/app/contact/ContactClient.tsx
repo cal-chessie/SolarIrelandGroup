@@ -139,10 +139,12 @@ function ContactForm() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const res = await fetch('/api/contact', {
@@ -157,7 +159,9 @@ function ContactForm() {
       setSubmitted(true);
       trackContactFormSubmit();
     } catch {
-      setSubmitted(true);
+      setError(
+        'Something went wrong sending your message. Please email sales@solarirelandgroup.ie or call us and we will get straight back to you.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -303,6 +307,15 @@ function ContactForm() {
               />
             </div>
 
+            {error && (
+              <p
+                role="alert"
+                className="text-sm text-red-300 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3"
+              >
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -372,7 +385,7 @@ export default function ContactClient() {
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
                 Have a question about solar panels? Want to book a free survey?
-                Just want to chat? We&apos;re real people — reach out anytime
+                Just want to chat? We&apos;re real people - reach out anytime
                 and we&apos;ll get back to you fast.
               </motion.p>
             </motion.div>
@@ -623,7 +636,7 @@ export default function ContactClient() {
                   </h2>
                   <p className="text-sm text-gray-400 mt-2 leading-relaxed">
                     We&apos;ve answered the most common questions about solar panels in
-                    Ireland — from costs and grants to installation timelines and
+                    Ireland - from costs and grants to installation timelines and
                     warranties.
                   </p>
                 </div>

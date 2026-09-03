@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 /**
  * Thin amber progress bar fixed to the top of the viewport.
- * Shows scroll depth — uses pure CSS width transition, no Framer Motion.
+ * Shows scroll depth - uses pure CSS width transition, no Framer Motion.
  */
 export default function ScrollProgress() {
   const barRef = useRef<HTMLDivElement>(null);

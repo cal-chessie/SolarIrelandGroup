@@ -48,41 +48,41 @@ interface CountyData {
 }
 
 const counties: CountyData[] = [
-  { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.com', status: 'active', costMin: 4800, costMax: 7200, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords — terraces to estates, we know every roof' },
-  { name: 'Wicklow', provinces: ['Leinster'], domain: 'solarwicklow.com', status: 'active', costMin: 4600, costMax: 7000, generationKwh: 3520, population: '155K', tagline: 'The Garden County — stunning scenery and serious solar potential' },
-  { name: 'Wexford', provinces: ['Leinster'], domain: 'solarwexford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3600, population: '156K', tagline: 'Sunny southeast at its finest — Hook Head leads the way' },
-  { name: 'Carlow', provinces: ['Leinster'], domain: 'solarcarlow.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3540, population: '61K', tagline: 'The Dolmen County — solid ground for solar investment' },
-  { name: 'Kildare', provinces: ['Leinster'], domain: 'solarkildare.com', status: 'active', costMin: 4600, costMax: 7100, generationKwh: 3550, population: '251K', tagline: 'Punchestown to Naas — commuter belt going green' },
-  { name: 'Meath', provinces: ['Leinster'], domain: 'solarmeath.com', status: 'active', costMin: 4500, costMax: 6900, generationKwh: 3560, population: '234K', tagline: 'The Royal County — heritage homes meet modern energy' },
+  { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.com', status: 'active', costMin: 4800, costMax: 7200, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords - terraces to estates, we know every roof' },
+  { name: 'Wicklow', provinces: ['Leinster'], domain: 'solarwicklow.com', status: 'active', costMin: 4600, costMax: 7000, generationKwh: 3520, population: '155K', tagline: 'The Garden County - stunning scenery and serious solar potential' },
+  { name: 'Wexford', provinces: ['Leinster'], domain: 'solarwexford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3600, population: '156K', tagline: 'Sunny southeast at its finest - Hook Head leads the way' },
+  { name: 'Carlow', provinces: ['Leinster'], domain: 'solarcarlow.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3540, population: '61K', tagline: 'The Dolmen County - solid ground for solar investment' },
+  { name: 'Kildare', provinces: ['Leinster'], domain: 'solarkildare.com', status: 'active', costMin: 4600, costMax: 7100, generationKwh: 3550, population: '251K', tagline: 'Punchestown to Naas - commuter belt going green' },
+  { name: 'Meath', provinces: ['Leinster'], domain: 'solarmeath.com', status: 'active', costMin: 4500, costMax: 6900, generationKwh: 3560, population: '234K', tagline: 'The Royal County - heritage homes meet modern energy' },
   { name: 'Louth', provinces: ['Leinster'], domain: 'solarlouth.com', status: 'coming-soon', costMin: 4500, costMax: 6800, generationKwh: 3530, population: '139K', tagline: 'The Wee County with big solar ambitions' },
-  { name: 'Longford', provinces: ['Leinster'], domain: 'solarlongford.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '46K', tagline: 'Heart of the Midlands — where community spirit shines' },
+  { name: 'Longford', provinces: ['Leinster'], domain: 'solarlongford.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '46K', tagline: 'Heart of the Midlands - where community spirit shines' },
   { name: 'Westmeath', provinces: ['Leinster'], domain: 'solarwestmeath.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3430, population: '96K', tagline: 'Lakeside living with rooftop power to match' },
-  { name: 'Offaly', provinces: ['Leinster'], domain: 'solaroffaly.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3420, population: '83K', tagline: 'From the Slieve Bloom to Shannonbridge — powering the Midlands' },
-  { name: 'Laois', provinces: ['Leinster'], domain: 'solarlaois.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3430, population: '85K', tagline: 'Quiet county, bright future — solar energy for every home' },
-  { name: 'Kilkenny', provinces: ['Leinster'], domain: 'solarkilkenny.com', status: 'active', costMin: 4400, costMax: 6700, generationKwh: 3500, population: '104K', tagline: 'The Marble City and beyond — medieval charm, modern energy' },
+  { name: 'Offaly', provinces: ['Leinster'], domain: 'solaroffaly.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3420, population: '83K', tagline: 'From the Slieve Bloom to Shannonbridge - powering the Midlands' },
+  { name: 'Laois', provinces: ['Leinster'], domain: 'solarlaois.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3430, population: '85K', tagline: 'Quiet county, bright future - solar energy for every home' },
+  { name: 'Kilkenny', provinces: ['Leinster'], domain: 'solarkilkenny.com', status: 'active', costMin: 4400, costMax: 6700, generationKwh: 3500, population: '104K', tagline: 'The Marble City and beyond - medieval charm, modern energy' },
 
   { name: 'Cork', provinces: ['Munster'], domain: 'solarcork.com', status: 'active', costMin: 4600, costMax: 7000, generationKwh: 3580, population: '555K', tagline: 'The Rebel County runs on sunshine' },
-  { name: 'Kerry', provinces: ['Munster'], domain: 'solarkerry.com', status: 'active', costMin: 4600, costMax: 7100, generationKwh: 3540, population: '156K', tagline: 'From the Kingdom — wild Atlantic coast, serious solar savings' },
+  { name: 'Kerry', provinces: ['Munster'], domain: 'solarkerry.com', status: 'active', costMin: 4600, costMax: 7100, generationKwh: 3540, population: '156K', tagline: 'From the Kingdom - wild Atlantic coast, serious solar savings' },
   { name: 'Limerick', provinces: ['Munster'], domain: 'solarlimerick.com', status: 'active', costMin: 4500, costMax: 6900, generationKwh: 3500, population: '205K', tagline: 'Treaty City homes switching on to solar' },
-  { name: 'Clare', provinces: ['Munster'], domain: 'solarclare.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3470, population: '131K', tagline: 'The Banner County — from the Burren to your rooftop' },
+  { name: 'Clare', provinces: ['Munster'], domain: 'solarclare.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3470, population: '131K', tagline: 'The Banner County - from the Burren to your rooftop' },
   { name: 'Tipperary', provinces: ['Munster'], domain: 'solartipperary.com', status: 'active', costMin: 4400, costMax: 6700, generationKwh: 3480, population: '165K', tagline: 'Premier County homes leading the solar charge' },
-  { name: 'Waterford', provinces: ['Munster'], domain: 'solarwaterford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3550, population: '127K', tagline: 'The Déise — crystal city with a green energy vision' },
+  { name: 'Waterford', provinces: ['Munster'], domain: 'solarwaterford.com', status: 'active', costMin: 4500, costMax: 6800, generationKwh: 3550, population: '127K', tagline: 'The Déise - crystal city with a green energy vision' },
 
-  { name: 'Galway', provinces: ['Connacht'], domain: 'solargalway.com', status: 'active', costMin: 4500, costMax: 7000, generationKwh: 3450, population: '279K', tagline: 'City of the Tribes — urban and county, we cover it all' },
-  { name: 'Mayo', provinces: ['Connacht'], domain: 'solarmayo.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3400, population: '137K', tagline: 'Wild Mayo — big skies, open roofs, endless potential' },
-  { name: 'Roscommon', provinces: ['Connacht'], domain: 'solarroscommon.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3380, population: '72K', tagline: 'Heart of the west — where every watt counts' },
+  { name: 'Galway', provinces: ['Connacht'], domain: 'solargalway.com', status: 'active', costMin: 4500, costMax: 7000, generationKwh: 3450, population: '279K', tagline: 'City of the Tribes - urban and county, we cover it all' },
+  { name: 'Mayo', provinces: ['Connacht'], domain: 'solarmayo.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3400, population: '137K', tagline: 'Wild Mayo - big skies, open roofs, endless potential' },
+  { name: 'Roscommon', provinces: ['Connacht'], domain: 'solarroscommon.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3380, population: '72K', tagline: 'Heart of the west - where every watt counts' },
   { name: 'Sligo', provinces: ['Connacht'], domain: 'solarsligo.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3390, population: '70K', tagline: 'Yeats Country catching rays on every rooftop' },
-  { name: 'Leitrim', provinces: ['Connacht'], domain: 'solarleitrim.com', status: 'coming-soon', costMin: 4300, costMax: 6500, generationKwh: 3350, population: '35K', tagline: 'The lovely county — small in size, big on green energy' },
+  { name: 'Leitrim', provinces: ['Connacht'], domain: 'solarleitrim.com', status: 'coming-soon', costMin: 4300, costMax: 6500, generationKwh: 3350, population: '35K', tagline: 'The lovely county - small in size, big on green energy' },
 
-  { name: 'Donegal', provinces: ['Ulster'], domain: 'solardonegal.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3410, population: '167K', tagline: 'From Malin Head to Donegal Town — the north-west shines bright' },
-  { name: 'Cavan', provinces: ['Ulster'], domain: 'solarcavan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3410, population: '81K', tagline: 'Lakeland County — drumlins and solar panels, a perfect match' },
-  { name: 'Monaghan', provinces: ['Ulster'], domain: 'solarmonaghan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '68K', tagline: 'The Farney County — border spirit, boundless energy' },
-  { name: 'Antrim', provinces: ['Ulster'], domain: 'solarantrim.com', status: 'coming-soon', costMin: 4600, costMax: 7200, generationKwh: 3450, population: '649K', tagline: 'Giant\'s Causeway coast and city rooftops — solar for all' },
-  { name: 'Armagh', provinces: ['Ulster'], domain: 'solararmagh.com', status: 'coming-soon', costMin: 4500, costMax: 7000, generationKwh: 3420, population: '206K', tagline: 'The Orchard County — growing green energy from the ground up' },
+  { name: 'Donegal', provinces: ['Ulster'], domain: 'solardonegal.com', status: 'active', costMin: 4400, costMax: 6800, generationKwh: 3410, population: '167K', tagline: 'From Malin Head to Donegal Town - the north-west shines bright' },
+  { name: 'Cavan', provinces: ['Ulster'], domain: 'solarcavan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3410, population: '81K', tagline: 'Lakeland County - drumlins and solar panels, a perfect match' },
+  { name: 'Monaghan', provinces: ['Ulster'], domain: 'solarmonaghan.com', status: 'coming-soon', costMin: 4300, costMax: 6600, generationKwh: 3400, population: '68K', tagline: 'The Farney County - border spirit, boundless energy' },
+  { name: 'Antrim', provinces: ['Ulster'], domain: 'solarantrim.com', status: 'coming-soon', costMin: 4600, costMax: 7200, generationKwh: 3450, population: '649K', tagline: 'Giant\'s Causeway coast and city rooftops - solar for all' },
+  { name: 'Armagh', provinces: ['Ulster'], domain: 'solararmagh.com', status: 'coming-soon', costMin: 4500, costMax: 7000, generationKwh: 3420, population: '206K', tagline: 'The Orchard County - growing green energy from the ground up' },
   { name: 'Down', provinces: ['Ulster'], domain: 'solardown.com', status: 'coming-soon', costMin: 4600, costMax: 7100, generationKwh: 3440, population: '552K', tagline: 'The Mountains of Mourne meet clean energy on every roof' },
-  { name: 'Fermanagh', provinces: ['Ulster'], domain: 'solarfermanagh.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3380, population: '62K', tagline: 'Lake country living — where nature and solar go hand in hand' },
-  { name: 'Derry', provinces: ['Ulster'], domain: 'solarderry.com', status: 'coming-soon', costMin: 4500, costMax: 6900, generationKwh: 3400, population: '252K', tagline: 'The Maiden City — historic walls, forward-thinking energy' },
-  { name: 'Tyrone', provinces: ['Ulster'], domain: 'solartyrone.com', status: 'coming-soon', costMin: 4400, costMax: 6800, generationKwh: 3390, population: '193K', tagline: 'From the Sperrins to Strabane — solar across the county' },
+  { name: 'Fermanagh', provinces: ['Ulster'], domain: 'solarfermanagh.com', status: 'coming-soon', costMin: 4400, costMax: 6700, generationKwh: 3380, population: '62K', tagline: 'Lake country living - where nature and solar go hand in hand' },
+  { name: 'Derry', provinces: ['Ulster'], domain: 'solarderry.com', status: 'coming-soon', costMin: 4500, costMax: 6900, generationKwh: 3400, population: '252K', tagline: 'The Maiden City - historic walls, forward-thinking energy' },
+  { name: 'Tyrone', provinces: ['Ulster'], domain: 'solartyrone.com', status: 'coming-soon', costMin: 4400, costMax: 6800, generationKwh: 3390, population: '193K', tagline: 'From the Sperrins to Strabane - solar across the county' },
 ];
 
 
@@ -123,7 +123,7 @@ const provinceSeoSubtitles: Record<Province, string> = {
 const faqs = [
   {
     question: 'Do you install solar panels in every county in Ireland?',
-    answer: 'Yes — Solar Ireland covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
+    answer: 'Yes - Solar Ireland covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
   },
   {
     question: 'How much do solar panels cost in my county?',
@@ -131,7 +131,7 @@ const faqs = [
   },
   {
     question: 'Is the SEAI grant available in all 32 counties?',
-    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland — all 26 counties qualify. The grant applies to homes built before 2021 that have a BER rating of C3 or lower. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team is fully up to speed on the grant process for both jurisdictions and handles all the paperwork on your behalf.',
+    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. The grant applies to homes built before 2021 that have a BER rating of C3 or lower. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team is fully up to speed on the grant process for both jurisdictions and handles all the paperwork on your behalf.',
   },
   {
     question: 'How long does a solar panel installation take?',
@@ -139,15 +139,15 @@ const faqs = [
   },
   {
     question: 'Do I need planning permission for solar panels?',
-    answer: 'In the vast majority of cases, no — solar panels on domestic homes in Ireland are classed as "exempted development" under planning law, meaning you don\'t need planning permission. This applies to panels on the roof of your home or detached garage, provided they don\'t extend more than 50cm above the roof plane and don\'t cover more than 50% of the roof area. For listed buildings or homes in architectural conservation areas, restrictions may apply, and our survey team will advise you during the free site assessment. Northern Ireland has similar exemptions under its permitted development rights.',
+    answer: 'In the vast majority of cases, no - solar panels on domestic homes in Ireland are classed as "exempted development" under planning law, meaning you don\'t need planning permission. This applies to panels on the roof of your home or detached garage, provided they don\'t extend more than 50cm above the roof plane and don\'t cover more than 50% of the roof area. For listed buildings or homes in architectural conservation areas, restrictions may apply, and our survey team will advise you during the free site assessment. Northern Ireland has similar exemptions under its permitted development rights.',
   },
   {
     question: 'What if my county says "Coming Soon"?',
-    answer: 'If your county is listed as "Coming Soon", it means we\'re actively setting up installation teams in your area and expect to be fully operational within the coming weeks. You can still reach out to us now — we\'ll add you to our waitlist, conduct a free remote roof assessment using satellite imagery, and have your SEAI grant paperwork ready to go so there\'s zero delay once our local team is active. Many of our "Coming Soon" counties already have surveyors in the area, so don\'t hesitate to get in touch.',
+    answer: 'If your county is listed as "Coming Soon", it means we\'re actively setting up installation teams in your area and expect to be fully operational within the coming weeks. You can still reach out to us now - we\'ll add you to our waitlist, conduct a free remote roof assessment using satellite imagery, and have your SEAI grant paperwork ready to go so there\'s zero delay once our local team is active. Many of our "Coming Soon" counties already have surveyors in the area, so don\'t hesitate to get in touch.',
   },
   {
     question: 'Can I get a free solar survey in my area?',
-    answer: 'Absolutely. Solar Ireland offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. There\'s no pressure and no charge — just honest, transparent advice about whether solar makes sense for your home.',
+    answer: 'Absolutely. Solar Ireland offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. There\'s no pressure and no charge - just honest, transparent advice about whether solar makes sense for your home.',
   },
   {
     question: 'Do you serve Northern Ireland?',
@@ -160,7 +160,7 @@ const whyLocalCards = [
   {
     icon: Home,
     title: 'Local Roof Knowledge',
-    description: 'We know the common housing types in your county — the typical roof pitches, the prevailing shading patterns, the orientation that works best. We\'re not guessing.',
+    description: 'We know the common housing types in your county - the typical roof pitches, the prevailing shading patterns, the orientation that works best. We\'re not guessing.',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
     border: 'border-amber-400/15',
@@ -176,7 +176,7 @@ const whyLocalCards = [
   {
     icon: FileCheck,
     title: 'SEAI Grant Expertise',
-    description: 'We handle all the SEAI paperwork for you — application, BER assessment, everything. No form-filling headaches, no chasing deadlines.',
+    description: 'We handle all the SEAI paperwork for you - application, BER assessment, everything. No form-filling headaches, no chasing deadlines.',
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
     border: 'border-sky-400/15',
@@ -184,7 +184,7 @@ const whyLocalCards = [
   {
     icon: HeartHandshake,
     title: 'Aftercare You Can Count On',
-    description: 'Local support means a real person you can call — not a faceless call centre. If something needs attention, our team is just down the road.',
+    description: 'Local support means a real person you can call - not a faceless call centre. If something needs attention, our team is just down the road.',
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'border-violet-400/15',
@@ -525,12 +525,12 @@ export default function CountiesClient() {
             </h1>
             <p className="text-gray-400 text-base sm:text-lg max-w-3xl leading-relaxed mb-4">
               From the Hook Head to Malin Head, we&apos;ve panels on roofs in every corner of Ireland.
-              Whether you&apos;re in a Dublin terrace, a Cork semi-d, or a Donegal cottage — we&apos;re here
+              Whether you&apos;re in a Dublin terrace, a Cork semi-d, or a Donegal cottage - we&apos;re here
               to help you harness the sun, cut your bills, and do your bit for the planet.
             </p>
             <p className="text-gray-500 text-sm sm:text-base max-w-3xl leading-relaxed mb-6">
               Our local installers know your area: the roof pitches, the shading patterns, the
-              orientation that works best. We&apos;re not passing through — we live here. And with the
+              orientation that works best. We&apos;re not passing through - we live here. And with the
               €1,800 SEAI grant, there&apos;s never been a better time to go solar.
             </p>
 
@@ -741,7 +741,7 @@ export default function CountiesClient() {
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
                     Join thousands of Irish homeowners already saving with solar. Get a free,
-                    no-obligation survey — we&apos;ll check your roof, estimate your savings, and
+                    no-obligation survey - we&apos;ll check your roof, estimate your savings, and
                     handle all the SEAI grant paperwork. No pressure, just honest advice.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

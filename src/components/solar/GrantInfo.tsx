@@ -336,7 +336,7 @@ const timelineSteps = [
   {
     icon: Wrench,
     title: 'Installation Day',
-    description: 'Our RECI-registered team installs your system. Scaffolding, mounting, wiring — done in a day.',
+    description: 'Our RECI-registered team installs your system. Scaffolding, mounting, wiring - done in a day.',
     duration: '1 day',
     who: 'We handle this',
     color: 'text-green-400',
@@ -359,7 +359,7 @@ function GrantTimeline() {
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       <h3 className="text-lg sm:text-xl font-bold text-white mb-2">How the grant works</h3>
-      <p className="text-xs text-gray-400 mb-6">From survey to savings — we handle the hard parts</p>
+      <p className="text-xs text-gray-400 mb-6">From survey to savings - we handle the hard parts</p>
 
       <div className="space-y-0">
         {timelineSteps.map((step, i) => {
@@ -434,7 +434,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
       <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
         <Euro className="w-3 h-3 text-amber-400" />
         <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
-          SEAI Grant — Republic of Ireland
+          SEAI Grant - Republic of Ireland
         </span>
       </div>
 
@@ -444,7 +444,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        The Irish government pays you to go solar — available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
+        The Irish government pays you to go solar - available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
       </p>
     </motion.div>
   );

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-contact.png',
         width: 1200,
         height: 630,
-        alt: 'Solar Ireland — Contact Us',
+        alt: 'Solar Ireland - Contact Us',
       },
     ],
   },

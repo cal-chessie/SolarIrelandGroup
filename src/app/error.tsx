@@ -24,7 +24,7 @@ export default function Error({
         </div>
         <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
         <p className="text-gray-500 text-sm mb-8">
-          Don&apos;t worry — this is just a loading glitch. Click below to reload the page.
+          Don&apos;t worry - this is just a loading glitch. Click below to reload the page.
         </p>
         <button
           onClick={reset}

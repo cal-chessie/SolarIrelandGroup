@@ -75,7 +75,7 @@ const servicesSchema = {
       '@id': 'https://solarirelandgroup.ie/services',
       name: 'Solar Panel Services Ireland',
       description:
-        'Complete solar panel services in Ireland — residential PV installation, battery storage, EV charger setup, SEAI grant handling & free surveys.',
+        'Complete solar panel services in Ireland - residential PV installation, battery storage, EV charger setup, SEAI grant handling & free surveys.',
       url: 'https://solarirelandgroup.ie/services',
       inLanguage: 'en-IE',
       isPartOf: {

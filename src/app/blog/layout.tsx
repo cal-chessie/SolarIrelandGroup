@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-blog.png',
         width: 1200,
         height: 630,
-        alt: 'Solar Ireland — Solar Energy Blog',
+        alt: 'Solar Ireland - Solar Energy Blog',
       },
     ],
   },

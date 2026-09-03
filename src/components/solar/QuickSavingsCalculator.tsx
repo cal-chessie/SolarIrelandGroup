@@ -27,12 +27,12 @@ import { trackCalculatorUsage } from '@/lib/analytics';
 const _CALC_VER = 'v2.7-updated-apr2026'; // cache-bust: forces new chunk hash on every meaningful update
 
 const UNIT_RATE = 0.34;          // €/kWh average incl. VAT across providers
-const STANDING_CHARGE_ANNUAL = 200; // €/year — Irish standing charges 2025/2026
-const GENERATION_PER_KWP = 1000;  // kWh/kWp/yr — well-optimized south-facing Irish roof
+const STANDING_CHARGE_ANNUAL = 200; // €/year - Irish standing charges 2025/2026
+const GENERATION_PER_KWP = 1000;  // kWh/kWp/yr - well-optimized south-facing Irish roof
 const PANEL_WATTS = 440;          // Modern panel wattage
 const COST_PER_KWP = 1600;       // €/kWp installed (includes inverter, mounting, labour)
 const BASE_INSTALL_COST = 1800;  // Fixed costs (scaffolding, design, commissioning, etc.)
-const CEG_RATE = SOLAR_DATA.export.ratePerKwh; // €0.21/kWh — Clean Export Guarantee
+const CEG_RATE = SOLAR_DATA.export.ratePerKwh; // €0.21/kWh - Clean Export Guarantee
 const SEAI_GRANT = SOLAR_DATA.grant.amount;    // €1,800
 const CO2_PER_KWH = 0.29;        // kg CO2 per kWh (EirGrid 2024 figure for Ireland)
 const TREES_PER_YEAR_KG = 22;    // kg CO2 absorbed per tree per year
@@ -364,7 +364,7 @@ function ResultsPanel({
             value: `${fmtEurDecimal(r.monthlyBillAfterSolar)}/mo`,
             color: 'text-emerald-400',
             bgColor: 'bg-emerald-400/10',
-            sub: `Down from ${fmtEurDecimal(monthlyBill)}/mo — save ${r.billReductionPct}%`,
+            sub: `Down from ${fmtEurDecimal(monthlyBill)}/mo - save ${r.billReductionPct}%`,
           },
           {
             icon: BatteryCharging,
@@ -443,7 +443,7 @@ function ResultsPanel({
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
                     <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-500" style={{ width: `${(r.annualSavingFromSelfUse / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.selfConsumedKwh)} kWh used directly — powering your home for free during the day</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.selfConsumedKwh)} kWh used directly - powering your home for free during the day</p>
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
@@ -453,14 +453,14 @@ function ResultsPanel({
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
                     <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500" style={{ width: `${(r.annualExportEarnings / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.exportedKwh)} kWh exported — surplus energy sold back to the grid</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.exportedKwh)} kWh exported - surplus energy sold back to the grid</p>
                 </div>
               </div>
             </div>
 
             <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 space-y-3">
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Estimated Monthly Generation</h4>
-              <p className="text-[10px] text-gray-400">Ireland has strong seasonal variation — you&apos;ll generate 4x more in summer than winter.</p>
+              <p className="text-[10px] text-gray-400">Ireland has strong seasonal variation - you&apos;ll generate 4x more in summer than winter.</p>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {r.monthlyGeneration.map((m) => {
                   const maxGen = Math.max(...r.monthlyGeneration.map(x => x.generation));

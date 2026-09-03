@@ -478,13 +478,13 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Upload Your Electricity Bill",
-      text: "Upload a recent electricity bill to our AI-powered Bill Analyser. It reads your actual usage and calculates exactly how much you could save with solar panels — personalised to your home.",
+      text: "Upload a recent electricity bill to our AI-powered Bill Analyser. It reads your actual usage and calculates exactly how much you could save with solar panels - personalised to your home.",
       position: 1,
     },
     {
       "@type": "HowToStep",
       name: "Get Your Free Home Survey",
-      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs — and we handle the full SEAI grant application for you.",
+      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we handle the full SEAI grant application for you.",
       position: 2,
     },
     {
@@ -603,7 +603,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Skip to main content — visible on keyboard focus only */}
+        {/* Skip to main content - visible on keyboard focus only */}
         <a
           href="#main-content"
           style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' as const, borderWidth: 0 }}

@@ -52,7 +52,7 @@ const mainServices = [
     iconColor: 'text-amber-400',
     borderAccent: 'border-amber-400/20',
     description:
-      'Transform your roof into a clean energy power station. Our residential solar PV systems generate free electricity from daylight — reducing your bills and your carbon footprint.',
+      'Transform your roof into a clean energy power station. Our residential solar PV systems generate free electricity from daylight - reducing your bills and your carbon footprint.',
     features: [
       { label: 'System Size', value: '4 – 10 kWp' },
       { label: 'Panel Brands', value: 'LONGi, Jinko, Trina (Tier-1)' },
@@ -108,12 +108,12 @@ const mainServices = [
     iconColor: 'text-sky-400',
     borderAccent: 'border-sky-400/20',
     description:
-      'Charge your electric vehicle at home using your own solar energy. Our smart chargers can divert excess solar directly to your car — meaning free driving powered by the sun.',
+      'Charge your electric vehicle at home using your own solar energy. Our smart chargers can divert excess solar directly to your car - meaning free driving powered by the sun.',
     features: [
       { label: 'Power', value: '7.4kW – 22kW' },
       { label: 'Brands', value: 'Zappi, Wallbox, myEnergi' },
       { label: 'SEAI Grant', value: '€600 Available' },
-      { label: 'Solar Divert', value: 'Yes — charge from solar' },
+      { label: 'Solar Divert', value: 'Yes - charge from solar' },
       { label: 'Scheduling', value: 'Smart Time-of-Use' },
       { label: 'App Control', value: 'iOS & Android' },
     ],
@@ -130,7 +130,7 @@ const additionalServices = [
   {
     icon: FileText,
     label: 'SEAI Grant Application',
-    desc: 'We handle the full grant process — from eligibility check to payment, saving you time and hassle.',
+    desc: 'We handle the full grant process - from eligibility check to payment, saving you time and hassle.',
   },
   {
     icon: BarChart3,
@@ -145,7 +145,7 @@ const additionalServices = [
   {
     icon: Monitor,
     label: 'System Monitoring',
-    desc: 'Real-time monitoring of your solar system — generation, consumption and savings at a glance.',
+    desc: 'Real-time monitoring of your solar system - generation, consumption and savings at a glance.',
   },
   {
     icon: Wrench,
@@ -165,7 +165,7 @@ const packages = [
       'Number of Panels': '8–10 Panels',
       'Panel Brand': 'Tier-1 (Trina)',
       'Inverter': 'String Inverter',
-      'Battery': '—',
+      'Battery': ' - ',
       'Monitoring': 'Basic App',
       'SEAI Grant': '€1,800',
       'Annual Savings': '€600–€800',
@@ -408,7 +408,7 @@ export default function ServicesPage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-2xl mb-8">
-                From residential solar PV and battery storage to EV charging — we deliver
+                From residential solar PV and battery storage to EV charging - we deliver
                 end-to-end clean energy solutions for homes across all 32 counties.
                 Every installation backed by our 10-year workmanship warranty.
               </p>
@@ -516,7 +516,7 @@ export default function ServicesPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-gray-400 max-w-xl mx-auto text-center"
               >
-                Everything you need for a complete solar journey — from initial survey to ongoing maintenance.
+                Everything you need for a complete solar journey - from initial survey to ongoing maintenance.
               </motion.p>
             </motion.div>
 

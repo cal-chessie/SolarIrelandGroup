@@ -264,11 +264,11 @@ function CookiesFAQ() {
     },
     {
       q: 'Does Solar Ireland use cookies for advertising?',
-      a: 'We do not serve targeted advertisements based on your browsing data. We may use Facebook Pixel cookies (_fbp, _fbc) for ad campaign measurement only — to understand how visitors who click on our ads interact with our website. We do not build detailed profiles of your interests or share your data with advertisers for retargeting.',
+      a: 'We do not serve targeted advertisements based on your browsing data. We may use Facebook Pixel cookies (_fbp, _fbc) for ad campaign measurement only - to understand how visitors who click on our ads interact with our website. We do not build detailed profiles of your interests or share your data with advertisers for retargeting.',
     },
     {
       q: 'What happens if I disable analytics cookies?',
-      a: 'Disabling analytics cookies means we will not collect anonymised data about how you use our website. The site will continue to function perfectly — you can still request quotes, use our calculators, and contact us. The only difference is that we will have less data to help us improve the website experience for all visitors.',
+      a: 'Disabling analytics cookies means we will not collect anonymised data about how you use our website. The site will continue to function perfectly - you can still request quotes, use our calculators, and contact us. The only difference is that we will have less data to help us improve the website experience for all visitors.',
     },
   ];
 
@@ -318,7 +318,7 @@ function CookiesContentIntro() {
         a better user experience, and give website owners information about how their site is being used.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Cookies serve a variety of purposes. Some are essential for the website to function at all — for
+        Cookies serve a variety of purposes. Some are essential for the website to function at all - for
         example, remembering your login status or maintaining your shopping cart. Others help us
         understand how visitors interact with our website so we can improve the experience. Still others
         are used by third-party services (like Google Analytics) to provide analytics and reporting
@@ -359,7 +359,7 @@ function CookiesContentHowWeUse() {
           },
           {
             title: 'Analytics Cookies',
-            desc: 'These cookies help us understand how visitors interact with our website — which pages are most popular, how long visitors spend on each page, and how they navigate through the site. We use this anonymised data to improve our content, fix usability issues, and make our website better for everyone. Analytics cookies are optional and require your consent.',
+            desc: 'These cookies help us understand how visitors interact with our website - which pages are most popular, how long visitors spend on each page, and how they navigate through the site. We use this anonymised data to improve our content, fix usability issues, and make our website better for everyone. Analytics cookies are optional and require your consent.',
             icon: BarChart3,
           },
           {
@@ -535,7 +535,7 @@ function CookiesContentThirdParty() {
           },
           {
             name: 'Meta / Facebook Pixel',
-            purpose: 'Used for ad campaign measurement — to track how many visitors who click on our Facebook ads subsequently visit specific pages on our website. We do not use this data for retargeting or building user profiles.',
+            purpose: 'Used for ad campaign measurement - to track how many visitors who click on our Facebook ads subsequently visit specific pages on our website. We do not use this data for retargeting or building user profiles.',
             link: 'facebook.com/privacy/policy/',
             linkLabel: 'Meta Privacy Policy',
           },
@@ -586,9 +586,9 @@ function CookiesContentManaging() {
       </p>
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
-          '"Accept All Cookies" — enables essential, analytics, and marketing cookies.',
-          '"Reject Non-Essential" — enables only essential cookies. Analytics and marketing cookies will not be set.',
-          '"Manage" — opens a detailed settings panel where you can individually toggle each cookie category on or off.',
+          '"Accept All Cookies" - enables essential, analytics, and marketing cookies.',
+          '"Reject Non-Essential" - enables only essential cookies. Analytics and marketing cookies will not be set.',
+          '"Manage" - opens a detailed settings panel where you can individually toggle each cookie category on or off.',
         ].map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />
@@ -611,7 +611,7 @@ function CookiesContentManaging() {
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
           'Click the floating cookie settings icon at the bottom-right of any page and update your preferences.',
-          'Clear your browser cookies — this will reset your consent and the banner will appear again on your next visit.',
+          'Clear your browser cookies - this will reset your consent and the banner will appear again on your next visit.',
           'Disable specific cookies through your browser settings (see below).',
         ].map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
@@ -638,7 +638,7 @@ function CookiesContentManaging() {
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />
             <div>
               <span className="text-gray-300 font-medium">{item.browser}</span>
-              <span className="text-gray-600 mx-2">—</span>
+              <span className="text-gray-600 mx-2"> - </span>
               <span className="font-mono text-xs">{item.path}</span>
             </div>
           </div>
@@ -755,8 +755,8 @@ function CookiesContentUpdates() {
         operational reasons.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
-        When we make material changes to this policy — such as adding new cookie categories, introducing
-        new third-party services, or changing how cookies are used — we will update the &quot;Last
+        When we make material changes to this policy - such as adding new cookie categories, introducing
+        new third-party services, or changing how cookies are used - we will update the &quot;Last
         updated&quot; date at the top of this page and, where appropriate, display a notice on our website.
         If the changes affect your existing consent, we will re-present the consent banner so you can
         review and update your preferences.

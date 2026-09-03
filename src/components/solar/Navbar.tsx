@@ -32,7 +32,7 @@ const SOCIAL_LINKS = [
   { href: 'https://www.linkedin.com/company/solarireland', label: 'LinkedIn', color: 'hover:text-[#0A66C2] hover:border-[#0A66C2]/30' },
 ] as const;
 
-// Mobile nav — all pages + sections
+// Mobile nav - all pages + sections
 const mobileLinks = [
   {
     label: 'Services',
@@ -160,7 +160,7 @@ const mobileLinks = [
   },
 ];
 
-// Desktop nav — all 7 links with proper styling
+// Desktop nav - all 7 links with proper styling
 const desktopNavLinks = [
   { label: 'Services', href: '/services', isBookSurvey: false },
   { label: 'Counties', href: '/counties', isBookSurvey: false },
@@ -590,7 +590,7 @@ export default function Navbar() {
             </span>
           </button>
 
-          {/* Desktop nav — 7 links */}
+          {/* Desktop nav - 7 links */}
           <div className="hidden lg:flex items-center gap-5">
             {desktopNavLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')

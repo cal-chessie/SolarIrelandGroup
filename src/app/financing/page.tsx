@@ -121,7 +121,7 @@ function FinancingFAQSchema() {
               name: 'How does the SEAI grant work with financing?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'The €1,800 SEAI grant is paid directly to your installer after the system is commissioned. This means the grant automatically reduces the amount you need to finance. For example, a €6,500 system becomes €4,700 after the grant — so you only need to borrow €4,700.',
+                text: 'The €1,800 SEAI grant is paid directly to your installer after the system is commissioned. This means the grant automatically reduces the amount you need to finance. For example, a €6,500 system becomes €4,700 after the grant - so you only need to borrow €4,700.',
               },
             },
             {
@@ -129,7 +129,7 @@ function FinancingFAQSchema() {
               name: 'Is it better to pay upfront or finance solar panels?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Paying upfront gives the best return on investment — a typical payback of 5-7 years. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar can still deliver significant long-term savings.',
+                text: 'Paying upfront gives the best return on investment - a typical payback of 5-7 years. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar can still deliver significant long-term savings.',
               },
             },
             {

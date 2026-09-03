@@ -97,7 +97,7 @@ const interests = [
   { label: 'Solar PV Panels', value: 'solar-pv', icon: Sun, desc: 'Generate your own electricity' },
   { label: 'Battery Storage', value: 'battery', icon: Battery, desc: 'Store excess energy for evening use' },
   { label: 'EV Charger', value: 'ev-charger', icon: Car, desc: 'Charge your electric vehicle for free' },
-  { label: "Not Sure — Advise Me", value: 'advise', icon: HelpCircle, desc: "We'll recommend the best setup" },
+  { label: "Not Sure - Advise Me", value: 'advise', icon: HelpCircle, desc: "We'll recommend the best setup" },
 ];
 
 const irishCounties = [
@@ -154,7 +154,7 @@ const testimonials = [
 const faqItems = [
   {
     q: 'Is the solar survey really free?',
-    a: 'Yes, 100% free with absolutely no obligation. Our SEAI-registered assessor visits your home at a time that suits you, evaluates your roof space, shading, and energy usage, then provides a detailed, honest quote. You won\'t be pressured into anything — ever.',
+    a: 'Yes, 100% free with absolutely no obligation. Our SEAI-registered assessor visits your home at a time that suits you, evaluates your roof space, shading, and energy usage, then provides a detailed, honest quote. You won\'t be pressured into anything - ever.',
   },
   {
     q: 'How long does the survey take?',
@@ -174,7 +174,7 @@ const faqItems = [
   },
   {
     q: 'What if I\'m not sure what system I need?',
-    a: 'That\'s perfectly fine — and very common! Select "Not Sure — Advise Me" in the form, and our assessor will evaluate your property and recommend the ideal setup. Many of our customers start this way and end up with a system perfectly matched to their home and budget.',
+    a: 'That\'s perfectly fine - and very common! Select "Not Sure - Advise Me" in the form, and our assessor will evaluate your property and recommend the ideal setup. Many of our customers start this way and end up with a system perfectly matched to their home and budget.',
   },
 ];
 
@@ -320,7 +320,7 @@ export default function BookSurveyClient() {
             </motion.nav>
 
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Left — Copy */}
+              {/* Left - Copy */}
               <motion.div
                 variants={fadeUp}
                 initial="hidden"
@@ -333,7 +333,7 @@ export default function BookSurveyClient() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
                   </span>
                   <span className="text-xs font-semibold text-green-400 uppercase tracking-wider">
-                    Free — No Obligation
+                    Free - No Obligation
                   </span>
                 </div>
 
@@ -363,7 +363,7 @@ export default function BookSurveyClient() {
                 </div>
               </motion.div>
 
-              {/* Right — Trust Card */}
+              {/* Right - Trust Card */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -540,7 +540,7 @@ export default function BookSurveyClient() {
 
                         <div className="mt-6 flex items-center gap-2 px-4 py-3 rounded-xl bg-green-400/[0.04] border border-green-400/10">
                           <Shield className="w-4 h-4 text-green-400 shrink-0" />
-                          <p className="text-xs text-gray-400">Your data is secure. We only use it to arrange your survey — never shared with third parties.</p>
+                          <p className="text-xs text-gray-400">Your data is secure. We only use it to arrange your survey - never shared with third parties.</p>
                         </div>
                       </motion.div>
                     )}
@@ -596,7 +596,7 @@ export default function BookSurveyClient() {
                             {errors.county && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.county}</p>}
                           </div>
 
-                          {/* Property Type — visual cards */}
+                          {/* Property Type - visual cards */}
                           <div>
                             <label className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                               <Home className="w-3.5 h-3.5 text-gray-500" />
@@ -735,7 +735,7 @@ export default function BookSurveyClient() {
                           </div>
                           <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-white">Choose a Date & Time</h2>
-                            <p className="text-sm text-gray-500">Pick your preferred slot — we&apos;ll confirm within 2 hours.</p>
+                            <p className="text-sm text-gray-500">Pick your preferred slot - we&apos;ll confirm within 2 hours.</p>
                           </div>
                         </div>
 
@@ -899,7 +899,7 @@ export default function BookSurveyClient() {
                                   <span className="text-[10px] text-gray-500 uppercase tracking-wider block">Time</span>
                                   <span className="text-sm text-white font-medium">
                                     {timeSlots.find((t) => t.value === formData.preferredTime)?.label}
-                                    {' — '}
+                                    {' - '}
                                     {timeSlots.find((t) => t.value === formData.preferredTime)?.time}
                                   </span>
                                 </div>
@@ -1107,7 +1107,7 @@ export default function BookSurveyClient() {
                 How Your Solar Journey <span className="text-gradient">Works</span>
               </h2>
               <p className="text-gray-400 max-w-lg mx-auto text-lg">
-                From booking to installation — four simple steps to start saving on your energy bills.
+                From booking to installation - four simple steps to start saving on your energy bills.
               </p>
             </motion.div>
 
@@ -1116,7 +1116,7 @@ export default function BookSurveyClient() {
                 {
                   step: '01',
                   title: 'Book Online',
-                  desc: 'Fill in the form above — takes 60 seconds. Pick your preferred date and time slot.',
+                  desc: 'Fill in the form above - takes 60 seconds. Pick your preferred date and time slot.',
                   icon: Calendar,
                   color: 'amber',
                 },

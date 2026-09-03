@@ -93,17 +93,19 @@ export default function Hero() {
             </span>
 
             <div className="mt-6 sm:mt-8">
-              <h1
-                className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
-                style={{ animationDelay: '0.2s' }}
-              >
-                <span className="text-white">Your Energy.</span>
-              </h1>
-              <h1
-                className="hero-fade-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]"
-                style={{ animationDelay: '0.35s' }}
-              >
-                <span className="text-gradient">Your Asset.</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]">
+                <span
+                  className="hero-fade-up block"
+                  style={{ animationDelay: '0.2s' }}
+                >
+                  <span className="text-white">Your Energy.</span>
+                </span>
+                <span
+                  className="hero-fade-up block"
+                  style={{ animationDelay: '0.35s' }}
+                >
+                  <span className="text-gradient">Your Asset.</span>
+                </span>
               </h1>
             </div>
 
@@ -112,7 +114,7 @@ export default function Hero() {
               style={{ animationDelay: '0.5s' }}
             >
               Upload your electricity bill and our AI will show you exactly what
-              solar will save you. We handle everything — survey, install,
+              solar will save you. We handle everything - survey, install,
               and your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
             </p>
 
@@ -120,13 +122,13 @@ export default function Hero() {
               className="hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto lg:items-start"
               style={{ animationDelay: '0.65s' }}
             >
-              {/* PRIMARY CTA — Analyse Bill */}
+              {/* PRIMARY CTA - Analyse Bill */}
               <button
                 onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
                 className="hero-cta-shimmer inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
               >
                 <Zap className="w-4 h-4" />
-                Analyse My Bill — Free
+                Analyse My Bill - Free
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
 
@@ -207,7 +209,7 @@ export default function Hero() {
       </div>
 
       {/* 
-          SCROLL INDICATOR — simple chevron
+          SCROLL INDICATOR - simple chevron
            */}
       <div
         className="hero-fade-up absolute bottom-6 left-1/2 -translate-x-1/2 z-20"

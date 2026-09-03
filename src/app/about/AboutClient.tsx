@@ -47,7 +47,7 @@ const valueProps = [
   {
     icon: MapPin,
     title: 'All 32 Counties',
-    description: 'From Donegal to Cork, Dublin to Galway — we install quality solar systems right across Ireland.',
+    description: 'From Donegal to Cork, Dublin to Galway - we install quality solar systems right across Ireland.',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
   },
@@ -76,7 +76,7 @@ const valueProps = [
 
 const teamMembers = [
   { initials: 'CM', name: 'Callum McGrath', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland to cut through the noise and give homeowners a better experience.' },
-  { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly — from survey scheduling to SEAI grant applications and aftercare.' },
+  { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly - from survey scheduling to SEAI grant applications and aftercare.' },
   { initials: 'JK', name: 'James Kelly', role: 'Senior Electrician (RECI)', bio: 'RECI-certified with extensive experience in solar PV wiring, battery integration, and grid connections.' },
   { initials: 'EO', name: 'Emma O\'Brien', role: 'Customer Care', bio: 'First point of contact for most customers. Emma makes sure every question is answered and every concern addressed.' },
 ];
@@ -201,7 +201,7 @@ export default function AboutClient() {
                 transition={{ duration: 0.6 }}
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
-                We&apos;re Solar Ireland — a SEAI-registered team of solar installers
+                We&apos;re Solar Ireland - a SEAI-registered team of solar installers
                 on a mission to cut through the jargon, eliminate the hard sell,
                 and help Irish homeowners save money with clean energy.
               </motion.p>
@@ -301,7 +301,7 @@ export default function AboutClient() {
                   <p>
                     We believed there had to be a better way. A way where homeowners
                     could get honest, jargon-free advice, transparent pricing, and a
-                    quality installation — without the pressure.
+                    quality installation - without the pressure.
                   </p>
                   <p>
                     Today, we&apos;re a growing team of certified installers serving
@@ -471,7 +471,7 @@ export default function AboutClient() {
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Full public liability insurance and professional indemnity cover.
                       All installations are guaranteed for 10 years, with panel manufacturer warranties
-                      lasting 25 years. If anything goes wrong, we&apos;ll fix it — no quibbles.
+                      lasting 25 years. If anything goes wrong, we&apos;ll fix it - no quibbles.
                     </p>
                   </div>
                 </div>

@@ -14,7 +14,7 @@ import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
 import Footer from '@/components/solar/Footer';
 
-// Client-only widgets — no SSR needed, no hydration risk
+// Client-only widgets - no SSR needed, no hydration risk
 const WhatsAppChat = dynamic(() => import('@/components/solar/WhatsAppChat'), { ssr: false });
 const ExitIntent = dynamic(() => import('@/components/solar/ExitIntent'), { ssr: false });
 

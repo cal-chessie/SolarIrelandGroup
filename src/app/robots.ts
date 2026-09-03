@@ -54,22 +54,46 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "GPTBot",
-        disallow: "/",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
       },
       {
         userAgent: "ChatGPT-User",
-        disallow: "/",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
       },
       {
-        userAgent: "CCBot",
-        disallow: "/",
+        userAgent: "OAI-SearchBot",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
       },
       {
         userAgent: "Google-Extended",
-        disallow: "/",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
       },
       {
         userAgent: "anthropic-ai",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
+      },
+      {
+        userAgent: "ClaudeBot",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
+      },
+      {
+        userAgent: "Claude-User",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
+      },
+      {
+        userAgent: "PerplexityBot",
+        allow: "/",
+        disallow: ["/api/", "/admin/"],
+      },
+      {
+        userAgent: "CCBot",
         disallow: "/",
       },
       {

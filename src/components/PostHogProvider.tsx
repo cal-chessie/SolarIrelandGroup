@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import posthog from 'posthog-js';
 
 /**
- * PostHog Provider — Solar Ireland
+ * PostHog Provider - Solar Ireland
  *
  * Initializes PostHog on the client side, gated on cookie consent.
  * This component listens for the 'cookie-consent-update' custom event
@@ -44,7 +44,7 @@ export default function PostHogProvider() {
         // Auto-capture: pageviews, clicks, form submissions
         capture_pageview: false, // We handle this manually in analytics.ts
         capture_pageleave: true,
-        // Disable by default — will be enabled when consent is given
+        // Disable by default - will be enabled when consent is given
         loaded: (ph) => {
           // Check consent state on load
           try {
@@ -55,7 +55,7 @@ export default function PostHogProvider() {
                 ph.opt_out_capturing();
               }
             } else {
-              // No consent yet — opt out until user decides
+              // No consent yet - opt out until user decides
               ph.opt_out_capturing();
             }
           } catch {

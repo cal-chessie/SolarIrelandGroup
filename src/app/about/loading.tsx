@@ -42,7 +42,7 @@ export default function AboutLoading() {
         </section>
 
         {/* 
-            OUR STORY — 2-column skeleton
+            OUR STORY - 2-column skeleton
              */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +78,7 @@ export default function AboutLoading() {
         </section>
 
         {/* 
-            WHY CHOOSE US — 3-column value props
+            WHY CHOOSE US - 3-column value props
              */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +107,7 @@ export default function AboutLoading() {
         </section>
 
         {/* 
-            TEAM SECTION — 4-column cards
+            TEAM SECTION - 4-column cards
              */}
         <section className="py-16 sm:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

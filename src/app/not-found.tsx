@@ -3,7 +3,7 @@ import { Sun, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '404 — Page Not Found',
+  title: '404 - Page Not Found',
   description: 'The page you are looking for does not exist. Return to Solar Ireland to explore solar panel options.',
   robots: { index: false, follow: false },
 };
@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <html lang="en-IE" className="dark">
       <head>
-        <title>404 — Page Not Found | Solar Ireland</title>
+        <title>404 - Page Not Found | Solar Ireland</title>
         <meta name="description" content="The page you are looking for does not exist." />
         <meta name="robots" content="noindex, nofollow" />
       </head>

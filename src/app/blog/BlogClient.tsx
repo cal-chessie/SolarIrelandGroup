@@ -191,7 +191,7 @@ export default function BlogClient() {
 
               <p className="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                 Honest, jargon-free advice about solar panels in Ireland. From grant guides
-                to cost breakdowns — everything you need to make an informed decision about
+                to cost breakdowns - everything you need to make an informed decision about
                 going solar.
               </p>
             </motion.div>

@@ -170,22 +170,22 @@ function PrivacyContent() {
           {
             basis: 'Consent',
             article: 'Art. 6(1)(a)',
-            desc: 'When you explicitly opt in — for example, ticking a box to receive marketing emails, agreeing to optional cookie categories, or consenting to smart meter data sharing. You can withdraw consent at any time without affecting the lawfulness of processing carried out before withdrawal.',
+            desc: 'When you explicitly opt in - for example, ticking a box to receive marketing emails, agreeing to optional cookie categories, or consenting to smart meter data sharing. You can withdraw consent at any time without affecting the lawfulness of processing carried out before withdrawal.',
           },
           {
             basis: 'Contractual Necessity',
             article: 'Art. 6(1)(b)',
-            desc: 'When processing is necessary to deliver the service you have requested — such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.',
+            desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.',
           },
           {
             basis: 'Legitimate Interest',
             article: 'Art. 6(1)(f)',
-            desc: 'When processing serves a genuine business interest that does not override your rights and freedoms — such as website analytics, fraud prevention, service quality monitoring, and direct marketing to existing customers where you have not opted out. We conduct and document Legitimate Interest Assessments for all such processing activities.',
+            desc: 'When processing serves a genuine business interest that does not override your rights and freedoms - such as website analytics, fraud prevention, service quality monitoring, and direct marketing to existing customers where you have not opted out. We conduct and document Legitimate Interest Assessments for all such processing activities.',
           },
           {
             basis: 'Legal Obligation',
             article: 'Art. 6(1)(c)',
-            desc: 'When processing is required by law — such as retaining financial records for 7 years under Irish tax law, reporting to SEAI for grant compliance, responding to valid legal requests from authorities, or maintaining insurance documentation as required by our professional indemnity policies.',
+            desc: 'When processing is required by law - such as retaining financial records for 7 years under Irish tax law, reporting to SEAI for grant compliance, responding to valid legal requests from authorities, or maintaining insurance documentation as required by our professional indemnity policies.',
           },
         ].map((item) => (
           <div
@@ -252,7 +252,7 @@ function PrivacyContent() {
         <div className="flex items-center gap-2 mb-2">
           <Shield className="w-4 h-4 text-green-400" />
           <p className="text-sm text-green-400 font-semibold">
-            We never sell your personal data — period.
+            We never sell your personal data - period.
           </p>
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
@@ -281,7 +281,7 @@ function PrivacyContent() {
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />
             <div>
               <span className="text-gray-300 font-mono text-xs">{item.name}</span>
-              <span className="text-gray-600 mx-2">—</span>
+              <span className="text-gray-600 mx-2"> - </span>
               <span>{item.desc}</span>
             </div>
           </div>
@@ -334,7 +334,7 @@ function PrivacyContent() {
             desc: 'If any personal data we hold about you is inaccurate, incomplete, or outdated, you can request corrections free of charge. Simply contact us with the correct information and we will update your records within 21 days and confirm the changes in writing.',
           },
           {
-            right: 'Right to Erasure — "Right to be Forgotten" (Article 17)',
+            right: 'Right to Erasure - "Right to be Forgotten" (Article 17)',
             desc: 'You can request deletion of your personal data where we no longer have a legal basis to retain it, where you withdraw consent, or where the data is no longer necessary for the purpose for which it was collected. We will comply unless there is a legal obligation to retain the data.',
           },
           {
@@ -351,7 +351,7 @@ function PrivacyContent() {
           },
           {
             right: 'Right to Restrict Processing (Article 18)',
-            desc: 'You can request that we limit how we use your data in specific circumstances — for example, while you are contesting the accuracy of your data, while we assess whether we have a legitimate ground to object to erasure, or if you need the data for legal proceedings.',
+            desc: 'You can request that we limit how we use your data in specific circumstances - for example, while you are contesting the accuracy of your data, while we assess whether we have a legitimate ground to object to erasure, or if you need the data for legal proceedings.',
           },
           {
             right: 'Right to Lodge a Complaint (Article 77)',
@@ -871,7 +871,7 @@ function KeyTakeaways() {
     },
     {
       icon: Heart,
-      text: 'We never sell, rent, or trade your personal data to anyone — ever',
+      text: 'We never sell, rent, or trade your personal data to anyone - ever',
       color: 'text-amber-400',
       bg: 'bg-amber-400/10',
     },
@@ -1324,10 +1324,10 @@ function PrivacyContentSection4() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { basis: 'Consent', article: 'Art. 6(1)(a)', desc: 'When you explicitly opt in — for example, ticking a box to receive marketing emails, agreeing to optional cookie categories, or consenting to smart meter data sharing. You can withdraw consent at any time without affecting the lawfulness of processing carried out before withdrawal.' },
-          { basis: 'Contractual Necessity', article: 'Art. 6(1)(b)', desc: 'When processing is necessary to deliver the service you have requested — such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.' },
-          { basis: 'Legitimate Interest', article: 'Art. 6(1)(f)', desc: 'When processing serves a genuine business interest that does not override your rights and freedoms — such as website analytics, fraud prevention, service quality monitoring, and direct marketing to existing customers where you have not opted out.' },
-          { basis: 'Legal Obligation', article: 'Art. 6(1)(c)', desc: 'When processing is required by law — such as retaining financial records for 7 years under Irish tax law, reporting to SEAI for grant compliance, responding to valid legal requests from authorities, or maintaining insurance documentation as required by our professional indemnity policies.' },
+          { basis: 'Consent', article: 'Art. 6(1)(a)', desc: 'When you explicitly opt in - for example, ticking a box to receive marketing emails, agreeing to optional cookie categories, or consenting to smart meter data sharing. You can withdraw consent at any time without affecting the lawfulness of processing carried out before withdrawal.' },
+          { basis: 'Contractual Necessity', article: 'Art. 6(1)(b)', desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.' },
+          { basis: 'Legitimate Interest', article: 'Art. 6(1)(f)', desc: 'When processing serves a genuine business interest that does not override your rights and freedoms - such as website analytics, fraud prevention, service quality monitoring, and direct marketing to existing customers where you have not opted out.' },
+          { basis: 'Legal Obligation', article: 'Art. 6(1)(c)', desc: 'When processing is required by law - such as retaining financial records for 7 years under Irish tax law, reporting to SEAI for grant compliance, responding to valid legal requests from authorities, or maintaining insurance documentation as required by our professional indemnity policies.' },
         ].map((item) => (
           <div key={item.basis} className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
             <div className="shrink-0 px-2 py-1 rounded-md bg-amber-400/10 text-[10px] font-mono font-semibold text-amber-400 mt-0.5">
@@ -1373,7 +1373,7 @@ function PrivacyContentSection5() {
       <div className="p-5 rounded-xl bg-green-400/5 border border-green-400/15 mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Shield className="w-4 h-4 text-green-400" />
-          <p className="text-sm text-green-400 font-semibold">We never sell your personal data — period.</p>
+          <p className="text-sm text-green-400 font-semibold">We never sell your personal data - period.</p>
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
           Solar Ireland does not sell, rent, trade, or otherwise monetise your personal information.
@@ -1406,7 +1406,7 @@ function PrivacyContentSection6() {
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />
             <div>
               <span className="text-gray-300 font-mono text-xs">{item.name}</span>
-              <span className="text-gray-600 mx-2">—</span>
+              <span className="text-gray-600 mx-2"> - </span>
               <span>{item.desc}</span>
             </div>
           </div>

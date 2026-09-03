@@ -13,7 +13,7 @@ const steps = [
     title: 'Upload Your Bill',
     subtitle: 'AI-powered analysis',
     description:
-      'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds — giving you a personalised savings estimate before you even talk to us.',
+      'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds - giving you a personalised savings estimate before you even talk to us.',
     icon: Upload,
     accent: 'from-amber-400 to-orange-500',
     accentBg: 'bg-amber-400/10',
@@ -32,7 +32,7 @@ const steps = [
     title: 'Free Survey',
     subtitle: 'No obligation, ever',
     description:
-      "We visit your home to assess your roof, shading, and energy usage. You'll get an honest recommendation tailored to your home — no pressure, no hard sell. Most surveys take under 45 minutes.",
+      "We visit your home to assess your roof, shading, and energy usage. You'll get an honest recommendation tailored to your home - no pressure, no hard sell. Most surveys take under 45 minutes.",
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
@@ -51,7 +51,7 @@ const steps = [
     title: 'Install & Save',
     subtitle: 'Done in a day',
     description:
-      'Our RECI-registered team installs your system in a single day. We handle the SEAI grant paperwork and ESB grid connection. You start generating clean energy — and savings — from day one.',
+      'Our RECI-registered team installs your system in a single day. We handle the SEAI grant paperwork and ESB grid connection. You start generating clean energy - and savings - from day one.',
     icon: Zap,
     accent: 'from-sky-400 to-blue-500',
     accentBg: 'bg-sky-400/10',
@@ -256,7 +256,7 @@ export default function HowItWorks() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
           >
-            From photo to savings in three simple steps. No jargon, no pressure — just honest solar advice.
+            From photo to savings in three simple steps. No jargon, no pressure - just honest solar advice.
           </motion.p>
 
           <motion.div
@@ -333,7 +333,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-white">NSAI Compliant</p>
-                  <p className="text-[10px] text-gray-400">I.S. EN 50559 standard</p>
+                  <p className="text-[10px] text-gray-400">I.S. 10101 wiring rules</p>
                 </div>
               </div>
             </div>

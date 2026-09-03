@@ -125,7 +125,7 @@ function PreFooterCTA() {
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed mx-auto lg:mx-0">
             We&apos;re real people, not a call centre. Drop us a WhatsApp or give us a
-            ring — we&apos;re happy to talk through whether solar is right for your
+            ring - we&apos;re happy to talk through whether solar is right for your
             home. No pressure, no jargon.
           </p>
         </div>
@@ -297,7 +297,7 @@ export default function Footer() {
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm mb-6">
               SEAI-registered solar panel installers covering all 32 counties.
               We provide honest advice, quality installations, and genuine
-              aftercare — no pressure, no hard sell, no jargon.
+              aftercare - no pressure, no hard sell, no jargon.
             </p>
 
             <div className="flex items-center gap-2.5">

@@ -176,13 +176,13 @@ export default function ExitIntent() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
             </span>
             <span className="text-[11px] text-green-400/90 font-medium">
-              SEAI-registered installer — trusted by 200+ Irish homeowners
+              SEAI-registered installer - trusted by 200+ Irish homeowners
             </span>
           </div>
 
           <div className="exit-intent-el exit-intent-el-2 mb-6">
             <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
-              Wait — don&apos;t leave{' '}
+              Wait - don&apos;t leave{' '}
               <span className="text-gradient">€1,800</span>
               <br />
               <span className="text-gradient">on the table (ROI)</span>
@@ -204,7 +204,7 @@ export default function ExitIntent() {
                   Track Your Project in Real Time
                 </h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Your personal portal shows every milestone — survey, design, install,
+                  Your personal portal shows every milestone - survey, design, install,
                   commissioning. You&apos;re never left wondering what&apos;s happening.
                 </p>
               </div>
@@ -220,7 +220,7 @@ export default function ExitIntent() {
                 </h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   Message your project manager and installers directly. No call centres,
-                  no tickets — just real people who know your name and your roof.
+                  no tickets - just real people who know your name and your roof.
                 </p>
               </div>
             </div>

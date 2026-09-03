@@ -36,7 +36,7 @@ const installs = [
     payback: '5.5 years',
     installed: '2025',
     inverter: 'Hybrid inverter',
-    battery: 'Yes — 5 kWh',
+    battery: 'Yes - 5 kWh',
     orientation: 'South-facing',
     caption: 'Client installation',
     badge: null,
@@ -90,7 +90,7 @@ const installs = [
     payback: '5.2 years',
     installed: 'Mar 2025',
     inverter: 'Microinverters',
-    battery: 'Yes — 7 kWh',
+    battery: 'Yes - 7 kWh',
     orientation: 'South',
     caption: 'Urban flat roof install',
     badge: 'Top Saver',
@@ -126,9 +126,9 @@ const installs = [
     payback: '4.8 years',
     installed: 'Jan 2025',
     inverter: 'Hybrid inverter',
-    battery: 'Yes — 10 kWh',
+    battery: 'Yes - 10 kWh',
     orientation: 'South',
-    caption: 'Large family home — max output',
+    caption: 'Large family home - max output',
     badge: 'Best ROI',
   },
   {
@@ -144,9 +144,9 @@ const installs = [
     payback: '5.5 years',
     installed: 'Jan 2025',
     inverter: 'Hybrid inverter',
-    battery: 'Yes — 5 kWh',
+    battery: 'Yes - 5 kWh',
     orientation: 'South-facing',
-    caption: 'Tiled roof — seamless integration',
+    caption: 'Tiled roof - seamless integration',
     badge: 'Most Popular',
   },
   {
@@ -164,7 +164,7 @@ const installs = [
     inverter: 'String inverter',
     battery: 'No',
     orientation: 'South-West',
-    caption: 'Flush-mount — clean finish',
+    caption: 'Flush-mount - clean finish',
     badge: null,
   },
 ];
@@ -460,7 +460,7 @@ export default function CustomerInstalls() {
                 <span className="text-gradient">Money in the bank.</span>
               </h2>
               <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
-                From Meath to Donegal, Dublin to Cork — these are the systems we've fitted, the savings our customers are earning, and the energy independence they're enjoying right now.
+                From Meath to Donegal, Dublin to Cork - these are the systems we've fitted, the savings our customers are earning, and the energy independence they're enjoying right now.
               </p>
             </div>
 
@@ -534,7 +534,7 @@ export default function CustomerInstalls() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <p className="text-sm text-gray-400 mb-4">Your home could be next — find out what you'd save with solar.</p>
+          <p className="text-sm text-gray-400 mb-4">Your home could be next - find out what you'd save with solar.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <motion.a
               href="#calculator"

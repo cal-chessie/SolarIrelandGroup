@@ -371,7 +371,7 @@ export default function BillAnalyser() {
 
           <AnimatePresence mode="wait">
             {/* 
-                INPUT STATE — THE INTAKE
+                INPUT STATE - THE INTAKE
                  */}
             {!analysis && !isAnalyzing && (
               <motion.div key="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -435,7 +435,7 @@ export default function BillAnalyser() {
                           {dragOver ? 'Drop it here!' : 'Drag your bill here'}
                         </p>
                         <p className="text-sm text-gray-400 text-center mb-4">
-                          or <span className="text-amber-400 underline underline-offset-2">browse files</span> — photo, scan or PDF
+                          or <span className="text-amber-400 underline underline-offset-2">browse files</span> - photo, scan or PDF
                         </p>
 
                         <button

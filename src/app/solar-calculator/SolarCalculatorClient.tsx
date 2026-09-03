@@ -70,7 +70,7 @@ function CalculatorHero() {
 
         <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
           See exactly how much you could save with solar panels. Enter your electricity bill,
-          pick your home type, and get an instant personalised estimate — no signup, no hassle.
+          pick your home type, and get an instant personalised estimate - no signup, no hassle.
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
@@ -142,7 +142,7 @@ function CalculatorExplainer() {
     {
       num: '02',
       title: 'Pick Your Home Type',
-      desc: 'Choose from Apartment, Semi-Detached, or Detached. This determines how many panels can fit on your roof — up to 22 premium 440W panels for larger homes.',
+      desc: 'Choose from Apartment, Semi-Detached, or Detached. This determines how many panels can fit on your roof - up to 22 premium 440W panels for larger homes.',
     },
     {
       num: '03',
@@ -213,7 +213,7 @@ function DataTransparency() {
             Our <span className="text-gradient">Data Sources</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Full transparency on every number. No inflated figures — we use conservative, real-world Irish data so your estimate is honest and realistic.
+            Full transparency on every number. No inflated figures - we use conservative, real-world Irish data so your estimate is honest and realistic.
           </p>
         </div>
 
@@ -259,7 +259,7 @@ function FinalCTA() {
             Ready to See Your <span className="text-gradient">Exact Savings?</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            The calculator gives you a great estimate. For exact figures based on your roof, get a free site survey — it takes 30 minutes and there&apos;s zero obligation.
+            The calculator gives you a great estimate. For exact figures based on your roof, get a free site survey - it takes 30 minutes and there&apos;s zero obligation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

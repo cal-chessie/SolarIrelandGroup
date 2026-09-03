@@ -103,7 +103,7 @@ async function persistConsentToSupabase(consent: ConsentState): Promise<void> {
       }),
     });
   } catch {
-    // Silent — consent is already saved to localStorage
+    // Silent - consent is already saved to localStorage
   }
 }
 
