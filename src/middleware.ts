@@ -89,7 +89,14 @@ export function middleware(request: NextRequest) {
   requestHeaders.set("Content-Security-Policy", csp);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
-  response.headers.set("Content-Security-Policy", csp);
+  // `next dev` needs 'unsafe-eval' for React Fast Refresh, which a strict CSP
+  // does not grant. Report-only in development keeps HMR working while still
+  // surfacing violations; production enforces.
+  const header =
+    process.env.NODE_ENV === "development"
+      ? "Content-Security-Policy-Report-Only"
+      : "Content-Security-Policy";
+  response.headers.set(header, csp);
   return response;
 }
 
