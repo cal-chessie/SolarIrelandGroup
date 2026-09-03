@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Solar Ireland | Our Story, Team & Certifications',
+  title: 'Our Story, Team & Certifications',
   description:
     'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
   openGraph: {
-    title: 'About Solar Ireland | Our Story, Team & Certifications',
+    title: 'Our Story, Team & Certifications',
     description:
       'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
     url: 'https://solarirelandgroup.ie/about',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Solar Ireland | Our Story, Team & Certifications',
+    title: 'Our Story, Team & Certifications',
     description:
       'SEAI-registered solar installers serving all 32 counties. No hard sell, honest pricing, and 25-year warranties.',
     images: ['https://solarirelandgroup.ie/og-about.png'],

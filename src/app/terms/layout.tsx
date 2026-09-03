@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms and Conditions | Solar Ireland',
+  title: 'Terms & Conditions',
   description:
-    'Terms and conditions for Solar Ireland solar PV installation services, SEAI grant applications, battery storage, and maintenance across Ireland. Irish consumer rights protected.',
+    'Terms and conditions for Solar Ireland solar PV installation, SEAI grant applications, battery storage and maintenance across Ireland.',
   openGraph: {
-    title: 'Terms and Conditions | Solar Ireland',
+    title: 'Terms & Conditions',
     description:
       'Terms and conditions for Solar Ireland solar PV installation, battery storage, and SEAI grant services.',
     url: 'https://solarirelandgroup.ie/terms',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Terms and Conditions | Solar Ireland',
+    title: 'Terms & Conditions',
     description:
       'Terms and conditions for solar PV installation and related services in Ireland.',
   },

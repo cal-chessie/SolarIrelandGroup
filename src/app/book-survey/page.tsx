@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import BookSurveyClient from './BookSurveyClient';
 
 export const metadata: Metadata = {
-  title: 'Book a Free Solar Survey | Solar Ireland',
+  title: 'Book a Free Solar Survey',
   description:
-    'Book your free no-obligation solar survey in under 60 seconds. Our SEAI-registered team will assess your roof, calculate your savings, and provide an honest itemised quote. Available across all 32 counties.',
+    'Book a free, no-obligation solar survey in 60 seconds. Our SEAI-registered team assesses your roof and gives an honest itemised quote. All 32 counties.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
-    title: 'Book a Free Solar Survey | Solar Ireland',
+    title: 'Book a Free Solar Survey',
     description:
       'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Book in under 60 seconds.',
     url: 'https://solarirelandgroup.ie/book-survey',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Book a Free Solar Survey | Solar Ireland',
+    title: 'Book a Free Solar Survey',
     description:
       'Free roof assessment, savings calculation, and itemised quote. Book in under 60 seconds.',
   },

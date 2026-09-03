@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Solar Ireland | Free Survey, WhatsApp, Phone & Email',
+  title: 'Contact Us & Book a Free Survey',
   description:
     'Get in touch with Solar Ireland. WhatsApp, phone, email, or fill in our contact form. Free no-obligation solar survey across all 32 counties.',
   openGraph: {
-    title: 'Contact Solar Ireland | Free Survey, WhatsApp, Phone & Email',
+    title: 'Contact Us & Book a Free Survey',
     description:
       'Get in touch with Solar Ireland. WhatsApp, phone, email, or contact form. Free no-obligation solar survey.',
     url: 'https://solarirelandgroup.ie/contact',

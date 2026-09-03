@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { articles } from '@/lib/blog-data';
 
 export const metadata: Metadata = {
-  title: 'Solar Energy Blog | Tips, Guides, Grants & News for Irish Homeowners',
+  title: 'Solar Blog: Tips, Guides & SEAI Grants',
   description:
     'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
   openGraph: {

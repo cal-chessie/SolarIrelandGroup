@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy | Solar Ireland',
+  title: 'Cookie Policy',
   description:
-    'How Solar Ireland uses cookies on our website. Learn about essential, analytics, and marketing cookies, how to manage your preferences, and your rights under GDPR and the ePrivacy Directive.',
+    'How Solar Ireland uses essential, analytics and marketing cookies, how to manage your preferences, and your rights under GDPR.',
   openGraph: {
-    title: 'Cookie Policy | Solar Ireland',
+    title: 'Cookie Policy',
     description:
       'Cookie policy for Solar Ireland. Learn how we use cookies, manage your preferences, and understand your rights.',
     url: 'https://solarirelandgroup.ie/cookies',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Cookie Policy | Solar Ireland',
+    title: 'Cookie Policy',
     description:
       'Cookie policy for Solar Ireland. Manage your cookie preferences.',
   },

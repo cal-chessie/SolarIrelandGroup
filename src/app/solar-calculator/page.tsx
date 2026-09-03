@@ -9,9 +9,9 @@ export const fetchCache = 'force-no-store';
 const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 
 export const metadata: Metadata = {
-  title: 'Solar Savings Calculator Ireland | How Much Can You Save in 2026?',
+  title: 'Solar Savings Calculator',
   description:
-    'Free solar panel savings calculator for Irish homes. See exactly how much you could save with solar panels based on your electricity bill, home type, and roof size. Includes SEAI grant, payback period, and 25-year savings projection.',
+    'Free solar savings calculator for Irish homes. See your annual savings, payback period and 25-year projection, including the €1,800 SEAI grant.',
   keywords: [
     'solar savings calculator Ireland',
     'solar panel savings calculator',

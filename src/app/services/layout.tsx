@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Solar Panel Services Ireland | PV, Battery & EV Charging Installation',
+  title: 'Solar PV, Battery & EV Charger Installation',
   description:
-    'Complete solar panel services in Ireland - residential PV installation from €4,500, battery storage, EV charger setup, SEAI grant handling, BER assessments & free surveys. All 32 counties.',
+    'Solar PV installation from €4,500, battery storage and EV chargers across all 32 counties. We handle the SEAI grant and BER assessment, plus free surveys.',
   openGraph: {
     title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
