@@ -230,7 +230,6 @@ export default function ExitIntent() {
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
               { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
-              { icon: Star, label: '4.9★ Rated', color: 'text-yellow-400/70' },
               { icon: TrendingUp, label: '€38k+ 25yr Savings', color: 'text-sky-400/70' },
             ].map(({ icon: Icon, label, color }) => (
               <div

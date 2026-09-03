@@ -91,7 +91,6 @@ const certifications = [
 
 const stats = [
   { value: '200+', label: 'Successful Installs', icon: CheckCircle2 },
-  { value: '4.9\u2605', label: 'Customer Rating', icon: Star },
   { value: '32', label: 'Counties Served', icon: MapPin },
   { value: '\u20AC1.1M+', label: 'Customer Savings', icon: Euro },
 ];

@@ -294,13 +294,6 @@ const localBusinessSchema = {
       containedInPlace: { "@type": "Country", name: "Ireland" },
     },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "127",
-    bestRating: "5",
-    worstRating: "1",
-  },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Solar Panel Services",
@@ -459,13 +452,6 @@ const serviceSchema = {
         },
       },
     ],
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "127",
-    bestRating: "5",
-    worstRating: "1",
   },
 };
 

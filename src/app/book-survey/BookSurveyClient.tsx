@@ -403,8 +403,8 @@ export default function BookSurveyClient() {
                         <Star className="w-7 h-7 text-sky-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">4.9★ from 200+ Reviews</h3>
-                        <p className="text-sm text-gray-500">Rated excellent on Google & Trustpilot</p>
+                        <h3 className="text-white font-bold">Real customer reviews</h3>
+                        <p className="text-sm text-gray-500">From Irish homeowners we have installed for</p>
                       </div>
                     </div>
 
@@ -966,7 +966,6 @@ export default function BookSurveyClient() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
                   {[
                     { icon: Shield, label: 'SEAI Registered', color: 'text-green-400', bg: 'bg-green-400/[0.06]' },
-                    { icon: Star, label: '4.9★ Rated', color: 'text-amber-400', bg: 'bg-amber-400/[0.06]' },
                     { icon: Zap, label: 'Free & No Obligation', color: 'text-sky-400', bg: 'bg-sky-400/[0.06]' },
                     { icon: MapPin, label: 'All 32 Counties', color: 'text-violet-400', bg: 'bg-violet-400/[0.06]' },
                   ].map((t) => (
