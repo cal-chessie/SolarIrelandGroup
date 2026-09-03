@@ -25,6 +25,18 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
+function usePrefersReducedMotion(): boolean {
+  const [prefersReduced, setPrefersReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReduced(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return prefersReduced;
+}
+
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-20px' });
@@ -99,6 +111,7 @@ function EligibilityChecker() {
   const [answers, setAnswers] = useState<Record<string, CheckResult>>({});
   const [isComplete, setIsComplete] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const step = checkSteps[currentStep];
   const StepIcon = step.icon;
@@ -234,8 +247,8 @@ function EligibilityChecker() {
                   className="w-full flex flex-col items-center justify-center py-8 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.04] transition-all active:scale-[0.99]"
                 >
                   <motion.div
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    animate={prefersReducedMotion ? undefined : { rotate: [0, 10, -10, 0] }}
+                    transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     <Sparkles className="w-8 h-8 text-amber-400 mb-3" />
                   </motion.div>

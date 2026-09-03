@@ -1,6 +1,44 @@
 import { NextResponse } from 'next/server';
 import ZAI from 'z-ai-web-dev-sdk';
 
+export const runtime = 'nodejs';
+export const maxDuration = 60;
+
+// Defensive caps for the uploaded bill image / PDF.
+const MAX_FILE_BYTES = 5 * 1024 * 1024; // ~5MB
+const ALLOWED_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'application/pdf',
+]);
+
+const GENERIC_ANALYSIS_ERROR =
+  "We couldn't analyse that bill. Please try again or enter your details manually.";
+
+// Lightweight in-memory per-IP throttle. Best-effort only: this state lives per
+// serverless instance and does NOT coordinate across instances. A real
+// distributed rate limiter still needs shared infra (Redis/KV).
+const RATE_LIMIT_MAX = 10; // requests
+const RATE_LIMIT_WINDOW_MS = 60_000; // per 60s
+const rateLimitHits = new Map<string, number[]>();
+
+function getClientIp(request: Request): string {
+  const fwd = request.headers.get('x-forwarded-for');
+  if (fwd) return fwd.split(',')[0].trim();
+  return request.headers.get('x-real-ip') || 'unknown';
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (rateLimitHits.get(ip) || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+  hits.push(now);
+  rateLimitHits.set(ip, hits);
+  return hits.length > RATE_LIMIT_MAX;
+}
+
 const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; standingCharge: number; exportRate: number }> = {
   'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
   'ESB': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
@@ -105,6 +143,13 @@ interface AnalysisResult {
 
 export async function POST(request: Request) {
   try {
+    if (isRateLimited(getClientIp(request))) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait a moment and try again.' },
+        { status: 429 }
+      );
+    }
+
     const contentType = request.headers.get('content-type') || '';
 
     let monthlyBill: number;
@@ -125,10 +170,33 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'No file uploaded.' }, { status: 400 });
       }
 
+      // Reject oversized uploads before doing any work.
+      if (file.size > MAX_FILE_BYTES) {
+        return NextResponse.json(
+          { error: 'That file is too large. Please upload a bill under 5MB.' },
+          { status: 413 }
+        );
+      }
+
+      // Only accept known image types or PDF before base64-encoding / calling ZAI.
+      const mimeType = file.type || 'image/jpeg';
+      if (!ALLOWED_MIME_TYPES.has(mimeType.toLowerCase())) {
+        return NextResponse.json(
+          { error: 'Unsupported file type. Please upload a photo (JPG, PNG, WEBP, HEIC) or a PDF.' },
+          { status: 415 }
+        );
+      }
+
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
+      // Guard again on the actual byte length (file.size can be spoofed / absent).
+      if (buffer.length > MAX_FILE_BYTES) {
+        return NextResponse.json(
+          { error: 'That file is too large. Please upload a bill under 5MB.' },
+          { status: 413 }
+        );
+      }
       const base64 = buffer.toString('base64');
-      const mimeType = file.type || 'image/jpeg';
 
       const zai = await ZAI.create();
 
@@ -212,13 +280,10 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
 
     return NextResponse.json(results);
   } catch (error: unknown) {
+    // Log the real error server-side only; never leak SDK/parse internals to the client.
     console.error('Bill analysis error:', error);
     return NextResponse.json(
-      {
-        error: error instanceof Error
-          ? error.message
-          : 'Failed to analyse bill. Please try entering your details manually.',
-      },
+      { error: GENERIC_ANALYSIS_ERROR },
       { status: 500 }
     );
   }

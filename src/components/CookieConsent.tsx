@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useId, type ReactNode } from 'react';
 import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 import { trackConsentDecision } from '@/lib/analytics';
 
@@ -141,16 +141,19 @@ function ToggleSwitch({
   enabled,
   disabled,
   onChange,
+  label,
 }: {
   enabled: boolean;
   disabled?: boolean;
   onChange: (val: boolean) => void;
+  label: string;
 }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={enabled}
+      aria-label={label}
       disabled={disabled}
       onClick={() => !disabled && onChange(!enabled)}
       className={`
@@ -190,6 +193,7 @@ function CategoryRow({
   onToggle: (val: boolean) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const detailsId = useId();
 
   return (
     <div
@@ -225,17 +229,19 @@ function CategoryRow({
               </span>
             )}
           </div>
-          <p className="text-xs text-white/40 mt-0.5 line-clamp-1">{category.description}</p>
+          <p className="text-xs text-white/70 mt-0.5 line-clamp-1">{category.description}</p>
         </div>
 
         <div className="flex items-center gap-2">
-          <ToggleSwitch enabled={enabled} disabled={category.required} onChange={onToggle} />
+          <ToggleSwitch enabled={enabled} disabled={category.required} onChange={onToggle} label={category.label} />
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+            aria-controls={detailsId}
             className={`
               p-1 rounded-md transition-transform duration-300
-              text-white/30 hover:text-white/60
+              text-white/70 hover:text-white
               ${expanded ? 'rotate-90' : 'rotate-0'}
             `}
             aria-label={expanded ? 'Collapse details' : 'Expand details'}
@@ -246,6 +252,7 @@ function CategoryRow({
       </div>
 
       <div
+        id={detailsId}
         className={`
           grid transition-all duration-500 ease-out
           ${expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}
@@ -254,12 +261,12 @@ function CategoryRow({
         <div className="overflow-hidden">
           <div className="px-3 pb-3 sm:px-4 sm:pb-4 pt-0">
             <div className="border-t border-white/5 pt-3">
-              <p className="text-xs text-white/40 leading-relaxed mb-2">{category.description}</p>
+              <p className="text-xs text-white/70 leading-relaxed mb-2">{category.description}</p>
               <div className="flex flex-wrap gap-1.5">
                 {category.examples.map((ex) => (
                   <span
                     key={ex}
-                    className="inline-flex items-center rounded-md bg-white/[0.04] px-2 py-1 text-[11px] text-white/30"
+                    className="inline-flex items-center rounded-md bg-white/[0.04] px-2 py-1 text-[11px] text-white/70"
                   >
                     {ex}
                   </span>
@@ -285,7 +292,7 @@ function FloatingCookieButton({ onClick }: { onClick: () => void }) {
         flex h-11 w-11 items-center justify-center
         rounded-full
         bg-white/[0.06] border border-white/[0.08]
-        text-white/40 hover:text-amber-400 hover:bg-white/[0.08] hover:border-white/[0.12]
+        text-white/70 hover:text-amber-400 hover:bg-white/[0.08] hover:border-white/[0.12]
         transition-all duration-300 ease-out
         cursor-pointer
         group
@@ -439,16 +446,16 @@ export default function CookieConsent() {
                       GDPR
                     </span>
                   </h3>
-                  <p className="text-sm text-white/45 mt-1 leading-relaxed">
+                  <p className="text-sm text-white/70 mt-1 leading-relaxed">
                     We use cookies to enhance your experience, analyse site traffic, and personalise content.
                     You can choose which cookies to allow.{' '}
-                    <span className="text-amber-400/70">Necessary cookies</span> keep the site working.
+                    <span className="text-amber-400/90">Necessary cookies</span> keep the site working.
                   </p>
                 </div>
                 {showSettingsOnly && (
                   <button
                     onClick={handleCloseSettingsOnly}
-                    className="shrink-0 p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+                    className="shrink-0 p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />
@@ -501,7 +508,7 @@ export default function CookieConsent() {
                       cookie-btn-manage
                       flex items-center justify-center gap-2
                       rounded-xl border border-white/[0.06] bg-transparent
-                      px-5 py-3 text-sm font-medium text-white/40
+                      px-5 py-3 text-sm font-medium text-white/70
                       hover:text-amber-400 hover:border-amber-500/20 active:scale-[0.98]
                       transition-all duration-200 ease-out cursor-pointer
                     "
@@ -568,8 +575,8 @@ export default function CookieConsent() {
                           cookie-btn-reject-sm
                           flex items-center justify-center gap-2
                           rounded-xl border border-white/[0.06] bg-transparent
-                          px-5 py-3 text-sm font-medium text-white/30
-                          hover:text-white/50 active:scale-[0.98]
+                          px-5 py-3 text-sm font-medium text-white/70
+                          hover:text-white active:scale-[0.98]
                           transition-all duration-200 ease-out cursor-pointer
                         "
                       >
@@ -578,13 +585,13 @@ export default function CookieConsent() {
                     )}
                   </div>
 
-                  <p className="text-center text-[11px] text-white/20 pt-1">
+                  <p className="text-center text-[11px] text-white/70 pt-1">
                     By consenting, you agree to our{' '}
-                    <a href="/privacy" className="underline underline-offset-2 hover:text-white/40 transition-colors">
+                    <a href="/privacy" className="text-amber-400/90 underline underline-offset-2 hover:text-amber-400 transition-colors">
                       Privacy Policy
                     </a>{' '}
                     and{' '}
-                    <a href="/cookies" className="underline underline-offset-2 hover:text-white/40 transition-colors">
+                    <a href="/cookies" className="text-amber-400/90 underline underline-offset-2 hover:text-amber-400 transition-colors">
                       Cookie Policy
                     </a>
                     .

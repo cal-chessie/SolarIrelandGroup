@@ -274,11 +274,6 @@ const localBusinessSchema = {
     addressLocality: "Dublin",
     addressRegion: "Leinster",
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: "53.3498",
-    longitude: "-6.2603",
-  },
   areaServed: [
     {
       "@type": "AdministrativeArea",
@@ -417,9 +412,9 @@ const serviceSchema = {
   offers: {
     "@type": "AggregateOffer",
     lowPrice: "4500",
-    highPrice: "7500",
+    highPrice: "11000",
     priceCurrency: "EUR",
-    offerCount: "3",
+    offerCount: "2",
     availability: "https://schema.org/InStock",
   },
   hasOfferCatalog: {

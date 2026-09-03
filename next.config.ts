@@ -70,8 +70,10 @@ const nextConfig: NextConfig = {
             value: "none",
           },
           {
+            // same-origin-allow-popups isolates the browsing context while still
+            // letting wa.me / external popups opened by the site function.
             key: "Cross-Origin-Opener-Policy",
-            value: "unsafe-none",
+            value: "same-origin-allow-popups",
           },
           {
             key: "Cross-Origin-Resource-Policy",

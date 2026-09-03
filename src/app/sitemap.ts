@@ -1,6 +1,6 @@
 
 import type { MetadataRoute } from "next";
-import { getAllArticleSlugs } from "@/lib/blog-data";
+import { getAllArticleSlugs, getArticleBySlug } from "@/lib/blog-data";
 
 const SITE_URL = "https://solarirelandgroup.ie";
 
@@ -97,11 +97,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    ...getAllArticleSlugs().map((slug) => ({
-      url: `${SITE_URL}/blog/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...getAllArticleSlugs().map((slug) => {
+      const article = getArticleBySlug(slug);
+      const modified = article?.date ? new Date(article.date) : new Date(now);
+      return {
+        url: `${SITE_URL}/blog/${slug}`,
+        lastModified: isNaN(modified.getTime()) ? now : modified.toISOString(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    }),
   ];
 }

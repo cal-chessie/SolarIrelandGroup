@@ -244,12 +244,16 @@ function SwipeGallery({
               key={i}
               onClick={() => onSelect(i)}
               aria-label={`Go to photo ${i + 1}`}
-              className={`transition-all duration-300 rounded-full ${
-                i === activeIndex
-                  ? 'w-6 h-2 bg-amber-400'
-                  : 'w-2 h-2 bg-white/15 hover:bg-white/30'
-              }`}
-            />
+              className="flex items-center justify-center p-2 -m-1 group"
+            >
+              <span
+                className={`block transition-all duration-300 rounded-full ${
+                  i === activeIndex
+                    ? 'w-6 h-2 bg-amber-400'
+                    : 'w-2 h-2 bg-white/15 group-hover:bg-white/30'
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}
@@ -291,6 +295,7 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         </div>
         <button
           onClick={onOpenLightbox}
+          aria-label="Enlarge install photo"
           className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.08] transition-all shrink-0"
         >
           <Maximize2 className="w-4 h-4" />

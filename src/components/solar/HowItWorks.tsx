@@ -98,6 +98,7 @@ function StepCard({
         onClick={onToggle}
         role="button"
         tabIndex={0}
+        aria-expanded={isActive}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
         className={`
           relative rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 cursor-pointer

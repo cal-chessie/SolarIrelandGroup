@@ -380,7 +380,7 @@ function MobileMenu({
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] text-gray-500 mt-0.5 block">
+                    <span className="text-[11px] text-gray-400 mt-0.5 block">
                       {link.description}
                     </span>
                   </div>

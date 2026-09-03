@@ -916,6 +916,7 @@ export default function WhatsAppChat() {
                       onChange={handleInputChange}
                       onKeyDown={handleKeyDown}
                       placeholder="Ask about solar..."
+                      aria-label="Message"
                       disabled={isLoading}
                       rows={1}
                       className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/10 disabled:opacity-50 resize-none transition-all duration-200"

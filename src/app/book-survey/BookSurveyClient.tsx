@@ -205,6 +205,12 @@ export default function BookSurveyClient() {
   const formRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(formRef, { once: true, margin: '-80px' });
 
+  const countyId = useId();
+  const householdSizeId = useId();
+  const currentBillId = useId();
+  const propertyTypeLabelId = useId();
+  const roofTypeLabelId = useId();
+
   const update = useCallback((field: keyof FormData, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -576,11 +582,12 @@ export default function BookSurveyClient() {
 
                           {/* County */}
                           <div>
-                            <label className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                            <label htmlFor={countyId} className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                               <MapPin className="w-3.5 h-3.5 text-gray-500" />
                               County
                             </label>
                             <select
+                              id={countyId}
                               value={formData.county}
                               onChange={(e) => update('county', e.target.value)}
                               className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-sm text-white appearance-none focus:outline-none transition-all ${
@@ -597,15 +604,16 @@ export default function BookSurveyClient() {
 
                           {/* Property Type - visual cards */}
                           <div>
-                            <label className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                            <label id={propertyTypeLabelId} className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                               <Home className="w-3.5 h-3.5 text-gray-500" />
                               Property Type
                             </label>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <div role="group" aria-labelledby={propertyTypeLabelId} className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                               {propertyTypes.map((type) => (
                                 <button
                                   key={type.value}
                                   onClick={() => update('propertyType', type.value)}
+                                  aria-pressed={formData.propertyType === type.value}
                                   className={`flex items-center gap-2.5 px-3 py-3 rounded-xl text-xs font-medium transition-all border ${
                                     formData.propertyType === type.value
                                       ? 'bg-green-400/10 border-green-400/30 text-green-400'
@@ -622,14 +630,15 @@ export default function BookSurveyClient() {
 
                           {/* Roof Type */}
                           <div>
-                            <label className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                            <label id={roofTypeLabelId} className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                               Roof Type
                             </label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div role="group" aria-labelledby={roofTypeLabelId} className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {roofTypes.map((type) => (
                                 <button
                                   key={type.value}
                                   onClick={() => update('roofType', type.value)}
+                                  aria-pressed={formData.roofType === type.value}
                                   className={`text-left px-4 py-3 rounded-xl transition-all border ${
                                     formData.roofType === type.value
                                       ? 'bg-green-400/10 border-green-400/30'
@@ -652,10 +661,11 @@ export default function BookSurveyClient() {
                           {/* Household size & bill (optional helpers) */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
+                              <label htmlFor={householdSizeId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
                                 Household Size <span className="text-gray-600 normal-case">(optional)</span>
                               </label>
                               <select
+                                id={householdSizeId}
                                 value={formData.householdSize}
                                 onChange={(e) => update('householdSize', e.target.value)}
                                 className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white appearance-none focus:outline-none focus:border-green-400/40 transition-all"
@@ -667,12 +677,13 @@ export default function BookSurveyClient() {
                               </select>
                             </div>
                             <div>
-                              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
+                              <label htmlFor={currentBillId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
                                 Monthly Electricity Bill <span className="text-gray-600 normal-case">(optional)</span>
                               </label>
                               <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500">€</span>
                                 <input
+                                  id={currentBillId}
                                   type="number"
                                   value={formData.currentBill}
                                   onChange={(e) => update('currentBill', e.target.value)}

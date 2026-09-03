@@ -393,6 +393,7 @@ export default function FAQ() {
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
+          "@id": "https://solarirelandgroup.ie",
           "speakable": {
             "@type": "SpeakableSpecification",
             "cssSelector": [".speakable-question", ".speakable-answer"],

@@ -29,6 +29,7 @@ export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const hasTriggered = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const pageLoadTimeRef = useRef(0);
 
 
@@ -113,11 +114,53 @@ export default function ExitIntent() {
 
   useEffect(() => {
     if (!show) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
+
+    // Move focus into the dialog when it opens.
+    const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 0);
+
+    const getFocusable = (): HTMLElement[] => {
+      const card = cardRef.current;
+      if (!card) return [];
+      return Array.from(
+        card.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
     };
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      // Keep focus trapped inside the dialog card.
+      if (!cardRef.current?.contains(active)) {
+        e.preventDefault();
+        first.focus();
+        return;
+      }
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    return () => {
+      clearTimeout(focusTimer);
+      document.removeEventListener('keydown', onKey);
+    };
   }, [show, close]);
 
   if (!show) return null;
@@ -160,6 +203,7 @@ export default function ExitIntent() {
             </span>
           </div>
           <button
+            ref={closeBtnRef}
             onClick={() => { trackExitIntent('dismiss'); close(); }}
             className="exit-intent-el exit-intent-el-0 w-9 h-9 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
             aria-label="Close"

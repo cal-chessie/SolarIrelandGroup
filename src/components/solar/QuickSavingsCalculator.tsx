@@ -215,7 +215,8 @@ export default function QuickSavingsCalculator() {
                       key={home.id}
                       type="button"
                       onClick={() => setHomeType(home.id)}
-                      className={`relative flex flex-col items-center gap-2.5 p-4 sm:p-5 rounded-xl border transition-all duration-300 cursor-pointer outline-none ${
+                      aria-pressed={isActive}
+                      className={`relative flex flex-col items-center gap-2.5 p-4 sm:p-5 rounded-xl border transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 ${
                         isActive
                           ? 'bg-amber-400/10 border-amber-400/30 shadow-lg shadow-amber-400/5'
                           : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04]'

@@ -3,7 +3,36 @@ import ZAI from 'z-ai-web-dev-sdk';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
+export const runtime = 'nodejs';
+export const maxDuration = 60;
+
 const WA_URL = buildWhatsAppUrl({ source: 'chat-ai-escalation' });
+
+// Defensive caps on the incoming conversation before hitting the paid model.
+const MAX_MESSAGES = 20;
+const MAX_MESSAGE_CHARS = 4000;
+const MAX_TOTAL_CHARS = 24000;
+
+// Lightweight in-memory per-IP throttle. Best-effort only: per serverless
+// instance, not coordinated across instances. A real distributed rate limiter
+// still needs shared infra (Redis/KV).
+const RATE_LIMIT_MAX = 15; // requests
+const RATE_LIMIT_WINDOW_MS = 60_000; // per 60s
+const rateLimitHits = new Map<string, number[]>();
+
+function getClientIp(request: Request): string {
+  const fwd = request.headers.get('x-forwarded-for');
+  if (fwd) return fwd.split(',')[0].trim();
+  return request.headers.get('x-real-ip') || 'unknown';
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (rateLimitHits.get(ip) || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+  hits.push(now);
+  rateLimitHits.set(ip, hits);
+  return hits.length > RATE_LIMIT_MAX;
+}
 
 const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-registered solar panel installation company. You're friendly, knowledgeable, and always honest — never making exaggerated claims.
 
@@ -92,10 +121,49 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 
 export async function POST(request: Request) {
   try {
+    if (isRateLimited(getClientIp(request))) {
+      return NextResponse.json(
+        { message: 'You are sending messages too quickly. Please wait a moment and try again.' },
+        { status: 429 }
+      );
+    }
+
     const { messages, stream } = await request.json();
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ message: 'Please send a message.' }, { status: 400 });
+    }
+
+    // Bound the conversation before calling the paid model.
+    if (messages.length > MAX_MESSAGES) {
+      return NextResponse.json(
+        { message: 'This conversation is too long. Please start a new chat.' },
+        { status: 400 }
+      );
+    }
+
+    let totalChars = 0;
+    for (const m of messages) {
+      const content = typeof m?.content === 'string' ? m.content : '';
+      if (!content || typeof m?.role !== 'string') {
+        return NextResponse.json(
+          { message: 'Please send a valid message.' },
+          { status: 400 }
+        );
+      }
+      if (content.length > MAX_MESSAGE_CHARS) {
+        return NextResponse.json(
+          { message: 'That message is too long. Please shorten it and try again.' },
+          { status: 400 }
+        );
+      }
+      totalChars += content.length;
+    }
+    if (totalChars > MAX_TOTAL_CHARS) {
+      return NextResponse.json(
+        { message: 'This conversation is too long. Please start a new chat.' },
+        { status: 400 }
+      );
     }
 
     const zai = await ZAI.create();

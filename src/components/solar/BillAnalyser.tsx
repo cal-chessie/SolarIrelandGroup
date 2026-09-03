@@ -218,7 +218,20 @@ function SystemComparisonCards({ comparisons, recommended }: { comparisons: Syst
   );
 }
 
+function usePrefersReducedMotion(): boolean {
+  const [prefersReduced, setPrefersReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReduced(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return prefersReduced;
+}
+
 function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   return (
     <div className="relative flex flex-col items-center justify-center py-10">
       {billPreview && (
@@ -227,8 +240,8 @@ function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
           <motion.div
             className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
             initial={{ top: '10%' }}
-            animate={{ top: '90%' }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            animate={prefersReducedMotion ? undefined : { top: '90%' }}
+            transition={prefersReducedMotion ? undefined : { duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
           />
           <div className="absolute inset-0 rounded-xl border-2 border-amber-400/30" />
         </div>
@@ -237,13 +250,13 @@ function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
         <div className="w-48 h-48 rounded-2xl bg-white/[0.03] border border-white/[0.06] mb-6 flex items-center justify-center overflow-hidden relative">
           <ScanLine className="w-12 h-12 text-amber-400/40" />
           <motion.div className="absolute left-4 right-4 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-            initial={{ top: '10%' }} animate={{ top: '90%' }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            initial={{ top: '10%' }} animate={prefersReducedMotion ? undefined : { top: '90%' }}
+            transition={prefersReducedMotion ? undefined : { duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
           />
         </div>
       )}
       <div className="flex items-center gap-2 text-amber-400">
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}>
+        <motion.div animate={prefersReducedMotion ? undefined : { rotate: 360 }} transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, ease: 'linear' }}>
           <ScanLine className="w-5 h-5" />
         </motion.div>
         <span className="text-sm font-medium">AI is reading your bill...</span>
@@ -264,6 +277,7 @@ export default function BillAnalyser() {
   const [showDetails, setShowDetails] = useState(false);
   const [showBattery, setShowBattery] = useState(false);
   const [billPreviewOpen, setBillPreviewOpen] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const [monthlyBill, setMonthlyBill] = useState('');
   const [annualUsage, setAnnualUsage] = useState('');
@@ -425,8 +439,8 @@ export default function BillAnalyser() {
 
                         <motion.div
                           className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ${dragOver ? 'bg-amber-400/20 scale-110' : 'bg-white/[0.04] group-hover:bg-amber-400/10'}`}
-                          animate={!dragOver ? { y: [0, -4, 0] } : { scale: [1, 1.05, 1] }}
-                          transition={!dragOver ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.6, repeat: Infinity }}
+                          animate={prefersReducedMotion ? undefined : (!dragOver ? { y: [0, -4, 0] } : { scale: [1, 1.05, 1] })}
+                          transition={prefersReducedMotion ? undefined : (!dragOver ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.6, repeat: Infinity })}
                         >
                           <Upload className={`w-9 h-9 transition-colors duration-300 ${dragOver ? 'text-amber-400' : 'text-gray-500 group-hover:text-amber-400'}`} />
                         </motion.div>
