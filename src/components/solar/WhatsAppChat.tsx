@@ -553,17 +553,20 @@ export default function WhatsAppChat() {
               Chat with us 💬
             </div>
           </div>
-          <div className="whatsapp-fab-ring absolute w-14 h-14 rounded-full bg-green-500/30" />
-          <div className="absolute w-14 h-14 rounded-full bg-green-500/20" style={{ animation: 'wa-fab-pulse 3.5s ease-out infinite' }} />
           <button
             onClick={handleOpen}
             onMouseEnter={() => setFabHovered(true)}
             onMouseLeave={() => setFabHovered(false)}
-            className="whatsapp-fab relative w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 transition-all duration-300 flex items-center justify-center group shadow-xl shadow-green-500/25 hover:shadow-green-500/40 hover:scale-[1.08] active:scale-95"
+            className="whatsapp-fab relative flex items-center justify-center group transition-transform duration-300 hover:scale-[1.08] active:scale-95"
             aria-label="Open chat"
           >
-            <MessageCircle className="w-6 h-6 text-white transition-transform duration-300 group-hover:scale-110" />
-            <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-green-300 rounded-full border-[2.5px] border-green-500" />
+            <Image
+              src="/bumblebee-md.webp"
+              alt=""
+              width={96}
+              height={96}
+              className="bumblebee-float w-16 h-16 object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.5)] group-hover:drop-shadow-[0_10px_24px_rgba(250,204,21,0.4)] transition-all duration-300"
+            />
           </button>
         </div>
       )}
