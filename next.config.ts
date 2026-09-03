@@ -42,8 +42,11 @@ const nextConfig: NextConfig = {
             value: "nosniff",
           },
           {
-            key: "Content-Security-Policy",
-            value: "frame-ancestors 'self'",
+            // Full Content-Security-Policy is issued per-request in
+            // src/middleware.ts (it needs a fresh nonce). This is the
+            // legacy clickjacking fallback for pre-CSP browsers.
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
           },
           {
             key: "X-XSS-Protection",

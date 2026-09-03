@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import PostHogProvider from "@/components/PostHogProvider";
@@ -529,11 +530,15 @@ const financialProductSchema = {
 };
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading a request header opts the whole tree into dynamic rendering, so
+  // Next.js stamps the per-request CSP nonce (set in middleware) onto every
+  // script it emits - inline RSC bootstrap, framework chunks, and next/script.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html lang="en-IE" className="dark" suppressHydrationWarning dir="ltr">
       <head>
@@ -620,9 +625,10 @@ export default function RootLayout({
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              nonce={nonce}
               strategy="afterInteractive"
             />
-            <Script id="ga-init" strategy="afterInteractive">
+            <Script id="ga-init" nonce={nonce} strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
