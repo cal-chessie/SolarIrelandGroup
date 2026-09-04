@@ -5,7 +5,6 @@ import Image from 'next/image';
 import {
   X,
   MessageCircle,
-  Zap,
   ArrowRight,
   LayoutDashboard,
   Users,
@@ -17,6 +16,7 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackExitIntent } from '@/lib/analytics';
+import { submitLead } from '@/lib/submitLead';
 
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
@@ -27,10 +27,23 @@ const IDLE_FALLBACK_MS = 60_000; // auto-show only after a full minute
 
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
+  const [exitEmail, setExitEmail] = useState('');
+  const [exitStatus, setExitStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
   const hasTriggered = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const pageLoadTimeRef = useRef(0);
+
+  const exitEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(exitEmail);
+
+  const handleExitEmail = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!exitEmailValid || exitStatus === 'submitting') return;
+    setExitStatus('submitting');
+    trackExitIntent('email-submit');
+    await submitLead({ source: 'exit_intent', email: exitEmail.trim() });
+    setExitStatus('done');
+  }, [exitEmail, exitEmailValid, exitStatus]);
 
 
   const trigger = useCallback(() => {
@@ -288,28 +301,44 @@ export default function ExitIntent() {
           </div>
 
           <div className="exit-intent-el exit-intent-el-7">
+            {exitStatus === 'done' ? (
+              <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
+                <Shield className="w-4 h-4" /> Done. Your estimate is on its way to your inbox.
+              </div>
+            ) : (
+              <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
+                <label htmlFor="exit-email" className="sr-only">Email address</label>
+                <input
+                  id="exit-email"
+                  type="email"
+                  required
+                  value={exitEmail}
+                  onChange={(e) => setExitEmail(e.target.value)}
+                  placeholder="your@email.ie"
+                  autoComplete="email"
+                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-amber-400/40"
+                />
+                <button
+                  type="submit"
+                  disabled={!exitEmailValid || exitStatus === 'submitting'}
+                  className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-amber-400 text-black font-bold text-[14px] hover:bg-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {exitStatus === 'submitting' ? 'Sending...' : <>Email my free estimate <ArrowRight className="w-4 h-4" /></>}
+                </button>
+              </form>
+            )}
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => { trackExitIntent('whatsapp-click'); handleCTA(); }}
-              className="exit-intent-cta flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-[15px] shadow-lg shadow-green-500/25 hover:shadow-green-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden"
-            >
-              <span className="absolute inset-0 exit-intent-cta-shimmer" />
-              <MessageCircle className="w-[18px] h-[18px] relative z-10" />
-              <span className="relative z-10">Get Your Free Survey</span>
-              <ArrowRight className="w-4 h-4 relative z-10" />
-            </a>
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
-            <a
-              href="#calculator"
-              onClick={() => { trackExitIntent('calculator-click'); handleCTA(); }}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-200"
             >
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span className="text-[13px]">Quick Calculator</span>
+              <MessageCircle className="w-4 h-4 text-green-400" />
+              <span className="text-[13px]">WhatsApp us instead</span>
             </a>
             <button
               onClick={() => { trackExitIntent('dismiss'); close(); }}

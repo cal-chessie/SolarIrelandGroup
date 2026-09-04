@@ -41,6 +41,7 @@ import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackSurveyBooking } from '@/lib/analytics';
+import { submitLead } from '@/lib/submitLead';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -286,9 +287,25 @@ export default function BookSurveyClient() {
       `☀️ Interest: ${interestStr}\n` +
       (formData.notes ? `📝 Notes: ${formData.notes}\n` : '');
 
-    window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
+    // Primary: persist the booking into AISolar (email-first, first-party record).
+    const res = await submitLead({
+      source: 'website_survey',
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim() || undefined,
+      county: formData.county || undefined,
+      address: formData.address || undefined,
+      monthlyBill: formData.currentBill ? Number(formData.currentBill) : undefined,
+      message,
+    });
+
+    // Fallback only: if the lead did not land, open a pre-filled WhatsApp draft
+    // so the booking is never silently lost.
+    if (!res.ok) {
+      window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
+    }
+
     trackSurveyBooking();
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);
   }, [formData]);
