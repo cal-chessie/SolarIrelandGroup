@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import { ChevronDown, List } from 'lucide-react';
@@ -116,6 +116,39 @@ function MobileTOC({ items }: { items: TOCItem[] }) {
   );
 }
 
+/**
+ * Minimal inline markdown for article content: **bold** and [text](href).
+ * Content comes only from our own static blog-data.ts (never user input).
+ * Links render as real crawlable <a> elements, so body copy can carry
+ * internal links between articles and to /book-survey.
+ */
+function renderInline(text: string): ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)\s]+\))/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={i} className="text-white font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    const link = part.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/);
+    if (link) {
+      return (
+        <a
+          key={i}
+          href={link[2]}
+          className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
+        >
+          {link[1]}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
 function ContentRenderer({ content }: { content: ContentSection[] }) {
   let headingIdx = 0;
 
@@ -134,7 +167,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
                 className="text-gray-300 leading-[1.8] text-[15px] sm:text-base"
               >
-                {section.text}
+                {renderInline(section.text)}
               </motion.p>
             );
 
@@ -189,7 +222,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                   <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${style.iconColor}`} />
                   <div>
                     <p className={`text-sm font-bold mb-1 ${style.iconColor}`}>{section.title}</p>
-                    <p className="text-sm text-gray-300 leading-relaxed">{section.body}</p>
+                    <p className="text-sm text-gray-300 leading-relaxed">{renderInline(section.body)}</p>
                   </div>
                 </div>
               </motion.div>
@@ -210,7 +243,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 {section.items.map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-[15px] sm:text-base text-gray-300 leading-relaxed">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-[10px]" />
-                    <span>{item}</span>
+                    <span>{renderInline(item)}</span>
                   </li>
                 ))}
               </motion.ul>
@@ -232,7 +265,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                     <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-amber-400/10 border border-amber-400/20 text-amber-400 text-xs font-bold shrink-0 mt-[2px]">
                       {i + 1}
                     </span>
-                    <span>{item}</span>
+                    <span>{renderInline(item)}</span>
                   </li>
                 ))}
               </motion.ol>
