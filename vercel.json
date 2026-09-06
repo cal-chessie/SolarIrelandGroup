@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "solarireland.org" }],
+      "destination": "https://solarirelandgroup.ie/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.solarireland.org" }],
+      "destination": "https://solarirelandgroup.ie/:path*",
+      "permanent": true
+    }
+  ]
+}
