@@ -199,6 +199,26 @@ export default function BookSurveyClient() {
     interest: [],
     notes: '',
   });
+  // Prefill from the bill analyser handoff (sessionStorage, never query params).
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('sig-survey-prefill');
+      if (!raw) return;
+      sessionStorage.removeItem('sig-survey-prefill');
+      const d = JSON.parse(raw) as Record<string, string>;
+      setFormData((prev) => ({
+        ...prev,
+        firstName: d.firstName || prev.firstName,
+        lastName: d.lastName || prev.lastName,
+        email: d.email || prev.email,
+        phone: d.phone || prev.phone,
+        address: d.eircode ? `Eircode: ${d.eircode}` : prev.address,
+        currentBill: d.currentBill || prev.currentBill,
+        notes: d.notes || prev.notes,
+      }));
+    } catch { /* no prefill - the form works blank */ }
+  }, []);
+
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
