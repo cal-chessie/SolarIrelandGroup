@@ -85,8 +85,8 @@ NAP everywhere, character-identical:
 
 ## ALREADY DONE (live)
 - [x] 23-article AEO cluster, truth-clean, answer-first (6 Sep)
-- [x] Site name signals: WebSite.name "Solar Ireland" + og:site_name +
-      alternateName "Solar Ireland Group" (705a169)
+- [x] Site name signals: WebSite.name "Solar Ireland" + og:site_name
+      (singular claim - no alternateName, per Cal)
 - [x] foundingDate 2019 in schema + About page
 - [x] Google-facing logo favicon (48/96/180) + bee tab icon
 - [x] robots + llms.txt + pricing.md AEO layer
