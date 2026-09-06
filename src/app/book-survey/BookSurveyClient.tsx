@@ -302,6 +302,19 @@ export default function BookSurveyClient() {
     return Object.keys(e).length === 0;
   }, [formData]);
 
+  // Whatever advances the step, land the visitor at the TOP of the new step -
+  // the Next button lives at the bottom, so without this each step opens with
+  // the viewport parked below the content (Cal: "you have to scroll up to see
+  // the calendar").
+  const stepCardRef = useRef<HTMLDivElement>(null);
+  const prevStepRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (prevStepRef.current === null) { prevStepRef.current = step; return; }
+    if (prevStepRef.current === step) return;
+    prevStepRef.current = step;
+    stepCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [step]);
+
   const nextStep = useCallback(() => {
     if (validateStep(step)) setStep((s) => Math.min(s + 1, 3));
   }, [step, validateStep]);
@@ -562,7 +575,7 @@ export default function BookSurveyClient() {
                 )}
 
                 {/* ── Step content ── */}
-                <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
+                <div ref={stepCardRef} className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 scroll-mt-24">
                   <AnimatePresence mode="wait">
                     {/* ══ STEP 0: Personal Details ══ */}
                     {step === 0 && (
