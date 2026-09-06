@@ -48,6 +48,8 @@ export default function ExitIntent() {
 
   const trigger = useCallback(() => {
     if (hasTriggered.current) return;
+    // Never fire over an open chat conversation.
+    if (document.body.dataset.sigChatOpen === '1') return;
     const timeOnPage = Date.now() - pageLoadTimeRef.current;
     // Never fire in the first 25s, regardless of how many pages were visited.
     if (timeOnPage < MIN_TIME_ON_PAGE_MS) return;
@@ -198,7 +200,7 @@ export default function ExitIntent() {
         className="exit-intent-card relative w-full max-w-[480px] max-h-[92dvh] flex flex-col rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
       >
         <div className="relative h-1 w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500" />
           <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         </div>
 
@@ -225,7 +227,7 @@ export default function ExitIntent() {
           </button>
         </div>
 
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-amber-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-yellow-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative p-6 sm:p-7 pt-4 overflow-y-auto flex-1 min-h-0">
           <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
@@ -254,8 +256,8 @@ export default function ExitIntent() {
 
           <div className="space-y-2 mb-4">
             <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-500/[0.05] border border-amber-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <LayoutDashboard className="w-[18px] h-[18px] text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400/10 to-yellow-500/[0.05] border border-yellow-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <LayoutDashboard className="w-[18px] h-[18px] text-yellow-400" />
               </div>
               <div>
                 <h3 className="text-[13px] font-bold text-white mb-0.5">
@@ -287,7 +289,7 @@ export default function ExitIntent() {
           <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-5 flex-wrap">
             {[
               { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
-              { icon: Clock, label: '1-Day Install', color: 'text-amber-400/70' },
+              { icon: Clock, label: '1-Day Install', color: 'text-yellow-400/70' },
               { icon: TrendingUp, label: '0% VAT on Solar', color: 'text-sky-400/70' },
             ].map(({ icon: Icon, label, color }) => (
               <div
@@ -316,12 +318,12 @@ export default function ExitIntent() {
                   onChange={(e) => setExitEmail(e.target.value)}
                   placeholder="your@email.ie"
                   autoComplete="email"
-                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-amber-400/40"
+                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
                 />
                 <button
                   type="submit"
                   disabled={!exitEmailValid || exitStatus === 'submitting'}
-                  className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-amber-400 text-black font-bold text-[14px] hover:bg-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-yellow-400 text-black font-bold text-[14px] hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {exitStatus === 'submitting' ? 'Sending...' : <>Email my free estimate <ArrowRight className="w-4 h-4" /></>}
                 </button>
