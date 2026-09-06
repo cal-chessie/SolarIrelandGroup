@@ -16,6 +16,7 @@ import Footer from '@/components/solar/Footer';
 // Client-only widgets - no SSR needed, no hydration risk
 const WhatsAppChat = dynamic(() => import('@/components/solar/WhatsAppChat'), { ssr: false });
 const ExitIntent = dynamic(() => import('@/components/solar/ExitIntent'), { ssr: false });
+const MobileStickyCTA = dynamic(() => import('@/components/solar/MobileStickyCTA'), { ssr: false });
 
 export default function HomeClient() {
   return (
@@ -35,6 +36,7 @@ export default function HomeClient() {
       <Footer />
       <WhatsAppChat />
       <ExitIntent />
+      <MobileStickyCTA />
     </div>
   );
 }

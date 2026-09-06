@@ -25,6 +25,7 @@ import {
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { submitLead } from '@/lib/submitLead';
 
 
 interface Message {
@@ -232,6 +233,9 @@ export default function WhatsAppChat() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [chatRestored, setChatRestored] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  // Email-first capture on the pre-chat screen — feeds the AISolar lead door.
+  const [prechatEmail, setPrechatEmail] = useState('');
+  const [prechatLeadStatus, setPrechatLeadStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -675,6 +679,46 @@ export default function WhatsAppChat() {
                     <MessageCircle className="w-4 h-4" />
                     Start Chat
                   </button>
+
+                  {/* Email-first: a savings estimate straight to the inbox */}
+                  {prechatLeadStatus === 'sent' ? (
+                    <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-xs text-green-400 mb-3" role="status">
+                      Done — your estimate is on its way. Check your inbox shortly.
+                    </div>
+                  ) : (
+                    <form
+                      className="w-full flex gap-2 mb-3"
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        const email = prechatEmail.trim();
+                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || prechatLeadStatus === 'sending') return;
+                        setPrechatLeadStatus('sending');
+                        const res = await submitLead({ source: 'website_chat', email, message: 'Requested a savings estimate from the chat pre-screen.' });
+                        setPrechatLeadStatus(res.ok ? 'sent' : 'error');
+                      }}
+                    >
+                      <input
+                        type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        value={prechatEmail}
+                        onChange={(e) => { setPrechatEmail(e.target.value); if (prechatLeadStatus === 'error') setPrechatLeadStatus('idle'); }}
+                        placeholder="Or get an estimate by email"
+                        aria-label="Email address for a savings estimate"
+                        className="flex-1 min-w-0 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all"
+                      />
+                      <button
+                        type="submit"
+                        disabled={prechatLeadStatus === 'sending' || !prechatEmail.trim()}
+                        className="px-4 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:bg-white/[0.06] disabled:text-gray-600 text-black font-bold text-sm transition-all shrink-0"
+                      >
+                        {prechatLeadStatus === 'sending' ? '…' : 'Send'}
+                      </button>
+                    </form>
+                  )}
+                  {prechatLeadStatus === 'error' && (
+                    <p className="w-full text-[11px] text-red-400 mb-3 -mt-1" role="alert">That didn&apos;t go through — try again or use WhatsApp below.</p>
+                  )}
 
                   <a
                     href={buildWhatsAppUrl({ source: 'chat-widget-prechat' })}

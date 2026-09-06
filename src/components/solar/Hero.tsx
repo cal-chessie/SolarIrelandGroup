@@ -66,7 +66,8 @@ export default function Hero() {
           alt=""
           fill
           sizes="100vw"
-          className="hero-bg object-cover"
+          quality={85}
+          className="hero-bg hero-kenburns object-cover"
           priority
         />
         <div className="hero-bg absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#0a0a0a]" />
@@ -104,7 +105,7 @@ export default function Hero() {
                   className="hero-fade-up block"
                   style={{ animationDelay: '0.35s' }}
                 >
-                  <span className="text-gradient">Your Asset.</span>
+                  <span className="text-gradient hero-sheen">Your Asset.</span>
                 </span>
               </h1>
             </div>

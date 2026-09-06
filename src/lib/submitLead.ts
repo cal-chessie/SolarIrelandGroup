@@ -10,6 +10,7 @@
 export type LeadSource =
   | 'bill_analyser'
   | 'website_survey'
+  | 'website_qualified'
   | 'exit_intent'
   | 'website_contact'
   | 'website_chat';
@@ -35,6 +36,10 @@ export interface LeadInput {
 export interface LeadResult {
   ok: boolean;
   leadId?: string | null;
+  /** True when the lead was captured by the SIG fallback store rather than
+   *  AISolar - no automated estimate email fires on that path, so success
+   *  copy must not promise an inbox. */
+  fallback?: boolean;
   error?: string;
 }
 
@@ -47,7 +52,7 @@ export async function submitLead(input: LeadInput): Promise<LeadResult> {
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return { ok: false, error: data?.error || 'Something went wrong. Please try again.' };
-    return { ok: true, leadId: data?.leadId ?? null };
+    return { ok: true, leadId: data?.leadId ?? null, fallback: data?.fallback === true };
   } catch {
     return { ok: false, error: 'Network error. Please check your connection and try again.' };
   }

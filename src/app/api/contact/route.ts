@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { forwardLead, isRateLimited, isHoneypotTripped } from '@/lib/leadBridge';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 interface ContactFormData {
   name: string;
@@ -10,7 +14,16 @@ interface ContactFormData {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json() as ContactFormData;
+    if (isRateLimited(request)) {
+      return NextResponse.json({ error: 'Too many requests. Please try again shortly.' }, { status: 429 });
+    }
+
+    const body = await request.json() as ContactFormData & Record<string, unknown>;
+
+    // Honeypot: accept-and-drop bot submissions silently.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true, message: 'Thank you!' });
+    }
 
     const { name, email, message } = body;
 
@@ -35,14 +48,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('[Contact Form] New submission received:', {
-      name: name.trim(),
-      email: email.trim(),
-      phone: body.phone?.trim() || 'N/A',
-      county: body.county?.trim() || 'N/A',
-      messageLength: message.trim().length,
-      timestamp: new Date().toISOString(),
+    // Contact submissions are leads too - forward through the same AISolar
+    // bridge as every other intake (with SIG-side fallback so none are lost).
+    const result = await forwardLead({
+      brand: 'solar-ireland',
+      source: 'website_contact',
+      name: name.trim().slice(0, 120),
+      email: email.trim().toLowerCase().slice(0, 254),
+      phone: body.phone?.trim().slice(0, 40) || undefined,
+      county: body.county?.trim().slice(0, 60) || undefined,
+      message: message.trim().slice(0, 2000),
+      meta: { page: '/contact' },
     });
+
+    if (!result.ok) {
+      return NextResponse.json(
+        { error: 'We could not send that just now. Please email sales@solarirelandgroup.ie or WhatsApp us.' },
+        { status: 502 }
+      );
+    }
+
+    console.log('[Contact Form] Lead forwarded', { leadId: result.leadId ?? null, fallback: result.fallback ?? false });
 
     return NextResponse.json({
       success: true,

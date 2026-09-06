@@ -19,8 +19,9 @@ import {
   BarChart3,
   Sun,
   ArrowRight,
-  Download,
   Share2,
+  Download,
+  Building2,
   CheckCircle2,
   AlertCircle,
   RotateCcw,
@@ -40,6 +41,8 @@ import { Button } from '@/components/ui/button';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { submitLead } from '@/lib/submitLead';
+import { trackEvent } from '@/lib/analytics';
 
 interface MonthlyProfile {
   month: string;
@@ -273,6 +276,14 @@ export default function BillAnalyser() {
   const [provider, setProvider] = useState('Electric Ireland');
   const [occupants, setOccupants] = useState('3');
 
+  // Land the cursor in the first field the moment manual mode opens.
+  useEffect(() => {
+    if (mode === 'manual' && !analysis && !isAnalyzing) {
+      const t = setTimeout(() => document.getElementById('mb')?.focus(), 350);
+      return () => clearTimeout(t);
+    }
+  }, [mode, analysis, isAnalyzing]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -377,7 +388,125 @@ export default function BillAnalyser() {
     }
   };
 
-  const reset = () => { setAnalysis(null); setError(null); setUploadedFile(null); setBillPreview(null); setShowDetails(false); setShowBattery(false); setBillPreviewOpen(false); };
+  const reset = () => { setAnalysis(null); setError(null); setUploadedFile(null); setBillPreview(null); setShowDetails(false); setShowBattery(false); setBillPreviewOpen(false); setLeadName(''); setLeadEmail(''); setLeadPhone(''); setLeadEircode(''); setLeadStatus('idle'); setLeadFallback(false); setLeadError(null); };
+
+  // ─── Email-first report capture: the analysis becomes a lead in AISolar ───
+  const [segment, setSegment] = useState<'home' | 'business'>('home');
+  const [leadName, setLeadName] = useState('');
+  const [leadEmail, setLeadEmail] = useState('');
+  const [leadPhone, setLeadPhone] = useState('');
+  const [leadEircode, setLeadEircode] = useState('');
+  const [leadStatus, setLeadStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [leadFallback, setLeadFallback] = useState(false);
+  const [leadError, setLeadError] = useState<string | null>(null);
+
+  // Business enquiries skip the domestic maths entirely (different grants,
+  // different sizing) and go straight to a qualified-lead capture.
+  const [biz, setBiz] = useState({ business: '', contact: '', email: '', phone: '', eircode: '', bill: '' });
+  const [bizStatus, setBizStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [bizFallback, setBizFallback] = useState(false);
+  const [bizError, setBizError] = useState<string | null>(null);
+
+  const buildReportText = (a: AnalysisResult): string => [
+    'Solar Ireland - Savings Report',
+    '------------------------------',
+    `Provider: ${a.provider}`,
+    `Monthly bill: €${a.monthlyBill}`,
+    `Annual usage: ${a.annualUsage.toLocaleString()} kWh`,
+    `Home type: ${a.homeType}`,
+    `Recommended system: ${a.recommendedSystem} kWp`,
+    `Annual self-consumption saving: €${a.annualSaving.toLocaleString()}`,
+    `Annual export earnings: €${a.annualExportEarning.toLocaleString()}`,
+    `Total annual benefit: €${a.totalAnnualBenefit.toLocaleString()}`,
+    `System cost: €${a.installCost.toLocaleString()} (SEAI grant -€${a.seaiGrant.toLocaleString()} = €${a.costAfterGrant.toLocaleString()})`,
+    `Payback: ${a.paybackYears} years · ROI ${a.roiPercent}%/yr`,
+    `25-year value: €${a.total25YearSavings.toLocaleString()}`,
+    `CO2 saved: ${a.annualCo2Saved.toLocaleString()} kg/yr`,
+    `Battery: ${a.batteryWorthwhile ? 'worth considering' : 'not recommended yet'}`,
+    '',
+    'solarirelandgroup.ie · +353 87 395 8424',
+  ].join('\n');
+
+  const downloadReport = () => {
+    if (!analysis) return;
+    const blob = new Blob([buildReportText(analysis)], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'solar-ireland-savings-report.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  };
+
+  const handleEmailReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!analysis || leadStatus === 'sending') return;
+    const name = leadName.trim();
+    const email = leadEmail.trim();
+    const phone = leadPhone.trim();
+    const eircode = leadEircode.trim().toUpperCase();
+    if (name.length < 2) { setLeadError('Please enter your name.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setLeadError('Please enter a valid email address.'); return; }
+    if (phone.replace(/[^0-9]/g, '').length < 7) { setLeadError('Please enter a valid mobile number.'); return; }
+    setLeadError(null);
+    setLeadStatus('sending');
+    const result = await submitLead({
+      source: 'bill_analyser',
+      name,
+      email,
+      phone,
+      eircode: eircode || undefined,
+      monthlyBill: analysis.monthlyBill,
+      annualKwh: analysis.annualUsage,
+      homeType: analysis.homeType,
+      estimatedAnnualSaving: analysis.totalAnnualBenefit,
+      message: buildReportText(analysis),
+    });
+    if (result.ok) {
+      setLeadFallback(result.fallback === true);
+      setLeadStatus('sent');
+      trackEvent({ event: 'lead_submit', properties: { source: 'bill_analyser', fallback: result.fallback === true } });
+    } else {
+      setLeadStatus('idle');
+      setLeadError(result.error || 'Something went wrong. Please try again or WhatsApp us.');
+    }
+  };
+
+  const handleBusinessSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (bizStatus === 'sending') return;
+    const business = biz.business.trim();
+    const email = biz.email.trim();
+    const phone = biz.phone.trim();
+    if (business.length < 2) { setBizError('Please enter your business name.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && phone.replace(/[^0-9]/g, '').length < 7) {
+      setBizError('Please enter an email or a phone number so we can come back to you.');
+      return;
+    }
+    setBizError(null);
+    setBizStatus('sending');
+    const billNum = parseFloat(biz.bill);
+    const result = await submitLead({
+      source: 'website_qualified',
+      name: biz.contact.trim() || business,
+      email: email || undefined,
+      phone: phone || undefined,
+      eircode: biz.eircode.trim().toUpperCase() || undefined,
+      monthlyBill: Number.isFinite(billNum) && billNum > 0 ? billNum : undefined,
+      homeType: 'Commercial',
+      message: `Commercial solar enquiry from ${business}${biz.bill ? ` - approx €${biz.bill}/month electricity` : ''}. Requested a tailored commercial assessment via the bill analyser.`,
+    });
+    if (result.ok) {
+      setBizFallback(result.fallback === true);
+      setBizStatus('sent');
+      trackEvent({ event: 'lead_submit', properties: { source: 'website_qualified', segment: 'business' } });
+    } else {
+      setBizStatus('idle');
+      setBizError(result.error || 'Something went wrong. Please try again or WhatsApp us.');
+    }
+  };
 
   const annualCost = analysis ? Math.round(analysis.monthlyBill * 12) : 0;
   const costAfter = analysis ? annualCost - analysis.totalAnnualBenefit : 0;
@@ -425,6 +554,19 @@ export default function BillAnalyser() {
                 </div>
 
                 <div className="p-6 sm:p-8">
+                  {/* HOME / BUSINESS */}
+                  <div className="flex items-center justify-center gap-1 mb-6 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
+                    <button onClick={() => setSegment('home')} aria-pressed={segment === 'home'}
+                      className={`flex items-center gap-2 px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'home' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
+                      <Home className="w-4 h-4" /> Home
+                    </button>
+                    <button onClick={() => setSegment('business')} aria-pressed={segment === 'business'}
+                      className={`flex items-center gap-2 px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'business' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
+                      <Building2 className="w-4 h-4" /> Business
+                    </button>
+                  </div>
+
+                  {segment === 'home' && (
                   <div className="flex items-center justify-center gap-1 mb-8 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
                     <button onClick={() => { setMode('upload'); reset(); }} aria-pressed={mode === 'upload'}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'upload' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
@@ -435,11 +577,12 @@ export default function BillAnalyser() {
                       <Euro className="w-4 h-4" /> Enter Manually
                     </button>
                   </div>
+                  )}
 
                   {/* 
                       UPLOAD MODE
                        */}
-                  {mode === 'upload' && (
+                  {segment === 'home' && mode === 'upload' && (
                     <div className="space-y-5">
                       <div
                         onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
@@ -532,7 +675,7 @@ export default function BillAnalyser() {
                   {/* 
                       MANUAL MODE
                        */}
-                  {mode === 'manual' && (
+                  {segment === 'home' && mode === 'manual' && (
                     <div className="space-y-6 max-w-2xl mx-auto">
                       <div>
                         <label className="block text-sm text-gray-400 mb-3">How many people live in your home?</label>
@@ -554,7 +697,7 @@ export default function BillAnalyser() {
                           <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
-                            <input id="mb" type="number" placeholder="160" value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
+                            <input id="mb" type="text" inputMode="numeric" placeholder="160" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
                           <p className="text-[11px] text-gray-400">Found on the front of your electricity bill</p>
@@ -563,7 +706,7 @@ export default function BillAnalyser() {
                           <label htmlFor="au" className="block text-sm text-gray-400">Annual Usage</label>
                           <div className="relative">
                             <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input id="au" type="number" placeholder="4800" value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
+                            <input id="au" type="text" inputMode="numeric" placeholder="4800" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
                               className="w-full pl-12 pr-14 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">kWh</span>
                           </div>
@@ -622,6 +765,65 @@ export default function BillAnalyser() {
                           <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
                       </div>
+                    </div>
+                  )}
+
+                  {segment === 'business' && (
+                    <div className="space-y-5 max-w-2xl mx-auto">
+                      {bizStatus === 'sent' ? (
+                        <div className="flex flex-col items-center text-center py-8" role="status" aria-live="polite">
+                          <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
+                            <CheckCircle2 className="w-6 h-6 text-green-400" />
+                          </div>
+                          <h4 className="text-lg font-bold text-white mb-1.5">Thanks — we&apos;re on it</h4>
+                          <p className="text-sm text-gray-400 max-w-md leading-relaxed">
+                            {bizFallback
+                              ? 'We have your details. Our commercial team will size your system properly and come back with real numbers.'
+                              : 'Your enquiry is with our commercial team. We\u2019ll model your usage profile and come back with real numbers.'}
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="text-center">
+                            <h3 className="text-lg font-bold text-white mb-1.5">Commercial solar, sized properly</h3>
+                            <p className="text-sm text-gray-400 max-w-lg mx-auto leading-relaxed">
+                              Business systems are a different animal — day-use profiles, three-phase supply, accelerated capital
+                              allowances instead of the domestic grant. Tell us about the business and we&apos;ll model it for real.
+                            </p>
+                          </div>
+                          <form onSubmit={handleBusinessSubmit} className="space-y-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <input type="text" placeholder="Business name" aria-label="Business name" value={biz.business}
+                                onChange={(e) => setBiz({ ...biz, business: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                              <input type="text" autoComplete="name" placeholder="Contact name" aria-label="Contact name" value={biz.contact}
+                                onChange={(e) => setBiz({ ...biz, contact: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                              <input type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Business email" value={biz.email}
+                                onChange={(e) => setBiz({ ...biz, email: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                              <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Business phone" value={biz.phone}
+                                onChange={(e) => setBiz({ ...biz, phone: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                              <input type="text" autoComplete="postal-code" placeholder="Eircode" aria-label="Eircode" value={biz.eircode}
+                                onChange={(e) => setBiz({ ...biz, eircode: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                              <input type="text" inputMode="numeric" placeholder="Monthly electricity spend (€, approx)" aria-label="Approximate monthly electricity spend in euro" value={biz.bill}
+                                onChange={(e) => setBiz({ ...biz, bill: e.target.value })}
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                            </div>
+                            <Button type="submit" disabled={bizStatus === 'sending'}
+                              className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
+                              {bizStatus === 'sending' ? 'Sending…' : <><Building2 className="mr-2 w-4 h-4" /> Get My Commercial Assessment <ArrowRight className="ml-2 w-4 h-4" /></>}
+                            </Button>
+                            {bizError && (
+                              <p role="alert" className="text-xs text-red-400 flex items-center gap-1.5">
+                                <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {bizError}
+                              </p>
+                            )}
+                          </form>
+                        </>
+                      )}
                     </div>
                   )}
 
@@ -823,31 +1025,91 @@ export default function BillAnalyser() {
                     )}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Button className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-bold py-4 rounded-xl shadow-lg shadow-amber-400/20" asChild>
-                      <a href={buildWhatsAppUrl({
-                        source: 'bill-analyser',
-                        annualSaving: analysis.annualSaving,
-                        paybackYears: analysis.paybackYears,
-                        total25yrSaving: analysis.total25YearSavings,
-                        monthlyBill: analysis.monthlyBill,
-                        annualUsage: analysis.annualUsage,
-                        homeType: analysis.homeType,
-                        recommendedSystem: analysis.recommendedSystem,
-                        provider: analysis.provider,
-                      })} target="_blank" rel="noopener noreferrer">
-                        <Share2 className="mr-2 w-4 h-4" /> Get Your Free Survey
-                      </a>
-                    </Button>
-                    <Button variant="outline" onClick={() => {
-                      const summary = `Solar Ireland Bill Analysis\n${''.repeat(35)}\nProvider: ${analysis.provider}\nMonthly Bill: €${analysis.monthlyBill}\nAnnual Usage: ${analysis.annualUsage.toLocaleString()} kWh\nRecommended: ${analysis.recommendedSystem} kWp\nAnnual Saving: €${analysis.annualSaving.toLocaleString()}\nExport Earnings: €${analysis.annualExportEarning.toLocaleString()}/yr\nTotal Benefit: €${analysis.totalAnnualBenefit.toLocaleString()}/yr\nPayback: ${analysis.paybackYears} years\nCost After Grant: €${analysis.costAfterGrant.toLocaleString()}\n25-Year Value: €${analysis.total25YearSavings.toLocaleString()}\nCO₂ Saved: ${analysis.annualCo2Saved.toLocaleString()} kg/yr`;
-                      navigator.clipboard.writeText(summary);
-                    }} className="flex-1 border-white/[0.08] text-gray-300 hover:bg-white/[0.04] hover:text-white py-4 rounded-xl">
-                      <Download className="mr-2 w-4 h-4" /> Copy Report
-                    </Button>
-                    <Button variant="outline" onClick={reset} className="sm:flex-none border-white/[0.08] text-gray-400 hover:bg-white/[0.04] hover:text-white py-4 px-6 rounded-xl">
-                      <RotateCcw className="w-4 h-4" />
-                    </Button>
+                  {/* ─── EMAIL-FIRST REPORT CAPTURE — every analysis becomes a lead ─── */}
+                  <div className="rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-6 sm:p-7">
+                    {leadStatus === 'sent' ? (
+                      <div className="flex flex-col items-center text-center py-2" role="status" aria-live="polite">
+                        <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
+                          <CheckCircle2 className="w-6 h-6 text-green-400" />
+                        </div>
+                        <h4 className="text-lg font-bold text-white mb-1.5">{leadFallback ? 'We\u2019ve got your details' : 'Your estimate is on its way'}</h4>
+                        <p className="text-sm text-gray-400 max-w-md leading-relaxed">
+                          {leadFallback
+                            ? 'Our team will send your personalised savings report and follow up to arrange your free survey — no pressure, no hard sell.'
+                            : <>We&apos;re sending your personalised savings report to <span className="text-white font-medium">{leadEmail.trim()}</span>. Our team will follow up to arrange your free survey — no pressure, no hard sell.</>}
+                        </p>
+                        <button onClick={downloadReport}
+                          className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-gray-300 hover:text-white hover:bg-white/[0.08] transition-all">
+                          <Download className="w-4 h-4" /> Download your summary
+                        </button>
+                        <a href={buildWhatsAppUrl({ source: 'bill-analyser', annualSaving: analysis.annualSaving, paybackYears: analysis.paybackYears, monthlyBill: analysis.monthlyBill, homeType: analysis.homeType, recommendedSystem: analysis.recommendedSystem, provider: analysis.provider })}
+                          target="_blank" rel="noopener noreferrer"
+                          className="mt-4 text-xs text-gray-400 hover:text-green-400 transition-colors">
+                          Can&apos;t wait? WhatsApp us now →
+                        </a>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-start gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-xl bg-amber-400/15 flex items-center justify-center shrink-0">
+                            <FileText className="w-5 h-5 text-amber-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-bold text-white leading-tight">Send me my full estimate</h4>
+                            <p className="text-xs sm:text-sm text-gray-400 mt-1 leading-relaxed">
+                              We&apos;ll email your full personalised estimate and arrange your free home survey. Your eircode lets us check your roof before we call. No spam, ever.
+                            </p>
+                          </div>
+                        </div>
+                        <form onSubmit={handleEmailReport} className="space-y-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={leadName}
+                              onChange={(e) => { setLeadName(e.target.value); if (leadError) setLeadError(null); }}
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            <input type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Email address for your savings report" value={leadEmail}
+                              onChange={(e) => { setLeadEmail(e.target.value); if (leadError) setLeadError(null); }}
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Mobile number" value={leadPhone}
+                              onChange={(e) => { setLeadPhone(e.target.value); if (leadError) setLeadError(null); }}
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            <input type="text" autoComplete="postal-code" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
+                              onChange={(e) => { setLeadEircode(e.target.value); if (leadError) setLeadError(null); }}
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                          </div>
+                          <Button type="submit" disabled={leadStatus === 'sending'}
+                            className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
+                            {leadStatus === 'sending' ? 'Sending…' : <>Send My Full Estimate <ArrowRight className="ml-2 w-4 h-4" /></>}
+                          </Button>
+                        </form>
+                        {leadError && (
+                          <p role="alert" className="mt-2.5 text-xs text-red-400 flex items-center gap-1.5">
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {leadError}
+                          </p>
+                        )}
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 pt-4 border-t border-white/[0.05]">
+                          <a href={buildWhatsAppUrl({
+                            source: 'bill-analyser',
+                            annualSaving: analysis.annualSaving,
+                            paybackYears: analysis.paybackYears,
+                            total25yrSaving: analysis.total25YearSavings,
+                            monthlyBill: analysis.monthlyBill,
+                            annualUsage: analysis.annualUsage,
+                            homeType: analysis.homeType,
+                            recommendedSystem: analysis.recommendedSystem,
+                            provider: analysis.provider,
+                          })} target="_blank" rel="noopener noreferrer"
+                            className="text-xs text-gray-400 hover:text-green-400 transition-colors flex items-center gap-1.5">
+                            <Share2 className="w-3.5 h-3.5" /> Prefer WhatsApp? Send us this analysis
+                          </a>
+                          <button onClick={downloadReport} className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5">
+                            <Download className="w-3.5 h-3.5" /> Download summary
+                          </button>
+                          <button onClick={reset} className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5">
+                            <RotateCcw className="w-3.5 h-3.5" /> Start over
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </motion.div>
