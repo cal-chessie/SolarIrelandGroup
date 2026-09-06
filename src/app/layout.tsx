@@ -204,7 +204,6 @@ const organizationSchema = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
-  alternateName: "Solar Ireland Group",
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
@@ -345,7 +344,6 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
   name: SITE_NAME,
-  alternateName: "Solar Ireland Group",
   url: SITE_URL,
   publisher: {
     "@id": `${SITE_URL}/#organization`,
