@@ -398,16 +398,13 @@ export default function Footer() {
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-3.5 h-3.5 text-gray-400" />
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
-                  Working Hours
+                  Front Desk
                 </p>
               </div>
               <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
-                <span className="text-gray-300 font-medium">Mon–Fri:</span> 8am–6pm
+                <span className="text-gray-300 font-medium">Open 24/7</span>
                 <span className="mx-1.5 text-white/[0.08]">|</span>
-                <span className="text-gray-300 font-medium">Sat:</span> 9am–2pm
-                <span className="mx-1.5 text-white/[0.08]">|</span>
-                <span className="text-gray-300 font-medium">Sun:</span>{' '}
-                <span className="text-gray-400">Closed</span>
+                Calls, WhatsApp &amp; bill analysis answered any time
               </p>
             </div>
           </div>
