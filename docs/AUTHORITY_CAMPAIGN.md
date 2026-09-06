@@ -1,0 +1,92 @@
+# Solar Ireland Group — Authority Campaign
+
+Goal, in order: (1) indexed and owning "solar ireland group" outright,
+(2) page-1 presence for "solar ireland" via the map pack, (3) compounding
+commercial-term traffic from the 23-article cluster, (4) the long organic
+climb on "solar ireland" fuelled by entity + 2019 seniority.
+
+NAP everywhere, character-identical:
+**Solar Ireland (Solar Ireland Group) · +353 87 395 8424 · sales@solarirelandgroup.ie · solarirelandgroup.ie**
+
+---
+
+## GATE 0 — blocks everything (CAL, ~10 min)
+- [ ] Google Search Console: add `solarirelandgroup.ie` as a **Domain property**
+      (DNS TXT at the registrar), or grab the HTML-meta token and hand it over
+      (the layout already renders `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`).
+- [ ] Submit `https://solarirelandgroup.ie/sitemap.xml`.
+- [ ] URL-inspect + **Request Indexing**: `/`, `/blog`, `/solar-calculator`,
+      `/book-survey`, 3-4 top articles.
+- [ ] Read the Coverage report — first sight of what Google actually holds.
+
+## WEEK 1 — entity foundations
+- [ ] **GBP** (CAL): name exactly "Solar Ireland" · primary category *Solar
+      energy company* (+ *Solar energy equipment supplier*) · **opening date
+      2019** · service areas (counties served) · website = homepage · phone
+      matching NAP · logo + real photos · capture the review short-link.
+- [ ] **sameAs truth-up** (CAL → ME): schema currently claims
+      facebook.com/solarireland, instagram.com/solarireland,
+      tiktok.com/@solarireland, linkedin.com/company/solarireland. Confirm the
+      EXACT live handles; I correct the schema same day. (Closes deferred #3.)
+- [ ] **Bing Places + Apple Business Connect** (CAL, ~15 min total): same NAP.
+- [ ] **Review engine** (ME + CAL): post-install review ask — GBP short-link on
+      the final invoice/handover message + QR card. Real customers only, ever.
+
+## WEEKS 1-2 — citations (identical NAP or don't bother)
+- [ ] SEAI **registered-contractor listing** — the most authoritative citation
+      an Irish installer can hold; confirm the entry is live + points at the
+      homepage. (CAL confirms account; ME verifies listing.)
+- [ ] Safe Electric / RECI register entry — same check.
+- [ ] goldenpages.ie business listing.
+- [ ] Yelp + Houzz profiles.
+- [ ] Local chamber of commerce for the home county.
+- [ ] (ME) verify every citation live, consistent, homepage-linked; log here.
+
+## ONGOING — loud
+- [ ] **Social repurposing** (ME drafts, CAL posts): each of the 23 articles →
+      3 platform-native posts (IG carousel script, FB post, LinkedIn). First
+      batch: NC6 explainer, worth-it-2026, installation step-by-step.
+- [ ] **Content cadence** (ME): ~2 articles/month; next up county guides
+      (Galway, Limerick) + seasonal (winter output refresh in Oct).
+- [ ] **Brand-search flywheel** (CAL): "Solar Ireland Group" on the van,
+      invoices, email signatures, proposals, ad creative — every offline
+      impression that becomes a Google search teaches Google the entity.
+
+## PRESS — the 2019 story (sequence with the solicitor)
+- [ ] The passing-off narrative ("trading as Solar Ireland since 2019; the
+      trade body rebranded onto the name in 2024") is genuinely pitchable to
+      Irish business/trade press — **held until legal timing is cleared**.
+- [ ] Softer PR needs no clearance: local install milestones, county grant
+      explainers, "what the 2026 grant means in <county>" to local papers.
+
+## LINKS
+- [ ] Supplier/stockist pages (the SolaX distributor relationship — a
+      partner/installer listing on their site is a real industry link).
+- [ ] Local sponsorship (club/community) — the classic honest Irish local link.
+- [ ] The blog cluster earns the rest passively; no link-buying, ever.
+
+## WATCHES (ME)
+- [ ] `solarireland.com` whois watch — the NGO must never get it; revisit an
+      **anonymous** low offer via broker in ~6 months. Never approach as Cal.
+- [ ] Monthly SERP check: "solar ireland group", "solar ireland", site-name
+      display ("Solar Ireland" above the URL), favicon, map-pack presence.
+- [ ] GSC coverage + queries monthly once verified.
+
+## EVIDENCE PACK (legal lane, parallel — CAL gathers, ME organises)
+- [x] Whois: solarireland.com created 19 Jan 2019.
+- [x] Wayback: live capture 30 Jun 2019 (pull the full 2019-2023 timeline).
+- [ ] 22 months of rent-to-buy payment records for the .com.
+- [ ] CRO/business-name registration date; first invoices/ads as Solar Ireland.
+- [ ] Social + GBP account creation dates.
+- [ ] Every instance of actual confusion between the two entities (gold).
+- [ ] Solicitor checks: IPOI/EUIPO register for "Solar Ireland" filings; advice
+      on filing ours.
+
+## ALREADY DONE (live)
+- [x] 23-article AEO cluster, truth-clean, answer-first (6 Sep)
+- [x] Site name signals: WebSite.name "Solar Ireland" + og:site_name +
+      alternateName "Solar Ireland Group" (705a169)
+- [x] foundingDate 2019 in schema + About page
+- [x] Google-facing logo favicon (48/96/180) + bee tab icon
+- [x] robots + llms.txt + pricing.md AEO layer
+- [x] Lead funnel live into AISolar (own every lead the authority work earns)
