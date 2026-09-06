@@ -92,6 +92,8 @@ export async function POST(request: Request) {
         page: str(body.page, MAX.generic) || undefined,
         homeType: str(body.homeType, MAX.generic) || undefined,
         estimatedAnnualSaving: posNum(body.estimatedAnnualSaving) ?? undefined,
+        surveyDate: str(body.surveyDate, MAX.generic) || undefined,
+        surveyTime: str(body.surveyTime, MAX.generic) || undefined,
       },
     };
 

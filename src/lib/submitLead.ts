@@ -28,6 +28,9 @@ export interface LeadInput {
   message?: string;
   homeType?: string;
   estimatedAnnualSaving?: number;
+  /** Survey slot preference labels (book-survey only). */
+  surveyDate?: string;
+  surveyTime?: string;
   /** Hidden honeypot fields - leave undefined; bots fill them. */
   company?: string;
   website_url?: string;

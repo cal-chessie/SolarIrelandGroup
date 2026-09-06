@@ -199,6 +199,34 @@ export default function BookSurveyClient() {
     interest: [],
     notes: '',
   });
+  // Magic link from the estimate email: ?lt=<lead token> resolves the lead
+  // server-side and lands the visitor on "confirm property, pick a time".
+  const [magicName, setMagicName] = useState<string | null>(null);
+  useEffect(() => {
+    const lt = new URLSearchParams(window.location.search).get('lt');
+    if (!lt || lt.length < 32) return;
+    (async () => {
+      try {
+        const res = await fetch(`/api/survey-context?lt=${encodeURIComponent(lt)}`);
+        const d = await res.json();
+        if (!d?.ok) return;
+        const [firstName, ...rest] = String(d.name || '').split(/\s+/);
+        setFormData((prev) => ({
+          ...prev,
+          firstName: firstName || prev.firstName,
+          lastName: rest.join(' ') || prev.lastName,
+          email: d.email || prev.email,
+          phone: d.phone || prev.phone,
+          address: d.address || (d.eircode ? `Eircode: ${d.eircode}` : prev.address),
+          county: d.county || prev.county,
+          currentBill: d.monthlyBill ? String(d.monthlyBill) : prev.currentBill,
+        }));
+        setMagicName(firstName || null);
+        setStep(1);
+      } catch { /* the cold form still works */ }
+    })();
+  }, []);
+
   // Prefill from the bill analyser handoff (sessionStorage, never query params).
   useEffect(() => {
     try {
@@ -316,6 +344,8 @@ export default function BookSurveyClient() {
       county: formData.county || undefined,
       address: formData.address || undefined,
       monthlyBill: formData.currentBill ? Number(formData.currentBill) : undefined,
+      surveyDate: dateStr,
+      surveyTime: timeStr,
       message,
     });
 
@@ -520,6 +550,16 @@ export default function BookSurveyClient() {
                     ))}
                   </div>
                 </div>
+
+                {magicName && step < 3 && (
+                  <div className="mb-4 flex items-start gap-3 rounded-xl bg-green-400/[0.07] border border-green-400/20 px-4 py-3">
+                    <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
+                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                      Welcome back, <span className="text-white font-semibold">{magicName}</span> — your details are
+                      filled in from your estimate. Confirm your property and pick a time that suits.
+                    </p>
+                  </div>
+                )}
 
                 {/* ── Step content ── */}
                 <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
