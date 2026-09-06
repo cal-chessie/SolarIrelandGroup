@@ -9,7 +9,7 @@ import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
 import CustomerInstalls from '@/components/solar/CustomerInstalls';
 import GrantInfo from '@/components/solar/GrantInfo';
-import HomeEstimateIntake from '@/components/solar/HomeEstimateIntake';
+import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
 import Footer from '@/components/solar/Footer';
 
@@ -29,7 +29,7 @@ export default function HomeClient() {
         <WhySolar />
         <CustomerInstalls />
         <GrantInfo />
-        <HomeEstimateIntake />
+        <BillAnalyser />
         <FAQ />
       </main>
       <Footer />
