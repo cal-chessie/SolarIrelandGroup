@@ -66,6 +66,13 @@ NAP everywhere, character-identical:
 - [ ] Local sponsorship (club/community) — the classic honest Irish local link.
 - [ ] The blog cluster earns the rest passively; no link-buying, ever.
 
+## DOMAIN CONSOLIDATION
+- [x] `solarireland.org` (Cal's, registered 15 Apr 2026, LetsHost/Tucows,
+      renews 15 Apr 2027 — KEEP RENEWING) attached to the Vercel project;
+      host-based 301 → solarirelandgroup.ie shipped in vercel.json (ef076a2).
+- [ ] CAL: LetsHost DNS — apex A → 76.76.21.21, www CNAME →
+      cname.vercel-dns.com. Then ME: verify live 301 + SSL.
+
 ## WATCHES (ME)
 - [ ] `solarireland.com` whois watch — the NGO must never get it; revisit an
       **anonymous** low offer via broker in ~6 months. Never approach as Cal.
