@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import ZAI from 'z-ai-web-dev-sdk';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -198,17 +197,43 @@ export async function POST(request: Request) {
       }
       const base64 = buffer.toString('base64');
 
-      const zai = await ZAI.create();
-
-      const visionResponse = await zai.chat.completions.createVision({
-        model: 'default',
-        messages: [
+      // Vision extraction runs through OpenRouter. Without a key configured we
+      // say so honestly and steer the visitor to manual entry (which needs no AI).
+      const apiKey = process.env.OPENROUTER_API_KEY;
+      if (!apiKey) {
+        return NextResponse.json(
           {
-            role: 'user',
-            content: [
+            error:
+              'Automatic bill reading is offline right now. Enter your monthly bill and usage manually instead — it takes 20 seconds.',
+            uploadUnavailable: true,
+          },
+          { status: 503 }
+        );
+      }
+
+      const model = process.env.BILL_VISION_MODEL || 'google/gemini-2.5-flash';
+      const abort = new AbortController();
+      const visionTimeout = setTimeout(() => abort.abort(), 45_000);
+      let visionResponse: { choices?: { message?: { content?: string } }[] };
+      try {
+        const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'https://solarirelandgroup.ie',
+            'X-Title': 'Solar Ireland Bill Analyser',
+          },
+          body: JSON.stringify({
+            model,
+            temperature: 0,
+            messages: [
               {
-                type: 'text',
-                text: `You are an expert at reading Irish electricity bills. This is a photo/scan of an Irish electricity bill.
+                role: 'user',
+                content: [
+                  {
+                    type: 'text',
+                    text: `You are an expert at reading Irish electricity bills. This is a photo/scan of an Irish electricity bill.
 
 Extract EVERYTHING you can and return ONLY a JSON object with these fields:
 {
@@ -225,18 +250,26 @@ Extract EVERYTHING you can and return ONLY a JSON object with these fields:
 }
 
 Return ONLY valid JSON. No markdown, no explanation. Use null for any field you cannot find.`,
-              },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: `data:${mimeType};base64,${base64}`,
-                },
+                  },
+                  {
+                    type: 'image_url',
+                    image_url: {
+                      url: `data:${mimeType};base64,${base64}`,
+                    },
+                  },
+                ],
               },
             ],
-          },
-        ],
-        thinking: { type: 'disabled' },
-      });
+          }),
+          signal: abort.signal,
+        });
+        if (!aiRes.ok) {
+          throw new Error(`Vision API responded ${aiRes.status}`);
+        }
+        visionResponse = await aiRes.json();
+      } finally {
+        clearTimeout(visionTimeout);
+      }
 
       const content = visionResponse.choices?.[0]?.message?.content || '';
       const jsonMatch = content.match(/\{[\s\S]*\}/);

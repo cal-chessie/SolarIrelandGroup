@@ -10,14 +10,16 @@ NAP everywhere, character-identical:
 
 ---
 
-## GATE 0 — blocks everything (CAL, ~10 min)
-- [ ] Google Search Console: add `solarirelandgroup.ie` as a **Domain property**
-      (DNS TXT at the registrar), or grab the HTML-meta token and hand it over
-      (the layout already renders `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`).
-- [ ] Submit `https://solarirelandgroup.ie/sitemap.xml`.
-- [ ] URL-inspect + **Request Indexing**: `/`, `/blog`, `/solar-calculator`,
-      `/book-survey`, 3-4 top articles.
-- [ ] Read the Coverage report — first sight of what Google actually holds.
+## GATE 0 — CLOSED 6 Sep 2026
+- [x] GSC verified (HTML file google98c426c622510056.html, URL-prefix property).
+- [x] Sitemap submitted + read same day: Success, 35 pages discovered.
+- [x] Request Indexing fired on priority set (/, /blog, worth-it-2026, NC6;
+      ~10/day quota — sitemap carries the other pages).
+- [x] First coverage read: HOME already indexed but STALE (pre-cleanup crawl;
+      "Review snippets: 2 invalid" = the old fake 4.9/127 markup, zero review
+      schema in current code — recrawl resolves). /blog + articles =
+      "Discovered, not yet crawled" (normal queue for a young site).
+- [ ] Re-read Coverage in ~1 week; re-request any page still uncrawled.
 
 ## WEEK 1 — entity foundations
 - [ ] **GBP** (CAL): name exactly "Solar Ireland" · primary category *Solar

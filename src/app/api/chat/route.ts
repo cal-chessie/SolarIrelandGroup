@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import ZAI from 'z-ai-web-dev-sdk';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -166,7 +165,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const zai = await ZAI.create();
+    // The assistant runs through OpenRouter. Without a key we hand off to the
+    // humans on WhatsApp rather than pretending to think.
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { message: `Our chat assistant is offline just now — message us directly on [WhatsApp](${WA_URL}) and a real person will answer.` },
+        { status: 503 }
+      );
+    }
 
     const chatMessages = [
       { role: 'system' as const, content: SYSTEM_PROMPT },
@@ -176,13 +183,35 @@ export async function POST(request: Request) {
       })),
     ];
 
-    if (stream) {
-      const completion = await zai.chat.completions.create({
-        messages: chatMessages,
-        max_tokens: 500,
-        temperature: 0.7,
+    const abort = new AbortController();
+    const chatTimeout = setTimeout(() => abort.abort(), 45_000);
+    let completion: { choices?: { message?: { content?: string } }[] };
+    try {
+      const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://solarirelandgroup.ie',
+          'X-Title': 'Solar Ireland Chat',
+        },
+        body: JSON.stringify({
+          model: process.env.CHAT_MODEL || 'google/gemini-2.5-flash',
+          messages: chatMessages,
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
+        signal: abort.signal,
       });
+      if (!aiRes.ok) {
+        throw new Error(`Chat API responded ${aiRes.status}`);
+      }
+      completion = await aiRes.json();
+    } finally {
+      clearTimeout(chatTimeout);
+    }
 
+    if (stream) {
       const content =
         completion.choices?.[0]?.message?.content ||
         'Sorry, I couldn\'t generate a response. Please try again.';
@@ -203,12 +232,6 @@ export async function POST(request: Request) {
         },
       });
     }
-
-    const completion = await zai.chat.completions.create({
-      messages: chatMessages,
-      max_tokens: 500,
-      temperature: 0.7,
-    });
 
     const messageContent =
       completion.choices?.[0]?.message?.content ||

@@ -292,18 +292,39 @@ export default function BillAnalyser() {
     setIsAnalyzing(true);
     setAnalysis(null);
     setAnalysisStep(0);
+    // Fire the request immediately; the step animation plays alongside it
+    // instead of delaying it.
+    const request = (async () => {
+      const formData = new FormData();
+      formData.append('bill', file);
+      const res = await fetch('/api/analyse-bill', { method: 'POST', body: formData });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const e = new Error(data.error || 'Failed to analyse bill.') as Error & { unavailable?: boolean };
+        e.unavailable = res.status === 503 || data.uploadUnavailable === true;
+        throw e;
+      }
+      return data;
+    })();
+    request.catch(() => {}); // handled below after the animation; silences unhandled-rejection noise
     for (let i = 0; i < ANALYSIS_STEPS.length; i++) {
       await new Promise(resolve => setTimeout(resolve, ANALYSIS_STEPS[i].duration));
       setAnalysisStep(i + 1);
     }
     try {
-      const formData = new FormData();
-      formData.append('bill', file);
-      const res = await fetch('/api/analyse-bill', { method: 'POST', body: formData });
-      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Failed to analyse bill.'); }
-      setAnalysis(await res.json());
+      setAnalysis(await request);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Try entering your details manually.');
+      const e = err as Error & { unavailable?: boolean };
+      if (e.unavailable) {
+        // Auto-read is off; drop the visitor into manual mode with the reason.
+        setMode('manual');
+        setUploadedFile(null);
+        setBillPreview(null);
+        setBillPreviewOpen(false);
+        setError(e.message);
+      } else {
+        setError(e instanceof Error ? e.message : 'Something went wrong. Try entering your details manually.');
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -335,14 +356,20 @@ export default function BillAnalyser() {
     setIsAnalyzing(true);
     setAnalysis(null);
     setAnalysisStep(0);
+    // Manual mode is pure calculation — request runs alongside a brisk step
+    // animation rather than after a long one.
+    const request = (async () => {
+      const res = await fetch('/api/analyse-bill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ monthlyBill: bill, annualUsage: usage, homeType, provider }) });
+      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Failed to calculate.'); }
+      return res.json();
+    })();
+    request.catch(() => {});
     for (let i = 0; i < ANALYSIS_STEPS.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, ANALYSIS_STEPS[i].duration));
+      await new Promise(resolve => setTimeout(resolve, 250));
       setAnalysisStep(i + 1);
     }
     try {
-      const res = await fetch('/api/analyse-bill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ monthlyBill: bill, annualUsage: usage, homeType, provider }) });
-      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Failed to calculate.'); }
-      setAnalysis(await res.json());
+      setAnalysis(await request);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Something went wrong.');
     } finally {
