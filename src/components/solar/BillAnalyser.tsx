@@ -1028,11 +1028,10 @@ export default function BillAnalyser() {
                         <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
                           <CheckCircle2 className="w-6 h-6 text-green-400" />
                         </div>
-                        <h4 className="text-lg font-bold text-white mb-1.5">{leadFallback ? 'We\u2019ve got your details' : 'Your estimate is on its way'}</h4>
+                        <h4 className="text-lg font-bold text-white mb-1.5">We&apos;ve got your details</h4>
                         <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-                          {leadFallback
-                            ? 'Our team will send your personalised savings report and follow up to arrange your free survey — no pressure, no hard sell.'
-                            : <>We&apos;re sending your personalised savings report to <span className="text-white font-medium">{leadEmail.trim()}</span>. Our team will follow up to arrange your free survey — no pressure, no hard sell.</>}
+                          Your estimate is saved against <span className="text-white font-medium">{leadEmail.trim()}</span> and
+                          our team will send your personalised report and arrange your free survey — no pressure, no hard sell.
                         </p>
                         <a
                           href="/book-survey?src=analyser"

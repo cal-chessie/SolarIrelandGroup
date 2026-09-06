@@ -683,7 +683,7 @@ export default function WhatsAppChat() {
                   {/* Email-first: a savings estimate straight to the inbox */}
                   {prechatLeadStatus === 'sent' ? (
                     <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-xs text-green-400 mb-3" role="status">
-                      Done — your estimate is on its way. Check your inbox shortly.
+                      Done — we have your details. Our team will email your estimate shortly.
                     </div>
                   ) : (
                     <form
