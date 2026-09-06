@@ -573,7 +573,7 @@ export default function BookSurveyClient() {
                   </div>
                 </div>
 
-                {magicName && step < 3 && (
+                {magicName && step === 1 && (
                   <div className="mb-4 flex items-start gap-3 rounded-xl bg-green-400/[0.07] border border-green-400/20 px-4 py-3">
                     <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                     <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
