@@ -395,6 +395,23 @@ export default function BillAnalyser() {
   const [leadFallback, setLeadFallback] = useState(false);
   const [leadError, setLeadError] = useState<string | null>(null);
 
+  // Eircode → home lookup ("that's the one we'll survey")
+  const [eirHome, setEirHome] = useState<{ address: string; county?: string } | null>(null);
+  useEffect(() => {
+    setEirHome(null);
+    const code = leadEircode.trim();
+    if (!isValidEircode(code)) return;
+    const ctrl = new AbortController();
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/eircode?code=${encodeURIComponent(code)}`, { signal: ctrl.signal });
+        const d = await res.json();
+        if (d?.ok && d.address) setEirHome({ address: d.address, county: d.county });
+      } catch { /* lookup is a bonus, never a blocker */ }
+    }, 450);
+    return () => { ctrl.abort(); clearTimeout(t); };
+  }, [leadEircode]);
+
   // Business enquiries skip the domestic maths entirely (different grants,
   // different sizing) and go straight to a qualified-lead capture.
   const [biz, setBiz] = useState({ business: '', contact: '', email: '', phone: '', eircode: '', bill: '' });
@@ -454,6 +471,8 @@ export default function BillAnalyser() {
       email,
       phone,
       eircode: eircode || undefined,
+      county: eirHome?.county || undefined,
+      address: eirHome ? eirHome.address.replace(/, Ireland$/, '') : undefined,
       monthlyBill: analysis.monthlyBill,
       annualKwh: analysis.annualUsage,
       homeType: analysis.homeType,
@@ -1044,6 +1063,7 @@ export default function BillAnalyser() {
                                 email: leadEmail.trim(),
                                 phone: leadPhone.trim(),
                                 eircode: leadEircode.trim().toUpperCase(),
+                                resolvedAddress: eirHome ? eirHome.address.replace(/, Ireland$/, '') : '',
                                 currentBill: analysis ? String(analysis.monthlyBill) : '',
                                 notes: analysis ? `From the bill analyser: ${analysis.recommendedSystem}kWp recommended, ~€${analysis.totalAnnualBenefit}/yr benefit.` : '',
                               }));
@@ -1093,7 +1113,9 @@ export default function BillAnalyser() {
                               {leadEircode.trim() && (
                                 <p className={`mt-1.5 text-[11px] flex items-center gap-1 ${isValidEircode(leadEircode) ? 'text-green-400' : 'text-amber-400/80'}`}>
                                   {isValidEircode(leadEircode)
-                                    ? <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} — we&apos;ll use this to find your home for the survey</>
+                                    ? (eirHome
+                                        ? <><Check className="w-3 h-3" /> {eirHome.address.replace(/, Ireland$/, '')} — that&apos;s the home we&apos;ll survey</>
+                                        : <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} — we&apos;ll use this to find your home for the survey</>)
                                     : <>Doesn&apos;t look like a full Eircode yet (e.g. D02 X285)</>}
                                 </p>
                               )}

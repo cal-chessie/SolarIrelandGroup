@@ -212,7 +212,7 @@ export default function BookSurveyClient() {
         lastName: d.lastName || prev.lastName,
         email: d.email || prev.email,
         phone: d.phone || prev.phone,
-        address: d.eircode ? `Eircode: ${d.eircode}` : prev.address,
+        address: d.resolvedAddress || (d.eircode ? `Eircode: ${d.eircode}` : prev.address),
         currentBill: d.currentBill || prev.currentBill,
         notes: d.notes || prev.notes,
       }));
