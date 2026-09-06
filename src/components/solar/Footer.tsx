@@ -37,6 +37,14 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z" />
+    </svg>
+  );
+}
+
 function LinkedInIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -57,10 +65,10 @@ import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const FOOTER_SOCIAL = [
-  { icon: FacebookIcon, href: 'https://www.facebook.com/solarireland', label: 'Follow us on Facebook', hoverColor: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/25 hover:text-[#1877F2]' },
+  { icon: FacebookIcon, href: 'https://www.facebook.com/solarlreland', label: 'Follow us on Facebook', hoverColor: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/25 hover:text-[#1877F2]' },
   { icon: InstagramIcon, href: 'https://www.instagram.com/solarireland', label: 'Follow us on Instagram', hoverColor: 'hover:bg-[#E4405F]/10 hover:border-[#E4405F]/25 hover:text-[#E4405F]' },
   { icon: TikTokIcon, href: 'https://www.tiktok.com/@solarireland', label: 'Follow us on TikTok', hoverColor: 'hover:bg-white/10 hover:border-white/25 hover:text-white' },
-  { icon: LinkedInIcon, href: 'https://www.linkedin.com/company/solarireland', label: 'Follow us on LinkedIn', hoverColor: 'hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/25 hover:text-[#0A66C2]' },
+  { icon: XIcon, href: 'https://x.com/solarlreland', label: 'Follow us on X', hoverColor: 'hover:bg-white/10 hover:border-white/25 hover:text-white' },
 ];
 
 

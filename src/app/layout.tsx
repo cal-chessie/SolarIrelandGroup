@@ -170,7 +170,7 @@ export const metadata: Metadata = {
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/hero-solar.jpg"],
-    creator: "@solarireland",
+    creator: "@solarlreland",
   },
 
 
@@ -217,10 +217,10 @@ const organizationSchema = {
   email: "sales@solarirelandgroup.ie",
   telephone: "+353 87 395 8424",
   sameAs: [
-    "https://www.facebook.com/solarireland",
+    "https://www.facebook.com/solarlreland",
     "https://www.instagram.com/solarireland",
     "https://www.tiktok.com/@solarireland",
-    "https://www.linkedin.com/company/solarireland",
+    "https://x.com/solarlreland",
   ],
   foundingDate: "2019",
   numberOfEmployees: {

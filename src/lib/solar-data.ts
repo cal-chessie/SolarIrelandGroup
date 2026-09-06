@@ -40,9 +40,9 @@ export const SOLAR_DATA = {
     whatsapp: '353873958424',
   },
   social: {
-    facebook: 'https://www.facebook.com/solarireland',
+    facebook: 'https://www.facebook.com/solarlreland',
     instagram: 'https://www.instagram.com/solarireland',
-    linkedin: 'https://www.linkedin.com/company/solarireland',
+    x: 'https://x.com/solarlreland',
     tiktok: 'https://www.tiktok.com/@solarireland',
   },
   certifications: ['SEAI Registered', 'RECI Certified', 'NSAI Compliant', 'Safe Electric'],

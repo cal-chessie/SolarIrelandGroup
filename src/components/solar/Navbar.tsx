@@ -29,7 +29,7 @@ const SOCIAL_LINKS = [
   { href: 'https://www.facebook.com/solarireland', label: 'Facebook', color: 'hover:text-[#1877F2] hover:border-[#1877F2]/30' },
   { href: 'https://www.instagram.com/solarireland', label: 'Instagram', color: 'hover:text-[#E4405F] hover:border-[#E4405F]/30' },
   { href: 'https://www.tiktok.com/@solarireland', label: 'TikTok', color: 'hover:text-white hover:border-white/30' },
-  { href: 'https://www.linkedin.com/company/solarireland', label: 'LinkedIn', color: 'hover:text-[#0A66C2] hover:border-[#0A66C2]/30' },
+  { href: 'https://x.com/solarlreland', label: 'X', color: 'hover:text-white hover:border-white/30' },
 ] as const;
 
 // Mobile nav - all pages + sections
