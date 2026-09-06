@@ -22,6 +22,7 @@ import {
   Share2,
   Download,
   Building2,
+  CalendarCheck,
   CheckCircle2,
   AlertCircle,
   RotateCcw,
@@ -43,6 +44,7 @@ import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { submitLead } from '@/lib/submitLead';
 import { trackEvent } from '@/lib/analytics';
+import { isValidEircode, formatEircode } from '@/lib/eircode';
 
 interface MonthlyProfile {
   month: string;
@@ -166,7 +168,7 @@ function MonthlyChart({ profile }: { profile: MonthlyProfile[] }) {
           return (
             <g key={m.month}>
               <rect x={x + 2} y={chartHeight - conH + 30} width={24} height={conH} rx={3} fill="rgba(255,255,255,0.06)" />
-              <motion.rect x={x + 2} y={chartHeight - genH + 30} width={24} height={genH} rx={3} fill="url(#amberGrad)" initial={{ height: 0, y: chartHeight + 30 }} animate={{ height: genH, y: chartHeight - genH + 30 }} transition={{ duration: 0.6, delay: i * 0.05 }} />
+              <rect className="chart-bar" x={x + 2} y={chartHeight - genH + 30} width={24} height={genH} rx={3} fill="url(#amberGrad)" style={{ animationDelay: `${i * 50}ms` }} />
               <text x={x + 14} y={chartHeight + 38} textAnchor="middle" fill="#6b7280" fontSize={8} fontFamily="sans-serif">{m.month}</text>
             </g>
           );
@@ -189,11 +191,12 @@ function CostMeter({ before, after }: { before: number; after: number }) {
   const pct = Math.round((1 - after / before) * 100);
   return (
     <div className="space-y-3">
-      <div className="flex justify-between text-sm"><span className="text-gray-400">Current annual cost</span><span className="text-white font-semibold">€{before.toLocaleString()}</span></div>
+      <div className="flex justify-between text-sm"><span className="text-gray-400 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-400 inline-block" />Current annual cost</span><span className="text-white font-semibold">€{before.toLocaleString()}</span></div>
       <div className="relative h-4 rounded-full bg-white/[0.06] overflow-hidden">
-        <motion.div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-amber-500 to-amber-400" initial={{ width: '0%' }} animate={{ width: `${100 - pct}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} />
+        <div className="meter-fill absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-red-400" style={{ width: '100%' }} />
+        <div className="meter-fill absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-green-500 to-green-400" style={{ width: `${Math.max(3, 100 - pct)}%`, animationDelay: '0.5s' }} />
       </div>
-      <div className="flex justify-between text-sm"><span className="text-gray-400">After solar</span><span className="text-amber-400 font-bold">€{after.toLocaleString()}/yr <span className="text-xs font-normal">({pct}% off)</span></span></div>
+      <div className="flex justify-between text-sm"><span className="text-gray-400 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-400 inline-block" />After solar</span><span className="text-green-400 font-bold">€{after.toLocaleString()}/yr <span className="text-xs font-normal text-gray-400">({pct}% off)</span></span></div>
     </div>
   );
 }
@@ -228,28 +231,20 @@ function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
       {billPreview && (
         <div className="relative mb-6 max-w-xs w-full">
           <img src={billPreview} alt="Scanning bill" className="w-full rounded-xl border border-white/[0.06] object-contain max-h-48 opacity-60" />
-          <motion.div
-            className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-            initial={{ top: '10%' }}
-            animate={prefersReducedMotion ? undefined : { top: '90%' }}
-            transition={prefersReducedMotion ? undefined : { duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
-          />
+          <div className="scan-sweep absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" style={{ top: '10%' }} />
           <div className="absolute inset-0 rounded-xl border-2 border-amber-400/30" />
         </div>
       )}
       {!billPreview && (
         <div className="w-48 h-48 rounded-2xl bg-white/[0.03] border border-white/[0.06] mb-6 flex items-center justify-center overflow-hidden relative">
           <ScanLine className="w-12 h-12 text-amber-400/40" />
-          <motion.div className="absolute left-4 right-4 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-            initial={{ top: '10%' }} animate={prefersReducedMotion ? undefined : { top: '90%' }}
-            transition={prefersReducedMotion ? undefined : { duration: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
-          />
+          <div className="scan-sweep absolute left-4 right-4 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" style={{ top: '10%' }} />
         </div>
       )}
       <div className="flex items-center gap-2 text-amber-400">
-        <motion.div animate={prefersReducedMotion ? undefined : { rotate: 360 }} transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, ease: 'linear' }}>
+        <div className="spin-slow">
           <ScanLine className="w-5 h-5" />
-        </motion.div>
+        </div>
         <span className="text-sm font-medium">AI is reading your bill...</span>
       </div>
     </div>
@@ -450,6 +445,7 @@ export default function BillAnalyser() {
     if (name.length < 2) { setLeadError('Please enter your name.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setLeadError('Please enter a valid email address.'); return; }
     if (phone.replace(/[^0-9]/g, '').length < 7) { setLeadError('Please enter a valid mobile number.'); return; }
+    if (eircode && !isValidEircode(eircode)) { setLeadError('That Eircode looks incomplete - it should be 7 characters, like D02 X285.'); return; }
     setLeadError(null);
     setLeadStatus('sending');
     const result = await submitLead({
@@ -553,15 +549,15 @@ export default function BillAnalyser() {
                   </div>
                 </div>
 
-                <div className="p-6 sm:p-8">
+                <div className="p-4 sm:p-8">
                   {/* HOME / BUSINESS */}
                   <div className="flex items-center justify-center gap-1 mb-6 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
                     <button onClick={() => setSegment('home')} aria-pressed={segment === 'home'}
-                      className={`flex items-center gap-2 px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'home' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
+                      className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'home' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Home className="w-4 h-4" /> Home
                     </button>
                     <button onClick={() => setSegment('business')} aria-pressed={segment === 'business'}
-                      className={`flex items-center gap-2 px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'business' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
+                      className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'business' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Building2 className="w-4 h-4" /> Business
                     </button>
                   </div>
@@ -875,7 +871,7 @@ export default function BillAnalyser() {
                  */}
             {analysis && !isAnalyzing && (
               <motion.div key="results" aria-live="polite" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <div className="px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
+                <div className="px-4 sm:px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center"><FileText className="w-5 h-5 text-amber-400" /></div>
@@ -906,30 +902,30 @@ export default function BillAnalyser() {
                   )}
                 </div>
 
-                <div className="p-6 sm:p-8 space-y-8">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-400/[0.03] border border-amber-400/20 p-5">
+                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div className="rounded-xl bg-gradient-to-br from-amber-400/10 to-amber-400/[0.03] border border-amber-400/20 p-4 sm:p-5">
                       <Euro className="w-5 h-5 text-amber-400 mb-3" />
                       <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">Annual Saving</p>
-                      <p className="text-3xl font-bold text-amber-400"><AnimatedNumber value={analysis.annualSaving} prefix="€" /></p>
+                      <p className="text-2xl sm:text-3xl font-bold text-amber-400"><AnimatedNumber value={analysis.annualSaving} prefix="€" /></p>
                       <p className="text-[11px] text-gray-400 mt-1">from self-consumption</p>
                     </div>
-                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
+                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5">
                       <Clock className="w-5 h-5 text-green-400 mb-3" />
                       <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">Payback Period</p>
-                      <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.paybackYears} suffix=" yrs" decimals={1} /></p>
+                      <p className="text-2xl sm:text-3xl font-bold text-white"><AnimatedNumber value={analysis.paybackYears} suffix=" yrs" decimals={1} /></p>
                       <p className="text-[11px] text-gray-400 mt-1">after SEAI grant</p>
                     </div>
-                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
+                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5">
                       <TrendingUp className="w-5 h-5 text-blue-400 mb-3" />
                       <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">25-Year Value</p>
-                      <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.total25YearSavings} prefix="€" /></p>
+                      <p className="text-2xl sm:text-3xl font-bold text-white"><AnimatedNumber value={analysis.total25YearSavings} prefix="€" /></p>
                       <p className="text-[11px] text-gray-400 mt-1">with 3% price rise</p>
                     </div>
-                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5">
+                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5">
                       <Leaf className="w-5 h-5 text-emerald-400 mb-3" />
                       <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">CO₂ Saved</p>
-                      <p className="text-3xl font-bold text-white"><AnimatedNumber value={analysis.annualCo2Saved} suffix=" kg" /></p>
+                      <p className="text-2xl sm:text-3xl font-bold text-white"><AnimatedNumber value={analysis.annualCo2Saved} suffix=" kg" /></p>
                       <p className="text-[11px] text-gray-400 mt-1">per year · {analysis.treesEquiv25Years} trees equiv</p>
                     </div>
                   </div>
@@ -946,13 +942,13 @@ export default function BillAnalyser() {
                     </span>
                   </div>
 
-                  <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
+                  <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
                     <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
                   </div>
 
-                  <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-6">
+                  <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Sun className="w-4 h-4 text-amber-400" /> Monthly Solar Generation vs Your Usage</h4>
                     <MonthlyChart profile={analysis.monthlyProfile} />
                     <p className="text-xs text-gray-400 mt-3">Based on SEAI Typical Meteorological Year data for Ireland. Actual output depends on roof orientation and shading.</p>
@@ -1026,7 +1022,7 @@ export default function BillAnalyser() {
                   </div>
 
                   {/* ─── EMAIL-FIRST REPORT CAPTURE — every analysis becomes a lead ─── */}
-                  <div className="rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-6 sm:p-7">
+                  <div className="rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-4 sm:p-7">
                     {leadStatus === 'sent' ? (
                       <div className="flex flex-col items-center text-center py-2" role="status" aria-live="polite">
                         <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
@@ -1038,8 +1034,27 @@ export default function BillAnalyser() {
                             ? 'Our team will send your personalised savings report and follow up to arrange your free survey — no pressure, no hard sell.'
                             : <>We&apos;re sending your personalised savings report to <span className="text-white font-medium">{leadEmail.trim()}</span>. Our team will follow up to arrange your free survey — no pressure, no hard sell.</>}
                         </p>
+                        <a
+                          href="/book-survey?src=analyser"
+                          onClick={() => {
+                            try {
+                              const [firstName, ...restName] = leadName.trim().split(/\s+/);
+                              sessionStorage.setItem('sig-survey-prefill', JSON.stringify({
+                                firstName: firstName || '',
+                                lastName: restName.join(' '),
+                                email: leadEmail.trim(),
+                                phone: leadPhone.trim(),
+                                eircode: leadEircode.trim().toUpperCase(),
+                                currentBill: analysis ? String(analysis.monthlyBill) : '',
+                                notes: analysis ? `From the bill analyser: ${analysis.recommendedSystem}kWp recommended, ~€${analysis.totalAnnualBenefit}/yr benefit.` : '',
+                              }));
+                            } catch { /* storage unavailable - form still works blank */ }
+                          }}
+                          className="mt-5 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-green-500 hover:bg-green-400 text-white font-bold text-sm shadow-lg shadow-green-500/20 transition-all active:scale-[0.98]">
+                          <CalendarCheck className="w-4 h-4" /> Pick my survey time
+                        </a>
                         <button onClick={downloadReport}
-                          className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-gray-300 hover:text-white hover:bg-white/[0.08] transition-all">
+                          className="mt-3 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-gray-300 hover:text-white hover:bg-white/[0.08] transition-all">
                           <Download className="w-4 h-4" /> Download your summary
                         </button>
                         <a href={buildWhatsAppUrl({ source: 'bill-analyser', annualSaving: analysis.annualSaving, paybackYears: analysis.paybackYears, monthlyBill: analysis.monthlyBill, homeType: analysis.homeType, recommendedSystem: analysis.recommendedSystem, provider: analysis.provider })}
@@ -1072,9 +1087,18 @@ export default function BillAnalyser() {
                             <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Mobile number" value={leadPhone}
                               onChange={(e) => { setLeadPhone(e.target.value); if (leadError) setLeadError(null); }}
                               className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
-                            <input type="text" autoComplete="postal-code" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
-                              onChange={(e) => { setLeadEircode(e.target.value); if (leadError) setLeadError(null); }}
-                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            <div>
+                              <input type="text" autoComplete="postal-code" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
+                                onChange={(e) => { setLeadEircode(e.target.value); if (leadError) setLeadError(null); }}
+                                className={`w-full px-4 py-3.5 rounded-xl bg-black/30 border text-white text-sm placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-400/10 transition-all ${leadEircode.trim() && !isValidEircode(leadEircode) ? 'border-amber-400/50' : leadEircode.trim() && isValidEircode(leadEircode) ? 'border-green-400/50' : 'border-white/[0.1] focus:border-amber-400/50'}`} />
+                              {leadEircode.trim() && (
+                                <p className={`mt-1.5 text-[11px] flex items-center gap-1 ${isValidEircode(leadEircode) ? 'text-green-400' : 'text-amber-400/80'}`}>
+                                  {isValidEircode(leadEircode)
+                                    ? <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} — we&apos;ll use this to find your home for the survey</>
+                                    : <>Doesn&apos;t look like a full Eircode yet (e.g. D02 X285)</>}
+                                </p>
+                              )}
+                            </div>
                           </div>
                           <Button type="submit" disabled={leadStatus === 'sending'}
                             className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
