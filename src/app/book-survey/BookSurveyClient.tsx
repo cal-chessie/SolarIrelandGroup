@@ -315,6 +315,15 @@ export default function BookSurveyClient() {
     stepCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [step]);
 
+  // The confirmation screen too - it replaces the form entirely, so surface it.
+  useEffect(() => {
+    if (!isSubmitted) return;
+    requestAnimationFrame(() => {
+      if (stepCardRef.current) stepCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }, [isSubmitted]);
+
   const nextStep = useCallback(() => {
     if (validateStep(step)) setStep((s) => Math.min(s + 1, 3));
   }, [step, validateStep]);
