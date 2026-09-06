@@ -24,10 +24,11 @@ NAP everywhere, character-identical:
       energy company* (+ *Solar energy equipment supplier*) · **opening date
       2019** · service areas (counties served) · website = homepage · phone
       matching NAP · logo + real photos · capture the review short-link.
-- [ ] **sameAs truth-up** (CAL → ME): schema currently claims
-      facebook.com/solarireland, instagram.com/solarireland,
-      tiktok.com/@solarireland, linkedin.com/company/solarireland. Confirm the
-      EXACT live handles; I correct the schema same day. (Closes deferred #3.)
+- [x] **sameAs truth-up** DONE: real profiles are facebook.com/solarlreland,
+      instagram.com/solarireland, tiktok.com/@solarireland, x.com/solarlreland.
+      LinkedIn + YouTube clean handles were TAKEN by the passing-off entity -
+      never link them; log the handle-squatting in the evidence pack. Secure a
+      YouTube handle (e.g. @solarlreland) before any YT content.
 - [ ] **Bing Places + Apple Business Connect** (CAL, ~15 min total): same NAP.
 - [ ] **Review engine** (ME + CAL): post-install review ask — GBP short-link on
       the final invoice/handover message + QR card. Real customers only, ever.
