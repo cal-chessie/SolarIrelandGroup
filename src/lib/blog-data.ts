@@ -271,7 +271,8 @@ export const articles: Article[] = [
         "text": "Get your exact payback number - upload your bill to the free solar calculator",
         "href": "/solar-calculator"
       }
-    ]
+    ],
+    "image": "/install-2.webp"
   },
   {
     "slug": "solar-panel-installation-process-ireland",
@@ -512,7 +513,8 @@ export const articles: Article[] = [
         "text": "Book your free site survey",
         "href": "/book-survey"
       }
-    ]
+    ],
+    "image": "/install-1.webp"
   },
   {
     "slug": "how-to-read-electricity-bill-ireland-solar",
@@ -796,7 +798,8 @@ export const articles: Article[] = [
         "text": "Upload a bill to the solar calculator and let the AI read your day/night split",
         "href": "/solar-calculator"
       }
-    ]
+    ],
+    "image": "/blog/how-to-read-electricity-bill-ireland-solar.webp"
   },
   {
     "slug": "do-solar-panels-improve-ber-rating-ireland",
@@ -994,7 +997,8 @@ export const articles: Article[] = [
         "text": "Book a free site survey and we will show you the rating gain and the savings for your own home",
         "href": "/book-survey"
       }
-    ]
+    ],
+    "image": "/blog/do-solar-panels-improve-ber-rating-ireland.webp"
   },
   {
     "slug": "solar-panels-cork-complete-guide",
@@ -1006,7 +1010,7 @@ export const articles: Article[] = [
     "author": "Solar Ireland Team",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
-    "image": "/blog-county-cork.webp",
+    "image": "/install-3.webp",
     "content": [
       {
         "type": "paragraph",
@@ -1336,7 +1340,8 @@ export const articles: Article[] = [
         "text": "Book a Free Site Survey - We Handle the NC6",
         "href": "/book-survey"
       }
-    ]
+    ],
+    "image": "/blog/nc6-form-solar-grid-connection-ireland.webp"
   },
   {
     "slug": "solar-panels-3-bed-semi-ireland-cost",
@@ -1538,7 +1543,8 @@ export const articles: Article[] = [
         "text": "Get Your Personalised 3-Bed Semi Estimate",
         "href": "/solar-calculator"
       }
-    ]
+    ],
+    "image": "/install-5.webp"
   },
   {
     "slug": "solar-panels-ev-charger-ireland",
@@ -1550,7 +1556,7 @@ export const articles: Article[] = [
     "author": "Solar Ireland Team",
     "iconBg": "bg-violet-400/10",
     "iconColor": "text-violet-400",
-    "image": "/blog-ev-charging.webp",
+    "image": "/blog/solar-panels-ev-charger-ireland.webp",
     "content": [
       {
         "type": "paragraph",
@@ -1698,7 +1704,7 @@ export const articles: Article[] = [
     "author": "Cal O'Reilly",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
-    "image": "/blog-seai-grant.webp",
+    "image": "/blog/complete-guide-seai-solar-grant-2026.webp",
     "content": [
       {
         "type": "heading",
@@ -1949,7 +1955,7 @@ export const articles: Article[] = [
     "author": "Cal O'Reilly",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
-    "image": "/blog-solar-costs.webp",
+    "image": "/blog/how-much-do-solar-panels-cost-ireland-2026.webp",
     "content": [
       {
         "type": "heading",
@@ -2158,7 +2164,7 @@ export const articles: Article[] = [
     "author": "Cal O'Reilly",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
-    "image": "/blog-solar-winter.webp",
+    "image": "/blog/solar-panels-in-winter-do-they-work.webp",
     "content": [
       {
         "type": "heading",
@@ -2349,7 +2355,7 @@ export const articles: Article[] = [
   {
     "slug": "clean-export-guarantee-explained",
     "title": "Clean Export Guarantee Explained: Get Paid for Your Excess Solar",
-    "image": "/blog-clean-export.webp",
+    "image": "/blog/clean-export-guarantee-explained.webp",
     "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and which suppliers offer the best rates.",
     "category": "grants",
     "date": "4 Apr 2026",
@@ -2515,7 +2521,7 @@ export const articles: Article[] = [
   {
     "slug": "east-vs-south-vs-west-facing-roofs-solar",
     "title": "East vs South vs West-Facing Roofs: Which Is Best for Solar?",
-    "image": "/blog-roof-orientation.webp",
+    "image": "/install-6.webp",
     "excerpt": "Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.",
     "category": "guides",
     "date": "28 Mar 2026",
@@ -2703,7 +2709,7 @@ export const articles: Article[] = [
   {
     "slug": "battery-storage-is-it-worth-the-extra-cost",
     "title": "Battery Storage: Is It Worth the Extra Cost?",
-    "image": "/blog-battery-storage.webp",
+    "image": "/blog/battery-storage-is-it-worth-the-extra-cost.webp",
     "excerpt": "Solar batteries cost €4,000-€8,000 - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
     "date": "22 Mar 2026",
@@ -2942,7 +2948,7 @@ export const articles: Article[] = [
   {
     "slug": "planning-permission-solar-panels-ireland",
     "title": "Planning Permission for Solar Panels in Ireland - What You Need to Know",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/planning-permission-solar-panels-ireland.webp",
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
     "date": "18 Mar 2026",
@@ -3115,7 +3121,7 @@ export const articles: Article[] = [
   {
     "slug": "longi-vs-jinko-vs-trina-best-solar-panels",
     "title": "LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/longi-vs-jinko-vs-trina-best-solar-panels.webp",
     "excerpt": "We compare the top three tier-1 solar panel brands used in Ireland - efficiency, warranties, real-world performance, and which one delivers the best value for your home.",
     "category": "technology",
     "date": "12 Mar 2026",
@@ -3345,7 +3351,7 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-dublin-ultimate-guide",
     "title": "Solar Panels in Dublin: The Ultimate 2026 Guide",
-    "image": "/blog-county-cork.webp",
+    "image": "/install-4.webp",
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
     "date": "6 Mar 2026",
@@ -3570,7 +3576,7 @@ export const articles: Article[] = [
   {
     "slug": "seai-grant-stay-e1800-2026-what-it-means",
     "title": "SEAI Grant Stays at €1,800 for 2026 - What It Means for You",
-    "image": "/blog-solar-financing.webp",
+    "image": "/blog/seai-grant-stay-e1800-2026-what-it-means.webp",
     "excerpt": "The government has confirmed the SEAI solar panel grant will remain at €1,800 for 2026. Here is what the announcement means for homeowners, the grant's history, and why now is still the time to apply.",
     "category": "news",
     "date": "28 Apr 2026",
@@ -3683,7 +3689,7 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-and-heat-pumps-perfect-partnership",
     "title": "Solar Panels and Heat Pumps: The Perfect Partnership",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes - with up to €14,300 in combined SEAI grants available.",
     "category": "guides",
     "date": "20 Apr 2026",
@@ -3918,7 +3924,7 @@ export const articles: Article[] = [
   {
     "slug": "smart-meter-required-solar-panels-ireland",
     "title": "Is a Smart Meter Required for Solar Panels in Ireland?",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/smart-meter-required-solar-panels-ireland.webp",
     "excerpt": "A smart meter is essential if you want to earn money from your excess solar through the Clean Export Guarantee. Here is how to check if you have one and how to get one installed for free.",
     "category": "guides",
     "date": "14 Apr 2026",
@@ -4080,7 +4086,7 @@ export const articles: Article[] = [
   {
     "slug": "how-many-solar-panels-do-i-need-ireland",
     "title": "How Many Solar Panels Do I Need in Ireland?",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/how-many-solar-panels-do-i-need-ireland.webp",
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
     "category": "guides",
     "date": "2 Apr 2026",
@@ -4317,7 +4323,7 @@ export const articles: Article[] = [
   {
     "slug": "best-time-of-year-to-get-solar-panels-ireland",
     "title": "Best Time of Year to Get Solar Panels in Ireland",
-    "image": "/blog-solar-installation.webp",
+    "image": "/blog/best-time-of-year-to-get-solar-panels-ireland.webp",
     "excerpt": "Is there an ideal season to install solar panels? We break down month-by-month generation data, seasonal advantages, and SEAI processing times to help you decide when to go solar.",
     "category": "savings",
     "date": "25 Mar 2026",
@@ -4604,7 +4610,7 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-rental-property-landlord-guide",
     "title": "Solar Panels for Rental Properties: A Landlord's Guide",
-    "image": "/blog-solar-financing.webp",
+    "image": "/blog/solar-panels-rental-property-landlord-guide.webp",
     "excerpt": "Yes, private landlords can claim the €1,800 SEAI solar grant. What to know about solar on Irish rental properties - eligibility, BER benefits and getting started.",
     "category": "grants",
     "date": "15 Mar 2026",
