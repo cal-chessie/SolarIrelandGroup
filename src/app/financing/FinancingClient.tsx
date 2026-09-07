@@ -715,7 +715,7 @@ function FinancingFAQ() {
     },
     {
       q: 'How does the SEAI grant work with financing?',
-      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, if you choose a €6,000 system, the grant brings it down to €4,200 - so you only need to borrow €4,200. You never have to pay the full amount and wait for a refund.`,
+      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, a standard 4 kWp system at €8,200 comes down to €6,400 after the grant, so that is what you borrow. You never have to pay the full amount and wait for a refund.`,
     },
     {
       q: 'Is it better to pay upfront or finance solar panels?',
@@ -727,11 +727,11 @@ function FinancingFAQ() {
     },
     {
       q: 'Can I add solar to my existing mortgage?',
-      a: `Yes, this is called a mortgage top-up and it can be the cheapest option. Because mortgage rates (typically 3.5–4.5%) are lower than personal loan rates, your monthly cost is minimal when spread over your remaining mortgage term. For example, adding €4,200 to a €200,000 mortgage over 20 years adds roughly €25/month. Contact your existing lender to ask about green or energy-efficiency mortgage top-ups. Not all lenders offer this, but most major Irish banks do.`,
+      a: `Yes, this is called a mortgage top-up and it can be the cheapest option. Because mortgage rates (typically 3.5–4.5%) are lower than personal loan rates, your monthly cost is minimal when spread over your remaining mortgage term. For example, adding €6,400 to a €200,000 mortgage over 20 years adds roughly €39 a month. Contact your existing lender to ask about green or energy-efficiency mortgage top-ups. Not all lenders offer this, but most major Irish banks do.`,
     },
     {
       q: 'What if I sell my house before the loan is paid off?',
-      a: `Solar panels add significant value to your property - typically €10,000–€15,000 according to the SEAI and BER assessment data. You have a few options: pay off the remaining loan balance from the sale proceeds (the increase in property value usually covers this), transfer the loan to your new property, or the buyer can assume the green loan in some cases. Either way, solar is a net positive for your property value and selling price.`,
+      a: `Solar panels improve your BER, and a better BER is worth real money when you sell. We would not put a figure on it for your house: that depends on the property and the market on the day. You have a few options: pay off the remaining loan balance from the sale proceeds (the increase in property value usually covers this), transfer the loan to your new property, or the buyer can assume the green loan in some cases. Either way, solar is a net positive for your property value and selling price.`,
     },
     {
       q: 'Are there any government-backed green finance schemes?',

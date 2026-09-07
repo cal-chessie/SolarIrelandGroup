@@ -120,7 +120,7 @@ function FinancingFAQSchema() {
               name: 'How does the SEAI grant work with financing?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'The €1,800 SEAI grant is paid directly to your installer after the system is commissioned. This means the grant automatically reduces the amount you need to finance. For example, a €6,500 system becomes €4,700 after the grant - so you only need to borrow €4,700.',
+                text: 'The €1,800 SEAI grant is paid directly to your installer after the system is commissioned. This means the grant automatically reduces the amount you need to finance. For example, a €8,200 system becomes €6,400 after the grant, so that is what you borrow.',
               },
             },
             {

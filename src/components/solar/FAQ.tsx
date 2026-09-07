@@ -63,7 +63,7 @@ const faqs: FAQItem[] = [
     id: 3,
     question: 'How long is the payback period?',
     answer:
-      'Most homeowners see a full payback typically within 5 to 7 years after the SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
+      'Most homeowners see a full payback typically within 5 to 7 years after the SEAI grant. A 4 kWp system is €8,200 installed, so €6,400 after the grant. At around €950 a year saved, that pays for itself in roughly 6.7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
     category: 'costs',
     keywords: ['payback', 'how long', 'break even', 'roi', 'return', 'years'],
   },
