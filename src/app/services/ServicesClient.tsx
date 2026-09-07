@@ -62,7 +62,7 @@ const mainServices = [
       { label: 'Avg. Annual Saving', value: '€800 – €1,400' },
     ],
     highlights: [
-      'MCS & SEAI certified installation',
+      'SEAI registered, RECI certified installation',
       'Smart monitoring included',
       'Grid-tied with export capability',
       'Roof assessment included free',
@@ -90,7 +90,7 @@ const mainServices = [
       { label: 'Backup Option', value: 'Blackout Protection' },
     ],
     highlights: [
-      'Increase self-use from 40% to 80%+',
+      'Increase self-use from roughly 40% to roughly 70-85%',
       'Charge from grid during off-peak hours',
       'Seamless backup power option',
       'Compatible with all major inverters',
@@ -130,7 +130,7 @@ const additionalServices = [
   {
     icon: FileText,
     label: 'SEAI Grant Application',
-    desc: 'We handle the full grant process - from eligibility check to payment, saving you time and hassle.',
+    desc: 'We prepare and submit your SEAI application and see it through to payment. Approval is SEAI\'s decision, not ours to promise.',
   },
   {
     icon: BarChart3,
@@ -169,7 +169,7 @@ const packages = [
       'Monitoring': 'Basic App',
       'SEAI Grant': '€1,800',
       'Annual Savings': '€600–€800',
-      'Payback Period': '5–6 Years',
+      'Payback Period': '6-8 Years',
       'Warranty': '25-Year Panel',
     },
     highlighted: false,
@@ -188,7 +188,7 @@ const packages = [
       'Monitoring': 'Smart App + Portal',
       'SEAI Grant': '€1,800',
       'Annual Savings': '€900–€1,200',
-      'Payback Period': '4–5 Years',
+      'Payback Period': '6-8 Years',
       'Warranty': '25-Year Panel + 10-Year Install',
     },
     highlighted: true,
@@ -207,7 +207,7 @@ const packages = [
       'Monitoring': 'Full Smart Monitoring',
       'SEAI Grant': '€1,800 + €600 EV',
       'Annual Savings': '€1,400–€2,000',
-      'Payback Period': '4–5 Years',
+      'Payback Period': '6-8 Years',
       'Warranty': '25-Year Panel + 10-Year Install',
     },
     highlighted: false,

@@ -28,7 +28,7 @@ export const articles: Article[] = [
   {
     "slug": "are-solar-panels-worth-it-ireland-2026",
     "title": "Are Solar Panels Worth It in Ireland? 2026 Verdict",
-    "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
+    "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 6-8 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
     "readTime": "10 min read",
@@ -38,7 +38,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 5-7 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill."
+        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 6-8 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill."
       },
       {
         "type": "heading",
@@ -88,7 +88,7 @@ export const articles: Article[] = [
           ],
           [
             "Typical payback",
-            "5-7 years"
+            "6-8 years"
           ],
           [
             "Typical 25-year savings",
@@ -122,7 +122,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A typical Irish home with a well-sized system saves **€800-1,400 a year**, made up of two streams: electricity you no longer buy, and export income for what you sell back. The first stream is worth far more per unit. Every kWh your panels generate that you use at home replaces grid electricity costing 35-45c per kWh at current rates, while a kWh exported earns you roughly 21c under a typical 2026 Clean Export Guarantee rate. That gap is the single most important number in solar economics: **using your own power beats selling it, roughly two to one**."
+        "text": "A typical Irish home with a well-sized system saves **€800-1,400 a year**, made up of two streams: electricity you no longer buy, and export income for what you sell back. The first stream is worth far more per unit. Every kWh your panels generate that you use at home replaces grid electricity costing 35-45c per kWh at current rates, while a kWh exported earns you roughly 20c under a typical 2026 Clean Export Guarantee rate. That gap is the single most important number in solar economics: **using your own power beats selling it, roughly two to one**."
       },
       {
         "type": "paragraph",
@@ -142,7 +142,7 @@ export const articles: Article[] = [
         "items": [
           "**Annual generation:** roughly 3,600 kWh from a well-sited 4.2kWp array, based on what we see across our own installs.",
           "**Self-consumed at home:** about half, 1,800 kWh, replacing grid electricity at €0.35/kWh = **€630 saved** on the bill.",
-          "**Exported:** the other 1,800 kWh at a 2026 CEG rate of €0.21/kWh = **€378 earned**, tax-free under the €400 annual exemption.",
+          "**Exported:** the other 1,800 kWh at a 2026 CEG rate of €0.20/kWh = **€378 earned**, tax-free under the €400 annual exemption.",
           "**Total first-year benefit:** about €1,008.",
           "**Payback:** €5,000 divided by €1,008 = **just over 5 years**."
         ]
@@ -158,7 +158,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 19c and 24c per kWh, typically around 21c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system earns **€200-400 a year**. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
+        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 19c and 24c per kWh, typically around 20c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system earns **€200-400 a year**. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
       },
       {
         "type": "callout",
@@ -225,7 +225,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Typically **5-7 years** for a well-sized domestic system after the €1,800 SEAI grant. Homes with high daytime usage and a clear roof come in near 5 years; smaller bills or awkward roofs stretch toward 7. After payback, the system produces essentially free electricity for the rest of its 25-30 year working life."
+        "text": "Typically **6-8 years** for a well-sized domestic system after the €1,800 SEAI grant. Homes with high daytime usage and a clear roof come in near 5 years; smaller bills or awkward roofs stretch toward 7. After payback, the system produces essentially free electricity for the rest of its 25-30 year working life."
       },
       {
         "type": "heading",
@@ -403,7 +403,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.21. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home earns €200-400 a year from export, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
+        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.20. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home earns €200-400 a year from export, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -718,7 +718,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The day/night split on your bill is the first honest signal of which household you are. It is the starting point for working out [how many solar panels you actually need](/blog/how-many-solar-panels-do-i-need-ireland) - roof space sets the ceiling, but your usage pattern sets the target. Get the match right and a typical system pays for itself in 5-7 years."
+        "text": "The day/night split on your bill is the first honest signal of which household you are. It is the starting point for working out [how many solar panels you actually need](/blog/how-many-solar-panels-do-i-need-ireland) - roof space sets the ceiling, but your usage pattern sets the target. Get the match right and a typical system pays for itself in 6-8 years."
       },
       {
         "type": "heading",
@@ -1791,7 +1791,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "tip",
         "title": "Maximise Your Savings",
-        "body": "The SEAI grant can be stacked with the Clean Export Guarantee (CEG), which pays you €0.21/kWh for excess solar energy exported to the grid. Between the grant, bill savings, and CEG earnings, a typical system can pay for itself in 5–7 years."
+        "body": "The SEAI grant can be stacked with the Clean Export Guarantee (CEG), which pays you €0.20/kWh for excess solar energy exported to the grid. Between the grant, bill savings, and CEG earnings, a typical system can pay for itself in 6-8 years."
       },
       {
         "type": "heading",
@@ -1924,7 +1924,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Combine the grant with the Clean Export Guarantee - earn €0.21/kWh for every unit of surplus energy you export to the grid. This alone can add €300–€500 per year to your income.",
+          "Combine the grant with the Clean Export Guarantee - earn €0.20/kWh for every unit of surplus energy you export to the grid. This alone can add €300–€500 per year to your income.",
           "Shift heavy electricity usage to daylight hours - run washing machines, dishwashers, and charge EVs while your panels are generating.",
           "Consider adding battery storage - while it adds upfront cost, a battery lets you use almost 100% of your generated electricity rather than exporting the excess.",
           "Ensure your system is sized correctly - an oversized system wastes money, while an undersized one leaves savings on the table.",
@@ -2076,7 +2076,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of just 5–7 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of just 6-8 years. Here is a detailed ROI calculation for the three most common system sizes:"
       },
       {
         "type": "table",
@@ -2311,7 +2311,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "During summer, your panels generate more electricity than you use. The excess is exported to the grid, and you earn €0.21 per kWh through the CEG. In winter, when your panels generate less, you draw more from the grid. The system effectively balances out over the course of a year, and the CEG payments you earn in summer help offset your higher winter electricity bills."
+        "text": "During summer, your panels generate more electricity than you use. The excess is exported to the grid, and you earn €0.20 per kWh through the CEG. In winter, when your panels generate less, you draw more from the grid. The system effectively balances out over the course of a year, and the CEG payments you earn in summer help offset your higher winter electricity bills."
       },
       {
         "type": "callout",
@@ -2371,7 +2371,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners **€0.21 per kilowatt-hour** for surplus solar electricity exported to the grid. This government-backed scheme, launched in 2022, requires energy suppliers to pay you for every unit of excess solar power your panels generate. For a typical 6kWp system, CEG earnings add €250–€378 per year on top of your bill savings - and the payment appears automatically as a credit on your electricity bill via your smart meter."
+        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners **€0.20 per kilowatt-hour** for surplus solar electricity exported to the grid. This government-backed scheme, launched in 2022, requires energy suppliers to pay you for every unit of excess solar power your panels generate. For a typical 6kWp system, CEG earnings add €250–€378 per year on top of your bill savings - and the payment appears automatically as a credit on your electricity bill via your smart meter."
       },
       {
         "type": "paragraph",
@@ -2381,7 +2381,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Current CEG Rate",
-        "body": "CEG rates are set by each supplier and typically sit around €0.21/kWh in 2026. The CRU oversees the scheme, so check your supplier's current export tariff and cru.ie for the rules. Some suppliers offer higher rates as part of competitive tariffs, so it pays to shop around."
+        "body": "CEG rates are set by each supplier and typically sit around €0.20/kWh in 2026. The CRU oversees the scheme, so check your supplier's current export tariff and cru.ie for the rules. Some suppliers offer higher rates as part of competitive tariffs, so it pays to shop around."
       },
       {
         "type": "heading",
@@ -2433,13 +2433,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "While the CRU sets a minimum CEG rate of €0.21/kWh, many energy suppliers compete by offering higher rates or additional perks. Here is a comparison of the leading supplier CEG offerings as of early 2026:"
+        "text": "While the CRU sets a minimum CEG rate of €0.20/kWh, many energy suppliers compete by offering higher rates or additional perks. Here is a comparison of the leading supplier CEG offerings as of early 2026:"
       },
       {
         "type": "callout",
         "variant": "tip",
         "title": "Switch and Save",
-        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check comparison sites like bonkers.ie and Switcher.ie at least once a year to ensure you are on the best available rate. A rate increase from €0.21 to €0.24/kWh could add €60–€100 per year to your CEG earnings."
+        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check comparison sites like bonkers.ie and Switcher.ie at least once a year to ensure you are on the best available rate. A rate increase from €0.20 to €0.24/kWh could add €60–€100 per year to your CEG earnings."
       },
       {
         "type": "heading",
@@ -2455,7 +2455,7 @@ export const articles: Article[] = [
         "headers": [
           "System Size",
           "Annual Export (kWh)",
-          "CEG Earnings at €0.21/kWh",
+          "CEG Earnings at €0.20/kWh",
           "CEG Earnings at €0.24/kWh"
         ],
         "rows": [
@@ -2578,7 +2578,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.45/kWh versus earning €0.21/kWh), this higher self-consumption rate partially offsets the lower total output."
+        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.45/kWh versus earning €0.20/kWh), this higher self-consumption rate partially offsets the lower total output."
       },
       {
         "type": "bulletList",
@@ -2793,7 +2793,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 5–7 years, a battery usually takes 8–12 years. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
+        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 6-8 years, a battery usually takes 8–12 years. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
       },
       {
         "type": "paragraph",
@@ -2842,7 +2842,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "Understanding the Numbers",
-        "body": "A battery saves you money by reducing your grid imports during the evening and night. The value of each stored kWh is €0.35–€0.45 (the price you would otherwise pay for grid electricity), versus the €0.21 you earn from exporting it. Storing your own solar is worth nearly double what exporting it earns."
+        "body": "A battery saves you money by reducing your grid imports during the evening and night. The value of each stored kWh is €0.35–€0.45 (the price you would otherwise pay for grid electricity), versus the €0.20 you earn from exporting it. Storing your own solar is worth nearly double what exporting it earns."
       },
       {
         "type": "heading",
@@ -3619,7 +3619,7 @@ export const articles: Article[] = [
           "No rush to apply - the €1,800 rate is guaranteed for all of 2026, regardless of when you apply during the year",
           "Better planning - with grant certainty, you can take 4–6 weeks to compare installers and get BER assessments done properly",
           "Combined with falling costs - panel prices have dropped significantly, so your out-of-pocket cost is lower than ever",
-          "Stack with CEG - the Clean Export Guarantee means you earn €0.21/kWh on top of bill savings, accelerating payback"
+          "Stack with CEG - the Clean Export Guarantee means you earn €0.20/kWh on top of bill savings, accelerating payback"
         ]
       },
       {
@@ -3887,7 +3887,7 @@ export const articles: Article[] = [
         "items": [
           "Battery storage - A 5–10kWh solar battery can store excess generation from autumn and spring for use during winter evenings. While it will not fully cover the winter heating demand, it can reduce grid dependence by 20–30%.",
           "Time-of-use tariffs - With a smart meter, you can sign up for tariffs that offer cheaper electricity at night. Charge your battery on cheap night-rate power and use it to run the heat pump during peak daytime hours.",
-          "CEG credits - Excess solar exported in summer earns you €0.21/kWh, which helps offset your higher winter electricity bills.",
+          "CEG credits - Excess solar exported in summer earns you €0.20/kWh, which helps offset your higher winter electricity bills.",
           "Insulation upgrades - Better insulation means your heat pump works less, reducing electricity demand in winter. Consider attic insulation, cavity wall insulation, and window upgrades."
         ]
       },

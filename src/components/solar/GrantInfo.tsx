@@ -82,14 +82,18 @@ const checkSteps: CheckStep[] = [
     icon: Calendar,
   },
   {
-    id: 'ber',
-    question: 'Do you know your BER rating?',
+    // This used to ask for a BER of C3 or lower and mark anything better as
+    // ineligible. There is no minimum BER in the scheme, so that answer was
+    // turning away homeowners who qualify. Previous solar funding at the same
+    // MPRN is a real disqualifier, so it takes the slot.
+    id: 'previous-grant',
+    question: 'Has this property had a solar grant before?',
     options: [
-      { label: 'C3 or lower', value: 'yes' },
-      { label: 'Better than C3', value: 'no' },
-      { label: "No BER / Not sure", value: 'unsure' },
+      { label: 'No, first time', value: 'yes' },
+      { label: 'Yes, already claimed', value: 'no' },
+      { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'Your home needs a BER rating of C3 or lower. Pre-1978 homes with no BER may also qualify. If you\'re unsure, we can check during the free survey.',
+    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid, and we arrange it.',
     icon: FileCheck,
   },
 ];
@@ -456,7 +460,7 @@ function KeyFactsRow() {
     { label: 'SEAI Grant (ROI)', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-violet-400', bg: 'bg-violet-400/10' },
     { label: 'Min. system', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
-    { label: 'BER required', value: 'C3 or lower', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
+    { label: 'BER', value: 'After the work', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];
 
   return (

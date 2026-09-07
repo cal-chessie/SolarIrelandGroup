@@ -63,7 +63,7 @@ const faqs: FAQItem[] = [
     id: 3,
     question: 'How long is the payback period?',
     answer:
-      'Most homeowners see a full payback within 5 to 7 years after the SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
+      'Most homeowners see a full payback typically within 6 to 8 years after the SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
     category: 'costs',
     keywords: ['payback', 'how long', 'break even', 'roi', 'return', 'years'],
   },
@@ -71,7 +71,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built before 2021, and the property must have a BER rating of C3 or lower (or be a pre-1978 home with no BER). The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built and occupied before 2021 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER to qualify: a BER assessment is done after the work is finished, before the grant is paid, and we arrange it. The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -127,7 +127,7 @@ const faqs: FAQItem[] = [
     id: 11,
     question: 'Do you offer battery storage?',
     answer:
-      'Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to 85%+. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they\'re worth considering if you\'re out during the day, have an EV, or want to maximise your energy independence. We discuss battery options during the survey.',
+      'Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to roughly 70-85%. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they\'re worth considering if you\'re out during the day, have an EV, or want to maximise your energy independence. We discuss battery options during the survey.',
     category: 'technical',
     keywords: ['battery', 'storage', 'tesla', 'powerwall', 'store', 'night', 'evening'],
   },

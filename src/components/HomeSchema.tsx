@@ -20,7 +20,7 @@ const webPageSchema = {
     {
       "@type": "WebPage",
       "@id": SITE_URL,
-      name: "Solar Ireland | #1 Rated Solar Panel Installers | SEAI Registered",
+      name: "Solar Ireland | SEAI Registered Solar Panel Installers",
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       inLanguage: "en-IE",
@@ -195,7 +195,7 @@ const financialProductSchema = {
     "@type": "FeesAndCommissionsSpecification",
     name: "Grant Conditions",
     description:
-      "Available to owner-occupiers of homes built before 2021. Property must have a BER rating of C3 or lower, or be a pre-1978 home with no BER. Grant paid directly to installer after completion.",
+      "Available to owner-occupiers of homes built and occupied before 2021 with an MPRN. A BER assessment is carried out after the work is finished, before the grant is paid. Grant paid directly to the installer after completion.",
   },
 };
 

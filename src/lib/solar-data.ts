@@ -4,7 +4,12 @@ export const SOLAR_DATA = {
     amount: 1800,
     label: '€1,800',
     authority: 'SEAI',
-    eligibility: 'Owner-occupiers of homes built before 2021 with BER C3 or lower',
+    // SEAI conditions for the Solar PV grant: the home must have been built and
+    // occupied before 2021, have an MPRN, not have drawn solar funding before,
+    // and a post-works BER must be completed before the grant is paid. There is
+    // NO minimum BER to qualify - the site used to claim C3 or lower, which
+    // would have turned away homes that are perfectly eligible.
+    eligibility: 'Owner-occupiers of homes built and occupied before 2021, with a post-works BER',
     processTime: '4-8 weeks',
   },
   savings: {

@@ -167,7 +167,7 @@ const faqItems = [
   },
   {
     q: 'What happens after I book?',
-    a: 'You\'ll receive a confirmation by text and email within 2 hours. On the day of your survey, our assessor arrives at your chosen time, completes the assessment, and you\'ll receive your itemised quote with savings estimate within 48 hours.',
+    a: 'Your confirmation email arrives straight away, and a member of our team will be in touch to confirm your exact time. On the day, our assessor completes the assessment and goes through your itemised figures with you.',
   },
   {
     q: 'Do I need to prepare anything for the survey?',
@@ -1206,13 +1206,13 @@ export default function BookSurveyClient() {
                   transition={{ delay: 0.4 }}
                 >
                   <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                    Booking Confirmed! 🎉
+                    Survey Request Received 🎉
                   </h2>
                   <p className="text-gray-400 max-w-md mx-auto mb-4 leading-relaxed text-lg">
                     Your survey request has been sent to our team.
                   </p>
                   <p className="text-gray-500 max-w-md mx-auto mb-10">
-                    We&apos;ll confirm your appointment by text and email within <span className="text-white font-semibold">2 hours</span>.
+                    Your confirmation email is on its way. A member of our team will be in touch to confirm your <span className="text-white font-semibold">exact time</span>.
                   </p>
                 </motion.div>
 
@@ -1230,7 +1230,7 @@ export default function BookSurveyClient() {
                     </h3>
                     <div className="space-y-4">
                       {[
-                        { time: 'Within 2 hours', text: 'You\'ll receive a confirmation text and email with your appointment details.' },
+                        { time: 'Straight away', text: 'A confirmation email lands with your appointment details.' },
                         { time: 'Survey Day', text: 'Our assessor visits your home for a thorough 30-45 minute roof and energy assessment.' },
                         { time: 'Within 48 hours', text: 'Receive your itemised quote with estimated savings, grant eligibility, and payback period.' },
                       ].map((item, i) => (
@@ -1328,7 +1328,7 @@ export default function BookSurveyClient() {
                 {
                   step: '02',
                   title: 'Quick Confirmation',
-                  desc: 'Our team confirms your appointment by text and email within 2 hours.',
+                  desc: 'A confirmation email lands straight away and our team confirms your exact time.',
                   icon: Phone,
                   color: 'sky',
                 },

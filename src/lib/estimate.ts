@@ -103,13 +103,16 @@ export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Au
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 /**
- * SEAI domestic solar PV grant. Tiered: €700/kWp to 2 kWp, €200/kWp from 2 to
- * 4 kWp, capped at €1,800. Systems under 2 kWp are not eligible.
+ * SEAI domestic solar PV grant.
+ *
+ * The scheme is tiered (€700/kWp for the first 2 kWp, then €200/kWp to 4 kWp),
+ * but it reaches its full €1,800 at exactly 4 kWp, and 4 kWp is our domestic
+ * floor. So every system we quote draws the full grant, and the site can say
+ * €1,800 without a caveat. The tier maths is kept below the floor only so the
+ * function stays truthful if it is ever called with a smaller size.
  */
 export function seaiGrant(kwp: number): number {
-  // Kept exact even though we never size below 4 kWp (where it is already at
-  // the full €1,800), so the tiers stay correct if the scheme or the floor
-  // ever changes.
+  if (kwp >= DOMESTIC_MIN_KWP) return SOLAR_DATA.grant.amount;
   if (kwp < 2) return 0;
   const firstTier = Math.min(kwp, 2) * 700;
   const secondTier = Math.max(0, Math.min(kwp, 4) - 2) * 200;

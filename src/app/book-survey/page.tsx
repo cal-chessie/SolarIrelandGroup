@@ -150,7 +150,7 @@ const bookSchema = {
           name: 'What happens after I book?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'We will confirm your appointment by text and email within 2 hours. On the day, our assessor arrives at your chosen time, evaluates your property, and delivers your quote within 48 hours.',
+            text: 'Your confirmation email arrives straight away, and a member of our team will be in touch to confirm your exact time. On the day, our assessor evaluates your property and goes through your figures with you.',
           },
         },
       ],
