@@ -428,22 +428,22 @@ export default function CookieConsent() {
           aria-label="Cookie consent"
           aria-modal="false"
         >
-          <div className="pointer-events-none h-12 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="pointer-events-none h-8 sm:h-12 bg-gradient-to-t from-black/40 to-transparent" />
 
           <div className="pointer-events-none absolute inset-0 -top-12 bg-black/40" />
 
-          <div className="relative mx-auto max-w-2xl px-4 pb-6">
+          <div className="relative mx-auto max-w-2xl px-3 pb-3 sm:px-4 sm:pb-6">
             <div
               className={`
                 cookie-banner-card
                 rounded-2xl border border-white/[0.08]
-                bg-[#111111]/95 p-5 sm:p-6
+                bg-[#111111]/95 p-4 sm:p-6
                 shadow-[0_8px_60px_-15px_rgba(0,0,0,0.8)]
                 transition-all duration-500 ease-out
               `}
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 mt-0.5">
+                <div className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yellow-500/10 text-yellow-400 mt-0.5">
                   <Cookie className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -454,10 +454,15 @@ export default function CookieConsent() {
                       GDPR
                     </span>
                   </h3>
-                  <p className="text-sm text-white/70 mt-1 leading-relaxed">
+                  {/* The long version is fine on a desktop column; on a phone
+                      it pushed the whole hero off the screen. */}
+                  <p className="hidden sm:block text-sm text-white/70 mt-1 leading-relaxed">
                     We use cookies to enhance your experience, analyse site traffic, and personalise content.
                     You can choose which cookies to allow.{' '}
-                    <span className="text-amber-400/90">Necessary cookies</span> keep the site working.
+                    <span className="text-yellow-400/90">Necessary cookies</span> keep the site working.
+                  </p>
+                  <p className="sm:hidden text-[13px] text-white/70 mt-1 leading-snug">
+                    We use cookies to improve the site. You choose which.
                   </p>
                 </div>
                 {showSettingsOnly && (
