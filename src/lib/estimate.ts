@@ -17,6 +17,12 @@
  *     would spend their upside and commit us to a number we have not surveyed.
  *   - Every figure should be one the survey can meet or beat. An estimate the
  *     consultant has to walk backwards from is worse than no estimate.
+ *   - 4 kWp is the domestic floor and the typical system. Smaller arrays are
+ *     not a good investment in this market: the fixed costs hardly change
+ *     while the generation and the grant both drop away. 4 kWp is also the
+ *     exact point the SEAI grant reaches its full €1,800, so it is where a
+ *     homeowner takes maximum grant and maximum saving. Nothing below it is
+ *     sized, quoted or shown in a comparison.
  *
  * ── Evidence for each constant (checked 7 Sep 2026) ───────────────────────
  * Unit rate 35c/kWh   Electric Ireland's standard 24hr rate from 1 Jul 2026 is
@@ -67,14 +73,24 @@ export const PRICING = {
   panelWatts: 440,
 } as const;
 
+/**
+ * The domestic floor. Below 4 kWp the economics stop making sense: the fixed
+ * costs (scaffolding, design, commissioning, the ESB paperwork) barely move,
+ * while the generation and the grant both fall away. 4 kWp is also exactly
+ * where the SEAI grant tops out at its full €1,800, so it is the point where a
+ * homeowner takes the most grant and the most saving for the same day's work.
+ * We do not size, quote or compare anything smaller.
+ */
+export const DOMESTIC_MIN_KWP = 4;
+
 /** Self-consumption band for a system with NO battery. */
 const SELF_USE_MIN = 0.30;
 const SELF_USE_MAX = 0.50;
 
 export const HOME_TYPES = [
-  { id: 'apartment', label: 'Apartment / Terrace', minKwp: 1.5, maxKwp: 6 },
-  { id: 'semi', label: 'Semi-Detached', minKwp: 2, maxKwp: 8 },
-  { id: 'detached', label: 'Detached', minKwp: 2.5, maxKwp: 9.7 },
+  { id: 'apartment', label: 'Apartment / Terrace', minKwp: DOMESTIC_MIN_KWP, maxKwp: 6 },
+  { id: 'semi', label: 'Semi-Detached', minKwp: DOMESTIC_MIN_KWP, maxKwp: 8 },
+  { id: 'detached', label: 'Detached', minKwp: DOMESTIC_MIN_KWP, maxKwp: 9.7 },
 ] as const;
 
 /** Share of a month's annual generation, Irish seasonal shape. */
@@ -91,6 +107,9 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
  * 4 kWp, capped at €1,800. Systems under 2 kWp are not eligible.
  */
 export function seaiGrant(kwp: number): number {
+  // Kept exact even though we never size below 4 kWp (where it is already at
+  // the full €1,800), so the tiers stay correct if the scheme or the floor
+  // ever changes.
   if (kwp < 2) return 0;
   const firstTier = Math.min(kwp, 2) * 700;
   const secondTier = Math.max(0, Math.min(kwp, 4) - 2) * 200;
@@ -124,7 +143,8 @@ export function sizeSystemKwp(annualUsageKwh: number, homeId?: string): number {
   // Aim to generate about 85% of annual usage, then clamp to what the roof takes.
   const ideal = (annualUsageKwh * 0.85) / ENERGY.generationPerKwp;
   const rounded = Math.round(ideal * 2) / 2;
-  return clamp(rounded, home.minKwp, home.maxKwp);
+  // Never below the domestic floor, whatever the usage says.
+  return clamp(rounded, Math.max(home.minKwp, DOMESTIC_MIN_KWP), home.maxKwp);
 }
 
 export interface EstimateResult {
@@ -188,8 +208,13 @@ export function estimate(input: {
     ENERGY.standingChargeAnnualEur,
   );
   const monthlySavingsEur = Math.round(((annualBillEur - annualBillAfterSolarEur) / 12) * 100) / 100;
+  // Measure the reduction against what the bill actually falls to, not against
+  // the total benefit. On a low-usage home a 4 kWp array can earn more than the
+  // bill, which used to read as "100% off your bill". It never is: the standing
+  // charge stays, and the surplus is export income on top rather than a
+  // discount. Anything above that floor is stated as earnings, not reduction.
   const billReductionPct = annualBillEur > 0
-    ? Math.min(100, Math.round((totalAnnualBenefitEur / annualBillEur) * 100))
+    ? Math.round(((annualBillEur - annualBillAfterSolarEur) / annualBillEur) * 100)
     : 0;
 
   const installCostEur = Math.round(systemSizeKwp * PRICING.perKwpEur + PRICING.baseInstallEur);
@@ -252,7 +277,7 @@ export function estimateFromMonthlyBill(monthlyBillEur: number, homeId?: string)
 /** Side-by-side sizes for the comparison table. Same engine, fixed sizes. */
 export function systemOptions(
   annualUsageKwh: number,
-  sizes: number[] = [2, 3, 4, 5, 6, 7],
+  sizes: number[] = [4, 5, 6, 7, 8],
   opts: { unitRateEur?: number; exportRateEur?: number } = {},
 ) {
   return sizes.map((systemSizeKwp) => {
