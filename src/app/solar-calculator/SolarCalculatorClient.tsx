@@ -268,12 +268,10 @@ function FinalCTA() {
             <a
               href={buildWhatsAppUrl({
                 source: 'calculator-page-cta',
-                monthlyBill: 160,
                 homeType: 'Semi-Detached',
-                annualSaving: 1400,
-                paybackYears: 5,
+                annualSaving: SOLAR_DATA.savings.avgAnnual,
+                paybackYears: SOLAR_DATA.savings.paybackYears,
                 total25yrSaving: SOLAR_DATA.savings.total25yr,
-                recommendedSystem: 5.5,
               })}
               target="_blank"
               rel="noopener noreferrer"
@@ -284,10 +282,11 @@ function FinalCTA() {
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href="/"
+              href="/book-survey"
               className="flex items-center gap-2 px-8 py-4 rounded-xl border border-white/[0.08] text-gray-300 font-medium text-sm hover:border-white/[0.15] hover:text-white transition-all"
             >
-              Back to Home
+              Pick a survey time
+              <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -305,7 +304,9 @@ export default function SolarCalculatorClient() {
       <main>
         <CalculatorHero />
         <TrustBadges />
-        <QuickSavingsCalculator />
+        {/* One calculator per page. This page is the bill analyser, which is
+            the actual intake; the slider teaser lives on the home page. Having
+            both here split the journey and gave two answers to one question. */}
         <CalculatorExplainer />
         <BillAnalyser />
         <DataTransparency />

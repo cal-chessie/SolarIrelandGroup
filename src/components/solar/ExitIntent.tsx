@@ -326,11 +326,33 @@ export default function ExitIntent() {
 
           <div className="exit-intent-el exit-intent-el-7">
             {exitStatus === 'done' ? (
-              <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
-                <Shield className="w-4 h-4" />
-                {exitFallback
-                  ? 'Done. We have your details and a member of our team will be in touch.'
-                  : 'Done. A member of our team will be in touch to walk you through your numbers.'}
+              <div className="w-full">
+                <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
+                  <Shield className="w-4 h-4" />
+                  Got it. A member of our team will be in touch.
+                </div>
+                {/* An email on its own tells us nothing about the house, so we
+                    cannot estimate from it. Offer the two things that turn this
+                    into a real number: a time to talk, or their actual bill. */}
+                <p className="mt-3 text-[13px] text-gray-400 text-center">
+                  Want it sooner, or exact?
+                </p>
+                <div className="mt-2 flex flex-col sm:flex-row gap-2.5">
+                  <a
+                    href="/book-survey"
+                    onClick={() => { trackExitIntent('callback-click'); close(); }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] text-[13px] text-gray-200 hover:bg-white/[0.07] transition-colors"
+                  >
+                    <Clock className="w-4 h-4 text-yellow-400" /> Pick a time to talk
+                  </a>
+                  <a
+                    href="/solar-calculator"
+                    onClick={() => { trackExitIntent('bill-estimate-click'); close(); }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-[13px] hover:bg-yellow-300 transition-colors"
+                  >
+                    <TrendingUp className="w-4 h-4" /> Exact figures from my bill
+                  </a>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
