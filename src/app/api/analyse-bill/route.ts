@@ -346,7 +346,9 @@ function runFullAnalysis(
   // (yield, grant tiers, panels-only self-consumption) comes from there.
   const rateOpts = { unitRateEur: effectiveRate, exportRateEur: rates.exportRate };
   const systemComparisons: AnalysisResult['systemComparisons'] =
-    systemOptions(annualUsage, [2, 3, 4, 5, 6, 7], rateOpts);
+    // Sizes come from the engine's own domestic range, which starts at the
+    // 4 kWp floor. Never hardcode a list here again.
+    systemOptions(annualUsage, undefined, rateOpts);
 
   const recommendedSystem = recommendedSize(annualUsage, homeType);
   const headline = estimate({ annualUsageKwh: annualUsage, systemSizeKwp: recommendedSystem, ...rateOpts });
