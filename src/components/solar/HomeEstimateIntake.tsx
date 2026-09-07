@@ -3,7 +3,7 @@
 import { useState, useMemo, useId } from 'react';
 import { Zap, TrendingUp, Clock, Mail, MessageCircle, Phone, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { estimateSavings, fmtEur, HOME_TYPES } from '@/lib/estimate';
+import { estimateFromMonthlyBill, fmtEur, HOME_TYPES } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { submitLead } from '@/lib/submitLead';
 
@@ -31,7 +31,7 @@ export default function HomeEstimateIntake() {
   const phoneId = useId();
   const billId = useId();
 
-  const r = useMemo(() => estimateSavings(monthlyBill, homeType), [monthlyBill, homeType]);
+  const r = useMemo(() => estimateFromMonthlyBill(monthlyBill, homeType), [monthlyBill, homeType]);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const canSubmit = firstName.trim().length > 0 && emailValid && status !== 'submitting';
@@ -48,7 +48,7 @@ export default function HomeEstimateIntake() {
       phone: phone.trim() || undefined,
       monthlyBill,
       homeType: HOME_TYPES.find((h) => h.id === homeType)?.label,
-      estimatedAnnualSaving: r.totalAnnualBenefit,
+      estimatedAnnualSaving: r.totalAnnualBenefitEur,
       company: company || undefined,
     });
     if (res.ok) {
@@ -60,9 +60,9 @@ export default function HomeEstimateIntake() {
   }
 
   const teaser = [
-    { icon: TrendingUp, label: 'Annual benefit', value: `${fmtEur(r.totalAnnualBenefit)}/yr`, sub: `~${fmtEur(r.monthlySavings)}/month` },
+    { icon: TrendingUp, label: 'Annual benefit', value: `${fmtEur(r.totalAnnualBenefitEur)}/yr`, sub: `~${fmtEur(r.monthlySavingsEur)}/month` },
     { icon: Zap, label: 'System size', value: `${r.systemSizeKwp} kWp`, sub: `${r.billReductionPct}% off your bill` },
-    { icon: Clock, label: 'Payback', value: `${r.paybackYears} yrs`, sub: `${fmtEur(r.total25yrSavings)}+ over 25 years` },
+    { icon: Clock, label: 'Payback', value: `${r.paybackYears} yrs`, sub: `${fmtEur(r.total25yrSavingsEur)}+ over 25 years` },
   ];
 
   return (

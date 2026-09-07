@@ -143,7 +143,7 @@ export const metadata: Metadata = {
     locale: "en_IE",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Solar Ireland | #1 Rated Solar Panel Installers | Save €1,400/Year",
+    title: "Solar Ireland | SEAI Solar Panel Installers | Save up to €1,400/Year",
     description:
       "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,400/year with a €1,800 SEAI grant. Serving all 32 counties across Ireland.",
     images: [
@@ -167,7 +167,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Solar Ireland | Save €1,400/Year with Solar Panels",
+    title: "Solar Ireland | Save up to €1,400/Year with Solar Panels",
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/hero-solar.jpg"],

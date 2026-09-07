@@ -1,4 +1,12 @@
 import { NextResponse } from 'next/server';
+import {
+  ENERGY,
+  MONTH_NAMES,
+  estimate,
+  systemOptions,
+  recommendedSize,
+  MONTHLY_GENERATION_SHARE,
+} from '@/lib/estimate';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -53,24 +61,8 @@ const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; stand
 
 const DEFAULT_RATES = { dayRate: 0.42, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.21 };
 
-const MONTHLY_YIELD_PER_KWP = [
-  42,  // Jan
-  62,  // Feb
-  97,  // Mar
-  129, // Apr
-  152, // May
-  152, // Jun
-  147, // Jul
-  139, // Aug
-  107, // Sep
-  68,  // Oct
-  42,  // Nov
-  33,  // Dec
-]; // Total: ~1070 kWh/kWp/year (slightly above 875 average, accounts for good conditions)
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-const CO2_FACTOR = 0.29;
+const CO2_FACTOR = ENERGY.co2PerKwh;
 
 interface BillExtraction {
   provider: string | null;
@@ -349,47 +341,29 @@ function runFullAnalysis(
   const avgDayConsumption = monthlyUsage * 0.65; // 65% during day
   const avgNightConsumption = monthlyUsage * 0.35; // 35% night
 
-  const systemComparisons: AnalysisResult['systemComparisons'] = [];
-  let bestPayback = Infinity;
-  let recommendedSystem = 4;
+  // One engine for the whole site: src/lib/estimate.ts. The customer's own
+  // unit rate from their bill overrides the market figure; everything else
+  // (yield, grant tiers, panels-only self-consumption) comes from there.
+  const rateOpts = { unitRateEur: effectiveRate, exportRateEur: rates.exportRate };
+  const systemComparisons: AnalysisResult['systemComparisons'] =
+    systemOptions(annualUsage, [2, 3, 4, 5, 6, 7], rateOpts);
 
-  for (const size of [2, 3, 4, 5, 6, 7]) {
-    const gen = size * 1070; // total annual generation
-    const selfConsumed = Math.min(gen * 0.65, annualUsage * 0.65); // 65% self-consumption
-    const exported = gen - selfConsumed;
-
-    const saving = selfConsumed * effectiveRate;
-    const exportEarning = exported * rates.exportRate;
-    const totalBenefit = saving + exportEarning;
-
-    const grant = size >= 2 ? 1800 : 0;
-    const installCost = size * 1500 + 2000; // base + per kWp
-    const netCost = installCost - grant;
-
-    const payback = totalBenefit > 0 ? netCost / totalBenefit : 99;
-
-    systemComparisons.push({
-      size,
-      generation: Math.round(gen),
-      annualSaving: Math.round(saving),
-      annualExport: Math.round(exportEarning),
-      paybackYears: Math.round(payback * 10) / 10,
-      cost: installCost,
-      grant,
-    });
-
-    if (payback < bestPayback && payback > 3) {
-      bestPayback = payback;
-      recommendedSystem = size;
-    }
-  }
-
-  const best = systemComparisons.find(c => c.size === recommendedSystem) || systemComparisons[2];
+  const recommendedSystem = recommendedSize(annualUsage, homeType);
+  const headline = estimate({ annualUsageKwh: annualUsage, systemSizeKwp: recommendedSystem, ...rateOpts });
+  const best = {
+    size: recommendedSystem,
+    generation: headline.annualGenerationKwh,
+    annualSaving: headline.annualSavingFromSelfUseEur,
+    annualExport: headline.annualExportEarningsEur,
+    paybackYears: headline.paybackYears,
+    cost: headline.installCostEur,
+    grant: headline.grantEur,
+  };
 
   const monthlyProfile = MONTH_NAMES.map((month, i) => {
-    const generation = recommendedSystem * MONTHLY_YIELD_PER_KWP[i];
+    const generation = headline.annualGenerationKwh * MONTHLY_GENERATION_SHARE[i];
     const consumption = monthlyUsage;
-    const selfConsumed = Math.min(generation * 0.65, consumption * 0.75);
+    const selfConsumed = Math.min(generation * (headline.selfConsumptionPct / 100), consumption);
     const exported = Math.max(0, generation - selfConsumed);
     const saving = selfConsumed * effectiveRate;
     const exportEarning = exported * rates.exportRate;
@@ -405,7 +379,7 @@ function runFullAnalysis(
     };
   });
 
-  const selfConsumptionRatio = best.annualSaving / (best.annualSaving + best.annualExport);
+  const selfConsumptionRatio = headline.selfConsumptionPct / 100;
   const batteryWorthwhile = selfConsumptionRatio < 0.45 && annualUsage > 3500;
   const estimatedBatteryCost = 4500; // 5kWh battery + installation
   const batteryExtraSaving = batteryWorthwhile
@@ -422,17 +396,7 @@ function runFullAnalysis(
   const total25YearCo2Saved = Math.round(annualCo2Saved * 22.5); // accounting for degradation
   const treesEquiv25Years = Math.round(total25YearCo2Saved / (22 * 25));
 
-  let total25YearSavings = 0;
-  let yearlyOutput = best.generation;
-  let currentPrice = effectiveRate;
-  for (let i = 0; i < 25; i++) {
-    const selfUsed = Math.min(yearlyOutput * 0.65, annualUsage * 0.65);
-    const exp = yearlyOutput - selfUsed;
-    total25YearSavings += selfUsed * currentPrice + exp * rates.exportRate;
-    yearlyOutput *= 0.995;
-    currentPrice *= 1.03; // 3% annual price rise
-  }
-  total25YearSavings = Math.round(total25YearSavings);
+  const total25YearSavings = headline.total25yrSavingsEur;
 
   const netCost = best.cost - best.grant;
   const roiPercent = Math.round(((best.annualSaving + best.annualExport) / netCost) * 100);

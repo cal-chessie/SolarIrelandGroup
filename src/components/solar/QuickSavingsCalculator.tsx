@@ -20,117 +20,66 @@ import {
   BatteryCharging,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { estimateFromMonthlyBill, ENERGY } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackCalculatorUsage } from '@/lib/analytics';
 
 
-const _CALC_VER = 'v2.7-updated-apr2026'; // cache-bust: forces new chunk hash on every meaningful update
+const _CALC_VER = 'v3.0-one-engine-sep2026'; // cache-bust on meaningful updates
 
-const UNIT_RATE = 0.34;          // €/kWh average incl. VAT across providers
-const STANDING_CHARGE_ANNUAL = 200; // €/year - Irish standing charges 2025/2026
-const GENERATION_PER_KWP = 1000;  // kWh/kWp/yr - well-optimized south-facing Irish roof
-const PANEL_WATTS = 440;          // Modern panel wattage
-const COST_PER_KWP = 1600;       // €/kWp installed (includes inverter, mounting, labour)
-const BASE_INSTALL_COST = 1800;  // Fixed costs (scaffolding, design, commissioning, etc.)
-const CEG_RATE = SOLAR_DATA.export.ratePerKwh; // €0.21/kWh - Clean Export Guarantee
-const SEAI_GRANT = SOLAR_DATA.grant.amount;    // €1,800
-const CO2_PER_KWH = 0.29;        // kg CO2 per kWh (EirGrid 2024 figure for Ireland)
-const TREES_PER_YEAR_KG = 22;    // kg CO2 absorbed per tree per year
-
-const MONTHLY_GEN_FACTOR: Record<string, number> = {
-  Jan: 0.38, Feb: 0.55, Mar: 0.82, Apr: 1.05,
-  May: 1.28, Jun: 1.38, Jul: 1.32, Aug: 1.18,
-  Sep: 0.95, Oct: 0.72, Nov: 0.45, Dec: 0.32,
-};
-const AVG_MONTHLY_FACTOR = Object.values(MONTHLY_GEN_FACTOR).reduce((a, b) => a + b, 0) / 12;
-
-
+/**
+ * All numbers come from src/lib/estimate.ts, the site's single savings engine.
+ * This component used to carry its own copy of the maths, which drifted from
+ * the analyser and gave two different answers for the same bill.
+ */
 const HOME_PROFILES = [
-  { id: 'apartment', label: 'Apartment / Terrace', icon: Building2, minKwp: 1.5, maxKwp: 9.7, description: '4–22 panels' },
-  { id: 'semi',      label: 'Semi-Detached',       icon: Home,     minKwp: 2.5, maxKwp: 9.7, description: '6–22 panels' },
-  { id: 'detached',  label: 'Detached',            icon: Warehouse, minKwp: 3,   maxKwp: 9.7, description: '8–22 panels' },
+  { id: 'apartment', label: 'Apartment / Terrace', icon: Building2, description: '4-14 panels' },
+  { id: 'semi', label: 'Semi-Detached', icon: Home, description: '5-18 panels' },
+  { id: 'detached', label: 'Detached', icon: Warehouse, description: '6-22 panels' },
 ];
 
-
+/** Adapter: the engine's field names, shaped for this component's markup. */
 function calculateSavings(monthlyBill: number, homeId: string) {
-  const annualBill = monthlyBill * 12;
-  const home = HOME_PROFILES.find((h) => h.id === homeId) || HOME_PROFILES[1];
-
-  const energyCost = Math.max(annualBill - STANDING_CHARGE_ANNUAL, 100);
-  const annualUsage = Math.round(energyCost / UNIT_RATE);
-
-  const targetGeneration = annualUsage * 0.85;
-  let idealKwp = targetGeneration / GENERATION_PER_KWP;
-  idealKwp = Math.round(idealKwp * 2) / 2;
-  const systemSizeKwp = Math.max(home.minKwp, Math.min(idealKwp, home.maxKwp));
-
-  const panels = Math.round(systemSizeKwp * (1000 / PANEL_WATTS));
-
-  const annualGeneration = Math.round(systemSizeKwp * GENERATION_PER_KWP);
-
-  const sizeRatio = annualUsage / Math.max(annualUsage + annualGeneration, 1);
-  const selfConsumptionRatio = Math.min(0.80, 0.48 + 0.38 * sizeRatio);
-
-  const selfConsumedKwh = Math.round(annualGeneration * selfConsumptionRatio);
-  const exportedKwh = annualGeneration - selfConsumedKwh;
-
-  const annualSavingFromSelfUse = Math.round(selfConsumedKwh * UNIT_RATE);
-  const annualExportEarnings = Math.round(exportedKwh * CEG_RATE);
-  const totalAnnualBenefit = annualSavingFromSelfUse + annualExportEarnings;
-
-  const annualBillAfterSolar = Math.max(annualBill - totalAnnualBenefit, STANDING_CHARGE_ANNUAL);
-  const monthlyBillAfterSolar = Math.round((annualBillAfterSolar / 12) * 100) / 100;
-  const monthlySavings = Math.round((monthlyBill - monthlyBillAfterSolar) * 100) / 100;
-  const billReductionPct = Math.round((totalAnnualBenefit / annualBill) * 100);
-
-  const installCost = Math.round(systemSizeKwp * COST_PER_KWP + BASE_INSTALL_COST);
-  const costAfterGrant = installCost - SEAI_GRANT;
-  const paybackYears = Math.max(Math.round((costAfterGrant / totalAnnualBenefit) * 10) / 10, 4);
-
-  let total25yrSavings = 0;
-  let yearlyGen = annualGeneration;
-  let currentUnitRate = UNIT_RATE;
-  for (let yr = 1; yr <= 25; yr++) {
-    const self = Math.min(yearlyGen * selfConsumptionRatio, annualUsage * selfConsumptionRatio);
-    const exp = yearlyGen - self;
-    total25yrSavings += Math.round(self * currentUnitRate + exp * CEG_RATE);
-    yearlyGen *= 0.995;       // 0.5% annual degradation
-    currentUnitRate *= 1.03;   // 3% annual price rise
-  }
-
-  const co2PerYear = Math.round(annualGeneration * CO2_PER_KWH);
-  const treesEquiv = Math.round(co2PerYear / TREES_PER_YEAR_KG);
-
-  const energyIndependence = Math.round((selfConsumedKwh / annualUsage) * 100);
-
-  const monthlyGeneration = Object.entries(MONTHLY_GEN_FACTOR).map(([month, factor]) => ({
-    month,
-    generation: Math.round((annualGeneration / 12) * (factor / AVG_MONTHLY_FACTOR)),
-    factor,
-  }));
-
+  const e = estimateFromMonthlyBill(monthlyBill, homeId);
   return {
-    annualBill, annualUsage, unitRate: UNIT_RATE, standingCharge: STANDING_CHARGE_ANNUAL,
-    systemSizeKwp, panels, annualGeneration,
-    selfConsumedKwh, exportedKwh, selfConsumptionRatio: Math.round(selfConsumptionRatio * 100),
-    energyIndependence,
-    annualSavingFromSelfUse, annualExportEarnings, totalAnnualBenefit,
-    annualBillAfterSolar, monthlyBillAfterSolar, monthlySavings, billReductionPct,
-    installCost, costAfterGrant, paybackYears, total25yrSavings,
-    co2PerYear, treesEquiv,
-    monthlyGeneration,
+    annualBill: e.annualBillEur,
+    annualUsage: e.annualUsageKwh,
+    unitRate: ENERGY.unitRateEur,
+    standingCharge: ENERGY.standingChargeAnnualEur,
+    systemSizeKwp: e.systemSizeKwp,
+    panels: e.panels,
+    annualGeneration: e.annualGenerationKwh,
+    selfConsumedKwh: e.selfConsumedKwh,
+    exportedKwh: e.exportedKwh,
+    selfConsumptionRatio: e.selfConsumptionPct,
+    energyIndependence: e.annualUsageKwh > 0
+      ? Math.round((e.selfConsumedKwh / e.annualUsageKwh) * 100)
+      : 0,
+    annualSavingFromSelfUse: e.annualSavingFromSelfUseEur,
+    annualExportEarnings: e.annualExportEarningsEur,
+    totalAnnualBenefit: e.totalAnnualBenefitEur,
+    annualBillAfterSolar: e.annualBillAfterSolarEur,
+    monthlyBillAfterSolar: e.monthlyBillAfterSolarEur,
+    monthlySavings: e.monthlySavingsEur,
+    billReductionPct: e.billReductionPct,
+    installCost: e.installCostEur,
+    grant: e.grantEur,
+    costAfterGrant: e.costAfterGrantEur,
+    paybackYears: e.paybackYears,
+    total25yrSavings: e.total25yrSavingsEur,
+    co2PerYear: e.co2PerYearKg,
+    treesEquiv: e.treesEquivalent,
+    monthlyGeneration: e.monthlyGeneration.map((m) => ({ month: m.month, generation: m.generationKwh })),
   };
 }
 
-
 function fmtEur(n: number): string {
-  return '€' + Math.round(n).toLocaleString();
+  return '\u20ac' + Math.round(n).toLocaleString();
 }
 
 function fmtEurDecimal(n: number): string {
-  return '€' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return '\u20ac' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
-
 
 export default function QuickSavingsCalculator() {
   const [monthlyBill, setMonthlyBill] = useState(160);
@@ -463,10 +412,10 @@ function ResultsPanel({
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Estimated Monthly Generation</h4>
               <p className="text-[10px] text-gray-400">Ireland has strong seasonal variation - you&apos;ll generate 4x more in summer than winter.</p>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                {r.monthlyGeneration.map((m) => {
+                {r.monthlyGeneration.map((m, i) => {
                   const maxGen = Math.max(...r.monthlyGeneration.map(x => x.generation));
                   const pct = Math.round((m.generation / maxGen) * 100);
-                  const isSummer = m.factor >= 1.0;
+                  const isSummer = [4, 5, 6, 7].includes(i);
                   return (
                     <div key={m.month} className="text-center">
                       <p className="text-[10px] text-gray-400 mb-1">{m.month}</p>

@@ -8,25 +8,36 @@ export const SOLAR_DATA = {
     processTime: '4-8 weeks',
   },
   savings: {
-    avgAnnual: 1400,
-    label: '€1,400/yr',
-    paybackYears: 5,
+    // These single figures are what the hero stats count up to, so they must be
+    // what the engine (src/lib/estimate.ts) actually returns for a typical home,
+    // not the top of the range. A 3-bed semi on a €160/month bill comes out at
+    // about €1,100/yr, 6.6 years, €31k over 25 years. Ranges used in prose
+    // ("€800 to €1,400") stay valid: €1,400 is reached around €200/month.
+    avgAnnual: 1100,
+    label: '€1,100/yr',
+    paybackYears: 7,
     // Optimistic headline point (energy-price inflation + export income over the
     // panels' 25yr life). total25yr/label25yr drive the hero stat; range25yrLabel
     // is the honest hedge used in prose so every 25-year figure reads from HERE.
-    total25yr: 48000,
-    label25yr: '€48k+',
+    total25yr: 30000,
+    label25yr: '€30k+',
     range25yrLabel: '€30,000 to €50,000',
   },
   export: {
-    ratePerKwh: 0.21,
-    label: '€0.21/kWh',
+    // The CRU's minimum Clean Export Guarantee obligation (CRU/24/019).
+    // Suppliers currently pay between 18.5c and 24c, so the regulated floor is
+    // the figure we can always stand over.
+    ratePerKwh: 0.20,
+    label: '€0.20/kWh',
     scheme: 'Clean Export Guarantee (CEG)',
-    annualRange: '€200–€400',
+    annualRange: '€200 to €800',
   },
   system: {
     avgSizeKwp: 4,
-    generationPerKwp: 1050, // kWh per kWp per year in Ireland
+    // PVGIS puts a south-facing 30 degree roof in Dublin at about 972 kWh/kWp
+    // after standard losses; the national average is about 884. 950 describes a
+    // good roof without assuming every roof is one.
+    generationPerKwp: 950,
     panelWarranty: 25,
     installTime: '1 day',
     warrantyLabel: '25+ years',

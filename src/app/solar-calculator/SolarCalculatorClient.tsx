@@ -269,7 +269,7 @@ function FinalCTA() {
                 homeType: 'Semi-Detached',
                 annualSaving: 1400,
                 paybackYears: 5,
-                total25yrSaving: 48000,
+                total25yrSaving: SOLAR_DATA.savings.total25yr,
                 recommendedSystem: 5.5,
               })}
               target="_blank"
