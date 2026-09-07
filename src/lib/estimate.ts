@@ -113,6 +113,19 @@ export const DOMESTIC_MIN_KWP = 4;
 const SELF_USE_MIN = 0.30;
 const SELF_USE_MAX = 0.50;
 
+/**
+ * Share of a home's electricity used while the sun is up.
+ *
+ * This is the ceiling on what solar can offset without a battery, and it is
+ * the thing that stops a light user from being credited with savings they
+ * could never physically make. A 4 kWp array on a house that burns 1,300 kWh
+ * a year, mostly in the evening, cannot have that power used at midday just
+ * because the array is big enough to make it.
+ *
+ * A real bill overrides this with the actual day/night split.
+ */
+const DEFAULT_DAY_SHARE = 0.6;
+
 export const HOME_TYPES = [
   { id: 'apartment', label: 'Apartment / Terrace', minKwp: DOMESTIC_MIN_KWP, maxKwp: 6 },
   { id: 'semi', label: 'Semi-Detached', minKwp: DOMESTIC_MIN_KWP, maxKwp: 8 },
@@ -213,6 +226,8 @@ export function estimate(input: {
   systemSizeKwp?: number;
   unitRateEur?: number;
   exportRateEur?: number;
+  /** Real daytime usage from a bill's day/night split, when we have it. */
+  dayUsageKwh?: number;
 }): EstimateResult {
   const unitRate = input.unitRateEur && input.unitRateEur > 0 ? input.unitRateEur : ENERGY.unitRateEur;
   const exportRate = input.exportRateEur && input.exportRateEur > 0 ? input.exportRateEur : ENERGY.exportRateEur;
@@ -223,8 +238,15 @@ export function estimate(input: {
   const panels = Math.round((systemSizeKwp * 1000) / PRICING.panelWatts);
 
   const ratio = selfConsumptionRatio(annualGenerationKwh, annualUsageKwh);
-  // Never claim to self-use more than the house actually consumes.
-  const selfConsumedKwh = Math.round(Math.min(annualGenerationKwh * ratio, annualUsageKwh));
+  // The hard ceiling: you cannot use solar you are not at home to use. Capping
+  // on DAYTIME demand rather than total demand is what separates a light user
+  // from a heavy one. Without it, a €60 and a €90 a month house came out with
+  // exactly the same saving and the same payback, which was the giveaway that
+  // the model was really just dividing the bill by itself.
+  const daytimeUsageKwh = input.dayUsageKwh && input.dayUsageKwh > 0
+    ? input.dayUsageKwh
+    : annualUsageKwh * DEFAULT_DAY_SHARE;
+  const selfConsumedKwh = Math.round(Math.min(annualGenerationKwh * ratio, daytimeUsageKwh));
   const exportedKwh = Math.max(0, annualGenerationKwh - selfConsumedKwh);
 
   const annualSavingFromSelfUseEur = Math.round(selfConsumedKwh * unitRate);
@@ -259,7 +281,7 @@ export function estimate(input: {
   let generation = annualGenerationKwh;
   let rate = unitRate;
   for (let year = 1; year <= 25; year += 1) {
-    const selfUsed = Math.min(generation * ratio, annualUsageKwh);
+    const selfUsed = Math.min(generation * ratio, daytimeUsageKwh);
     const exported = Math.max(0, generation - selfUsed);
     total25yrSavingsEur += selfUsed * rate + exported * exportRate;
     generation *= 1 - ENERGY.panelDegradationPerYear;

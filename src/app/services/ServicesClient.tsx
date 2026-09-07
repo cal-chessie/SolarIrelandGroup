@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
+  Sparkles,
   Sun,
   Battery,
   Car,
@@ -159,6 +160,7 @@ const packages = [
     name: 'Essential',
     price: '€11,400',
     afterGrant: '€9,600 after the grant',
+    marketingPrice: '€8,600 if you join our marketing package',
     bestFor: 'A typical 3-bed semi that wants evening power without over-buying.',
     tag: 'Best Value',
     tier: 'entry',
@@ -179,8 +181,9 @@ const packages = [
   },
   {
     name: 'Popular',
-    price: '€14,500',
-    afterGrant: '€12,700 after the grant',
+    price: '€13,650',
+    afterGrant: '€11,850 after the grant',
+    marketingPrice: '€10,850 if you join our marketing package',
     bestFor: 'Bigger houses, or anyone home during the day with an EV on the way.',
     tag: 'Best All-Rounder',
     tier: 'popular',
@@ -189,7 +192,7 @@ const packages = [
       'Number of Panels': '12–16 Panels',
       'Panel Brand': 'Tier-1 (LONGi)',
       'Inverter': 'Hybrid Inverter',
-      'Battery': '10 kWh Battery',
+      'Battery': '7.5 kWh Battery',
       'Monitoring': 'Smart App + Portal',
       'SEAI Grant': '€1,800 (full)',
       'Annual Savings': '€1,700–€1,900',
@@ -203,6 +206,7 @@ const packages = [
     name: 'Premium',
     price: '€15,900',
     afterGrant: '€14,100 after the grant',
+    marketingPrice: '€13,100 if you join our marketing package',
     bestFor: 'Large homes, heat pumps, two EVs, and the most independence we can fit.',
     tag: 'Max Savings',
     tier: 'premium',
@@ -583,6 +587,11 @@ export default function ServicesPage() {
               >
                 Choose the right solar package for your home and budget.
                 All packages include free survey, installation and grid connection.
+                <span className="block mt-3 text-[13px] text-gray-400">
+                  <span className="text-yellow-400 font-semibold">€1,000 off any package</span> if you join our
+                  marketing package: we photograph the finished job and you leave an honest review. Honest is the
+                  word. You are never asked to say anything you do not mean, and you can decline either part.
+                </span>
               </motion.p>
             </motion.div>
 
@@ -629,6 +638,10 @@ export default function ServicesPage() {
                       </div>
                       <p className={`mt-1.5 text-[13px] font-semibold ${pkg.highlighted ? 'text-yellow-400' : 'text-green-400'}`}>
                         {pkg.afterGrant}
+                      </p>
+                      <p className="mt-2 inline-flex items-start gap-1.5 text-[13px] text-white/90">
+                        <Sparkles className="w-3.5 h-3.5 mt-0.5 shrink-0 text-yellow-400" />
+                        <span>{pkg.marketingPrice}</span>
                       </p>
                       <p className="mt-3 text-[13px] text-gray-400 leading-relaxed">
                         {pkg.bestFor}
