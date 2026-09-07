@@ -1,12 +1,12 @@
 /**
- * leadBridge — server-only forwarding core shared by every lead route.
+ * leadBridge - server-only forwarding core shared by every lead route.
  *
  * One implementation of "get this lead into AISolar, never lose it":
  *   1. POST to AISolar ingest-lead with the server-only x-source-key.
  *   2. Fallback to SIG's own `website_leads` table if AISolar is unreachable.
  *
  * /api/lead and /api/contact both import this so the two doors can never
- * drift apart. Import only from server code — the source key must never
+ * drift apart. Import only from server code - the source key must never
  * reach the browser.
  */
 

@@ -373,7 +373,7 @@ function ResultsPanel({
             value: `${r.energyIndependence}%`,
             color: 'text-amber-400',
             bgColor: 'bg-amber-400/10',
-            sub: `${r.selfConsumptionRatio}% self-consumed, ${fmtEur(r.exportedKwh)}kWh exported`,
+            sub: `${r.selfConsumptionRatio}% self-consumed, ${r.exportedKwh.toLocaleString()} kWh exported`,
           },
           {
             icon: Leaf,
@@ -444,7 +444,7 @@ function ResultsPanel({
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
                     <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-500" style={{ width: `${(r.annualSavingFromSelfUse / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.selfConsumedKwh)} kWh used directly - powering your home for free during the day</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{r.selfConsumedKwh.toLocaleString()} kWh used directly - powering your home for free during the day</p>
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
@@ -454,7 +454,7 @@ function ResultsPanel({
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
                     <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500" style={{ width: `${(r.annualExportEarnings / r.totalAnnualBenefit * 100).toFixed(1)}%` }} />
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">{fmtEur(r.exportedKwh)} kWh exported - surplus energy sold back to the grid</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{r.exportedKwh.toLocaleString()} kWh exported - surplus energy sold back to the grid</p>
                 </div>
               </div>
             </div>

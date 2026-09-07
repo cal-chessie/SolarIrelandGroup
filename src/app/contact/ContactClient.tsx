@@ -174,7 +174,7 @@ function ContactForm() {
   };
 
   const inputClasses =
-    'w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/10 transition-all duration-200';
+    'w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white placeholder-gray-600 focus:outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/10 transition-all duration-200';
 
   return (
     <div className="glass-card rounded-2xl p-6 sm:p-8">
@@ -242,6 +242,8 @@ function ContactForm() {
                   type="text"
                   name="name"
                   aria-label="Your full name" placeholder="Your full name"
+                  autoComplete="name"
+                  enterKeyHint="next"
                   required
                   value={formData.name}
                   onChange={handleChange}
@@ -255,6 +257,9 @@ function ContactForm() {
                   type="email"
                   name="email"
                   aria-label="Your email address" placeholder="your@email.com"
+                  autoComplete="email"
+                  inputMode="email"
+                  enterKeyHint="next"
                   required
                   value={formData.email}
                   onChange={handleChange}
@@ -268,6 +273,9 @@ function ContactForm() {
                   type="tel"
                   name="phone"
                   aria-label="Your phone number" placeholder="08X XXX XXXX"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  enterKeyHint="next"
                   value={formData.phone}
                   onChange={handleChange}
                   className={`${inputClasses} pl-10`}

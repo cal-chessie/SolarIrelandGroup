@@ -87,7 +87,7 @@ export default function PortalLandingClient() {
               </h1>
 
               <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
-                Enter your reference number to see every step of your solar journey — from survey to switch-on, all in one place.
+                Enter your reference number to see every step of your solar journey - from survey to switch-on, all in one place.
               </p>
             </motion.div>
 

@@ -29,6 +29,8 @@ export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const [exitEmail, setExitEmail] = useState('');
   const [exitStatus, setExitStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
+  const [exitError, setExitError] = useState<string | null>(null);
+  const [exitFallback, setExitFallback] = useState(false);
   const hasTriggered = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -40,8 +42,17 @@ export default function ExitIntent() {
     e.preventDefault();
     if (!exitEmailValid || exitStatus === 'submitting') return;
     setExitStatus('submitting');
+    setExitError(null);
     trackExitIntent('email-submit');
-    await submitLead({ source: 'exit_intent', email: exitEmail.trim() });
+    const res = await submitLead({ source: 'exit_intent', email: exitEmail.trim() });
+    // Never claim an inbox we did not reach. On the fallback path the details
+    // are captured but no automated estimate goes out, so the copy softens.
+    if (!res.ok) {
+      setExitStatus('idle');
+      setExitError("That didn't go through. Try WhatsApp below and we'll pick it up.");
+      return;
+    }
+    setExitFallback(!!res.fallback);
     setExitStatus('done');
   }, [exitEmail, exitEmailValid, exitStatus]);
 
@@ -111,10 +122,21 @@ export default function ExitIntent() {
 
   useEffect(() => {
     if (!show) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // iOS Safari ignores overflow:hidden for touch scrolling, so the page
+    // scrolled behind the modal. position:fixed is the lock that actually holds.
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const prev = { overflow: body.style.overflow, position: body.style.position, top: body.style.top, width: body.style.width };
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.width = '100%';
     return () => {
-      document.body.style.overflow = prev;
+      body.style.overflow = prev.overflow;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      window.scrollTo(0, scrollY);
     };
   }, [show]);
 
@@ -220,7 +242,7 @@ export default function ExitIntent() {
           <button
             ref={closeBtnRef}
             onClick={() => { trackExitIntent('dismiss'); close(); }}
-            className="exit-intent-el exit-intent-el-0 w-9 h-9 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
+            className="exit-intent-el exit-intent-el-0 w-11 h-11 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -305,7 +327,10 @@ export default function ExitIntent() {
           <div className="exit-intent-el exit-intent-el-7">
             {exitStatus === 'done' ? (
               <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
-                <Shield className="w-4 h-4" /> Done. Your estimate is on its way to your inbox.
+                <Shield className="w-4 h-4" />
+                {exitFallback
+                  ? 'Done. We have your details and a member of our team will be in touch.'
+                  : 'Done. Your estimate is on its way to your inbox.'}
               </div>
             ) : (
               <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
@@ -318,6 +343,8 @@ export default function ExitIntent() {
                   onChange={(e) => setExitEmail(e.target.value)}
                   placeholder="your@email.ie"
                   autoComplete="email"
+                  inputMode="email"
+                  enterKeyHint="send"
                   className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
                 />
                 <button
@@ -328,6 +355,9 @@ export default function ExitIntent() {
                   {exitStatus === 'submitting' ? 'Sending...' : <>Email my free estimate <ArrowRight className="w-4 h-4" /></>}
                 </button>
               </form>
+            )}
+            {exitError && (
+              <p className="mt-2 text-[13px] text-red-400" role="alert">{exitError}</p>
             )}
           </div>
 

@@ -243,7 +243,10 @@ function MobileMenu({
         if (href.startsWith('/')) {
           if (href.includes('#')) {
             const [path, hash] = href.split('#');
-            if (path === '/' || path === '') {
+            // Only scroll in-page when we are already on the page that owns the
+            // anchor. Anywhere else the hash target does not exist, so the tap
+            // has to be a real navigation or the menu item does nothing.
+            if ((path === '/' || path === '') && window.location.pathname === '/') {
               document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
             } else {
               window.location.href = href;
@@ -283,7 +286,7 @@ function MobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-40 bg-black/70 md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[55] bg-black/70 lg:hidden transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
@@ -298,7 +301,7 @@ function MobileMenu({
         role="dialog"
         aria-label="Navigation menu"
         aria-modal="true"
-        className={`fixed inset-x-0 top-0 z-50 md:hidden max-h-[100dvh] overflow-y-auto overscroll-contain transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`fixed inset-x-0 top-0 z-[60] lg:hidden max-h-[100dvh] overflow-y-auto overscroll-contain transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? 'translate-y-0 opacity-100'
             : '-translate-y-full opacity-0 pointer-events-none'

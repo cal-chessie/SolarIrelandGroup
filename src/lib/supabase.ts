@@ -1,5 +1,5 @@
 /**
- * Supabase Client — Solar Ireland
+ * Supabase Client - Solar Ireland
  *
  * Creates typed Supabase clients for use throughout the Next.js app.
  * - `createBrowserClient`: for client components (uses anon key)

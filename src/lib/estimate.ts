@@ -1,5 +1,5 @@
 /**
- * Solar savings estimate — shared calculation.
+ * Solar savings estimate - shared calculation.
  *
  * Single source of truth for the on-site TEASER numbers (home intake +, next,
  * the /solar-calculator tool). The full, personalised estimate that the

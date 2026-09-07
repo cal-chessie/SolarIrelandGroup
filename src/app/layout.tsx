@@ -259,7 +259,7 @@ const localBusinessSchema = {
   priceRange: "€€",
   currenciesAccepted: "EUR",
   paymentAccepted: "Cash, Credit Card, Bank Transfer",
-  // Front desk (calls, WhatsApp, AI bill analyser) answers around the clock —
+  // Front desk (calls, WhatsApp, AI bill analyser) answers around the clock -
   // matches the Google Business Profile's "Open 24 hours".
   openingHoursSpecification: [
     {

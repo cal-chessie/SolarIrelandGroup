@@ -362,7 +362,7 @@ export default function BillAnalyser() {
     setIsAnalyzing(true);
     setAnalysis(null);
     setAnalysisStep(0);
-    // Manual mode is pure calculation — request runs alongside a brisk step
+    // Manual mode is pure calculation - request runs alongside a brisk step
     // animation rather than after a long one.
     const request = (async () => {
       const res = await fetch('/api/analyse-bill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ monthlyBill: bill, annualUsage: usage, homeType, provider }) });
@@ -790,7 +790,7 @@ export default function BillAnalyser() {
                           <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
                             <CheckCircle2 className="w-6 h-6 text-green-400" />
                           </div>
-                          <h4 className="text-lg font-bold text-white mb-1.5">Thanks — we&apos;re on it</h4>
+                          <h4 className="text-lg font-bold text-white mb-1.5">Thanks - we&apos;re on it</h4>
                           <p className="text-sm text-gray-400 max-w-md leading-relaxed">
                             {bizFallback
                               ? 'We have your details. Our commercial team will size your system properly and come back with real numbers.'
@@ -802,7 +802,7 @@ export default function BillAnalyser() {
                           <div className="text-center">
                             <h3 className="text-lg font-bold text-white mb-1.5">Commercial solar, sized properly</h3>
                             <p className="text-sm text-gray-400 max-w-lg mx-auto leading-relaxed">
-                              Business systems are a different animal — day-use profiles, three-phase supply, accelerated capital
+                              Business systems are a different animal - day-use profiles, three-phase supply, accelerated capital
                               allowances instead of the domestic grant. Tell us about the business and we&apos;ll model it for real.
                             </p>
                           </div>
@@ -853,7 +853,7 @@ export default function BillAnalyser() {
             {/* 
                 SCANNING STATE (file just uploaded)
                  */}
-            {isAnalyzing && billPreviewOpen && analysisStep > 0 && analysisStep < ANALYSIS_STEPS.length && (
+            {isAnalyzing && billPreviewOpen && analysisStep < ANALYSIS_STEPS.length && (
               <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 sm:p-8">
                 <ScanningOverlay billPreview={billPreview} />
               </motion.div>
@@ -1040,7 +1040,7 @@ export default function BillAnalyser() {
                     )}
                   </div>
 
-                  {/* ─── EMAIL-FIRST REPORT CAPTURE — every analysis becomes a lead ─── */}
+                  {/* ─── EMAIL-FIRST REPORT CAPTURE - every analysis becomes a lead ─── */}
                   <div className="rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-4 sm:p-7">
                     {leadStatus === 'sent' ? (
                       <div className="flex flex-col items-center text-center py-2" role="status" aria-live="polite">
@@ -1050,7 +1050,7 @@ export default function BillAnalyser() {
                         <h4 className="text-lg font-bold text-white mb-1.5">We&apos;ve got your details</h4>
                         <p className="text-sm text-gray-400 max-w-md leading-relaxed">
                           Your estimate is saved against <span className="text-white font-medium">{leadEmail.trim()}</span> and
-                          our team will send your personalised report and arrange your free survey — no pressure, no hard sell.
+                          our team will send your personalised report and arrange your free survey - no pressure, no hard sell.
                         </p>
                         <a
                           href="/book-survey?src=analyser"
@@ -1114,8 +1114,8 @@ export default function BillAnalyser() {
                                 <p className={`mt-1.5 text-[11px] flex items-center gap-1 ${isValidEircode(leadEircode) ? 'text-green-400' : 'text-amber-400/80'}`}>
                                   {isValidEircode(leadEircode)
                                     ? (eirHome
-                                        ? <><Check className="w-3 h-3" /> {eirHome.address.replace(/, Ireland$/, '')} — that&apos;s the home we&apos;ll survey</>
-                                        : <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} — we&apos;ll use this to find your home for the survey</>)
+                                        ? <><Check className="w-3 h-3" /> {eirHome.address.replace(/, Ireland$/, '')} - that&apos;s the home we&apos;ll survey</>
+                                        : <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} - we&apos;ll use this to find your home for the survey</>)
                                     : <>Doesn&apos;t look like a full Eircode yet (e.g. D02 X285)</>}
                                 </p>
                               )}

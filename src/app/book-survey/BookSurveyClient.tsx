@@ -250,6 +250,8 @@ export default function BookSurveyClient() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [failedMessage, setFailedMessage] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(formRef, { once: true, margin: '-80px' });
@@ -371,13 +373,18 @@ export default function BookSurveyClient() {
       message,
     });
 
-    // Fallback only: if the lead did not land, open a pre-filled WhatsApp draft
-    // so the booking is never silently lost.
+    // If the booking did not land we must not show the confirmed screen. A
+    // popup opened after an await is blocked on iOS, so offer a real link the
+    // customer taps themselves instead of pretending we have the booking.
     if (!res.ok) {
-      window.open(buildWhatsAppUrl({ source: 'booking-form', customMessage: message }), '_blank');
+      setFailedMessage(message);
+      setSubmitError("That booking didn't reach us. Send it to us on WhatsApp and we'll lock in your time.");
+      setIsSubmitting(false);
+      return;
     }
 
     trackSurveyBooking();
+    setSubmitError(null);
     setIsSubmitting(false);
     setIsSubmitted(true);
   }, [formData]);
@@ -536,11 +543,11 @@ export default function BookSurveyClient() {
                     <span className="text-sm text-gray-500">{stepLabels[step]}</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500"
-                      initial={false}
-                      animate={{ width: `${progressPercent}%` }}
-                      transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    {/* Plain div with an inline width: the motion shim ignores
+                        object-style animates, which left this bar always full. */}
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-[width] duration-500 ease-out"
+                      style={{ width: `${progressPercent}%` }}
                     />
                   </div>
                   <div className="flex items-center justify-between mt-3">
@@ -577,7 +584,7 @@ export default function BookSurveyClient() {
                   <div className="mb-4 flex items-start gap-3 rounded-xl bg-green-400/[0.07] border border-green-400/20 px-4 py-3">
                     <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                     <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                      Welcome back, <span className="text-white font-semibold">{magicName}</span> — your details are
+                      Welcome back, <span className="text-white font-semibold">{magicName}</span> - your details are
                       filled in from your estimate. Confirm your property and pick a time that suits.
                     </p>
                   </div>
@@ -613,6 +620,9 @@ export default function BookSurveyClient() {
                             onChange={(v) => update('firstName', v)}
                             error={errors.firstName}
                             placeholder="e.g. John"
+                            name="given-name"
+                            autoComplete="given-name"
+                            enterKeyHint="next"
                           />
                           <InputField
                             label="Last Name"
@@ -620,6 +630,9 @@ export default function BookSurveyClient() {
                             onChange={(v) => update('lastName', v)}
                             error={errors.lastName}
                             placeholder="e.g. Murphy"
+                            name="family-name"
+                            autoComplete="family-name"
+                            enterKeyHint="next"
                           />
                         </div>
 
@@ -632,14 +645,23 @@ export default function BookSurveyClient() {
                           error={errors.email}
                           placeholder="john@example.com"
                           className="mb-4"
+                          name="email"
+                          inputMode="email"
+                          autoComplete="email"
+                          enterKeyHint="next"
                         />
                         <InputField
                           label="Phone Number"
                           icon={Phone}
+                          type="tel"
                           value={formData.phone}
                           onChange={(v) => update('phone', v)}
                           error={errors.phone}
                           placeholder="087 123 4567"
+                          name="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          enterKeyHint="done"
                         />
 
                         <div className="mt-6 flex items-center gap-2 px-4 py-3 rounded-xl bg-green-400/[0.04] border border-green-400/10">
@@ -677,6 +699,9 @@ export default function BookSurveyClient() {
                             onChange={(v) => update('address', v)}
                             error={errors.address}
                             placeholder="e.g. 42 Main Street, Rathmines"
+                            name="street-address"
+                            autoComplete="street-address"
+                            enterKeyHint="next"
                           />
 
                           {/* County */}
@@ -1026,6 +1051,23 @@ export default function BookSurveyClient() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+
+                  {submitError && (
+                    <div
+                      role="alert"
+                      className="mt-6 p-4 rounded-xl bg-red-500/[0.07] border border-red-500/25"
+                    >
+                      <p className="text-sm text-red-300">{submitError}</p>
+                      <a
+                        href={buildWhatsAppUrl({ source: 'booking-form', customMessage: failedMessage })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-3 rounded-xl bg-green-500 hover:bg-green-400 text-white font-bold text-sm transition-colors"
+                      >
+                        Send it on WhatsApp
+                      </a>
+                    </div>
+                  )}
 
                   {/* ── Navigation buttons ── */}
                   <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/[0.06]">
@@ -1463,6 +1505,10 @@ function InputField({
   placeholder,
   type = 'text',
   className = '',
+  inputMode,
+  autoComplete,
+  enterKeyHint,
+  name,
 }: {
   label: string;
   icon?: React.ComponentType<{ className?: string }>;
@@ -1472,6 +1518,10 @@ function InputField({
   placeholder?: string;
   type?: string;
   className?: string;
+  inputMode?: 'text' | 'email' | 'tel' | 'numeric' | 'decimal' | 'search' | 'url' | 'none';
+  autoComplete?: string;
+  enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
+  name?: string;
 }) {
   const id = useId();
   return (
@@ -1488,7 +1538,11 @@ function InputField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-sm text-white placeholder-gray-600 focus:outline-none transition-all ${
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        enterKeyHint={enterKeyHint}
+        name={name}
+        className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-base text-white placeholder-gray-600 focus:outline-none transition-all ${
           error ? 'border-red-400/50 focus:border-red-400' : 'border-white/[0.08] focus:border-green-400/40'
         }`}
       />

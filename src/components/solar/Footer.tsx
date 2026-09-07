@@ -475,19 +475,19 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <a
               href="/privacy"
-              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
+              className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors"
             >
               Privacy Policy
             </a>
             <a
               href="/terms"
-              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
+              className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors"
             >
               Terms &amp; Conditions
             </a>
             <a
               href="/cookies"
-              className="text-[10px] sm:text-[11px] text-gray-400 hover:text-gray-400 transition-colors"
+              className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors"
             >
               Cookie Policy
             </a>

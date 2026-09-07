@@ -618,7 +618,11 @@ export default function WhatsAppChat() {
             ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 scale-[0.92] translate-y-6 pointer-events-none'
         } ${
-          'bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[calc(100vw-3rem)] sm:h-[600px] sm:max-h-[calc(100vh-6rem)] sm:rounded-2xl'
+          isMinimized
+            // Minimized is a small bar, never the full-screen sheet: the sheet
+            // geometry with only the header rendered reads as a dead black page.
+            ? 'bottom-4 left-4 right-4 h-auto rounded-2xl sm:left-auto sm:bottom-6 sm:right-6 sm:w-[340px]'
+            : 'bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[calc(100vw-3rem)] sm:h-[600px] sm:max-h-[calc(100vh-6rem)] sm:rounded-2xl'
         } bg-[#0f0f0f]`}
         aria-hidden={!isOpen}
       >

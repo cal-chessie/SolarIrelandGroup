@@ -271,7 +271,7 @@ function MotionElement(tag: string, rawProps: MotionProps) {
 
 // Cache one wrapper component per tag. Without this, every `motion.div`
 // access returns a NEW component type, so React unmounts and remounts the
-// entire subtree on every parent re-render — killing input focus (type one
+// entire subtree on every parent re-render - killing input focus (type one
 // character, lose the field), restarting animations, and re-running effects.
 const motionComponentCache = new Map<string, (props: MotionProps) => React.JSX.Element>();
 

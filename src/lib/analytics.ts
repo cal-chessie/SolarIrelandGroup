@@ -1,8 +1,8 @@
 /**
- * Analytics — Solar Ireland
+ * Analytics - Solar Ireland
  *
  * Unified event tracking layer for Google Analytics 4 and PostHog.
- * All analytics calls are consent-gated — events only fire when the user
+ * All analytics calls are consent-gated - events only fire when the user
  * has opted into the "analytics" cookie category.
  *
  * Usage:
@@ -73,7 +73,7 @@ function posthogEnabled(): boolean {
 /* ------------------------------------------------------------------ */
 
 export interface TrackEventParams {
-  /** Event name — use snake_case, e.g. "whatsapp_click" */
+  /** Event name - use snake_case, e.g. "whatsapp_click" */
   event: string;
   /** Additional properties to send with the event */
   properties?: Record<string, string | number | boolean | null | undefined>;
@@ -154,7 +154,7 @@ export function identifyUser(
 /*  Preset event helpers                                              */
 /* ------------------------------------------------------------------ */
 
-/** WhatsApp click — call from every WhatsApp CTA */
+/** WhatsApp click - call from every WhatsApp CTA */
 export function trackWhatsAppClick(source: string): void {
   trackEvent({
     event: 'whatsapp_click',

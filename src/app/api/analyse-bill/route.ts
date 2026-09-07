@@ -204,7 +204,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             error:
-              'Automatic bill reading is offline right now. Enter your monthly bill and usage manually instead — it takes 20 seconds.',
+              'Automatic bill reading is offline right now. Enter your monthly bill and usage manually instead - it takes 20 seconds.',
             uploadUnavailable: true,
           },
           { status: 503 }

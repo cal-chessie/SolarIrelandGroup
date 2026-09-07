@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 // ============================================================================
-// MOCK DATA — used when Supabase is not available
+// MOCK DATA - used when Supabase is not available
 // ============================================================================
 const MOCK = {
   lead_funnel: { new_contacts_today: 7, contacts_this_week: 34, contacts_this_month: 112, pending_surveys_today: 4 },
@@ -284,7 +284,7 @@ function OverviewTab({ data, allRecent }: { data: DashboardData; allRecent: any[
         {/* Lead funnel chart */}
         <div className="bg-white rounded-xl border p-6">
           <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" /> Lead Funnel — This Month
+            <BarChart3 className="w-5 h-5" /> Lead Funnel - This Month
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={[
@@ -351,7 +351,7 @@ function OverviewTab({ data, allRecent }: { data: DashboardData; allRecent: any[
                 <div key={s.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div>
                     <p className="text-sm font-medium text-gray-900">{s.reference}</p>
-                    <p className="text-xs text-gray-500">{s.first_name} {s.last_name} — {s.county}</p>
+                    <p className="text-xs text-gray-500">{s.first_name} {s.last_name} - {s.county}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">{s.preferred_date}</p>
@@ -557,7 +557,7 @@ function WhatsAppTab({ data }: { data: DashboardData }) {
             {data.recent_leads.whatsapp.map((c: any) => (
               <tr key={c.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-sm text-gray-700">{c.phone_number}</td>
-                <td className="px-4 py-3 font-medium text-gray-900">{c.display_name || "—"}</td>
+                <td className="px-4 py-3 font-medium text-gray-900">{c.display_name || "-"}</td>
                 <td className="px-4 py-3"><span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${stageColor(c.lead_stage)}`}>{c.lead_stage.replace(/_/g, " ")}</span></td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">

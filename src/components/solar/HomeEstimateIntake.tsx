@@ -8,7 +8,7 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { submitLead } from '@/lib/submitLead';
 
 /**
- * HomeEstimateIntake — the home page's single lead engine.
+ * HomeEstimateIntake - the home page's single lead engine.
  *
  * Shows an instant teaser (annual benefit, monthly saving, payback) as the
  * homeowner adjusts their bill, then captures first name + email to send the

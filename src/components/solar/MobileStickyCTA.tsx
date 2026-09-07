@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Zap } from 'lucide-react';
 
 /**
- * MobileStickyCTA — thumb-reach lead capture on small screens.
+ * MobileStickyCTA - thumb-reach lead capture on small screens.
  *
  * Appears once the visitor scrolls past the hero (its own CTAs are gone by
  * then) and hides again while the analyser is on screen, so it never sits on
@@ -57,7 +57,7 @@ export default function MobileStickyCTA() {
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-amber-400 text-black font-bold text-sm shadow-2xl shadow-black/50 border border-amber-300/40 active:scale-[0.98] transition-transform"
       >
         <Zap className="w-4 h-4" />
-        See My Savings — Free
+        See My Savings - Free
       </button>
     </div>
   );

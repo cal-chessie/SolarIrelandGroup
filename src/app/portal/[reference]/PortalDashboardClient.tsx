@@ -169,8 +169,8 @@ const demoDocuments = [
   { name: 'Survey Report', date: '24 Mar 2026', type: 'PDF', size: '2.4 MB' },
   { name: 'Itemised Quote', date: '24 Mar 2026', type: 'PDF', size: '1.8 MB' },
   { name: 'SEAI Grant Application', date: '1 Apr 2026', type: 'PDF', size: '340 KB' },
-  { name: 'Grant Offer Letter', date: '—', type: 'PDF', size: '—' },
-  { name: 'Completion Certificate', date: '—', type: 'PDF', size: '—' },
+  { name: 'Grant Offer Letter', date: '-', type: 'PDF', size: '-' },
+  { name: 'Completion Certificate', date: '-', type: 'PDF', size: '-' },
 ];
 
 const demoNotifications = [
@@ -182,7 +182,7 @@ const demoNotifications = [
 const demoCustomer = {
   name: 'John Murphy',
   address: '42 Main Street, Rathmines, Dublin 6',
-  system: '6kWp Solar PV — 16 Panels',
+  system: '6kWp Solar PV - 16 Panels',
   inverter: 'Huawei 6kW Hybrid Inverter',
   reference: 'SI-2026-0042',
   projectManager: 'Sarah Kelly',
@@ -523,7 +523,7 @@ export default function PortalDashboardClient() {
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.02] border border-white/[0.05]">
                       <PartyPopper className="w-4 h-4 text-amber-400" />
                       <span className="text-xs text-gray-500">
-                        {totalSteps - completedSteps} steps remaining — almost there!
+                        {totalSteps - completedSteps} steps remaining - almost there!
                       </span>
                     </div>
                   </div>
@@ -539,7 +539,7 @@ export default function PortalDashboardClient() {
 
                 <div className="space-y-2">
                   {demoDocuments.map((doc, i) => {
-                    const isAvailable = doc.date !== '—';
+                    const isAvailable = doc.date !== '-';
                     return (
                       <div
                         key={doc.name}
