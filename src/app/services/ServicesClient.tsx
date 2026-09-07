@@ -157,57 +157,66 @@ const additionalServices = [
 const packages = [
   {
     name: 'Essential',
-    price: '€8,200',
+    price: '€12,700',
+    afterGrant: '€10,900 after the grant',
+    bestFor: 'A typical 3-bed semi that wants evening power without over-buying.',
     tag: 'Best Value',
     tier: 'entry',
     features: {
       'System Size': '4 kWp',
-      'Number of Panels': '9–10 Panels',
+      'Number of Panels': '8–10 Panels',
       'Panel Brand': 'Tier-1 (Trina)',
-      'Inverter': 'String Inverter',
-      'Battery': 'None',
+      'Inverter': 'Hybrid Inverter',
+      'Battery': '5 kWh Battery',
       'Monitoring': 'Basic App',
       'SEAI Grant': '€1,800 (full)',
-      'Annual Savings': '€900–€1,000',
-      'Payback Period': '5-7 Years',
+      'Annual Savings': '€1,100–€1,250',
+      'Energy Independence': 'Around 70%',
+      'Payback Period': '9-11 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,
   },
   {
     name: 'Popular',
-    price: '€12,700',
-    tag: 'Most Popular',
+    price: '€18,900',
+    afterGrant: '€17,100 after the grant',
+    bestFor: 'Bigger houses, or anyone home during the day with an EV on the way.',
+    tag: 'Best All-Rounder',
     tier: 'popular',
     features: {
-      'System Size': '4 kWp',
-      'Number of Panels': '9–10 Panels',
+      'System Size': '6 kWp',
+      'Number of Panels': '12–16 Panels',
       'Panel Brand': 'Tier-1 (LONGi)',
       'Inverter': 'Hybrid Inverter',
-      'Battery': '5 kWh Battery',
+      'Battery': '10 kWh Battery',
       'Monitoring': 'Smart App + Portal',
       'SEAI Grant': '€1,800 (full)',
-      'Annual Savings': '€1,100–€1,300',
-      'Payback Period': '8-10 Years',
+      'Annual Savings': '€1,700–€1,900',
+      'Energy Independence': 'Around 75%',
+      'Payback Period': '9-11 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: true,
   },
   {
     name: 'Premium',
-    price: '€15,900',
+    price: '€22,100',
+    afterGrant: '€20,300 after the grant',
+    bestFor: 'Large homes, heat pumps, two EVs, and the most independence we can fit.',
     tag: 'Max Savings',
     tier: 'premium',
     features: {
-      'System Size': '6 kWp',
-      'Number of Panels': '13–14 Panels',
+      'System Size': '8 kWp',
+      'Number of Panels': '16–20 Panels',
       'Panel Brand': 'Tier-1 (Jinko)',
       'Inverter': 'Hybrid Inverter',
-      'Battery': '5 kWh Battery',
+      'Battery': '10 kWh Battery',
       'Monitoring': 'Full Smart Monitoring',
       'SEAI Grant': '€1,800 + €300 EV charger',
-      'Annual Savings': '€1,600–€1,900',
-      'Payback Period': '7-9 Years',
+      'Annual Savings': '€2,200–€2,400',
+      'Energy Independence': 'Around 75%',
+      'Payback Period': '8-10 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,
@@ -600,7 +609,7 @@ export default function ServicesPage() {
                   )}
                   {pkg.highlighted && (
                     <div className="absolute top-4 right-4">
-                      <span className="px-2.5 py-1 rounded-full bg-amber-400 text-black text-[10px] font-bold uppercase tracking-wider">
+                      <span className="px-2.5 py-1 rounded-full bg-yellow-400 text-black text-[10px] font-bold uppercase tracking-wider">
                         Most Popular
                       </span>
                     </div>
@@ -614,10 +623,16 @@ export default function ServicesPage() {
                         {pkg.tag}
                       </p>
                       <h3 className="text-2xl font-bold text-white mb-1">{pkg.name}</h3>
-                      <div className="flex items-baseline gap-1">
+                      <div className="flex items-baseline gap-1.5">
                         <span className="text-4xl font-bold text-white">{pkg.price}</span>
-                        <span className="text-sm text-gray-500">from</span>
+                        <span className="text-sm text-gray-400">from</span>
                       </div>
+                      <p className={`mt-1.5 text-[13px] font-semibold ${pkg.highlighted ? 'text-yellow-400' : 'text-green-400'}`}>
+                        {pkg.afterGrant}
+                      </p>
+                      <p className="mt-3 text-[13px] text-gray-400 leading-relaxed">
+                        {pkg.bestFor}
+                      </p>
                     </div>
 
                     <div className="space-y-3 mb-8">
