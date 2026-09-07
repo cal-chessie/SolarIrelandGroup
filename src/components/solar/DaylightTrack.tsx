@@ -71,7 +71,13 @@ function formatIrish(date: Date): string {
   }).format(date);
 }
 
-export default function DaylightTrack({ className = '' }: { className?: string }) {
+export default function DaylightTrack({
+  className = '',
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   // Rendered on the client only: the sun's position is not a server fact, and
   // rendering it during SSR would guarantee a hydration mismatch.
   const [state, setState] = useState<{
@@ -128,7 +134,7 @@ export default function DaylightTrack({ className = '' }: { className?: string }
   const y = (1 - t) ** 2 * p0.y + 2 * (1 - t) * t * p1.y + t ** 2 * p2.y;
 
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`}>
+    <div className={`inline-flex items-center gap-3 ${className}`} style={style}>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="overflow-visible">
         <path d={path} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="1" strokeLinecap="round" />
         {/* The travelled portion, so the arc reads as progress through the day */}

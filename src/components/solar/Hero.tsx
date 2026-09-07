@@ -94,8 +94,6 @@ export default function Hero() {
               SEAI Registered Installer
             </span>
 
-            {/* Where the sun actually is, right now, over Ireland. */}
-            <DaylightTrack className="hero-fade-up mt-5 justify-center lg:justify-start" />
 
             <div className="mt-6 sm:mt-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]">
@@ -178,7 +176,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="flex-shrink-0 lg:mt-4">
+          <div className="flex-shrink-0 lg:mt-4 flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:gap-6">
             <div
               ref={bumblebeeRef}
               className="hero-fade-up transition-transform duration-500 ease-out"
@@ -192,6 +190,13 @@ export default function Hero() {
                 className={`w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 ${loaded ? 'bumblebee-float' : ''}`}
               />
             </div>
+
+            {/* Where the sun actually is, right now, over Ireland. Sits to the
+                bee's right so the two read as one object. */}
+            <DaylightTrack
+              className="hero-fade-up shrink-0"
+              style={{ animationDelay: '0.55s' }}
+            />
           </div>
         </div>
 
