@@ -197,7 +197,9 @@ function useActiveSection() {
   const [active, setActive] = useState<string>('');
 
   useEffect(() => {
-    const sectionIds = mobileLinks.map((l) => l.href.replace('#', ''));
+    // href.replace('#','') turned '/#calculator' into '/calculator', which
+    // matches no element, so nothing was ever observed. Take the hash only.
+    const sectionIds = mobileLinks.map((l) => l.href.split('#')[1]).filter(Boolean);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -433,7 +435,7 @@ function MobileMenu({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={onClose}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-xs font-medium text-gray-300 hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.06] text-[13px] font-medium text-gray-300 hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
               >
                 <Phone className="w-3.5 h-3.5 text-green-400" />
                 WhatsApp
@@ -441,7 +443,7 @@ function MobileMenu({
               <a
                 href={`mailto:${SOLAR_DATA.provider.email}`}
                 onClick={onClose}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-xs font-medium text-gray-300 hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.06] text-[13px] font-medium text-gray-300 hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
               >
                 <Mail className="w-3.5 h-3.5 text-sky-400" />
                 Email Us

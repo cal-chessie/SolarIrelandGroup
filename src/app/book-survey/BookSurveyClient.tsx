@@ -333,6 +333,12 @@ export default function BookSurveyClient() {
   const prevStep = useCallback(() => setStep((s) => Math.max(s - 1, 0)), []);
 
   const handleSubmit = useCallback(async () => {
+    // A magic link drops the visitor straight to step 1, so step 0 may never
+    // have been validated. Without this a booking can arrive with no phone.
+    if (!validateStep(0)) {
+      setStep(0);
+      return;
+    }
     setIsSubmitting(true);
     const dateObj = availableDates.find((d) => d.date.toISOString() === formData.preferredDate);
     const dateStr = dateObj ? `${dateObj.dayName} ${dateObj.label}` : formData.preferredDate;
@@ -555,7 +561,8 @@ export default function BookSurveyClient() {
                       <button
                         key={label}
                         onClick={() => i < step && setStep(i)}
-                        className={`flex items-center gap-1.5 transition-all ${
+                        aria-label={`Step ${i + 1}: ${label}`}
+                        className={`flex items-center gap-1.5 py-2.5 px-1.5 -my-2.5 -mx-1.5 transition-all ${
                           i < step ? 'cursor-pointer' : 'cursor-default'
                         }`}
                       >
@@ -710,11 +717,13 @@ export default function BookSurveyClient() {
                               <MapPin className="w-3.5 h-3.5 text-gray-500" />
                               County
                             </label>
+                            <div className="relative">
+                            <ChevronDown className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             <select
                               id={countyId}
                               value={formData.county}
                               onChange={(e) => update('county', e.target.value)}
-                              className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-sm text-white appearance-none focus:outline-none transition-all ${
+                              className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-base text-white pr-10 appearance-none focus:outline-none transition-all ${
                                 errors.county ? 'border-red-400/50 focus:border-red-400' : 'border-white/[0.08] focus:border-green-400/40'
                               }`}
                             >
@@ -723,6 +732,7 @@ export default function BookSurveyClient() {
                                 <option key={c} value={c} className="bg-[#1a1a1a]">{c}</option>
                               ))}
                             </select>
+                            </div>
                             {errors.county && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.county}</p>}
                           </div>
 
@@ -788,17 +798,20 @@ export default function BookSurveyClient() {
                               <label htmlFor={householdSizeId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
                                 Household Size <span className="text-gray-600 normal-case">(optional)</span>
                               </label>
+                              <div className="relative">
+                              <ChevronDown className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                               <select
                                 id={householdSizeId}
                                 value={formData.householdSize}
                                 onChange={(e) => update('householdSize', e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white appearance-none focus:outline-none focus:border-green-400/40 transition-all"
+                                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white pr-10 appearance-none focus:outline-none focus:border-green-400/40 transition-all"
                               >
                                 <option value="" className="bg-[#1a1a1a]">Select</option>
                                 {['1 person', '2 people', '3 people', '4 people', '5+ people'].map((v) => (
                                   <option key={v} value={v} className="bg-[#1a1a1a]">{v}</option>
                                 ))}
                               </select>
+                              </div>
                             </div>
                             <div>
                               <label htmlFor={currentBillId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
@@ -808,7 +821,9 @@ export default function BookSurveyClient() {
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500">€</span>
                                 <input
                                   id={currentBillId}
-                                  type="number"
+                                  type="text"
+                                  inputMode="numeric"
+                                  pattern="[0-9]*"
                                   value={formData.currentBill}
                                   onChange={(e) => update('currentBill', e.target.value)}
                                   placeholder="150"
@@ -893,8 +908,8 @@ export default function BookSurveyClient() {
                                         : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1]'
                                     }`}
                                   >
-                                    <span className={`text-[10px] font-medium ${
-                                      isSelected ? 'text-sky-400' : 'text-gray-500'
+                                    <span className={`text-xs font-medium ${
+                                      isSelected ? 'text-sky-400' : 'text-gray-400'
                                     }`}>
                                       {d.dayName}
                                     </span>
@@ -903,7 +918,7 @@ export default function BookSurveyClient() {
                                     }`}>
                                       {d.date.getDate()}
                                     </span>
-                                    <span className={`text-[9px] ${
+                                    <span className={`text-[11px] ${
                                       isSelected ? 'text-sky-400/70' : 'text-gray-600'
                                     }`}>
                                       {d.month}
@@ -1069,8 +1084,10 @@ export default function BookSurveyClient() {
                     </div>
                   )}
 
-                  {/* ── Navigation buttons ── */}
-                  <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/[0.06]">
+                  {/* ── Navigation buttons ──
+                      pr on mobile keeps the primary button clear of the chat
+                      bubble parked at bottom-6 right-6. */}
+                  <div className="flex items-center justify-between gap-3 mt-8 pt-6 pr-20 sm:pr-0 border-t border-white/[0.06]">
                     {step > 0 ? (
                       <button
                         onClick={prevStep}
@@ -1158,7 +1175,7 @@ export default function BookSurveyClient() {
                     Your survey request has been sent to our team.
                   </p>
                   <p className="text-gray-500 max-w-md mx-auto mb-10">
-                    We&apos;ll confirm your appointment by text and email within <span className="text-white font-semibold">2 hours</span>. Check your WhatsApp for a message from us.
+                    We&apos;ll confirm your appointment by text and email within <span className="text-white font-semibold">2 hours</span>.
                   </p>
                 </motion.div>
 
@@ -1466,7 +1483,17 @@ export default function BookSurveyClient() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
-                  onClick={() => { setStep(0); setIsSubmitted(false); setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', county: '', propertyType: '', roofType: '', householdSize: '', currentBill: '', preferredDate: '', preferredTime: '', interest: [], notes: '' }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onClick={() => {
+                    // Only wipe the form when starting a genuinely new booking.
+                    // Mid-form this button used to destroy everything typed.
+                    if (isSubmitted) {
+                      setStep(0);
+                      setIsSubmitted(false);
+                      setSubmitError(null);
+                      setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', county: '', propertyType: '', roofType: '', householdSize: '', currentBill: '', preferredDate: '', preferredTime: '', interest: [], notes: '' });
+                    }
+                    stepCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
                   className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-green-400 hover:bg-green-300 text-black font-bold text-sm transition-all active:scale-[0.98] shadow-lg shadow-green-400/20"
                 >
                   <Calendar className="w-4 h-4" />

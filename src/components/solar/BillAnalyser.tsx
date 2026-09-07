@@ -264,6 +264,13 @@ export default function BillAnalyser() {
   const [showBattery, setShowBattery] = useState(false);
   const [billPreviewOpen, setBillPreviewOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const errorRef = useRef<HTMLDivElement>(null);
+
+  // The error renders at the foot of a tall card, so on a phone it lands well
+  // below the fold and the analysis just looks like it did nothing.
+  useEffect(() => {
+    if (error) errorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [error]);
 
   const [monthlyBill, setMonthlyBill] = useState('');
   const [annualUsage, setAnnualUsage] = useState('');
@@ -274,6 +281,7 @@ export default function BillAnalyser() {
   // Land the cursor in the first field the moment manual mode opens.
   useEffect(() => {
     if (mode === 'manual' && !analysis && !isAnalyzing) {
+      if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return;
       const t = setTimeout(() => document.getElementById('mb')?.focus(), 350);
       return () => clearTimeout(t);
     }
@@ -611,9 +619,7 @@ export default function BillAnalyser() {
                           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
 
                         <motion.div
-                          className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ${dragOver ? 'bg-amber-400/20 scale-110' : 'bg-white/[0.04] group-hover:bg-amber-400/10'}`}
-                          animate={prefersReducedMotion ? undefined : (!dragOver ? { y: [0, -4, 0] } : { scale: [1, 1.05, 1] })}
-                          transition={prefersReducedMotion ? undefined : (!dragOver ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.6, repeat: Infinity })}
+                          className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ${dragOver ? 'bg-yellow-400/20 scale-110 upload-pulse' : 'bg-white/[0.04] group-hover:bg-yellow-400/10 upload-float'}`}
                         >
                           <Upload className={`w-9 h-9 transition-colors duration-300 ${dragOver ? 'text-amber-400' : 'text-gray-500 group-hover:text-amber-400'}`} />
                         </motion.div>
@@ -712,7 +718,7 @@ export default function BillAnalyser() {
                           <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
-                            <input id="mb" type="text" inputMode="numeric" placeholder="160" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
+                            <input id="mb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="160" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
                           <p className="text-[11px] text-gray-400">Found on the front of your electricity bill</p>
@@ -721,12 +727,12 @@ export default function BillAnalyser() {
                           <label htmlFor="au" className="block text-sm text-gray-400">Annual Usage</label>
                           <div className="relative">
                             <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input id="au" type="text" inputMode="numeric" placeholder="4800" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
+                            <input id="au" enterKeyHint="go" type="text" inputMode="numeric" placeholder="4800" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
                               className="w-full pl-12 pr-14 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">kWh</span>
                           </div>
                           <button onClick={() => setAnnualUsage(String(estimateUsage(homeType, occupants)))}
-                            className="text-[11px] text-amber-400/70 hover:text-amber-400 transition-colors flex items-center gap-1">
+                            className="mt-1.5 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] text-yellow-400/90 hover:text-yellow-300 bg-white/[0.03] border border-white/[0.06] hover:border-yellow-400/25 transition-colors">
                             <Sparkles className="w-3 h-3" /> Auto-estimate from home type ({estimateUsage(homeType, occupants).toLocaleString()} kWh)
                           </button>
                         </div>
@@ -747,10 +753,10 @@ export default function BillAnalyser() {
                         </div>
                         <div className="space-y-2">
                           <label className="block text-sm text-gray-400">Provider</label>
-                          <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto">
+                          <div className="flex flex-wrap gap-2 sm:max-h-[100px] sm:overflow-y-auto">
                             {PROVIDERS.map(p => (
                               <button key={p} onClick={() => setProvider(p)} aria-pressed={provider === p}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${provider === p
+                                className={`px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all border ${provider === p
                                   ? (PROVIDER_COLORS[p] || 'bg-amber-400/10 border-amber-400/30 text-amber-400')
                                   : 'bg-white/[0.02] border-white/[0.06] text-gray-500 hover:border-white/[0.12] hover:text-gray-300'
                                 }`}>{p}</button>
@@ -775,7 +781,7 @@ export default function BillAnalyser() {
 
                       <div className="pt-2">
                         <Button onClick={handleManualAnalyse} disabled={!monthlyBill || !annualUsage}
-                          className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
+                          className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
                           <Sparkles className="mr-2 w-4 h-4" /> Analyse My Savings
                           <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
@@ -796,6 +802,24 @@ export default function BillAnalyser() {
                               ? 'We have your details. Our commercial team will size your system properly and come back with real numbers.'
                               : 'Your enquiry is with our commercial team. We\u2019ll model your usage profile and come back with real numbers.'}
                           </p>
+                          {/* The home panel offers a way onward; this one used
+                              to be a dead end with no route back. */}
+                          <div className="mt-6 flex flex-col sm:flex-row items-center gap-2.5 w-full max-w-sm">
+                            <a
+                              href={buildWhatsAppUrl({ source: 'bill-analyser-business', customMessage: 'Hi Solar Ireland, I just sent a commercial solar enquiry through the bill analyser.' })}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-green-500/10 border border-green-500/25 text-green-400 font-medium text-[14px] hover:bg-green-500/15 transition-colors"
+                            >
+                              <Share2 className="w-4 h-4" /> Talk to us now
+                            </a>
+                            <button
+                              onClick={() => { setBizStatus('idle'); setBizFallback(false); }}
+                              className="w-full sm:w-auto px-5 py-3 rounded-xl border border-white/[0.08] text-gray-400 text-[14px] hover:text-white hover:bg-white/[0.04] transition-colors"
+                            >
+                              Another enquiry
+                            </button>
+                          </div>
                         </div>
                       ) : (
                         <>
@@ -820,7 +844,7 @@ export default function BillAnalyser() {
                               <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Business phone" value={biz.phone}
                                 onChange={(e) => setBiz({ ...biz, phone: e.target.value })}
                                 className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="text" autoComplete="postal-code" placeholder="Eircode" aria-label="Eircode" value={biz.eircode}
+                              <input type="text" autoComplete="postal-code" autoCapitalize="characters" placeholder="Eircode" aria-label="Eircode" value={biz.eircode}
                                 onChange={(e) => setBiz({ ...biz, eircode: e.target.value })}
                                 className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="text" inputMode="numeric" placeholder="Monthly electricity spend (€, approx)" aria-label="Approximate monthly electricity spend in euro" value={biz.bill}
@@ -828,7 +852,7 @@ export default function BillAnalyser() {
                                 className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                             </div>
                             <Button type="submit" disabled={bizStatus === 'sending'}
-                              className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
+                              className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
                               {bizStatus === 'sending' ? 'Sending…' : <><Building2 className="mr-2 w-4 h-4" /> Get My Commercial Assessment <ArrowRight className="ml-2 w-4 h-4" /></>}
                             </Button>
                             {bizError && (
@@ -1107,9 +1131,9 @@ export default function BillAnalyser() {
                               onChange={(e) => { setLeadPhone(e.target.value); if (leadError) setLeadError(null); }}
                               className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <div>
-                              <input type="text" autoComplete="postal-code" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
+                              <input type="text" autoComplete="postal-code" autoCapitalize="characters" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
                                 onChange={(e) => { setLeadEircode(e.target.value); if (leadError) setLeadError(null); }}
-                                className={`w-full px-4 py-3.5 rounded-xl bg-black/30 border text-white text-sm placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-400/10 transition-all ${leadEircode.trim() && !isValidEircode(leadEircode) ? 'border-amber-400/50' : leadEircode.trim() && isValidEircode(leadEircode) ? 'border-green-400/50' : 'border-white/[0.1] focus:border-amber-400/50'}`} />
+                                className={`w-full px-4 py-3.5 rounded-xl bg-black/30 border text-white text-base placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-400/10 transition-all ${leadEircode.trim() && !isValidEircode(leadEircode) ? 'border-amber-400/50' : leadEircode.trim() && isValidEircode(leadEircode) ? 'border-green-400/50' : 'border-white/[0.1] focus:border-amber-400/50'}`} />
                               {leadEircode.trim() && (
                                 <p className={`mt-1.5 text-[11px] flex items-center gap-1 ${isValidEircode(leadEircode) ? 'text-green-400' : 'text-amber-400/80'}`}>
                                   {isValidEircode(leadEircode)
@@ -1122,7 +1146,7 @@ export default function BillAnalyser() {
                             </div>
                           </div>
                           <Button type="submit" disabled={leadStatus === 'sending'}
-                            className="w-full bg-amber-400 hover:bg-amber-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-sm shadow-lg shadow-amber-400/20 transition-all disabled:shadow-none">
+                            className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
                             {leadStatus === 'sending' ? 'Sending…' : <>Send My Full Estimate <ArrowRight className="ml-2 w-4 h-4" /></>}
                           </Button>
                         </form>
@@ -1143,13 +1167,13 @@ export default function BillAnalyser() {
                             recommendedSystem: analysis.recommendedSystem,
                             provider: analysis.provider,
                           })} target="_blank" rel="noopener noreferrer"
-                            className="text-xs text-gray-400 hover:text-green-400 transition-colors flex items-center gap-1.5">
+                            className="text-[13px] text-gray-400 hover:text-green-400 transition-colors flex items-center gap-1.5 py-2 px-2 -mx-2 rounded-lg">
                             <Share2 className="w-3.5 h-3.5" /> Prefer WhatsApp? Send us this analysis
                           </a>
-                          <button onClick={downloadReport} className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5">
+                          <button onClick={downloadReport} className="text-[13px] text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 py-2 px-2 -mx-2 rounded-lg">
                             <Download className="w-3.5 h-3.5" /> Download summary
                           </button>
-                          <button onClick={reset} className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5">
+                          <button onClick={reset} className="text-[13px] text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 py-2 px-2 ml-auto sm:ml-4 rounded-lg">
                             <RotateCcw className="w-3.5 h-3.5" /> Start over
                           </button>
                         </div>
@@ -1162,8 +1186,8 @@ export default function BillAnalyser() {
           </AnimatePresence>
 
           {error && (
-            <motion.div role="alert" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              className="mx-6 mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 flex items-start gap-2">
+            <motion.div ref={errorRef} role="alert" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className="mx-6 mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 flex items-start gap-2 scroll-mt-24">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}
             </motion.div>
           )}

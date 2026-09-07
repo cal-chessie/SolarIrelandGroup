@@ -236,6 +236,7 @@ export default function WhatsAppChat() {
   // Email-first capture on the pre-chat screen - feeds the AISolar lead door.
   const [prechatEmail, setPrechatEmail] = useState('');
   const [prechatLeadStatus, setPrechatLeadStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [prechatFallback, setPrechatFallback] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -244,6 +245,7 @@ export default function WhatsAppChat() {
   const notifTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const debounceSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const stored = loadFromStorage();
@@ -305,11 +307,16 @@ export default function WhatsAppChat() {
 
   useEffect(() => {
     if (hasGreeted || isOpen || notifDismissed) return;
+    let hideTimer: ReturnType<typeof setTimeout>;
     notifTimerRef.current = setTimeout(() => {
       setNotification("Got a question about solar? \ud83d\udc4b");
+      // The toast draws a 6s countdown bar, so it has to actually leave when
+      // the bar empties. It sits over the cookie settings button otherwise.
+      hideTimer = setTimeout(() => setNotification(null), 6000);
     }, 10000);
     return () => {
       if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
+      clearTimeout(hideTimer);
     };
   }, [hasGreeted, isOpen, notifDismissed]);
 
@@ -334,6 +341,25 @@ export default function WhatsAppChat() {
     if (!el) return;
     setShowScrollBtn(el.scrollHeight - el.scrollTop - el.clientHeight > 100);
   }, []);
+
+  // The on-screen keyboard does not shrink 100dvh, so the composer ends up
+  // behind it and Safari scrolls the header off the top. Drive the height from
+  // the visual viewport instead while the panel is open on a phone.
+  useEffect(() => {
+    if (!isOpen || isMinimized) return;
+    const vv = window.visualViewport;
+    const el = panelRef.current;
+    if (!vv || !el || !window.matchMedia('(max-width: 639px)').matches) return;
+    const apply = () => { el.style.height = `${vv.height}px`; };
+    apply();
+    vv.addEventListener('resize', apply);
+    vv.addEventListener('scroll', apply);
+    return () => {
+      vv.removeEventListener('resize', apply);
+      vv.removeEventListener('scroll', apply);
+      el.style.height = '';
+    };
+  }, [isOpen, isMinimized]);
 
   // While the chat is open: flag it so the exit-intent popup never fires over
   // an active conversation, and on mobile freeze the page behind the panel so
@@ -551,7 +577,7 @@ export default function WhatsAppChat() {
         tabIndex={0}
         aria-label="Open chat"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); }}
-        className={`fixed bottom-24 right-6 z-50 cursor-pointer max-w-xs transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`fixed bottom-40 right-6 z-50 cursor-pointer max-w-[min(20rem,calc(100vw-3rem))] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           notification && !isOpen
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 translate-y-5 scale-95 pointer-events-none'
@@ -569,9 +595,10 @@ export default function WhatsAppChat() {
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); dismissNotif(); }}
-            className="w-7 h-7 rounded-full hover:bg-white/[0.06] flex items-center justify-center text-gray-500 hover:text-gray-300 transition-colors shrink-0"
+            aria-label="Dismiss"
+            className="w-11 h-11 -mr-2 rounded-full hover:bg-white/[0.06] flex items-center justify-center text-gray-500 hover:text-gray-300 transition-colors shrink-0"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -613,6 +640,7 @@ export default function WhatsAppChat() {
           CHAT PANEL
            */}
       <div
+        ref={panelRef}
         className={`fixed z-50 flex flex-col overflow-hidden shadow-2xl shadow-black/50 border border-white/[0.08] transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
@@ -674,7 +702,7 @@ export default function WhatsAppChat() {
                     </div>
                   </div>
                   <button onClick={handleClose}
-                    className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                    className="w-11 h-11 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] flex items-center justify-center text-gray-300 hover:text-white transition-colors"
                     aria-label="Close chat">
                     <X className="w-4 h-4" />
                   </button>
@@ -720,8 +748,10 @@ export default function WhatsAppChat() {
 
                   {/* Email-first: a savings estimate straight to the inbox */}
                   {prechatLeadStatus === 'sent' ? (
-                    <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-xs text-green-400 mb-3" role="status">
-                      Done - we have your details. Our team will email your estimate shortly.
+                    <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-[13px] text-green-400 mb-3" role="status">
+                      {prechatFallback
+                        ? 'Done. We have your details and a member of our team will be in touch.'
+                        : 'Done. We have your details and your estimate is on the way.'}
                     </div>
                   ) : (
                     <form
@@ -729,9 +759,16 @@ export default function WhatsAppChat() {
                       onSubmit={async (e) => {
                         e.preventDefault();
                         const email = prechatEmail.trim();
-                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || prechatLeadStatus === 'sending') return;
+                        if (prechatLeadStatus === 'sending') return;
+                        // Say why nothing happened instead of silently doing
+                        // nothing when the address does not look like one.
+                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                          setPrechatLeadStatus('error');
+                          return;
+                        }
                         setPrechatLeadStatus('sending');
                         const res = await submitLead({ source: 'website_chat', email, message: 'Requested a savings estimate from the chat pre-screen.' });
+                        setPrechatFallback(!!res.fallback);
                         setPrechatLeadStatus(res.ok ? 'sent' : 'error');
                       }}
                     >
@@ -739,6 +776,7 @@ export default function WhatsAppChat() {
                         type="email"
                         inputMode="email"
                         autoComplete="email"
+                        enterKeyHint="send"
                         value={prechatEmail}
                         onChange={(e) => { setPrechatEmail(e.target.value); if (prechatLeadStatus === 'error') setPrechatLeadStatus('idle'); }}
                         placeholder="Or get an estimate by email"
@@ -755,7 +793,7 @@ export default function WhatsAppChat() {
                     </form>
                   )}
                   {prechatLeadStatus === 'error' && (
-                    <p className="w-full text-[11px] text-red-400 mb-3 -mt-1" role="alert">That didn&apos;t go through - try again or use WhatsApp below.</p>
+                    <p className="w-full text-[13px] text-red-400 mb-3 -mt-1" role="alert">Check that email address and try again, or use WhatsApp below.</p>
                   )}
 
                   <a
@@ -797,21 +835,21 @@ export default function WhatsAppChat() {
                       <span className="text-xs text-gray-400">&middot; Typically replies instantly</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-0.5">
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => setSoundEnabled(!soundEnabled)}
-                      className="w-8 h-8 rounded-lg hover:bg-white/[0.06] flex items-center justify-center text-gray-500 hover:text-white transition-colors"
+                      className="w-11 h-11 rounded-lg hover:bg-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white transition-colors"
                       aria-label={soundEnabled ? 'Mute notifications' : 'Enable notifications'}
                     >
                       {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
                     </button>
                     <button onClick={handleMinimize}
-                      className="w-8 h-8 rounded-lg hover:bg-white/[0.06] flex items-center justify-center text-gray-500 hover:text-white transition-colors"
+                      className="w-11 h-11 rounded-lg hover:bg-white/[0.06] flex items-center justify-center text-gray-400 hover:text-white transition-colors"
                       aria-label="Minimize chat">
                       <Minus className="w-4 h-4" />
                     </button>
                     <button onClick={handleClose}
-                      className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                      className="w-11 h-11 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] flex items-center justify-center text-gray-300 hover:text-white transition-colors"
                       aria-label="Close chat">
                       <X className="w-4 h-4" />
                     </button>
@@ -868,17 +906,17 @@ export default function WhatsAppChat() {
                         <div className="flex items-center gap-2 mt-1 px-1">
                           <span className="text-[10px] text-gray-400">{timeAgo(msg.timestamp)}</span>
                           {msg.role === 'assistant' && messages.indexOf(msg) > 0 && (
-                            <div className="flex items-center gap-0.5">
+                            <div className="flex items-center gap-1">
                               <button
                                 onClick={() => rateMessage(msg.id, 'up')}
-                                className={`p-0.5 rounded transition-colors ${msg.rated === 'up' ? 'text-green-400' : 'text-gray-500 hover:text-gray-300'}`}
+                                className={`p-2 -m-1 rounded transition-colors ${msg.rated === 'up' ? 'text-green-400' : 'text-gray-500 hover:text-gray-300'}`}
                                 aria-label="Helpful"
                               >
                                 <ThumbsUp className="w-3 h-3" />
                               </button>
                               <button
                                 onClick={() => rateMessage(msg.id, 'down')}
-                                className={`p-0.5 rounded transition-colors ${msg.rated === 'down' ? 'text-red-400' : 'text-gray-500 hover:text-gray-300'}`}
+                                className={`p-2 -m-1 rounded transition-colors ${msg.rated === 'down' ? 'text-red-400' : 'text-gray-500 hover:text-gray-300'}`}
                                 aria-label="Not helpful"
                               >
                                 <ThumbsDown className="w-3 h-3" />
@@ -899,7 +937,7 @@ export default function WhatsAppChat() {
                             setShowSuggestions(false);
                             sendMessage(suggestion);
                           }}
-                          className="follow-up-pill px-3 py-1.5 rounded-full text-[13px] text-yellow-300/80 bg-yellow-400/[0.06] border border-yellow-400/20 hover:bg-yellow-400/10 hover:border-yellow-400/35 hover:text-yellow-200 transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+                          className="follow-up-pill px-3.5 py-2.5 rounded-full text-[13px] text-yellow-300/80 bg-yellow-400/[0.06] border border-yellow-400/20 hover:bg-yellow-400/10 hover:border-yellow-400/35 hover:text-yellow-200 transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
                           style={{ animationDelay: `${i * 100}ms` }}
                         >
                           {suggestion}
@@ -958,7 +996,7 @@ export default function WhatsAppChat() {
                         <button
                           key={action.label}
                           onClick={() => handleQuickAction(action)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[13px] text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                          className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[13px] text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
                         >
                           <ActionIcon className="w-3 h-3" /> {action.label}
                         </button>
@@ -971,17 +1009,17 @@ export default function WhatsAppChat() {
                   <div className="flex items-center gap-2 mb-2">
                     <a href={buildWhatsAppUrl({ source: 'chat-widget' })}
                       target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-green-400 hover:bg-green-400/10 transition-colors">
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] text-green-400 hover:bg-green-400/10 transition-colors">
                       <Phone className="w-3 h-3" /> WhatsApp
                     </a>
                     <a href={`mailto:${SOLAR_DATA.provider.email}`}
-                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-400 hover:bg-white/[0.04] transition-colors">
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:bg-white/[0.04] transition-colors">
                       <Mail className="w-3 h-3" /> Email
                     </a>
                     <div className="flex-1" />
                     {messages.length > 3 && (
                       <button onClick={clearChat}
-                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-gray-400 hover:text-gray-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        className="flex items-center gap-1.5 ml-2 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:text-gray-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
                         <RotateCcw className="w-3 h-3" /> New chat
                       </button>
                     )}
@@ -994,6 +1032,7 @@ export default function WhatsAppChat() {
                       onChange={handleInputChange}
                       onKeyDown={handleKeyDown}
                       placeholder="Ask about solar..."
+                      enterKeyHint="send"
                       aria-label="Message"
                       disabled={isLoading}
                       rows={1}

@@ -267,9 +267,9 @@ export default function QuickSavingsCalculator() {
           })}
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-4">
+        <p className="text-center text-[13px] text-gray-400 mt-4">
           Want a personalised AI-powered report?{' '}
-          <a href="#calculator" className="text-amber-400/70 hover:text-amber-400 underline underline-offset-2 transition-colors">
+          <a href="#calculator" className="inline-block py-2 text-[13px] text-yellow-400/90 hover:text-yellow-300 underline underline-offset-2 transition-colors">
             Upload your bill &rarr;
           </a>
         </p>
@@ -403,7 +403,7 @@ function ResultsPanel({
       <button
         type="button"
         onClick={() => { trackCalculatorUsage(); setShowDetails(!showDetails); }}
-        className="w-full flex items-center justify-center gap-2 py-2.5 text-xs text-gray-400 hover:text-amber-400 transition-colors cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 py-3.5 text-[13px] text-gray-400 hover:text-yellow-400 transition-colors cursor-pointer"
       >
         <span>{showDetails ? 'Hide full breakdown' : 'Show full breakdown'}</span>
         <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showDetails ? 'rotate-180' : ''}`} />

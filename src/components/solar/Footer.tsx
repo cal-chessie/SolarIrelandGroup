@@ -335,7 +335,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors py-1"
+                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
                   >
                     <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
                     {link.label}

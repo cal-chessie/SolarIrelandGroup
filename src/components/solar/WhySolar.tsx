@@ -492,7 +492,7 @@ function BenefitCard({
 
 export default function WhySolar() {
   return (
-    <section id="why-solar" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative">
+    <section id="why-solar" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="absolute inset-0 honeycomb-bg" />
 
       <div className="absolute top-1/3 left-0 w-[500px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />

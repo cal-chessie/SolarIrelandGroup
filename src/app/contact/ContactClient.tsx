@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from '@/lib/motion';
 import Link from 'next/link';
 import {
   ChevronRight,
+  ChevronDown,
   MessageCircle,
   Phone,
   Mail,
@@ -41,7 +42,7 @@ const contactMethods = [
   {
     icon: MessageCircle,
     title: 'WhatsApp',
-    description: 'Fastest way to reach us. Send a message and we\'ll reply within minutes during office hours.',
+    description: 'Fastest way to reach us. Send a message and we\'ll reply within minutes, day or night.',
     action: 'Start Chat',
     href: buildWhatsAppUrl({ source: 'contact-page' }),
     external: true,
@@ -52,7 +53,7 @@ const contactMethods = [
   {
     icon: Phone,
     title: 'Phone',
-    description: 'Speak directly with our team. Available Monday to Saturday for solar questions and bookings.',
+    description: 'Speak directly with our team. The line is open around the clock for solar questions and bookings.',
     action: `Call ${SOLAR_DATA.provider.phoneDisplay}`,
     href: `tel:${SOLAR_DATA.provider.phone}`,
     external: false,
@@ -74,9 +75,9 @@ const contactMethods = [
 ];
 
 const officeHours = [
-  { day: 'Monday - Friday', hours: '8:00 AM - 6:00 PM', current: false },
-  { day: 'Saturday', hours: '9:00 AM - 2:00 PM', current: false },
-  { day: 'Sunday', hours: 'Closed', current: false },
+  { day: 'Monday to Friday', hours: 'Open 24 hours', current: false },
+  { day: 'Saturday', hours: 'Open 24 hours', current: false },
+  { day: 'Sunday', hours: 'Open 24 hours', current: false },
 ];
 
 const provinces = [
@@ -158,9 +159,14 @@ function ContactForm() {
       }
       setSubmitted(true);
       trackContactFormSubmit();
-    } catch {
+    } catch (err) {
+      // Show what the server actually said (e.g. the message is too short) so
+      // the visitor can fix it, not a dead end that blames the connection.
+      const msg = err instanceof Error ? err.message : '';
       setError(
-        'Something went wrong sending your message. Please email sales@solarirelandgroup.ie or call us and we will get straight back to you.'
+        msg && msg !== 'Submission failed'
+          ? msg
+          : 'Something went wrong sending your message. Please email sales@solarirelandgroup.ie or call us and we will get straight back to you.'
       );
     } finally {
       setIsSubmitting(false);
@@ -284,12 +290,13 @@ function ContactForm() {
 
               <div className="relative">
                 <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none z-10" />
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" />
                 <select
                   name="county"
                   aria-label="Your county"
                   value={formData.county}
                   onChange={handleChange}
-                  className={`${inputClasses} pl-10 appearance-none cursor-pointer`}
+                  className={`${inputClasses} pl-10 pr-10 appearance-none cursor-pointer`}
                 >
                   <option value="" className="bg-[#1a1a1a] text-gray-400">
                     Select your county

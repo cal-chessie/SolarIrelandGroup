@@ -244,7 +244,7 @@ function SwipeGallery({
               key={i}
               onClick={() => onSelect(i)}
               aria-label={`Go to photo ${i + 1}`}
-              className="flex items-center justify-center p-2 -m-1 group"
+              className="flex items-center justify-center min-h-11 px-2.5 -mx-1 group"
             >
               <span
                 className={`block transition-all duration-300 rounded-full ${

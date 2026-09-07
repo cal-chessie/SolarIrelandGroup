@@ -295,7 +295,7 @@ function CategoryTabs({
             key={cat.key}
             onClick={() => onChange(cat.key)}
             className={`
-              shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium
+              shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[13px] font-medium
               transition-all duration-200 active:scale-95 border
               ${isActive
                 ? `${cat.bg} ${cat.borderHover} border-white/[0.1] ${cat.color}`
@@ -527,7 +527,7 @@ export default function FAQ() {
               href={buildWhatsAppUrl({ source: 'faq' })}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-400 hover:text-green-300 transition-colors font-medium"
+              className="inline-block py-2 text-green-400 hover:text-green-300 transition-colors font-medium"
             >
               Ask us on WhatsApp →
             </a>

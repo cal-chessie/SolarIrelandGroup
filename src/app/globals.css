@@ -888,6 +888,12 @@
 @keyframes chart-bar-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .chart-bar { transform-box: fill-box; transform-origin: bottom; animation: chart-bar-grow 0.6s ease-out both; }
 
+@keyframes upload-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.upload-float { animation: upload-float 3s ease-in-out infinite; }
+
+@keyframes upload-pulse { 0%, 100% { transform: scale(1.1); } 50% { transform: scale(1.16); } }
+.upload-pulse { animation: upload-pulse 0.6s ease-in-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -920,6 +926,8 @@
   .scan-sweep,
   .spin-slow,
   .chart-bar,
+  .upload-float,
+  .upload-pulse,
   .bumblebee-float,
   .hero-orb,
   .scroll-bounce,
