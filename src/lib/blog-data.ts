@@ -28,7 +28,7 @@ export const articles: Article[] = [
   {
     "slug": "are-solar-panels-worth-it-ireland-2026",
     "title": "Are Solar Panels Worth It in Ireland? 2026 Verdict",
-    "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 6-8 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
+    "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
     "readTime": "10 min read",
@@ -38,7 +38,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 6-8 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill."
+        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 5-7 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill."
       },
       {
         "type": "heading",
@@ -88,7 +88,7 @@ export const articles: Article[] = [
           ],
           [
             "Typical payback",
-            "6-8 years"
+            "5-7 years"
           ],
           [
             "Typical 25-year savings",
@@ -225,7 +225,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Typically **6-8 years** for a well-sized domestic system after the €1,800 SEAI grant. Homes with high daytime usage and a clear roof come in near 5 years; smaller bills or awkward roofs stretch toward 7. After payback, the system produces essentially free electricity for the rest of its 25-30 year working life."
+        "text": "Typically **5-7 years** for a well-sized domestic system after the €1,800 SEAI grant. Homes with high daytime usage and a clear roof come in near 5 years; smaller bills or awkward roofs stretch toward 7. After payback, the system produces essentially free electricity for the rest of its 25-30 year working life."
       },
       {
         "type": "heading",
@@ -718,7 +718,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The day/night split on your bill is the first honest signal of which household you are. It is the starting point for working out [how many solar panels you actually need](/blog/how-many-solar-panels-do-i-need-ireland) - roof space sets the ceiling, but your usage pattern sets the target. Get the match right and a typical system pays for itself in 6-8 years."
+        "text": "The day/night split on your bill is the first honest signal of which household you are. It is the starting point for working out [how many solar panels you actually need](/blog/how-many-solar-panels-do-i-need-ireland) - roof space sets the ceiling, but your usage pattern sets the target. Get the match right and a typical system pays for itself in 5-7 years."
       },
       {
         "type": "heading",
@@ -1791,7 +1791,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "tip",
         "title": "Maximise Your Savings",
-        "body": "The SEAI grant can be stacked with the Clean Export Guarantee (CEG), which pays you €0.20/kWh for excess solar energy exported to the grid. Between the grant, bill savings, and CEG earnings, a typical system can pay for itself in 6-8 years."
+        "body": "The SEAI grant can be stacked with the Clean Export Guarantee (CEG), which pays you €0.20/kWh for excess solar energy exported to the grid. Between the grant, bill savings, and CEG earnings, a typical system can pay for itself in 5-7 years."
       },
       {
         "type": "heading",
@@ -2076,7 +2076,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of just 6-8 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of just 5-7 years. Here is a detailed ROI calculation for the three most common system sizes:"
       },
       {
         "type": "table",
@@ -2793,7 +2793,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 6-8 years, a battery usually takes 8–12 years. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
+        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 5-7 years, a battery usually takes 8–12 years. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
       },
       {
         "type": "paragraph",

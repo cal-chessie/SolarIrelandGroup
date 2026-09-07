@@ -47,7 +47,7 @@ const faqs: FAQItem[] = [
     id: 1,
     question: 'How much do solar panels cost in Ireland in 2026?',
     answer:
-      `A typical residential solar PV system costs between €4,500 and €7,500 before the SEAI grant. After the ${SOLAR_DATA.grant.label} grant, you are looking at approximately €2,700 to €5,700 out of pocket. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
+      `A standard 4 kWp system, the size most Irish homes get, costs €8,200 installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is €6,400 out of pocket. Larger systems run to about €14,600 before the grant. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
     category: 'costs',
     keywords: ['cost', 'price', 'expensive', 'cheap', 'budget', 'how much', 'money', 'afford'],
   },
@@ -63,7 +63,7 @@ const faqs: FAQItem[] = [
     id: 3,
     question: 'How long is the payback period?',
     answer:
-      'Most homeowners see a full payback typically within 6 to 8 years after the SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
+      'Most homeowners see a full payback typically within 5 to 7 years after the SEAI grant. A 4 kWp system costing around €6,500 (after grant) with annual savings of €1,000 would pay for itself in roughly 6.5 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
     category: 'costs',
     keywords: ['payback', 'how long', 'break even', 'roi', 'return', 'years'],
   },

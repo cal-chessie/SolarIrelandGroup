@@ -757,7 +757,7 @@ export default function WhatsAppChat() {
                     <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-[13px] text-green-400 mb-3" role="status">
                       {prechatFallback
                         ? 'Done. We have your details and a member of our team will be in touch.'
-                        : 'Done. We have your details and your estimate is on the way.'}
+                        : 'Done. A member of our team will be in touch about your estimate.'}
                     </div>
                   ) : (
                     <form

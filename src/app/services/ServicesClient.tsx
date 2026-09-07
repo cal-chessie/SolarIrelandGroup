@@ -45,7 +45,7 @@ const mainServices = [
     icon: Sun,
     title: 'Solar PV Installation',
     tagline: 'Residential Solar Panels',
-    price: '€4,500 – €7,500',
+    price: '€8,200 – €14,600',
     grant: 'Before €1,800 SEAI Grant',
     color: 'amber',
     iconBg: 'bg-amber-400/10',
@@ -58,7 +58,7 @@ const mainServices = [
       { label: 'Panel Brands', value: 'LONGi, Jinko, Trina (Tier-1)' },
       { label: 'Inverters', value: 'Hybrid & String Inverters' },
       { label: 'Panel Warranty', value: '25-Year Manufacturer' },
-      { label: 'Installer Warranty', value: '10-Year Workmanship' },
+      { label: 'Installer Warranty', value: '5-Year Workmanship' },
       { label: 'Avg. Annual Saving', value: '€800 – €1,400' },
     ],
     highlights: [
@@ -157,7 +157,7 @@ const additionalServices = [
 const packages = [
   {
     name: 'Essential',
-    price: '€4,500',
+    price: '€8,200',
     tag: 'Best Value',
     tier: 'entry',
     features: {
@@ -169,7 +169,7 @@ const packages = [
       'Monitoring': 'Basic App',
       'SEAI Grant': '€1,800',
       'Annual Savings': '€600–€800',
-      'Payback Period': '6-8 Years',
+      'Payback Period': '5-7 Years',
       'Warranty': '25-Year Panel',
     },
     highlighted: false,
@@ -188,7 +188,7 @@ const packages = [
       'Monitoring': 'Smart App + Portal',
       'SEAI Grant': '€1,800',
       'Annual Savings': '€900–€1,200',
-      'Payback Period': '6-8 Years',
+      'Payback Period': '5-7 Years',
       'Warranty': '25-Year Panel + 10-Year Install',
     },
     highlighted: true,
@@ -207,7 +207,7 @@ const packages = [
       'Monitoring': 'Full Smart Monitoring',
       'SEAI Grant': '€1,800 + €600 EV',
       'Annual Savings': '€1,400–€2,000',
-      'Payback Period': '6-8 Years',
+      'Payback Period': '5-7 Years',
       'Warranty': '25-Year Panel + 10-Year Install',
     },
     highlighted: false,
@@ -410,7 +410,7 @@ export default function ServicesPage() {
               <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-2xl mb-8">
                 From residential solar PV and battery storage to EV charging - we deliver
                 end-to-end clean energy solutions for homes across all 32 counties.
-                Every installation backed by our 10-year workmanship warranty.
+                Every installation backed by a 25 year panel performance warranty and our 5-year workmanship guarantee.
               </p>
 
               <div className="flex flex-wrap items-center gap-4">

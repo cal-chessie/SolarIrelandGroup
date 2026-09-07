@@ -56,7 +56,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 - A 3-bed semi can save roughly €800-€1,400/year depending on the bill; around €1,100 is typical
 - Self-consumption WITHOUT a battery is typically 30-50% in Ireland; the rest is exported. A battery lifts it to roughly 70-85%, which is why a battery is worth discussing on the survey.
 - Export: at least €0.20/kWh, the CRU's minimum Clean Export Guarantee rate that every supplier must pay. Some suppliers pay more.
-- Payback: typically 6-8 years after the grant, panels only
+- Payback: typically 5-7 years after the grant, panels only
 
 **Installation:**
 - Usually completed in one day

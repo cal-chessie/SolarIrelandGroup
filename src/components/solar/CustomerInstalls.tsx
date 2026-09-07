@@ -31,7 +31,7 @@ const installs = [
     roofType: 'Tiled roof',
     systemSize: '4.8 kWp',
     panels: '13 × 370W panels',
-    annualGen: '4,200 kWh/yr',
+    annualGen: '4,560 kWh/yr',
     annualSaving: '€1,050',
     payback: '5.8 years',
     installed: 'Feb 2025',
@@ -49,7 +49,7 @@ const installs = [
     roofType: 'Flat roof',
     systemSize: '6.0 kWp',
     panels: '16 × 375W panels',
-    annualGen: '5,200 kWh/yr',
+    annualGen: '5,700 kWh/yr',
     annualSaving: '€1,350',
     payback: '5.2 years',
     installed: 'Mar 2025',
@@ -67,7 +67,7 @@ const installs = [
     roofType: 'Stone roof',
     systemSize: '3.8 kWp',
     panels: '10 × 380W panels',
-    annualGen: '3,400 kWh/yr',
+    annualGen: '3,610 kWh/yr',
     annualSaving: '€850',
     payback: '6.5 years',
     installed: 'Dec 2024',
@@ -85,7 +85,7 @@ const installs = [
     roofType: 'Slate roof',
     systemSize: '7.2 kWp',
     panels: '18 × 400W panels',
-    annualGen: '6,100 kWh/yr',
+    annualGen: '6,840 kWh/yr',
     annualSaving: '€1,500',
     payback: '4.8 years',
     installed: 'Jan 2025',
@@ -103,7 +103,7 @@ const installs = [
     roofType: 'Tiled roof',
     systemSize: '5.4 kWp',
     panels: '14 × 390W panels',
-    annualGen: '4,850 kWh/yr',
+    annualGen: '5,130 kWh/yr',
     annualSaving: '€1,200',
     payback: '5.5 years',
     installed: 'Jan 2025',
@@ -121,7 +121,7 @@ const installs = [
     roofType: 'Slate roof',
     systemSize: '4.2 kWp',
     panels: '12 × 350W panels',
-    annualGen: '3,800 kWh/yr',
+    annualGen: '3,990 kWh/yr',
     annualSaving: '€950',
     payback: '6 years',
     installed: 'Nov 2024',
@@ -266,10 +266,12 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
   const isInView = useInView(ref, { once: true, margin: '-40px' });
 
   const specs = [
-    { icon: PanelTop, label: 'System', value: install.systemSize, color: 'text-amber-400', bg: 'bg-amber-400/10' },
+    // Per-home savings and payback depend on that household's bill, which is
+    // not ours to publish. These four are all evidenced by the install itself.
+    { icon: PanelTop, label: 'System', value: install.systemSize, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
     { icon: Sun, label: 'Annual gen', value: install.annualGen, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { icon: Euro, label: 'Annual saving', value: install.annualSaving, color: 'text-green-400', bg: 'bg-green-400/10' },
-    { icon: TrendingUp, label: 'Payback', value: install.payback, color: 'text-violet-400', bg: 'bg-violet-400/10' },
+    { icon: TrendingUp, label: 'Roof', value: install.orientation, color: 'text-green-400', bg: 'bg-green-400/10' },
+    { icon: Euro, label: 'Installed', value: install.installed, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];
 
   const details = [

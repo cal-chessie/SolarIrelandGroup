@@ -330,7 +330,7 @@ export default function ExitIntent() {
                 <Shield className="w-4 h-4" />
                 {exitFallback
                   ? 'Done. We have your details and a member of our team will be in touch.'
-                  : 'Done. Your estimate is on its way to your inbox.'}
+                  : 'Done. A member of our team will be in touch to walk you through your numbers.'}
               </div>
             ) : (
               <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
@@ -352,7 +352,7 @@ export default function ExitIntent() {
                   disabled={!exitEmailValid || exitStatus === 'submitting'}
                   className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-yellow-400 text-black font-bold text-[14px] hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {exitStatus === 'submitting' ? 'Sending...' : <>Email my free estimate <ArrowRight className="w-4 h-4" /></>}
+                  {exitStatus === 'submitting' ? 'Sending...' : <>Get my free estimate <ArrowRight className="w-4 h-4" /></>}
                 </button>
               </form>
             )}

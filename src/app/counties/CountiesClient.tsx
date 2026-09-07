@@ -127,7 +127,7 @@ const faqs = [
   },
   {
     question: 'How much do solar panels cost in my county?',
-    answer: 'Solar panel costs vary slightly by county depending on local demand, travel distances for installation teams, and the typical housing types in your area. Generally, a standard 4kWp residential solar PV system in Ireland costs between €4,300 and €7,200, including installation. After the €1,800 SEAI grant, your out-of-pocket cost could be as low as €2,500–€5,400. Every county page on our site shows specific pricing ranges for that area, so you can get a realistic estimate for your home.',
+    answer: 'Solar panel costs vary slightly by county depending on local demand, travel distances for installation teams, and the typical housing types in your area. A standard 4 kWp system costs €8,200 installed, which is €6,400 after the full €1,800 SEAI grant. Larger systems run to about €14,600 before the grant. Every county page on our site shows specific pricing ranges for that area, so you can get a realistic estimate for your home.',
   },
   {
     question: 'Is the SEAI grant available in all 32 counties?',

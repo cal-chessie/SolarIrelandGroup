@@ -571,7 +571,7 @@ function FinancingOptions() {
         'Highest 25-year return on investment',
         'No interest costs - every cent goes to savings',
         'Best option if you have savings earning less than 7%',
-        '€2,700–€8,700 typical out-of-pocket cost after grant',
+        '€6,400 to €12,800 typical out-of-pocket cost after the grant',
         'Instant equity increase in your property',
       ],
     },

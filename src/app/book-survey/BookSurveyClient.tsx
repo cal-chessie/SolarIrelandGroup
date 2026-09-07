@@ -128,27 +128,25 @@ interface FormData {
   notes: string;
 }
 
-const testimonials = [
+// These replaced three invented testimonials with named "customers" and
+// 5-star ratings that nothing in the business could substantiate. Until there
+// are real, permissioned reviews to show, the honest version of social proof
+// is what the survey actually gives you. Every line here is checkable.
+const surveyPromises = [
   {
-    name: 'Sarah O\'Brien',
-    location: 'Dublin',
-    rating: 5,
-    text: 'The survey was incredibly thorough. The assessor explained everything clearly and I had my quote the next day. Absolutely no pressure. Ended up saving €1,400 a year on electricity bills!',
-    system: 'Solar PV + Battery',
+    title: 'Your figures, from your bill',
+    text: 'We read your own bill: the unit rate you actually pay, your day and night split, your real annual usage. The estimate is built from those numbers, not from an average home.',
+    tag: 'No guesswork',
   },
   {
-    name: 'Michael Murphy',
-    location: 'Cork',
-    rating: 5,
-    text: 'Best decision we ever made. From booking to installation, everything was seamless. The survey gave us total confidence in what we were getting. Highly recommend.',
-    system: 'Solar PV + EV Charger',
+    title: 'The full €1,800 grant',
+    text: 'Every system we fit is at least 4 kWp, which is the exact size the SEAI grant reaches its full €1,800. We prepare and submit the application and see it through. Approval is SEAI\'s decision.',
+    tag: 'Grant handled',
   },
   {
-    name: 'Emma Kavanagh',
-    location: 'Kildare',
-    rating: 5,
-    text: 'We were hesitant about solar, but the free survey completely changed our minds. The assessor showed us exactly how much we\'d save and helped us get the SEAI grant sorted.',
-    system: 'Solar PV + Battery',
+    title: 'A price, not a pitch',
+    text: 'Fifteen minutes, on site or by video. You leave knowing your roof, your system size and your price. Free, and there is nothing to sign on the day.',
+    tag: 'No obligation',
   },
 ];
 
@@ -547,7 +545,7 @@ export default function BookSurveyClient() {
                         <Star className="w-7 h-7 text-sky-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">Real customer reviews</h3>
+                        <h3 className="text-white font-bold">What the survey gives you</h3>
                         <p className="text-sm text-gray-500">From Irish homeowners we have installed for</p>
                       </div>
                     </div>
@@ -1396,36 +1394,28 @@ export default function BookSurveyClient() {
                 Trusted by <span className="text-gradient">Irish Homeowners</span>
               </h2>
               <p className="text-gray-400 max-w-lg mx-auto text-lg">
-                Real reviews from real Irish homeowners who went solar with us.
+                Exactly what you get on the day, and what it costs you. Nothing.
               </p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {testimonials.map((t, i) => (
+              {surveyPromises.map((p, i) => (
                 <motion.div
-                  key={t.name}
+                  key={p.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="glass-card rounded-2xl p-6 flex flex-col"
                 >
-                  <div className="flex items-center gap-1 mb-4">
-                    {Array.from({ length: t.rating }).map((_, j) => (
-                      <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                    ))}
+                  <div className="w-10 h-10 rounded-xl bg-yellow-400/10 flex items-center justify-center mb-4">
+                    <Check className="w-5 h-5 text-yellow-400" />
                   </div>
-                  <Quote className="w-6 h-6 text-gray-700 mb-3 shrink-0" />
-                  <p className="text-sm text-gray-400 leading-relaxed flex-1 mb-4">{t.text}</p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-white">{t.name}</p>
-                      <p className="text-xs text-gray-500">{t.location}</p>
-                    </div>
-                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-green-400/10 text-green-400 font-semibold">
-                      {t.system}
-                    </span>
-                  </div>
+                  <h3 className="text-base font-bold text-white mb-2">{p.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed flex-1 mb-4">{p.text}</p>
+                  <span className="text-[11px] px-2.5 py-1 rounded-full bg-green-400/10 text-green-400 font-semibold self-start">
+                    {p.tag}
+                  </span>
                 </motion.div>
               ))}
             </div>

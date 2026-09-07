@@ -469,7 +469,7 @@ export default function AboutClient() {
                     <h3 className="text-sm font-bold text-white mb-1">Insurance & Guarantee</h3>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Full public liability insurance and professional indemnity cover.
-                      All installations are guaranteed for 10 years, with panel manufacturer warranties
+                      Panels carry a 25 year performance warranty, and our own workmanship is guaranteed for 5 years, with panel manufacturer warranties
                       lasting 25 years. If anything goes wrong, it is covered by our workmanship warranty, subject to the terms.
                     </p>
                   </div>
