@@ -266,6 +266,16 @@ export default function BillAnalyser() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const errorRef = useRef<HTMLDivElement>(null);
 
+  // If they arrived from a package card, remember which one. It travels with
+  // the lead so the brief can say which tier actually pulled it in.
+  const [pkgInterest, setPkgInterest] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get('pkg');
+      if (p) setPkgInterest(p.slice(0, 40));
+    } catch { /* no param, no problem */ }
+  }, []);
+
   // The error renders at the foot of a tall card, so on a phone it lands well
   // below the fold and the analysis just looks like it did nothing.
   useEffect(() => {
@@ -488,6 +498,7 @@ export default function BillAnalyser() {
       segment: 'domestic',
       occupants,
       provider: analysis.provider,
+      packageInterest: pkgInterest ?? undefined,
       // Only send a bill read when a bill was actually read. Typed figures
       // must never masquerade as an extraction: the platform decides between
       // the two-page and one-page estimate on exactly this.
@@ -538,6 +549,7 @@ export default function BillAnalyser() {
       monthlyBill: Number.isFinite(billNum) && billNum > 0 ? billNum : undefined,
       homeType: 'Commercial',
       segment: 'commercial',
+      packageInterest: pkgInterest ?? undefined,
       message: `Commercial solar enquiry from ${business}${biz.bill ? ` - approx €${biz.bill}/month electricity` : ''}. Requested a tailored commercial assessment via the bill analyser.`,
     });
     if (result.ok) {

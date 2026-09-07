@@ -35,6 +35,8 @@ export interface LeadInput {
   /** Their electricity supplier, so the estimate can use the right rates. */
   provider?: string;
   /** Roof type and household size from the booking form. */
+  /** Which pricing package sent them into the analyser, if any. */
+  packageInterest?: string;
   roofType?: string;
   householdSize?: string;
   /**

@@ -119,6 +119,7 @@ export async function POST(request: Request) {
         segment: body.segment === 'commercial' ? 'commercial' : (body.segment === 'domestic' ? 'domestic' : undefined),
         occupants: str(body.occupants, MAX.generic) || undefined,
         provider: str(body.provider, MAX.generic) || undefined,
+        packageInterest: str(body.packageInterest, MAX.generic) || undefined,
         roofType: str(body.roofType, MAX.generic) || undefined,
         householdSize: str(body.householdSize, MAX.generic) || undefined,
         // The analyser's read of a real uploaded bill. Values only, capped,

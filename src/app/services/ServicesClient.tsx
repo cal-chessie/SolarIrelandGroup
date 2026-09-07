@@ -45,7 +45,7 @@ const mainServices = [
     icon: Sun,
     title: 'Solar PV Installation',
     tagline: 'Residential Solar Panels',
-    price: '€8,200 – €14,600',
+    price: '€8,200 – €12,400',
     grant: 'Before €1,800 SEAI Grant',
     color: 'amber',
     iconBg: 'bg-amber-400/10',
@@ -157,8 +157,8 @@ const additionalServices = [
 const packages = [
   {
     name: 'Essential',
-    price: '€12,700',
-    afterGrant: '€10,900 after the grant',
+    price: '€11,400',
+    afterGrant: '€9,600 after the grant',
     bestFor: 'A typical 3-bed semi that wants evening power without over-buying.',
     tag: 'Best Value',
     tier: 'entry',
@@ -172,15 +172,15 @@ const packages = [
       'SEAI Grant': '€1,800 (full)',
       'Annual Savings': '€1,100–€1,250',
       'Energy Independence': 'Around 70%',
-      'Payback Period': '9-11 Years',
+      'Payback Period': '8-9 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,
   },
   {
     name: 'Popular',
-    price: '€18,900',
-    afterGrant: '€17,100 after the grant',
+    price: '€14,500',
+    afterGrant: '€12,700 after the grant',
     bestFor: 'Bigger houses, or anyone home during the day with an EV on the way.',
     tag: 'Best All-Rounder',
     tier: 'popular',
@@ -194,15 +194,15 @@ const packages = [
       'SEAI Grant': '€1,800 (full)',
       'Annual Savings': '€1,700–€1,900',
       'Energy Independence': 'Around 75%',
-      'Payback Period': '9-11 Years',
+      'Payback Period': '7-8 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: true,
   },
   {
     name: 'Premium',
-    price: '€22,100',
-    afterGrant: '€20,300 after the grant',
+    price: '€15,900',
+    afterGrant: '€14,100 after the grant',
     bestFor: 'Large homes, heat pumps, two EVs, and the most independence we can fit.',
     tag: 'Max Savings',
     tier: 'premium',
@@ -216,7 +216,7 @@ const packages = [
       'SEAI Grant': '€1,800 + €300 EV charger',
       'Annual Savings': '€2,200–€2,400',
       'Energy Independence': 'Around 75%',
-      'Payback Period': '8-10 Years',
+      'Payback Period': '6-7 Years',
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,
@@ -646,17 +646,18 @@ export default function ServicesPage() {
                       ))}
                     </div>
 
+                    {/* Into the analyser, not out to WhatsApp. The package they
+                        picked rides along so it reaches the brief and we know
+                        which tier pulled the lead. */}
                     <a
-                      href={buildWhatsAppUrl({ source: 'services-package', customMessage: `Hi, I'm interested in the ${pkg.name} solar package.` })}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={`/solar-calculator?pkg=${encodeURIComponent(pkg.name.toLowerCase())}`}
                       className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         pkg.highlighted
-                          ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
+                          ? 'bg-yellow-400 hover:bg-yellow-300 text-black shadow-lg shadow-yellow-400/15'
                           : 'bg-white/[0.05] hover:bg-white/[0.08] text-white border border-white/[0.08]'
                       }`}
                     >
-                      Get a Quote
+                      Price this on my bill
                       <ArrowRight className="w-4 h-4" />
                     </a>
                   </div>

@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar PV, Battery & EV Charger Installation',
   description:
-    'Panels-only solar from €8,200 before the SEAI grant, so €6,400 after it. Battery packages from €12,700. Across all 32 counties, with the grant and BER handled and free surveys.',
+    'Panels-only solar from €8,200 before the SEAI grant, so €6,400 after it. Battery packages from €11,400. Across all 32 counties, with the grant and BER handled and free surveys.',
   openGraph: {
     title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
-      'Panels-only solar from €8,200 before the SEAI grant (€6,400 after), battery packages from €12,700, EV charging. Grant handled. Serving all 32 counties.',
+      'Panels-only solar from €8,200 before the SEAI grant (€6,400 after), battery packages from €11,400, EV charging. Grant handled. Serving all 32 counties.',
     url: 'https://solarirelandgroup.ie/services',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:
-      'Panels-only solar from €8,200 before the SEAI grant (€6,400 after), battery packages from €12,700, EV charging. Grant handled. Serving all 32 counties.',
+      'Panels-only solar from €8,200 before the SEAI grant (€6,400 after), battery packages from €11,400, EV charging. Grant handled. Serving all 32 counties.',
     images: ['https://solarirelandgroup.ie/og-services.png'],
   },
   alternates: {

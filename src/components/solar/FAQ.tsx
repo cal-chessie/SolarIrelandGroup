@@ -47,7 +47,7 @@ const faqs: FAQItem[] = [
     id: 1,
     question: 'How much do solar panels cost in Ireland in 2026?',
     answer:
-      `A standard 4 kWp system, the size most Irish homes get, costs €8,200 installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is €6,400 out of pocket. Larger systems run to about €14,600 before the grant. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
+      `A standard 4 kWp system, the size most Irish homes get, costs €8,200 installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is €6,400 out of pocket. Larger systems price better per kWp: a 10 kWp roof is about €12,400 before the grant. The exact cost depends on the system size, roof complexity, and whether you want battery storage. We provide itemised quotes so you can see exactly where your money goes - no hidden costs, no surprises. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Use our AI Bill Analyser for a personalised quote</a>`,
     category: 'costs',
     keywords: ['cost', 'price', 'expensive', 'cheap', 'budget', 'how much', 'money', 'afford'],
   },

@@ -66,12 +66,38 @@ export const ENERGY = {
   co2PerTreePerYear: 22,
 } as const;
 
-/** Solar Ireland's own install pricing. Not evidence, a commercial decision. */
+/**
+ * Solar Ireland's own install pricing. Not evidence, a commercial decision.
+ *
+ * Bigger systems price better per kWp, which a flat rate could not express:
+ * the scaffolding, the design, the commissioning, the ESB paperwork and the
+ * day's labour barely move between a 4 kWp and an 8 kWp roof, so almost all of
+ * the extra cost is panels and mounting. A flat €1,600/kWp overpriced every
+ * large system badly enough to lose the lead.
+ *
+ * Fitted to the two prices Cal confirmed:
+ *   4 kWp panels only          €8,200
+ *   8 kWp with a 10 kWh battery €15,900
+ */
 export const PRICING = {
-  perKwpEur: 1600,
   baseInstallEur: 1800,
+  /** The first 4 kWp, the domestic floor. */
+  firstTierPerKwpEur: 1600,
+  /** Every kWp above the floor: mostly panels and mounting. */
+  additionalPerKwpEur: 700,
+  /** Battery: a fixed install cost plus capacity. */
+  batteryBaseEur: 1500,
+  batteryPerKwhEur: 340,
   panelWatts: 440,
 } as const;
+
+/** What a system costs to install, before the grant. */
+export function installCostEur(systemSizeKwp: number, batteryKwh = 0): number {
+  const firstTier = Math.min(systemSizeKwp, DOMESTIC_MIN_KWP) * PRICING.firstTierPerKwpEur;
+  const above = Math.max(0, systemSizeKwp - DOMESTIC_MIN_KWP) * PRICING.additionalPerKwpEur;
+  const battery = batteryKwh > 0 ? PRICING.batteryBaseEur + batteryKwh * PRICING.batteryPerKwhEur : 0;
+  return Math.round(PRICING.baseInstallEur + firstTier + above + battery);
+}
 
 /**
  * The domestic floor. Below 4 kWp the economics stop making sense: the fixed
@@ -220,9 +246,9 @@ export function estimate(input: {
     ? Math.round(((annualBillEur - annualBillAfterSolarEur) / annualBillEur) * 100)
     : 0;
 
-  const installCostEur = Math.round(systemSizeKwp * PRICING.perKwpEur + PRICING.baseInstallEur);
+  const installCost = installCostEur(systemSizeKwp);
   const grantEur = seaiGrant(systemSizeKwp);
-  const costAfterGrantEur = Math.max(installCostEur - grantEur, 0);
+  const costAfterGrantEur = Math.max(installCost - grantEur, 0);
   const paybackYears = totalAnnualBenefitEur > 0
     ? Math.round((costAfterGrantEur / totalAnnualBenefitEur) * 10) / 10
     : 0;
@@ -258,7 +284,7 @@ export function estimate(input: {
     monthlyBillAfterSolarEur: Math.round((annualBillAfterSolarEur / 12) * 100) / 100,
     monthlySavingsEur,
     billReductionPct,
-    installCostEur,
+    installCostEur: installCost,
     grantEur,
     costAfterGrantEur,
     paybackYears,
