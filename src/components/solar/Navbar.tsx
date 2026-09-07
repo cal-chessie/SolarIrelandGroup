@@ -302,7 +302,10 @@ function MobileMenu({
         tabIndex={-1}
         role="dialog"
         aria-label="Navigation menu"
-        aria-modal="true"
+        aria-modal={isOpen}
+        // Closed, this panel keeps 20 links in the tab order and still claims
+        // to be an open dialog. inert takes it out of both.
+        inert={!isOpen}
         className={`fixed inset-x-0 top-0 z-[60] lg:hidden max-h-[100dvh] overflow-y-auto overscroll-contain transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? 'translate-y-0 opacity-100'
@@ -595,7 +598,7 @@ export default function Navbar() {
           </button>
 
           {/* Desktop nav - 7 links */}
-          <div className="hidden lg:flex items-center gap-5">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-5">
             {desktopNavLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
                 ? (pathname === link.href || pathname.startsWith(link.href + '/'))
@@ -631,9 +634,11 @@ export default function Navbar() {
 
           {/* Desktop CTA buttons */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* The row needs ~1100px but the desktop nav starts at 1024, which
+                clipped the survey CTA. The secondary CTA waits for xl. */}
             <button
               onClick={() => navigateTo('/#calculator')}
-              className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20 whitespace-nowrap"
+              className="hidden xl:inline-flex bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-xs px-5 py-2 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
             >
               Analyse Bill
             </button>

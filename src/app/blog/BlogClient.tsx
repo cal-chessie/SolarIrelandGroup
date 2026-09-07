@@ -248,7 +248,7 @@ export default function BlogClient() {
                   href={`/blog/${featuredArticle.slug}`}
                   className="group block glass-card rounded-2xl overflow-hidden"
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative h-64 sm:h-80 lg:h-auto bg-gradient-to-br from-amber-400/[0.08] via-amber-500/[0.04] to-transparent overflow-hidden">
                       {featuredArticle.image ? (
                         <Image src={featuredArticle.image} alt={featuredArticle.title} fill className="object-cover" />

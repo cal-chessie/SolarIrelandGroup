@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useId, type ReactNode } from 'react';
 import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 import { trackConsentDecision } from '@/lib/analytics';
+import { setCookieBannerVisible } from '@/lib/bottomLayer';
 
 
 type CookieCategory = 'necessary' | 'analytics' | 'marketing';
@@ -317,6 +318,13 @@ export default function CookieConsent() {
     analytics: false,
     marketing: false,
   });
+
+  // Tell the sticky CTA and the chat bubble to stand down while this sheet is
+  // up, so it does not bury them in the same corner.
+  useEffect(() => {
+    setCookieBannerVisible(visible && !isDismissed);
+    return () => setCookieBannerVisible(false);
+  }, [visible, isDismissed]);
 
   useEffect(() => {
     const existing = getStoredConsent();

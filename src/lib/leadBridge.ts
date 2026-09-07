@@ -101,7 +101,10 @@ async function persistFallback(lead: BridgeLead): Promise<boolean> {
       monthly_bill: lead.monthlyBill ?? null,
       annual_kwh: lead.annualKwh ?? null,
       message: lead.message ?? null,
-      meta: lead.meta ?? null,
+      // The eircode has no column here, and it is the field that tells us which
+      // house to survey. Keep it in meta rather than losing it on the one path
+      // where the lead already failed to reach the platform.
+      meta: { ...(lead.meta ?? {}), ...(lead.eircode ? { eircode: lead.eircode } : {}) },
       forwarded: false,
     });
     if (error) {

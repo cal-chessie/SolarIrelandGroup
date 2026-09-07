@@ -267,7 +267,7 @@ function FinancingCalculator() {
             <p className="text-xs text-gray-500 mb-5">
               The size of system that fits your home determines the total cost.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
               {SYSTEM_PRESETS.map((s, i) => (
                 <button
                   key={i}
@@ -612,7 +612,7 @@ function FinancingOptions() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {options.map((opt) => {
             const Icon = opt.icon;
             return (

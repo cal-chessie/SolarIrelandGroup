@@ -26,6 +26,7 @@ import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { submitLead } from '@/lib/submitLead';
+import { useCookieBannerVisible } from '@/lib/bottomLayer';
 
 
 interface Message {
@@ -246,6 +247,8 @@ export default function WhatsAppChat() {
   const abortRef = useRef<AbortController | null>(null);
   const debounceSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // The cookie sheet covers this corner; wait until the visitor has answered it.
+  const cookieBanner = useCookieBannerVisible();
 
   useEffect(() => {
     const stored = loadFromStorage();
@@ -583,6 +586,7 @@ export default function WhatsAppChat() {
             : 'opacity-0 translate-y-5 scale-95 pointer-events-none'
         }`}
         aria-hidden={!notification || isOpen}
+        inert={!notification || isOpen}
       >
         <div className="relative overflow-hidden flex items-center gap-3 px-5 py-4 rounded-2xl bg-zinc-800/95 border border-white/[0.08] shadow-2xl shadow-black/40">
           <div className="notif-progress absolute bottom-0 left-0 h-[2px] bg-yellow-400/60 rounded-full" />
@@ -606,7 +610,7 @@ export default function WhatsAppChat() {
       {/* 
           FLOATING ACTION BUTTON (Enhanced 2026)
            */}
-      {!isOpen && (
+      {!isOpen && !cookieBanner && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2">
           <div
             className={`whatsapp-fab-tooltip transition-all duration-300 pointer-events-none ${
@@ -653,6 +657,8 @@ export default function WhatsAppChat() {
             : 'bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[calc(100vw-3rem)] sm:h-[600px] sm:max-h-[calc(100vh-6rem)] sm:rounded-2xl'
         } bg-[#0f0f0f]`}
         aria-hidden={!isOpen}
+        // Closed, the panel still held its whole form in the tab order.
+        inert={!isOpen}
       >
         {isMinimized ? (
           <div

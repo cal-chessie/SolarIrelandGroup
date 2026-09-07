@@ -222,7 +222,11 @@ export default function BookSurveyClient() {
           currentBill: d.monthlyBill ? String(d.monthlyBill) : prev.currentBill,
         }));
         setMagicName(firstName || null);
-        setStep(1);
+        // Only skip the details step when the estimate actually carried a full
+        // set. Jumping past a gap used to bounce the visitor back here at the
+        // final click, with errors on fields they were never shown.
+        const complete = Boolean(firstName && d.email && d.phone);
+        setStep(complete ? 1 : 0);
       } catch { /* the cold form still works */ }
     })();
   }, []);
@@ -308,6 +312,36 @@ export default function BookSurveyClient() {
   // the Next button lives at the bottom, so without this each step opens with
   // the viewport parked below the content (Cal: "you have to scroll up to see
   // the calendar").
+  // A refresh, a back button or a magic-link reload used to wipe all fourteen
+  // fields. Keep a local draft so a part-filled booking survives.
+  const DRAFT_KEY = 'sig-booking-draft';
+  const draftLoaded = useRef(false);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const d = JSON.parse(raw);
+        if (d && typeof d === 'object' && d.formData) {
+          setFormData((prev) => ({ ...prev, ...d.formData }));
+          if (typeof d.step === 'number' && d.step > 0 && d.step < 3) setStep(d.step);
+        }
+      }
+    } catch { /* a corrupt draft must never block the form */ }
+    draftLoaded.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!draftLoaded.current || isSubmitted) return;
+    const t = setTimeout(() => {
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ formData, step })); } catch { /* quota */ }
+    }, 400);
+    return () => clearTimeout(t);
+  }, [formData, step, isSubmitted]);
+
+  useEffect(() => {
+    if (isSubmitted) { try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ } }
+  }, [isSubmitted]);
+
   const stepCardRef = useRef<HTMLDivElement>(null);
   const prevStepRef = useRef<number | null>(null);
   useEffect(() => {
@@ -374,6 +408,9 @@ export default function BookSurveyClient() {
       county: formData.county || undefined,
       address: formData.address || undefined,
       monthlyBill: formData.currentBill ? Number(formData.currentBill) : undefined,
+      // Property type was only ever inside the message blob, so nothing could
+      // query it. It maps onto the same field the analyser sends.
+      homeType: propType || undefined,
       surveyDate: dateStr,
       surveyTime: timeStr,
       message,
@@ -587,7 +624,7 @@ export default function BookSurveyClient() {
                   </div>
                 </div>
 
-                {magicName && step === 1 && (
+                {magicName && step <= 1 && (
                   <div className="mb-4 flex items-start gap-3 rounded-xl bg-green-400/[0.07] border border-green-400/20 px-4 py-3">
                     <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                     <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">

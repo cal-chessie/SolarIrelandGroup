@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Zap } from 'lucide-react';
+import { useCookieBannerVisible } from '@/lib/bottomLayer';
 
 /**
  * MobileStickyCTA - thumb-reach lead capture on small screens.
@@ -43,7 +44,9 @@ export default function MobileStickyCTA() {
     return () => observer.disconnect();
   }, []);
 
-  const visible = pastHero && !analyserVisible && !nearFooter;
+  // Stand down while the cookie sheet owns the bottom of the screen.
+  const cookieBanner = useCookieBannerVisible();
+  const visible = pastHero && !analyserVisible && !nearFooter && !cookieBanner;
   if (!visible) return null;
 
   return (
@@ -54,7 +57,7 @@ export default function MobileStickyCTA() {
     >
       <button
         onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-amber-400 text-black font-bold text-sm shadow-2xl shadow-black/50 border border-amber-300/40 active:scale-[0.98] transition-transform"
+        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-yellow-400 text-black font-bold text-[15px] shadow-2xl shadow-black/50 border border-yellow-300/40 active:scale-[0.98] transition-transform"
       >
         <Zap className="w-4 h-4" />
         See My Savings - Free

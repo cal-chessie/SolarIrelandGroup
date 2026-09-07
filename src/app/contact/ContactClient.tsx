@@ -137,6 +137,8 @@ function ContactForm() {
     phone: '',
     county: '',
     message: '',
+    company: '',
+    website_url: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -216,7 +218,7 @@ function ContactForm() {
               <button
                 onClick={() => {
                   setSubmitted(false);
-                  setFormData({ name: '', email: '', phone: '', county: '', message: '' });
+                  setFormData({ name: '', email: '', phone: '', county: '', message: '', company: '', website_url: '' });
                 }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.03] text-gray-400 text-sm hover:bg-white/[0.06] transition-all"
               >
@@ -317,10 +319,18 @@ function ContactForm() {
                 aria-label="Your message" placeholder="Tell us about your home, roof type, or any questions you have..."
                 rows={4}
                 required
+                minLength={10}
                 value={formData.message}
                 onChange={handleChange}
                 className={`${inputClasses} pl-10 resize-none`}
               />
+            </div>
+
+            {/* Honeypot: the API already checks these two names, but this form
+                never rendered them, so the guard had nothing to catch. */}
+            <div className="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+              <input type="text" name="company" tabIndex={-1} autoComplete="off" value={formData.company} onChange={handleChange} />
+              <input type="text" name="website_url" tabIndex={-1} autoComplete="off" value={formData.website_url} onChange={handleChange} />
             </div>
 
             {error && (
