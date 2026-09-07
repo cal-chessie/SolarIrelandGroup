@@ -28,6 +28,21 @@ export interface LeadInput {
   message?: string;
   homeType?: string;
   estimatedAnnualSaving?: number;
+  /** Home or business. Drives which estimate the platform builds. */
+  segment?: 'domestic' | 'commercial';
+  /** People in the home: the biggest driver of daytime usage after the bill. */
+  occupants?: string;
+  /** Their electricity supplier, so the estimate can use the right rates. */
+  provider?: string;
+  /** Roof type and household size from the booking form. */
+  roofType?: string;
+  householdSize?: string;
+  /**
+   * The analyser's actual read of an uploaded bill. Without this the platform
+   * only ever sees a monthly figure and an annual usage, which is why every
+   * "full" estimate was being built from two numbers.
+   */
+  billRead?: Record<string, string | number | null | undefined>;
   /** Survey slot preference labels (book-survey only). */
   surveyDate?: string;
   surveyTime?: string;

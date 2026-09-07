@@ -409,6 +409,9 @@ export default function BookSurveyClient() {
       // Property type was only ever inside the message blob, so nothing could
       // query it. It maps onto the same field the analyser sends.
       homeType: propType || undefined,
+      segment: 'domestic',
+      roofType: roof || undefined,
+      householdSize: formData.householdSize || undefined,
       surveyDate: dateStr,
       surveyTime: timeStr,
       message,

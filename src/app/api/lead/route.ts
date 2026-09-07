@@ -42,6 +42,25 @@ function posNum(v: unknown): number | null {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
+
+/**
+ * Keep only simple label/value pairs from the analyser's bill read, bounded in
+ * both count and length. This is model output, so it is treated as untrusted.
+ */
+function sanitiseBillRead(raw: unknown): Record<string, string> | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (Object.keys(out).length >= 30) break;
+    if (v === null || v === undefined || v === '') continue;
+    if (typeof v !== 'string' && typeof v !== 'number' && typeof v !== 'boolean') continue;
+    const key = k.slice(0, 40).replace(/[^\w.-]/g, '');
+    if (!key) continue;
+    out[key] = String(v).slice(0, 120);
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
 export async function POST(request: Request) {
   try {
     if (isRateLimited(request)) {
@@ -94,6 +113,17 @@ export async function POST(request: Request) {
         estimatedAnnualSaving: posNum(body.estimatedAnnualSaving) ?? undefined,
         surveyDate: str(body.surveyDate, MAX.generic) || undefined,
         surveyTime: str(body.surveyTime, MAX.generic) || undefined,
+        // What the forms actually collect. Every one of these makes the
+        // estimate less of a guess, and none of them reached the platform
+        // before: it was seeing a monthly figure and an annual usage.
+        segment: body.segment === 'commercial' ? 'commercial' : (body.segment === 'domestic' ? 'domestic' : undefined),
+        occupants: str(body.occupants, MAX.generic) || undefined,
+        provider: str(body.provider, MAX.generic) || undefined,
+        roofType: str(body.roofType, MAX.generic) || undefined,
+        householdSize: str(body.householdSize, MAX.generic) || undefined,
+        // The analyser's read of a real uploaded bill. Values only, capped,
+        // so a bad extraction can never post arbitrary payloads onward.
+        billRead: sanitiseBillRead(body.billRead),
       },
     };
 

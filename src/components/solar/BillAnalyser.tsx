@@ -485,6 +485,24 @@ export default function BillAnalyser() {
       annualKwh: analysis.annualUsage,
       homeType: analysis.homeType,
       estimatedAnnualSaving: analysis.totalAnnualBenefit,
+      segment: 'domestic',
+      occupants,
+      provider: analysis.provider,
+      // Only send a bill read when a bill was actually read. Typed figures
+      // must never masquerade as an extraction: the platform decides between
+      // the two-page and one-page estimate on exactly this.
+      billRead: mode === 'upload' && analysis.extractedFields.length > 0
+        ? {
+            supplier: analysis.provider,
+            unit_rate: analysis.unitRate,
+            standing_charge: analysis.standingCharge,
+            billing_period: analysis.billingPeriod ?? undefined,
+            annual_usage_kwh: analysis.annualUsage,
+            monthly_bill: analysis.monthlyBill,
+            fields_read: analysis.extractedFields.length,
+            confidence: analysis.confidence,
+          }
+        : undefined,
       message: buildReportText(analysis),
     });
     if (result.ok) {
@@ -519,6 +537,7 @@ export default function BillAnalyser() {
       eircode: biz.eircode.trim().toUpperCase() || undefined,
       monthlyBill: Number.isFinite(billNum) && billNum > 0 ? billNum : undefined,
       homeType: 'Commercial',
+      segment: 'commercial',
       message: `Commercial solar enquiry from ${business}${biz.bill ? ` - approx €${biz.bill}/month electricity` : ''}. Requested a tailored commercial assessment via the bill analyser.`,
     });
     if (result.ok) {
