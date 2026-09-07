@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import DaylightTrack from './DaylightTrack';
 import {
   MessageCircle,
   ArrowRight,
@@ -92,6 +93,9 @@ export default function Hero() {
               <Sun className="w-3.5 h-3.5" />
               SEAI Registered Installer
             </span>
+
+            {/* Where the sun actually is, right now, over Ireland. */}
+            <DaylightTrack className="hero-fade-up mt-5 justify-center lg:justify-start" />
 
             <div className="mt-6 sm:mt-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]">

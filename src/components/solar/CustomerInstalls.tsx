@@ -165,7 +165,9 @@ function SwipeGallery({
 
   return (
     <div className="relative">
-      <div ref={constraintsRef} className="overflow-hidden rounded-2xl sm:rounded-3xl">
+      {/* panel-glint: a slow diagonal light crosses the photo on hover, the way
+          sun catches real glass. */}
+      <div ref={constraintsRef} className="panel-glint overflow-hidden rounded-2xl sm:rounded-3xl">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
