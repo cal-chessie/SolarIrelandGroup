@@ -121,44 +121,60 @@ export default function DaylightTrack({
   if (!state) return null;
 
   // A shallow arc, drawn once and measured, so the dot sits exactly on it.
-  const W = 132;
-  const H = 30;
-  const path = `M 4 ${H - 4} Q ${W / 2} -8 ${W - 4} ${H - 4}`;
+  const W = 148;
+  const H = 34;
+  const path = `M 5 ${H - 5} Q ${W / 2} -4 ${W - 5} ${H - 5}`;
 
   // Quadratic bezier at t, for the dot.
   const t = state.progress;
-  const p0 = { x: 4, y: H - 4 };
-  const p1 = { x: W / 2, y: -8 };
-  const p2 = { x: W - 4, y: H - 4 };
+  const p0 = { x: 5, y: H - 5 };
+  const p1 = { x: W / 2, y: -4 };
+  const p2 = { x: W - 5, y: H - 5 };
   const x = (1 - t) ** 2 * p0.x + 2 * (1 - t) * t * p1.x + t ** 2 * p2.x;
   const y = (1 - t) ** 2 * p0.y + 2 * (1 - t) * t * p1.y + t ** 2 * p2.y;
 
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`} style={style}>
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="overflow-visible">
-        <path d={path} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="1" strokeLinecap="round" />
-        {/* The travelled portion, so the arc reads as progress through the day */}
+    <div
+      className={`inline-flex items-center gap-3.5 rounded-full border border-white/[0.12] bg-black/45 pl-4 pr-5 py-2.5 backdrop-blur-md shadow-lg shadow-black/30 ${className}`}
+      style={style}
+    >
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="overflow-visible shrink-0">
+        <defs>
+          <filter id="daylight-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="2.6" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        {/* The whole day, faint but present */}
+        <path d={path} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1.5" strokeLinecap="round" />
+        {/* How much of it has gone */}
         <path
           d={path}
           fill="none"
-          stroke={state.daylight ? 'rgba(250,204,21,0.55)' : 'rgba(255,255,255,0.12)'}
-          strokeWidth="1"
+          stroke={state.daylight ? '#facc15' : 'rgba(255,255,255,0.3)'}
+          strokeWidth="2"
           strokeLinecap="round"
           pathLength={1}
           strokeDasharray={1}
           strokeDashoffset={1 - t}
+          opacity={state.daylight ? 0.9 : 0.4}
         />
-        {state.daylight && (
-          <>
-            <circle cx={x} cy={y} r={5} fill="rgba(250,204,21,0.18)" className="daylight-pulse" />
-            <circle cx={x} cy={y} r={2.5} fill="#facc15" />
-          </>
+        {state.daylight ? (
+          <g filter="url(#daylight-glow)">
+            <circle cx={x} cy={y} r={7} fill="rgba(250,204,21,0.28)" className="daylight-pulse" />
+            <circle cx={x} cy={y} r={4} fill="#fde68a" />
+            <circle cx={x} cy={y} r={2.4} fill="#ffffff" />
+          </g>
+        ) : (
+          <circle cx={x} cy={y} r={3} fill="rgba(255,255,255,0.55)" />
         )}
-        {!state.daylight && <circle cx={x} cy={y} r={2} fill="rgba(255,255,255,0.28)" />}
       </svg>
-      <span className="text-left leading-tight">
-        <span className="block text-[11px] font-semibold tracking-wide text-white/80">{state.label}</span>
-        <span className="block text-[11px] text-gray-400">{state.detail}</span>
+      <span className="text-left leading-tight whitespace-nowrap">
+        <span className="block text-[13px] font-semibold text-white">{state.label}</span>
+        <span className="block text-[12px] text-white/65">{state.detail}</span>
       </span>
     </div>
   );
