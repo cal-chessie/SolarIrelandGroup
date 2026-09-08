@@ -83,29 +83,28 @@ Then a second round, all seven items Cal listed:
 
 ---
 
-## Left in the blog, deliberately
+## The blog: closed, 8 Sep 2026
 
-The 8 Sep sweep fixed prices, the 4 kWp floor, yield, the landlord
-contradiction and the unsourced statistics. Three things were left because
-fixing them properly is a decision, not an edit:
+All three items the first sweep left are now fixed and pushed (`398bdf6`).
 
-- **`battery-storage-is-it-worth-the-extra-cost` models a 6 kWp system at about
-  5,000 kWh a year**, an implied 833 kWh/kWp against the canonical 950.
-  Correcting it cascades through four prose calculations and the whole ROI
-  table. Its battery prices and paybacks were corrected consistently with its
-  own generation assumption, so it is internally coherent but sits below the
-  rest of the site.
-- **The same article uses a €0.105 "effective CEG rate"** against €0.20
-  everywhere else, and `clean-export-guarantee-explained` states 6 kWp export
-  income as both "€250 to €378" and "€300 to €500" a year.
-- **The cost article's ROI table computes 25-year net profit at constant
-  electricity prices** (€16,100 for 4 kWp), which is below the canonical
-  €30,000 to €50,000. The table says it assumes constant prices, so it is
-  honest, but a reader comparing two articles will see a contradiction. Closing
-  it means choosing an escalation assumption, which is Cal's call, not an
-  invention to make the numbers agree.
+- **The battery article's economics** were built on 833 kWh/kWp and a
+  "€0.105 effective" export rate with no basis anywhere on the site. Rebuilt on
+  the engine: 5,700 kWh for 6 kWp, export at the €0.20 CRU floor, so the
+  battery is worth about €318 a year and pays back in roughly 10 years on its
+  own €3,200.
+- **The CEG export table** had a 4 kWp system exporting 800 to 1,200 kWh, which
+  implies 68 to 79% self-consumption. That is what a battery achieves, not
+  panels alone, so it understated export income about threefold. Now the real
+  panels-only band.
+- **The 25-year "contradiction" was not one.** €16,100 was net profit at flat
+  prices; the canonical €30,000 to €50,000 is gross benefit with 3% annual
+  rises. Two different quantities. The table now shows both rows and says which
+  assumption each uses, rather than picking one and hiding the other.
 
----
+**The lesson worth keeping:** two figures that disagree are not automatically
+one error. Check whether they are measuring the same thing before you
+"reconcile" them, because forcing agreement between a net and a gross number
+produces a third figure that is true of neither.
 
 ## The blog needed its own pass (done 8 Sep)
 
