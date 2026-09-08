@@ -279,7 +279,7 @@ export default function Footer() {
     <footer ref={footerRef} role="contentinfo" className="border-t border-white/[0.05] relative">
       <div className="amber-line" />
 
-      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="pt-12 sm:pt-16 pb-10 sm:pb-14">
           <PreFooterCTA />
         </div>

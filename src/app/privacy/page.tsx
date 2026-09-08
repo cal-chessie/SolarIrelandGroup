@@ -993,7 +993,7 @@ export default function PrivacyPolicyPage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-20 right-1/4 w-[300px] h-[200px] bg-blue-400/[0.02] rounded-full blur-[100px] pointer-events-none" />
 
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
             <div className="flex items-center gap-2 mb-5">
               <Shield className="w-4 h-4 text-amber-400" />
               <span className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-400">
@@ -1027,7 +1027,7 @@ export default function PrivacyPolicyPage() {
         </header>
 
         <div className="border-b border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8 py-3">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 py-3">
             <nav className="flex items-center gap-2 text-xs text-gray-600">
               <a href="/" className="hover:text-gray-400 transition-colors">Home</a>
               <ChevronRight className="w-3 h-3" />
@@ -1036,7 +1036,7 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
 
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8 pt-10 sm:pt-14">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 pt-10 sm:pt-14">
           <div className="mb-2">
             <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-gray-500 mb-1">
               Key Takeaways
@@ -1045,7 +1045,7 @@ export default function PrivacyPolicyPage() {
           <KeyTakeaways />
         </div>
 
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8 pb-10 sm:pb-14">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 pb-10 sm:pb-14">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-14">
             <aside className="lg:w-64 shrink-0">
               <TableOfContents />

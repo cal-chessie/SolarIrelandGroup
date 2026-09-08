@@ -5,7 +5,7 @@ export default function Loading() {
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-1/4 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full blur-[100px]" />
         </div>
-        <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
+        <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
           <div className="flex items-center gap-2 text-sm mb-8">
             <div className="w-12 h-3 bg-white/[0.04] rounded" />
             <div className="w-3 h-3 bg-white/[0.03] rounded" />
@@ -24,7 +24,7 @@ export default function Loading() {
         </div>
       </section>
       <section className="py-16 sm:py-24">
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <div className="h-8 bg-white/[0.04] rounded w-48 mx-auto mb-4" />
             <div className="h-4 bg-white/[0.03] rounded w-64 mx-auto" />

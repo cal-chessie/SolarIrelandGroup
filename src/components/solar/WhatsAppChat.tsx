@@ -654,7 +654,7 @@ export default function WhatsAppChat() {
               alt=""
               width={96}
               height={96}
-              className="bumblebee-float relative w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.55)] group-hover:drop-shadow-[0_10px_24px_rgba(250,204,21,0.4)] transition-all duration-300"
+              className="bumblebee-float relative w-[72px] h-[72px] sm:w-20 sm:h-20 object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.55)] group-hover:drop-shadow-[0_10px_24px_rgba(250,204,21,0.4)] transition-all duration-300"
             />
             <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-[#0a0a0a]" />
           </button>

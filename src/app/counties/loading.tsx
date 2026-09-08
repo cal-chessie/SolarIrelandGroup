@@ -4,7 +4,7 @@ return (
 <section className="relative overflow-hidden">
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
-  <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
+  <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
     <div className="inline-block w-32 h-6 bg-white/[0.04] rounded-full mb-4" />
     <div className="h-12 sm:h-14 bg-white/[0.04] rounded w-3/4 mb-4" />
     <div className="h-4 bg-white/[0.03] rounded w-full mb-2" />
@@ -18,7 +18,7 @@ return (
 </section>
 
 <section className="border-y border-white/[0.04] bg-white/[0.01] py-12 sm:py-16">
-  <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-5 sm:px-8">
+  <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8">
     <div className="text-center mb-8">
       <div className="h-7 bg-white/[0.04] rounded w-48 mx-auto mb-3" />
       <div className="h-4 bg-white/[0.03] rounded w-64 mx-auto" />

@@ -12,7 +12,7 @@ export default function BookSurveyLoading() {
             <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-green-400/[0.03] rounded-full blur-[100px]" />
           </div>
 
-          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
+          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 mb-8">
               <div className="h-3.5 w-12 rounded bg-white/[0.04] animate-pulse" />
@@ -89,7 +89,7 @@ export default function BookSurveyLoading() {
 
         {/* Testimonials */}
         <section className="py-16 sm:py-20 border-t border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <div className="h-8 w-56 mx-auto rounded-lg bg-white/[0.04] animate-pulse mb-3" />
               <div className="h-4 w-72 mx-auto rounded bg-white/[0.03] animate-pulse" />

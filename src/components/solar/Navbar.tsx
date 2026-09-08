@@ -572,7 +572,7 @@ export default function Navbar() {
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 h-16 xl:h-20 flex items-center justify-between">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-16 xl:h-[72px] flex items-center justify-between gap-4 lg:gap-8 xl:gap-10">
           {/* Logo */}
           <button
             onClick={() => {
@@ -607,7 +607,7 @@ export default function Navbar() {
                 <button
                   key={link.href}
                   onClick={() => navigateTo(link.href)}
-                  className={`text-xs xl:text-sm font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
+                  className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
                     link.isBookSurvey
                       ? 'text-green-400 font-semibold'
                       : link.href === '/portal'
@@ -638,13 +638,13 @@ export default function Navbar() {
                 clipped the survey CTA. The secondary CTA waits for xl. */}
             <button
               onClick={() => navigateTo('/#calculator')}
-              className="hidden xl:inline-flex bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs xl:text-sm px-5 xl:px-6 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
+              className="hidden xl:inline-flex bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
             >
               Analyse Bill
             </button>
             <button
               onClick={() => navigateTo('/book-survey')}
-              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs xl:text-sm px-5 xl:px-6 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
+              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
               Book Free Survey
             </button>

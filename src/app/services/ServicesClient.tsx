@@ -386,7 +386,7 @@ export default function ServicesPage() {
             <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full blur-[80px]" />
           </div>
 
-          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
+          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
             <motion.nav
               variants={fadeUp}
               initial="hidden"
@@ -466,7 +466,7 @@ export default function ServicesPage() {
             MAIN SERVICES GRID
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={stagger}
               initial="hidden"
@@ -509,7 +509,7 @@ export default function ServicesPage() {
             ADDITIONAL SERVICES
              */}
         <section className="py-16 sm:py-24 border-t border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={stagger}
               initial="hidden"
@@ -565,7 +565,7 @@ export default function ServicesPage() {
             COMPARISON TABLE
              */}
         <section className="py-16 sm:py-24 border-t border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={stagger}
               initial="hidden"

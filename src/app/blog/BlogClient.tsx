@@ -143,7 +143,7 @@ export default function BlogClient() {
             <div className="absolute bottom-0 left-1/3 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full blur-[80px]" />
           </div>
 
-          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
+          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16">
             <motion.nav
               variants={fadeUp}
               initial="hidden"
@@ -190,7 +190,7 @@ export default function BlogClient() {
             CATEGORY FILTER PILLS
              */}
         <section className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={stagger}
               initial="hidden"
@@ -236,7 +236,7 @@ export default function BlogClient() {
              */}
         {featuredArticle && (
           <section className="py-12 sm:py-16">
-            <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
                 variants={fadeUp}
                 initial="hidden"
@@ -313,7 +313,7 @@ export default function BlogClient() {
             ARTICLE GRID
              */}
         <section ref={gridRef} className="pb-16 sm:pb-24 scroll-mt-32">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className={`transition-all duration-200 ease-out ${
                 isTransitioning
@@ -462,7 +462,7 @@ export default function BlogClient() {
             NEWSLETTER SIGNUP
              */}
         <section className="py-16 sm:py-24 border-t border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

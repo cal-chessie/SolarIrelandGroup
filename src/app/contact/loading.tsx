@@ -5,7 +5,7 @@ export default function Loading() {
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 -right-32 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full blur-[100px]" />
         </div>
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-8">
               <div className="w-12 h-3 bg-white/[0.04] rounded" />
@@ -19,7 +19,7 @@ export default function Loading() {
         </div>
       </section>
       <section className="py-16 sm:py-20">
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[1, 2, 3].map((i) => (
               <div key={i} className="rounded-2xl border border-white/[0.04] bg-white/[0.02] p-6 h-40">

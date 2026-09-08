@@ -83,7 +83,7 @@ export default function Hero() {
       {/* 
           CONTENT
            */}
-      <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-8 xl:px-12 pt-28 pb-28 sm:pb-32">
+      <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-8 xl:px-12 pt-28 pb-28 sm:pb-32">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-6">
           <div className="max-w-2xl xl:max-w-3xl flex-1 text-center lg:text-left">
             <span
@@ -96,7 +96,7 @@ export default function Hero() {
 
 
             <div className="mt-6 sm:mt-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold tracking-tight leading-[0.95]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95]">
                 <span
                   className="hero-fade-up block"
                   style={{ animationDelay: '0.2s' }}
