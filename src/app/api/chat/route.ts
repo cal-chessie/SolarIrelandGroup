@@ -47,7 +47,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 **Costs:**
 - Typical 4 kWp system: around €8,200 installed before the grant, so about €6,400 after the full €1,800
 - Price depends on roof type, access, system size, and whether battery is included
-- We give honest quotes - no hidden costs, no pressure
+- Quotes are itemised and nothing is added afterwards
 - Battery storage adds ~€3,500–€5,500 depending on capacity
 
 **Generation & Savings:**

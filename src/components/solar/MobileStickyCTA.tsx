@@ -76,7 +76,7 @@ export default function MobileStickyCTA({
   );
 
   const className =
-    'w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-yellow-400 text-black font-bold text-[15px] shadow-2xl shadow-black/50 border border-yellow-300/40 active:scale-[0.98] transition-transform';
+    'w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-amber-400 text-black font-bold text-[15px] shadow-2xl shadow-black/50 border border-amber-300/40 active:scale-[0.98] transition-transform';
 
   return (
     // Right clearance keeps the chat FAB's corner free (it sits at right-6, z-50).

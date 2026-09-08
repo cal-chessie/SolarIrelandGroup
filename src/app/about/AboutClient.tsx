@@ -203,7 +203,7 @@ export default function AboutClient() {
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
                 We&apos;re Solar Ireland - a SEAI-registered team of solar installers
-                on a mission to cut through the jargon, eliminate the hard sell,
+                here to give a straight number and stand over it,
                 and help Irish homeowners save money with clean energy.
               </motion.p>
 
@@ -290,7 +290,7 @@ export default function AboutClient() {
                   Our Story
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight mb-6">
-                  Tired of the hard sell? So were we.
+                  We started this because we got quoted badly ourselves.
                 </h2>
                 <div className="space-y-4 text-sm sm:text-base text-gray-400 leading-relaxed">
                   <p>

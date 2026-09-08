@@ -1118,8 +1118,13 @@ export default function BillAnalyser() {
                         </div>
                         <h4 className="text-lg font-bold text-white mb-1.5">We&apos;ve got your details</h4>
                         <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-                          Your estimate is saved against <span className="text-white font-medium">{leadEmail.trim()}</span> and
-                          our team will send your personalised report and arrange your free survey - no pressure, no hard sell.
+                          {leadFallback ? (
+                            <>We have your details and your estimate is saved. Our team will come back to
+                            you with your full report and arrange your free survey.</>
+                          ) : (
+                            <>Your estimate is saved against <span className="text-white font-medium">{leadEmail.trim()}</span> and
+                            our team will send your personalised report and arrange your free survey. Nobody rings you at dinner time.</>
+                          )}
                         </p>
                         <a
                           href="/book-survey?src=analyser"

@@ -126,7 +126,7 @@ const bookSchema = {
           name: 'Is the solar survey really free?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes, completely free with no obligation. Our assessor visits your home, evaluates your roof and energy usage, and provides an honest itemised quote. You are under no pressure to proceed.',
+            text: 'Yes, free and with no obligation. The assessor measures your roof, checks shading and reviews your usage, then gives you an itemised quote. If solar is not right for your house, they will say so on the day.',
           },
         },
         {

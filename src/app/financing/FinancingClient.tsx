@@ -902,7 +902,7 @@ function FinalCTA() {
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
             Get a free, itemised quote with financing breakdown. We&apos;ll show you exactly
-            what you&apos;d pay upfront, monthly, and over 25 years - no hidden fees, no pressure.
+            what you&apos;d pay upfront, monthly, and over 25 years. Every figure itemised, nothing added later.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

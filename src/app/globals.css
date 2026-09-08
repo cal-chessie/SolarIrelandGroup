@@ -1182,3 +1182,42 @@
     transform: scale(1);
   }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   PRINT
+   The site is dark by design, and the legal pages already carry
+   print:hidden and print:pt-0, so printing was clearly intended. Nothing
+   ever reset the colours, so Terms, Privacy and Cookies printed white on
+   white: a blank page with a header. Customers do print these.
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  :root,
+  body,
+  .min-h-screen {
+    background: #fff !important;
+  }
+  main,
+  main * {
+    color: #111 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  main a {
+    color: #111 !important;
+    text-decoration: underline;
+  }
+  /* Chrome drops backgrounds by default; borders are what keep tables and
+     cards legible on paper. */
+  main table,
+  main th,
+  main td {
+    border: 1px solid #999 !important;
+  }
+  nav,
+  footer,
+  [aria-label="Cookie consent"],
+  [aria-label="Open chat"] {
+    display: none !important;
+  }
+}

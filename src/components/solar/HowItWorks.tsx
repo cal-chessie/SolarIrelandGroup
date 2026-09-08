@@ -31,7 +31,7 @@ const steps = [
     title: 'Free Survey',
     subtitle: 'No obligation, ever',
     description:
-      "We visit your home to assess your roof, shading, and energy usage. You'll get an honest recommendation tailored to your home - no pressure, no hard sell. Most surveys take under 45 minutes.",
+      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Most surveys take under 45 minutes.",
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
@@ -259,7 +259,7 @@ export default function HowItWorks() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
           >
-            From photo to savings in three simple steps. No jargon, no pressure - just honest solar advice.
+            From a photo of your bill to a real number in about fifteen seconds.
           </motion.p>
 
           <motion.div

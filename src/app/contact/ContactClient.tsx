@@ -236,7 +236,7 @@ function ContactForm() {
             className="space-y-5"
           >
             <div>
-              <h3 className="text-lg font-bold text-white mb-1">Send Us a Message</h3>
+              <h2 className="text-lg font-bold text-white mb-1">Send Us a Message</h2>
               <p className="text-xs text-gray-500">
                 Fill in the form below and we&apos;ll get back to you within 24 hours.
               </p>
@@ -449,7 +449,7 @@ export default function ContactClient() {
                       <div className={`w-14 h-14 rounded-2xl ${method.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                         <Icon className={`w-7 h-7 ${method.color}`} />
                       </div>
-                      <h3 className="text-lg font-bold text-white mb-2">{method.title}</h3>
+                      <h2 className="text-lg font-bold text-white mb-2">{method.title}</h2>
                       <p className="text-sm text-gray-400 leading-relaxed mb-4">
                         {method.description}
                       </p>
@@ -530,7 +530,7 @@ export default function ContactClient() {
                   </div>
                   <ul className="space-y-3">
                     {[
-                      'No obligation or hard sell',
+                      'Costs nothing, commits you to nothing',
                       'Honest assessment of your home',
                       'Itemised quote within 48 hours',
                       'SEAI grant application handled for you',
@@ -621,7 +621,7 @@ export default function ContactClient() {
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
                   <p className="text-sm text-gray-500 mb-4">
-                    Don&apos;t see your area? We cover every corner of Ireland.{' '}
+                    Don&apos;t see your area? We install in all 32 counties.{' '}
                     <a
                       href={buildWhatsAppUrl({ source: 'contact-counties' })}
                       target="_blank"

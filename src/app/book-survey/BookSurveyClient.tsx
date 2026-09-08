@@ -360,8 +360,21 @@ export default function BookSurveyClient() {
     });
   }, [isSubmitted]);
 
+  // A failed Continue used to do nothing visible: no scroll, no focus, and on a
+  // long step the first error could be off screen, so the button read as dead
+  // and people pressed it again.
   const nextStep = useCallback(() => {
-    if (validateStep(step)) setStep((s) => Math.min(s + 1, 3));
+    if (validateStep(step)) {
+      setStep((s) => Math.min(s + 1, 3));
+      return;
+    }
+    requestAnimationFrame(() => {
+      const firstInvalid = document.querySelector<HTMLElement>('[aria-invalid="true"]');
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus({ preventScroll: true });
+      }
+    });
   }, [step, validateStep]);
 
   const prevStep = useCallback(() => setStep((s) => Math.max(s - 1, 0)), []);
@@ -530,7 +543,7 @@ export default function BookSurveyClient() {
                         <Shield className="w-7 h-7 text-green-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">SEAI Registered Installer</h3>
+                        <h2 className="text-white font-bold">SEAI Registered Installer</h2>
                         <p className="text-sm text-gray-500">Fully accredited & insured</p>
                       </div>
                     </div>
@@ -542,7 +555,7 @@ export default function BookSurveyClient() {
                         <Award className="w-7 h-7 text-amber-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">€1,800 SEAI Grant (ROI)</h3>
+                        <h2 className="text-white font-bold">€1,800 SEAI Grant (ROI)</h2>
                         <p className="text-sm text-gray-500">We handle all grant paperwork for you</p>
                       </div>
                     </div>
@@ -554,7 +567,7 @@ export default function BookSurveyClient() {
                         <Star className="w-7 h-7 text-sky-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">What the survey gives you</h3>
+                        <h2 className="text-white font-bold">What the survey gives you</h2>
                         <p className="text-sm text-gray-500">From Irish homeowners we have installed for</p>
                       </div>
                     </div>
@@ -566,7 +579,7 @@ export default function BookSurveyClient() {
                         <MapPin className="w-7 h-7 text-violet-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-bold">All 32 Counties</h3>
+                        <h2 className="text-white font-bold">All 32 Counties</h2>
                         <p className="text-sm text-gray-500">Nationwide coverage with local assessors</p>
                       </div>
                     </div>
@@ -1607,12 +1620,14 @@ function InputField({
         autoComplete={autoComplete}
         enterKeyHint={enterKeyHint}
         name={name}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
         className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border text-base text-white placeholder-gray-600 focus:outline-none transition-all ${
           error ? 'border-red-400/50 focus:border-red-400' : 'border-white/[0.08] focus:border-green-400/40'
         }`}
       />
       {error && (
-        <p className="flex items-center gap-1 text-xs text-red-400 mt-1.5">
+        <p id={`${id}-error`} role="alert" className="flex items-center gap-1 text-xs text-red-400 mt-1.5">
           <AlertCircle className="w-3 h-3" />
           {error}
         </p>

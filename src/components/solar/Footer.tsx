@@ -313,7 +313,7 @@ export default function Footer() {
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm mb-6">
               SEAI-registered solar panel installers covering all 32 counties.
               We provide honest advice, quality installations, and genuine
-              aftercare - no pressure, no hard sell, no jargon.
+              aftercare. One team, one number to ring, start to finish.
             </p>
 
             <div className="flex items-center gap-2.5">

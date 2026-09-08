@@ -675,7 +675,7 @@ export default function ServicesPage() {
                       href={`/solar-calculator?pkg=${encodeURIComponent(pkg.name.toLowerCase())}`}
                       className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         pkg.highlighted
-                          ? 'bg-yellow-400 hover:bg-yellow-300 text-black shadow-lg shadow-yellow-400/15'
+                          ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
                           : 'bg-white/[0.05] hover:bg-white/[0.08] text-white border border-white/[0.08]'
                       }`}
                     >
@@ -732,7 +732,7 @@ export default function ServicesPage() {
                   </a>
                 </div>
                 <p className="text-xs text-gray-600 mt-6">
-                  No pressure, no hard sell. Just honest advice about solar for your home.
+                  We quote what the survey finds. If the sums do not work on your roof, we will tell you.
                 </p>
               </div>
             </div>
