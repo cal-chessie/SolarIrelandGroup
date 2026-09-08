@@ -59,7 +59,10 @@ const benefits = [
     stat: 'Up to 70%',
     statLabel: 'reduction on bills',
     description:
-      'A typical Irish home with a 4kWp system saves €800–€1,200 per year on electricity. As ESB and other supplier prices rise year on year, your savings actually grow - your panels produce the same free energy regardless of what electricity costs on the open market.',
+      // Read the range from solar-data. Typed here as "€800 to €1,200", it
+      // contradicted the FAQ on the same site, which said "€800 to €1,400" for
+      // the same system.
+      `A typical Irish home with a ${SOLAR_DATA.system.avgSizeKwp}kWp system saves ${SOLAR_DATA.savings.rangeLabel} per year on electricity. As ESB and other supplier prices rise year on year, your savings actually grow - your panels produce the same free energy regardless of what electricity costs on the open market.`,
     color: 'text-green-400',
     bg: 'bg-green-400/10',
     border: 'hover:border-green-400/15',
@@ -478,13 +481,14 @@ function BenefitCard({
         <span className="text-[10px] text-gray-400">
           {expanded ? 'Tap to collapse' : 'Tap for details'}
         </span>
-        <motion.span
-          animate={{ rotate: expanded ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          className="text-gray-600"
+        {/* CSS transform, not an object-style animate: the motion shim ignores
+            those, so this arrow never turned. */}
+        <span
+          className="text-gray-600 inline-flex"
+          style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 250ms ease' }}
         >
           <ArrowUpRight className="w-3 h-3" />
-        </motion.span>
+        </span>
       </div>
     </motion.div>
   );

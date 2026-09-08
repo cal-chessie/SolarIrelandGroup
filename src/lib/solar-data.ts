@@ -20,6 +20,12 @@ export const SOLAR_DATA = {
     // ("€800 to €1,400") stay valid: €1,400 is reached around €200/month.
     avgAnnual: 1100,
     label: '€1,100/yr',
+    // The range prose quotes. It lived only as loose text, so components drifted
+    // apart: WhySolar said "€800 to €1,200" while the FAQ on the same site said
+    // "€800 to €1,400" for the same system. Every range now reads from here.
+    rangeMin: 800,
+    rangeMax: 1400,
+    rangeLabel: '€800 to €1,400',
     paybackYears: 6,
     // Optimistic headline point (energy-price inflation + export income over the
     // panels' 25yr life). total25yr/label25yr drive the hero stat; range25yrLabel

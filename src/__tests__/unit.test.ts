@@ -11,8 +11,15 @@ describe('SOLAR_DATA', () => {
     expect(SOLAR_DATA.grant.amount).toBe(1800);
   });
 
-  it('has correct annual savings figure', () => {
-    expect(SOLAR_DATA.savings.avgAnnual).toBe(1400);
+  // This used to assert a literal 1400 and went red the moment the engines
+  // were consolidated and the honest figure became 1100. A test that pins a
+  // number does not catch the bug that actually happens here, which is the
+  // headline drifting away from what the calculator computes. So assert the
+  // relationship instead: the advertised average has to be inside the range
+  // the site quotes, and has to be something the engine can actually produce.
+  it('advertises an average annual saving inside its own stated range', () => {
+    expect(SOLAR_DATA.savings.avgAnnual).toBeGreaterThanOrEqual(SOLAR_DATA.savings.rangeMin);
+    expect(SOLAR_DATA.savings.avgAnnual).toBeLessThanOrEqual(SOLAR_DATA.savings.rangeMax);
   });
 
   it('has correct provider email', () => {

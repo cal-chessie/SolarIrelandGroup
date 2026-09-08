@@ -5,6 +5,7 @@ import {
   estimate,
   systemOptions,
   recommendedSize,
+  installCostEur,
   MONTHLY_GENERATION_SHARE,
 } from '@/lib/estimate';
 
@@ -383,16 +384,24 @@ function runFullAnalysis(
 
   const selfConsumptionRatio = headline.selfConsumptionPct / 100;
   const batteryWorthwhile = selfConsumptionRatio < 0.45 && annualUsage > 3500;
-  const estimatedBatteryCost = 4500; // 5kWh battery + installation
+  // The battery add-on comes from the engine's own pricing, not a literal. This
+  // was hardcoded at €4,500 while the engine says €3,200 for 5 kWh
+  // (batteryBaseEur 1500 + 5 x 340), so the analyser was overstating the cost
+  // by €1,300 and then computing a payback from that wrong number.
+  const BATTERY_KWH = 5;
+  const estimatedBatteryCost = installCostEur(0, BATTERY_KWH) - installCostEur(0);
   const batteryExtraSaving = batteryWorthwhile
     ? Math.round(best.annualExport * 0.6 * effectiveRate * 0.85) // capture 60% of export at 85% battery efficiency
     : 0;
   const batteryPaybackYears = batteryExtraSaving > 0
     ? Math.round((estimatedBatteryCost / batteryExtraSaving) * 10) / 10
     : 99;
+  // Deliberately framed as a question for the survey, not a quote. The engine is
+  // panels-only by design: sizing and pricing storage is the consultant's job,
+  // so this says "worth asking about" rather than putting a number on the day.
   const batteryReason = batteryWorthwhile
-    ? `Your self-consumption is ~${Math.round(selfConsumptionRatio * 100)}%, meaning you're exporting a lot of energy. A battery could capture ~€${batteryExtraSaving}/year more of that, paying for itself in ~${batteryPaybackYears} years.`
-    : `Your self-consumption is already strong at ~${Math.round(selfConsumptionRatio * 100)}%. A battery wouldn't add enough benefit to justify the €${estimatedBatteryCost.toLocaleString()} cost.`;
+    ? `Your self-consumption is around ${Math.round(selfConsumptionRatio * 100)}%, so a good share of what you make is being exported. A ${BATTERY_KWH} kWh battery would capture roughly €${batteryExtraSaving} a year of that. Worth asking about on the survey, where it can be sized to your actual day and night usage.`
+    : `Your self-consumption is already strong at around ${Math.round(selfConsumptionRatio * 100)}%, so you are using most of what you generate. A battery would add less here than it does for most homes.`;
 
   const annualCo2Saved = Math.round(best.generation * CO2_FACTOR);
   const total25YearCo2Saved = Math.round(annualCo2Saved * 22.5); // accounting for degradation

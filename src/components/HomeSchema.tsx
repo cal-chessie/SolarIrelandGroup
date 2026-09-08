@@ -9,7 +9,30 @@
  * WebSite) stay in the root layout.
  */
 
+import { installCostEur, seaiGrant, DOMESTIC_MIN_KWP } from "@/lib/estimate";
+
 const SITE_URL = "https://solarirelandgroup.ie";
+
+/**
+ * Prices are COMPUTED from the engine, never typed here.
+ *
+ * They were typed once and went stale: this catalogue was still offering
+ * 4 kWp at €6,500 and a battery package at €11,000 months after the real
+ * prices became €8,200 and €11,400. Structured data is the worst place for a
+ * stale price, because Google can surface it in a rich result and it undercut
+ * the real figure by about €1,700. Now the only way for it to drift is for the
+ * engine itself to change, which is the point.
+ */
+const PANELS_ONLY_KWP = DOMESTIC_MIN_KWP;
+const BATTERY_KWH = 5;
+const PREMIUM_KWP = 8;
+const PREMIUM_BATTERY_KWH = 10;
+
+const eur = (n: number) => String(Math.round(n));
+const panelsOnly = installCostEur(PANELS_ONLY_KWP);
+const withBattery = installCostEur(PANELS_ONLY_KWP, BATTERY_KWH);
+const premium = installCostEur(PREMIUM_KWP, PREMIUM_BATTERY_KWH);
+const grant = seaiGrant(PANELS_ONLY_KWP);
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
@@ -82,8 +105,8 @@ const serviceSchema = {
   serviceType: "Solar Panel Installation",
   offers: {
     "@type": "AggregateOffer",
-    lowPrice: "4500",
-    highPrice: "11000",
+    lowPrice: eur(panelsOnly),
+    highPrice: eur(premium),
     priceCurrency: "EUR",
     offerCount: "2",
     availability: "https://schema.org/InStock",
@@ -96,16 +119,16 @@ const serviceSchema = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Standard Solar PV (4 kWp)",
-          description: "4 kWp solar panel system for a typical 3-4 bedroom home",
+          name: `Standard Solar PV (${PANELS_ONLY_KWP} kWp)`,
+          description: `${PANELS_ONLY_KWP} kWp solar panel system for a typical 3-4 bedroom home`,
         },
-        price: "6500",
+        price: eur(panelsOnly),
         priceCurrency: "EUR",
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: "4700",
+          price: eur(panelsOnly - grant),
           priceCurrency: "EUR",
-          name: "Price after €1,800 SEAI Grant",
+          name: `Price after €${grant.toLocaleString()} SEAI Grant`,
         },
       },
       {
@@ -113,15 +136,15 @@ const serviceSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Solar PV + Battery Storage",
-          description: "Solar panels with 5kWh battery storage for maximum self-consumption",
+          description: `Solar panels with ${BATTERY_KWH}kWh battery storage for maximum self-consumption`,
         },
-        price: "11000",
+        price: eur(withBattery),
         priceCurrency: "EUR",
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: "9200",
+          price: eur(withBattery - grant),
           priceCurrency: "EUR",
-          name: "Price after €1,800 SEAI Grant",
+          name: `Price after €${grant.toLocaleString()} SEAI Grant`,
         },
       },
     ],
@@ -138,7 +161,7 @@ const howToSchema = {
   estimatedCost: {
     "@type": "MonetaryAmount",
     currency: "EUR",
-    value: "6500",
+    value: eur(panelsOnly - grant),
   },
   tool: [
     {
@@ -162,7 +185,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Installation Day",
-      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. The €1,800 SEAI grant (Republic of Ireland) is deducted from your final bill.",
+      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We prepare and submit your €1,800 SEAI grant application (Republic of Ireland). SEAI pays it into the account nominated on the Request for Payment form once your post-works BER is published.",
       position: 3,
     },
   ],

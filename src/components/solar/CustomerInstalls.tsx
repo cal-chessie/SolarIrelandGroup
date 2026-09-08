@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import { motion, AnimatePresence, useInView, PanInfo } from '@/lib/motion';
 import {
   MapPin,
@@ -449,9 +450,13 @@ export default function CustomerInstalls() {
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider">Recent installs</p>
               </div>
               <div className="w-px h-10 bg-white/[0.06]" />
+              {/* "100% satisfaction rate" was here. Nothing measured it, and it
+                  is the same invented aggregate as the 4.9 rating and the
+                  "200+ installs" that came off this site on 3 Sep. Replaced
+                  with a fact we can stand over. */}
               <div className="text-right">
-                <p className="text-2xl font-bold text-amber-400">100%</p>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Satisfaction rate</p>
+                <p className="text-2xl font-bold text-amber-400">{SOLAR_DATA.grant.label}</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider">SEAI grant handled</p>
               </div>
             </motion.div>
           </div>

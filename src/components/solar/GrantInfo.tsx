@@ -23,6 +23,7 @@ import {
   BadgeEuro,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { DOMESTIC_MIN_KWP } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 function AnimatedGrant({ show }: { show: boolean }) {
@@ -269,18 +270,31 @@ function EligibilityChecker() {
                   {hasUnsure && (
                     <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything during your free survey.</p>
                   )}
-                  <motion.a
-                    href={buildWhatsAppUrl({ source: 'grant-checker', eligible: true })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
-                  >
-                    <Zap className="w-4 h-4" />
-                    Book Free Survey
-                    <ArrowRight className="w-4 h-4" />
-                  </motion.a>
+                  {/* Someone who has just been told they qualify is the highest
+                      intent visitor on this page. This used to hand them to
+                      WhatsApp under a button that said "Book Free Survey", so
+                      the moment was spent on a chat window instead of a booking
+                      or an estimate. Both real next steps now, booking first. */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3">
+                    <motion.a
+                      href="/book-survey?src=grant-checker"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
+                    >
+                      <Zap className="w-4 h-4" />
+                      Book Free Survey
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.a>
+                    <motion.a
+                      href="#calculator"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                    >
+                      See it on my bill
+                    </motion.a>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -458,7 +472,10 @@ function GrantHero({ isInView }: { isInView: boolean }) {
 function KeyFactsRow() {
   const facts = [
     { label: 'SEAI Grant (ROI)', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-violet-400', bg: 'bg-violet-400/10' },
-    { label: 'Min. system', value: '2 kWp', icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
+    // Said 2 kWp, which is neither an SEAI rule nor something we sell. Our
+    // domestic floor is 4 kWp, and it is also the exact size the grant reaches
+    // its full amount, so it is the honest number in both directions.
+    { label: 'Min. system', value: `${DOMESTIC_MIN_KWP} kWp`, icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER', value: 'After the work', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];

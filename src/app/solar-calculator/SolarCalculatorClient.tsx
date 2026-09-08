@@ -138,7 +138,9 @@ function CalculatorExplainer() {
     {
       num: '01',
       title: 'Enter Your Bill',
-      desc: 'Move the slider to your monthly electricity bill amount. We use the current average Irish unit rate (34c/kWh including VAT) and €200/year standing charges for accurate calculations.',
+      // Read from the engine, so this can never again describe rates the
+      // calculator on the same page is not using.
+      desc: `Move the slider to your monthly electricity bill amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
     },
     {
       num: '02',

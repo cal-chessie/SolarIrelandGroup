@@ -103,7 +103,7 @@ const mainServices = [
     title: 'EV Charger Installation',
     tagline: 'Smart Home Charging',
     price: '€1,200 – €2,500',
-    grant: '€600 SEAI EV Grant Available',
+    grant: '€300 SEAI EV Grant Available',
     color: 'sky',
     iconBg: 'bg-sky-400/10',
     iconColor: 'text-sky-400',
@@ -113,7 +113,7 @@ const mainServices = [
     features: [
       { label: 'Power', value: '7.4kW – 22kW' },
       { label: 'Brands', value: 'Zappi, Wallbox, myEnergi' },
-      { label: 'SEAI Grant', value: '€600 Available' },
+      { label: 'SEAI Grant', value: '€300 Available' },
       { label: 'Solar Divert', value: 'Yes - charge from solar' },
       { label: 'Scheduling', value: 'Smart Time-of-Use' },
       { label: 'App Control', value: 'iOS & Android' },
@@ -704,10 +704,10 @@ export default function ServicesPage() {
                   We cover all 32 counties and our installations typically take just one day.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  {/* Said "Book Free Survey", opened WhatsApp. It books a
+                      survey now. */}
                   <a
-                    href={buildWhatsAppUrl({ source: 'services-survey', customMessage: "Hi, I'd like to book a free home survey." })}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/book-survey?src=services"
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                   >
                     <Zap className="w-4 h-4" />

@@ -120,7 +120,7 @@ function FinancingFAQSchema() {
               name: 'How does the SEAI grant work with financing?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'The €1,800 SEAI grant is paid directly to your installer after the system is commissioned. This means the grant automatically reduces the amount you need to finance. For example, a €8,200 system becomes €6,400 after the grant, so that is what you borrow.',
+                text: 'The €1,800 SEAI grant applies in the Republic of Ireland only. SEAI pays it into the bank account nominated on the Request for Payment form, once the completion documents are in and the post-works BER is published, normally about 4 to 6 weeks later. By default that is your own account. Ask us before arranging finance, because it decides whether you borrow the full €8,200 or the €6,400 after-grant figure.',
               },
             },
             {

@@ -29,16 +29,40 @@ import {
 } from 'lucide-react';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { estimate, installCostEur, PRICING } from '@/lib/estimate';
 
 /* ─── Data ─── */
 
-const SYSTEM_PRESETS = [
-  { label: 'Apartment (1-2 bed)', panels: 6, kwp: 2.64, costBeforeGrant: 4500, icon: '🏢' },
-  { label: 'Semi-Detached (3 bed)', panels: 10, kwp: 4.4, costBeforeGrant: 6000, icon: '🏠' },
-  { label: 'Detached (4 bed)', panels: 14, kwp: 6.16, costBeforeGrant: 7500, icon: '🏡' },
-  { label: 'Large Detached (5+ bed)', panels: 18, kwp: 7.92, costBeforeGrant: 9000, icon: '🏰' },
-  { label: 'Maximum System', panels: 22, kwp: 9.68, costBeforeGrant: 10500, icon: '⚡' },
-];
+/**
+ * Sizes and prices come from the engine, never from a table typed here.
+ *
+ * This table used to carry its own prices, and every one of them was wrong:
+ * €4,500 for an apartment, €6,000 for a semi, €10,500 for the biggest system a
+ * domestic connection allows. Those were the pre-consolidation figures, so the
+ * financing page was quoting monthly repayments on money nobody would ever be
+ * lent. The apartment row was also 2.64 kWp, below the 4 kWp domestic floor,
+ * which we do not sell.
+ *
+ * Panels-only, matching the engine's stance: a battery is the consultant's to
+ * price on the day, so it is not financed here either.
+ */
+const SYSTEM_PRESETS = [4, 5, 6, 8, 9.7].map((kwp, i) => ({
+  label: ['Apartment / Terrace', 'Semi-Detached (3 bed)', 'Detached (4 bed)', 'Large Detached (5+ bed)', 'Maximum System'][i],
+  icon: ['🏢', '🏠', '🏡', '🏰', '⚡'][i],
+  kwp,
+  panels: Math.round((kwp * 1000) / PRICING.panelWatts),
+  costBeforeGrant: installCostEur(kwp),
+  // What the engine says a house sized for this array actually saves. The page
+  // used to assume a flat 18% of net cost, which is a fifth savings model and
+  // exactly the drift that made four engines disagree in the first place.
+  ...(() => {
+    // sizeSystemKwp aims an array at about 85% of annual usage, so invert it to
+    // get the household this system would have been sized for.
+    const annualUsageKwh = Math.round((kwp * SOLAR_DATA.system.generationPerKwp) / 0.85);
+    const e = estimate({ annualUsageKwh, systemSizeKwp: kwp });
+    return { annualSaving: e.totalAnnualBenefitEur, grantEur: e.grantEur };
+  })(),
+}));
 
 const FINANCE_TERMS = [
   { months: 36, label: '3 years', rate: 5.9 },
@@ -54,7 +78,9 @@ function calculateFinancing(
   grant: number,
   depositPercent: number,
   termMonths: number,
-  apr: number
+  apr: number,
+  /** From the engine, per system size. Never derived from the price. */
+  annualSaving: number
 ) {
   const netCost = systemCost - grant;
   const depositAmount = netCost * (depositPercent / 100);
@@ -78,8 +104,6 @@ function calculateFinancing(
   const totalRepayable = loanAmount + totalInterest;
   const totalOutOfPocket = depositAmount + totalRepayable;
 
-  // Annual savings estimate (conservative)
-  const annualSaving = netCost * 0.18;
   const monthlySaving = annualSaving / 12;
   const netMonthlyCost = monthlyPayment - monthlySaving;
 
@@ -163,7 +187,7 @@ function FinancingHero() {
             { icon: CreditCard, label: 'From 0% Deposit', sub: 'Many green loans' },
             { icon: Percent, label: '5.5–7.9% APR', sub: 'Green loan rates' },
             { icon: TrendingUp, label: 'Cash-Flow Positive', sub: 'Savings > repayments' },
-            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'Reduces your loan' },
+            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'We handle the paperwork' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -187,7 +211,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'Transparent Pricing', desc: 'No hidden fees' },
-    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'Automatic deduction' },
+    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'Applied for on your behalf' },
     { icon: BadgeCheck, label: 'Green Loan Friendly', desc: 'Work with all major lenders' },
   ];
 
@@ -229,12 +253,13 @@ function FinancingCalculator() {
     () =>
       calculateFinancing(
         system.costBeforeGrant,
-        SOLAR_DATA.grant.amount,
+        system.grantEur,
         depositPercent,
         termMonths,
-        term.rate
+        term.rate,
+        system.annualSaving
       ),
-    [system.costBeforeGrant, depositPercent, termMonths, term.rate]
+    [system.costBeforeGrant, system.grantEur, system.annualSaving, depositPercent, termMonths, term.rate]
   );
 
   const isCashFlowPositive = result.netMonthlyCost < 0;
@@ -448,6 +473,24 @@ function FinancingCalculator() {
                     </div>
                   ))}
                 </div>
+
+                {/* The figures above finance the AFTER-GRANT cost, which assumes
+                    the grant is assigned to us. SEAI's default is to pay it to
+                    the homeowner instead, and in that case the amount borrowed
+                    at the start is the full price. Saying so is not optional:
+                    it changes what the customer actually signs for. */}
+                <div className="mt-5 flex items-start gap-3 p-4 rounded-xl bg-amber-400/[0.06] border border-amber-400/15">
+                  <HelpCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    <span className="font-semibold text-white">About the grant timing.</span>{' '}
+                    These figures assume the {SOLAR_DATA.grant.label} grant is applied to your price
+                    up front. SEAI pays the grant into whichever bank account is nominated on the
+                    Request for Payment form, normally about 4 to 6 weeks after your post-works BER
+                    is published, and by default that account is yours. Ask us at quote stage which
+                    applies to your job, because if the grant comes to you the amount you borrow at
+                    the start is {fmt(result.systemCost)}, not {fmt(result.netCost)}.
+                  </p>
+                </div>
               </div>
 
               {/* Comparison Toggle */}
@@ -651,7 +694,7 @@ function HowFinancingWorks() {
     {
       num: '01',
       title: 'Get Your Free Quote',
-      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. The SEAI grant of €1,800 is deducted from the price shown - no extra paperwork required on your end.',
+      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we prepare and submit the grant application for you.',
     },
     {
       num: '02',
@@ -715,7 +758,7 @@ function FinancingFAQ() {
     },
     {
       q: 'How does the SEAI grant work with financing?',
-      a: `The €1,800 SEAI grant (Republic of Ireland only) is paid directly to your installer (us) after the system is commissioned and a post-install BER assessment is completed. This means the grant automatically reduces the amount you need to finance. For example, a standard 4 kWp system at €8,200 comes down to €6,400 after the grant, so that is what you borrow. You never have to pay the full amount and wait for a refund.`,
+      a: `The ${SOLAR_DATA.grant.label} SEAI grant applies in the Republic of Ireland only. SEAI pays it into the bank account nominated on the Request for Payment form, once your completion documents are in and the post-works BER has been published, normally about 4 to 6 weeks later. By default that account is yours, so the usual pattern is that you pay the full price and the grant follows. A registered contractor can also offer the price net of the grant instead, with our account nominated on that form. Ask us which applies to your job before you arrange finance, because it changes whether you borrow ${'$'}{fmtEur(installCostEur(DOMESTIC_MIN_KWP))} or ${'$'}{fmtEur(installCostEur(DOMESTIC_MIN_KWP) - SOLAR_DATA.grant.amount)} on a ${'$'}{DOMESTIC_MIN_KWP} kWp system.`,
     },
     {
       q: 'Is it better to pay upfront or finance solar panels?',

@@ -53,7 +53,7 @@ const servicesSchema = {
       '@id': 'https://solarirelandgroup.ie/#service-ev',
       name: 'EV Charger Installation',
       description:
-        'Smart home EV charging (7.4 kW – 22 kW) with solar divert capability. Zappi, Wallbox, myEnergi brands. SEAI €600 grant available. Charge your car from excess solar for free.',
+        'Smart home EV charging (7.4 kW – 22 kW) with solar divert capability. Zappi, Wallbox, myEnergi brands. SEAI €300 grant available. Charge your car from excess solar for free.',
       url: 'https://solarirelandgroup.ie/services',
       provider: {
         '@id': 'https://solarirelandgroup.ie/#business',
