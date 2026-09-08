@@ -83,7 +83,31 @@ Then a second round, all seven items Cal listed:
 
 ---
 
-## The blog needs its own pass
+## Left in the blog, deliberately
+
+The 8 Sep sweep fixed prices, the 4 kWp floor, yield, the landlord
+contradiction and the unsourced statistics. Three things were left because
+fixing them properly is a decision, not an edit:
+
+- **`battery-storage-is-it-worth-the-extra-cost` models a 6 kWp system at about
+  5,000 kWh a year**, an implied 833 kWh/kWp against the canonical 950.
+  Correcting it cascades through four prose calculations and the whole ROI
+  table. Its battery prices and paybacks were corrected consistently with its
+  own generation assumption, so it is internally coherent but sits below the
+  rest of the site.
+- **The same article uses a €0.105 "effective CEG rate"** against €0.20
+  everywhere else, and `clean-export-guarantee-explained` states 6 kWp export
+  income as both "€250 to €378" and "€300 to €500" a year.
+- **The cost article's ROI table computes 25-year net profit at constant
+  electricity prices** (€16,100 for 4 kWp), which is below the canonical
+  €30,000 to €50,000. The table says it assumes constant prices, so it is
+  honest, but a reader comparing two articles will see a contradiction. Closing
+  it means choosing an escalation assumption, which is Cal's call, not an
+  invention to make the numbers agree.
+
+---
+
+## The blog needed its own pass (done 8 Sep)
 
 Three agents swept the repo on 7 Sep. The site came back clean apart from what is listed above, which is fixed. **The 23 blog articles did not.** This is a scoped job, not a quick fix, and the line numbers are in `src/lib/blog-data.ts`.
 
