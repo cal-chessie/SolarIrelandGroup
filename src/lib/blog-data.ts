@@ -1924,7 +1924,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Combine the grant with the Clean Export Guarantee - earn €0.20/kWh for every unit of surplus energy you export to the grid. This alone can add €300–€500 per year to your income.",
+          "Combine the grant with the Clean Export Guarantee - earn €0.20/kWh for every unit of surplus energy you export to the grid. Without a battery this alone can add €570–€800 per year on a 6 kWp system.",
           "Shift heavy electricity usage to daylight hours - run washing machines, dishwashers, and charge EVs while your panels are generating.",
           "Consider adding battery storage - while it adds upfront cost, a battery lets you use almost 100% of your generated electricity rather than exporting the excess.",
           "Ensure your system is sized correctly - an oversized system wastes money, while an undersized one leaves savings on the table.",
@@ -1933,7 +1933,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€800–€1,200/year), CEG earnings (€300–€500/year), and the €1,800 SEAI grant can deliver a full return on investment within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
+        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€750–€1,100/year), CEG earnings (€570–€800/year), and the €1,800 SEAI grant can deliver a full return on investment within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
       },
       {
         "type": "divider"
@@ -2095,33 +2095,39 @@ export const articles: Article[] = [
           ],
           [
             "Annual Bill Savings",
-            "€750",
-            "€1,000",
-            "€1,500"
+            "€500",
+            "€755",
+            "€1,255"
           ],
           [
             "CEG Export Earnings",
-            "€150",
-            "€250",
-            "€400"
+            "€475",
+            "€710",
+            "€1,180"
           ],
           [
             "Total Annual Savings",
-            "€900",
-            "€1,250",
-            "€1,900"
+            "€975",
+            "€1,465",
+            "€2,435"
           ],
           [
             "Payback Period",
-            "~7.1 years",
-            "~6.2 years",
-            "~5.6 years"
+            "~6.6 years",
+            "~5.3 years",
+            "~4.3 years"
           ],
           [
-            "25-Year Net Profit",
-            "€16,100",
-            "€23,450",
-            "€36,900"
+            "25-Year Net Profit (flat prices)",
+            "€18,000",
+            "€28,800",
+            "€50,300"
+          ],
+          [
+            "25-Year Net Profit (3% price rises)",
+            "€21,900",
+            "€34,600",
+            "€60,100"
           ]
         ]
       },
@@ -2129,7 +2135,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "tip",
         "title": "ROI Boost",
-        "body": "If electricity prices continue to rise (as forecast), your payback period could be even shorter. The above calculations assume constant prices - if electricity reaches €0.50/kWh, the 6kWp system pays for itself in under 5 years."
+        "body": "The two profit rows are the same system under different assumptions about electricity prices. The first holds today's rate flat for 25 years, which nothing in the last decade suggests will happen but which is the conservative floor. The second applies 3% a year, the assumption our own savings engine uses. Panel output is degraded by 0.5% a year in both, and export income is held flat in both, because the Clean Export Guarantee rate is not guaranteed to rise."
       },
       {
         "type": "heading",
@@ -2461,21 +2467,21 @@ export const articles: Article[] = [
         "rows": [
           [
             "4kWp",
-            "800–1,200 kWh",
-            "€168–€252",
-            "€192–€288"
+            "1,900–2,700 kWh",
+            "€380–€530",
+            "€456–€640"
           ],
           [
             "6kWp",
-            "1,200–1,800 kWh",
-            "€252–€378",
-            "€288–€432"
+            "2,850–4,000 kWh",
+            "€570–€800",
+            "€684–€960"
           ],
           [
             "10kWp",
-            "1,800–2,500 kWh",
-            "€378–€525",
-            "€432–€600"
+            "4,750–6,650 kWh",
+            "€950–€1,330",
+            "€1,140–€1,596"
           ]
         ]
       },
@@ -2483,7 +2489,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "The Big Picture",
-        "body": "CEG earnings alone (€300–€500/year for a typical 6kWp system) may not seem huge, but remember this is income on top of your bill savings (€800–€1,200/year). Together, they significantly accelerate your return on investment. The CEG essentially ensures that no solar energy goes to waste."
+        "body": "CEG earnings alone (€570–€800/year for a typical 6kWp system without a battery) are worth more than most people expect, and remember this is income on top of your bill savings (€800–€1,200/year). Together, they significantly accelerate your return on investment. The CEG essentially ensures that no solar energy goes to waste."
       },
       {
         "type": "heading",
@@ -2797,11 +2803,11 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Without a battery, a typical 6kWp solar system generates approximately 5,000 kWh per year. If you use 50% directly and export 50%, your annual savings look like this: €875 in direct savings (2,500 kWh × €0.35/kWh) plus €263 in CEG earnings (2,500 kWh × €0.105 effective rate). Total: approximately €1,138 per year."
+        "text": "Without a battery, a 6 kWp system generates about 5,700 kWh a year. An Irish home with no storage uses roughly 30 to 50% of that as it is made, so take a typical 38%: about 2,150 kWh used directly and 3,550 kWh exported. That is €753 off the bill (2,150 kWh at €0.35) plus €710 from the Clean Export Guarantee (3,550 kWh at €0.20, the CRU minimum every supplier must pay). Total: about €1,463 a year."
       },
       {
         "type": "paragraph",
-        "text": "With a 5 kWh battery, you can increase your self-consumption to approximately 75–80%. That means consuming 4,000 kWh directly and exporting only 1,000 kWh: €1,400 in direct savings (4,000 kWh × €0.35/kWh) plus €105 in CEG earnings (1,000 kWh × €0.105 effective rate). Total: approximately €1,505 per year."
+        "text": "With a 5 kWh battery, self-consumption typically rises to around 75%. That means using about 4,275 kWh directly and exporting 1,425 kWh: €1,496 off the bill (4,275 kWh at €0.35) plus €285 from the Clean Export Guarantee (1,425 kWh at €0.20). Total: about €1,781 a year. The battery is therefore worth roughly €318 a year more than panels alone, and at about €3,200 fitted that is a payback of around 10 years on the battery portion, noticeably longer than the panels themselves."
       },
       {
         "type": "table",
