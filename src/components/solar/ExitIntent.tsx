@@ -367,7 +367,7 @@ export default function ExitIntent() {
                   autoComplete="email"
                   inputMode="email"
                   enterKeyHint="send"
-                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
+                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-base placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
                 />
                 <button
                   type="submit"

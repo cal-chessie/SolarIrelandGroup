@@ -60,8 +60,8 @@ const valueProps = [
   },
   {
     icon: Clock,
-    title: '25-Year Warranty',
-    description: 'Our panels come with a 25-year manufacturer warranty and a 10-year installation warranty for total peace of mind.',
+    title: 'Warranty',
+    description: '25-year panel performance warranty from the manufacturer, and a 5-year workmanship warranty from us.',
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
   },

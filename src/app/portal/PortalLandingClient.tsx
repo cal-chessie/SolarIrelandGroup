@@ -118,7 +118,7 @@ export default function PortalLandingClient() {
                     value={reference}
                     onChange={(e) => { setReference(e.target.value); setError(''); }}
                     placeholder="SI-2026-0042"
-                    className={`w-full pl-11 pr-4 py-4 rounded-xl bg-white/[0.04] border text-sm text-white placeholder-gray-600 focus:outline-none transition-all font-mono tracking-wider text-center text-lg ${
+                    className={`w-full pl-11 pr-4 py-4 rounded-xl bg-white/[0.04] border text-base text-white placeholder-gray-600 focus:outline-none transition-all font-mono tracking-wider text-center text-lg ${
                       error ? 'border-red-400/50 focus:border-red-400' : 'border-white/[0.08] focus:border-amber-400/40'
                     }`}
                   />

@@ -879,22 +879,22 @@ export default function BillAnalyser() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               <input type="text" placeholder="Business name" aria-label="Business name" value={biz.business}
                                 onChange={(e) => setBiz({ ...biz, business: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="text" autoComplete="name" placeholder="Contact name" aria-label="Contact name" value={biz.contact}
                                 onChange={(e) => setBiz({ ...biz, contact: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Business email" value={biz.email}
                                 onChange={(e) => setBiz({ ...biz, email: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Business phone" value={biz.phone}
                                 onChange={(e) => setBiz({ ...biz, phone: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="text" autoComplete="postal-code" autoCapitalize="characters" placeholder="Eircode" aria-label="Eircode" value={biz.eircode}
                                 onChange={(e) => setBiz({ ...biz, eircode: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                               <input type="text" inputMode="numeric" placeholder="Monthly electricity spend (€, approx)" aria-label="Approximate monthly electricity spend in euro" value={biz.bill}
                                 onChange={(e) => setBiz({ ...biz, bill: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
+                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
                             </div>
                             <Button type="submit" disabled={bizStatus === 'sending'}
                               className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
@@ -1168,13 +1168,13 @@ export default function BillAnalyser() {
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={leadName}
                               onChange={(e) => { setLeadName(e.target.value); if (leadError) setLeadError(null); }}
-                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <input type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Email address for your savings report" value={leadEmail}
                               onChange={(e) => { setLeadEmail(e.target.value); if (leadError) setLeadError(null); }}
-                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Mobile number" value={leadPhone}
                               onChange={(e) => { setLeadPhone(e.target.value); if (leadError) setLeadError(null); }}
-                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                              className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                             <div>
                               <input type="text" autoComplete="postal-code" autoCapitalize="characters" placeholder="Eircode (for your survey)" aria-label="Eircode" value={leadEircode}
                                 onChange={(e) => { setLeadEircode(e.target.value); if (leadError) setLeadError(null); }}

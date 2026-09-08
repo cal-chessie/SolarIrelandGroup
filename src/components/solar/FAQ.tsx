@@ -258,7 +258,7 @@ function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label="Search questions" placeholder="Search questions..."
-        className="w-full pl-11 pr-20 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/[0.03] border border-white/[0.06] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/10 transition-all"
+        className="w-full pl-11 pr-20 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/[0.03] border border-white/[0.06] text-base text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/10 transition-all"
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
         {hasValue && (

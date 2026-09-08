@@ -74,11 +74,9 @@ const contactMethods = [
   },
 ];
 
-const officeHours = [
-  { day: 'Monday to Friday', hours: 'Open 24 hours', current: false },
-  { day: 'Saturday', hours: 'Open 24 hours', current: false },
-  { day: 'Sunday', hours: 'Open 24 hours', current: false },
-];
+// Deliberately not an hours table. The front desk is open 24/7, so a
+// Monday-to-Friday grid invites the reader to look for the closed day.
+const officeHours: { day: string; hours: string; current: boolean }[] = [];
 
 const provinces = [
   {

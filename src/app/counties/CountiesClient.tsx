@@ -601,7 +601,7 @@ export default function CountiesClient() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   aria-label="Search counties" placeholder="Search counties..."
-                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/30 focus:ring-1 focus:ring-amber-400/10 transition-all"
+                  className="w-full pl-11 pr-10 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white placeholder-gray-600 focus:outline-none focus:border-amber-400/30 focus:ring-1 focus:ring-amber-400/10 transition-all"
                 />
                 {searchQuery && (
                   <button

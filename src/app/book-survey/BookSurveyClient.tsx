@@ -865,7 +865,7 @@ export default function BookSurveyClient() {
                                   value={formData.currentBill}
                                   onChange={(e) => update('currentBill', e.target.value)}
                                   placeholder="150"
-                                  className="w-full pl-8 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-green-400/40 transition-all"
+                                  className="w-full pl-8 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white placeholder-gray-600 focus:outline-none focus:border-green-400/40 transition-all"
                                 />
                               </div>
                             </div>
@@ -1014,7 +1014,7 @@ export default function BookSurveyClient() {
                               onChange={(e) => update('notes', e.target.value)}
                               rows={3}
                               placeholder="Any specific questions, access issues, or things you'd like us to check..."
-                              className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-gray-600 focus:outline-none focus:border-sky-400/40 transition-all resize-none"
+                              className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white placeholder-gray-600 focus:outline-none focus:border-sky-400/40 transition-all resize-none"
                             />
                           </div>
                         </div>
@@ -1390,11 +1390,11 @@ export default function BookSurveyClient() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-400/10 border border-green-400/20 mb-6">
                 <Heart className="w-3.5 h-3.5 text-green-400" />
                 <span className="text-xs font-semibold text-green-400 uppercase tracking-wider">
-                  Customer Love
+                  The Survey
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Trusted by <span className="text-gradient">Irish Homeowners</span>
+                What you get <span className="text-gradient">on the day</span>
               </h2>
               <p className="text-gray-400 max-w-lg mx-auto text-lg">
                 Exactly what you get on the day, and what it costs you. Nothing.
