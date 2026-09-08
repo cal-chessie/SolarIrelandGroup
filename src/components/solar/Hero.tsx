@@ -83,9 +83,9 @@ export default function Hero() {
       {/* 
           CONTENT
            */}
-      <div className="relative z-10 w-full max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-8 xl:px-12 pt-28 pb-28 sm:pb-32">
+      <div className="relative z-10 w-full max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-28 sm:pb-32">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-6">
-          <div className="max-w-2xl xl:max-w-3xl flex-1 text-center lg:text-left">
+          <div className="max-w-2xl flex-1 min-w-0 text-center lg:text-left">
             <span
               className="hero-fade-up inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/40 text-amber-400 border border-white/[0.15]"
               style={{ animationDelay: '0.1s' }}
@@ -179,7 +179,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="flex-shrink-0 lg:mt-4 flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:gap-6">
+          <div className="min-w-0 shrink lg:mt-4 flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:gap-6">
             <div
               ref={bumblebeeRef}
               className="hero-fade-up transition-transform duration-500 ease-out"

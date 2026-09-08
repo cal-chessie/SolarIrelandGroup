@@ -572,7 +572,7 @@ export default function Navbar() {
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-[72px] xl:h-20 flex items-center justify-between gap-4 lg:gap-6 xl:gap-8">
+        <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] xl:h-20 flex items-center justify-between gap-4 lg:gap-6 xl:gap-8">
           {/* Logo */}
           <button
             onClick={() => {
