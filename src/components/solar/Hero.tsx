@@ -128,7 +128,7 @@ export default function Hero() {
               {/* PRIMARY CTA - Analyse Bill */}
               <button
                 onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hero-cta-shimmer inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
+                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 py-3.5 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
               >
                 <Zap className="w-4 h-4" />
                 Analyse My Bill - Free
@@ -144,14 +144,14 @@ export default function Hero() {
                   href={buildWhatsAppUrl({ source: 'hero' })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
                 >
                   <MessageCircle className="w-4 h-4 text-green-400" />
                   WhatsApp Us
                 </a>
                 <a
                   href="/book-survey"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
                 >
                   <CalendarCheck className="w-4 h-4" />
                   Book Free Survey
