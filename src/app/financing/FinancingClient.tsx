@@ -183,6 +183,23 @@ function FinancingHero() {
           factor in the €1,800 SEAI grant, and find out if solar pays for itself from day one.
         </p>
 
+        {/* The page was 13.6 screens tall with nothing to act on above the
+            fold and no link to the booking form anywhere on it. */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+          <a
+            href="/solar-calculator"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98] shadow-lg shadow-amber-400/15"
+          >
+            Price it on my bill
+          </a>
+          <a
+            href="/book-survey?src=financing"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap hover:bg-green-400/20 transition-all active:scale-[0.98]"
+          >
+            Book a free survey
+          </a>
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
           {[
             { icon: CreditCard, label: 'From 0% Deposit', sub: 'Many green loans' },
@@ -448,6 +465,23 @@ function FinancingCalculator() {
                     </span>
                   </div>
                 )}
+
+                {/* The calculator answered the question and then offered
+                    nothing. This is the highest intent moment on the page. */}
+                <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href="/book-survey?src=financing-calc"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]"
+                  >
+                    Book a survey to confirm these figures
+                  </a>
+                  <a
+                    href="/solar-calculator"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.12] bg-white/[0.03] text-gray-300 hover:text-white text-sm whitespace-nowrap transition-all"
+                  >
+                    Check it against my actual bill
+                  </a>
+                </div>
               </div>
 
               {/* Breakdown Grid */}

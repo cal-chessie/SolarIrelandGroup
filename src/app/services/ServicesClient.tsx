@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
+  CalendarCheck,
   Sparkles,
   Sun,
   Battery,
@@ -350,10 +351,12 @@ function ServiceCard({
             ))}
           </div>
 
+          {/* The service cards used to hand the visitor to WhatsApp, which took
+              them off the site at the exact moment they were most interested.
+              The analyser answers the question they actually have: what would
+              this cost on MY bill. */}
           <a
-            href={buildWhatsAppUrl({ source: 'services', customMessage: "Hi, I'm interested in a free quote for solar panels." })}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/solar-calculator"
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
               service.color === 'amber'
                 ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
@@ -429,13 +432,18 @@ export default function ServicesPage() {
 
               <div className="flex flex-wrap items-center gap-4">
                 <a
-                  href={buildWhatsAppUrl({ source: 'services', customMessage: "Hi, I'm interested in a free quote for solar panels." })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
+                  href="/solar-calculator"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                 >
-                  Get a Free Quote
+                  Price It On My Bill
                   <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href="/book-survey?src=services"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
+                >
+                  <CalendarCheck className="w-4 h-4" />
+                  Book a Free Survey
                 </a>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}

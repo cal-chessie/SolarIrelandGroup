@@ -455,6 +455,75 @@ function NewsletterSection() {
   );
 }
 
+/**
+ * End-of-article next step, chosen by category.
+ *
+ * Every article was a dead end: nothing in the template linked to an intake,
+ * so a reader arriving from search could finish the piece and leave. One
+ * generic block everywhere would have been the lazy fix. What someone wants
+ * next depends on what they just read: a grant explainer ends with an
+ * eligibility question, a cost piece ends with "what about MY bill", and a
+ * county piece ends with wanting someone local.
+ */
+function ArticleCTA({ category, title }: { category: string; title: string }) {
+  const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string }; secondary: { href: string; label: string } }> = {
+    grants: {
+      h: 'Find out what you qualify for',
+      p: 'The grant is €1,800 at 4 kWp and we prepare the paperwork. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
+      primary: { href: '/solar-calculator', label: 'Check my grant and savings' },
+      secondary: { href: '/book-survey?src=blog-grants', label: 'Book a free survey' },
+    },
+    savings: {
+      h: 'That was the average. What about your house?',
+      p: 'The numbers above are a typical Irish home. Yours depends on your usage, your roof and your day-night split. The analyser reads your actual bill and tells you.',
+      primary: { href: '/solar-calculator', label: 'Analyse my bill' },
+      secondary: { href: '/book-survey?src=blog-savings', label: 'Book a free survey' },
+    },
+    county: {
+      h: 'Get a local answer',
+      p: 'Generation, roof types and grid connection differ by county. Book a free survey and the team covering your area will confirm what your roof can actually do.',
+      primary: { href: '/book-survey?src=blog-county', label: 'Book a free survey' },
+      secondary: { href: '/solar-calculator', label: 'Price it on my bill first' },
+    },
+    guides: {
+      h: 'See it on your own numbers',
+      p: 'Everything above is general. Thirty seconds with your electricity bill turns it into your system size, your saving and your payback.',
+      primary: { href: '/solar-calculator', label: 'Price it on my bill' },
+      secondary: { href: '/book-survey?src=blog-guide', label: 'Book a free survey' },
+    },
+    technology: {
+      h: 'Which of these suits your roof?',
+      p: 'Panels, inverters and batteries are sized to the house, not chosen from a list. The survey is free and there is no obligation.',
+      primary: { href: '/book-survey?src=blog-tech', label: 'Book a free survey' },
+      secondary: { href: '/solar-calculator', label: 'See what it would save' },
+    },
+    news: {
+      h: 'Work out what it means for you',
+      p: 'Policy moves. Your bill is the thing that decides whether solar is worth it for your house today.',
+      primary: { href: '/solar-calculator', label: 'Analyse my bill' },
+      secondary: { href: '/book-survey?src=blog-news', label: 'Book a free survey' },
+    },
+  };
+  const c = byCategory[category] ?? byCategory.guides;
+  return (
+    <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+      <div className="rounded-2xl border border-amber-400/15 bg-gradient-to-br from-amber-400/[0.07] to-transparent p-7 sm:p-9">
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2.5">{c.h}</h2>
+        <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-6 max-w-xl">{c.p}</p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a href={c.primary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]">
+            {c.primary.label}
+          </a>
+          <a href={c.secondary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-gray-300 hover:text-white text-sm whitespace-nowrap transition-all">
+            {c.secondary.label}
+          </a>
+        </div>
+        <p className="sr-only">Related to: {title}</p>
+      </div>
+    </section>
+  );
+}
+
 function RelatedArticles({ currentSlug }: { currentSlug: string }) {
   const related = useMemo(() => getRelatedArticles(currentSlug, 3), [currentSlug]);
 
@@ -722,6 +791,8 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             RELATED ARTICLES
              */}
         <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
+          <ArticleCTA category={article.category} title={article.title} />
+
           <RelatedArticles currentSlug={slug} />
         </div>
 

@@ -138,10 +138,10 @@ function CalculatorExplainer() {
   const steps = [
     {
       num: '01',
-      title: 'Enter Your Bill',
+      title: 'Upload or Type Your Bill',
       // Read from the engine, so this can never again describe rates the
       // calculator on the same page is not using.
-      desc: `Move the slider to your monthly electricity bill amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
+      desc: `Photograph your bill and the analyser reads it, or move the slider to your monthly amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
     },
     {
       num: '02',
@@ -155,8 +155,8 @@ function CalculatorExplainer() {
     },
     {
       num: '04',
-      title: 'Get Your Free Quote',
-      desc: 'Happy with the numbers? Send your estimate directly to our team via WhatsApp for a free, no-obligation site survey and personalised quote.',
+      title: 'Book the Survey',
+      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then handle the SEAI paperwork.',
     },
   ];
 
@@ -307,11 +307,13 @@ export default function SolarCalculatorClient() {
       <main>
         <CalculatorHero />
         <TrustBadges />
-        {/* One calculator per page. This page is the bill analyser, which is
-            the actual intake; the slider teaser lives on the home page. Having
-            both here split the journey and gave two answers to one question. */}
-        <CalculatorExplainer />
+        {/* The analyser comes FIRST. It was behind the explainer, 2.9 screens
+            down, and the explainer described a slider the page did not have.
+            Bill first for anyone who brought one, slider underneath for anyone
+            who did not, then the explainer for anyone still deciding. */}
         <BillAnalyser />
+        <QuickSavingsCalculator />
+        <CalculatorExplainer />
         <DataTransparency />
         <FAQ />
         <FinalCTA />

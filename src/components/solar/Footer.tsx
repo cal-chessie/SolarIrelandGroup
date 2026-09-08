@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
 import { useRef } from 'react';
 import {
+  CalendarCheck,
   MessageCircle,
   Mail,
   MapPin,
@@ -129,37 +130,44 @@ function PreFooterCTA() {
       <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
         <div className="flex-1 text-center lg:text-left">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
-            Still have questions?
+            See what your roof is worth
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed mx-auto lg:mx-0">
-            We&apos;re real people, not a call centre. Drop us a WhatsApp or give us a
-            ring - we&apos;re happy to talk through whether solar is right for your
-            home. No pressure, no jargon.
+            Send us a photo of your electricity bill. You get your system size,
+            your yearly saving and your payback in about fifteen seconds, before
+            anyone rings you. Or skip ahead and book the survey.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
           <motion.a
-            href={buildWhatsAppUrl({ source: 'footer' })}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/solar-calculator"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-green-500 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 transition-shadow whitespace-nowrap"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm whitespace-nowrap shadow-lg shadow-amber-400/20"
           >
-            <MessageCircle className="w-4 h-4" />
-            WhatsApp Us
+            <Zap className="w-4 h-4" />
+            Analyse My Bill
             <ArrowRight className="w-4 h-4" />
           </motion.a>
           <motion.a
-            href={`tel:${SOLAR_DATA.provider.phone}`}
+            href="/book-survey"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/20 bg-black/40 text-white text-sm hover:bg-white/10 transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
           >
-            <Phone className="w-4 h-4" />
-            Call Now
+            <CalendarCheck className="w-4 h-4" />
+            Book a Free Survey
           </motion.a>
+          <a
+            href={buildWhatsAppUrl({ source: 'footer' })}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors whitespace-nowrap"
+          >
+            <MessageCircle className="w-4 h-4 text-green-400" />
+            or WhatsApp us
+          </a>
         </div>
       </div>
     </motion.div>
