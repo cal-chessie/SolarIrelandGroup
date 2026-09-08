@@ -83,9 +83,9 @@ export default function Hero() {
       {/* 
           CONTENT
            */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 pt-28 pb-28 sm:pb-32">
+      <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-8 xl:px-12 pt-28 pb-28 sm:pb-32">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-6">
-          <div className="max-w-2xl flex-1 text-center lg:text-left">
+          <div className="max-w-2xl xl:max-w-3xl flex-1 text-center lg:text-left">
             <span
               className="hero-fade-up inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/40 text-amber-400 border border-white/[0.15]"
               style={{ animationDelay: '0.1s' }}
@@ -96,7 +96,7 @@ export default function Hero() {
 
 
             <div className="mt-6 sm:mt-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[0.95]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold tracking-tight leading-[0.95]">
                 <span
                   className="hero-fade-up block"
                   style={{ animationDelay: '0.2s' }}
@@ -113,7 +113,7 @@ export default function Hero() {
             </div>
 
             <p
-              className="hero-fade-up mt-5 sm:mt-6 text-base sm:text-lg text-gray-200/90 max-w-lg leading-relaxed mx-auto lg:mx-0"
+              className="hero-fade-up mt-5 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-lg xl:max-w-2xl leading-relaxed mx-auto lg:mx-0"
               style={{ animationDelay: '0.5s' }}
             >
               Upload your electricity bill and our AI will show you exactly what
@@ -128,7 +128,7 @@ export default function Hero() {
               {/* PRIMARY CTA - Analyse Bill */}
               <button
                 onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 py-3.5 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
+                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 xl:px-9 py-3.5 xl:py-4 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm xl:text-base tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
               >
                 <Zap className="w-4 h-4" />
                 Analyse My Bill - Free
@@ -144,14 +144,14 @@ export default function Hero() {
                   href={buildWhatsAppUrl({ source: 'hero' })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
                 >
                   <MessageCircle className="w-4 h-4 text-green-400" />
                   WhatsApp Us
                 </a>
                 <a
                   href="/book-survey"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
                 >
                   <CalendarCheck className="w-4 h-4" />
                   Book Free Survey
