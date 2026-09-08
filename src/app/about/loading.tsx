@@ -15,7 +15,7 @@ export default function AboutLoading() {
             HERO SECTION
              */}
         <section className="relative">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
             <div className="flex items-center gap-2 mb-6">
               <div className="h-4 w-12 rounded bg-white/[0.04] animate-pulse" />
               <div className="h-3 w-3 rounded-sm bg-white/[0.03] animate-pulse" />
@@ -45,7 +45,7 @@ export default function AboutLoading() {
             OUR STORY - 2-column skeleton
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <div className="aspect-[4/3] rounded-2xl bg-white/[0.04] border border-white/[0.06] animate-pulse" />
 
@@ -81,7 +81,7 @@ export default function AboutLoading() {
             WHY CHOOSE US - 3-column value props
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 sm:mb-16 space-y-3">
               <div className="h-6 w-28 rounded-full bg-white/[0.04] animate-pulse mx-auto" />
               <div className="h-9 w-72 rounded-xl bg-white/[0.04] animate-pulse mx-auto" />
@@ -110,7 +110,7 @@ export default function AboutLoading() {
             TEAM SECTION - 4-column cards
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 sm:mb-16 space-y-3">
               <div className="h-6 w-24 rounded-full bg-white/[0.04] animate-pulse mx-auto" />
               <div className="h-9 w-80 rounded-xl bg-white/[0.04] animate-pulse mx-auto" />
@@ -140,7 +140,7 @@ export default function AboutLoading() {
             STATS SECTION skeleton
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-2xl sm:rounded-3xl p-8 sm:p-12 bg-white/[0.03] border border-white/[0.06]">
               <div className="text-center mb-10 space-y-3">
                 <div className="h-6 w-28 rounded-full bg-white/[0.04] animate-pulse mx-auto" />
@@ -163,7 +163,7 @@ export default function AboutLoading() {
             CTA SECTION skeleton
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 bg-white/[0.03] border border-amber-400/10">
               <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
                 <div className="flex-1 text-center lg:text-left space-y-3">

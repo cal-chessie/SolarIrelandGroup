@@ -24,6 +24,7 @@ import {
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -175,7 +176,7 @@ export default function AboutClient() {
           <div className="absolute top-20 -left-32 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
           <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -239,7 +240,7 @@ export default function AboutClient() {
             OUR STORY
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -340,7 +341,7 @@ export default function AboutClient() {
              */}
         <section className="py-16 sm:py-24 relative">
           <div className="absolute inset-0 honeycomb-bg pointer-events-none" />
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <SectionHeader
               badge="Why Choose Us"
               title="The Solar Ireland Difference"
@@ -380,7 +381,7 @@ export default function AboutClient() {
             TEAM SECTION
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               badge="Our Team"
               title="The People Behind Solar Ireland"
@@ -419,7 +420,7 @@ export default function AboutClient() {
              */}
         <section className="py-16 sm:py-24 relative">
           <div className="amber-line mb-16" />
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               badge="Certifications"
               title="Fully Certified & Compliant"
@@ -483,7 +484,7 @@ export default function AboutClient() {
             STATS SECTION
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="rounded-2xl sm:rounded-3xl glass-card p-8 sm:p-12 relative overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
@@ -536,7 +537,7 @@ export default function AboutClient() {
             CTA SECTION
              */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12 lg:p-16"
               initial={{ opacity: 0, y: 30 }}
@@ -586,6 +587,7 @@ export default function AboutClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
     </div>
   );
 }

@@ -27,6 +27,7 @@ import {
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 
 
@@ -509,7 +510,7 @@ export default function CountiesClient() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-20 right-0 w-[400px] h-[300px] bg-emerald-400/[0.02] rounded-full blur-[100px] pointer-events-none" />
 
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-10 sm:pb-14 relative">
             <div className="flex items-center gap-2 mb-4">
               <MapPin className="w-4 h-4 text-amber-400" />
               <span className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-400">
@@ -551,7 +552,7 @@ export default function CountiesClient() {
         </header>
 
         <section className="border-y border-white/[0.04] bg-white/[0.01]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 py-12 sm:py-16">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-5 sm:px-8 py-12 sm:py-16">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
                 Why Going <span className="text-amber-400">Local</span> Matters
@@ -581,7 +582,7 @@ export default function CountiesClient() {
         </section>
 
         <div className="border-b border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 py-3">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-5 sm:px-8 py-3">
             <nav className="flex items-center gap-2 text-xs text-gray-600">
               <a href="/" className="hover:text-gray-400 transition-colors">Home</a>
               <ChevronRight className="w-3 h-3 rotate-90" />
@@ -591,7 +592,7 @@ export default function CountiesClient() {
         </div>
 
         <div className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04] backdrop-blur-sm">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 py-4">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-5 sm:px-8 py-4">
             {/* Search bar */}
             <div className="flex items-center gap-3">
               <div className="flex-1 relative">
@@ -662,7 +663,7 @@ export default function CountiesClient() {
           </div>
         </div>
 
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-5 sm:px-8 py-10 sm:py-14">
+        <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-5 sm:px-8 py-10 sm:py-14">
           {filteredCounties.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-4">
@@ -772,6 +773,7 @@ export default function CountiesClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
 
       <script
         type="application/ld+json"

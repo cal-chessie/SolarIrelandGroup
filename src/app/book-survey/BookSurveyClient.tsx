@@ -37,6 +37,7 @@ import {
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -455,7 +456,7 @@ export default function BookSurveyClient() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-400/[0.02] rounded-full blur-[80px]" />
           </div>
 
-          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-8 sm:pb-12">
+          <div className="relative max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-8 sm:pb-12">
             {/* Breadcrumb */}
             <motion.nav
               variants={fadeUp}
@@ -1553,6 +1554,7 @@ export default function BookSurveyClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={null} exit={false} />
     </div>
   );
 }

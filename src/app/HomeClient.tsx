@@ -15,8 +15,7 @@ import Footer from '@/components/solar/Footer';
 
 // Client-only widgets - no SSR needed, no hydration risk
 const WhatsAppChat = dynamic(() => import('@/components/solar/WhatsAppChat'), { ssr: false });
-const ExitIntent = dynamic(() => import('@/components/solar/ExitIntent'), { ssr: false });
-const MobileStickyCTA = dynamic(() => import('@/components/solar/MobileStickyCTA'), { ssr: false });
+const PageIntake = dynamic(() => import('@/components/solar/PageIntake'), { ssr: false });
 
 export default function HomeClient() {
   return (
@@ -35,8 +34,7 @@ export default function HomeClient() {
       </main>
       <Footer />
       <WhatsAppChat />
-      <ExitIntent />
-      <MobileStickyCTA />
+      <PageIntake sticky={{ label: 'See My Savings - Free', scrollTo: 'calculator' }} exit={true} />
     </div>
   );
 }

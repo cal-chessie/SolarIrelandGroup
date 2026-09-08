@@ -412,7 +412,7 @@ export default function CustomerInstalls() {
     <section id="our-work" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-amber-500/[0.015] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto relative z-10">
+      <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto relative z-10">
         <motion.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}

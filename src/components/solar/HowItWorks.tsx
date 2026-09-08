@@ -224,7 +224,7 @@ export default function HowItWorks() {
 
   return (
     <section id="how-it-works" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto relative z-10">
+      <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto relative z-10">
         <div className="text-center mb-14 sm:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 25 }}

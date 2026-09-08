@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import FAQ from '@/components/solar/FAQ';
 import {
   Euro,
@@ -916,6 +917,7 @@ export default function FinancingClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={{ label: 'Book a Free Survey', href: '/book-survey' }} exit={true} />
     </div>
   );
 }

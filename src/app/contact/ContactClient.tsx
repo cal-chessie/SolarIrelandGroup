@@ -24,6 +24,7 @@ import {
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -383,7 +384,7 @@ export default function ContactClient() {
           <div className="absolute top-20 -right-32 w-[400px] h-[400px] bg-amber-400/[0.04] rounded-full pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-amber-400/[0.03] rounded-full pointer-events-none" />
 
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -422,7 +423,7 @@ export default function ContactClient() {
             CONTACT METHODS GRID
              */}
         <section className="py-16 sm:py-20">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-5"
               initial="hidden"
@@ -473,7 +474,7 @@ export default function ContactClient() {
             CONTACT FORM + SIDEBAR
              */}
         <section className="py-16 sm:py-20">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
               <motion.div
                 className="lg:col-span-3"
@@ -570,7 +571,7 @@ export default function ContactClient() {
             SERVING ALL 32 COUNTIES
              */}
         <section className="py-16 sm:py-20">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="rounded-2xl sm:rounded-3xl glass-card p-8 sm:p-12 relative overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
@@ -640,7 +641,7 @@ export default function ContactClient() {
             FAQ TEASER
              */}
         <section className="py-16 sm:py-20">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
               initial={{ opacity: 0, y: 30 }}
@@ -679,6 +680,7 @@ export default function ContactClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={null} exit={false} />
     </div>
   );
 }

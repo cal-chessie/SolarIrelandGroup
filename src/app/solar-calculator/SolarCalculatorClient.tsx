@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
+import PageIntake from '@/components/solar/PageIntake';
 import FAQ from '@/components/solar/FAQ';
 import {
   Zap,
@@ -318,6 +319,7 @@ export default function SolarCalculatorClient() {
 
       <Footer />
       <WhatsAppChat />
+      <PageIntake sticky={{ label: 'Analyse My Bill - Free', scrollTo: 'calculator' }} exit={true} />
     </div>
   );
 }

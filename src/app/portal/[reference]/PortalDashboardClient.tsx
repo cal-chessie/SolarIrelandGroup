@@ -208,7 +208,7 @@ export default function PortalDashboardClient() {
       <main className="pt-16">
         {/* ── TOP BAR ── */}
         <section className="border-b border-white/[0.05] bg-white/[0.01]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <Link
                 href="/portal"
@@ -231,7 +231,7 @@ export default function PortalDashboardClient() {
             <div className="absolute top-0 left-1/3 w-[400px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[100px]" />
           </div>
 
-          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8">
+          <div className="relative max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Customer Info */}
               <div>
@@ -355,7 +355,7 @@ export default function PortalDashboardClient() {
 
         {/* ── TABS ── */}
         <section className="border-t border-white/[0.04]">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-1 border-b border-white/[0.06] overflow-x-auto">
               {[
                 { key: 'timeline' as const, label: 'Installation Timeline', icon: Clock },
@@ -381,7 +381,7 @@ export default function PortalDashboardClient() {
 
         {/* ── TAB CONTENT ── */}
         <section className="pb-16">
-          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* TIMELINE TAB */}
             {activeTab === 'timeline' && (
               <div className="max-w-3xl mx-auto">

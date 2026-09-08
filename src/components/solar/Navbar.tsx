@@ -572,7 +572,7 @@ export default function Navbar() {
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-16 xl:h-[72px] flex items-center justify-between gap-4 lg:gap-8 xl:gap-10">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[84rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 h-[72px] xl:h-20 flex items-center justify-between gap-4 lg:gap-6 xl:gap-8">
           {/* Logo */}
           <button
             onClick={() => {
@@ -587,18 +587,18 @@ export default function Navbar() {
             <Image
               src="/logo-sm.webp"
               alt="Solar Ireland"
-              className="h-10 w-auto sm:h-11"
+              className="h-11 w-auto sm:h-12 xl:h-14"
               width={44}
               height={50}
               priority
             />
-            <span className="font-bold text-white hidden sm:inline text-base lg:text-lg tracking-wide">
+            <span className="font-bold text-white hidden sm:inline text-lg lg:text-xl xl:text-2xl tracking-wide">
               Solar Ireland
             </span>
           </button>
 
           {/* Desktop nav - 7 links */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-5">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
             {desktopNavLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
                 ? (pathname === link.href || pathname.startsWith(link.href + '/'))
