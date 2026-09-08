@@ -192,9 +192,16 @@ export default function Hero() {
             </div>
 
             {/* Where the sun actually is, right now, over Ireland. Sits to the
-                bee's right so the two read as one object. */}
+                bee's right so the two read as one object.
+
+                The right margin on phones keeps it clear of the chat FAB, which
+                is fixed at bottom-6 right-6 and sits ON TOP of this. Measured at
+                375px: the pill ran to x=333 and the FAB starts at x=291, so the
+                last word was painted over and the label read "Panels resti".
+                Same 5.5rem clearance MobileStickyCTA reserves, and for the same
+                reason. */}
             <DaylightTrack
-              className="hero-fade-up shrink-0"
+              className="hero-fade-up shrink-0 mr-[5.5rem] sm:mr-0"
               style={{ animationDelay: '0.55s' }}
             />
           </div>

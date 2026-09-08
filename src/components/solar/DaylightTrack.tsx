@@ -138,7 +138,11 @@ export default function DaylightTrack({
       className={`inline-flex items-center gap-3.5 rounded-full border border-white/[0.12] bg-black/45 pl-4 pr-5 py-2.5 backdrop-blur-md shadow-lg shadow-black/30 ${className}`}
       style={style}
     >
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="overflow-visible shrink-0">
+      {/* Narrower arc on phones. At 375px the pill was 290px wide, which does
+          not fit between the page edge and the chat FAB's corner: it either ran
+          under the FAB or, once given clearance, off the left edge. The viewBox
+          keeps the geometry, so the dot still lands on the arc at any width. */}
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="overflow-visible shrink-0 w-[104px] sm:w-[148px]">
         <defs>
           <filter id="daylight-glow" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="2.6" result="b" />
