@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { articles, getArticleBySlug } from '@/lib/blog-data';
 import BlogPostClient from './BlogPostClient';
 
@@ -19,6 +20,22 @@ function metaTitleForArticle(fullTitle: string): string {
   return branded.length <= 60 ? branded : base;
 }
 
+/**
+ * Only the real article slugs exist as routes.
+ *
+ * Without this, /blog/anything-at-all rendered a page and returned HTTP 200
+ * with "index, follow" in the head: an unlimited supply of indexable junk URLs
+ * hanging off the domain. notFound() inside the component was not enough,
+ * because generateMetadata had already emitted indexable metadata by then.
+ * dynamicParams = false settles it at the routing layer instead, and has the
+ * side benefit of statically generating all 23 articles.
+ */
+export function generateStaticParams() {
+  return articles.map((a) => ({ slug: a.slug }));
+}
+
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -27,11 +44,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
 
-  if (!article) {
-    return {
-      title: 'Article Not Found',
-    };
-  }
+  // notFound() has to be called HERE, not in the component.
+  // generateMetadata runs before the response opens. The component runs after
+  // the root layout has already begun streaming (it awaits headers() for the
+  // CSP nonce), and by then the 200 is committed and cannot be changed, which
+  // is why an unknown slug used to render the 404 page with an HTTP 200.
+  if (!article) notFound();
 
   const ogTitle = `${article.title} | Solar Ireland`;
   const ogDescription = article.excerpt;
@@ -74,7 +92,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function getArticleSchema(slug: string) {
   const article = getArticleBySlug(slug);
-  if (!article) return null;
+  if (!article) notFound();
 
   return {
     '@context': 'https://schema.org',
@@ -84,17 +102,17 @@ function getArticleSchema(slug: string) {
     author: {
       '@type': 'Person',
       name: article.author,
-      jobTitle: 'Solar Energy Consultant',
-      url: SITE_URL,
+      jobTitle: 'Founder, Solar Ireland',
+      url: `${SITE_URL}/about`,
       worksFor: {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
         name: 'Solar Ireland',
         url: SITE_URL,
       },
-      sameAs: [
-        'https://www.linkedin.com/in/cal-oreilly',
-      ],
+      // No sameAs until there is a real profile to point at. The handle that
+      // used to sit here belonged to a person who does not exist, which is
+      // exactly the kind of author signal Google is checking.
     },
     publisher: {
       '@type': 'Organization',
@@ -130,7 +148,7 @@ function getArticleSchema(slug: string) {
 
 function getBreadcrumbSchema(slug: string) {
   const article = getArticleBySlug(slug);
-  if (!article) return null;
+  if (!article) notFound();
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -145,6 +163,13 @@ function getBreadcrumbSchema(slug: string) {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
+
+  // The guard has to be here, in the component, as the first thing it does.
+  // dynamicParams = false does nothing on this site because the root layout
+  // reads headers() for the CSP nonce, which makes every route dynamic, so
+  // nothing is ever statically generated and there is no routing-layer check.
+  if (!getArticleBySlug(slug)) notFound();
+
   const articleSchema = getArticleSchema(slug);
   const breadcrumbSchema = getBreadcrumbSchema(slug);
 

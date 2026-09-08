@@ -32,7 +32,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "5 Sep 2026",
     "readTime": "10 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "content": [
@@ -281,7 +281,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "5 Sep 2026",
     "readTime": "8 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -388,7 +388,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A post-works BER is a required step for the SEAI grant. Once your installation is finished, your installer uploads the completion documentation to SEAI, and you arrange a BER assessment of the house. The grant can only be processed after all documents are in and the new BER is published by the assessor. SEAI then pays the grant by electronic transfer into the bank account you nominated on your application, usually within about 4-6 weeks (seai.ie). The grant is not deducted from your installer's bill; it lands in your account."
+        "text": "A post-works BER is a required step for the SEAI grant. Once your installation is finished, your installer uploads the completion documentation to SEAI, and you arrange a BER assessment of the house. The grant can only be processed after all documents are in and the new BER is published by the assessor. SEAI then pays the grant by electronic transfer into the bank account you nominated on your application, usually within about 4-6 weeks (seai.ie). By default the grant is not deducted from your installer's bill; it lands in your account. A registered contractor can instead offer the price net of the grant, in which case you nominate their account on the SEAI Request for Payment form."
       },
       {
         "type": "callout",
@@ -523,7 +523,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "5 Sep 2026",
     "readTime": "10 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
     "content": [
@@ -808,7 +808,7 @@ export const articles: Article[] = [
     "category": "grants",
     "date": "5 Sep 2026",
     "readTime": "9 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "content": [
@@ -904,7 +904,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "warning",
         "title": "Apply before any work starts",
-        "body": "You must apply on seai.ie before installation begins, or you can lose the grant entirely. SEAI pays the €1,800 into your own bank account by bank transfer once your completion documents and post-works BER are published, usually within about 4 to 6 weeks. It is never deducted from the installer's invoice, so budget for the full cost up front and treat the grant as money back afterwards."
+        "body": "You must apply on seai.ie before installation begins, or you can lose the grant entirely. SEAI pays the €1,800 into your own bank account by bank transfer once your completion documents and post-works BER are published, usually within about 4 to 6 weeks. By default it is not deducted from the installer's invoice, so budget for the full cost up front and treat the grant as money back afterwards. A registered contractor can also offer you the price net of the grant: you nominate their account on the SEAI Request for Payment form and pay the after-grant figure instead. Ask your installer which they do."
       },
       {
         "type": "heading",
@@ -1007,7 +1007,7 @@ export const articles: Article[] = [
     "category": "county",
     "date": "5 Sep 2026",
     "readTime": "9 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "image": "/install-3.webp",
@@ -1075,7 +1075,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "The grant is paid to you, not the installer",
-        "body": "SEAI pays the €1,800 into your nominated bank account by electronic transfer, usually within about 4 to 6 weeks of your completion documents and post-works BER being processed. It is not deducted from your installer's bill."
+        "body": "SEAI pays the €1,800 into your nominated bank account by electronic transfer, usually within about 4 to 6 weeks of your completion documents and post-works BER being processed. By default it is not deducted from your installer's bill, though a registered contractor may offer the price net of the grant instead, in which case you nominate their account on the SEAI Request for Payment form."
       },
       {
         "type": "heading",
@@ -1180,7 +1180,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "5 Sep 2026",
     "readTime": "8 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -1350,7 +1350,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "5 Sep 2026",
     "readTime": "8 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
     "content": [
@@ -1553,7 +1553,7 @@ export const articles: Article[] = [
     "category": "technology",
     "date": "5 Sep 2026",
     "readTime": "9 min read",
-    "author": "Solar Ireland Team",
+    "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
     "iconColor": "text-violet-400",
     "image": "/blog/solar-panels-ev-charger-ireland.webp",
@@ -1701,7 +1701,7 @@ export const articles: Article[] = [
     "date": "15 Apr 2026",
     "readTime": "12 min read",
     "featured": true,
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
     "image": "/blog/complete-guide-seai-solar-grant-2026.webp",
@@ -1952,7 +1952,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "12 Apr 2026",
     "readTime": "8 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "image": "/blog/how-much-do-solar-panels-cost-ireland-2026.webp",
@@ -2161,7 +2161,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "8 Apr 2026",
     "readTime": "6 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "image": "/blog/solar-panels-in-winter-do-they-work.webp",
@@ -2360,7 +2360,7 @@ export const articles: Article[] = [
     "category": "grants",
     "date": "4 Apr 2026",
     "readTime": "7 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
     "content": [
@@ -2526,7 +2526,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "28 Mar 2026",
     "readTime": "9 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
     "iconColor": "text-violet-400",
     "content": [
@@ -2714,7 +2714,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "22 Mar 2026",
     "readTime": "10 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "content": [
@@ -2953,7 +2953,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "18 Mar 2026",
     "readTime": "5 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-rose-400/10",
     "iconColor": "text-rose-400",
     "content": [
@@ -3126,7 +3126,7 @@ export const articles: Article[] = [
     "category": "technology",
     "date": "12 Mar 2026",
     "readTime": "8 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -3356,7 +3356,7 @@ export const articles: Article[] = [
     "category": "county",
     "date": "6 Mar 2026",
     "readTime": "11 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-orange-400/10",
     "iconColor": "text-orange-400",
     "content": [
@@ -3581,7 +3581,7 @@ export const articles: Article[] = [
     "category": "news",
     "date": "28 Apr 2026",
     "readTime": "5 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
     "iconColor": "text-violet-400",
     "content": [
@@ -3694,7 +3694,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "20 Apr 2026",
     "readTime": "10 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -3929,7 +3929,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "14 Apr 2026",
     "readTime": "6 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -4091,7 +4091,7 @@ export const articles: Article[] = [
     "category": "guides",
     "date": "2 Apr 2026",
     "readTime": "9 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "content": [
@@ -4328,7 +4328,7 @@ export const articles: Article[] = [
     "category": "savings",
     "date": "25 Mar 2026",
     "readTime": "7 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
     "content": [
@@ -4615,7 +4615,7 @@ export const articles: Article[] = [
     "category": "grants",
     "date": "15 Mar 2026",
     "readTime": "8 min read",
-    "author": "Cal O'Reilly",
+    "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
     "content": [
