@@ -502,7 +502,7 @@ export default function WhySolar() {
       <div className="absolute top-1/3 left-0 w-[500px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-amber-400/[0.015] rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto relative z-10">
         <motion.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}

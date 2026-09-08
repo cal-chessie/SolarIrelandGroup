@@ -11,7 +11,7 @@ export default function BlogLoading() {
       <div className="h-16 bg-white/[0.02]" />
 
       <main className="pt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-4">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-4">
           <div className="flex items-center gap-2 mb-8">
             <div className="h-4 w-12 rounded bg-white/[0.04] animate-pulse" />
             <div className="h-3 w-3 rounded-sm bg-white/[0.03] animate-pulse" />
@@ -28,7 +28,7 @@ export default function BlogLoading() {
         </div>
 
         <div className="sticky top-16 z-20 bg-[#0a0a0a]/95 border-b border-white/[0.04]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2 py-4">
               {Array.from({ length: 7 }).map((_, i) => (
                 <div
@@ -42,7 +42,7 @@ export default function BlogLoading() {
         </div>
 
         <section className="py-12 sm:py-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="h-64 sm:h-80 lg:h-auto bg-white/[0.04] animate-pulse" />
@@ -69,7 +69,7 @@ export default function BlogLoading() {
         </section>
 
         <section className="pb-16 sm:pb-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div

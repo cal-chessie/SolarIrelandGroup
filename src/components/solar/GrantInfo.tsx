@@ -506,7 +506,7 @@ export default function GrantInfo() {
     <section id="grant-info" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
       <div className="absolute top-1/3 left-0 w-[600px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative z-10" ref={sectionRef}>
+      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto relative z-10" ref={sectionRef}>
         <GrantHero isInView={isInView} />
 
         <motion.div

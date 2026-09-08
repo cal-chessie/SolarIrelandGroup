@@ -467,7 +467,7 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
       transition={{ duration: 0.7 }}
       className="py-12 sm:py-16 border-t border-white/[0.04]"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-8">
           Related <span className="text-gradient">Articles</span>
         </h2>
@@ -586,7 +586,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             BREADCRUMB
              */}
         <div className="border-b border-white/[0.04]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.nav
               variants={fadeUp}
               initial="hidden"
@@ -617,7 +617,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             <div className="absolute top-10 left-1/4 w-[400px] h-[400px] bg-amber-400/[0.03] rounded-full blur-[100px]" />
           </div>
 
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-8 sm:pb-12">
+          <div className="relative max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-8 sm:pb-12">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -683,7 +683,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             ARTICLE BODY + SIDEBAR TOC
              */}
         <section className="pb-12 sm:pb-20">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex gap-10 lg:gap-16">
               <div className="flex-1 min-w-0 max-w-[72ch]">
                 <MobileTOC items={tocItems} />
@@ -705,7 +705,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
+          className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8"
         >
           <Link
             href="/blog"
@@ -719,7 +719,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
         {/* 
             RELATED ARTICLES
              */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
           <RelatedArticles currentSlug={slug} />
         </div>
 

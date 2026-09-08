@@ -7,7 +7,7 @@ export default function PortalDashboardLoading() {
       <main className="pt-16">
         {/* Top bar */}
         <section className="border-b border-white/[0.05] bg-white/[0.01]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="h-4 w-32 rounded bg-white/[0.04] animate-pulse" />
               <div className="flex items-center gap-2">
@@ -20,7 +20,7 @@ export default function PortalDashboardLoading() {
 
         {/* Hero summary */}
         <section className="relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Customer info */}
               <div>
@@ -81,7 +81,7 @@ export default function PortalDashboardLoading() {
 
         {/* Tabs */}
         <section className="border-t border-white/[0.04]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-1 border-b border-white/[0.06]">
               {[140, 90, 70].map((w, i) => (
                 <div key={i} className="py-4 px-5 border-b-2 border-transparent">
@@ -97,7 +97,7 @@ export default function PortalDashboardLoading() {
 
         {/* Timeline skeleton */}
         <section className="pb-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="max-w-3xl mx-auto">
               {/* Timeline steps */}
               <div className="relative">
