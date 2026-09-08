@@ -22,6 +22,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 import { NextResponse } from "next/server";
+import { BLOG_SLUGS } from "@/lib/blog-slugs";
 import type { NextRequest } from "next/server";
 
 // ── ROLLOUT SWITCH ──────────────────────────────────────────────
@@ -102,7 +103,22 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  /* ─── 3. Per-request CSP nonce ─── */
+  /* ─── 3. Unknown /blog/<slug> is a real 404, not a soft one ─── */
+  // This has to happen in middleware. The root layout awaits headers() to read
+  // the CSP nonce, which makes every route dynamically rendered, so nothing is
+  // statically generated and `dynamicParams = false` never gets a routing-layer
+  // check to apply. notFound() in the page or in generateMetadata renders the
+  // 404 page but cannot change the status: the response has already begun
+  // streaming with a 200. Middleware runs before any of that.
+  const blogMatch = url.pathname.match(/^\/blog\/([^/]+)$/);
+  if (blogMatch && !BLOG_SLUGS.has(blogMatch[1])) {
+    return new NextResponse(null, {
+      status: 404,
+      headers: { "x-robots-tag": "noindex, nofollow" },
+    });
+  }
+
+  /* ─── 4. Per-request CSP nonce ─── */
   // Enforce only in production and only once the rollout switch is flipped.
   // Development stays report-only because Fast Refresh needs 'unsafe-eval',
   // which a strict policy does not grant.
