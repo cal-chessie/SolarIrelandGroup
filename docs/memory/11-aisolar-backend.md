@@ -170,4 +170,36 @@ Constraints that have cost real time: `agent_runs.trigger_type` accepts only `cr
 
 ## The one thing blocking real bookings
 
-`survey_scheduler` fails "No available installers" on almost every run, because the `installers` table has no row for Cal's tenant with `availability_status = 'available'`. The whole chain in front of it works. One insert fixes it, and it is Cal's write to make. See [09](09-open-items.md).
+`survey_scheduler` fails "No available installers" on almost every run. I described this as one missing installer row. Read live on 8 Sep, it is bigger than that: **the whole tenant layer is orphaned.**
+
+| Read from production, 8 Sep 2026 | |
+|---|---|
+| `tenants` | **0 rows** |
+| `leads` | 7, every one carrying tenant `664e46db-9493-4d7c-b8c8-d380528ac304` |
+| `brands` | "Solar Ireland" national on that same id; 3 county + 2 independent brands on 3 further ids that also do not exist |
+| `installers` | 1 row, the 9 Aug C0 proof fixture (`installer-c0s1-…@example.invalid`), `tenant_id` NULL |
+| `survey_scheduler` | 21 consecutive failures, latest 2026-09-07 21:17 |
+
+`agent-drain` picks a surveyor tenant-scoped, at `index.ts:708` for surveys and `:1106` for installs:
+
+```
+installers where availability_status = 'available' and tenant_id = <this lead's tenant>
+```
+
+The one installer row has `tenant_id` NULL, so that matches nothing for any lead. Everything in front of it works; nothing behind it can run.
+
+**The obvious fix is wrong.** Stamping the fixture with the tenant is one line, and it would route real homeowner surveys to an `@example.invalid` account. `installers.user_id` is UNIQUE with an FK to `auth.users`, so a real roster entry needs a real account, and `cal@renewably.ie` is the only one Solar Ireland has.
+
+**And it cannot be stamped anyway until a tenant exists**, because `installers.tenant_id` has an FK to `tenants`. Six other tables FK onto `tenants` as well: `tenant_payment_profiles`, `payment_obligations`, `notifications`, `field_records`, `invoice_counters`. `bill_observations` would be the seventh, and its FK is why that table could not be created usefully either. One missing row, seven tables.
+
+`provision_tenant()` is not the way in: it generates its own id and raises `not authenticated` outside a browser session, and the id here has to be the pinned one the seven leads already use.
+
+The repair, the proof and the full write-up live in the AISolar repo on `golden-client-lead-engine` @ `09baaa2`:
+
+| | |
+|---|---|
+| Repair, idempotent | `supabase/cleanup/20260908_solar_ireland_tenant_repair.sql` |
+| Read-only proof | `tests/wiring/20260908_tenant_repair_verify.read_only.sql` |
+| The reasoning | `docs/SWEEP8_DB_WIRING.md`, "8 Sep 2026" |
+
+Both are **Cal's operator run**: the auto-mode classifier blocks autonomous production writes on this project. See [09](09-open-items.md).

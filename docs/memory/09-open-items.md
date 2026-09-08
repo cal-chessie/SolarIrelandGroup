@@ -26,14 +26,26 @@ The counties page was the same problem and is **done**: all 32 county cards and 
 
 ## Blocking, in AISolar
 
-**One row in `installers`.** Cal's tenant, `availability_status='available'`. Without it `survey_scheduler` fails "No available installers" (10 of the last 11 runs) and **no lead is ever actually booked**, whatever the site does. One insert. It is Cal's write to make.
+**Two SQL files to run. This is the only thing standing between the site and a real booking.**
 
-**Deploy `agent-drain`.** Commits `5938f3c` (daytime cap) and `4b44426` (scale pricing, adaptive email) are on `golden-client-lead-engine` and not deployed.
+`agent-drain` and `ingest-bill-observation` are both deployed as of 8 Sep. What is left is two writes the auto-mode classifier will not let an agent make on production:
 
 ```bash
 cd ~/Desktop/SONSSONS/repos/AISolar/aisolar
-bunx supabase functions deploy agent-drain --project-ref ywizcsulurxoqjdgnkvc --use-api
+bunx supabase db query --linked -f supabase/cleanup/20260908_solar_ireland_tenant_repair.sql
+bunx supabase db query --linked -f supabase/migrations/20260908093000_bill_observations.sql
+bunx supabase db query --linked -f tests/wiring/20260908_tenant_repair_verify.read_only.sql
 ```
+
+The third prints seven rows and every one must read `PASS`.
+
+The repair is idempotent and add-only, so running it twice is safe. It creates the missing `tenants` row at the pinned id the seven live leads already carry, tenant-stamps Cal's `user_roles` (all NULL, so he currently has no tenant-scoped access to his own leads), and puts a real surveyor on the roster.
+
+I previously wrote this up as "one row in `installers`". That was too small. `tenants` is **empty** while leads, brands, installers and six FK'd tables all point at ids with nothing behind them, and `installers.tenant_id` has an FK to `tenants`, so the one-line version cannot even be written. Full account in [11](11-aisolar-backend.md#the-one-thing-blocking-real-bookings).
+
+**Do not stamp the existing installer row.** It is the 9 Aug proof fixture on `@example.invalid`. Stamping it books real homeowners onto a fake account.
+
+**Then requeue.** Fixing the roster does not retroactively schedule the leads that already failed. The verify script's last line counts them.
 
 ---
 
