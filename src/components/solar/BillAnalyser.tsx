@@ -691,7 +691,11 @@ export default function BillAnalyser() {
 
                       <div className="grid grid-cols-3 gap-3">
                         {[
-                          { icon: Lock, label: 'Bill data stays private', sub: 'Processed & deleted' },
+                          // Precise, because it has to be. The bill and anything
+                          // that identifies you really is discarded. What we keep
+                          // is a county-level reading with no name, no address, no
+                          // eircode, no MPRN and no way back to you.
+                          { icon: Lock, label: 'Your bill is deleted', sub: 'We keep anonymous county stats' },
                           { icon: Timer, label: 'Takes ~15 seconds', sub: 'AI-powered analysis' },
                           { icon: CheckCircle2, label: 'Free, no signup', sub: 'No email required' },
                         ].map((item) => (

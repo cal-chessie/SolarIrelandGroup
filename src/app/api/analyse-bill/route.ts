@@ -153,8 +153,20 @@ export async function POST(request: Request) {
     let billingPeriod: string | null = null;
     let confidence = 100;
     let extractedFields: string[] = ['All manual'];
+    // Which path produced the figures. A real bill read and a typed guess must
+    // never be mixed together in a published statistic.
+    const isUpload = contentType.includes('multipart/form-data');
+    // County, when the caller knows it (the analyser passes it through from an
+    // eircode lookup or a county-page link). Coarse by design; never an eircode.
+    let county: string | undefined;
+    // The day/night split, when the bill actually shows one. This is the single
+    // most valuable field in the dataset: it is what separates a household that
+    // can use solar from one that cannot, and nobody else in the market has it.
+    let dayUsageKwh: number | undefined;
+    let nightUsageKwh: number | undefined;
+    let hasDayNightMeter: boolean | undefined;
 
-    if (contentType.includes('multipart/form-data')) {
+    if (isUpload) {
       const formData = await request.formData();
       const file = formData.get('bill') as File | null;
 
@@ -278,6 +290,11 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       billingPeriod = billData.billingPeriod || null;
       unitRate = billData.unitRate;
       standingCharge = billData.standingCharge;
+      hasDayNightMeter = billData.dayNightMeter;
+      const rawDay = Number((billData as unknown as { dayUsage?: unknown }).dayUsage);
+      const rawNight = Number((billData as unknown as { nightUsage?: unknown }).nightUsage);
+      dayUsageKwh = Number.isFinite(rawDay) && rawDay > 0 ? rawDay : undefined;
+      nightUsageKwh = Number.isFinite(rawNight) && rawNight > 0 ? rawNight : undefined;
 
       extractedFields = [];
       confidence = 0;
@@ -293,6 +310,7 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       annualUsage = parseFloat(body.annualUsage);
       provider = body.provider || 'Unknown';
       homeType = body.homeType || 'Semi-detached';
+      county = typeof body.county === 'string' ? body.county : undefined;
 
       if (!monthlyBill || monthlyBill <= 0 || !annualUsage || annualUsage <= 0) {
         return NextResponse.json(
@@ -304,6 +322,24 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
 
     const results = runFullAnalysis(monthlyBill, annualUsage, provider, homeType, unitRate, standingCharge, billingPeriod, confidence, extractedFields);
 
+    // Record the reading, anonymously. Deliberately NOT awaited: the customer
+    // waits for their estimate, never for our bookkeeping, and a failure here
+    // must never cost a lead.
+    void recordObservation({
+      source: isUpload ? 'bill_upload' : 'manual',
+      county,
+      supplier: provider,
+      unitRate,
+      standingCharge,
+      annualKwh: annualUsage,
+      dayKwh: dayUsageKwh,
+      nightKwh: nightUsageKwh,
+      hasDayNightMeter,
+      monthlyBill,
+      recommendedKwp: results.recommendedSystem,
+      propertyType: homeType,
+    });
+
     return NextResponse.json(results);
   } catch (error: unknown) {
     // Log the real error server-side only; never leak SDK/parse internals to the client.
@@ -312,6 +348,58 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       { error: GENERIC_ANALYSIS_ERROR },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Send one anonymous reading to the platform.
+ *
+ * Every bill this analyser reads is a grain of the only dataset in this market
+ * nobody else can build: SEAI publishes grant counts, the trade association
+ * publishes member surveys, and neither of them reads real bills. Until now
+ * every reading was discarded the moment the estimate was rendered.
+ *
+ * What leaves this function is a fixed set of coarse figures. No name, no
+ * email, no phone, no MPRN, no eircode, no address, no bill image, and no lead
+ * reference. County, not eircode. The platform stamps the month itself and
+ * stores no timestamp, because a precise time plus a county plus a usage
+ * figure could be lined up against a lead row and re-identify a household.
+ * That is what keeps the promise on the analyser honest.
+ *
+ * Silent by design. If the platform is unreachable, or the env is not set, the
+ * customer is unaffected and never learns anything happened.
+ */
+async function recordObservation(o: {
+  source: 'bill_upload' | 'manual';
+  county?: string | null;
+  supplier?: string | null;
+  unitRate?: number | null;
+  standingCharge?: number | null;
+  annualKwh?: number | null;
+  dayKwh?: number | null;
+  nightKwh?: number | null;
+  hasDayNightMeter?: boolean | null;
+  monthlyBill?: number | null;
+  recommendedKwp?: number | null;
+  propertyType?: string | null;
+}): Promise<void> {
+  const ingestUrl = process.env.AISOLAR_INGEST_URL;
+  const sourceKey = process.env.AISOLAR_SOURCE_KEY;
+  if (!ingestUrl || !sourceKey) return;
+
+  // Derived from the lead door, so one env var configures both.
+  const url = ingestUrl.replace(/ingest-lead\/?$/, 'ingest-bill-observation');
+  if (url === ingestUrl) return;
+
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-source-key': sourceKey },
+      body: JSON.stringify(o),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch {
+    // Never surfaces. A dropped observation costs a row, not a customer.
   }
 }
 

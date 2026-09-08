@@ -21,6 +21,7 @@ Everything known about this site and its integration with AISolar, split so you 
 | **[09 · Open items](09-open-items.md)** | Cal's next builds, verified defects, decisions only he can make | **Every session. This is the to-do.** |
 | **[10 · History and lessons](10-history-and-lessons.md)** | Why it looks like this, the mistakes, decisions not to reverse | Before deciding something here is arbitrary |
 | **[11 · The AISolar back end](11-aisolar-backend.md)** | The data model, the agent runtime, tenancy and branding, what is scaffolded but not live | You are working on the platform side, or need to know what is real |
+| **[12 · The bill dataset](12-the-bill-dataset.md)** | The anonymous record of what Irish bills say, why the schema enforces the privacy promise | **Before touching the analyser, the observations table, or any privacy copy** |
 
 ---
 

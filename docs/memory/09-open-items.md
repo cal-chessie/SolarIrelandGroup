@@ -113,7 +113,9 @@ The site used to state the net-of-grant version as fact in seven places, includi
 
 **The testimonial conflict.** An earlier memory recorded Sarah O'Brien, Michael Murphy and Emma Kavanagh as **real and owner-confirmed**. I removed them on 7 Sep (`1c30569`) as invented. The site now carries no testimonials at all. If they are real and permissioned, they go back today. This needs his answer, not my judgement.
 
-**`/admin` and `/portal` are unauthenticated pages showing invented customers.** No real data can leak, but they present fake names and a fake conversion rate as this business's numbers, to anyone with the URL. `robots.ts` disallows them, which stops well-behaved crawlers and nothing else. The decision is what those pages are for, not a patch. See [08](08-server-admin-portal.md).
+**`/admin` and `/portal` are unauthenticated pages showing invented customers.** No real data can leak, but they present fake names and a fabricated 18% conversion rate as this business's numbers, to anyone with the URL. `robots.ts` disallows them, which stops well-behaved crawlers and nothing else. The decision is what those pages are for, not a patch. See [08](08-server-admin-portal.md).
+
+> **Cal's call, 8 Sep 2026: noted, fix in a few sessions.** Deliberately deferred, not forgotten. Do not quietly wire either page to real data in the meantime, and do not spend a session on it unprompted. When it comes up, the question to answer first is what these pages are *for*: a sales demo, a real customer portal, or neither. The answer decides whether they get auth, get rebuilt on live data, or get retired to `_TRASH`. Until then the risk is reputational only, and it is a known, accepted one.
 
 **Rate limiting needs infra.** The current per-IP limiter is a `Map` in process: it does not survive a cold start or span instances. Upstash or Vercel KV, Cal's pick, then wire it.
 
