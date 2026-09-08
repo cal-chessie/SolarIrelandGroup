@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { installCostEur, fmtEur, DOMESTIC_MIN_KWP } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 interface FAQItem {
@@ -55,7 +56,7 @@ const faqs: FAQItem[] = [
     id: 2,
     question: 'How much could I save with solar panels?',
     answer:
-      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save between €800 and €1,400 per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from ${SOLAR_DATA.savings.range25yrLabel}. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
+      `A typical 3-bed semi-detached home with a ${SOLAR_DATA.system.avgSizeKwp} kWp system can save ${SOLAR_DATA.savings.rangeLabel} per year on electricity bills, depending on your usage patterns and whether you have a battery. With electricity prices rising around 3% annually, your savings grow over time. Over 25 years, total savings typically range from ${SOLAR_DATA.savings.range25yrLabel}. The best way to get an accurate figure is to use our AI Bill Analyser - it reads your actual bill and calculates your personalised savings. <a href="#calculator" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Try it now</a>`,
     category: 'costs',
     keywords: ['save', 'savings', 'saving', 'return', 'roi', 'payback', 'worth it', 'investment'],
   },
@@ -63,7 +64,7 @@ const faqs: FAQItem[] = [
     id: 3,
     question: 'How long is the payback period?',
     answer:
-      'Most homeowners see a full payback typically within 5 to 7 years after the SEAI grant. A 4 kWp system is €8,200 installed, so €6,400 after the grant. At around €950 a year saved, that pays for itself in roughly 6.7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 18+ years of the panel warranty. With rising electricity prices, many customers are seeing even faster payback periods.',
+      `Most homeowners see a full payback within 5 to 7 years after the SEAI grant. A ${DOMESTIC_MIN_KWP} kWp system is ${fmtEur(installCostEur(DOMESTIC_MIN_KWP))} installed, so ${fmtEur(installCostEur(DOMESTIC_MIN_KWP) - SOLAR_DATA.grant.amount)} after the grant. At the typical ${SOLAR_DATA.savings.label} saved, that pays for itself in about ${SOLAR_DATA.savings.paybackYears} years. After that, every kilowatt-hour generated is essentially free electricity for the remaining years of the panel warranty. With rising electricity prices, many customers see faster payback than that.`,
     category: 'costs',
     keywords: ['payback', 'how long', 'break even', 'roi', 'return', 'years'],
   },
@@ -71,7 +72,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built and occupied before 2021 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER to qualify: a BER assessment is done after the work is finished, before the grant is paid, and we arrange it. The grant is paid directly to your installer after completion, so it comes off your final bill. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must be the owner-occupier of a home built and occupied before 2021 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER to qualify: a BER assessment is done after the work is finished, before the grant is paid, and we arrange it. SEAI pays the grant into the bank account nominated on the Request for Payment form once the work is complete and the post-works BER is published, normally about 4 to 6 weeks later. By default that account is yours. We verify your eligibility during the free survey and handle the entire application on your behalf. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -79,7 +80,7 @@ const faqs: FAQItem[] = [
     id: 5,
     question: 'How does the SEAI grant application work?',
     answer:
-      `It's straightforward - and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and a post-install BER assessment is completed, SEAI pays the ${SOLAR_DATA.grant.label} grant directly to us, and it's deducted from your final invoice. You don't need to pay the grant amount upfront and wait for a refund.`,
+      `It's straightforward - and we do all the paperwork for you. After your free survey, we submit the grant application to SEAI on your behalf. Once approved (usually within a few weeks), we proceed with the installation. After the system is commissioned and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} into the bank account nominated on the Request for Payment form, normally about 4 to 6 weeks later. By default that is your own account. We will tell you at quote stage whether we can take the grant directly instead and quote you the net price.`,
     category: 'grants',
     keywords: ['grant', 'apply', 'application', 'process', 'paperwork', 'how does it work', 'seai'],
   },
@@ -127,7 +128,7 @@ const faqs: FAQItem[] = [
     id: 11,
     question: 'Do you offer battery storage?',
     answer:
-      'Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to roughly 70-85%. A typical 5 kWh lithium-ion battery costs around €4,000-€5,000 installed. The payback on batteries is longer (8-12 years) compared to panels alone, but they\'re worth considering if you\'re out during the day, have an EV, or want to maximise your energy independence. We discuss battery options during the survey.',
+      `Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to roughly 70-85%. A 5 kWh battery adds about ${fmtEur(installCostEur(0, 5) - installCostEur(0))} to a system. It pays back more slowly than the panels do, which is exactly why we size it on the survey against your real day and night usage rather than guessing here. Worth considering if you are out during the day, have an EV, or want to maximise your energy independence.`,
     category: 'technical',
     keywords: ['battery', 'storage', 'tesla', 'powerwall', 'store', 'night', 'evening'],
   },
@@ -186,13 +187,15 @@ function FAQItemCard({
             {faq.question}
           </span>
         </div>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          className="shrink-0 w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mt-0.5 sm:mt-0 group-hover:bg-white/[0.08] transition-colors"
+        {/* Plain div with a CSS transform. This was a motion.div using an
+            object-style `animate={{rotate}}`, which the shim in lib/motion.tsx
+            silently discards, so the chevron never actually turned. */}
+        <div
+          className="shrink-0 w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mt-0.5 sm:mt-0 group-hover:bg-white/[0.08] transition-all duration-250"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 250ms ease, background-color 200ms ease' }}
         >
           <ChevronDown className={`w-3.5 h-3.5 transition-colors ${isOpen ? 'text-amber-400' : 'text-gray-400'}`} />
-        </motion.div>
+        </div>
       </button>
 
       <AnimatePresence>

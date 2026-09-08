@@ -67,7 +67,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Welcome aboard',
     description: 'We received your enquiry and our team has started reviewing your details.',
     status: 'completed',
-    date: '15 Mar 2026',
+    date: '6 Aug 2026',
     icon: Bell,
   },
   {
@@ -76,7 +76,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Free home assessment scheduled',
     description: 'Your free solar survey has been booked. Our assessor will visit your home to evaluate your roof, energy usage, and property.',
     status: 'completed',
-    date: '17 Mar 2026',
+    date: '8 Aug 2026',
     icon: Calendar,
   },
   {
@@ -85,7 +85,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Assessment done',
     description: 'Our SEAI-registered assessor visited your home, measured your roof space, checked orientation and shading, and reviewed your electrical setup.',
     status: 'completed',
-    date: '22 Mar 2026',
+    date: '13 Aug 2026',
     icon: Sun,
   },
   {
@@ -94,7 +94,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Itemised proposal ready',
     description: 'Your honest, itemised quote has been prepared with system specification, estimated savings, SEAI grant details, and payback period.',
     status: 'completed',
-    date: '24 Mar 2026',
+    date: '15 Aug 2026',
     icon: FileText,
   },
   {
@@ -103,7 +103,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: "You've approved the installation",
     description: 'You reviewed and accepted our proposal. Your dedicated project manager has been assigned and will oversee your entire installation.',
     status: 'completed',
-    date: '28 Mar 2026',
+    date: '19 Aug 2026',
     icon: CheckCircle2,
   },
   {
@@ -112,7 +112,7 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Grant application submitted',
     description: "We've submitted your SEAI grant application on your behalf. The Sustainable Energy Authority of Ireland will review and approve your €1,800 grant.",
     status: 'completed',
-    date: '1 Apr 2026',
+    date: '23 Aug 2026',
     icon: Award,
   },
   {
@@ -121,14 +121,14 @@ const demoSteps: InstallationStep[] = [
     subtitle: 'Your installation date is confirmed',
     description: 'Your installation has been scheduled. Scaffolding will go up in the morning, panels mounted and wired by midday, and the system fully commissioned by evening.',
     status: 'in-progress',
-    date: '18 Apr 2026',
+    date: '22 Sep 2026',
     icon: Wrench,
     details: [
       'Arrival time: 8:00 AM',
       'Estimated completion: 4:00 PM',
       'System: 6kWp Solar PV (16 panels)',
       'Inverter: Huawei 6kW Hybrid',
-      'Scaffolding: Pre-erected on 17 Apr',
+      'Scaffolding: Pre-erected on 21 Sep',
     ],
   },
   {
@@ -143,7 +143,7 @@ const demoSteps: InstallationStep[] = [
     id: 9,
     title: 'SEAI Grant Approved',
     subtitle: '€1,800 grant confirmed',
-    description: 'The SEAI has approved your grant. The €1,800 payment will be processed and deducted from your final invoice.',
+    description: 'The SEAI has approved your grant. The €1,800 will be paid into the bank account nominated on your Request for Payment form once your post-works BER is published.',
     status: 'upcoming',
     icon: Euro,
   },
@@ -166,17 +166,17 @@ const demoSteps: InstallationStep[] = [
 ];
 
 const demoDocuments = [
-  { name: 'Survey Report', date: '24 Mar 2026', type: 'PDF', size: '2.4 MB' },
-  { name: 'Itemised Quote', date: '24 Mar 2026', type: 'PDF', size: '1.8 MB' },
-  { name: 'SEAI Grant Application', date: '1 Apr 2026', type: 'PDF', size: '340 KB' },
+  { name: 'Survey Report', date: '15 Aug 2026', type: 'PDF', size: '2.4 MB' },
+  { name: 'Itemised Quote', date: '15 Aug 2026', type: 'PDF', size: '1.8 MB' },
+  { name: 'SEAI Grant Application', date: '23 Aug 2026', type: 'PDF', size: '340 KB' },
   { name: 'Grant Offer Letter', date: '-', type: 'PDF', size: '-' },
   { name: 'Completion Certificate', date: '-', type: 'PDF', size: '-' },
 ];
 
 const demoNotifications = [
-  { text: 'Your installation is confirmed for 18 Apr 2026. Scaffolding goes up on 17 Apr.', date: '8 Apr 2026', type: 'info' },
-  { text: 'SEAI grant application submitted. Expected approval within 4-6 weeks.', date: '1 Apr 2026', type: 'success' },
-  { text: 'Your quote has been delivered. Please review and let us know if you have questions.', date: '24 Mar 2026', type: 'info' },
+  { text: 'Your installation is confirmed for 22 Sep 2026. Scaffolding goes up on 21 Sep.', date: '2 Sep 2026', type: 'info' },
+  { text: 'SEAI grant application submitted. Expected approval within 4-6 weeks.', date: '23 Aug 2026', type: 'success' },
+  { text: 'Your quote has been delivered. Please review and let us know if you have questions.', date: '15 Aug 2026', type: 'info' },
 ];
 
 const demoCustomer = {
@@ -321,7 +321,7 @@ export default function PortalDashboardClient() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-green-400" />
-                        <span className="text-sm text-white font-medium">18 Apr 2026</span>
+                        <span className="text-sm text-white font-medium">22 Sep 2026</span>
                       </div>
                       <span className="text-gray-700">·</span>
                       <span className="text-xs text-gray-500">Single day install</span>
@@ -499,7 +499,7 @@ export default function PortalDashboardClient() {
                               {step.status === 'in-progress' && (
                                 <div className="mt-4 flex gap-2">
                                   <a
-                                    href={buildWhatsAppUrl({ source: 'portal', customMessage: `Hi Sarah, I have a question about my installation on 18 Apr (ref: ${demoCustomer.reference}).` })}
+                                    href={buildWhatsAppUrl({ source: 'portal', customMessage: `Hi Sarah, I have a question about my installation on 22 Sep (ref: ${demoCustomer.reference}).` })}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-400 hover:bg-green-300 text-black text-xs font-bold transition-all active:scale-[0.98]"
