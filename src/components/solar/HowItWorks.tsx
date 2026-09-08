@@ -5,7 +5,6 @@ import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, Check
 import { motion } from '@/lib/motion';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const steps = [
   {
@@ -44,7 +43,10 @@ const steps = [
       'Zero cost, zero pressure',
     ],
     stat: { value: '~45', unit: 'minutes', label: 'for a full survey' },
-    cta: { href: buildWhatsAppUrl({ source: 'hero', customMessage: "Hi! I'd like to book a free solar survey." }), text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    // A button that says "Book Free Survey" has to book a survey. This opened
+    // WhatsApp, which is a chat window, not a booking, and it lost the lead to
+    // a conversation nobody was guaranteed to answer.
+    cta: { href: '/book-survey', text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',
@@ -63,7 +65,7 @@ const steps = [
       'Saving from day one',
     ],
     stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
-    cta: { href: buildWhatsAppUrl({ source: 'hero', customMessage: "Hi! I'd like to get a quote for solar panels for my home." }), text: 'Get a Quote', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
+    cta: { href: '/solar-calculator', text: 'Price It On My Bill', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
 

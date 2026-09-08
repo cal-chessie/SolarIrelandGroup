@@ -9,8 +9,7 @@ import {
   Zap,
   Euro,
   ArrowRight,
-  MessageCircle,
-
+  Calendar,
   X,
   Map,
   Globe,
@@ -29,8 +28,6 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import ScrollProgress from '@/components/solar/ScrollProgress';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { trackWhatsAppClick } from '@/lib/analytics';
 
 
 type Province = 'Leinster' | 'Munster' | 'Connacht' | 'Ulster';
@@ -196,9 +193,11 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
   const colors = provinceColors[primaryProvince];
   const isActive = county.status === 'active';
 
-  const whatsappUrl = buildWhatsAppUrl({
-    customMessage: `Hi Solar Ireland! I'm interested in solar panels in ${county.name}. Can I get a free survey?`,
-  });
+  // The card leads into the bill analyser, not WhatsApp. Thirty two cards all
+  // handing the visitor to a chat window meant the county page could not
+  // produce a lead of its own: the analyser reads their bill, builds the
+  // estimate and puts the lead into the platform with the county attached.
+  const analyserUrl = `/solar-calculator?county=${encodeURIComponent(county.name)}`;
 
   return (
     <div
@@ -279,17 +278,15 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
 
       <div className="flex items-center gap-2">
         <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackWhatsAppClick('counties-page')}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-500/10 border border-green-500/15 text-green-400 text-xs font-semibold hover:bg-green-500/20 transition-colors active:scale-[0.98]"
+          href={analyserUrl}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
         >
-          <MessageCircle className="w-3.5 h-3.5" />
-          Get Quote
+          <Zap className="w-3.5 h-3.5" />
+          Check My Savings
         </a>
         <a
           href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
+          aria-label={`Call Solar Ireland about ${county.name}`}
           className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-xs font-medium hover:bg-white/[0.06] hover:text-white transition-colors active:scale-[0.98]"
         >
           <Phone className="w-3.5 h-3.5" />
@@ -718,7 +715,11 @@ export default function CountiesClient() {
                     Everything you need to know about getting solar panels installed in your county.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
+                {/* No inner scroll box. A 600px cap clipped the last answer the
+                    moment it opened, so on a phone "Do you serve Northern
+                    Ireland?" expanded into nothing and read as covered by the
+                    section below. The page scrolls; the FAQ does not. */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-start">
                   {faqs.map((faq, index) => (
                     <FaqItem
                       key={index}
@@ -740,27 +741,26 @@ export default function CountiesClient() {
                     Ready to Go Solar?
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
-                    Join thousands of Irish homeowners already saving with solar. Get a free,
-                    no-obligation survey - we&apos;ll check your roof, estimate your savings, and
-                    handle all the SEAI grant paperwork. No pressure, just honest advice.
+                    Upload your electricity bill and we&apos;ll show you what solar would save on
+                    your roof, in your county. Then book a free survey and we&apos;ll check the
+                    roof properly and handle the SEAI grant paperwork. No pressure, just
+                    honest numbers.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
-                      href={buildWhatsAppUrl({ source: 'counties-page' })}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-green-500 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:bg-green-400 transition-all active:scale-[0.98]"
+                      href="/solar-calculator"
+                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-yellow-400 text-black font-bold text-sm shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/30 hover:bg-yellow-300 transition-all active:scale-[0.98]"
                     >
-                      <MessageCircle className="w-4 h-4" />
-                      WhatsApp Us
+                      <Zap className="w-4 h-4" />
+                      Check My Savings
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
-                      href={`mailto:${SOLAR_DATA.provider.email}`}
+                      href="/book-survey"
                       className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
-                      <MapPin className="w-4 h-4" />
-                      Email Us
+                      <Calendar className="w-4 h-4" />
+                      Book a Free Survey
                     </a>
                   </div>
                 </div>

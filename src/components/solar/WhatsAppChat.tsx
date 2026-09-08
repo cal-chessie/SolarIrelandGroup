@@ -622,20 +622,27 @@ export default function WhatsAppChat() {
               Chat with us 💬
             </div>
           </div>
+          {/* The bee used to float bare on the page. Over a photo or a pale
+              section it stopped reading as a control at all: no edge, no
+              ground, just a small illustration. It now sits on a dark glass
+              disc with a yellow rim, so it reads as a button first and a bee
+              second, which is the order that matters on a phone. */}
           <button
             onClick={handleOpen}
             onMouseEnter={() => setFabHovered(true)}
             onMouseLeave={() => setFabHovered(false)}
-            className="whatsapp-fab relative flex items-center justify-center group transition-transform duration-300 hover:scale-[1.08] active:scale-95"
+            className="whatsapp-fab relative flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#111]/90 border border-yellow-400/40 backdrop-blur-md shadow-xl shadow-black/50 group transition-transform duration-300 hover:scale-[1.08] hover:border-yellow-400/70 active:scale-95"
             aria-label="Open chat"
           >
+            <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10" />
             <Image
               src="/bumblebee-md.webp"
               alt=""
               width={96}
               height={96}
-              className="bumblebee-float w-16 h-16 object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.5)] group-hover:drop-shadow-[0_10px_24px_rgba(250,204,21,0.4)] transition-all duration-300"
+              className="bumblebee-float w-11 h-11 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] transition-all duration-300"
             />
+            <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#111]" />
           </button>
         </div>
       )}
@@ -899,9 +906,13 @@ export default function WhatsAppChat() {
                           <Image src="/bumblebee-sm.webp" alt="" className="w-5 h-5" width={20} height={20} />
                         </div>
                       )}
-                      <div className={`max-w-[82%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                      {/* 82% of a 375px screen, minus the avatar and the row
+                          padding, left a very narrow column and made every
+                          answer taller than it needed to be. Wider on phones,
+                          unchanged on desktop where 82% reads better. */}
+                      <div className={`min-w-0 max-w-[88%] sm:max-w-[82%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                         <div
-                          className={`px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap break-words transition-all duration-200 ${
+                          className={`px-3.5 sm:px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere] transition-all duration-200 ${
                             msg.role === 'user'
                               ? 'bg-yellow-400 text-black rounded-2xl rounded-br-md'
                               : 'bg-white/[0.07] text-gray-300 rounded-2xl rounded-bl-md hover:bg-white/[0.09]'

@@ -102,7 +102,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 
 **Tone:** Friendly, helpful, Irish. Not robotic. Use natural language - as if chatting with a knowledgeable friend who works in solar. You can use light Irish expressions naturally but don't force them.
 
-**Format:** Use **bold** for key numbers or terms. Keep responses concise - 2-4 sentences for simple questions, up to a short paragraph for complex ones. Use bullet points only when listing 3+ items.
+**Format:** Almost everyone reading you is on a phone, so a long answer is a worse answer: it fills the whole screen and they have to scroll back to find the point. Lead with the answer in the first sentence, then at most two more. Three sentences is the ceiling for a normal question. Only go longer when they have asked for a genuine comparison or a step by step, and even then keep it under six short lines and use bullets rather than a paragraph. Use **bold** for the key number or term so it can be found at a glance. Never open with a preamble like "Great question" and never restate their question back to them. If a full answer really needs more room, give the short version and offer the detail: "Want me to break that down?"
 
 **Key Behaviours:**
 1. When asked about savings/costs, always mention that exact figures depend on the home and suggest using the **AI Bill Analyser** on the page for a personalised estimate. Also mention that a **free site survey** gives the most accurate quote.
@@ -212,7 +212,10 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           model: process.env.CHAT_MODEL || 'google/gemini-2.5-flash',
           messages: chatMessages,
-          max_tokens: 500,
+          // 500 tokens is roughly 375 words, which on a 375px phone is most of
+          // a screen and a lot of scrolling. A hard ceiling backs up the format
+          // instruction in the prompt rather than trusting it alone.
+          max_tokens: 300,
           temperature: 0.7,
         }),
         signal: abort.signal,

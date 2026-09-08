@@ -269,10 +269,17 @@ export default function BillAnalyser() {
   // If they arrived from a package card, remember which one. It travels with
   // the lead so the brief can say which tier actually pulled it in.
   const [pkgInterest, setPkgInterest] = useState<string | null>(null);
+  // And if they came off a county card, keep the county. Without this the lead
+  // arrives with no location at all unless they happen to type an eircode, and
+  // the county is what decides which installer it routes to.
+  const [countyFromLink, setCountyFromLink] = useState<string | null>(null);
   useEffect(() => {
     try {
-      const p = new URLSearchParams(window.location.search).get('pkg');
+      const params = new URLSearchParams(window.location.search);
+      const p = params.get('pkg');
       if (p) setPkgInterest(p.slice(0, 40));
+      const c = params.get('county');
+      if (c) setCountyFromLink(c.slice(0, 60));
     } catch { /* no param, no problem */ }
   }, []);
 
@@ -489,7 +496,9 @@ export default function BillAnalyser() {
       email,
       phone,
       eircode: eircode || undefined,
-      county: eirHome?.county || undefined,
+      // A resolved eircode beats the county they arrived from; the link is the
+      // fallback so a county-page lead is never location-less.
+      county: eirHome?.county || countyFromLink || undefined,
       address: eirHome ? eirHome.address.replace(/, Ireland$/, '') : undefined,
       monthlyBill: analysis.monthlyBill,
       annualKwh: analysis.annualUsage,
@@ -546,6 +555,7 @@ export default function BillAnalyser() {
       email: email || undefined,
       phone: phone || undefined,
       eircode: biz.eircode.trim().toUpperCase() || undefined,
+      county: countyFromLink || undefined,
       monthlyBill: Number.isFinite(billNum) && billNum > 0 ? billNum : undefined,
       homeType: 'Commercial',
       segment: 'commercial',
