@@ -437,7 +437,7 @@ export default function CookieConsent() {
               className={`
                 cookie-banner-card
                 rounded-2xl border border-white/[0.08]
-                bg-[#111111]/95 p-4 sm:p-6
+                bg-[#111111]/95 p-3.5 sm:p-6
                 shadow-[0_8px_60px_-15px_rgba(0,0,0,0.8)]
                 transition-all duration-500 ease-out
               `}
@@ -448,7 +448,8 @@ export default function CookieConsent() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base font-semibold text-white/90 flex items-center gap-2">
-                    We value your privacy
+                    <span className="sm:hidden">Cookies</span>
+                    <span className="hidden sm:inline">We value your privacy</span>
                     <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-400">
                       <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-green-400" />
                       GDPR
@@ -480,7 +481,7 @@ export default function CookieConsent() {
                 <div
                   className="
                     cookie-buttons-compact
-                    mt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3
+                    mt-3 sm:mt-5 flex flex-row items-center gap-2 sm:gap-3
                   "
                 >
                   <button
@@ -489,7 +490,7 @@ export default function CookieConsent() {
                     className="
                       cookie-btn-accept
                       flex-1 flex items-center justify-center gap-2
-                      rounded-xl bg-amber-500 px-5 py-3
+                      rounded-xl bg-amber-500 px-3 sm:px-5 py-2.5 sm:py-3
                       text-sm font-semibold text-black
                       hover:bg-amber-400 active:scale-[0.98]
                       transition-all duration-200 ease-out cursor-pointer
@@ -506,7 +507,7 @@ export default function CookieConsent() {
                       cookie-btn-reject
                       flex-1 flex items-center justify-center gap-2
                       rounded-xl border border-white/10 bg-white/[0.03]
-                      px-5 py-3 text-sm font-medium text-white/60
+                      px-3 sm:px-5 py-2.5 sm:py-3 text-sm font-medium text-white/60
                       hover:bg-white/[0.06] hover:text-white/80 active:scale-[0.98]
                       transition-all duration-200 ease-out cursor-pointer
                     "
@@ -521,13 +522,13 @@ export default function CookieConsent() {
                       cookie-btn-manage
                       flex items-center justify-center gap-2
                       rounded-xl border border-white/[0.06] bg-transparent
-                      px-5 py-3 text-sm font-medium text-white/70
+                      px-3 sm:px-5 py-2.5 sm:py-3 text-sm font-medium text-white/70
                       hover:text-amber-400 hover:border-amber-500/20 active:scale-[0.98]
                       transition-all duration-200 ease-out cursor-pointer
                     "
                   >
                     <Cookie className="w-4 h-4" />
-                    <span className="hidden sm:inline">Manage</span>
+                    <span className="text-xs sm:text-sm">Manage</span>
                   </button>
                 </div>
               )}

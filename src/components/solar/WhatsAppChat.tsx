@@ -225,7 +225,21 @@ export default function WhatsAppChat() {
   const [showScrollBtn, setShowScrollBtn] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [notification, setNotification] = useState<string | null>(null);
+  // Dismissal has to outlive the page. This was useState(false), so every
+  // navigation remounted the widget, reset the flag, and popped the toast again
+  // ten seconds later. On a six page visit that is six interruptions, each one
+  // asking a question the visitor has already declined to answer.
   const [notifDismissed, setNotifDismissed] = useState(false);
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('sig-chat-notif-dismissed') === '1') setNotifDismissed(true);
+    } catch { /* private mode: fall back to per-page behaviour */ }
+  }, []);
+  const dismissNotification = useCallback(() => {
+    setNotifDismissed(true);
+    setNotification(null);
+    try { sessionStorage.setItem('sig-chat-notif-dismissed', '1'); } catch { /* no-op */ }
+  }, []);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [prevMsgCount, setPrevMsgCount] = useState(0);
   const [fabHovered, setFabHovered] = useState(false);
@@ -559,10 +573,7 @@ export default function WhatsAppChat() {
     }, 100);
   };
 
-  const dismissNotif = () => {
-    setNotification(null);
-    setNotifDismissed(true);
-  };
+  const dismissNotif = dismissNotification;
 
   const lastMsg = messages.length > 0 ? messages[messages.length - 1] : null;
   const followUps = (showSuggestions && !isLoading && !isStreaming && lastMsg?.role === 'assistant' && messages.indexOf(lastMsg) > 0)
@@ -581,12 +592,12 @@ export default function WhatsAppChat() {
         aria-label="Open chat"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); }}
         className={`fixed bottom-40 right-6 z-50 cursor-pointer max-w-[min(20rem,calc(100vw-3rem))] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          notification && !isOpen
+          notification && !isOpen && !cookieBanner
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 translate-y-5 scale-95 pointer-events-none'
         }`}
-        aria-hidden={!notification || isOpen}
-        inert={!notification || isOpen}
+        aria-hidden={!notification || isOpen || cookieBanner}
+        inert={!notification || isOpen || cookieBanner}
       >
         <div className="relative overflow-hidden flex items-center gap-3 px-5 py-4 rounded-2xl bg-zinc-800/95 border border-white/[0.08] shadow-2xl shadow-black/40">
           <div className="notif-progress absolute bottom-0 left-0 h-[2px] bg-yellow-400/60 rounded-full" />
@@ -622,27 +633,30 @@ export default function WhatsAppChat() {
               Chat with us 💬
             </div>
           </div>
-          {/* The bee used to float bare on the page. Over a photo or a pale
-              section it stopped reading as a control at all: no edge, no
-              ground, just a small illustration. It now sits on a dark glass
-              disc with a yellow rim, so it reads as a button first and a bee
-              second, which is the order that matters on a phone. */}
+          {/* The bee floats free, at full size. It was briefly put inside a
+              dark disc and shrunk to 44px to make it read more like a control;
+              Cal's verdict was that it wrecked the mascot, and he is right that
+              the bee IS the brand here. It gets a soft glow behind it instead,
+              which lifts it off a photographic hero without caging it. */}
           <button
             onClick={handleOpen}
             onMouseEnter={() => setFabHovered(true)}
             onMouseLeave={() => setFabHovered(false)}
-            className="whatsapp-fab relative flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#111]/90 border border-yellow-400/40 backdrop-blur-md shadow-xl shadow-black/50 group transition-transform duration-300 hover:scale-[1.08] hover:border-yellow-400/70 active:scale-95"
+            className="whatsapp-fab relative flex items-center justify-center group transition-transform duration-300 hover:scale-[1.08] active:scale-95"
             aria-label="Open chat"
           >
-            <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-[-6px] rounded-full bg-black/35 blur-md"
+            />
             <Image
               src="/bumblebee-md.webp"
               alt=""
               width={96}
               height={96}
-              className="bumblebee-float w-11 h-11 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] transition-all duration-300"
+              className="bumblebee-float relative w-16 h-16 object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.55)] group-hover:drop-shadow-[0_10px_24px_rgba(250,204,21,0.4)] transition-all duration-300"
             />
-            <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#111]" />
+            <span className="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#0a0a0a]" />
           </button>
         </div>
       )}

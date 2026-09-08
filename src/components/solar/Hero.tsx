@@ -136,7 +136,10 @@ export default function Hero() {
               </button>
 
               {/* SECONDARY CTAs */}
-              <div className="flex items-stretch gap-3 w-full sm:w-auto">
+              {/* Stacked below sm. Side by side they were 166px each at 375px,
+                  which wrapped "Book Free Survey" onto two lines and left the
+                  pair looking broken. */}
+              <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full sm:w-auto">
                 <a
                   href={buildWhatsAppUrl({ source: 'hero' })}
                   target="_blank"
@@ -201,7 +204,7 @@ export default function Hero() {
                 Same 5.5rem clearance MobileStickyCTA reserves, and for the same
                 reason. */}
             <DaylightTrack
-              className="hero-fade-up shrink-0 mr-[5.5rem] sm:mr-0"
+              className="hero-fade-up shrink-0 mr-12 sm:mr-0"
               style={{ animationDelay: '0.55s' }}
             />
           </div>

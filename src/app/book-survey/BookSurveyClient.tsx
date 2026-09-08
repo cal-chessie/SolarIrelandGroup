@@ -165,7 +165,7 @@ const faqItems = [
   },
   {
     q: 'What happens after I book?',
-    a: 'Your confirmation email arrives straight away, and a member of our team will be in touch to confirm your exact time. On the day, our assessor completes the assessment and goes through your itemised figures with you.',
+    a: 'We come back to you to confirm your exact time. On the day, our assessor completes the assessment and goes through your itemised figures with you.',
   },
   {
     q: 'Do I need to prepare anything for the survey?',
@@ -253,6 +253,7 @@ export default function BookSurveyClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [bookingFallback, setBookingFallback] = useState(false);
   const [failedMessage, setFailedMessage] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
@@ -428,6 +429,10 @@ export default function BookSurveyClient() {
     }
 
     trackSurveyBooking();
+    // On the fallback path the lead was stored by us, not by the platform, so
+    // no confirmation email is queued. The success copy has to know that: the
+    // analyser already branches this way and this screen did not.
+    setBookingFallback(res.fallback === true);
     setSubmitError(null);
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -1213,8 +1218,9 @@ export default function BookSurveyClient() {
                     Your survey request has been sent to our team.
                   </p>
                   <p className="text-gray-500 max-w-md mx-auto mb-10">
-                    Your confirmation email is on its way. A member of our team will be in touch to confirm your <span className="text-white font-semibold">exact time</span>.
-                  </p>
+                    {bookingFallback
+                      ? 'We have your request. A member of our team will be in touch to confirm your time.'
+                      : 'Your confirmation email is on its way. A member of our team will be in touch to confirm your exact time.'}</p>
                 </motion.div>
 
                 {/* What happens next */}
@@ -1231,7 +1237,7 @@ export default function BookSurveyClient() {
                     </h3>
                     <div className="space-y-4">
                       {[
-                        { time: 'Straight away', text: 'A confirmation email lands with your appointment details.' },
+                        { time: 'Straight away', text: bookingFallback ? 'We have your request and your preferred time.' : 'A confirmation email lands with your appointment details.' },
                         { time: 'Survey Day', text: 'Our assessor visits your home for a thorough 30-45 minute roof and energy assessment.' },
                         { time: 'Within 48 hours', text: 'Receive your itemised quote with estimated savings, grant eligibility, and payback period.' },
                       ].map((item, i) => (
@@ -1329,7 +1335,7 @@ export default function BookSurveyClient() {
                 {
                   step: '02',
                   title: 'Quick Confirmation',
-                  desc: 'A confirmation email lands straight away and our team confirms your exact time.',
+                  desc: 'We come straight back to confirm your exact time.',
                   icon: Phone,
                   color: 'sky',
                 },
