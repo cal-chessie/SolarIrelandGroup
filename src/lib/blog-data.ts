@@ -57,7 +57,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Ireland is voting with its roofs",
-        "body": "More than **102,000 Irish homes** have been grant-aided for solar since 2018, with a record **34,088 installations in 2025** - about 16% up on 2024, according to the SEAI's end-of-year statement. This is no longer an early-adopter purchase."
+        "body": "More than **100,000 Irish homes** have been grant-aided for solar since the scheme began in 2018, and 2025 was a record year for domestic installations. The running totals are published by [SEAI](https://www.seai.ie). This is no longer an early-adopter purchase."
       },
       {
         "type": "table",
@@ -76,7 +76,7 @@ export const articles: Article[] = [
           ],
           [
             "Typical net cost, 4kWp system",
-            "€4,200-€6,200 after grant"
+            "€6,400 after grant"
           ],
           [
             "Typical annual bill saving",
@@ -103,7 +103,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A standard 4kWp system on an Irish home lands at roughly €4,200-€6,200 after the grant, with larger 6kWp systems typically €6,700-€9,200 net. The full price breakdown by system size is in our guide to [how much solar panels cost in Ireland](/blog/how-much-do-solar-panels-cost-ireland-2026), but the grant mechanics matter just as much as the sticker price. The grant is tiered at €700 per kWp for the first 2kWp and €200 per kWp up to 4kWp, which means any system of 4kWp or larger gets the full **€1,800**."
+        "text": "A standard 4kWp system on an Irish home is €8,200 installed, which is €6,400 after the grant. A larger 6kWp system is €9,600 installed, or €7,800 net. The full price breakdown by system size is in our guide to [how much solar panels cost in Ireland](/blog/how-much-do-solar-panels-cost-ireland-2026), but the grant mechanics matter just as much as the sticker price. The grant is tiered at €700 per kWp for the first 2kWp and €200 per kWp up to 4kWp, which means any system of 4kWp or larger gets the full **€1,800**."
       },
       {
         "type": "paragraph",
@@ -135,16 +135,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Here is a real-world-shaped example, the kind we price every week. A 3-bed semi-detached home using 4,200 kWh a year, with a bill showing a 60/40 day/night usage split, fits a 4.2kWp system at a net cost of **€5,000** after the grant."
+        "text": "Here is a real-world-shaped example, the kind we price every week. A 3-bed semi-detached home using 4,200 kWh a year, with a bill showing a 60/40 day/night usage split, fits a 4kWp system at €8,200 installed, a net cost of **€6,400** after the grant."
       },
       {
         "type": "bulletList",
         "items": [
-          "**Annual generation:** roughly 3,600 kWh from a well-sited 4.2kWp array, based on what we see across our own installs.",
-          "**Self-consumed at home:** about half, 1,800 kWh, replacing grid electricity at €0.35/kWh = **€630 saved** on the bill.",
-          "**Exported:** the other 1,800 kWh at a 2026 CEG rate of €0.20/kWh = **€378 earned**, tax-free under the €400 annual exemption.",
-          "**Total first-year benefit:** about €1,008.",
-          "**Payback:** €5,000 divided by €1,008 = **just over 5 years**."
+          "**Annual generation:** roughly 3,800 kWh from a well-sited 4kWp array, based on what we see across our own installs.",
+          "**Self-consumed at home:** about half, 1,900 kWh, replacing grid electricity at €0.35/kWh = **€665 saved** on the bill.",
+          "**Exported:** the other 1,900 kWh at a 2026 CEG rate of €0.20/kWh = **€380 earned**, tax-free under the €400 annual exemption.",
+          "**Total first-year benefit:** about €1,045.",
+          "**Payback:** €6,400 divided by €1,045 = **about 6 years**."
         ]
       },
       {
@@ -300,7 +300,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The physical installation takes 1-2 days for a typical domestic system. The full journey, from first enquiry to grant money in your bank account, usually runs 4-8 weeks, and most of that is scheduling and paperwork rather than work on your roof. Demand matters too: SEAI grant-aided a record 34,088 home solar installations in 2025, about 16% up on 2024, so lead times stretch in the busiest months. If you are flexible on timing, [when you book makes a difference](/blog/best-time-of-year-to-get-solar-panels-ireland)."
+        "text": "The physical installation takes 1-2 days for a typical domestic system. The full journey, from first enquiry to grant money in your bank account, usually runs 4-8 weeks, and most of that is scheduling and paperwork rather than work on your roof. Demand matters too: 2025 was a record year for SEAI grant-aided home solar installations ([SEAI](https://www.seai.ie)), so lead times stretch in the busiest months. If you are flexible on timing, [when you book makes a difference](/blog/best-time-of-year-to-get-solar-panels-ireland)."
       },
       {
         "type": "callout",
@@ -1014,7 +1014,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical system costs **€6,000 to €9,000 before the €1,800 SEAI grant**, saves €800 to €1,400 a year, and pays for itself in 5 to 7 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details."
+        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical system costs **€8,200 to €12,400 before the €1,800 SEAI grant**, saves €800 to €1,400 a year, and pays for itself in about 6 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details."
       },
       {
         "type": "paragraph",
@@ -1027,7 +1027,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home system runs roughly €6,000 to €9,000 before the grant, depending on size, roof complexity and whether you add a battery. After the **€1,800 SEAI grant** and with 0% VAT, most homeowners are looking at €4,200 to €7,200 out of pocket for panels only."
+        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home system runs roughly €8,200 to €12,400 before the grant, depending on size, roof complexity and whether you add a battery. After the **€1,800 SEAI grant** and with 0% VAT, most homeowners are looking at €6,400 to €10,600 out of pocket for panels only."
       },
       {
         "type": "table",
@@ -1041,20 +1041,20 @@ export const articles: Article[] = [
           [
             "4 kWp (~10 panels)",
             "3-bed semi",
-            "€6,000 - €7,000",
-            "€4,200 - €5,200"
+            "€8,200",
+            "€6,400"
           ],
           [
             "6 kWp (~14 panels)",
             "4-bed detached",
-            "€7,500 - €9,000",
-            "€5,700 - €7,200"
+            "€9,600",
+            "€7,800"
           ],
           [
-            "6 kWp + battery",
+            "6 kWp + 5 kWh battery",
             "high evening use",
-            "€11,000 - €13,000",
-            "€9,200 - €11,200"
+            "€12,800",
+            "€11,000"
           ]
         ]
       },
@@ -1084,7 +1084,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "SEAI does not break every figure down to the town, but the national picture tells the story: more than 100,000 Irish homes have been grant-aided for solar since the scheme began in 2018, and 2025 set a record with over 34,000 installations in a single year (SEAI). Cork, as the largest county outside Dublin, is consistently one of the busiest markets in the country."
+        "text": "SEAI does not break every figure down to the town, but the national picture tells the story: more than 100,000 Irish homes have been grant-aided for solar since the scheme began in 2018, and 2025 was a record year for domestic installations. The running totals are published by [SEAI](https://www.seai.ie). Cork, as the largest county outside Dublin, is consistently one of the busiest markets in the country."
       },
       {
         "type": "heading",
@@ -1356,7 +1356,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "A typical 3-bed semi in Ireland needs about **10 panels, roughly a 4 to 4.4 kWp system**. That costs around €6,000 to €7,000 before the grant, or **€4,200 to €5,200 after the €1,800 SEAI grant** with 0% VAT. It saves most semis €800 to €1,400 a year and pays for itself in about 5 to 7 years."
+        "text": "A typical 3-bed semi in Ireland needs about **10 panels, roughly a 4 to 4.4 kWp system**. That costs €8,200 to €8,500 before the grant, or **€6,400 to €6,700 after the €1,800 SEAI grant** with 0% VAT. It saves most semis €800 to €1,400 a year and pays for itself in about 6 years."
       },
       {
         "type": "paragraph",
@@ -1387,15 +1387,15 @@ export const articles: Article[] = [
         "rows": [
           [
             "10 panels (~4.4 kWp)",
-            "€6,000 - €7,000",
+            "€8,500",
             "- €1,800",
-            "€4,200 - €5,200"
+            "€6,700"
           ],
           [
             "+ 5 kWh battery",
-            "+ €3,500 - €4,500",
+            "+ €3,200",
             "no battery grant",
-            "+ €3,500 - €4,500"
+            "+ €3,200"
           ]
         ]
       },
@@ -1463,11 +1463,11 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "System: ~4.4 kWp, 10 panels",
-          "Cost after grant: ~€4,700",
+          "Cost after grant: ~€6,700",
           "Self-use saving: the electricity you stop buying during the day",
           "Export income: roughly €200 - €400 a year under the Clean Export Guarantee (first €400/yr tax-exempt)",
           "Combined annual benefit: around €900 - €1,300",
-          "Payback: roughly 5 to 7 years"
+          "Payback: roughly 6 years"
         ]
       },
       {
@@ -1723,7 +1723,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Key Statistic",
-        "body": "More than 100,000 Irish homes have been grant-aided for solar PV since the scheme launched in 2018, with a record 34,000+ installations in 2025 alone (SEAI)."
+        "body": "More than 100,000 Irish homes have been grant-aided for solar PV since the scheme launched in 2018, and 2025 was a record year for domestic installations. The running totals are published by [SEAI](https://www.seai.ie)."
       },
       {
         "type": "heading",
@@ -1770,20 +1770,20 @@ export const articles: Article[] = [
           [
             "Solar PV Panels (standard)",
             "€1,800",
-            "€6,000 – €16,000",
-            "11% – 30%"
+            "€8,200 – €12,400",
+            "15% – 22%"
           ],
           [
             "Battery Storage (up to 6kWh)",
             "No grant",
-            "€4,000 – €8,000",
+            "€2,500 – €3,500",
             "N/A"
           ],
           [
             "Solar PV + Battery Combined",
             "Up to €1,800",
-            "€10,000 – €24,000",
-            "7.5% – 18%"
+            "€11,400 – €17,300",
+            "10% – 16%"
           ]
         ]
       },
@@ -1804,7 +1804,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A BER assessment typically costs between €200 and €350 and provides a rating from A (most efficient) to G (least efficient). The good news is that you do not need to achieve a particular BER rating to qualify for the solar grant - you simply need to have one carried out. In fact, installing solar panels will often improve your BER rating by 1–2 grades, which adds value to your property."
+        "text": "A BER assessment typically costs between €200 and €350 and provides a rating from A (most efficient) to G (least efficient). The good news is that you do not need to achieve a particular BER rating to qualify for the solar grant - you simply need to have one carried out. Installing solar panels reliably moves a BER rating in the right direction, but how far depends on where your home is starting from and how much of your own generation you use. Any installer who promises a specific jump from one grade to the next before surveying your roof is guessing."
       },
       {
         "type": "callout",
@@ -1964,17 +1964,17 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panels in Ireland cost between **€4,200 and €14,200 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs approximately €4,200–€6,200, a 6kWp system costs €6,700–€9,200, and a 10kWp system with battery costs €10,200–€14,200. Prices have fallen substantially over the past five years as the market has matured as the market has matured, making 2026 the most affordable time to go solar."
+        "text": "Solar panels in Ireland cost between **€6,400 and €15,500 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs €6,400 after the grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €15,500. Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
       },
       {
         "type": "paragraph",
-        "text": "The Irish solar market has matured significantly over the past few years. Increased competition, improvements in panel efficiency, and streamlined installation processes have all contributed to a steady decline in prices. A standard residential solar PV system now costs roughly 20–30% less than it did just five years ago."
+        "text": "The Irish solar market has matured significantly over the past few years. Increased competition, improvements in panel efficiency, and streamlined installation processes have all contributed to a steady decline in prices. A standard residential solar PV system now costs noticeably less than it did five years ago."
       },
       {
         "type": "callout",
         "variant": "stat",
         "title": "Price Range Overview",
-        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €6,000 for a small 4kWp system to €16,000 for a large 10kWp system with battery storage. After the €1,800 SEAI grant, your net cost drops to between €4,200 and €14,200."
+        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €8,200 for a 4kWp system to €17,300 for a large 10kWp system with 10 kWh of battery storage. After the €1,800 SEAI grant, your net cost drops to between €6,400 and €15,500."
       },
       {
         "type": "heading",
@@ -1998,22 +1998,22 @@ export const articles: Article[] = [
           [
             "4kWp",
             "10–12 panels",
-            "€6,000 – €8,000",
-            "€4,200 – €6,200",
-            "€600 – €900"
+            "€8,200",
+            "€6,400",
+            "€800 – €1,100"
           ],
           [
             "6kWp",
             "14–16 panels",
-            "€8,500 – €11,000",
-            "€6,700 – €9,200",
-            "€800 – €1,200"
+            "€9,600",
+            "€7,800",
+            "€1,000 – €1,300"
           ],
           [
             "10kWp",
             "22–26 panels",
-            "€12,000 – €16,000",
-            "€10,200 – €14,200",
+            "€12,400",
+            "€10,600",
             "€1,200 – €1,800"
           ]
         ]
@@ -2039,7 +2039,7 @@ export const articles: Article[] = [
           "Roof complexity - A simple pitched roof with clear access is cheapest to install. Multiple roof planes, flat roofs, or difficult access add €500–€2,000",
           "Scaffold requirements - Most installations require scaffolding, which typically costs €300–€600 extra for two-storey homes",
           "Electrical upgrades - Older homes may need a consumer unit (fuse board) upgrade or new cabling, adding €300–€1,000",
-          "Battery storage - Adding a solar battery adds €4,000–€8,000 depending on capacity and brand",
+          "Battery storage - Adding a solar battery costs roughly €3,200 for 5 kWh and about €4,900 for 10 kWh, depending on capacity and brand",
           "Location - Installations in Dublin and other major cities tend to be slightly more expensive than rural areas due to higher labour costs"
         ]
       },
@@ -2076,7 +2076,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of just 5-7 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
       },
       {
         "type": "table",
@@ -2089,9 +2089,9 @@ export const articles: Article[] = [
         "rows": [
           [
             "Net Cost (after grant)",
-            "€5,100",
-            "€7,950",
-            "€12,200"
+            "€6,400",
+            "€7,800",
+            "€10,600"
           ],
           [
             "Annual Bill Savings",
@@ -2113,15 +2113,15 @@ export const articles: Article[] = [
           ],
           [
             "Payback Period",
-            "~5.7 years",
-            "~6.4 years",
-            "~6.4 years"
+            "~7.1 years",
+            "~6.2 years",
+            "~5.6 years"
           ],
           [
             "25-Year Net Profit",
-            "€17,400",
-            "€23,300",
-            "€35,300"
+            "€16,100",
+            "€23,450",
+            "€36,900"
           ]
         ]
       },
@@ -2710,7 +2710,7 @@ export const articles: Article[] = [
     "slug": "battery-storage-is-it-worth-the-extra-cost",
     "title": "Battery Storage: Is It Worth the Extra Cost?",
     "image": "/blog/battery-storage-is-it-worth-the-extra-cost.webp",
-    "excerpt": "Solar batteries cost €4,000-€8,000 - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
+    "excerpt": "Solar batteries cost €3,200-€4,900 for the usual 5 to 10 kWh sizes - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
     "date": "22 Mar 2026",
     "readTime": "10 min read",
@@ -2725,7 +2725,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Adding battery storage to your solar panel system is the single biggest decision you will make after choosing to go solar. It is also the most expensive optional component, with prices ranging from €4,000 to €8,000 depending on capacity, brand, and installation complexity. So, is it worth the extra cost? The honest answer is: it depends on your circumstances."
+        "text": "Adding battery storage to your solar panel system is the single biggest decision you will make after choosing to go solar. It is also the most expensive optional component, with prices ranging from about €3,200 for 5 kWh to €4,900 for 10 kWh depending on capacity, brand, and installation complexity. So, is it worth the extra cost? The honest answer is: it depends on your circumstances."
       },
       {
         "type": "paragraph",
@@ -2762,22 +2762,22 @@ export const articles: Article[] = [
         "rows": [
           [
             "3–5 kWh (small)",
-            "€4,000 – €5,500",
+            "€2,500 – €3,200",
             "Small households, low evening usage"
           ],
           [
             "5–7 kWh (medium)",
-            "€5,000 – €7,000",
+            "€3,200 – €3,900",
             "Average 3-4 person household"
           ],
           [
             "7–10 kWh (large)",
-            "€6,500 – €8,000",
+            "€3,900 – €4,900",
             "Large homes, EV owners, high usage"
           ],
           [
             "10–13.5 kWh (XL)",
-            "€8,000 – €10,000",
+            "€4,900 – €6,100",
             "Off-grid capability, heat pumps"
           ]
         ]
@@ -2821,20 +2821,20 @@ export const articles: Article[] = [
           [
             "5 kWh battery + solar",
             "€1,505",
-            "€5,400",
-            "~9.3 years"
+            "€3,200",
+            "~8.7 years"
           ],
           [
             "7 kWh battery + solar",
             "€1,575",
-            "€6,400",
-            "~10.8 years"
+            "€3,900",
+            "~8.9 years"
           ],
           [
             "10 kWh battery + solar",
             "€1,645",
-            "€7,400",
-            "~12.1 years"
+            "€4,900",
+            "~9.7 years"
           ]
         ]
       },
@@ -3367,7 +3367,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin is at the forefront of Ireland's residential solar energy boom. With approximately 550,000 residential properties, the capital has the highest concentration of potential solar installations in the country. Nationally, a record 34,000+ homes were grant-aided for solar in 2025 (SEAI), and Dublin consistently accounts for the largest share of applications."
+        "text": "Dublin is at the forefront of Ireland's residential solar energy boom. With approximately 550,000 residential properties, the capital has the highest concentration of potential solar installations in the country. Nationally, 2025 was a record year for grant-aided home solar ([SEAI](https://www.seai.ie)), and Dublin consistently accounts for the largest share of applications."
       },
       {
         "type": "paragraph",
@@ -3377,7 +3377,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Dublin Solar Stats",
-        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 (SEAI), with Dublin the largest single county market. The average 6kWp system in Dublin generates approximately 5,000–5,500 kWh per year, saving homeowners €900–€1,200 annually on electricity bills."
+        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. The average 6kWp system in Dublin generates approximately 5,700 kWh per year, saving homeowners €900–€1,200 annually on electricity bills."
       },
       {
         "type": "heading",
@@ -3399,27 +3399,27 @@ export const articles: Article[] = [
         "rows": [
           [
             "4kWp (10–12 panels)",
-            "€6,500 – €8,500",
-            "€6,000 – €8,000",
-            "€4,700 – €6,700"
+            "€8,200",
+            "€8,200",
+            "€6,400"
           ],
           [
             "6kWp (14–16 panels)",
-            "€9,000 – €12,000",
-            "€8,500 – €11,000",
-            "€7,200 – €10,200"
+            "€9,600",
+            "€9,600",
+            "€7,800"
           ],
           [
             "10kWp (22–26 panels)",
-            "€13,000 – €17,000",
-            "€12,000 – €16,000",
-            "€11,200 – €15,200"
+            "€12,400",
+            "€12,400",
+            "€10,600"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "Dublin costs are typically 5–10% above the national average, but the higher electricity prices in Dublin mean the financial returns are actually slightly better. At an average urban electricity rate of €0.40/kWh (including standing charges and VAT), a 6kWp system in Dublin pays for itself in approximately 5.5–6.5 years - slightly faster than the national average of 6–7 years."
+        "text": "Dublin costs are in line with the national market, because solar is priced nationally rather than county by county. What does differ is the return: at an average urban electricity rate of €0.40/kWh (including standing charges and VAT), a 6kWp system in Dublin pays for itself in approximately 5.5–6.5 years, slightly faster than the national average of about 6 years."
       },
       {
         "type": "heading",
@@ -3592,17 +3592,17 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The Government confirmed the SEAI solar PV grant would remain at €1,800 for 2026, pausing the scheduled €300 annual reduction (seai.ie) for the entirety of 2026. This announcement came as a relief to thousands of homeowners who were planning solar installations, as the grant had been on a steady downward trajectory and was widely expected to drop to €1,500 this year."
+        "text": "The Government confirmed the SEAI solar PV grant would remain at €1,800 for 2026, pausing the scheduled €300 annual reduction (seai.ie) for the entirety of 2026. This came as a relief to homeowners planning an installation, because the scheme's annual reduction would otherwise have applied again in 2026."
       },
       {
         "type": "paragraph",
-        "text": "The decision reflects the government's ongoing commitment to residential renewable energy and its recognition that solar adoption in Ireland is still accelerating. With more than 100,000 homes now grant-aided for solar and 2025 setting a record 34,000+ installations (SEAI), the grant is clearly doing its job - and the government has chosen to maintain the incentive rather than risk slowing momentum."
+        "text": "The decision reflects the government's ongoing commitment to residential renewable energy and its recognition that solar adoption in Ireland is still accelerating. With more than 100,000 homes now grant-aided for solar and 2025 a record year for domestic installations ([SEAI](https://www.seai.ie)), the grant is clearly doing its job - and the government has chosen to maintain the incentive rather than risk slowing momentum."
       },
       {
         "type": "callout",
         "variant": "stat",
         "title": "Best Value in the Scheme's History",
-        "body": "The €1,800 grant represents the best value in the scheme's history when combined with falling panel prices. Solar system costs have dropped 20–30% since 2021, meaning the grant now covers a larger percentage of total installation costs than ever before."
+        "body": "The €1,800 grant represents the best value in the scheme's history when combined with falling panel prices. Solar system costs have fallen since 2021, so the grant now covers a larger share of the total installation cost than it used to."
       },
       {
         "type": "heading",
@@ -3629,7 +3629,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Understanding the trajectory of the SEAI solar grant helps put the current €1,800 figure into context. When the scheme first launched, the grant was set at €2,400 - a very generous level designed to kickstart the residential solar market in Ireland. However, the grant was always intended to decrease over time as installation costs fell and the market matured."
+        "text": "Understanding the trajectory of the SEAI solar grant helps put the current €1,800 figure into context. When the scheme first launched, the grant was set at a higher level than today, designed to kickstart the residential solar market in Ireland. It was always intended to decrease over time as installation costs fell and the market matured. SEAI publishes the current rate and the tier structure at seai.ie."
       },
       {
         "type": "paragraph",
@@ -3642,11 +3642,11 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "While the headline grant figure of €1,800 is the same as it has been since 2022, the real-world value of that grant has actually increased. Solar panel prices in Ireland have fallen by approximately 20–30% since 2021, driven by manufacturing overcapacity in China, more efficient supply chains, and increased competition among Irish installers."
+        "text": "While the headline grant figure of €1,800 is the same as it has been since 2022, the real-world value of that grant has actually increased. Solar panel prices in Ireland have fallen since 2021, driven by manufacturing overcapacity in China, more efficient supply chains, and increased competition among Irish installers."
       },
       {
         "type": "paragraph",
-        "text": "To put this in perspective: a 6kWp system that cost €14,000 in 2021 now costs approximately €9,500. The €1,800 grant represented 12.8% of the 2021 cost, but it represents nearly 19% of the 2026 cost. Combined with the fact that electricity prices have risen significantly over the same period, the financial case for solar in 2026 is stronger than at any point in the grant's history."
+        "text": "To put this in perspective: a 6kWp system now costs €9,600 before the grant, so the €1,800 covers a meaningfully larger share of the price than it did when installation costs were higher. Combined with electricity prices that have risen significantly over the same period, the financial case for solar in 2026 is stronger than at any point in the grant's history."
       },
       {
         "type": "heading",
@@ -4136,43 +4136,43 @@ export const articles: Article[] = [
           [
             "1–2 people (low usage)",
             "2,500–3,500 kWh",
-            "3–4 kWp",
-            "8–10 panels",
-            "2,700–3,600 kWh"
+            "4 kWp",
+            "10 panels",
+            "3,800 kWh"
           ],
           [
             "1–2 people (medium usage)",
             "3,500–4,500 kWh",
             "4–5 kWp",
             "10–13 panels",
-            "3,600–4,500 kWh"
+            "3,800–4,750 kWh"
           ],
           [
             "3–4 people",
             "4,000–5,000 kWh",
             "5–6 kWp",
             "13–16 panels",
-            "4,500–5,400 kWh"
+            "4,750–5,700 kWh"
           ],
           [
             "5+ people",
             "5,000–6,500 kWh",
             "7–10 kWp",
             "18–26 panels",
-            "6,300–9,000 kWh"
+            "6,650–9,500 kWh"
           ],
           [
             "EV + heat pump home",
             "7,000–10,000 kWh",
             "8–12 kWp",
             "20–32 panels",
-            "7,200–10,800 kWh"
+            "7,600–11,400 kWh"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The recommended system sizes are designed to cover a significant portion of your annual usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
+        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are designed to cover a significant portion of your annual usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
       },
       {
         "type": "heading",
@@ -4212,13 +4212,7 @@ export const articles: Article[] = [
         ],
         "rows": [
           [
-            "3 kWp",
-            "8 panels",
-            "~15 m²",
-            "4m × 4m clear area"
-          ],
-          [
-            "4 kWp",
+            "4 kWp (the domestic minimum)",
             "10 panels",
             "~19 m²",
             "5m × 4m clear area"
@@ -4303,7 +4297,7 @@ export const articles: Article[] = [
         "type": "numberedList",
         "items": [
           "Start with your annual electricity usage (find it on your electricity bill) - this is the most important factor",
-          "A 3–4kWp system suits 1–2 person homes, a 5–6kWp system suits 3–4 person homes, and a 7–10kWp system suits larger families or homes with EVs and heat pumps",
+          "4kWp is the smallest system worth fitting and suits 1–2 person homes: below that the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4kWp is exactly where the SEAI grant reaches its full €1,800. A 5–6kWp system suits 3–4 person homes, and a 7–10kWp system suits larger families or homes with EVs and heat pumps",
           "Each panel requires approximately 1.7m² of roof space plus gaps - measure your available roof area before getting quotes",
           "South-facing roofs are optimal, but east and west-facing roofs are still highly viable (80–85% output)",
           "If budget is tight, start with 4kWp and expand later - just ensure your inverter and mounting rails are sized for future expansion",
@@ -4343,13 +4337,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The main factor to consider is this: solar generation in Ireland varies enormously by season. A 4kWp south-facing system will generate roughly 380 kWh in June but only 70 kWh in December - a five-fold difference. If you install in spring, you immediately start capturing the highest-generation months and maximise your first-year savings. Install in December, and your first few months of generation will be relatively modest."
+        "text": "The main factor to consider is this: solar generation in Ireland varies enormously by season. A 4kWp south-facing system will generate roughly 520 kWh in June but only 95 kWh in December - more than a five-fold difference. If you install in spring, you immediately start capturing the highest-generation months and maximise your first-year savings. Install in December, and your first few months of generation will be relatively modest."
       },
       {
         "type": "callout",
         "variant": "stat",
         "title": "Timing Matters",
-        "body": "Installing in March versus December means an extra ~1,500 kWh in your first year - worth roughly €400 to €500 depending on how much you self-consume. That is the equivalent of 3–4 months of free electricity just from choosing the right installation month."
+        "body": "Installing in March versus December means an extra ~2,000 kWh in your first year - worth roughly €400 to €700 depending on how much you self-consume rather than export. That is the equivalent of about six months of free electricity just from choosing the right installation month."
       },
       {
         "type": "heading",
@@ -4358,7 +4352,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "To understand the seasonal impact, here is the actual month-by-month generation data for a typical 4kWp south-facing solar PV system in Ireland. These figures are typical modelled yields for a south-facing 4kWp system in Ireland (roughly 850 kWh per kWp per year):"
+        "text": "To understand the seasonal impact, here is the month-by-month generation profile for a typical 4kWp south-facing solar PV system in Ireland. These figures are typical modelled yields for a south-facing 4kWp system in Ireland (roughly 950 kWh per kWp per year):"
       },
       {
         "type": "table",
@@ -4371,87 +4365,87 @@ export const articles: Article[] = [
         "rows": [
           [
             "January",
-            "80 kWh",
-            "2.6%",
-            "2.6"
+            "110 kWh",
+            "2.9%",
+            "3.5"
           ],
           [
             "February",
-            "120 kWh",
-            "3.9%",
-            "4.3"
+            "165 kWh",
+            "4.3%",
+            "5.9"
           ],
           [
             "March",
-            "200 kWh",
-            "6.6%",
-            "6.5"
+            "275 kWh",
+            "7.2%",
+            "8.9"
           ],
           [
             "April",
-            "300 kWh",
-            "9.9%",
-            "10.0"
+            "410 kWh",
+            "10.8%",
+            "13.7"
           ],
           [
             "May",
-            "370 kWh",
-            "12.2%",
-            "11.9"
+            "505 kWh",
+            "13.3%",
+            "16.3"
           ],
           [
             "June",
-            "380 kWh",
-            "12.5%",
-            "12.7"
+            "520 kWh",
+            "13.7%",
+            "17.3"
           ],
           [
             "July",
-            "380 kWh",
-            "12.5%",
-            "12.3"
+            "515 kWh",
+            "13.6%",
+            "16.6"
           ],
           [
             "August",
-            "350 kWh",
-            "11.6%",
-            "11.3"
+            "480 kWh",
+            "12.6%",
+            "15.5"
           ],
           [
             "September",
-            "260 kWh",
-            "8.6%",
-            "8.7"
+            "355 kWh",
+            "9.3%",
+            "11.8"
           ],
           [
             "October",
-            "170 kWh",
-            "5.6%",
-            "5.5"
+            "235 kWh",
+            "6.2%",
+            "7.6"
           ],
           [
             "November",
-            "100 kWh",
-            "3.3%",
-            "3.3"
+            "135 kWh",
+            "3.6%",
+            "4.5"
           ],
           [
             "December",
-            "70 kWh",
-            "2.3%",
-            "2.3"
+            "95 kWh",
+            "2.5%",
+            "3.1"
           ],
           [
             "Annual Total",
-            "2,780 kWh",
+            "3,800 kWh",
             "100%",
-            "7.6"
+            "10.4"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "The data tells a clear story. From April through September, Ireland receives 80% of its annual solar irradiation in just six months. October through March accounts for the remaining 20%. This is the fundamental reason why spring installation is optimal - you capture the entire high-generation season from day one."
+        "text": "The data tells a clear story. From April through September, an Irish array produces roughly three quarters of its annual output in just six months. October through March accounts for the remaining quarter. This is the fundamental reason why spring installation is optimal - you capture the entire high-generation season from day one."
       },
       {
         "type": "heading",
@@ -4489,7 +4483,7 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "Installers are at their busiest - lead times can stretch to 6–8 weeks, and you may pay a slight premium",
-          "You miss the March–May generation window - this costs you approximately 870 kWh of potential first-year generation",
+          "You miss the March–May generation window - this costs you approximately 1,190 kWh of potential first-year generation",
           "Scaffold work in hot weather can be slower - roof surface temperatures can reach 50°C+ on sunny days",
           "Despite these drawbacks, summer generation is excellent and your system will be fully productive immediately"
         ]
@@ -4501,7 +4495,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Autumn is a pragmatic time to install solar panels. Generation is declining but still meaningful - September alone produces 260 kWh from a 4kWp system, more than December and January combined. Installer availability improves as the summer rush subsides, and you may be able to negotiate slightly better pricing."
+        "text": "Autumn is a pragmatic time to install solar panels. Generation is declining but still meaningful - September alone produces 355 kWh from a 4kWp system, more than December and January combined. Installer availability improves as the summer rush subsides, and you may be able to negotiate slightly better pricing."
       },
       {
         "type": "paragraph",
@@ -4520,14 +4514,14 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "Installers are least busy - shortest lead times (1–2 weeks) and potential for discounted pricing",
-          "Panels still generate - even in December, a 4kWp system produces approximately 70 kWh, enough to offset a portion of your higher winter electricity bills",
+          "Panels still generate - even in December, a 4kWp system produces approximately 95 kWh, enough to offset a portion of your higher winter electricity bills",
           "The SEAI grant process continues year-round - there is no seasonal suspension of grant applications",
           "Installation conditions - while weather can delay installation, most installers work year-round and monitor forecasts to schedule work on dry days"
         ]
       },
       {
         "type": "paragraph",
-        "text": "If you install in January, by the time your system is fully operational (factoring in 4–6 weeks for grant approval and scheduling), it will be late February or early March - just as generation begins to climb. The \"lost\" generation from January and February is relatively small (approximately 200 kWh combined)."
+        "text": "If you install in January, by the time your system is fully operational (factoring in 4–6 weeks for grant approval and scheduling), it will be late February or early March - just as generation begins to climb. The \"lost\" generation from January and February is relatively small (approximately 275 kWh combined)."
       },
       {
         "type": "heading",
@@ -4626,34 +4620,34 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "This is one of the most frequently asked questions we receive from property investors, and the answer depends on your specific situation. The SEAI solar PV grant is designed for homeowner-occupiers - people who live in the property as their principal private residence. This means:"
+        "text": "This is one of the most frequently asked questions we receive from property investors, and the answer is yes. The SEAI solar PV grant is open to owner-occupiers and to private landlords, for homes built and occupied before 2021. This means:"
       },
       {
         "type": "bulletList",
         "items": [
           "Yes - if you live in the property as your main home and install solar panels on it, you are eligible for the full €1,800 grant, regardless of whether you rent out individual rooms under the Rent a Room scheme",
           "Yes - private landlords can claim the €1,800 SEAI solar grant on rental homes built and occupied before 2021 (seai.ie 'Supports for landlords')",
-          "No - holiday homes and second homes are also not eligible, as the grant is restricted to your principal private residence"
+          "No - a property that was not built and occupied as a home before 2021 does not qualify, and neither does an MPRN that has already had a solar grant"
         ]
       },
       {
         "type": "paragraph",
-        "text": "The eligibility criteria are clear: the SEAI grant is open to owner-occupiers and private landlords. If you own multiple properties, you can claim the grant for the one you live in, but not for any rental properties. This is a source of frustration for many landlords who would like to improve the energy efficiency of their rental stock, but it is the current state of the scheme."
+        "text": "The eligibility criteria are clear: the SEAI grant is open to owner-occupiers and private landlords, for homes built and occupied before 2021 with a valid MPRN. If you own multiple properties, you can apply for each qualifying home, but only once per MPRN, so a property that has already had a solar grant cannot claim a second one."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Rent-a-Room Exemption",
-        "body": "If you live in the property as your main home and rent out a room (or rooms) under the Rent a Room Scheme, you ARE eligible for the full €1,800 SEAI solar grant. The key test is whether the property is your principal private residence, not whether you have tenants."
+        "body": "If you live in the property as your main home and rent out a room (or rooms) under the Rent a Room Scheme, you are eligible for the full €1,800 SEAI solar grant. Having tenants does not change anything: the tests are that the home was built and occupied before 2021, has a valid MPRN, and has not had a solar grant before."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Alternatives for Landlords"
+        "text": "Other Supports for Landlords"
       },
       {
         "type": "paragraph",
-        "text": "While the domestic SEAI grant is not available for buy-to-let properties, there are alternative incentives and financial mechanisms that landlords can explore:"
+        "text": "The domestic SEAI grant is not the only support available. Depending on the property, there are further incentives and financial mechanisms that landlords can explore:"
       },
       {
         "type": "heading",
@@ -4689,7 +4683,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Even without grant eligibility, installing solar panels on a rental property can deliver significant benefits - both for the landlord and the tenant. While the landlord bears the upfront cost, the advantages can be substantial:"
+        "text": "Beyond the grant itself, installing solar panels on a rental property delivers benefits both for the landlord and the tenant. While the landlord bears the upfront cost, the advantages can be substantial:"
       },
       {
         "type": "bulletList",
@@ -4711,7 +4705,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar PV installations typically improve a property's BER rating by 1–2 grades. For example, a D1-rated property could move to a C2 or C3 rating with a well-sized solar PV system. The exact improvement depends on the existing energy performance of the property, the size of the solar installation, and whether other energy efficiency measures are also implemented."
+        "text": "Solar PV reliably moves a property's BER rating in the right direction, but how far depends on the existing energy performance of the property, the size of the solar installation, and whether other energy efficiency measures are carried out at the same time. Any installer who promises a specific jump from one grade to the next before surveying the roof is guessing."
       },
       {
         "type": "callout",
@@ -4738,7 +4732,7 @@ export const articles: Article[] = [
           "Solar can make a rental more attractive to tenants and cut their running costs, depending on the location and system size",
           "Over a year, this represents €600–€1,200 in additional rental income",
           "Combined with the tenant's electricity savings of €600–€1,200 per year, the total value proposition of solar is €1,200–€2,400 per year",
-          "For a 6kWp system costing approximately €9,500 (no grant), this means a payback period of 5–8 years purely from the rent premium - before counting any other benefits"
+          "For a 6kWp system at €7,800 after the €1,800 grant, this means a payback period of roughly 7 to 13 years purely from the rent premium - before counting any other benefits"
         ]
       },
       {
@@ -4763,26 +4757,26 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "2026 Developments: Grants for Rental Properties?"
+        "text": "Keeping Up With Scheme Changes"
       },
       {
         "type": "paragraph",
-        "text": "There is growing political pressure to extend SEAI grant eligibility to rental properties. The government's Climate Action Plan recognises that the rental sector represents a significant proportion of Ireland's housing stock and that achieving national energy efficiency targets will require upgrades across all property types, not just owner-occupied homes."
+        "text": "The government's Climate Action Plan recognises that the rental sector represents a significant proportion of Ireland's housing stock and that achieving national energy efficiency targets will require upgrades across all property types, not just owner-occupied homes. That is the backdrop to the grant covering rented homes as well as owner-occupied ones."
       },
       {
         "type": "callout",
         "variant": "tip",
         "title": "Stay Informed",
-        "body": "The policy landscape for rental property energy upgrades is evolving rapidly. We recommend checking the SEAI website regularly or subscribing to their newsletter for the latest grant announcements. If a rental property grant scheme is introduced, it is likely to be announced as part of a budget or climate action update."
+        "body": "Grant rates and eligibility rules are set by SEAI and do change from year to year. Check seai.ie for the current rate and conditions before you commit, and always apply online before any work starts."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Is It Worth It Without the Grant?"
+        "text": "Is It Worth It on a Rental?"
       },
       {
         "type": "paragraph",
-        "text": "Even without the €1,800 SEAI grant, installing solar panels on a rental property can be a sound investment. A 6kWp system costs approximately €9,500 (without grant) and generates roughly €1,000–€1,400 per year in combined electricity savings and CEG payments. If the property commands a rent premium of €75/month (€900/year), the total annual benefit is approximately €1,900–€2,300, giving a payback period of 4–5 years. Over 25 years, the net profit could exceed €30,000."
+        "text": "The numbers stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI grant, and generates roughly €1,000–€1,400 per year in combined electricity savings and CEG payments. If the property also commands a rent premium of €75/month (€900/year), the total annual benefit is approximately €1,900–€2,300, giving a payback period of about 3 to 4 years. Over 25 years, the net profit could exceed €30,000."
       },
       {
         "type": "paragraph",
