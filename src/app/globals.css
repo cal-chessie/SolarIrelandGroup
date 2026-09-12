@@ -221,6 +221,19 @@
     will-change: transform, opacity;
   }
 
+  /* LCP-critical headline: paint at first frame (opacity 1), animate transform only.
+     A fade from opacity:0 delays Largest Contentful Paint; this keeps the motion
+     without the paint penalty. */
+  .hero-lcp {
+    opacity: 1;
+    animation: hero-rise-instant 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform;
+  }
+  @keyframes hero-rise-instant {
+    from { transform: translateY(12px); }
+    to { transform: translateY(0); }
+  }
+
   /* CTA shimmer sweep */
   .hero-cta-shimmer {
     position: relative;

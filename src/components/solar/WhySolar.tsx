@@ -616,6 +616,7 @@ export default function WhySolar() {
               href={buildWhatsAppUrl({ source: 'why-solar' })}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Chat with Solar Ireland on WhatsApp"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors whitespace-nowrap"

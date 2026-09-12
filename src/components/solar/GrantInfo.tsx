@@ -463,7 +463,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        The Irish government pays you to go solar - available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 transition-colors">Got questions? Check our FAQ</a>
+        The Irish government pays you to go solar - available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Got questions? Check our FAQ</a>
       </p>
     </motion.div>
   );

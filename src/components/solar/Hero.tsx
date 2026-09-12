@@ -97,16 +97,10 @@ export default function Hero() {
 
             <div className="mt-6 sm:mt-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95]">
-                <span
-                  className="hero-fade-up block"
-                  style={{ animationDelay: '0.2s' }}
-                >
+                <span className="hero-lcp block">
                   <span className="text-white">Your Energy.</span>
                 </span>
-                <span
-                  className="hero-fade-up block"
-                  style={{ animationDelay: '0.35s' }}
-                >
+                <span className="hero-lcp block">
                   <span className="text-gradient hero-sheen">Your Asset.</span>
                 </span>
               </h1>
