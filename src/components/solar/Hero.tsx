@@ -116,13 +116,13 @@ export default function Hero() {
             </p>
 
             <div
-              className="hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto lg:items-start"
+              className="hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto lg:items-start"
               style={{ animationDelay: '0.65s' }}
             >
               {/* PRIMARY CTA - Analyse Bill */}
               <button
                 onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 xl:px-9 py-3.5 xl:py-4 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm xl:text-base tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
+                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 xl:px-9 py-3.5 xl:py-4 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm xl:text-base tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto sm:shrink-0 hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
               >
                 <Zap className="w-4 h-4" />
                 Analyse My Bill - Free

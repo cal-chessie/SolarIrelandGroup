@@ -147,7 +147,7 @@ function PreFooterCTA() {
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm whitespace-nowrap shadow-lg shadow-amber-400/20"
           >
             <Zap className="w-4 h-4" />
-            Analyse My Bill
+            Solar Calculator
             <ArrowRight className="w-4 h-4" />
           </motion.a>
           <motion.a

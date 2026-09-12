@@ -262,6 +262,8 @@
   .hero-orb {
     will-change: transform, opacity;
     animation: orb-drift 12s ease-in-out infinite;
+    /* isolate the decorative orb so its animation can't register as page CLS */
+    contain: layout style;
   }
   .hero-orb-1 {
     animation-delay: 0s;
