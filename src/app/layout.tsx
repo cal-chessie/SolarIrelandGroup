@@ -225,6 +225,7 @@ const organizationSchema = {
     "https://www.facebook.com/SolarIrelandGroup",
     "https://www.instagram.com/solarireland",
     "https://www.tiktok.com/@solarireland",
+    "https://www.threads.com/@solarireland",
   ],
   foundingDate: "2019",
   numberOfEmployees: {
