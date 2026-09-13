@@ -62,10 +62,10 @@ export const SOLAR_DATA = {
     whatsapp: '353873958424',
   },
   social: {
-    facebook: 'https://www.facebook.com/solarlreland',
+    facebook: 'https://www.facebook.com/SolarIrelandGroup',
     instagram: 'https://www.instagram.com/solarireland',
-    x: 'https://x.com/solarlreland',
     tiktok: 'https://www.tiktok.com/@solarireland',
+    threads: 'https://www.threads.com/@solarireland',
   },
   certifications: ['SEAI Registered', 'RECI Certified', 'NSAI Compliant', 'Safe Electric'],
   serviceAreas: ['Connacht', 'Leinster', 'Munster', 'Ulster'],

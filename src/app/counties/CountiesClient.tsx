@@ -13,6 +13,7 @@ import {
   X,
   Map,
   Globe,
+  AtSign,
   CheckCircle2,
   Clock,
   ChevronRight,
@@ -133,7 +134,7 @@ const faqs = [
   },
   {
     question: 'How long does a solar panel installation take?',
-    answer: 'A typical residential solar panel installation takes just one day to complete on-site. The scaffolding goes up in the morning, panels are mounted by midday, and the electrical wiring and inverter connection are finished by late afternoon. Before installation day, there\'s usually a 2–4 week lead time for a site survey, system design, SEAI grant application, and scheduling. After installation, it takes 4–8 weeks for the SEAI grant payment to arrive into your bank account. From first call to panels on your roof, you\'re typically looking at 4–6 weeks in total.',
+    answer: 'A typical residential solar panel installation takes just one day to complete on-site. The scaffolding goes up in the morning, panels are mounted by midday, and the electrical wiring and inverter connection are finished by late afternoon. Before installation day, there\'s usually a 2 to 4 week lead time for a site survey, system design, SEAI grant application, and scheduling. After installation, it takes 4 to 8 weeks for the SEAI grant payment to arrive into your bank account. From first call to panels on your roof, you\'re typically looking at 4 to 6 weeks in total.',
   },
   {
     question: 'Do I need planning permission for solar panels?',
@@ -257,7 +258,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
             <Euro className="w-3 h-3 text-amber-400/60" />
           </div>
           <p className="text-xs font-semibold text-gray-300">
-            €{county.costMin.toLocaleString()}–€{county.costMax.toLocaleString()}
+            €{county.costMin.toLocaleString()} to €{county.costMax.toLocaleString()}
           </p>
           <p className="text-[10px] text-gray-600 mt-0.5">System cost</p>
         </div>
@@ -278,8 +279,8 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
       </div>
 
       <div className="flex items-center gap-1.5 mb-4">
-        <Globe className="w-3 h-3 text-gray-600" />
-        <span className="text-xs text-gray-500">{county.domain}</span>
+        <AtSign className="w-3 h-3 text-gray-600" />
+        <span className="text-xs text-gray-500">@{county.domain.replace(/\.[a-z.]+$/, '')}</span>
       </div>
 
       {localPage && (

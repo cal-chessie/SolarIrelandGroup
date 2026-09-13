@@ -481,7 +481,7 @@ export default function CookieConsent() {
                 <div
                   className="
                     cookie-buttons-compact
-                    mt-3 sm:mt-5 flex flex-row items-center gap-2 sm:gap-3
+                    mt-3 sm:mt-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3
                   "
                 >
                   <button

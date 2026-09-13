@@ -57,7 +57,6 @@ export const metadata: Metadata = {
     description:
       'How much could solar panels save you? Enter your electricity bill and find out instantly. SEAI grant included.',
     images: ['/hero-solar.jpg'],
-    creator: '@solarireland',
   },
   robots: {
     index: true,

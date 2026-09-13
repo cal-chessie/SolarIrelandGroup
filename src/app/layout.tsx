@@ -175,7 +175,6 @@ export const metadata: Metadata = {
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/hero-solar.jpg"],
-    creator: "@solarlreland",
   },
 
 

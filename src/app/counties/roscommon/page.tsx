@@ -119,7 +119,6 @@ export const metadata: Metadata = {
     description:
       'Upload your bill and our AI shows what solar saves your Roscommon home. SEAI grant handled, honest local quotes.',
     images: ['https://solarirelandgroup.ie/og-counties.png'],
-    creator: '@solarireland',
   },
   robots: {
     index: true,

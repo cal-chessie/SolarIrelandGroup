@@ -52,7 +52,6 @@ export const metadata: Metadata = {
     description:
       'Free payment plan calculator. See monthly repayments and compare financing options for solar panels in Ireland.',
     images: ['/og-financing.jpg'],
-    creator: '@solarireland',
   },
   robots: {
     index: true,
