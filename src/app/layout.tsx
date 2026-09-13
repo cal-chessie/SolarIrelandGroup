@@ -111,14 +111,17 @@ export const metadata: Metadata = {
 
 
   icons: {
-    // ONE brand favicon everywhere: the gold ring. src/app/favicon.ico (the
-    // canonical file Google reads first) + these tags all resolve to the ring,
-    // so browser tabs and the Google result listing agree. The bee lives on as
-    // the hero mascot, not the favicon — a bee is mush at 16px and Google was
-    // picking it over the ring while the two competed.
+    // Split by size on purpose:
+    //  - Browser tab renders at 16/32px and picks the closest declared size,
+    //    so the bee stays in the tab (its home since launch).
+    //  - Google's favicon only uses icons >=48px (multiples of 48), so it
+    //    picks the gold ring. public/favicon.ico is the ring too, which is the
+    //    file Google crawls first — both signals point Google at the ring.
+    // The ring lives in /public (not src/app) so Next doesn't inject it as a
+    // sizes="any" tab icon and override the bee.
     icon: [
-      { url: "/logo-icon-16.png", sizes: "16x16", type: "image/png" },
-      { url: "/logo-icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/bumblebee-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/bumblebee-favicon.png", sizes: "32x32", type: "image/png" },
       { url: "/logo-icon-48.png", sizes: "48x48", type: "image/png" },
       { url: "/logo-icon-96.png", sizes: "96x96", type: "image/png" },
       { url: "/logo-icon-512.png", sizes: "512x512", type: "image/png" },
