@@ -48,7 +48,7 @@ const mainServices = [
     icon: Sun,
     title: 'Solar PV Installation',
     tagline: 'Residential Solar Panels',
-    price: '€8,200 – €12,400',
+    price: '€8,200-€12,400',
     grant: 'Before €1,800 SEAI Grant',
     color: 'amber',
     iconBg: 'bg-amber-400/10',
@@ -57,7 +57,7 @@ const mainServices = [
     description:
       'Transform your roof into a clean energy power station. Our residential solar PV systems generate free electricity from daylight - reducing your bills and your carbon footprint.',
     features: [
-      { label: 'System Size', value: '4 – 10 kWp' },
+      { label: 'System Size', value: '4-10 kWp' },
       { label: 'Panel Brands', value: 'LONGi, Jinko, Trina (Tier-1)' },
       { label: 'Inverters', value: 'Hybrid & String Inverters' },
       { label: 'Panel Warranty', value: '25-Year Manufacturer' },

@@ -8,7 +8,7 @@ const servicesSchema = {
       '@id': 'https://solarirelandgroup.ie/#service-solar-pv',
       name: 'Residential Solar PV Installation',
       description:
-        'Complete solar panel installation for Irish homes. Tier-1 panels (LONGi, Jinko, Trina), hybrid or string inverters, smart monitoring, and a €1,800 SEAI grant. Systems from 4 kWp to 10 kWp saving €800–€1,400/year.',
+        'Complete solar panel installation for Irish homes. Tier-1 panels (LONGi, Jinko, Trina), hybrid or string inverters, smart monitoring, and a €1,800 SEAI grant. Systems from 4 kWp to 10 kWp saving €800-€1,400/year.',
       url: 'https://solarirelandgroup.ie/services',
       provider: {
         '@id': 'https://solarirelandgroup.ie/#business',
