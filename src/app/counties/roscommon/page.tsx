@@ -9,6 +9,7 @@ import {
   ArrowRight,
   FileCheck,
   Sparkles,
+  ChevronDown,
 } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
@@ -301,8 +302,9 @@ export default function RoscommonPage() {
           <div className="mt-6 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
             {FAQS.map((f) => (
               <details key={f.question} className="group p-6">
-                <summary className="cursor-pointer list-none text-base font-semibold marker:content-['']">
-                  {f.question}
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold marker:content-['']">
+                  <span>{f.question}</span>
+                  <ChevronDown className="h-5 w-5 shrink-0 text-yellow-400 transition-transform duration-200 group-open:rotate-180" />
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-white/60">{f.answer}</p>
               </details>
