@@ -47,7 +47,7 @@ interface CountyData {
 }
 
 const counties: CountyData[] = [
-  { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords - terraces to estates, we know every roof' },
+  { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.ie', status: 'active', costMin: 8400, costMax: 12800, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords - terraces to estates, we know every roof' },
   { name: 'Wicklow', provinces: ['Leinster'], domain: 'solarwicklow.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3520, population: '155K', tagline: 'The Garden County - stunning scenery and serious solar potential' },
   { name: 'Wexford', provinces: ['Leinster'], domain: 'solarwexford.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3600, population: '156K', tagline: 'Sunny southeast at its finest - Hook Head leads the way' },
   { name: 'Carlow', provinces: ['Leinster'], domain: 'solarcarlow.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3540, population: '61K', tagline: 'The Dolmen County - solid ground for solar investment' },
@@ -60,7 +60,7 @@ const counties: CountyData[] = [
   { name: 'Laois', provinces: ['Leinster'], domain: 'solarlaois.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3430, population: '85K', tagline: 'Quiet county, bright future - solar energy for every home' },
   { name: 'Kilkenny', provinces: ['Leinster'], domain: 'solarkilkenny.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3500, population: '104K', tagline: 'The Marble City and beyond - medieval charm, modern energy' },
 
-  { name: 'Cork', provinces: ['Munster'], domain: 'solarcork.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3580, population: '555K', tagline: 'The Rebel County runs on sunshine' },
+  { name: 'Cork', provinces: ['Munster'], domain: 'solarcork.ie', status: 'active', costMin: 8400, costMax: 12800, generationKwh: 3580, population: '555K', tagline: 'The Rebel County runs on sunshine' },
   { name: 'Kerry', provinces: ['Munster'], domain: 'solarkerry.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3540, population: '156K', tagline: 'From the Kingdom - wild Atlantic coast, serious solar savings' },
   { name: 'Limerick', provinces: ['Munster'], domain: 'solarlimerick.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3500, population: '205K', tagline: 'Treaty City homes switching on to solar' },
   { name: 'Clare', provinces: ['Munster'], domain: 'solarclare.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3470, population: '131K', tagline: 'The Banner County - from the Burren to your rooftop' },
@@ -260,7 +260,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
           <p className="text-xs font-semibold text-gray-300">
             €{county.costMin.toLocaleString()} to €{county.costMax.toLocaleString()}
           </p>
-          <p className="text-[10px] text-gray-600 mt-0.5">System cost</p>
+          <p className="text-[10px] text-gray-600 mt-0.5">4-8 kWp system</p>
         </div>
         <div className="text-center p-2.5 rounded-lg bg-white/[0.03]">
           <div className="flex items-center justify-center gap-1 mb-1">
