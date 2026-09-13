@@ -353,6 +353,11 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
   name: SITE_NAME,
+  // Domain spells out "...group.ie", so Google leans toward "Solar Ireland
+  // Group" (or the bare domain) for the site name. Declaring that as an
+  // alternateName of the primary "Solar Ireland" tells Google the two are the
+  // same entity and "Solar Ireland" is the name to display.
+  alternateName: "Solar Ireland Group",
   url: SITE_URL,
   publisher: {
     "@id": `${SITE_URL}/#organization`,
