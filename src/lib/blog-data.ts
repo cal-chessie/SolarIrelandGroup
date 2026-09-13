@@ -1856,7 +1856,7 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
-    "image": "/blog/complete-guide-seai-solar-grant-2026.webp",
+    "image": "/blog/IMG_2092.JPG",
     "content": [
       {
         "type": "heading",
