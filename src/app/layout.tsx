@@ -222,10 +222,9 @@ const organizationSchema = {
   email: "sales@solarirelandgroup.ie",
   telephone: "+353 87 395 8424",
   sameAs: [
-    "https://www.facebook.com/solarlreland",
+    "https://www.facebook.com/SolarIrelandGroup",
     "https://www.instagram.com/solarireland",
     "https://www.tiktok.com/@solarireland",
-    "https://x.com/solarlreland",
   ],
   foundingDate: "2019",
   numberOfEmployees: {
