@@ -48,17 +48,17 @@ const FAQS = [
   {
     question: 'Do you install solar panels in County Roscommon?',
     answer:
-      'Yes. Solar Ireland installs solar panels right across County Roscommon — Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. Surveys are free and we handle the full SEAI grant application for you.',
+      'Yes. Solar Ireland installs solar panels right across County Roscommon: Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. Surveys are free and we handle the full SEAI grant application for you.',
   },
   {
     question: 'How much do solar panels cost in Roscommon?',
     answer:
-      'A typical home system in Roscommon costs from about €4,300 to €6,600 after the €1,800 SEAI grant, depending on system size. A standard 4 kWp system for a 3–4 bedroom home is €8,200 installed — €6,400 after the grant. Use our free bill analyser for an exact figure based on your own electricity usage.',
+      'A typical home system in Roscommon costs from about €4,300 to €6,600 after the €1,800 SEAI grant, depending on system size. A standard 4 kWp system for a 3 to 4 bedroom home is €8,200 installed, or €6,400 after the grant. Use our free bill analyser for an exact figure based on your own electricity usage.',
   },
   {
     question: 'How much electricity will solar panels generate in Roscommon?',
     answer:
-      'A typical domestic system in Roscommon generates around 3,380 kWh of electricity a year. Roscommon has plenty of open, unshaded roof space on bungalows and farmhouses, which suits solar well — the households that benefit most are the ones using electricity during the day.',
+      'A typical domestic system in Roscommon generates around 3,380 kWh of electricity a year. Roscommon has plenty of open, unshaded roof space on bungalows and farmhouses, which suits solar well. The households that benefit most are the ones using electricity during the day.',
   },
   {
     question: 'Is the €1,800 SEAI grant available in Roscommon?',
@@ -75,7 +75,7 @@ const FAQS = [
 export const metadata: Metadata = {
   title: 'Solar Panel Installers Roscommon | SEAI Grants | Free Survey',
   description:
-    'SEAI-registered solar panel installers in County Roscommon — Roscommon Town, Boyle, Castlerea, Strokestown and more. €1,800 grant handled for you. Free survey and honest quote.',
+    'SEAI-registered solar panel installers in County Roscommon: Roscommon Town, Boyle, Castlerea, Strokestown and more. €1,800 grant handled for you. Free survey and honest quote.',
   keywords: [
     'solar panels Roscommon',
     'solar panel installers Roscommon',
@@ -204,7 +204,7 @@ export default function RoscommonPage() {
             Solar Panel Installers in <span className="text-yellow-400">Roscommon</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
-            SEAI-registered solar panel installation right across County Roscommon — from Roscommon Town and Boyle
+            SEAI-registered solar panel installation right across County Roscommon, from Roscommon Town and Boyle
             to Castlerea, Strokestown and Monksland. Free survey, honest quote, and we handle the full €1,800 SEAI
             grant application for you.
           </p>
@@ -213,7 +213,7 @@ export default function RoscommonPage() {
               href="/solar-calculator"
               className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
             >
-              Analyse My Bill — Free <ArrowRight className="h-4 w-4" />
+              Analyse My Bill <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/book-survey"
@@ -228,7 +228,7 @@ export default function RoscommonPage() {
         <section className="mx-auto max-w-6xl px-4 py-8">
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { icon: Euro, label: 'Typical cost after grant', value: `€${COUNTY.costMin.toLocaleString()}–€${COUNTY.costMax.toLocaleString()}` },
+              { icon: Euro, label: 'Typical cost after grant', value: `€${COUNTY.costMin.toLocaleString()} to €${COUNTY.costMax.toLocaleString()}` },
               { icon: Zap, label: 'Annual generation', value: `~${COUNTY.generationKwh.toLocaleString()} kWh` },
               { icon: Sun, label: 'SEAI grant handled', value: 'Up to €1,800' },
             ].map((s) => (
@@ -245,7 +245,7 @@ export default function RoscommonPage() {
         <section className="mx-auto max-w-6xl px-4 py-10">
           <h2 className="text-2xl font-bold">Towns we serve across Roscommon</h2>
           <p className="mt-3 max-w-2xl text-white/60">
-            We install for homeowners county-wide. Don&apos;t see your town? We still cover it — get in touch for a free
+            We install for homeowners county-wide. Don&apos;t see your town? We still cover it. Get in touch for a free
             consultation.
           </p>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -262,7 +262,7 @@ export default function RoscommonPage() {
           <h2 className="text-2xl font-bold">Why Roscommon homes are well suited to solar</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
-              { icon: Sun, title: 'Open, unshaded roofs', body: 'Roscommon\'s bungalows and farmhouses often have large, south-facing roofs with little shading — close to ideal for solar generation.' },
+              { icon: Sun, title: 'Open, unshaded roofs', body: 'Roscommon\'s bungalows and farmhouses often have large, south-facing roofs with little shading, close to ideal for solar generation.' },
               { icon: FileCheck, title: 'Grant & paperwork done for you', body: 'We prepare and submit the SEAI grant, handle the ESB Networks grid connection notification, and arrange your post-works BER.' },
               { icon: CheckCircle2, title: 'One-day installation', body: 'A standard system is installed and commissioned in a single day by our RECI-certified team.' },
             ].map((c) => (
@@ -277,7 +277,7 @@ export default function RoscommonPage() {
 
         {/* FAQ */}
         <section className="mx-auto max-w-6xl px-4 py-10">
-          <h2 className="text-2xl font-bold">Solar panels in Roscommon — common questions</h2>
+          <h2 className="text-2xl font-bold">Solar panels in Roscommon: common questions</h2>
           <div className="mt-6 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
             {FAQS.map((f) => (
               <details key={f.question} className="group p-6">
@@ -295,12 +295,12 @@ export default function RoscommonPage() {
           <div className="rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold sm:text-3xl">Get your free Roscommon solar quote</h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Upload your electricity bill and our AI shows you exactly what solar will save your Roscommon home — no
+              Upload your electricity bill and our AI shows you exactly what solar will save your Roscommon home. No
               obligation, no hard sell.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link href="/solar-calculator" className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-black transition hover:bg-yellow-300">
-                Analyse My Bill — Free <ArrowRight className="h-4 w-4" />
+                Analyse My Bill <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="/counties" className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 font-semibold text-white transition hover:bg-white/5">
                 See all counties
