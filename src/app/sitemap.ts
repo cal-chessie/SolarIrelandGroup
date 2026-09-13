@@ -10,6 +10,7 @@ const PAGE_DATES: Record<string, string> = {
   "/": "2026-04-08T00:00:00+00:00",
   "/services": "2026-04-01T00:00:00+00:00",
   "/counties": "2026-04-01T00:00:00+00:00",
+  "/counties/roscommon": "2026-09-13T00:00:00+00:00",
   "/blog": "2026-04-08T00:00:00+00:00",
   "/about": "2026-03-15T00:00:00+00:00",
   "/contact": "2026-03-15T00:00:00+00:00",
@@ -42,6 +43,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: PAGE_DATES["/counties"],
       changeFrequency: "monthly",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/counties/roscommon`,
+      lastModified: PAGE_DATES["/counties/roscommon"],
+      changeFrequency: "monthly",
+      priority: 0.85,
     },
     {
       url: `${SITE_URL}/blog`,

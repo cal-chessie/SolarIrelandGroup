@@ -189,10 +189,15 @@ const whyLocalCards = [
   },
 ];
 
+// Counties with a dedicated local landing page (internally linked + in the
+// sitemap). Add a slug here when each /counties/<slug> page ships.
+const COUNTY_PAGES: Record<string, string> = { Roscommon: 'roscommon' };
+
 function CountyCard({ county, index }: { county: CountyData; index: number }) {
   const primaryProvince = county.provinces[0];
   const colors = provinceColors[primaryProvince];
   const isActive = county.status === 'active';
+  const localPage = COUNTY_PAGES[county.name] ?? null;
 
   // The card leads into the bill analyser, not WhatsApp. Thirty two cards all
   // handing the visitor to a chat window meant the county page could not
@@ -276,6 +281,16 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
         <Globe className="w-3 h-3 text-gray-600" />
         <span className="text-xs text-gray-500">{county.domain}</span>
       </div>
+
+      {localPage && (
+        <a
+          href={`/counties/${localPage}`}
+          className="mb-4 -mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors"
+        >
+          Read our {county.name} solar guide
+          <ChevronRight className="w-3 h-3" />
+        </a>
+      )}
 
       <div className="flex items-center gap-2">
         <a
