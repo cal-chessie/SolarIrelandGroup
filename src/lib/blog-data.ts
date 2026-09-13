@@ -26,6 +26,158 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    "slug": "do-solar-panels-add-value-to-your-home-ireland",
+    "title": "Do Solar Panels Add Value to Your Home in Ireland?",
+    "excerpt": "Yes - solar lifts your BER, cuts running costs, and appeals to buyers who now read the energy rating first. The honest picture on how much value it adds, and why the bigger return happens while you still live there.",
+    "category": "savings",
+    "date": "13 Sep 2026",
+    "readTime": "7 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-emerald-400/10",
+    "iconColor": "text-emerald-400",
+    "image": "/install-2.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Yes - solar panels add value to an Irish home, but the honest answer has two parts. The resale uplift is real yet modest and hard to pin to an exact euro figure; the bigger, more certain return is the money you save on electricity every year you live there. Put together, a solar system improves your **BER rating**, lowers your running costs, and makes your home stand out to buyers who now check the energy rating before they book a viewing."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Does solar actually raise resale value in Ireland?"
+      },
+      {
+        "type": "paragraph",
+        "text": "The BER (Building Energy Rating) is now printed on every property listing in Ireland, and buyers use it to compare homes the same way they compare price or size. Research from the **ESRI** has consistently found that higher-BER homes sell for a measurable premium over otherwise similar lower-rated homes. Solar PV directly improves your BER because it offsets grid electricity with on-site generation - so the panels don't just cut your bills, they move the one number every buyer sees."
+      },
+      {
+        "type": "callout",
+        "variant": "stat",
+        "title": "Buyers read the rating first",
+        "body": "A better BER is one of the few upgrades that shows up on the listing itself, before anyone views the house. In a market where energy costs are front of mind, that visibility is worth more than most cosmetic renovations."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How much value does solar add?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Anyone quoting you a precise percentage is guessing - the uplift depends on your area, the buyer, the system size and the rest of the house. What we can say honestly is what drives the value, and it is the combination below, not any single number."
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "**A higher BER band** - the headline figure buyers screen on.",
+          "**Lower running costs** - a home that is cheaper to live in is easier to sell.",
+          "**Future-proofing** - panels signal an EV-ready, battery-ready, modern home.",
+          "**Buyer demand** - more purchasers now actively want solar, widening your pool of interested buyers."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The bigger return happens while you live there"
+      },
+      {
+        "type": "paragraph",
+        "text": "Here is the part people miss when they focus only on resale. A typical Irish system saves **€800-1,400 a year** on electricity and pays for itself in 5-7 years, with the €1,800 SEAI grant and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "title": "Get your post-works BER cert",
+        "body": "After installation, a fresh BER assessment is carried out (it is required before your SEAI grant is paid). Keep that certificate - it is the document that proves the improved rating to a future buyer."
+      },
+      {
+        "type": "cta",
+        "text": "See what solar would save your home",
+        "href": "/solar-calculator"
+      }
+    ]
+  },
+  {
+    "slug": "solar-panel-maintenance-ireland-do-they-need-cleaning",
+    "title": "Solar Panel Maintenance in Ireland: Do They Need Cleaning?",
+    "excerpt": "Almost none. Irish rain does most of the work, panels have no moving parts, and most homeowners do nothing for years. Here is the honest, short list of what solar panels actually need.",
+    "category": "guides",
+    "date": "13 Sep 2026",
+    "readTime": "6 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-sky-400/10",
+    "iconColor": "text-sky-400",
+    "image": "/install-6.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Solar panels need very little maintenance, and in Ireland they need less than almost anywhere. There are no moving parts, our frequent rain rinses them naturally, and most homeowners do nothing at all for years and lose no meaningful output. The honest maintenance list is short - and none of it involves climbing on your roof."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Do solar panels need cleaning in Ireland?"
+      },
+      {
+        "type": "paragraph",
+        "text": "For the vast majority of Irish roofs, no. Panels are mounted at a tilt, and rain running off a tilted, smooth glass surface carries away most dust and pollen on its own. The Irish climate does you a genuine favour here. Cleaning only becomes worth considering in a few specific cases: a very shallow roof pitch where water pools, heavy tree cover dropping sap and leaves, persistent bird mess, or a home near a source of heavy grime. Even then, the output loss from light soiling is usually only a few percent."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "title": "Don't climb up to clean them yourself",
+        "body": "It is rarely worth the risk, and a pressure washer can damage the seals. If panels genuinely need cleaning, use a professional with proper access equipment and soft-brush/pure-water kit. For most homes it is simply never needed."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What maintenance do they actually need?"
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "**Watch your monitoring app** - the single most useful habit. A sudden drop in generation is your early-warning system.",
+          "**Glance at the inverter light** now and then - a steady status light means all is well.",
+          "**Keep panels and inverter vents clear** of leaves, moss creep or debris.",
+          "**Expect one inverter replacement** over the system's life - it is the main wear component."
+        ]
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Component",
+          "Typical lifespan",
+          "What it needs"
+        ],
+        "rows": [
+          ["Solar panels", "25-30+ years", "Effectively nothing - rain does the work"],
+          ["Inverter", "10-15 years", "One replacement over the system's life"],
+          ["Mounting & wiring", "25+ years", "A visual check if you ever re-roof"],
+          ["Battery (if fitted)", "10-15 years", "Managed automatically; no user upkeep"]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What about warranties?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Quality panels carry a performance warranty of **25-30 years**, guaranteeing they still produce a high percentage of their original output decades in. Inverters typically carry a shorter warranty, which is why they are the one part most likely to be replaced once. Good monitoring means that if anything does drift, you spot it early and it is covered - rather than losing output silently for months."
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "The real 'maintenance' is monitoring",
+        "body": "A solar system that is watched will tell you when something is wrong long before it costs you. That is the whole job - and the app does most of it for you."
+      },
+      {
+        "type": "cta",
+        "text": "Thinking about solar? Start with your bill",
+        "href": "/solar-calculator"
+      }
+    ]
+  },
+  {
     "slug": "are-solar-panels-worth-it-ireland-2026",
     "title": "Are Solar Panels Worth It in Ireland? 2026 Verdict",
     "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
