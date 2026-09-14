@@ -30,4 +30,6 @@ export const BLOG_SLUGS: ReadonlySet<string> = new Set([
   'solar-panels-ev-charger-ireland',
   'solar-panels-in-winter-do-they-work',
   'solar-panels-rental-property-landlord-guide',
+  'do-solar-panels-add-value-to-your-home-ireland',
+  'solar-panel-maintenance-ireland-do-they-need-cleaning',
 ]);
