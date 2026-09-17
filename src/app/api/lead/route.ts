@@ -41,6 +41,21 @@ function posNum(v: unknown): number | null {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? n : null;
 }
+/** Validate an untrusted ISO datetime from the browser and canonicalise it, so
+ *  downstream (AISolar) always receives one clean shape or nothing. */
+function isoOrUndef(v: unknown): string | undefined {
+  const s = typeof v === 'string' ? v.trim().slice(0, 40) : '';
+  if (!s) return undefined;
+  const t = Date.parse(s);
+  if (!Number.isFinite(t)) return undefined;
+  return new Date(t).toISOString();
+}
+/** The homeowner's magic-link token (?lt=). Accept only a clean, bounded token
+ *  so nothing else can ride this field into the platform. */
+function tokenOrUndef(v: unknown): string | undefined {
+  const s = typeof v === 'string' ? v.trim() : '';
+  return /^[A-Za-z0-9_-]{32,128}$/.test(s) ? s : undefined;
+}
 
 
 /**
@@ -107,12 +122,18 @@ export async function POST(request: Request) {
       monthlyBill: posNum(body.monthlyBill) ?? undefined,
       annualKwh: posNum(body.annualKwh) ?? undefined,
       message: str(body.message, MAX.message) || undefined,
+      // The homeowner's own magic-link token (top level, so ingest-lead threads
+      // this booking onto their existing lead instead of creating a duplicate).
+      leadToken: tokenOrUndef(body.leadToken),
       meta: {
         page: str(body.page, MAX.generic) || undefined,
         homeType: str(body.homeType, MAX.generic) || undefined,
         estimatedAnnualSaving: posNum(body.estimatedAnnualSaving) ?? undefined,
         surveyDate: str(body.surveyDate, MAX.generic) || undefined,
         surveyTime: str(body.surveyTime, MAX.generic) || undefined,
+        // The chosen slot as one real datetime (validated ISO). This is what the
+        // platform books, so the homeowner's pick becomes the appointment.
+        surveySlotISO: isoOrUndef(body.surveySlotISO),
         // What the forms actually collect. Every one of these makes the
         // estimate less of a guess, and none of them reached the platform
         // before: it was seeing a monthly figure and an annual usage.

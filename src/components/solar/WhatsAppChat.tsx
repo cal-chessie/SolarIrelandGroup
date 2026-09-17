@@ -359,15 +359,23 @@ export default function WhatsAppChat() {
     setShowScrollBtn(el.scrollHeight - el.scrollTop - el.clientHeight > 100);
   }, []);
 
-  // The on-screen keyboard does not shrink 100dvh, so the composer ends up
-  // behind it and Safari scrolls the header off the top. Drive the height from
-  // the visual viewport instead while the panel is open on a phone.
+  // The on-screen keyboard does not shrink 100dvh, so a panel anchored bottom:0
+  // leaves its composer behind the keyboard, off-screen. Pin the panel to the
+  // VISUAL viewport instead (the strip of screen actually visible above the
+  // keyboard): drive BOTH top (vv.offsetTop) and height (vv.height), and release
+  // the bottom anchor while active. Setting height alone was the old bug — with
+  // bottom:0 still pinned it trimmed the header off the top and left the input
+  // exactly where it was, behind the keyboard.
   useEffect(() => {
     if (!isOpen || isMinimized) return;
     const vv = window.visualViewport;
     const el = panelRef.current;
     if (!vv || !el || !window.matchMedia('(max-width: 639px)').matches) return;
-    const apply = () => { el.style.height = `${vv.height}px`; };
+    const apply = () => {
+      el.style.height = `${vv.height}px`;
+      el.style.top = `${vv.offsetTop}px`;
+      el.style.bottom = 'auto';
+    };
     apply();
     vv.addEventListener('resize', apply);
     vv.addEventListener('scroll', apply);
@@ -375,6 +383,8 @@ export default function WhatsAppChat() {
       vv.removeEventListener('resize', apply);
       vv.removeEventListener('scroll', apply);
       el.style.height = '';
+      el.style.top = '';
+      el.style.bottom = '';
     };
   }, [isOpen, isMinimized]);
 
@@ -1036,7 +1046,7 @@ export default function WhatsAppChat() {
                   </div>
                 )}
 
-                <div className="px-4 sm:px-5 py-3 border-t border-white/[0.06] bg-[#0a0a0a]">
+                <div className="px-4 sm:px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/[0.06] bg-[#0a0a0a]">
                   <div className="flex items-center gap-2 mb-2">
                     <a href={buildWhatsAppUrl({ source: 'chat-widget' })}
                       target="_blank" rel="noopener noreferrer"

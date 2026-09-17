@@ -74,6 +74,31 @@ const timeSlots = [
   { label: 'Late Afternoon', time: '3pm – 6pm', value: 'late-afternoon', icon: '🌇' },
 ];
 
+// Canonical arrival hour (Europe/Dublin) for each survey window. The homeowner
+// picks a window; this resolves it to the ONE real time the surveyor is booked
+// for, so the platform stores a true datetime, never a display label.
+const SLOT_HOUR: Record<string, number> = { morning: 9, afternoon: 12, 'late-afternoon': 15 };
+
+// UTC ISO instant whose Europe/Dublin wall clock reads `day` at `hour`:00.
+// DST-safe AND independent of the runtime's own timezone: read Dublin's offset
+// for that date via Intl formatToParts (no fragile locale-string re-parsing),
+// then subtract it. Verified 09/12/15 correct in GMT and IST, in any runtime tz.
+function dublinSlotISO(day: Date, hour: number): string {
+  const guess = Date.UTC(day.getFullYear(), day.getMonth(), day.getDate(), hour, 0, 0);
+  const p = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Dublin', hour12: false,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+  }).formatToParts(new Date(guess)).reduce((acc, part) => {
+    if (part.type !== 'literal') acc[part.type] = part.value;
+    return acc;
+  }, {} as Record<string, string>);
+  // The Dublin wall clock of `guess`, re-expressed as a UTC epoch.
+  const asUTC = Date.UTC(+p.year, +p.month - 1, +p.day, p.hour === '24' ? 0 : +p.hour, +p.minute, +p.second);
+  const offset = asUTC - guess; // Europe/Dublin's offset from UTC on that date
+  return new Date(guess - offset).toISOString();
+}
+
 function getAvailableDates(): { date: Date; label: string; dayName: string; month: string }[] {
   const dates: { date: Date; label: string; dayName: string; month: string }[] = [];
   const now = new Date();
@@ -81,6 +106,13 @@ function getAvailableDates(): { date: Date; label: string; dayName: string; mont
   for (let i = 1; i <= 21 && added < 14; i++) {
     const d = new Date(now);
     d.setDate(now.getDate() + i);
+    // Zero the clock so the day is keyed by the calendar date, not the moment the
+    // page loaded. Without this, toISOString() carries the load time, so a refresh,
+    // a back-button or a magic-link reload re-keys every day and the saved
+    // preferredDate matches nothing: no selection shows and surveySlotISO goes
+    // undefined, so the platform books its own next free day instead of the pick.
+    // dublinSlotISO reads only the day components, so it is unaffected.
+    d.setHours(0, 0, 0, 0);
     if (d.getDay() === 0) continue;
     dates.push({
       date: d,
@@ -201,9 +233,15 @@ export default function BookSurveyClient() {
   // Magic link from the estimate email: ?lt=<lead token> resolves the lead
   // server-side and lands the visitor on "confirm property, pick a time".
   const [magicName, setMagicName] = useState<string | null>(null);
+  // The magic-link token itself. Held so the booking submit threads onto the
+  // homeowner's existing lead (exactly-once) rather than birthing a duplicate.
+  // Stored independently of the prefill fetch: the identity holds even if the
+  // context lookup fails and the visitor completes the form cold.
+  const [magicToken, setMagicToken] = useState<string | null>(null);
   useEffect(() => {
     const lt = new URLSearchParams(window.location.search).get('lt');
     if (!lt || lt.length < 32) return;
+    setMagicToken(lt);
     (async () => {
       try {
         const res = await fetch(`/api/survey-context?lt=${encodeURIComponent(lt)}`);
@@ -249,6 +287,17 @@ export default function BookSurveyClient() {
       }));
     } catch { /* no prefill - the form works blank */ }
   }, []);
+
+  // A preferredDate restored from a saved draft or a magic-link prefill can be a
+  // day that has since dropped out of the 14-day window. Clear it so the grid
+  // shows no false selection and validation forces a fresh, bookable pick. The
+  // date picker only ever sets a value that is in availableDates, so this never
+  // clears a live selection.
+  useEffect(() => {
+    if (formData.preferredDate && !availableDates.some((d) => d.date.toISOString() === formData.preferredDate)) {
+      setFormData((prev) => ({ ...prev, preferredDate: '' }));
+    }
+  }, [formData.preferredDate]);
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -412,6 +461,15 @@ export default function BookSurveyClient() {
       `☀️ Interest: ${interestStr}\n` +
       (formData.notes ? `📝 Notes: ${formData.notes}\n` : '');
 
+    // The chosen slot as one real datetime the platform can book, not a label.
+    // dateObj is the day the homeowner picked; the window resolves to a canonical
+    // Dublin arrival hour. If either is missing we send nothing, and the platform
+    // schedules the next free slot instead of ever booking a wrong guess.
+    const slotHour = SLOT_HOUR[formData.preferredTime];
+    const surveySlotISO = dateObj && slotHour !== undefined
+      ? dublinSlotISO(dateObj.date, slotHour)
+      : undefined;
+
     // Primary: persist the booking into AISolar (email-first, first-party record).
     const res = await submitLead({
       source: 'website_survey',
@@ -429,6 +487,9 @@ export default function BookSurveyClient() {
       householdSize: formData.householdSize || undefined,
       surveyDate: dateStr,
       surveyTime: timeStr,
+      surveySlotISO,
+      // Thread onto the homeowner's existing lead when they arrived by magic link.
+      leadToken: magicToken ?? undefined,
       message,
     });
 
@@ -450,7 +511,7 @@ export default function BookSurveyClient() {
     setSubmitError(null);
     setIsSubmitting(false);
     setIsSubmitted(true);
-  }, [formData]);
+  }, [formData, magicToken]);
 
   const totalSteps = stepLabels.length;
   const progressPercent = ((step + 1) / totalSteps) * 100;

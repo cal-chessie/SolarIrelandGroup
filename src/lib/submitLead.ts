@@ -45,9 +45,16 @@ export interface LeadInput {
    * "full" estimate was being built from two numbers.
    */
   billRead?: Record<string, string | number | null | undefined>;
-  /** Survey slot preference labels (book-survey only). */
+  /** Survey slot preference labels (book-survey only), kept for email copy. */
   surveyDate?: string;
   surveyTime?: string;
+  /** The chosen slot as ONE real UTC ISO datetime (Europe/Dublin wall clock),
+   *  so the platform books the time the homeowner picked, never a guess. */
+  surveySlotISO?: string;
+  /** The homeowner's own magic-link token (the ?lt= carried by the estimate
+   *  email). When present, the platform threads this booking onto their
+   *  existing lead instead of creating a duplicate. */
+  leadToken?: string;
   /** Hidden honeypot fields - leave undefined; bots fill them. */
   company?: string;
   website_url?: string;

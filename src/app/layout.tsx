@@ -57,6 +57,11 @@ const SITE_KEYWORDS = [
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // No maximumScale/userScalable: pinch-zoom stays enabled (accessibility, and a
+  // Lighthouse fix on main). interactiveWidget reflows fixed/bottom-anchored UI
+  // (the chat composer, sticky CTAs) ABOVE the on-screen keyboard rather than
+  // letting it cover them, alongside the chat widget's own visualViewport handler.
+  interactiveWidget: "resizes-content",
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
     { media: "(prefers-color-scheme: light)", color: "#FACC15" },

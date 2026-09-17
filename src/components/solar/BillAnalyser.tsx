@@ -41,6 +41,12 @@ import {
 import { Button } from '@/components/ui/button';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import {
+  COMMERCIAL_RATE_FLOOR,
+  commercialEstimate,
+  commercialSystemOptions,
+  recommendedCommercialSize,
+} from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { submitLead } from '@/lib/submitLead';
 import { trackEvent } from '@/lib/analytics';
@@ -95,6 +101,100 @@ interface AnalysisResult {
   batteryPaybackYears: number;
   annualCo2Saved: number;
   treesEquiv25Years: number;
+
+  // ── Commercial extensions (present only on the business path) ──
+  // The domestic path leaves these undefined; the results view reads them to
+  // swap the grant label to NDMG and to show the commercial VAT line.
+  isCommercial?: boolean;
+  vatRate?: number;
+  vatAmount?: number;
+  installCostExVat?: number;
+}
+
+/**
+ * Turn a set of read or typed bill figures into a COMMERCIAL estimate, in the
+ * exact AnalysisResult shape the domestic results view already renders, so the
+ * business path reuses the same UI with commercial numbers. The maths comes
+ * from the one engine (src/lib/estimate.ts commercial siblings): NDMG grant,
+ * 13% commercial VAT, no 4 kWp floor.
+ */
+function buildCommercialAnalysis(x: {
+  provider: string;
+  monthlyBill: number;
+  annualUsage: number;
+  unitRate: number | null;
+  standingCharge: number | null;
+  billingPeriod: string | null;
+  confidence: number;
+  extractedFields: string[];
+  dayUsage?: number;
+}): AnalysisResult {
+  const unitRateOpt = x.unitRate && x.unitRate > 0 ? x.unitRate : undefined;
+  const effRate = unitRateOpt ?? COMMERCIAL_RATE_FLOOR;
+  const rec = recommendedCommercialSize(x.annualUsage);
+  const e = commercialEstimate({ annualUsageKwh: x.annualUsage, systemSizeKwp: rec, unitRateEur: unitRateOpt, dayUsageKwh: x.dayUsage });
+  const comparisons = commercialSystemOptions(x.annualUsage, rec, { unitRateEur: unitRateOpt });
+
+  const monthlyUsage = x.annualUsage / 12;
+  const ratio = e.selfConsumptionPct / 100;
+  const monthlyProfile = e.monthlyGeneration.map((g) => {
+    const generation = g.generationKwh;
+    const consumption = monthlyUsage;
+    const selfConsumed = Math.min(generation * ratio, consumption);
+    const exported = Math.max(0, generation - selfConsumed);
+    return {
+      month: g.month,
+      generation: Math.round(generation),
+      consumption: Math.round(consumption),
+      selfConsumed: Math.round(selfConsumed),
+      exported: Math.round(exported),
+      saving: Math.round(selfConsumed * effRate),
+      exportEarning: Math.round(exported * SOLAR_DATA.export.ratePerKwh),
+    };
+  });
+
+  const netCost = e.costAfterGrantEur;
+  const roiPercent = netCost > 0 ? Math.round((e.totalAnnualBenefitEur / netCost) * 100) : 0;
+  const total25YearCo2 = Math.round(e.co2PerYearKg * 22.5);
+
+  return {
+    provider: x.provider,
+    monthlyBill: Math.round(x.monthlyBill * 100) / 100,
+    annualUsage: Math.round(x.annualUsage),
+    homeType: 'Commercial',
+    unitRate: effRate,
+    standingCharge: x.standingCharge && x.standingCharge > 0 ? x.standingCharge : 0,
+    confidence: x.confidence,
+    extractedFields: x.extractedFields,
+    billingPeriod: x.billingPeriod,
+    recommendedSystem: e.systemSizeKwp,
+    // installCost is the gross (VAT-inclusive) cost before the grant; the VAT
+    // split is carried separately for the breakdown.
+    installCost: e.installCostEur,
+    seaiGrant: e.grantEur,
+    costAfterGrant: netCost,
+    annualSaving: e.annualSavingFromSelfUseEur,
+    annualExportEarning: e.annualExportEarningsEur,
+    totalAnnualBenefit: e.totalAnnualBenefitEur,
+    paybackYears: e.paybackYears,
+    roiPercent,
+    total25YearSavings: e.total25yrSavingsEur,
+    co2Saved25Years: total25YearCo2,
+    monthlyProfile,
+    systemComparisons: comparisons,
+    // Commercial storage is sized on a half-hourly demand profile at the survey,
+    // never guessed from a bill. We do not put a number on it here.
+    batteryWorthwhile: false,
+    batteryReason: 'Commercial storage is sized on your half-hourly demand profile at the survey, where it can be matched to your day and night load and your capacity charges. We do not put a number on it before we have seen that profile.',
+    estimatedBatteryCost: 0,
+    batteryPaybackYears: 0,
+    annualCo2Saved: e.co2PerYearKg,
+    treesEquiv25Years: Math.round(total25YearCo2 / (22 * 25)),
+    isCommercial: true,
+    vatRate: e.vatRate,
+    vatAmount: e.vatEur,
+    installCostExVat: e.installCostExVatEur,
+  };
 }
 
 const HOME_TYPES = ['Detached', 'Semi-detached', 'Terraced', 'Apartment', 'Bungalow'];
@@ -252,6 +352,10 @@ function ScanningOverlay({ billPreview }: { billPreview: string | null }) {
 }
 
 export default function BillAnalyser() {
+  // Home or business. Declared up here (above handleFile) so the upload handler
+  // reads the live segment and routes an uploaded bill to the domestic or the
+  // commercial estimate.
+  const [segment, setSegment] = useState<'home' | 'business'>('home');
   const [mode, setMode] = useState<'upload' | 'manual'>('upload');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
@@ -343,7 +447,27 @@ export default function BillAnalyser() {
       setAnalysisStep(i + 1);
     }
     try {
-      setAnalysis(await request);
+      const data = await request;
+      // Same extraction route for both segments (it reads generic bill fields).
+      // A business bill is turned into a COMMERCIAL estimate; a home bill keeps
+      // the domestic result the route already computed.
+      if (segment === 'business') {
+        setAnalysis(buildCommercialAnalysis({
+          provider: data.provider,
+          monthlyBill: data.monthlyBill,
+          annualUsage: data.annualUsage,
+          // The route mixes an extracted rate with a domestic default; only take
+          // the rate when it was genuinely read off the bill, else the engine
+          // uses the commercial floor.
+          unitRate: Array.isArray(data.extractedFields) && data.extractedFields.includes('Unit Rate') ? data.unitRate : null,
+          standingCharge: Array.isArray(data.extractedFields) && data.extractedFields.includes('Standing Charge') ? data.standingCharge : null,
+          billingPeriod: data.billingPeriod,
+          confidence: data.confidence,
+          extractedFields: data.extractedFields,
+        }));
+      } else {
+        setAnalysis(data);
+      }
     } catch (err: unknown) {
       const e = err as Error & { unavailable?: boolean };
       if (e.unavailable) {
@@ -359,7 +483,7 @@ export default function BillAnalyser() {
     } finally {
       setIsAnalyzing(false);
     }
-  }, []);
+  }, [segment]);
 
   const handleDrop = useCallback((e: React.DragEvent) => { e.preventDefault(); setDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }, [handleFile]);
   const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setDragOver(true); }, []);
@@ -387,6 +511,26 @@ export default function BillAnalyser() {
     setIsAnalyzing(true);
     setAnalysis(null);
     setAnalysisStep(0);
+    // Business manual entry is a pure client-side COMMERCIAL calculation: no bill
+    // was read, so nothing goes to the extraction route. Typed figures only.
+    if (segment === 'business') {
+      for (let i = 0; i < ANALYSIS_STEPS.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        setAnalysisStep(i + 1);
+      }
+      setAnalysis(buildCommercialAnalysis({
+        provider: provider || 'Business supply',
+        monthlyBill: bill,
+        annualUsage: usage,
+        unitRate: null,
+        standingCharge: null,
+        billingPeriod: null,
+        confidence: 100,
+        extractedFields: ['All manual'],
+      }));
+      setIsAnalyzing(false);
+      return;
+    }
     // Manual mode is pure calculation - request runs alongside a brisk step
     // animation rather than after a long one.
     const request = (async () => {
@@ -411,7 +555,6 @@ export default function BillAnalyser() {
   const reset = () => { setAnalysis(null); setError(null); setUploadedFile(null); setBillPreview(null); setShowDetails(false); setShowBattery(false); setBillPreviewOpen(false); setLeadName(''); setLeadEmail(''); setLeadPhone(''); setLeadEircode(''); setLeadStatus('idle'); setLeadFallback(false); setLeadError(null); };
 
   // ─── Email-first report capture: the analysis becomes a lead in AISolar ───
-  const [segment, setSegment] = useState<'home' | 'business'>('home');
   const [leadName, setLeadName] = useState('');
   const [leadEmail, setLeadEmail] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
@@ -437,32 +580,52 @@ export default function BillAnalyser() {
     return () => { ctrl.abort(); clearTimeout(t); };
   }, [leadEircode]);
 
-  // Business enquiries skip the domestic maths entirely (different grants,
-  // different sizing) and go straight to a qualified-lead capture.
-  const [biz, setBiz] = useState({ business: '', contact: '', email: '', phone: '', eircode: '', bill: '' });
-  const [bizStatus, setBizStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
-  const [bizFallback, setBizFallback] = useState(false);
-  const [bizError, setBizError] = useState<string | null>(null);
-
-  const buildReportText = (a: AnalysisResult): string => [
-    'Solar Ireland - Savings Report',
-    '------------------------------',
-    `Provider: ${a.provider}`,
-    `Monthly bill: €${a.monthlyBill}`,
-    `Annual usage: ${a.annualUsage.toLocaleString()} kWh`,
-    `Home type: ${a.homeType}`,
-    `Recommended system: ${a.recommendedSystem} kWp`,
-    `Annual self-consumption saving: €${a.annualSaving.toLocaleString()}`,
-    `Annual export earnings: €${a.annualExportEarning.toLocaleString()}`,
-    `Total annual benefit: €${a.totalAnnualBenefit.toLocaleString()}`,
-    `System cost: €${a.installCost.toLocaleString()} (SEAI grant -€${a.seaiGrant.toLocaleString()} = €${a.costAfterGrant.toLocaleString()})`,
-    `Payback: ${a.paybackYears} years · ROI ${a.roiPercent}%/yr`,
-    `25-year value: €${a.total25YearSavings.toLocaleString()}`,
-    `CO2 saved: ${a.annualCo2Saved.toLocaleString()} kg/yr`,
-    `Battery: ${a.batteryWorthwhile ? 'worth considering' : 'not recommended yet'}`,
-    '',
-    'solarirelandgroup.ie · +353 87 395 8424',
-  ].join('\n');
+  const buildReportText = (a: AnalysisResult): string => {
+    if (a.isCommercial) {
+      return [
+        'Solar Ireland - Commercial Solar Estimate',
+        '-----------------------------------------',
+        `Supplier: ${a.provider}`,
+        `Monthly electricity spend: €${a.monthlyBill}`,
+        `Annual usage: ${a.annualUsage.toLocaleString()} kWh`,
+        `Recommended system: ${a.recommendedSystem} kWp`,
+        `Annual self-consumption saving: €${a.annualSaving.toLocaleString()}`,
+        `Annual export earnings: €${a.annualExportEarning.toLocaleString()}`,
+        `Total annual benefit: €${a.totalAnnualBenefit.toLocaleString()}`,
+        `System cost (ex VAT): €${(a.installCostExVat ?? 0).toLocaleString()}`,
+        `VAT (${Math.round((a.vatRate ?? 0) * 100)}%): €${(a.vatAmount ?? 0).toLocaleString()}`,
+        `Non-Domestic Microgen (NDMG) grant: -€${a.seaiGrant.toLocaleString()} (confirmed at assessment)`,
+        `Cost after grant: €${a.costAfterGrant.toLocaleString()}`,
+        `Payback: ${a.paybackYears} years · ROI ${a.roiPercent}%/yr`,
+        `25-year value: €${a.total25YearSavings.toLocaleString()}`,
+        `CO2 saved: ${a.annualCo2Saved.toLocaleString()} kg/yr`,
+        '',
+        'A close estimate, not a proposal. Our commercial team sizes the real system on your',
+        'demand profile and models accelerated capital allowances at the survey.',
+        '',
+        'solarirelandgroup.ie · +353 87 395 8424',
+      ].join('\n');
+    }
+    return [
+      'Solar Ireland - Savings Report',
+      '------------------------------',
+      `Provider: ${a.provider}`,
+      `Monthly bill: €${a.monthlyBill}`,
+      `Annual usage: ${a.annualUsage.toLocaleString()} kWh`,
+      `Home type: ${a.homeType}`,
+      `Recommended system: ${a.recommendedSystem} kWp`,
+      `Annual self-consumption saving: €${a.annualSaving.toLocaleString()}`,
+      `Annual export earnings: €${a.annualExportEarning.toLocaleString()}`,
+      `Total annual benefit: €${a.totalAnnualBenefit.toLocaleString()}`,
+      `System cost: €${a.installCost.toLocaleString()} (SEAI grant -€${a.seaiGrant.toLocaleString()} = €${a.costAfterGrant.toLocaleString()})`,
+      `Payback: ${a.paybackYears} years · ROI ${a.roiPercent}%/yr`,
+      `25-year value: €${a.total25YearSavings.toLocaleString()}`,
+      `CO2 saved: ${a.annualCo2Saved.toLocaleString()} kg/yr`,
+      `Battery: ${a.batteryWorthwhile ? 'worth considering' : 'not recommended yet'}`,
+      '',
+      'solarirelandgroup.ie · +353 87 395 8424',
+    ].join('\n');
+  };
 
   const downloadReport = () => {
     if (!analysis) return;
@@ -502,10 +665,13 @@ export default function BillAnalyser() {
       address: eirHome ? eirHome.address.replace(/, Ireland$/, '') : undefined,
       monthlyBill: analysis.monthlyBill,
       annualKwh: analysis.annualUsage,
-      homeType: analysis.homeType,
+      homeType: analysis.isCommercial ? 'Commercial' : analysis.homeType,
       estimatedAnnualSaving: analysis.totalAnnualBenefit,
-      segment: 'domestic',
-      occupants,
+      // Tell the platform which estimate to build. A business analysis submits a
+      // clean commercial shape so AISolar sends the NDMG estimate, never the
+      // domestic grant advice.
+      segment: analysis.isCommercial ? 'commercial' : 'domestic',
+      occupants: analysis.isCommercial ? undefined : occupants,
       provider: analysis.provider,
       packageInterest: pkgInterest ?? undefined,
       // Only send a bill read when a bill was actually read. Typed figures
@@ -535,45 +701,12 @@ export default function BillAnalyser() {
     }
   };
 
-  const handleBusinessSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (bizStatus === 'sending') return;
-    const business = biz.business.trim();
-    const email = biz.email.trim();
-    const phone = biz.phone.trim();
-    if (business.length < 2) { setBizError('Please enter your business name.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && phone.replace(/[^0-9]/g, '').length < 7) {
-      setBizError('Please enter an email or a phone number so we can come back to you.');
-      return;
-    }
-    setBizError(null);
-    setBizStatus('sending');
-    const billNum = parseFloat(biz.bill);
-    const result = await submitLead({
-      source: 'website_qualified',
-      name: biz.contact.trim() || business,
-      email: email || undefined,
-      phone: phone || undefined,
-      eircode: biz.eircode.trim().toUpperCase() || undefined,
-      county: countyFromLink || undefined,
-      monthlyBill: Number.isFinite(billNum) && billNum > 0 ? billNum : undefined,
-      homeType: 'Commercial',
-      segment: 'commercial',
-      packageInterest: pkgInterest ?? undefined,
-      message: `Commercial solar enquiry from ${business}${biz.bill ? ` - approx €${biz.bill}/month electricity` : ''}. Requested a tailored commercial assessment via the bill analyser.`,
-    });
-    if (result.ok) {
-      setBizFallback(result.fallback === true);
-      setBizStatus('sent');
-      trackEvent({ event: 'lead_submit', properties: { source: 'website_qualified', segment: 'business' } });
-    } else {
-      setBizStatus('idle');
-      setBizError(result.error || 'Something went wrong. Please try again or WhatsApp us.');
-    }
-  };
-
   const annualCost = analysis ? Math.round(analysis.monthlyBill * 12) : 0;
   const costAfter = analysis ? annualCost - analysis.totalAnnualBenefit : 0;
+  // Grant label swaps with the segment: a business sees the Non-Domestic
+  // Microgen (NDMG) scheme, never the domestic SEAI grant.
+  const grantLabelTitle = analysis?.isCommercial ? 'NDMG Grant' : 'SEAI Grant';
+  const grantLabelInline = analysis?.isCommercial ? 'NDMG grant' : 'SEAI grant';
 
   return (
     <section id="calculator" className="py-20 px-4 bg-[#0a0a0a] scroll-mt-20">
@@ -620,17 +753,16 @@ export default function BillAnalyser() {
                 <div className="p-4 sm:p-8">
                   {/* HOME / BUSINESS */}
                   <div className="flex items-center justify-center gap-1 mb-6 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
-                    <button onClick={() => setSegment('home')} aria-pressed={segment === 'home'}
+                    <button onClick={() => { setSegment('home'); reset(); }} aria-pressed={segment === 'home'}
                       className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'home' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Home className="w-4 h-4" /> Home
                     </button>
-                    <button onClick={() => setSegment('business')} aria-pressed={segment === 'business'}
+                    <button onClick={() => { setSegment('business'); reset(); }} aria-pressed={segment === 'business'}
                       className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-lg text-sm font-semibold transition-all ${segment === 'business' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
                       <Building2 className="w-4 h-4" /> Business
                     </button>
                   </div>
 
-                  {segment === 'home' && (
                   <div className="flex items-center justify-center gap-1 mb-8 p-1 rounded-xl bg-white/[0.04] w-fit mx-auto border border-white/[0.04]">
                     <button onClick={() => { setMode('upload'); reset(); }} aria-pressed={mode === 'upload'}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'upload' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
@@ -638,16 +770,21 @@ export default function BillAnalyser() {
                     </button>
                     <button onClick={() => { setMode('manual'); reset(); }} aria-pressed={mode === 'manual'}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${mode === 'manual' ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'}`}>
-                      <Euro className="w-4 h-4" /> Enter Manually
+                      <Euro className="w-4 h-4" /> {segment === 'business' ? 'Enter Figures' : 'Enter Manually'}
                     </button>
                   </div>
-                  )}
 
-                  {/* 
-                      UPLOAD MODE
+                  {/*
+                      UPLOAD MODE (home and business both upload a bill; the
+                      business path turns it into a commercial estimate)
                        */}
-                  {segment === 'home' && mode === 'upload' && (
+                  {mode === 'upload' && (
                     <div className="space-y-5">
+                      {segment === 'business' && (
+                        <p className="text-center text-sm text-gray-400 max-w-lg mx-auto -mt-2 mb-1">
+                          Upload a recent business electricity bill and we&apos;ll size a commercial system, apply the Non-Domestic Microgen grant, and show your numbers.
+                        </p>
+                      )}
                       <div
                         onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
                         onClick={() => fileInputRef.current?.click()}
@@ -707,12 +844,15 @@ export default function BillAnalyser() {
                         ))}
                       </div>
 
+                      {segment === 'home' && (
                       <div className="flex items-center gap-4">
                         <div className="flex-1 h-px bg-white/[0.06]" />
                         <span className="text-xs text-gray-400">or try a quick example</span>
                         <div className="flex-1 h-px bg-white/[0.06]" />
                       </div>
+                      )}
 
+                      {segment === 'home' && (
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {PRESETS.map((preset) => {
                           const PresetIcon = preset.icon;
@@ -735,11 +875,12 @@ export default function BillAnalyser() {
                           );
                         })}
                       </div>
+                      )}
                     </div>
                   )}
 
-                  {/* 
-                      MANUAL MODE
+                  {/*
+                      MANUAL MODE (home)
                        */}
                   {segment === 'home' && mode === 'manual' && (
                     <div className="space-y-6 max-w-2xl mx-auto">
@@ -834,85 +975,66 @@ export default function BillAnalyser() {
                     </div>
                   )}
 
-                  {segment === 'business' && (
-                    <div className="space-y-5 max-w-2xl mx-auto">
-                      {bizStatus === 'sent' ? (
-                        <div className="flex flex-col items-center text-center py-8" role="status" aria-live="polite">
-                          <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
-                            <CheckCircle2 className="w-6 h-6 text-green-400" />
+                  {/*
+                      MANUAL MODE (business) - typed figures, same shape as the
+                      home manual entry, sized and priced as commercial.
+                       */}
+                  {segment === 'business' && mode === 'manual' && (
+                    <div className="space-y-6 max-w-2xl mx-auto">
+                      <div className="text-center">
+                        <h3 className="text-lg font-bold text-white mb-1.5">Commercial solar, sized properly</h3>
+                        <p className="text-sm text-gray-400 max-w-lg mx-auto leading-relaxed">
+                          Enter the business&apos;s figures and we&apos;ll size a commercial system, apply the Non-Domestic Microgen grant, and show your numbers. A close estimate, not a proposal: our commercial team confirms it on your demand profile.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label htmlFor="cmb" className="block text-sm text-gray-400">Monthly Electricity Spend</label>
+                          <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
+                            <input id="cmb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="1200" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
+                              className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <h4 className="text-lg font-bold text-white mb-1.5">Thanks - we&apos;re on it</h4>
-                          <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-                            {bizFallback
-                              ? 'We have your details. Our commercial team will size your system properly and come back with real numbers.'
-                              : 'Your enquiry is with our commercial team. We\u2019ll model your usage profile and come back with real numbers.'}
-                          </p>
-                          {/* The home panel offers a way onward; this one used
-                              to be a dead end with no route back. */}
-                          <div className="mt-6 flex flex-col sm:flex-row items-center gap-2.5 w-full max-w-sm">
-                            <a
-                              href={buildWhatsAppUrl({ source: 'bill-analyser-business', customMessage: 'Hi Solar Ireland, I just sent a commercial solar enquiry through the bill analyser.' })}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-green-500/10 border border-green-500/25 text-green-400 font-medium text-[14px] hover:bg-green-500/15 transition-colors"
-                            >
-                              <Share2 className="w-4 h-4" /> Talk to us now
-                            </a>
-                            <button
-                              onClick={() => { setBizStatus('idle'); setBizFallback(false); }}
-                              className="w-full sm:w-auto px-5 py-3 rounded-xl border border-white/[0.08] text-gray-400 text-[14px] hover:text-white hover:bg-white/[0.04] transition-colors"
-                            >
-                              Another enquiry
-                            </button>
-                          </div>
+                          <p className="text-[11px] text-gray-400">The total on the business electricity bill</p>
                         </div>
-                      ) : (
-                        <>
-                          <div className="text-center">
-                            <h3 className="text-lg font-bold text-white mb-1.5">Commercial solar, sized properly</h3>
-                            <p className="text-sm text-gray-400 max-w-lg mx-auto leading-relaxed">
-                              Business systems are a different animal - day-use profiles, three-phase supply, accelerated capital
-                              allowances instead of the domestic grant. Tell us about the business and we&apos;ll model it for real.
-                            </p>
+                        <div className="space-y-2">
+                          <label htmlFor="cau" className="block text-sm text-gray-400">Annual Usage</label>
+                          <div className="relative">
+                            <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input id="cau" enterKeyHint="go" type="text" inputMode="numeric" placeholder="40000" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={annualUsage} onChange={(e) => setAnnualUsage(e.target.value)}
+                              className="w-full pl-12 pr-14 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">kWh</span>
                           </div>
-                          <form onSubmit={handleBusinessSubmit} className="space-y-3">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              <input type="text" placeholder="Business name" aria-label="Business name" value={biz.business}
-                                onChange={(e) => setBiz({ ...biz, business: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="text" autoComplete="name" placeholder="Contact name" aria-label="Contact name" value={biz.contact}
-                                onChange={(e) => setBiz({ ...biz, contact: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Business email" value={biz.email}
-                                onChange={(e) => setBiz({ ...biz, email: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="tel" inputMode="tel" autoComplete="tel" placeholder="Mobile" aria-label="Business phone" value={biz.phone}
-                                onChange={(e) => setBiz({ ...biz, phone: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="text" autoComplete="postal-code" autoCapitalize="characters" placeholder="Eircode" aria-label="Eircode" value={biz.eircode}
-                                onChange={(e) => setBiz({ ...biz, eircode: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                              <input type="text" inputMode="numeric" placeholder="Monthly electricity spend (€, approx)" aria-label="Approximate monthly electricity spend in euro" value={biz.bill}
-                                onChange={(e) => setBiz({ ...biz, bill: e.target.value })}
-                                className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 transition-all" />
-                            </div>
-                            <Button type="submit" disabled={bizStatus === 'sending'}
-                              className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
-                              {bizStatus === 'sending' ? 'Sending…' : <><Building2 className="mr-2 w-4 h-4" /> Get My Commercial Assessment <ArrowRight className="ml-2 w-4 h-4" /></>}
-                            </Button>
-                            {bizError && (
-                              <p role="alert" className="text-xs text-red-400 flex items-center gap-1.5">
-                                <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {bizError}
-                              </p>
-                            )}
-                          </form>
-                        </>
-                      )}
+                          <p className="text-[11px] text-gray-400">Yearly consumption, on the annual statement</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm text-gray-400">Provider (optional)</label>
+                        <div className="flex flex-wrap gap-2 sm:max-h-[100px] sm:overflow-y-auto">
+                          {PROVIDERS.map(p => (
+                            <button key={p} onClick={() => setProvider(p)} aria-pressed={provider === p}
+                              className={`px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all border ${provider === p
+                                ? (PROVIDER_COLORS[p] || 'bg-amber-400/10 border-amber-400/30 text-amber-400')
+                                : 'bg-white/[0.02] border-white/[0.06] text-gray-500 hover:border-white/[0.12] hover:text-gray-300'
+                              }`}>{p}</button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-2">
+                        <Button onClick={handleManualAnalyse} disabled={!monthlyBill || !annualUsage}
+                          className="w-full h-auto bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-4 rounded-xl text-[15px] shadow-lg shadow-yellow-400/20 transition-all disabled:shadow-none">
+                          <Building2 className="mr-2 w-4 h-4" /> Analyse My Commercial Savings
+                          <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
 
                   <p className="mt-6 text-[11px] text-gray-400 text-center leading-relaxed">
-                    Estimates based on SEAI grant rates, Met Éireann solar irradiance data, and your reported usage.
+                    Estimates based on {segment === 'business' ? 'Non-Domestic Microgen (NDMG) grant rates' : 'SEAI grant rates'}, Met Éireann solar irradiance data, and your reported usage.
                     Actual savings depend on roof orientation, shading, and consumption patterns. A free site survey gives you exact figures.
                   </p>
                 </div>
@@ -1002,7 +1124,7 @@ export default function BillAnalyser() {
                       <Clock className="w-5 h-5 text-green-400 mb-3" />
                       <p className="text-[11px] text-gray-400 uppercase tracking-wider mb-1">Payback Period</p>
                       <p className="text-2xl sm:text-3xl font-bold text-white"><AnimatedNumber value={analysis.paybackYears} suffix=" yrs" decimals={1} /></p>
-                      <p className="text-[11px] text-gray-400 mt-1">after SEAI grant</p>
+                      <p className="text-[11px] text-gray-400 mt-1">after {grantLabelInline}</p>
                     </div>
                     <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5">
                       <TrendingUp className="w-5 h-5 text-blue-400 mb-3" />
@@ -1023,7 +1145,7 @@ export default function BillAnalyser() {
                       <Zap className="w-4 h-4 text-green-400" /><span className="text-gray-400">Export earnings:</span><span className="text-green-400 font-semibold">€{analysis.annualExportEarning}/yr</span>
                     </span>
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-400/10 border border-blue-400/15 text-sm">
-                      <Shield className="w-4 h-4 text-blue-400" /><span className="text-gray-400">SEAI Grant:</span><span className="text-blue-400 font-semibold">€{analysis.seaiGrant.toLocaleString()}</span>
+                      <Shield className="w-4 h-4 text-blue-400" /><span className="text-gray-400">{grantLabelTitle}:</span><span className="text-blue-400 font-semibold">€{analysis.seaiGrant.toLocaleString()}</span>
                     </span>
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/15 text-sm">
                       <TrendingUp className="w-4 h-4 text-purple-400" /><span className="text-gray-400">ROI:</span><span className="text-purple-400 font-semibold">{analysis.roiPercent}%</span>
@@ -1083,22 +1205,30 @@ export default function BillAnalyser() {
                     {showDetails && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="px-5 pb-5 border-t border-white/[0.06] pt-4">
                         <div className="space-y-3 text-sm">
-                          {[
+                          {([
                             ['Annual electricity cost', `€${annualCost.toLocaleString()}`, 'text-white'],
                             ['Provider unit rate', `€${analysis.unitRate.toFixed(4)}/kWh`, 'text-white'],
-                            ['Standing charge (est.)', `€${analysis.standingCharge.toFixed(2)}/day`, 'text-white'],
+                            ...(analysis.standingCharge > 0 ? [['Standing charge (est.)', `€${analysis.standingCharge.toFixed(2)}/day`, 'text-white']] : []),
                             ['Recommended system', `${analysis.recommendedSystem} kWp`, 'text-amber-400'],
                             ['Est. annual generation', `${analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh`, 'text-white'],
                             ['Self-consumption saving', `€${analysis.annualSaving.toLocaleString()}/yr`, 'text-white'],
                             [`Export payment (${SOLAR_DATA.export.label})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
                             ['Total annual benefit', `€${analysis.totalAnnualBenefit.toLocaleString()}/yr`, 'text-amber-400 font-bold'],
-                            ['System cost (before grant)', `€${analysis.installCost.toLocaleString()}`, 'text-white'],
-                            ['SEAI grant', `- €${analysis.seaiGrant.toLocaleString()}`, 'text-blue-400'],
+                            // Commercial itemises the VAT the business pays on top of the
+                            // ex-VAT install price; domestic is quoted VAT-inclusive.
+                            ...(analysis.isCommercial
+                              ? [
+                                  ['System cost (ex VAT)', `€${(analysis.installCostExVat ?? 0).toLocaleString()}`, 'text-white'],
+                                  [`VAT (${Math.round((analysis.vatRate ?? 0) * 100)}%)`, `€${(analysis.vatAmount ?? 0).toLocaleString()}`, 'text-white'],
+                                  ['System cost (inc VAT)', `€${analysis.installCost.toLocaleString()}`, 'text-white'],
+                                ]
+                              : [['System cost (before grant)', `€${analysis.installCost.toLocaleString()}`, 'text-white']]),
+                            [grantLabelInline.replace(/^./, (c) => c.toUpperCase()), `- €${analysis.seaiGrant.toLocaleString()}`, 'text-blue-400'],
                             ['Cost after grant', `€${analysis.costAfterGrant.toLocaleString()}`, 'text-white'],
                             ['Payback period', `${analysis.paybackYears} years`, 'text-white'],
                             ['Annual CO₂ reduction', `${analysis.annualCo2Saved.toLocaleString()} kg`, 'text-emerald-400'],
                             ['25-year CO₂ reduction', `${analysis.co2Saved25Years.toLocaleString()} kg (${analysis.treesEquiv25Years} trees)`, 'text-emerald-400'],
-                          ].map(([label, value, cls]) => (
+                          ] as [string, string, string][]).map(([label, value, cls]) => (
                             <div key={label as string} className="flex justify-between py-2 border-b border-white/[0.04]">
                               <span className="text-gray-400">{label}</span>
                               <span className={cls}>{value}</span>
@@ -1165,7 +1295,7 @@ export default function BillAnalyser() {
                           <div>
                             <h4 className="text-base sm:text-lg font-bold text-white leading-tight">Send me my full estimate</h4>
                             <p className="text-xs sm:text-sm text-gray-400 mt-1 leading-relaxed">
-                              We&apos;ll email your full personalised estimate and arrange your free home survey. Your eircode lets us check your roof before we call. No spam, ever.
+                              We&apos;ll email your full personalised estimate and arrange your free {analysis.isCommercial ? 'site survey' : 'home survey'}. Your eircode lets us check your roof before we call. No spam, ever.
                             </p>
                           </div>
                         </div>
