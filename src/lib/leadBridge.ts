@@ -23,6 +23,9 @@ export interface BridgeLead {
   annualKwh?: number;
   message?: string;
   meta?: Record<string, unknown>;
+  /** The homeowner's own magic-link token, forwarded to ingest-lead so a return
+   *  booking threads onto the existing lead instead of creating a duplicate. */
+  leadToken?: string;
 }
 
 export interface BridgeResult {

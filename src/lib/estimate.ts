@@ -356,3 +356,279 @@ export function recommendedSize(annualUsageKwh: number, homeId?: string): number
 export function fmtEur(n: number): string {
   return '€' + Math.round(n).toLocaleString();
 }
+
+// ─── COMMERCIAL ───────────────────────────────────────────────────────────
+//
+// The same engine shape as the domestic side above, with the numbers swapped
+// for a business. It is still a CLOSE estimate, never a proposal: the commercial
+// team sizes the real system on a half-hourly demand profile and models the
+// accelerated capital allowance on the day. Everything here is deliberately
+// conservative so the survey can only improve on it.
+//
+// What changes from domestic, and why:
+//   - NO 4 kWp floor. A business sizes to its usage, and commercial arrays are
+//     much larger. Sizing runs up to a 500 kWp band before a roof cap.
+//   - The grant is the Non-Domestic Microgen (NDMG) scheme, NOT the domestic
+//     SEAI Solar Electricity Grant. The tiered NDMG rates below are mirrored
+//     EXACTLY from the platform's own engine (aisolar `_shared/quote.ts`
+//     `calculateNDMG`), so the website estimate and the AISolar autoresponder
+//     never show two grant figures.
+//   - Commercial VAT applies (13%), the rate the platform already uses
+//     (`VAT_COMMERCIAL` in that same file). The domestic path is 0% VAT and its
+//     install price is quoted VAT-inclusive; commercial cost is quoted ex-VAT
+//     with the 13% shown on top, then the NDMG grant taken off the gross.
+//   - Higher self-consumption band. Commercial demand runs through the middle of
+//     the day, exactly when the panels produce, so a business uses far more of
+//     its generation directly than a house does.
+//
+// AUDIT NOTE: the two figures that must never be invented are the grant and the
+// VAT rate. Both are taken verbatim from the codebase (aisolar `_shared/quote.ts`),
+// not chosen here. The install price and the modelling assumptions (day share,
+// self-use band) are Solar Ireland's own conservative commercial inputs, the
+// mirror of the `PRICING` block above, and are Cal's to confirm.
+
+/** Commercial retail-rate floor: mirrors aisolar `_shared/quote.ts`
+ *  `ECONOMIC_RULESET.retailRateFloor.commercial`. Used only when a real bill
+ *  did not give us the business's own unit rate. */
+export const COMMERCIAL_RATE_FLOOR = 0.24;
+
+/** Commercial VAT rate: mirrors aisolar `_shared/quote.ts` `VAT_COMMERCIAL`. */
+export const VAT_COMMERCIAL = 0.13;
+
+/** No domestic floor for a business. Commercial systems are larger; size to the
+ *  usage, clamped to this band before any roof cap. Band mirrors aisolar
+ *  `_shared/quote.ts` `ECONOMIC_RULESET.commercialSizeBand`. */
+export const COMMERCIAL_MIN_KWP = 4;
+export const COMMERCIAL_MAX_KWP = 500;
+
+/**
+ * Solar Ireland's own commercial install pricing. Not evidence, a commercial
+ * decision, the mirror of the domestic `PRICING` block. Quoted EX-VAT (the 13%
+ * is added on top for a business), at a flat per-kWp that matches the platform's
+ * tenant default (aisolar `pricing.ts` / `_shared/quote.ts` `DEFAULT_PRICING`
+ * `perKwp: 1800`), so the site estimate agrees with the autoresponder.
+ */
+export const COMMERCIAL_PRICING = {
+  perKwpExVatEur: 1800,
+  panelWatts: 440,
+} as const;
+
+/** Commercial self-consumption band with NO battery. Higher than domestic
+ *  (0.30-0.50): a business is open through the day, so far more of what the
+ *  panels make is used the moment it is made. */
+const COMMERCIAL_SELF_USE_MIN = 0.50;
+const COMMERCIAL_SELF_USE_MAX = 0.75;
+
+/**
+ * Share of a business's electricity used while the sun is up. A commercial load
+ * is daytime-heavy, so this ceiling sits well above the domestic 0.6. A real
+ * bill's day/night split overrides it, as on the domestic side.
+ */
+const COMMERCIAL_DAY_SHARE = 0.75;
+
+/**
+ * Non-Domestic Microgen (NDMG) grant. Mirrored EXACTLY from aisolar
+ * `_shared/quote.ts` `calculateNDMG`: €900/kWp to 2 kWp, €300/kWp to 20 kWp,
+ * €200/kWp to 200 kWp, €150/kWp to 1,000 kWp, capped at €162,600. Do not
+ * change here without changing it there, and never invent a different number.
+ */
+export function ndmgGrant(kwp: number): number {
+  if (kwp < 1) return 0;
+  let g = Math.min(kwp, 2) * 900;
+  if (kwp > 2) g += (Math.min(kwp, 20) - 2) * 300;
+  if (kwp > 20) g += (Math.min(kwp, 200) - 20) * 200;
+  if (kwp > 200) g += (Math.min(kwp, 1000) - 200) * 150;
+  return Math.min(Math.round(g), 162600);
+}
+
+/** Commercial install cost before VAT and before the grant. */
+export function commercialInstallCostExVatEur(systemSizeKwp: number): number {
+  return Math.round(systemSizeKwp * COMMERCIAL_PRICING.perKwpExVatEur);
+}
+
+/** Size a commercial array to the business's usage. No floor: sizes to offset
+ *  about 85% of annual usage (the conservative honest target the survey
+ *  improves on), clamped to the commercial band, roof cap winning. */
+export function sizeCommercialKwp(annualUsageKwh: number, roofCapKwp?: number): number {
+  if (annualUsageKwh <= 0) return 0;
+  const ideal = (annualUsageKwh * 0.85) / ENERGY.generationPerKwp;
+  const rounded = Math.round(ideal * 2) / 2;
+  const sized = clamp(rounded, COMMERCIAL_MIN_KWP, COMMERCIAL_MAX_KWP);
+  return roofCapKwp && roofCapKwp > 0 ? Math.min(roofCapKwp, sized) : sized;
+}
+
+/** Commercial self-consumption: a well-matched array reaches the top of the
+ *  commercial band, an oversized one falls to the bottom. Same shape as the
+ *  domestic `selfConsumptionRatio`, higher band. */
+export function commercialSelfConsumptionRatio(annualGenerationKwh: number, annualUsageKwh: number): number {
+  if (annualUsageKwh <= 0) return COMMERCIAL_SELF_USE_MIN;
+  const cover = annualGenerationKwh / annualUsageKwh;
+  const t = clamp((cover - 0.3) / 0.9, 0, 1);
+  return clamp(
+    COMMERCIAL_SELF_USE_MAX - (COMMERCIAL_SELF_USE_MAX - COMMERCIAL_SELF_USE_MIN) * t,
+    COMMERCIAL_SELF_USE_MIN,
+    COMMERCIAL_SELF_USE_MAX,
+  );
+}
+
+/** Annual kWh implied by a monthly commercial bill. Uses the commercial rate
+ *  floor when the business's own rate is unknown, and strips the standing
+ *  charge as on the domestic side. */
+export function commercialUsageFromMonthlyBill(monthlyBillEur: number, unitRateEur?: number): number {
+  const rate = unitRateEur && unitRateEur > 0 ? unitRateEur : COMMERCIAL_RATE_FLOOR;
+  const annualBill = monthlyBillEur * 12;
+  const energyOnly = Math.max(annualBill - ENERGY.standingChargeAnnualEur, 100);
+  return Math.round(energyOnly / rate);
+}
+
+export interface CommercialEstimateResult extends EstimateResult {
+  /** The commercial VAT rate applied (fraction, e.g. 0.13). */
+  vatRate: number;
+  /** VAT amount in euro, included in `installCostEur`. */
+  vatEur: number;
+  /** Install cost before VAT and before the grant. */
+  installCostExVatEur: number;
+  /** Install cost after VAT, before the grant (gross). Equals `installCostEur`. */
+  installCostIncVatEur: number;
+}
+
+/**
+ * The commercial estimate. Panels only, conservative inputs, NDMG grant and
+ * commercial VAT. Mirrors the domestic `estimate()` step for step.
+ * `installCostEur` is the gross (VAT-inclusive) cost before the grant, so the
+ * shared `EstimateResult` fields stay meaningful; `installCostExVatEur` and
+ * `vatEur` are exposed for the cost breakdown.
+ */
+export function commercialEstimate(input: {
+  annualUsageKwh: number;
+  systemSizeKwp?: number;
+  unitRateEur?: number;
+  exportRateEur?: number;
+  dayUsageKwh?: number;
+  roofCapKwp?: number;
+}): CommercialEstimateResult {
+  const unitRate = input.unitRateEur && input.unitRateEur > 0 ? input.unitRateEur : COMMERCIAL_RATE_FLOOR;
+  const exportRate = input.exportRateEur && input.exportRateEur > 0 ? input.exportRateEur : ENERGY.exportRateEur;
+  const annualUsageKwh = Math.max(Math.round(input.annualUsageKwh), 0);
+
+  const systemSizeKwp = input.systemSizeKwp ?? sizeCommercialKwp(annualUsageKwh, input.roofCapKwp);
+  const annualGenerationKwh = Math.round(systemSizeKwp * ENERGY.generationPerKwp);
+  const panels = Math.round((systemSizeKwp * 1000) / COMMERCIAL_PRICING.panelWatts);
+
+  const ratio = commercialSelfConsumptionRatio(annualGenerationKwh, annualUsageKwh);
+  const daytimeUsageKwh = input.dayUsageKwh && input.dayUsageKwh > 0
+    ? input.dayUsageKwh
+    : annualUsageKwh * COMMERCIAL_DAY_SHARE;
+  const selfConsumedKwh = Math.round(Math.min(annualGenerationKwh * ratio, daytimeUsageKwh));
+  const exportedKwh = Math.max(0, annualGenerationKwh - selfConsumedKwh);
+
+  const annualSavingFromSelfUseEur = Math.round(selfConsumedKwh * unitRate);
+  const annualExportEarningsEur = Math.round(exportedKwh * exportRate);
+  const totalAnnualBenefitEur = annualSavingFromSelfUseEur + annualExportEarningsEur;
+
+  const annualBillEur = Math.round(annualUsageKwh * unitRate + ENERGY.standingChargeAnnualEur);
+  const annualBillAfterSolarEur = Math.max(
+    annualBillEur - totalAnnualBenefitEur,
+    ENERGY.standingChargeAnnualEur,
+  );
+  const monthlySavingsEur = Math.round(((annualBillEur - annualBillAfterSolarEur) / 12) * 100) / 100;
+  const billReductionPct = annualBillEur > 0
+    ? Math.round(((annualBillEur - annualBillAfterSolarEur) / annualBillEur) * 100)
+    : 0;
+
+  const installCostExVatEur = commercialInstallCostExVatEur(systemSizeKwp);
+  const vatEur = Math.round(installCostExVatEur * VAT_COMMERCIAL);
+  const installCostIncVatEur = installCostExVatEur + vatEur;
+  const grantEur = ndmgGrant(systemSizeKwp);
+  const costAfterGrantEur = Math.max(installCostIncVatEur - grantEur, 0);
+  const paybackYears = totalAnnualBenefitEur > 0
+    ? Math.round((costAfterGrantEur / totalAnnualBenefitEur) * 10) / 10
+    : 0;
+
+  let total25yrSavingsEur = 0;
+  let generation = annualGenerationKwh;
+  let rate = unitRate;
+  for (let year = 1; year <= 25; year += 1) {
+    const selfUsed = Math.min(generation * ratio, daytimeUsageKwh);
+    const exported = Math.max(0, generation - selfUsed);
+    total25yrSavingsEur += selfUsed * rate + exported * exportRate;
+    generation *= 1 - ENERGY.panelDegradationPerYear;
+    rate *= 1 + ENERGY.energyPriceInflationPerYear;
+  }
+
+  const co2PerYearKg = Math.round(annualGenerationKwh * ENERGY.co2PerKwh);
+
+  return {
+    annualBillEur,
+    annualUsageKwh,
+    systemSizeKwp,
+    panels,
+    annualGenerationKwh,
+    selfConsumptionPct: Math.round(ratio * 100),
+    selfConsumedKwh,
+    exportedKwh,
+    annualSavingFromSelfUseEur,
+    annualExportEarningsEur,
+    totalAnnualBenefitEur,
+    annualBillAfterSolarEur,
+    monthlyBillAfterSolarEur: Math.round((annualBillAfterSolarEur / 12) * 100) / 100,
+    monthlySavingsEur,
+    billReductionPct,
+    installCostEur: installCostIncVatEur,
+    grantEur,
+    costAfterGrantEur,
+    paybackYears,
+    total25yrSavingsEur: Math.round(total25yrSavingsEur),
+    co2PerYearKg,
+    treesEquivalent: Math.round(co2PerYearKg / ENERGY.co2PerTreePerYear),
+    monthlyGeneration: MONTH_NAMES.map((month, i) => ({
+      month,
+      generationKwh: Math.round(annualGenerationKwh * MONTHLY_GENERATION_SHARE[i]),
+    })),
+    vatRate: VAT_COMMERCIAL,
+    vatEur,
+    installCostExVatEur,
+    installCostIncVatEur,
+  };
+}
+
+/** Convenience wrapper for the surfaces that only know a monthly commercial bill. */
+export function commercialEstimateFromMonthlyBill(
+  monthlyBillEur: number,
+  opts: { unitRateEur?: number; exportRateEur?: number; roofCapKwp?: number } = {},
+): CommercialEstimateResult {
+  return commercialEstimate({
+    annualUsageKwh: commercialUsageFromMonthlyBill(monthlyBillEur, opts.unitRateEur),
+    ...opts,
+  });
+}
+
+/** Side-by-side commercial sizes for the comparison table. Same engine, sizes
+ *  derived from the recommended so the spread suits a business's scale. */
+export function commercialSystemOptions(
+  annualUsageKwh: number,
+  recommended?: number,
+  opts: { unitRateEur?: number; exportRateEur?: number } = {},
+) {
+  const base = recommended && recommended > 0 ? recommended : sizeCommercialKwp(annualUsageKwh);
+  const sizes = Array.from(
+    new Set([0.6, 0.8, 1.0, 1.2, 1.4].map((f) => clamp(Math.round(base * f * 2) / 2, COMMERCIAL_MIN_KWP, COMMERCIAL_MAX_KWP))),
+  ).sort((a, b) => a - b);
+  return sizes.map((systemSizeKwp) => {
+    const e = commercialEstimate({ annualUsageKwh, systemSizeKwp, ...opts });
+    return {
+      size: systemSizeKwp,
+      generation: e.annualGenerationKwh,
+      annualSaving: e.annualSavingFromSelfUseEur,
+      annualExport: e.annualExportEarningsEur,
+      paybackYears: e.paybackYears,
+      cost: e.installCostEur,
+      grant: e.grantEur,
+    };
+  });
+}
+
+/** The commercial size with the best return: sized to the business's usage. */
+export function recommendedCommercialSize(annualUsageKwh: number, roofCapKwp?: number): number {
+  return sizeCommercialKwp(annualUsageKwh, roofCapKwp);
+}

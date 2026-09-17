@@ -59,6 +59,10 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  // Reflow fixed/bottom-anchored UI (the chat composer, sticky CTAs) ABOVE the
+  // on-screen keyboard instead of letting it cover them. Belt-and-suspenders with
+  // the chat widget's own visualViewport handler for browsers that honour it.
+  interactiveWidget: "resizes-content",
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
     { media: "(prefers-color-scheme: light)", color: "#FACC15" },
