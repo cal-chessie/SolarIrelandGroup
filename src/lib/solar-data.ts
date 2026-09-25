@@ -28,11 +28,17 @@ export const SOLAR_DATA = {
     rangeLabel: '€800 to €1,400',
     paybackYears: 6,
     // Optimistic headline point (energy-price inflation + export income over the
-    // panels' 25yr life). total25yr/label25yr drive the hero stat; range25yrLabel
-    // is the honest hedge used in prose so every 25-year figure reads from HERE.
+    // panels' 25yr life). total25yr/label25yr drive the hero stat and describe a
+    // TYPICAL home: the engine returns about €31k over 25 years for the €160/mo
+    // reference home, so "€30k+" holds there.
     total25yr: 30000,
     label25yr: '€30k+',
-    range25yrLabel: '€30,000 to €50,000',
+    // The honest hedge used in prose, so every 25-year range reads from HERE. The
+    // floor is set to the engine's true minimum: even the lightest qualifying home
+    // (a forced 4 kWp on an €80-100/mo bill) returns about €26,100 over 25 years,
+    // so €25,000 is a floor no home falls below. It used to say €30,000, which
+    // overstated the low end against the engine (estimate.ts has authority).
+    range25yrLabel: '€25,000 to €50,000',
   },
   export: {
     // The CRU's minimum Clean Export Guarantee obligation (CRU/24/019).

@@ -265,7 +265,7 @@ export default function ExitIntent() {
           <div className="exit-intent-el exit-intent-el-2 mb-4">
             <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
               Wait - don&apos;t leave{' '}
-              <span className="text-gradient">€1,800</span>
+              <span className="text-gradient">€1,800</span>{' '}
               <br />
               <span className="text-gradient">on the table (ROI)</span>
             </h3>

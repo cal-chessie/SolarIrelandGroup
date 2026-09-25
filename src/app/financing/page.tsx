@@ -12,16 +12,6 @@ export const metadata: Metadata = {
   title: 'Solar Panel Financing & Payment Plans',
   description:
     'Solar panel financing in Ireland. Use our free calculator to see monthly repayments, compare upfront versus finance, and how the €1,800 SEAI grant helps.',
-  keywords: [
-    'solar panel financing Ireland',
-    'solar payment plan',
-    'solar panel loan Ireland',
-    'solar finance calculator',
-    'pay monthly solar panels',
-    'green loan Ireland',
-    'SEAI grant financing',
-    'solar panel cost breakdown',
-  ],
   alternates: {
     canonical: PAGE_URL,
     languages: {

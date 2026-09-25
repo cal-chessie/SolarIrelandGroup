@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { articles, getArticleBySlug } from '@/lib/blog-data';
+import { toISODate } from '@/lib/blog-dates';
 import BlogPostClient from './BlogPostClient';
 
 const SITE_URL = 'https://solarirelandgroup.ie';
@@ -51,7 +52,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // is why an unknown slug used to render the 404 page with an HTTP 200.
   if (!article) notFound();
 
-  const ogTitle = `${article.title} | Solar Ireland`;
+  // Bound the share-card title the same way as <title> (<=60) so blog og:title
+  // and twitter:title do not truncate mid-phrase on social/link previews.
+  const ogTitle = metaTitleForArticle(article.title);
   const ogDescription = article.excerpt;
 
   return {
@@ -65,8 +68,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: ogTitle,
       description: ogDescription,
       type: 'article',
-      publishedTime: article.date,
-      modifiedTime: article.date,
+      publishedTime: toISODate(article.date),
+      modifiedTime: toISODate(article.updated ?? article.date),
       authors: [article.author],
       url: `${SITE_URL}/blog/${slug}`,
       siteName: 'Solar Ireland',
@@ -102,7 +105,9 @@ function getArticleSchema(slug: string) {
     author: {
       '@type': 'Person',
       name: article.author,
-      jobTitle: 'Founder, Solar Ireland',
+      jobTitle: 'Founder & Lead Installer, Solar Ireland',
+      description:
+        'Over 10 years in the Irish solar industry. Founder of Solar Ireland, an SEAI-registered installer covering all 32 counties.',
       url: `${SITE_URL}/about`,
       worksFor: {
         '@type': 'Organization',
@@ -125,8 +130,8 @@ function getArticleSchema(slug: string) {
         height: 512,
       },
     },
-    datePublished: article.date,
-    dateModified: article.date,
+    datePublished: toISODate(article.date),
+    dateModified: toISODate(article.updated ?? article.date),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `${SITE_URL}/blog/${slug}`,

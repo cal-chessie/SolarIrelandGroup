@@ -430,7 +430,7 @@ export default function FAQ() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl mx-auto leading-[1.1]">
-            Common
+            Common{' '}
             <br />
             <span className="text-gradient">questions.</span>
           </h2>

@@ -44,7 +44,9 @@ function AnimatedGrant({ show }: { show: boolean }) {
 
   return (
     <span ref={ref} className="tabular-nums">
-      €<motion.span className={!visible ? 'opacity-0' : ''}>{rounded}</motion.span>
+      {/* Server-render the real grant figure so crawlers and no-JS readers see
+          "€1,800", never "€0". The count-up takes over once it scrolls in. */}
+      €{visible ? <motion.span>{rounded}</motion.span> : SOLAR_DATA.grant.label.replace('€', '')}
     </span>
   );
 }
@@ -459,7 +461,7 @@ function GrantHero({ isInView }: { isInView: boolean }) {
 
       <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
         Up to{' '}
-        <span className="text-gradient tabular-nums">€<motion.span className={!visible ? 'opacity-0' : ''}>{rounded}</motion.span></span>
+        <span className="text-gradient tabular-nums">€{visible ? <motion.span>{rounded}</motion.span> : SOLAR_DATA.grant.label.replace('€', '')}</span>
         {' '}grant for solar PV.
       </h2>
       <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">

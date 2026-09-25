@@ -12,20 +12,6 @@ export const metadata: Metadata = {
   title: 'Solar Savings Calculator',
   description:
     'Free solar savings calculator for Irish homes. See your annual savings, payback period and 25-year projection, including the €1,800 SEAI grant.',
-  keywords: [
-    'solar savings calculator Ireland',
-    'solar panel savings calculator',
-    'how much do solar panels save Ireland',
-    'solar panel payback calculator',
-    'solar ROI calculator Ireland',
-    'how many solar panels do I need',
-    'solar panel cost calculator Ireland',
-    'SEAI grant calculator',
-    'solar panel system size calculator',
-    'solar export earnings calculator',
-    'solar panel calculator Ireland 2026',
-    'free solar calculator',
-  ],
   alternates: {
     canonical: CALC_URL,
     languages: {
@@ -36,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solar Savings Calculator Ireland | How Much Can You Save?',
     description:
-      'Free solar panel calculator for Irish homes. See your annual savings, payback period, and 25-year ROI based on your actual electricity bill. Includes €1,800 SEAI grant.',
+      'Free solar calculator for Irish homes. See your annual savings, payback period and 25-year ROI from your actual bill, including the €1,800 SEAI grant.',
     url: CALC_URL,
     type: 'website',
     locale: 'en_IE',

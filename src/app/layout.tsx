@@ -26,33 +26,6 @@ const SITE_NAME = "Solar Ireland";
 // retaining the key entities (Solar Ireland, SEAI, solar panel installers).
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers across all 32 counties of Ireland. Free AI bill analysis and honest quotes. Cut your electricity bill with solar.";
-const SITE_KEYWORDS = [
-  "solar panels Ireland",
-  "solar panel installation Ireland",
-  "SEAI grant solar",
-  "solar PV Ireland",
-  "solar panel cost Ireland 2026",
-  "solar panel grants Ireland",
-  "renewable energy Ireland",
-  "Solar Ireland",
-  "solar panel installers near me",
-  "best solar company Ireland",
-  "solar electricity Ireland",
-  "home solar panels Ireland",
-  "solar battery storage Ireland",
-  "clean export guarantee",
-  "SEAI registered installer",
-  "solar panel savings calculator",
-  "AI bill analyser solar",
-  "free solar survey Ireland",
-  "solar panels Dublin",
-  "solar panels Cork",
-  "solar panels Galway",
-  "solar panels Limerick",
-  "residential solar Ireland",
-  "how much do solar panels cost Ireland",
-  "solar panel payback period Ireland",
-];
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -80,7 +53,9 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
 
 
-  keywords: SITE_KEYWORDS,
+  // The meta keywords tag is ignored by Google and Bing and only advertised our
+  // target list to competitors, so it was removed. Keyword relevance now lives
+  // where it counts: the visible copy, headings, and JSON-LD.
 
 
   authors: [{ name: "Solar Ireland", url: SITE_URL }],
@@ -152,9 +127,10 @@ export const metadata: Metadata = {
     locale: "en_IE",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Solar Ireland | SEAI Solar Panel Installers | Save up to €1,400/Year",
+    // Kept under ~55 chars so link-share cards do not truncate mid-phrase.
+    title: "Solar Ireland | Save up to €1,400/yr with Solar PV",
     description:
-      "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,400/year with a €1,800 SEAI grant. Serving all 32 counties across Ireland.",
+      "SEAI solar installers. Free AI bill analysis and honest quotes. Save up to €1,400/yr with the €1,800 SEAI grant.",
     images: [
       {
         url: "/hero-solar.jpg",

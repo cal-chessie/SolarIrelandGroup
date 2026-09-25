@@ -517,7 +517,7 @@ export default function WhySolar() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl leading-[1.1]">
-            Stop renting
+            Stop renting{' '}
             <br />
             <span className="text-gradient">your energy.</span>
           </h2>

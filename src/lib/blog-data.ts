@@ -15,6 +15,10 @@ export interface Article {
   excerpt: string;
   category: string;
   date: string;
+  /** Human "Last updated" date, set only when the article's content was
+   *  genuinely revised after publication. Drives dateModified + the visible
+   *  "Updated" line. Omit it and dateModified falls back to the publish date. */
+  updated?: string;
   readTime: string;
   featured?: boolean;
   author: string;
@@ -244,7 +248,7 @@ export const articles: Article[] = [
           ],
           [
             "Typical 25-year savings",
-            "€30,000-€50,000"
+            "€25,000-€50,000"
           ]
         ]
       },
@@ -350,7 +354,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Payback is only the halfway point of the story. Modern tier-one panels carry 25-30 year performance warranties from their manufacturers, and the system keeps producing long after it has paid for itself. Over a 25-year life, a typical Irish home saves **€30,000-€50,000** in avoided electricity costs and export income. Even the low end of that range is several multiples of what you paid, and unlike most home upgrades, this one produces a measurable cash return every single month, including through the darker half of the year - see [how panels perform in an Irish winter](/blog/solar-panels-in-winter-do-they-work) for the seasonal reality."
+        "text": "Payback is only the halfway point of the story. Modern tier-one panels carry 25-30 year performance warranties from their manufacturers, and the system keeps producing long after it has paid for itself. Over a 25-year life, a typical Irish home saves **€25,000-€50,000** in avoided electricity costs and export income. Even the low end of that range is several multiples of what you paid, and unlike most home upgrades, this one produces a measurable cash return every single month, including through the darker half of the year - see [how panels perform in an Irish winter](/blog/solar-panels-in-winter-do-they-work) for the seasonal reality."
       },
       {
         "type": "paragraph",
@@ -1082,7 +1086,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The more concrete number is what the system saves. A typical Irish solar install returns roughly **€30,000 to €50,000** over its 25-year life through bill savings and export income, and that benefit does not reset when the house changes hands. It carries on for whoever owns the roof next. For landlords the case is much the same. A better rating and lower tenant bills both help a property let, and because private landlords are eligible for the same grant, the upfront cost is cut too. Our [landlord's guide to solar](/blog/solar-panels-rental-property-landlord-guide) covers the rental angle in full."
+        "text": "The more concrete number is what the system saves. A typical Irish solar install returns roughly **€25,000 to €50,000** over its 25-year life through bill savings and export income, and that benefit does not reset when the house changes hands. It carries on for whoever owns the roof next. For landlords the case is much the same. A better rating and lower tenant bills both help a property let, and because private landlords are eligible for the same grant, the upfront cost is cut too. Our [landlord's guide to solar](/blog/solar-panels-rental-property-landlord-guide) covers the rental angle in full."
       },
       {
         "type": "heading",
@@ -1851,6 +1855,7 @@ export const articles: Article[] = [
     "excerpt": "Everything you need to know about the €1,800 SEAI solar panel grant - eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.",
     "category": "grants",
     "date": "15 Apr 2026",
+    "updated": "8 Sep 2026",
     "readTime": "12 min read",
     "featured": true,
     "author": "Cal Chesters",
@@ -2103,6 +2108,7 @@ export const articles: Article[] = [
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
+    "updated": "8 Sep 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2318,6 +2324,7 @@ export const articles: Article[] = [
     "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 25-35% of their peak-month output during the darker months.",
     "category": "guides",
     "date": "8 Apr 2026",
+    "updated": "7 Sep 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -2517,6 +2524,7 @@ export const articles: Article[] = [
     "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and which suppliers offer the best rates.",
     "category": "grants",
     "date": "4 Apr 2026",
+    "updated": "8 Sep 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -2683,6 +2691,7 @@ export const articles: Article[] = [
     "excerpt": "Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.",
     "category": "guides",
     "date": "28 Mar 2026",
+    "updated": "7 Sep 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -2871,6 +2880,7 @@ export const articles: Article[] = [
     "excerpt": "Solar batteries cost €3,200-€4,900 for the usual 5 to 10 kWh sizes - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
     "date": "22 Mar 2026",
+    "updated": "8 Sep 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -3110,6 +3120,7 @@ export const articles: Article[] = [
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
     "date": "18 Mar 2026",
+    "updated": "6 Sep 2026",
     "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-rose-400/10",
@@ -3283,6 +3294,7 @@ export const articles: Article[] = [
     "excerpt": "We compare the top three tier-1 solar panel brands used in Ireland - efficiency, warranties, real-world performance, and which one delivers the best value for your home.",
     "category": "technology",
     "date": "12 Mar 2026",
+    "updated": "6 Sep 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -3513,6 +3525,7 @@ export const articles: Article[] = [
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
     "date": "6 Mar 2026",
+    "updated": "8 Sep 2026",
     "readTime": "11 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-orange-400/10",
@@ -3738,6 +3751,7 @@ export const articles: Article[] = [
     "excerpt": "The government has confirmed the SEAI solar panel grant will remain at €1,800 for 2026. Here is what the announcement means for homeowners, the grant's history, and why now is still the time to apply.",
     "category": "news",
     "date": "28 Apr 2026",
+    "updated": "8 Sep 2026",
     "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -3851,6 +3865,7 @@ export const articles: Article[] = [
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes - with up to €14,300 in combined SEAI grants available.",
     "category": "guides",
     "date": "20 Apr 2026",
+    "updated": "7 Sep 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4248,6 +4263,7 @@ export const articles: Article[] = [
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
     "category": "guides",
     "date": "2 Apr 2026",
+    "updated": "8 Sep 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4479,6 +4495,7 @@ export const articles: Article[] = [
     "excerpt": "Is there an ideal season to install solar panels? We break down month-by-month generation data, seasonal advantages, and SEAI processing times to help you decide when to go solar.",
     "category": "savings",
     "date": "25 Mar 2026",
+    "updated": "8 Sep 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -4766,6 +4783,7 @@ export const articles: Article[] = [
     "excerpt": "Yes, private landlords can claim the €1,800 SEAI solar grant. What to know about solar on Irish rental properties - eligibility, BER benefits and getting started.",
     "category": "grants",
     "date": "15 Mar 2026",
+    "updated": "8 Sep 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",

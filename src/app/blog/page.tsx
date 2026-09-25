@@ -1,4 +1,5 @@
 import { articles } from '@/lib/blog-data';
+import { toISODate } from '@/lib/blog-dates';
 import BlogClient from './BlogClient';
 
 const SITE_URL = 'https://solarirelandgroup.ie';
@@ -54,7 +55,8 @@ const blogSchema = {
         headline: article.title,
         description: article.excerpt,
         url: `${SITE_URL}/blog/${article.slug}`,
-        datePublished: article.date,
+        datePublished: toISODate(article.date),
+        dateModified: toISODate(article.updated ?? article.date),
         author: {
           '@type': 'Person',
           name: article.author,

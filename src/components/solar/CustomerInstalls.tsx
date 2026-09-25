@@ -429,7 +429,7 @@ export default function CustomerInstalls() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl leading-[1.1]">
-                Panels on roofs.
+                Panels on roofs.{' '}
                 <br />
                 <span className="text-gradient">Money in the bank.</span>
               </h2>

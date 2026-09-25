@@ -247,7 +247,7 @@ export default function HowItWorks() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
-            Three steps to
+            Three steps to{' '}
             <br />
             <span className="text-gradient">lower bills.</span>
           </motion.h2>

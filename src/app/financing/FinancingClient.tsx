@@ -173,7 +173,7 @@ function FinancingHero() {
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
           Solar Panel{' '}
-          <span className="text-gradient">Payment Plans</span>
+          <span className="text-gradient">Payment Plans</span>{' '}
           <br />
           for Irish Homes
         </h1>

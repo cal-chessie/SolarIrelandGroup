@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Calendar,
   Clock,
+  History,
   ArrowRight,
   ArrowLeft,
   BookOpen,
@@ -746,6 +747,12 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                 <Clock className="w-3.5 h-3.5" />
                 {article.readTime}
               </div>
+              {article.updated && article.updated !== article.date && (
+                <div className="flex items-center gap-1.5 text-xs text-amber-400/90" title="This article was reviewed and updated after publication">
+                  <History className="w-3.5 h-3.5" />
+                  Updated {article.updated}
+                </div>
+              )}
             </motion.div>
           </div>
         </section>
@@ -768,7 +775,48 @@ export default function BlogPostClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        {/* 
+        {/*
+            ABOUT THE AUTHOR - a real expertise signal (E-E-A-T). The copy mirrors
+            the founder bio on /about; keep the two in sync if either changes.
+             */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5 }}
+          className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16"
+        >
+          <div className="max-w-[72ch]">
+            <div className="glass-card rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row gap-5 sm:items-center">
+              <div className="w-14 h-14 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0">
+                <span className="text-base font-bold text-amber-400">
+                  {article.author.split(' ').map((n) => n[0]).join('')}
+                </span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Written by</p>
+                <p className="text-white font-semibold">{article.author}</p>
+                <p className="text-xs text-amber-400/90 mt-0.5">
+                  {article.author === 'Cal Chesters' ? 'Founder & Lead Installer, Solar Ireland' : 'Solar Ireland'}
+                </p>
+                <p className="text-sm text-gray-400 mt-2 leading-relaxed">
+                  {article.author === 'Cal Chesters'
+                    ? 'Over 10 years in the Irish solar industry. Cal started Solar Ireland to cut through the noise and give homeowners a straight answer on what solar is worth.'
+                    : 'Writes about solar PV, the SEAI grant and getting a straight answer on solar for Irish homes.'}
+                </p>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-1.5 text-sm text-amber-400 hover:text-amber-300 mt-3 transition-colors group"
+                >
+                  More about Solar Ireland
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/*
             RETURN TO BLOG LINK
              */}
         <motion.div

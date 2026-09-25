@@ -1,6 +1,7 @@
 
 import type { MetadataRoute } from "next";
 import { getAllArticleSlugs, getArticleBySlug } from "@/lib/blog-data";
+import { toISODate } from "@/lib/blog-dates";
 
 const SITE_URL = "https://solarirelandgroup.ie";
 
@@ -106,10 +107,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...getAllArticleSlugs().map((slug) => {
       const article = getArticleBySlug(slug);
-      const modified = article?.date ? new Date(article.date) : new Date(now);
+      // lastmod tracks the article's real last revision (updated), falling back to
+      // its publish date, via the same deterministic ISO helper the JSON-LD and OG
+      // dates use, so the sitemap never disagrees with the page's dateModified and
+      // never drifts a day on a non-UTC build server.
+      const human = article?.updated ?? article?.date;
       return {
         url: `${SITE_URL}/blog/${slug}`,
-        lastModified: isNaN(modified.getTime()) ? now : modified.toISOString(),
+        lastModified: human ? toISODate(human) : now,
         changeFrequency: "monthly" as const,
         priority: 0.7,
       };
