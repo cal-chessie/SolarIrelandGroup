@@ -238,6 +238,11 @@ export default function BookSurveyClient() {
   // Stored independently of the prefill fetch: the identity holds even if the
   // context lookup fails and the visitor completes the form cold.
   const [magicToken, setMagicToken] = useState<string | null>(null);
+  // Home or business. Mirrors the bill analyser's toggle: a business booking must
+  // not be forced through a home-only form (house property types, household size,
+  // "your home" copy), and must submit as commercial so the platform prices it on
+  // the Non-Domestic Microgen grant, not the domestic SEAI tiers.
+  const [segment, setSegment] = useState<'home' | 'business'>('home');
   useEffect(() => {
     const lt = new URLSearchParams(window.location.search).get('lt');
     if (!lt || lt.length < 32) return;
@@ -259,6 +264,10 @@ export default function BookSurveyClient() {
           currentBill: d.monthlyBill ? String(d.monthlyBill) : prev.currentBill,
         }));
         setMagicName(firstName || null);
+        // Auto-select business when the lead behind this magic link is commercial,
+        // so a business never has to notice the toggle. Harmless until lead-context
+        // returns segment (null today); wired now so a redeploy is all it takes.
+        if (d.segment === 'commercial') setSegment('business');
         // Only skip the details step when the estimate actually carried a full
         // set. Jumping past a gap used to bounce the visitor back here at the
         // final click, with errors on fields they were never shown.
@@ -344,7 +353,7 @@ export default function BookSurveyClient() {
     if (s === 1) {
       if (!formData.address.trim()) e.address = 'Required';
       if (!formData.county) e.county = 'Please select your county';
-      if (!formData.propertyType) e.propertyType = 'Please select your property type';
+      if (segment === 'home' && !formData.propertyType) e.propertyType = 'Please select your property type';
       if (!formData.roofType) e.roofType = 'Please select your roof type';
     }
 
@@ -355,7 +364,7 @@ export default function BookSurveyClient() {
 
     setErrors(e);
     return Object.keys(e).length === 0;
-  }, [formData]);
+  }, [formData, segment]);
 
   // Whatever advances the step, land the visitor at the TOP of the new step -
   // the Next button lives at the bottom, so without this each step opens with
@@ -452,7 +461,7 @@ export default function BookSurveyClient() {
       `📧 Email: ${formData.email}\n` +
       `🏠 Address: ${formData.address}\n` +
       `📍 County: ${formData.county}\n` +
-      `🏗️ Property: ${propType}\n` +
+      (segment === 'business' ? `🏢 Business premises\n` : `🏗️ Property: ${propType}\n`) +
       `🏠 Roof: ${roof}\n` +
       (formData.householdSize ? `👨‍👩‍👧‍👦 Household: ${formData.householdSize} people\n` : '') +
       (formData.currentBill ? `💳 Current Bill: €${formData.currentBill}/month\n` : '') +
@@ -481,10 +490,10 @@ export default function BookSurveyClient() {
       monthlyBill: formData.currentBill ? Number(formData.currentBill) : undefined,
       // Property type was only ever inside the message blob, so nothing could
       // query it. It maps onto the same field the analyser sends.
-      homeType: propType || undefined,
-      segment: 'domestic',
+      homeType: segment === 'home' ? (propType || undefined) : undefined,
+      segment: segment === 'business' ? 'commercial' : 'domestic',
       roofType: roof || undefined,
-      householdSize: formData.householdSize || undefined,
+      householdSize: segment === 'home' ? (formData.householdSize || undefined) : undefined,
       surveyDate: dateStr,
       surveyTime: timeStr,
       surveySlotISO,
@@ -511,7 +520,7 @@ export default function BookSurveyClient() {
     setSubmitError(null);
     setIsSubmitting(false);
     setIsSubmitted(true);
-  }, [formData, magicToken]);
+  }, [formData, magicToken, segment]);
 
   const totalSteps = stepLabels.length;
   const progressPercent = ((step + 1) / totalSteps) * 100;
@@ -811,8 +820,27 @@ export default function BookSurveyClient() {
                           </div>
                           <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-white">Your Property</h2>
-                            <p className="text-sm text-gray-500">Helps us prepare the right assessment for your home.</p>
+                            <p className="text-sm text-gray-500">Helps us prepare the right assessment for your {segment === 'business' ? 'premises' : 'home'}.</p>
                           </div>
+                        </div>
+
+                        {/* Home or business. Business hides the home-only fields below
+                            and submits as commercial (Non-Domestic Microgen grant), so a
+                            business booking is never dressed up as a house. */}
+                        <div className="mt-5 inline-flex p-1 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                          {([['home', 'Home'], ['business', 'Business']] as const).map(([val, label]) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => setSegment(val)}
+                              aria-pressed={segment === val}
+                              className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
+                                segment === val ? 'bg-green-400/15 text-green-400' : 'text-gray-400 hover:text-white'
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          ))}
                         </div>
 
                         <div className="mt-6 space-y-6">
@@ -854,7 +882,10 @@ export default function BookSurveyClient() {
                             {errors.county && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.county}</p>}
                           </div>
 
-                          {/* Property Type - visual cards */}
+                          {/* Property Type - visual cards. Home only: a business has no
+                              house type, and forcing one through here is what made the
+                              business booking read as a home. */}
+                          {segment === 'home' && (
                           <div>
                             <label id={propertyTypeLabelId} className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                               <Home className="w-3.5 h-3.5 text-gray-500" />
@@ -879,6 +910,7 @@ export default function BookSurveyClient() {
                             </div>
                             {errors.propertyType && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.propertyType}</p>}
                           </div>
+                          )}
 
                           {/* Roof Type */}
                           <div>
@@ -910,8 +942,10 @@ export default function BookSurveyClient() {
                             {errors.roofType && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.roofType}</p>}
                           </div>
 
-                          {/* Household size & bill (optional helpers) */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {/* Bill, plus household size for a home. A business has no
+                              household, so that field is home-only and the bill spans. */}
+                          <div className={`grid grid-cols-1 gap-4 ${segment === 'home' ? 'sm:grid-cols-2' : ''}`}>
+                            {segment === 'home' && (
                             <div>
                               <label htmlFor={householdSizeId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
                                 Household Size <span className="text-gray-600 normal-case">(optional)</span>
@@ -931,6 +965,7 @@ export default function BookSurveyClient() {
                               </select>
                               </div>
                             </div>
+                            )}
                             <div>
                               <label htmlFor={currentBillId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
                                 Monthly Electricity Bill <span className="text-gray-600 normal-case">(optional)</span>
@@ -1136,7 +1171,7 @@ export default function BookSurveyClient() {
                             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Property Details</h3>
                             <div className="space-y-3">
                               <ConfirmRow icon={Home} label="Address" value={`${formData.address}, ${formData.county}`} />
-                              <ConfirmRow icon={Building2} label="Property Type" value={propertyTypes.find(p => p.value === formData.propertyType)?.label || formData.propertyType} />
+                              <ConfirmRow icon={Building2} label={segment === 'business' ? 'Type' : 'Property Type'} value={segment === 'business' ? 'Business premises' : (propertyTypes.find(p => p.value === formData.propertyType)?.label || formData.propertyType)} />
                               <ConfirmRow icon={Home} label="Roof Type" value={roofTypes.find(r => r.value === formData.roofType)?.label || formData.roofType} />
                               {formData.interest.length > 0 && (
                                 <ConfirmRow icon={Zap} label="Interested In" value={formData.interest.map(v => interests.find(i => i.value === v)?.label || v).join(', ')} />

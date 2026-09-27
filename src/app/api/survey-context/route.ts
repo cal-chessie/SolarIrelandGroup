@@ -48,6 +48,10 @@ export async function GET(request: Request) {
       address: data.address ?? null,
       county: data.county ?? null,
       monthlyBill: data.monthlyBill ?? null,
+      // Home vs business, so the booking form can auto-select the business variant
+      // for a commercial lead. Null until AISolar lead-context returns it; the
+      // booking form treats null as home, so this is safe before that ships.
+      segment: data.segment ?? null,
     });
   } catch (error) {
     console.error('[survey-context] lookup failed:', error);
