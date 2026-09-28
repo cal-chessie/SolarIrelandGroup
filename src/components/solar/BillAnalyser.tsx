@@ -448,6 +448,11 @@ export default function BillAnalyser() {
     }
     try {
       const data = await request;
+      // Name off the bill: prefill it so the report gate is just email + phone.
+      // Never overwrite a name the visitor already typed.
+      if (data && typeof data.accountName === 'string' && data.accountName.trim()) {
+        setLeadName((prev) => (prev.trim() ? prev : data.accountName.trim().slice(0, 80)));
+      }
       // Same extraction route for both segments (it reads generic bill fields).
       // A business bill is turned into a COMMERCIAL estimate; a home bill keeps
       // the domestic result the route already computed.

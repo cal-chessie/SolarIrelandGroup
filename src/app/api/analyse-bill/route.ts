@@ -67,6 +67,7 @@ const CO2_FACTOR = ENERGY.co2PerKwh;
 
 interface BillExtraction {
   provider: string | null;
+  accountName: string | null;
   monthlyBill: number | null;
   annualUsage: number | null;
   billingPeriod: string | null;
@@ -148,6 +149,7 @@ export async function POST(request: Request) {
     let annualUsage: number;
     let provider: string = 'Unknown';
     let homeType: string = 'Semi-detached';
+    let accountName: string | null = null;
     let unitRate: number | null = null;
     let standingCharge: number | null = null;
     let billingPeriod: string | null = null;
@@ -243,6 +245,7 @@ export async function POST(request: Request) {
 Extract EVERYTHING you can and return ONLY a JSON object with these fields:
 {
   "provider": "electricity supplier name (e.g. Electric Ireland, ESB, Bord Gáis Energy, SSE Airtricity, Energia, Panda, Yuno, Pinergy, Community Power, PrepayPower)",
+  "accountName": "the account holder's full name exactly as printed on the bill (a person's name, or a business name for a commercial bill), or null if not visible",
   "monthlyBill": "total amount due in euros (number, e.g. 187.42)",
   "annualUsage": "annual consumption in kWh (number). Look for 'annual', 'kWh', 'consumption'. If only a monthly reading is shown, multiply by 12",
   "billingPeriod": "the billing period (e.g. '1 Dec 2025 to 31 Dec 2025')",
@@ -287,6 +290,7 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       monthlyBill = billData.monthlyBill || 160;
       annualUsage = billData.annualUsage || 4800;
       provider = billData.provider || 'Unknown';
+      accountName = typeof billData.accountName === 'string' ? billData.accountName.trim().slice(0, 80) || null : null;
       billingPeriod = billData.billingPeriod || null;
       unitRate = billData.unitRate;
       standingCharge = billData.standingCharge;
@@ -340,7 +344,7 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       propertyType: homeType,
     });
 
-    return NextResponse.json(results);
+    return NextResponse.json({ ...results, accountName });
   } catch (error: unknown) {
     // Log the real error server-side only; never leak SDK/parse internals to the client.
     console.error('Bill analysis error:', error);
