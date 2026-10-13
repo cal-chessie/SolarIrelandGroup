@@ -416,6 +416,8 @@ body[data-intake-open] .daylight-pulse {
 }
 .si-lane-foot a,
 .si-lane-foot button {
+  min-width: 44px;
+  justify-content: center;
   color: var(--si-fg-muted);
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -832,7 +834,7 @@ body[data-intake-open] .daylight-pulse {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   padding: 2px;
-  min-height: 44px;
+  min-height: 50px;
   background: var(--si-raise);
   border: 1px solid var(--si-line-control);
   border-radius: var(--si-r);
@@ -843,7 +845,7 @@ body[data-intake-open] .daylight-pulse {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 40px;
+  min-height: 44px;
   border-radius: 10px;
   font-size: 15px;
   line-height: 22px;
@@ -872,10 +874,10 @@ body[data-intake-open] .daylight-pulse {
   outline-offset: 2px;
 }
 .si-switch--tall {
-  min-height: 48px;
+  min-height: 52px;
 }
 .si-switch--tall label {
-  min-height: 44px;
+  min-height: 46px;
 }
 
 .si-tiles {

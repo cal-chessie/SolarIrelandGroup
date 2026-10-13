@@ -33,6 +33,7 @@ export default function ScrollProgress() {
     <div
       ref={barRef}
       hidden={intakeOpen}
+      data-scroll-progress=""
       className="fixed top-0 left-0 h-[2px] z-[100] transition-[width] duration-150 ease-out"
       style={{
         width: '0%',

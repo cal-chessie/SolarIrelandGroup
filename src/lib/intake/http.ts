@@ -19,11 +19,19 @@ function clientIp(request: Request): string {
 }
 
 export function intakeRateLimited(request: Request, max = MAX_PER_WINDOW): boolean {
-  const ip = clientIp(request);
+  // One bucket per route per visitor, so a burst of reads never locks out
+  // the submit, and the submit's tighter limit is its own.
+  let route = 'intake';
+  try {
+    route = new URL(request.url).pathname;
+  } catch {
+    /* keep the shared bucket */
+  }
+  const key = `${route}|${clientIp(request)}`;
   const now = Date.now();
-  const list = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
+  const list = (hits.get(key) || []).filter((t) => now - t < WINDOW_MS);
   list.push(now);
-  hits.set(ip, list);
+  hits.set(key, list);
   if (hits.size > 5000) hits.clear();
   return list.length > max;
 }

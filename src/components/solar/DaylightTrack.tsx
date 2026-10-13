@@ -135,6 +135,7 @@ export default function DaylightTrack({
 
   return (
     <div
+      data-daylight-track=""
       className={`inline-flex items-center gap-3.5 rounded-full border border-white/[0.12] bg-black/45 pl-4 pr-5 py-2.5 backdrop-blur-md shadow-lg shadow-black/30 ${className}`}
       style={style}
     >

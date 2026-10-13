@@ -317,6 +317,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const closedRef = useRef(false);
   const openedAt = useRef(0);
   const pointerRef = useRef(false);
+  const claimedRef = useRef(false);
 
   draftRef.current = draft;
   stepRef.current = step;
@@ -454,15 +455,20 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     setStep(first);
     stepRef.current = first;
 
-    const state = { ...(window.history.state || {}), si: 1, sid: 'intake', d: 1, step: first };
-    if (variant === 'layer') window.history.pushState(state, '', urlFor(first, d));
-    else window.history.replaceState(state, '', urlFor(first, d));
-    depthRef.current = 1;
-    setDepth(1);
+    // Claim the history entry once. React's dev StrictMode runs this effect
+    // twice; a second push would leave a stray entry that back lands on.
+    if (!claimedRef.current) {
+      const state = { ...(window.history.state || {}), si: 1, sid: 'intake', d: 1, step: first };
+      if (variant === 'layer') window.history.pushState(state, '', urlFor(first, d));
+      else window.history.replaceState(state, '', urlFor(first, d));
+      depthRef.current = 1;
+      setDepth(1);
+      scrollYRef.current = window.scrollY;
+      claimedRef.current = true;
+    }
 
     setIntakeOpen(true, { layer: variant === 'layer' });
     if (variant === 'layer') {
-      scrollYRef.current = window.scrollY;
       const b = document.body;
       b.style.position = 'fixed';
       b.style.top = `-${scrollYRef.current}px`;
@@ -1242,7 +1248,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <NoteRow plain icon={<Clock size={16} aria-hidden="true" />}>
         Pick up where you left off?{' '}
         <b>
-          {resumeOffer.segment === 'commercial' ? 'Business' : 'Home'}, about {eur(resumeOffer.per === '2months' ? resumeOffer.bill / 2 : resumeOffer.bill)} a month.
+          {resumeOffer.segment === 'commercial' ? 'Business' : 'Home'}, about{' '}
+          <span {...prov('you_told_us')}>{eur(resumeOffer.per === '2months' ? resumeOffer.bill / 2 : resumeOffer.bill)}</span> a month.
         </b>
       </NoteRow>
       <div className="si-pair si-mt-12">
@@ -1281,14 +1288,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                 onPointerDown={() => {
                   pointerRef.current = true;
                 }}
-                onChange={() => {
-                  if (pointerRef.current) chooseSegment(o.v);
-                  else update({ segment: o.v, segmentProv: 'you_told_us' });
-                  pointerRef.current = false;
-                }}
+                // A pointer tap chooses and moves on; arrow keys only select
+                // (Enter or Space then moves on), ui-spec 5.3. React runs
+                // onClick before onChange for a radio.
                 onClick={() => {
-                  if (seg === o.v && pointerRef.current) chooseSegment(o.v);
+                  if (!pointerRef.current) return;
                   pointerRef.current = false;
+                  chooseSegment(o.v);
+                }}
+                onChange={() => {
+                  if (!pointerRef.current) update({ segment: o.v, segmentProv: 'you_told_us' });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -1382,7 +1391,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           >
             {draft.bill != null ? (
               <>
-                We couldn't read that bill clearly. Your estimate still uses the <b>{eur(draft.bill)}</b> you gave us.
+                We couldn't read that bill clearly. Your estimate still uses the <b {...prov('you_told_us')}>{eur(draft.bill)}</b> you gave us.
               </>
             ) : (
               <>We couldn't read that bill clearly. Type your bill instead, or skip it.</>
@@ -1671,7 +1680,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                 <span className="si-strip__value" {...prov('estimate')}>{kwp(figures.kwp)}</span>
               </div>
               <div className="si-strip__cell" role="listitem">
-                <span className="si-strip__label">After your {eur(figures.grantEur)} SEAI grant</span>
+                <span className="si-strip__label">
+                  After your <span {...prov('estimate')}>{eur(figures.grantEur)}</span> SEAI grant
+                </span>
                 <span className="si-strip__value" {...prov('estimate')}>{figures.netCostEur != null ? eur(figures.netCostEur) : ''}</span>
               </div>
               <div className="si-strip__cell" role="listitem">
@@ -1683,7 +1694,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         </div>
         {!isBiz && figures.horizonSavingsEur != null ? (
           <p className="si-long">
-            Over {figures.horizonYears} years, about <b {...prov('estimate')}>{eur(figures.horizonSavingsEur)}</b>.
+            Over <span {...prov('settings')}>{figures.horizonYears} years</span>, about <b {...prov('estimate')}>{eur(figures.horizonSavingsEur)}</b>.
           </p>
         ) : null}
       </div>
@@ -1849,7 +1860,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             <span className="si-strip__value" {...prov('settings')}>{kwp(minSys.kwp)}</span>
           </div>
           <div className="si-strip__cell" role="listitem">
-            <span className="si-strip__label">After your {eur(minSys.grantEur)} SEAI grant</span>
+            <span className="si-strip__label">
+              After your <span {...prov('settings')}>{eur(minSys.grantEur)}</span> SEAI grant
+            </span>
             <span className="si-strip__value" {...prov('settings')}>{eur(minSys.netCostEur)}</span>
           </div>
         </div>
@@ -1951,6 +1964,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             ? estimateBlock
             : estimateLoading}
       {hasBasis && figures ? emailBlock : null}
+      {/* The phone bar points at the times. When the request panel is the
+          action (opened, or no live times), it steps away: one primary. */}
+      {!requestOpen && slotsStatus !== 'error' && !(slotsStatus === 'ready' && (slots?.length ?? 0) === 0) ? (
       <div className="si-actions si-actions--phone" ref={actionsRef} data-hidden={barHidden ? 'true' : 'false'}>
         <div className="si-actions__inner">
           <PrimaryButton
@@ -1965,6 +1981,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           />
         </div>
       </div>
+      ) : null}
       {leftFoot}
     </div>
   );
