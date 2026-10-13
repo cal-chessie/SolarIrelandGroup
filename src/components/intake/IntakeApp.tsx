@@ -2748,7 +2748,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const showDeviceBooked = !!deviceBooked && step !== 'done' && (step === 'segment' || step === 'bill' || step === 'time');
   const progressState: ('done' | 'current' | 'future')[] =
-    step === 'segment'
+    showDeviceBooked
+      ? ['done', 'done', 'done']
+      : step === 'segment'
       ? ['future', 'future', 'future']
       : step === 'bill'
         ? ['current', 'future', 'future']
@@ -2763,11 +2765,22 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   let left: ReactNode;
   let right: ReactNode;
-  if (showDeviceBooked) {
+  if (showDeviceBooked && deviceBooked) {
+    const dbDate = dublinDate(deviceBooked.startsAt);
     left = deviceBookedLeft;
     right = (
       <div className="si-screen-in">
-        {howItWorks(true)}
+        <h2 className="si-lane-title">What happens next</h2>
+        <Timeline
+          rows={[
+            ...(reminderDue(deviceBooked.startsAt) ? [{ lead: dayLong(addDays(dbDate, -1)), line: 'A reminder by email, the day before.' }] : []),
+            {
+              lead: `${dayLong(dbDate)}, ${windowLabel(deviceBooked.startsAt, deviceBooked.endsAt)}`,
+              line: `${who || 'Your surveyor'} checks the roof, the fuse board and the meter, and answers your questions.`,
+            },
+            { lead: 'Need to change the time?', line: 'Do it in your project page. The link is in your confirmation email.' },
+          ]}
+        />
         {rightFoot}
       </div>
     );

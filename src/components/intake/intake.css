@@ -2000,7 +2000,7 @@ body[data-intake-open] .daylight-pulse {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  column-gap: 6px;
+  column-gap: 20px;
   font-size: 14px;
   line-height: 20px;
   color: var(--si-fg-muted);

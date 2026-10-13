@@ -75,7 +75,6 @@ export default function IntakeDoor({
             Just book a free survey
           </a>
         ) : null}
-        {bookLink && businessLink ? <span aria-hidden="true">·</span> : null}
         {businessLink ? (
           <a
             href={intakeHref({ door: `${door}-business`, segment: 'business', step: 'bill' })}
