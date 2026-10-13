@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useIntakeOpen } from '@/lib/bottomLayer';
 
 /**
  * Thin amber progress bar fixed to the top of the viewport.
@@ -25,9 +26,13 @@ export default function ScrollProgress() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // The intake has its own progress; this bar steps aside while it is open.
+  const intakeOpen = useIntakeOpen();
+
   return (
     <div
       ref={barRef}
+      hidden={intakeOpen}
       className="fixed top-0 left-0 h-[2px] z-[100] transition-[width] duration-150 ease-out"
       style={{
         width: '0%',

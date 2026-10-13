@@ -1,32 +1,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Zap } from 'lucide-react';
-import { useCookieBannerVisible } from '@/lib/bottomLayer';
+import { ArrowRight } from 'lucide-react';
+import { useCookieBannerVisible, useIntakeOpen } from '@/lib/bottomLayer';
+import { intakeHref, openIntake, type DoorSegment } from '@/lib/intake/open';
 
 /**
- * MobileStickyCTA - thumb-reach lead capture on small screens.
+ * MobileStickyCTA - thumb-reach door on small screens (Intake OS).
  *
- * Appears once the visitor has scrolled past the first screen, and hides again
- * while the thing it points at is already on screen, so it never sits on top of
- * its own destination. Desktop never sees it.
+ * Every page's bar opens the same intake: "Get my solar estimate", Screen 1,
+ * or the home-or-business question when the page does not know. It appears
+ * once the visitor has scrolled past the first screen, hides while an inline
+ * bill door (scrollTo) is on screen, near the footer, under the cookie sheet,
+ * and while the intake itself is open. Desktop never sees it.
  *
- * Configurable per page, because the right next step is not the same
- * everywhere: a visitor on /financing has already priced the thing and should
- * be offered a survey, while a visitor on a blog article has not seen a number
- * yet and should be offered the analyser. Pages where the visitor is already
- * mid-intake (book-survey, contact) pass nothing and get no bar at all.
+ * `label` and `href` are kept for the existing callers but no longer change
+ * the bar: one door, one label, one flow.
  */
 export default function MobileStickyCTA({
-  label = 'See My Savings - Free',
-  /** Element id to scroll to. Takes precedence over href when present on the page. */
   scrollTo = 'calculator',
-  /** Where to send them when there is nothing to scroll to on this page. */
-  href,
+  segment = null,
 }: {
   label?: string;
   scrollTo?: string | null;
   href?: string;
+  segment?: DoorSegment | null;
 } = {}) {
   const [pastHero, setPastHero] = useState(false);
   const [targetVisible, setTargetVisible] = useState(false);
@@ -61,38 +59,31 @@ export default function MobileStickyCTA({
     return () => observer.disconnect();
   }, [scrollTo]);
 
-  // Stand down while the cookie sheet owns the bottom of the screen.
+  // Stand down while the cookie sheet owns the bottom of the screen, and
+  // while the intake is open (it has its own bar).
   const cookieBanner = useCookieBannerVisible();
-  const visible = pastHero && !targetVisible && !nearFooter && !cookieBanner;
+  const intakeOpen = useIntakeOpen();
+  const visible = pastHero && !targetVisible && !nearFooter && !cookieBanner && !intakeOpen;
   if (!visible) return null;
 
-  const onScreenTarget = scrollTo ? document.getElementById(scrollTo) : null;
-
-  const inner = (
-    <>
-      <Zap className="w-4 h-4" />
-      {label}
-    </>
-  );
-
-  const className =
-    'w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-amber-400 text-black font-bold text-[15px] shadow-2xl shadow-black/50 border border-amber-300/40 active:scale-[0.98] transition-transform';
-
+  const opts = { door: 'sticky', segment, step: 'bill' as const };
   return (
     // Right clearance keeps the chat FAB's corner free (it sits at right-6, z-50).
     <div
       className="sticky-cta-enter lg:hidden fixed bottom-0 left-0 right-[6rem] z-40 pl-3 pb-3"
       style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
     >
-      {onScreenTarget ? (
-        <button onClick={() => onScreenTarget.scrollIntoView({ behavior: 'smooth' })} className={className}>
-          {inner}
-        </button>
-      ) : (
-        <a href={href || '/solar-calculator'} className={className}>
-          {inner}
-        </a>
-      )}
+      <a
+        href={intakeHref(opts)}
+        onClick={(e) => {
+          e.preventDefault();
+          openIntake(opts);
+        }}
+        className="w-full min-h-[52px] flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-amber-400 text-black font-semibold text-[16px] shadow-2xl shadow-black/50 border border-amber-300/40"
+      >
+        Get my solar estimate
+        <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
+      </a>
     </div>
   );
 }

@@ -17,6 +17,7 @@ import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackExitIntent } from '@/lib/analytics';
 import { submitLead } from '@/lib/submitLead';
+import { useIntakeOpen } from '@/lib/bottomLayer';
 
 
 const SESSION_KEY = 'solar-ireland-exit-seen';
@@ -27,6 +28,7 @@ const IDLE_FALLBACK_MS = 60_000; // auto-show only after a full minute
 
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
+  const intakeOpen = useIntakeOpen();
   const [exitEmail, setExitEmail] = useState('');
   const [exitStatus, setExitStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
   const [exitError, setExitError] = useState<string | null>(null);
@@ -59,8 +61,11 @@ export default function ExitIntent() {
 
   const trigger = useCallback(() => {
     if (hasTriggered.current) return;
-    // Never fire over an open chat conversation.
+    // Never fire over an open chat conversation, the intake, or an
+    // unanswered cookie banner (one decision on screen at a time).
     if (document.body.dataset.sigChatOpen === '1') return;
+    if (document.body.dataset.intakeOpen === '1') return;
+    if (document.body.dataset.sigCookieBanner === '1') return;
     const timeOnPage = Date.now() - pageLoadTimeRef.current;
     // Never fire in the first 25s, regardless of how many pages were visited.
     if (timeOnPage < MIN_TIME_ON_PAGE_MS) return;
@@ -200,7 +205,7 @@ export default function ExitIntent() {
     };
   }, [show, close]);
 
-  if (!show) return null;
+  if (!show || intakeOpen) return null;
 
   const whatsappUrl = buildWhatsAppUrl({
     source: 'exit-intent',

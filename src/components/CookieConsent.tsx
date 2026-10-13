@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useId, type ReactNode } from 'react';
 import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 import { trackConsentDecision } from '@/lib/analytics';
-import { setCookieBannerVisible } from '@/lib/bottomLayer';
+import { setCookieBannerVisible, useIntakeOpen } from '@/lib/bottomLayer';
 
 
 type CookieCategory = 'necessary' | 'analytics' | 'marketing';
@@ -343,9 +343,14 @@ export default function CookieConsent() {
   }, []);
 
   useEffect(() => {
+    // "Cookie settings" from anywhere (the intake's lane footer, the cookie
+    // policy page). It used to set the panel flags only, so once the banner
+    // had been answered the event opened nothing.
     const handler = () => {
       setShowSettingsOnly(true);
       setShowSettings(true);
+      setVisible(true);
+      setIsDismissed(false);
     };
     window.addEventListener('cookie-consent-open-settings', handler);
     return () => window.removeEventListener('cookie-consent-open-settings', handler);
@@ -413,11 +418,27 @@ export default function CookieConsent() {
     setShowSettings(false);
   }, []);
 
+  // Intake OS: while the intake is open the banner is never a sheet over it.
+  // The intake shows one line under its header instead ("Cookies: Reject all
+  // · Accept · Manage"), which answers through this event. Manage opens the
+  // full settings sheet here, over the intake.
+  useEffect(() => {
+    const onAction = (e: Event) => {
+      const a = (e as CustomEvent<string>).detail;
+      if (a === 'reject') handleRejectAll();
+      else if (a === 'accept') handleAcceptAll();
+    };
+    window.addEventListener('sig:cookie-action', onAction);
+    return () => window.removeEventListener('sig:cookie-action', onAction);
+  }, [handleAcceptAll, handleRejectAll]);
+
+  const intakeOpen = useIntakeOpen();
+
   if (!isHydrated) return null;
 
   return (
     <>
-      {!isDismissed && visible && (
+      {!isDismissed && visible && (!intakeOpen || showSettings || showSettingsOnly) && (
         <div
           className={`
             fixed bottom-0 left-0 right-0 z-[60]
@@ -617,7 +638,7 @@ export default function CookieConsent() {
         </div>
       )}
 
-      {isHydrated && isDismissed && !showSettingsOnly && (
+      {isHydrated && isDismissed && !showSettingsOnly && !intakeOpen && (
         <FloatingCookieButton
           onClick={() => {
             setShowSettingsOnly(true);

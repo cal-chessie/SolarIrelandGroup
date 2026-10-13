@@ -35,7 +35,7 @@ export default function PageIntake({
   return (
     <>
       {sticky ? (
-        <MobileStickyCTA label={sticky.label} scrollTo={sticky.scrollTo ?? null} href={sticky.href} />
+        <MobileStickyCTA scrollTo={sticky.scrollTo ?? null} />
       ) : null}
       {exit ? <ExitIntent /> : null}
     </>

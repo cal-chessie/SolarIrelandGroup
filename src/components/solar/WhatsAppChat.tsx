@@ -25,8 +25,8 @@ import {
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { submitLead } from '@/lib/submitLead';
-import { useCookieBannerVisible } from '@/lib/bottomLayer';
+import { useCookieBannerVisible, useIntakeOpen } from '@/lib/bottomLayer';
+import { intakeHref, openIntake } from '@/lib/intake/open';
 
 
 interface Message {
@@ -248,10 +248,6 @@ export default function WhatsAppChat() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [chatRestored, setChatRestored] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  // Email-first capture on the pre-chat screen - feeds the AISolar lead door.
-  const [prechatEmail, setPrechatEmail] = useState('');
-  const [prechatLeadStatus, setPrechatLeadStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-  const [prechatFallback, setPrechatFallback] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -263,6 +259,8 @@ export default function WhatsAppChat() {
   const panelRef = useRef<HTMLDivElement>(null);
   // The cookie sheet covers this corner; wait until the visitor has answered it.
   const cookieBanner = useCookieBannerVisible();
+  // The intake owns the screen while it is open: no bee, no toast, no panel.
+  const intakeOpen = useIntakeOpen();
 
   useEffect(() => {
     const stored = loadFromStorage();
@@ -323,7 +321,7 @@ export default function WhatsAppChat() {
   }, [isOpen, showPreChat, getGreeting]);
 
   useEffect(() => {
-    if (hasGreeted || isOpen || notifDismissed) return;
+    if (hasGreeted || isOpen || notifDismissed || intakeOpen) return;
     let hideTimer: ReturnType<typeof setTimeout>;
     notifTimerRef.current = setTimeout(() => {
       setNotification("Got a question about solar? \ud83d\udc4b");
@@ -335,7 +333,7 @@ export default function WhatsAppChat() {
       if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
       clearTimeout(hideTimer);
     };
-  }, [hasGreeted, isOpen, notifDismissed]);
+  }, [hasGreeted, isOpen, notifDismissed, intakeOpen]);
 
   useEffect(() => {
     if (messages.length > prevMsgCount && messages.length > 1) {
@@ -602,12 +600,12 @@ export default function WhatsAppChat() {
         aria-label="Open chat"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); }}
         className={`fixed bottom-40 right-6 z-50 cursor-pointer max-w-[min(20rem,calc(100vw-3rem))] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          notification && !isOpen && !cookieBanner
+          notification && !isOpen && !cookieBanner && !intakeOpen
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 translate-y-5 scale-95 pointer-events-none'
         }`}
-        aria-hidden={!notification || isOpen || cookieBanner}
-        inert={!notification || isOpen || cookieBanner}
+        aria-hidden={!notification || isOpen || cookieBanner || intakeOpen}
+        inert={!notification || isOpen || cookieBanner || intakeOpen}
       >
         <div className="relative overflow-hidden flex items-center gap-3 px-5 py-4 rounded-2xl bg-zinc-800/95 border border-white/[0.08] shadow-2xl shadow-black/40">
           <div className="notif-progress absolute bottom-0 left-0 h-[2px] bg-yellow-400/60 rounded-full" />
@@ -631,7 +629,7 @@ export default function WhatsAppChat() {
       {/* 
           FLOATING ACTION BUTTON (Enhanced 2026)
            */}
-      {!isOpen && !cookieBanner && (
+      {!isOpen && !cookieBanner && !intakeOpen && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2">
           <div
             className={`whatsapp-fab-tooltip transition-all duration-300 pointer-events-none ${
@@ -783,55 +781,22 @@ export default function WhatsAppChat() {
                     Start Chat
                   </button>
 
-                  {/* Email-first: a savings estimate straight to the inbox */}
-                  {prechatLeadStatus === 'sent' ? (
-                    <div className="w-full px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-[13px] text-green-400 mb-3" role="status">
-                      {prechatFallback
-                        ? 'Done. We have your details and a member of our team will be in touch.'
-                        : 'Done. A member of our team will be in touch about your estimate.'}
-                    </div>
-                  ) : (
-                    <form
-                      className="w-full flex gap-2 mb-3"
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        const email = prechatEmail.trim();
-                        if (prechatLeadStatus === 'sending') return;
-                        // Say why nothing happened instead of silently doing
-                        // nothing when the address does not look like one.
-                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                          setPrechatLeadStatus('error');
-                          return;
-                        }
-                        setPrechatLeadStatus('sending');
-                        const res = await submitLead({ source: 'website_chat', email, message: 'Requested a savings estimate from the chat pre-screen.' });
-                        setPrechatFallback(!!res.fallback);
-                        setPrechatLeadStatus(res.ok ? 'sent' : 'error');
-                      }}
-                    >
-                      <input
-                        type="email"
-                        inputMode="email"
-                        autoComplete="email"
-                        enterKeyHint="send"
-                        value={prechatEmail}
-                        onChange={(e) => { setPrechatEmail(e.target.value); if (prechatLeadStatus === 'error') setPrechatLeadStatus('idle'); }}
-                        placeholder="Or get an estimate by email"
-                        aria-label="Email address for a savings estimate"
-                        className="flex-1 min-w-0 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-base text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400/50 transition-all"
-                      />
-                      <button
-                        type="submit"
-                        disabled={prechatLeadStatus === 'sending' || !prechatEmail.trim()}
-                        className="px-4 py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 disabled:bg-white/[0.06] disabled:text-gray-600 text-black font-bold text-sm transition-all shrink-0"
-                      >
-                        {prechatLeadStatus === 'sending' ? '…' : 'Send'}
-                      </button>
-                    </form>
-                  )}
-                  {prechatLeadStatus === 'error' && (
-                    <p className="w-full text-[13px] text-red-400 mb-3 -mt-1" role="alert">Check that email address and try again, or use WhatsApp below.</p>
-                  )}
+                  {/* Intake OS: the chat collects nothing itself (DECISIONS 3). Its
+                      one door closes the chat and opens the same intake as
+                      every other door. The old email-only capture promised an
+                      estimate it could not make. */}
+                  <a
+                    href={intakeHref({ door: 'chat', step: 'bill' })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClose();
+                      // Let the chat release its body lock before the intake takes one.
+                      setTimeout(() => openIntake({ door: 'chat', step: 'bill' }), 80);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-white/[0.14] bg-white/[0.03] text-white font-semibold text-[15px] hover:bg-white/[0.06] transition-colors mb-3"
+                  >
+                    Get my estimate
+                  </a>
 
                   <a
                     href={buildWhatsAppUrl({ source: 'chat-widget-prechat' })}
@@ -1089,7 +1054,20 @@ export default function WhatsAppChat() {
                       <Send className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-[11px] text-gray-400 mt-2 text-center">AI assistant &middot; For accurate quotes, get a free site survey</p>
+                  <p className="text-[12px] text-gray-400 mt-1 text-center">
+                    AI assistant &middot;{' '}
+                    <a
+                      href={intakeHref({ door: 'chat', step: 'bill' })}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleClose();
+                        setTimeout(() => openIntake({ door: 'chat', step: 'bill' }), 80);
+                      }}
+                      className="inline-flex items-center min-h-[44px] text-white underline underline-offset-4 decoration-white/30"
+                    >
+                      Get my estimate
+                    </a>
+                  </p>
                 </div>
 
               </>

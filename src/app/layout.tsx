@@ -6,6 +6,7 @@ import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import PostHogProvider from "@/components/PostHogProvider";
 import LeadSourceTracker from "@/components/LeadSourceTracker";
+import IntakeHost from "@/components/intake/IntakeHost";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -410,6 +411,8 @@ export default async function RootLayout({
         <CookieConsent />
         <PostHogProvider />
         <LeadSourceTracker />
+        {/* Intake OS: every door opens the same intake as a layer over the page. */}
+        <IntakeHost />
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
