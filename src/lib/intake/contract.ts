@@ -75,6 +75,8 @@ export interface IntakeConfig {
     maxDaysAhead: number;
     minNoticeHours: number;
     holdMinutes: number;
+    /** Days with no surveys (Irish public holidays, editable), so "request a day" never offers one. */
+    closedDates: string[];
     /** The name homeowners see for who will survey and call ("Cal"). Null hides it. */
     homeownerFacingName: string | null;
     /** DECISIONS 5: the welcome-call line. Null turns the line off. */

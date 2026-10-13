@@ -87,15 +87,14 @@ export default function IntakeDoor({
             {segment === 'business' ? 'For a home instead' : 'Solar for a business'}
           </a>
         ) : null}
-        {whatsapp ? (
-          <>
-            <span aria-hidden="true">·</span>
-            <a href={buildWhatsAppUrl({ source: door })} target="_blank" rel="noopener noreferrer">
-              Or WhatsApp us
-            </a>
-          </>
-        ) : null}
       </p>
+      {whatsapp ? (
+        <p className="si-door__links si-door__links--wa">
+          <a href={buildWhatsAppUrl({ source: door })} target="_blank" rel="noopener noreferrer">
+            Or WhatsApp us
+          </a>
+        </p>
+      ) : null}
     </form>
   );
 }

@@ -48,6 +48,7 @@ import {
 import type { IntakeConfig, Quote, Segment, Slot, SlotDay, SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
 import {
   addDays,
+  betweenLabel,
   cents,
   dayLong,
   dayOfMonth,
@@ -165,6 +166,14 @@ function breakpoint(): 'phone' | 'tablet' | 'desktop' {
   return window.innerWidth < 640 ? 'phone' : window.innerWidth < 1024 ? 'tablet' : 'desktop';
 }
 
+/**
+ * The reminder goes 24 hours before the survey. A survey booked for less than
+ * a day away (the notice is 18 hours) gets no reminder, so none is promised.
+ */
+function reminderDue(startsAt: string): boolean {
+  return new Date(startsAt).getTime() - Date.now() > 26 * 3600000;
+}
+
 function formatEircodeInput(v: string): string {
   const s = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 7);
   return s.length > 3 ? `${s.slice(0, 3)} ${s.slice(3)}` : s;
@@ -192,7 +201,7 @@ function buildIcs(slot: Slot, where: string, who: string | null, visitMinutes: n
     `DTEND:${icsStamp(slot.endsAt)}`,
     'SUMMARY:Solar Ireland site survey',
     `LOCATION:${where.replace(/[,;]/g, (m) => `\\${m}`)}`,
-    `DESCRIPTION:${who ? `${who} arrives` : 'We arrive'} between ${windowLabel(slot.startsAt, slot.endsAt)}. The survey takes about ${visitMinutes} minutes.`,
+    `DESCRIPTION:${who ? `${who} arrives` : 'We arrive'} ${betweenLabel(slot.startsAt, slot.endsAt)}. The survey takes about ${visitMinutes} minutes.`,
     'END:VEVENT',
     'END:VCALENDAR',
   ];
@@ -205,7 +214,7 @@ function googleCalendarUrl(slot: Slot, who: string | null, visitMinutes: number)
     action: 'TEMPLATE',
     text: 'Solar Ireland site survey',
     dates: `${icsStamp(slot.startsAt)}/${icsStamp(slot.endsAt)}`,
-    details: `${who ? `${who} arrives` : 'We arrive'} between ${windowLabel(slot.startsAt, slot.endsAt)}. The survey takes about ${visitMinutes} minutes.`,
+    details: `${who ? `${who} arrives` : 'We arrive'} ${betweenLabel(slot.startsAt, slot.endsAt)}. The survey takes about ${visitMinutes} minutes.`,
   });
   return `https://calendar.google.com/calendar/render?${p.toString()}`;
 }
@@ -883,7 +892,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const read = r.read;
     track('intake_photo', { result: 'read', ms: Date.now() - started, fields_read: Object.values(read).filter((v) => v != null).length });
     const supplierKnown = read.supplier && config?.estimate.suppliers.some((s) => s.name === read.supplier) ? read.supplier : null;
-    sharpenTick.current += 1;
+    // "Updated" only when an estimate on screen changes; a first read is not an update.
+    if (where === 'time' && stepRef.current === 'time') sharpenTick.current += 1;
     update((d) => ({
       billRead: read,
       bill: read.amountEur ?? d.bill,
@@ -1126,7 +1136,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    if (booked && resultSlot) setAnnounce(`Booked. ${dayLong(dublinDate(resultSlot.startsAt))}, arrive between ${windowLabel(resultSlot.startsAt, resultSlot.endsAt)}.`);
+    if (booked && resultSlot) setAnnounce(`Booked. ${dayLong(dublinDate(resultSlot.startsAt))}, arrive ${betweenLabel(resultSlot.startsAt, resultSlot.endsAt)}.`);
   };
 
   const onDetailsSubmit = (e: FormEvent) => {
@@ -1215,7 +1225,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <span>SEAI registered installer</span>
         <span aria-hidden="true">·</span>
         <span>RECI registered</span>
-        <span aria-hidden="true">·</span>
+      </p>
+      <p className="si-foot-line si-only-phone">
         <span>
           Questions?{' '}
           <a href={WA("Hi Solar Ireland, I have a question about my survey booking.")} target="_blank" rel="noopener noreferrer">
@@ -1330,7 +1341,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         You already have a survey booked on this device.
       </h1>
       <p className="si-facts">
-        {dayLong(dublinDate(deviceBooked.startsAt))}, arrive between {windowLabel(deviceBooked.startsAt, deviceBooked.endsAt)}.
+        {dayLong(dublinDate(deviceBooked.startsAt))}, arrive {betweenLabel(deviceBooked.startsAt, deviceBooked.endsAt)}.
       </p>
       <div className="si-done-actions si-done-actions--two">
         <a className="si-btn si-btn--primary" data-primary="true" href="/portal">
@@ -1598,7 +1609,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           : []),
         {
           name: 'Yearly use',
-          value: draft.annualKwh != null ? `${num(figures.annualKwh)} kWh` : `About ${num(figures.annualKwh)} kWh, worked out from your bill`,
+          value:
+            draft.annualKwh != null
+              ? `${num(figures.annualKwh)} kWh`
+              : `About ${num(figures.annualKwh)} kWh, worked out from your ${draft.per === '2months' && draft.bill != null ? `${eur(draft.bill)} every 2 months` : `${eur(monthly ?? 0)} a month`}`,
           tag: billProv,
           prov: billProv,
         },
@@ -2025,7 +2039,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       const wd = weekdayIndex(dd);
       const st = config?.survey.startTimes;
       const times = !st ? [] : wd === 0 ? st.sunday : wd === 6 ? st.saturday : st.weekday;
-      return times.length > 0 && dd >= first && dd <= last;
+      return times.length > 0 && dd >= first && dd <= last && !(config?.survey.closedDates ?? []).includes(dd);
     };
     return (
       <form onSubmit={onRequestDay} noValidate style={{ paddingTop: 12, paddingBottom: 8 }}>
@@ -2143,7 +2157,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                           role="listitem"
                           tabIndex={(selectedHere ? selectedHere === s : firstFree === s) ? 0 : -1}
                           data-selected={draft.slot?.startsAt === s.startsAt || pendingSlot === s.startsAt ? 'true' : 'false'}
-                          aria-label={`${dayLong(day.date)}, arrive between ${windowLabel(s.startsAt, s.endsAt)}`}
+                          aria-label={`${dayLong(day.date)}, arrive ${betweenLabel(s.startsAt, s.endsAt)}`}
                           onClick={() => void pickSlot(s)}
                           onKeyDown={onCellKey}
                         >
@@ -2214,7 +2228,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                     type="button"
                     className="si-cell"
                     style={{ height: 'auto', minHeight: 52, flexDirection: 'column', lineHeight: '20px', padding: '6px 4px' }}
-                    aria-label={`Book ${dayLong(dublinDate(s.startsAt))}, arrive between ${windowLabel(s.startsAt, s.endsAt)}`}
+                    aria-label={`Book ${dayLong(dublinDate(s.startsAt))}, arrive ${betweenLabel(s.startsAt, s.endsAt)}`}
                     onClick={() => void pickAlternative(s)}
                   >
                     <span className="si-caption">{dayShort(dublinDate(s.startsAt)).replace(/ \w+$/, '')}</span>
@@ -2515,7 +2529,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const whatNextRows: TimelineRow[] = draft.slot
     ? [
         { lead: 'A confirmation email, straight away', line: figures ? 'With your project page link, a calendar invite and your estimate.' : 'With your project page link and a calendar invite.' },
-        { lead: 'A reminder the day before', line: 'By email, 24 hours before your survey.' },
+        ...(reminderDue(draft.slot.startsAt) ? [{ lead: 'A reminder the day before', line: 'By email, 24 hours before your survey.' }] : []),
         { lead: 'Your survey', line: `${who || 'Your surveyor'} checks the roof, the fuse board and the meter, and answers your questions.` },
       ]
     : [
@@ -2534,7 +2548,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             <p className="si-when__date">{draft.slot ? dayLong(dublinDate(draft.slot.startsAt)) : draft.requestedDay ? dayLong(draft.requestedDay.date) : ''}</p>
             <p className="si-when__line">
               {draft.slot
-                ? `Arrive between ${windowLabel(draft.slot.startsAt, draft.slot.endsAt)} · about ${visitMinutes} minutes`
+                ? `Arrive ${betweenLabel(draft.slot.startsAt, draft.slot.endsAt)} · about ${visitMinutes} minutes`
                 : draft.requestedDay
                   ? `In the ${draft.requestedDay.part}, to confirm by phone`
                   : ''}
@@ -2656,7 +2670,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </h1>
       <p className="si-facts">
         {doneKind === 'booked' && rs && rsDate
-          ? `${dayLong(rsDate)}. ${who || 'Your surveyor'} will arrive between ${windowLabel(rs.startsAt, rs.endsAt)} at ${placeLine()}.`
+          ? `${dayLong(rsDate)}. ${who || 'Your surveyor'} will arrive ${betweenLabel(rs.startsAt, rs.endsAt)} at ${placeLine()}.`
           : doneKind === 'requested' && draft.requestedDay
             ? `You asked for ${dayLong(draft.requestedDay.date)}, in the ${draft.requestedDay.part}. ${who || 'We'} will call you on ${det.mobile.trim()} to confirm a time.`
             : doneKind === 'saved'
@@ -2696,7 +2710,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       ];
       if (config?.survey.welcomeCallName) rows.push({ lead: 'Today', line: `${config.survey.welcomeCallName} from Solar Ireland will ring you to say hello and confirm the details.` });
       if (!figures) rows.push({ lead: 'Want your estimate before the survey?', line: 'Add a photo of your bill in your project page.' });
-      rows.push({ lead: dayLong(addDays(rsDate, -1)), line: 'A reminder by email, the day before.' });
+      if (reminderDue(rs.startsAt)) rows.push({ lead: dayLong(addDays(rsDate, -1)), line: 'A reminder by email, the day before.' });
       rows.push({ lead: `${dayLong(rsDate)}, ${windowLabel(rs.startsAt, rs.endsAt)}`, line: `${name === 'We' ? 'Your surveyor' : name} checks the roof, the fuse board and the meter, and answers your questions. Have someone ${isBiz ? 'on site' : 'home'} who can show the way in.` });
       rows.push({ lead: 'After the survey', line: isBiz ? 'Your proposal, with the real price, follows in your project page.' : 'Your proposal follows in your project page.' });
       return rows;

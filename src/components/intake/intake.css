@@ -412,7 +412,7 @@ body[data-intake-open] .daylight-pulse {
   color: var(--si-fg-muted);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 .si-lane-foot a,
 .si-lane-foot button {
@@ -1455,6 +1455,12 @@ body[data-intake-open] .daylight-pulse {
   display: flex;
   flex-direction: column;
 }
+/* Labels sit at the top, values on one shared baseline at the bottom, so a
+   label that wraps to three lines at 390 never knocks its value out of line. */
+.si-strip__cell .si-strip__value {
+  margin-top: auto;
+  padding-top: 4px;
+}
 .si-strip__cell + .si-strip__cell {
   border-left: 1px solid var(--si-line);
 }
@@ -1997,6 +2003,9 @@ body[data-intake-open] .daylight-pulse {
 .si-door__links a:hover,
 .si-door__links button:hover {
   text-decoration-color: rgba(255, 255, 255, 0.8);
+}
+.si-door__links--wa {
+  margin-top: 0;
 }
 .si-door__hint {
   margin-top: 8px;

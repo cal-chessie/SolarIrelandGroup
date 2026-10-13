@@ -158,6 +158,11 @@ export function windowLabel(startsAt: string, endsAt: string): string {
   return `${timeLabel(startsAt)} to ${timeLabel(endsAt)}`;
 }
 
+/** "between 9am and 11am" */
+export function betweenLabel(startsAt: string, endsAt: string): string {
+  return `between ${timeLabel(startsAt)} and ${timeLabel(endsAt)}`;
+}
+
 export function addDays(date: string, n: number): string {
   const p = dateParts(date);
   const t = new Date(Date.UTC(p.y, p.m - 1, p.d + n));

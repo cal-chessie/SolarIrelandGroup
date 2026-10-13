@@ -73,6 +73,7 @@ export function stubConfig(): IntakeConfig {
       maxDaysAhead: S.survey.maxDaysAhead,
       minNoticeHours: S.survey.minNoticeHours,
       holdMinutes: S.survey.holdMinutes,
+      closedDates: [...S.survey.closedDates],
       homeownerFacingName: S.survey.homeownerFacingName,
       welcomeCallName: S.survey.welcomeCallName,
     },
