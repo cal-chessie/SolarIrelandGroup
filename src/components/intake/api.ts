@@ -66,9 +66,10 @@ export async function getQuotes(items: QuoteRequestItem[]): Promise<Quote[] | nu
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ requests: missing.slice(0, 8) }),
     });
-    if (r.status !== 200 || !r.data?.quotes) return null;
+    const quotes = r.data?.quotes;
+    if (r.status !== 200 || !quotes) return null;
     missing.slice(0, 8).forEach((m, i) => {
-      const q = r.data!.quotes[i];
+      const q = quotes[i];
       if (q) quoteCache.set(quoteKey(m), q);
     });
   }

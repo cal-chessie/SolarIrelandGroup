@@ -1,17 +1,19 @@
 import type { Metadata } from 'next';
 import BookSurveyClient from './BookSurveyClient';
+import IntakePage from '@/components/intake/IntakePage';
+import { parseIntakeQuery } from '@/lib/intake/open';
 
 export const metadata: Metadata = {
   title: 'Book a Free Solar Survey',
   description:
-    'Book a free, no-obligation solar survey in 60 seconds. Our SEAI-registered team assesses your roof and gives an honest itemised quote. All 32 counties.',
+    'Pick a real time for a free, no-obligation solar site survey. Our SEAI-registered team checks your roof and gives an honest itemised quote. All 32 counties.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
     title: 'Book a Free Solar Survey',
     description:
-      'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Book in under 60 seconds.',
+      'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Pick a real time online.',
     url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
     siteName: 'Solar Ireland',
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Book a Free Solar Survey',
     description:
-      'Free roof assessment, savings calculation, and itemised quote. Book in under 60 seconds.',
+      'Free roof assessment, savings calculation, and itemised quote. Pick a real time online.',
   },
 };
 
@@ -150,7 +152,7 @@ const bookSchema = {
           name: 'What happens after I book?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Your confirmation email arrives straight away, and a member of our team will be in touch to confirm your exact time. On the day, our assessor evaluates your property and goes through your figures with you.',
+            text: 'You pick a real time on the page. Your confirmation email arrives straight away with a calendar invite and your project page, and a reminder comes the day before. On the day, our surveyor checks the roof, the fuse board and the meter, and goes through your figures with you.',
           },
         },
       ],
@@ -158,14 +160,27 @@ const bookSchema = {
   ],
 };
 
-export default function BookSurveyPage() {
+/**
+ * Intake OS: /book-survey keeps its URL for search and old links, and opens
+ * the one intake at Screen 2 (the survey times). A magic link (?lt=) from an
+ * old estimate email still gets the old booking form until slice 4 moves those
+ * links to the portal sign-in, so nothing in an inbox breaks.
+ */
+export default async function BookSurveyPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const hasMagicLink = typeof sp.lt === 'string' && sp.lt.length > 0;
+  const q = parseIntakeQuery(sp);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bookSchema) }}
       />
-      <BookSurveyClient />
+      {hasMagicLink ? (
+        <BookSurveyClient />
+      ) : (
+        <IntakePage initial={{ ...q, door: q.door === 'direct' ? 'book-survey' : q.door, step: q.step ?? 'time', stepRaw: q.stepRaw ?? null }} />
+      )}
     </>
   );
 }

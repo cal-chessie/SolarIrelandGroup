@@ -82,44 +82,36 @@
   text-align: left;
 }
 
-.si-intake h1,
-.si-intake h2,
-.si-intake h3,
-.si-intake p,
-.si-intake ol,
-.si-intake ul,
-.si-intake fieldset,
-.si-intake legend {
+/* Resets wrapped in :where() so they carry no specificity: every component
+   class below wins over them without !important. */
+:where(.si-intake) :where(h1, h2, h3, p, ol, ul, fieldset, legend) {
   margin: 0;
   padding: 0;
 }
-.si-intake ol,
-.si-intake ul {
+:where(.si-intake) :where(ol, ul) {
   list-style: none;
 }
-.si-intake fieldset {
+:where(.si-intake) fieldset {
   border: 0;
   min-width: 0;
 }
-.si-intake button,
-.si-door button {
+:where(.si-intake, .si-door) :where(button) {
   font: inherit;
   color: inherit;
   background: none;
   border: 0;
+  padding: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.si-intake a,
-.si-door a {
+:where(.si-intake, .si-door) :where(a) {
   color: inherit;
   -webkit-tap-highlight-color: transparent;
 }
-.si-intake h1,
-.si-intake h2 {
+:where(.si-intake) :where(h1, h2) {
   text-wrap: balance;
 }
-.si-intake p {
+:where(.si-intake) :where(p) {
   text-wrap: pretty;
 }
 
@@ -163,8 +155,7 @@ body[data-intake-open] .daylight-pulse {
 
 /* ── Focus ──────────────────────────────────────────────────── */
 
-.si-intake :focus,
-.si-door :focus {
+:where(.si-intake, .si-door) :focus {
   outline: none;
 }
 .si-intake :focus-visible,
@@ -2103,8 +2094,15 @@ body[data-intake-open] .daylight-pulse {
     transform: rotate(360deg);
   }
 }
-.si-screen-in {
-  animation: si-screen-in var(--si-dur-2) var(--si-ease-out) both;
+/* Under 1024 the screens swap instantly. Any animation on the screen (even a
+   finished, filled fade) makes it a containing block and a stacking context
+   for the fixed thumb-zone bar inside it: the bar lifted off the bottom of the
+   phone and later lanes painted over it. From 1024 the bar sits in the lane,
+   so the 180ms rise and fade is safe there. */
+@media (min-width: 1024px) {
+  .si-screen-in {
+    animation: si-screen-in var(--si-dur-2) var(--si-ease-out) both;
+  }
 }
 .si-reveal > * {
   animation: si-screen-in var(--si-dur-2) var(--si-ease-out) both;

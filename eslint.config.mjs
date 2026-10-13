@@ -22,6 +22,15 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
     "react/display-name": "off",
     "react/prop-types": "off",
     "react-compiler/react-compiler": "off",
+    // eslint-plugin-react-hooks 7 ships React Compiler readiness checks as
+    // errors. This site does not run the React Compiler, and these flagged
+    // long-standing, working patterns (reading storage in a mount effect,
+    // the motion shim's refs), which turned `bun run lint` red with no code
+    // change. Kept visible as warnings so they can be cleaned up deliberately.
+    "react-hooks/set-state-in-effect": "warn",
+    "react-hooks/refs": "warn",
+    "react-hooks/immutability": "warn",
+    "react-hooks/preserve-manual-memoization": "warn",
 
     // Next.js
     "@next/next/no-img-element": "off",

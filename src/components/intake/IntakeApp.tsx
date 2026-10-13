@@ -55,7 +55,6 @@ import {
   dublinDate,
   eur,
   firstName,
-  hhmmLabel,
   isEmail,
   isNorthernIreland,
   isPhone,
@@ -701,7 +700,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   useEffect(() => {
     if (step !== 'bill' || !seg || !config) return;
     const amounts = isBiz ? config.bill.chips.commercial : config.bill.chips.domestic;
-    const items = amounts.map((a) => quoteItemOf({ ...draftRef.current, bill: a, per: 'month', annualKwh: null, billRead: null })!).filter(Boolean);
+    const items = amounts
+      .map((a) => quoteItemOf({ ...draftRef.current, bill: a, per: 'month', annualKwh: null, billRead: null }))
+      .filter((q): q is NonNullable<typeof q> => q != null);
     void getQuotes(items);
   }, [step, seg, config, isBiz]);
 
@@ -897,7 +898,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     track('intake_assumption_changed', { field: 'supplier' });
   };
 
-  const useKwh = () => {
+  const applyKwh = () => {
     const k = Number(sharpKwh.replace(/[,\s]/g, ''));
     if (!Number.isFinite(k) || k < 100) {
       setSharpKwhError('Type your yearly use in kWh, for example 4,200.');
@@ -1096,7 +1097,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const outcome = res.booking.outcome;
     if (outcome === 'slot_unavailable' || outcome === 'invalid_slot') {
       update({ idemKey: null, holdToken: null });
-      setIssue({ kind: 'taken', lost: slot!, alternatives: res.booking.alternatives ?? [] });
+      if (slot) setIssue({ kind: 'taken', lost: slot, alternatives: res.booking.alternatives ?? [] });
+      else setIssue({ kind: 'failed' });
       setSlotsFor(null);
       return;
     }
@@ -1753,11 +1755,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        useKwh();
+                        applyKwh();
                       }
                     }}
                   />
-                  <button type="button" className="si-btn si-btn--secondary" onClick={useKwh}>
+                  <button type="button" className="si-btn si-btn--secondary" onClick={applyKwh}>
                     Use this
                   </button>
                 </div>

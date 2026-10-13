@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import IntakeLink from '@/components/intake/IntakeLink';
 import {
   MapPin,
   Sun,
@@ -207,22 +208,22 @@ export default function RoscommonPage() {
             Solar Panel Installers in <span className="text-yellow-400">Roscommon</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
-            Upload your electricity bill and our AI shows you exactly what solar would save your Roscommon home, in
-            minutes. Real local installers, the €1,800 SEAI grant handled for you, and an honest quote with no hard sell.
+            Type your electricity bill and see what solar would save your Roscommon home, on the page. Real local
+            installers, the €1,800 SEAI grant handled for you, and an honest quote with no hard sell.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/solar-calculator"
-              className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
+            <IntakeLink
+              opts={{ door: 'county-roscommon', segment: 'home', step: 'bill', county: 'Roscommon' }}
+              className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-5 min-h-[48px] font-semibold text-black transition hover:bg-amber-300"
             >
-              <Sparkles className="h-4 w-4" /> Analyse My Bill
-            </Link>
-            <Link
-              href="/book-survey"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 font-semibold text-white transition hover:bg-white/5"
+              Get my estimate <ArrowRight className="h-4 w-4" />
+            </IntakeLink>
+            <IntakeLink
+              opts={{ door: 'county-roscommon-book', segment: 'home', step: 'time', county: 'Roscommon' }}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 min-h-[48px] font-semibold text-white transition hover:bg-white/5"
             >
-              Book a survey
-            </Link>
+              Book a site survey
+            </IntakeLink>
           </div>
         </section>
 
@@ -316,13 +317,16 @@ export default function RoscommonPage() {
           <div className="rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold sm:text-3xl">See what solar saves your Roscommon home</h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Upload your electricity bill and our AI does the rest. Real numbers for your home, the €1,800 SEAI grant
-              included, no obligation.
+              Type your electricity bill for a close estimate on the page, the €1,800 SEAI grant included, then pick a
+              time for a free site survey. No obligation.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <Link href="/solar-calculator" className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-black transition hover:bg-yellow-300">
-                <Sparkles className="h-4 w-4" /> Analyse My Bill
-              </Link>
+              <IntakeLink
+                opts={{ door: 'county-roscommon-end', segment: 'home', step: 'bill', county: 'Roscommon' }}
+                className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-6 min-h-[48px] font-semibold text-black transition hover:bg-amber-300"
+              >
+                Get my estimate <ArrowRight className="h-4 w-4" />
+              </IntakeLink>
               <Link href="/counties" className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 font-semibold text-white transition hover:bg-white/5">
                 See all counties <ArrowRight className="h-4 w-4" />
               </Link>

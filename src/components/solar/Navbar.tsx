@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { usePathname } from 'next/navigation';
+import { openIntake, parseIntakeQuery, INTAKE_PATH } from '@/lib/intake/open';
 import {
   X,
   Zap,
@@ -69,11 +70,11 @@ const mobileLinks = [
     borderHover: 'hover:border-green-400/20',
   },
   {
-    label: 'Book Survey',
-    href: '/book-survey',
+    label: 'Book a site survey',
+    href: '/estimate?step=time&door=nav-book',
     icon: CalendarCheck,
     color: 'green',
-    description: 'Book a free home solar assessment',
+    description: 'Pick a real time for a free site survey',
     gradient: 'from-green-400/20 to-emerald-400/10',
     iconBg: 'bg-green-400/10',
     iconColor: 'text-green-400',
@@ -137,11 +138,11 @@ const mobileLinks = [
     highlight: true,
   },
   {
-    label: 'AI Bill Analyser',
-    href: '/#calculator',
+    label: 'Get my estimate',
+    href: '/estimate?door=nav-menu',
     icon: Zap,
     color: 'amber',
-    description: 'Upload your bill, see savings',
+    description: 'Type your bill, see what solar saves',
     gradient: 'from-amber-400/20 to-yellow-400/10',
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',
@@ -160,13 +161,21 @@ const mobileLinks = [
   },
 ];
 
+/** Intake OS: every estimate or booking link in the nav opens the one intake. */
+function openIntakeHref(href: string): boolean {
+  if (!href.startsWith(INTAKE_PATH)) return false;
+  const q = parseIntakeQuery(new URLSearchParams(href.split('?')[1] || ''));
+  openIntake({ door: q.door, segment: q.segment, step: q.step });
+  return true;
+}
+
 // Desktop nav - all 7 links with proper styling
 const desktopNavLinks = [
   { label: 'Services', href: '/services', isBookSurvey: false },
   { label: 'Counties', href: '/counties', isBookSurvey: false },
   { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Book Survey', href: '/book-survey', isBookSurvey: true },
+  { label: 'Book Survey', href: '/estimate?step=time&door=nav-book', isBookSurvey: false },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
   { label: 'Portal', href: '/portal', isBookSurvey: false },
 ];
@@ -242,6 +251,7 @@ function MobileMenu({
     (href: string) => {
       onClose();
       setTimeout(() => {
+        if (openIntakeHref(href)) return;
         if (href.startsWith('/')) {
           if (href.includes('#')) {
             const [path, hash] = href.split('#');
@@ -414,22 +424,22 @@ function MobileMenu({
             }`}
             style={{ transitionDelay: isOpen ? '400ms' : '0ms' }}
           >
+            {/* Intake OS: one amber primary, "Get my estimate"; booking is the
+                secondary. Green stays for done, found and booked. */}
             <button
-              onClick={() => navigateTo('/#calculator')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
+              onClick={() => navigateTo('/estimate?door=nav-menu-cta')}
+              className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] active:scale-[0.98] transition-transform"
             >
-              <Zap className="w-4 h-4" />
-              Analyse My Bill
+              Get my estimate
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => navigateTo('/book-survey')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
+              onClick={() => navigateTo('/estimate?step=time&door=nav-menu-book')}
+              className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl border border-white/[0.14] bg-transparent text-white font-medium text-[15px] active:scale-[0.98] transition-transform mt-3"
             >
               <CalendarCheck className="w-4 h-4" />
-              Book Free Survey
-              <ArrowRight className="w-4 h-4" />
+              Book a site survey
             </button>
 
             <div className="flex items-center gap-2 mt-3">
@@ -540,6 +550,7 @@ export default function Navbar() {
   }, []);
 
   const navigateTo = (href: string) => {
+    if (openIntakeHref(href)) return;
     if (href.startsWith('/') && !href.startsWith('/#')) {
       window.location.href = href;
     } else if (href.startsWith('/#')) {
@@ -636,17 +647,14 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
                 clipped the survey CTA. The secondary CTA waits for xl. */}
+            {/* Intake OS (DECISIONS 3): one primary nav button, "Get my
+                estimate", in amber. "Book a site survey" lives in the links
+                and the menu. */}
             <button
-              onClick={() => navigateTo('/#calculator')}
-              className="hidden xl:inline-flex bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
+              onClick={() => navigateTo('/estimate?door=nav')}
+              className="inline-flex items-center min-h-[44px] bg-amber-400 hover:bg-amber-300 text-black font-semibold text-sm px-5 rounded-full active:scale-95 transition-colors whitespace-nowrap"
             >
-              Analyse Bill
-            </button>
-            <button
-              onClick={() => navigateTo('/book-survey')}
-              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
-            >
-              Book Free Survey
+              Get my estimate
             </button>
           </div>
 

@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
@@ -23,32 +22,8 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { ENERGY, DOMESTIC_MIN_KWP } from '@/lib/estimate';
 
-const QuickSavingsCalculator = dynamic(
-  () => import('@/components/solar/QuickSavingsCalculator'),
-  {
-    loading: () => (
-      <section className="py-20 px-4 bg-[#0a0a0a]">
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
-          </div>
-        </div>
-      </section>
-    ),
-  }
-);
-
-const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
-  loading: () => (
-    <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto">
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
-        </div>
-      </div>
-    </section>
-  ),
-});
+import IntakeDoorSection from '@/components/intake/IntakeDoorSection';
+import IntakeLink from '@/components/intake/IntakeLink';
 
 
 function CalculatorHero() {
@@ -260,36 +235,31 @@ function FinalCTA() {
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
       <div className="max-w-3xl mx-auto text-center">
-        <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-b from-amber-400/[0.06] to-transparent p-10 sm:p-14">
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-10 sm:p-14">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Ready to See Your <span className="text-gradient">Exact Savings?</span>
+            The survey turns a close estimate into <span className="text-gradient">your proposal</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            The calculator gives you a great estimate. For exact figures based on your roof, get a free site survey - it takes 30 minutes and there&apos;s zero obligation.
+            A free site survey takes about 45 minutes at your home, with no obligation. Pick a real time on this page.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={buildWhatsAppUrl({
-                source: 'calculator-page-cta',
-                homeType: 'Semi-Detached',
-                annualSaving: SOLAR_DATA.savings.avgAnnual,
-                paybackYears: SOLAR_DATA.savings.paybackYears,
-                total25yrSaving: SOLAR_DATA.savings.total25yr,
-              })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Get Free Site Survey
-              <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href="/book-survey"
-              className="flex items-center gap-2 px-8 py-4 rounded-xl border border-white/[0.08] text-gray-300 font-medium text-sm hover:border-white/[0.15] hover:text-white transition-all"
+            {/* Intake OS: this used to say "Get Free Site Survey" and open
+                WhatsApp. It now opens the one intake at the survey times. */}
+            <IntakeLink
+              opts={{ door: 'calculator-final', segment: 'home', step: 'time' }}
+              className="flex items-center gap-2.5 min-h-[52px] px-8 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] transition-colors"
             >
               Pick a survey time
               <ArrowRight className="w-4 h-4" />
+            </IntakeLink>
+            <a
+              href={buildWhatsAppUrl({ source: 'calculator-page-cta' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 min-h-[44px] px-4 text-gray-300 font-medium text-sm hover:text-white transition-colors underline underline-offset-4 decoration-white/30"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Or WhatsApp us
             </a>
           </div>
         </div>
@@ -307,12 +277,11 @@ export default function SolarCalculatorClient() {
       <main>
         <CalculatorHero />
         <TrustBadges />
-        {/* The analyser comes FIRST. It was behind the explainer, 2.9 screens
-            down, and the explainer described a slider the page did not have.
-            Bill first for anyone who brought one, slider underneath for anyone
-            who did not, then the explainer for anyone still deciding. */}
-        <BillAnalyser />
-        <QuickSavingsCalculator />
+        {/* Intake OS: the one door comes first. The old analyser long form and
+            the quick slider (a second calculator on different numbers) are no
+            longer mounted; their files retire in slice 4. id="calculator"
+            keeps old #calculator links landing here. */}
+        <IntakeDoorSection id="calculator" door="calculator" heading="Your bill, your estimate" />
         <CalculatorExplainer />
         <DataTransparency />
         <FAQ />
@@ -321,7 +290,7 @@ export default function SolarCalculatorClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Analyse My Bill - Free', scrollTo: 'calculator' }} exit={true} />
+      <PageIntake sticky={{ label: 'Get my solar estimate', scrollTo: 'calculator' }} exit={true} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import IntakeLink from '@/components/intake/IntakeLink';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
@@ -668,11 +669,11 @@ export default function ServicesPage() {
                       ))}
                     </div>
 
-                    {/* Into the analyser, not out to WhatsApp. The package they
-                        picked rides along so it reaches the brief and we know
-                        which tier pulled the lead. */}
-                    <a
-                      href={`/solar-calculator?pkg=${encodeURIComponent(pkg.name.toLowerCase())}`}
+                    {/* Into the one intake, not out to WhatsApp. The package they
+                        picked rides along as context (ux-spec 5.4), so it reaches
+                        Cal and we know which tier pulled the lead. */}
+                    <IntakeLink
+                      opts={{ door: 'package', segment: 'home', step: 'bill', pkg: pkg.name.toLowerCase() }}
                       className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         pkg.highlighted
                           ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
@@ -681,7 +682,7 @@ export default function ServicesPage() {
                     >
                       Price this on my bill
                       <ArrowRight className="w-4 h-4" />
-                    </a>
+                    </IntakeLink>
                   </div>
                 </motion.div>
               ))}

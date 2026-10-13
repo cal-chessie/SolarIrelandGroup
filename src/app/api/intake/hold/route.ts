@@ -51,7 +51,8 @@ export async function POST(request: Request) {
   const iso = slot?.startsAt;
   const tooSoon = slot ? new Date(slot.startsAt).getTime() < Date.now() + STUB_SETTINGS.survey.minNoticeHours * 3600000 : true;
   const takenByFixture = slot ? fixtureTaken(dublinDate(slot.startsAt), wallTime(slot.startsAt)) : true;
-  const heldByOther = iso ? holds.has(iso) && holds.get(iso)!.token !== mine : false;
+  const existing = iso ? holds.get(iso) : undefined;
+  const heldByOther = !!existing && existing.token !== mine;
 
   if (!slot || !iso || tooSoon || takenByFixture || heldByOther || scenarioOf(request) === 'hold_taken') {
     return json({ ok: false, outcome: 'slot_unavailable', alternatives: alternativesAfter(body.startsAt, segment) } satisfies HoldResponse);

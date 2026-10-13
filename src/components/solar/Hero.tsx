@@ -4,18 +4,14 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import DaylightTrack from './DaylightTrack';
 import {
-  MessageCircle,
-  ArrowRight,
   Shield,
-  Zap,
   Sun,
   CheckCircle2,
   Star,
   ChevronDown,
-  CalendarCheck,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import IntakeDoor from '@/components/intake/IntakeDoor';
 
 
 export default function Hero() {
@@ -110,47 +106,19 @@ export default function Hero() {
               className="hero-fade-up mt-5 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-lg xl:max-w-2xl leading-relaxed mx-auto lg:mx-0"
               style={{ animationDelay: '0.5s' }}
             >
-              Upload your electricity bill and our AI will show you exactly what
-              solar will save you. We handle everything - survey, install,
+              Type your bill to see what solar would save you, then book a free
+              site survey on the same page. We handle the survey, the install
               and your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
             </p>
 
+            {/* Intake OS: the bill field IS the door (ui-spec 6.0). It replaces
+                the three equal CTAs; booking without a bill and the business
+                door sit under it as quiet links, WhatsApp as a quiet text link. */}
             <div
-              className="hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto lg:items-start"
+              className="hero-fade-up mt-8 sm:mt-10 w-full max-w-[560px] mx-auto lg:mx-0"
               style={{ animationDelay: '0.65s' }}
             >
-              {/* PRIMARY CTA - Analyse Bill */}
-              <button
-                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 xl:px-9 py-3.5 xl:py-4 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm xl:text-base tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto sm:shrink-0 hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
-              >
-                <Zap className="w-4 h-4" />
-                Analyse My Bill - Free
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-
-              {/* SECONDARY CTAs */}
-              {/* Stacked below sm. Side by side they were 166px each at 375px,
-                  which wrapped "Book Free Survey" onto two lines and left the
-                  pair looking broken. */}
-              <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full sm:w-auto">
-                <a
-                  href={buildWhatsAppUrl({ source: 'hero' })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
-                >
-                  <MessageCircle className="w-4 h-4 text-green-400" />
-                  WhatsApp Us
-                </a>
-                <a
-                  href="/book-survey"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
-                >
-                  <CalendarCheck className="w-4 h-4" />
-                  Book Free Survey
-                </a>
-              </div>
+              <IntakeDoor door="hero" segment="home" label="What's your electricity bill?" whatsapp />
             </div>
 
             <div

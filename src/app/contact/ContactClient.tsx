@@ -1,5 +1,6 @@
 'use client';
 
+import IntakeLink from '@/components/intake/IntakeLink';
 import { useState } from 'react';
 import { motion, AnimatePresence } from '@/lib/motion';
 import Link from 'next/link';
@@ -413,6 +414,29 @@ export default function ContactClient() {
                 Just want to chat? We&apos;re real people - reach out anytime
                 and we&apos;ll get back to you fast.
               </motion.p>
+
+              {/* Intake OS: the top card on /contact opens the one intake. The
+                  form below stays for questions only. */}
+              <div className="mt-8 max-w-2xl rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 sm:p-6">
+                <p className="text-base sm:text-lg font-semibold text-white">Want a price or a free site survey?</p>
+                <p className="mt-1 text-sm text-gray-400">
+                  Type your bill for a close estimate on the page, then pick a real time. No email needed to see it.
+                </p>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <IntakeLink
+                    opts={{ door: 'contact', step: 'bill' }}
+                    className="inline-flex items-center justify-center gap-2 min-h-[52px] px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] transition-colors"
+                  >
+                    Get my estimate
+                  </IntakeLink>
+                  <IntakeLink
+                    opts={{ door: 'contact-book', step: 'time', segment: 'home' }}
+                    className="inline-flex items-center justify-center gap-2 min-h-[52px] px-5 rounded-xl border border-white/[0.14] text-white font-medium text-[15px] hover:bg-white/[0.06] transition-colors"
+                  >
+                    Book a site survey
+                  </IntakeLink>
+                </div>
+              </div>
             </motion.div>
           </div>
 

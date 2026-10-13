@@ -29,6 +29,7 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
+import IntakeLink from '@/components/intake/IntakeLink';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 
 
@@ -200,11 +201,10 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
   const isActive = county.status === 'active';
   const localPage = COUNTY_PAGES[county.name] ?? null;
 
-  // The card leads into the bill analyser, not WhatsApp. Thirty two cards all
-  // handing the visitor to a chat window meant the county page could not
-  // produce a lead of its own: the analyser reads their bill, builds the
-  // estimate and puts the lead into the platform with the county attached.
-  const analyserUrl = `/solar-calculator?county=${encodeURIComponent(county.name)}`;
+  // Intake OS: the card opens the one intake with the county as context (it
+  // never changes a figure; the Eircode overrides it). Not WhatsApp, so the
+  // county page produces a lead of its own with the county attached.
+  const intakeOpts = { door: 'county', segment: 'home' as const, step: 'bill' as const, county: county.name };
 
   return (
     <div
@@ -294,13 +294,13 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
       )}
 
       <div className="flex items-center gap-2">
-        <a
-          href={analyserUrl}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
+        <IntakeLink
+          opts={intakeOpts}
+          className="flex-1 flex items-center justify-center gap-2 px-4 min-h-[44px] rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
         >
           <Zap className="w-3.5 h-3.5" />
           Check My Savings
-        </a>
+        </IntakeLink>
         <a
           href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
           aria-label={`Call Solar Ireland about ${county.name}`}
@@ -757,27 +757,25 @@ export default function CountiesClient() {
                     Ready to Go Solar?
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
-                    Upload your electricity bill and we&apos;ll show you what solar would save on
-                    your roof, in your county. Then book a free survey and we&apos;ll check the
-                    roof properly and handle the SEAI grant paperwork. The figures you get
-                    are the ones we stand over.
+                    Type your electricity bill and see what solar would save you, in your
+                    county, on this page. Then pick a time for a free site survey: we check the
+                    roof properly and handle the SEAI grant paperwork.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a
-                      href="/solar-calculator"
-                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/30 hover:bg-yellow-300 transition-all active:scale-[0.98]"
+                    <IntakeLink
+                      opts={{ door: 'counties-cta', segment: 'home', step: 'bill' }}
+                      className="inline-flex items-center gap-2.5 px-7 min-h-[48px] rounded-full bg-amber-400 text-black font-bold text-sm hover:bg-amber-300 transition-colors active:scale-[0.98]"
                     >
-                      <Zap className="w-4 h-4" />
-                      Check My Savings
+                      Get my estimate
                       <ArrowRight className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="/book-survey"
-                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
+                    </IntakeLink>
+                    <IntakeLink
+                      opts={{ door: 'counties-cta-book', segment: 'home', step: 'time' }}
+                      className="inline-flex items-center gap-2.5 px-7 min-h-[48px] rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <Calendar className="w-4 h-4" />
-                      Book a Free Survey
-                    </a>
+                      Book a free site survey
+                    </IntakeLink>
                   </div>
                 </div>
               </div>
@@ -788,7 +786,7 @@ export default function CountiesClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
+      <PageIntake sticky={{ label: 'Get my solar estimate', scrollTo: null }} exit={true} />
 
       <script
         type="application/ld+json"

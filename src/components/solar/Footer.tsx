@@ -3,14 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
+import IntakeDoor from '@/components/intake/IntakeDoor';
 import { useRef } from 'react';
 import {
-  CalendarCheck,
   MessageCircle,
   Mail,
   MapPin,
   Phone,
-  ArrowRight,
   ChevronUp,
   Sun,
   ShieldCheck,
@@ -123,62 +122,29 @@ const trustBadges = [
 ];
 
 
+/**
+ * Intake OS: the footer band carries the one door (ux-spec 2.2): the bill
+ * field for a home, with "Just book a free survey" and "Solar for a business"
+ * under it. It replaces "See what your roof is worth" and its three links.
+ */
 function PreFooterCTA() {
   return (
-    <motion.div
-      className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7 }}
-    >
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.06] rounded-full blur-[80px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-amber-400/[0.04] rounded-full blur-[60px] pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-        <div className="flex-1 text-center lg:text-left">
+    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/[0.08] p-6 sm:p-10 lg:p-12">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12">
+        <div className="text-left">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
-            See what your roof is worth
+            See what solar would save you
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed mx-auto lg:mx-0">
-            Send us a photo of your electricity bill. You get your system size,
-            your yearly saving and your payback in about fifteen seconds, before
-            anyone rings you. Or skip ahead and book the survey.
+          <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed">
+            Type your bill and your estimate appears on the page, before anyone
+            rings you. Then pick a real time for a free site survey.
           </p>
         </div>
-
-        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-          <motion.a
-            href="/solar-calculator"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm whitespace-nowrap shadow-lg shadow-amber-400/20"
-          >
-            <Zap className="w-4 h-4" />
-            Solar Calculator
-            <ArrowRight className="w-4 h-4" />
-          </motion.a>
-          <motion.a
-            href="/book-survey"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
-          >
-            <CalendarCheck className="w-4 h-4" />
-            Book a Free Survey
-          </motion.a>
-          <a
-            href={buildWhatsAppUrl({ source: 'footer' })}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors whitespace-nowrap"
-          >
-            <MessageCircle className="w-4 h-4 text-green-400" />
-            or WhatsApp us
-          </a>
+        <div className="lg:justify-self-end w-full lg:max-w-[560px]">
+          <IntakeDoor door="footer" segment="home" />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
