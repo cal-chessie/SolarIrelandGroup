@@ -126,7 +126,8 @@ export async function POST(request: Request) {
     const tooSoon = slot ? new Date(slot.startsAt).getTime() < Date.now() + STUB_SETTINGS.survey.minNoticeHours * 3600000 : true;
     const hold = slot ? holds.get(slot.startsAt) : undefined;
     const heldByOther = !!hold && hold.token !== body.slot.holdToken;
-    const taken = slot ? fixtureTaken(dublinDate(slot.startsAt), wallTime(slot.startsAt)) : false;
+    const bookedByOther = slot ? [...S.devices.entries()].some(([tok, d]) => tok !== deviceToken && d.booking?.startsAt === slot.startsAt) : false;
+    const taken = slot ? fixtureTaken(dublinDate(slot.startsAt), wallTime(slot.startsAt)) || bookedByOther : false;
 
     if (device.booking && body.onExisting !== 'move') {
       res = {

@@ -11,7 +11,7 @@
 import type { Segment, Slot, SlotDay } from '@/lib/intake/contract';
 import { addDays, dayShort, dublinDate, dublinWallToUtc, hhmmLabel, weekdayIndex } from '@/lib/intake/format';
 import { STUB_SETTINGS } from './settings';
-import { liveHolds } from './state';
+import { liveHolds, store } from './state';
 
 const SV = STUB_SETTINGS.survey;
 
@@ -58,11 +58,14 @@ export function gridSlot(startsAt: string): Slot | null {
   return null;
 }
 
-export function stubSlotDays(from: string, days: number, _segment: Segment, opts: { ignoreHoldToken?: string | null } = {}): SlotDay[] {
+export function stubSlotDays(from: string, days: number, _segment: Segment, opts: { ignoreHoldToken?: string | null; ownBooking?: string | null } = {}): SlotDay[] {
   const today = todayDublin();
   const last = addDays(today, SV.maxDaysAhead);
   const earliest = Date.now() + SV.minNoticeHours * 3600000;
   const holds = liveHolds();
+  // A booked slot is gone for everyone else: one homeowner per slot.
+  const booked = new Set<string>();
+  for (const d of store().devices.values()) if (d.booking) booked.add(d.booking.startsAt);
   const out: SlotDay[] = [];
   const start = from < today ? today : from;
   for (let i = 0; i < Math.min(days, 31); i += 1) {
@@ -75,6 +78,7 @@ export function stubSlotDays(from: string, days: number, _segment: Segment, opts
       if (s.getTime() < earliest) continue;
       if (fixtureTaken(date, hhmm)) continue;
       const iso = s.toISOString();
+      if (booked.has(iso) && iso !== opts.ownBooking) continue;
       const hold = holds.get(iso);
       if (hold && hold.token !== opts.ignoreHoldToken) continue;
       slots.push({

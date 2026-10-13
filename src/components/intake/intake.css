@@ -472,6 +472,17 @@ body[data-intake-open] .daylight-pulse {
     display: flex;
     flex-direction: column;
   }
+  /* The screen inside each lane runs the lane's full height, so the two lane
+     footers sit on one baseline at the bottom (ui-spec 4.3). */
+  .si-col > * {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .si-col > * > .si-back-text {
+    align-self: flex-start;
+  }
   .si-lane-foot {
     margin-top: auto;
     padding-top: 40px;
@@ -1499,6 +1510,11 @@ body[data-intake-open] .daylight-pulse {
     font-size: 22px;
     line-height: 28px;
   }
+}
+.si-strip__value.si-strip__value--words {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
 }
 .si-strip--compact .si-strip__value {
   font-size: 18px;

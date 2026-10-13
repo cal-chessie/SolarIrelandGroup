@@ -4,7 +4,7 @@ import type { HoldResponse, Segment } from '@/lib/intake/contract';
 import { dublinDate, wallTime } from '@/lib/intake/format';
 import { STUB_SETTINGS } from '@/lib/intake/stub/settings';
 import { alternativesAfter, fixtureTaken, gridSlot } from '@/lib/intake/stub/slots';
-import { cookieValue, liveHolds, scenarioOf } from '@/lib/intake/stub/state';
+import { cookieValue, liveHolds, scenarioOf, store } from '@/lib/intake/stub/state';
 
 /**
  * POST /api/intake/hold
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   const tooSoon = slot ? new Date(slot.startsAt).getTime() < Date.now() + STUB_SETTINGS.survey.minNoticeHours * 3600000 : true;
   const takenByFixture = slot ? fixtureTaken(dublinDate(slot.startsAt), wallTime(slot.startsAt)) : true;
   const existing = iso ? holds.get(iso) : undefined;
-  const heldByOther = !!existing && existing.token !== mine;
+  const heldByOther = (!!existing && existing.token !== mine) || [...store().devices.values()].some((d) => d.booking?.startsAt === iso);
 
   if (!slot || !iso || tooSoon || takenByFixture || heldByOther || scenarioOf(request) === 'hold_taken') {
     return json({ ok: false, outcome: 'slot_unavailable', alternatives: alternativesAfter(body.startsAt, segment) } satisfies HoldResponse);
