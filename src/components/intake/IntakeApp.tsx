@@ -1458,7 +1458,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <EuroInput
           id="si-bill"
           ref={billInputRef}
-          placeholder={isBiz ? '1,200' : '150'}
           value={draft.billText}
           invalid={false}
           aria-describedby={billError ? 'si-bill-msg' : undefined}
@@ -1518,7 +1517,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           <Collapse open={kwhOpen}>
             <div style={{ paddingTop: 8 }}>
               <Field id="si-kwh" label="Yearly use in kWh" hint="It's on the annual statement.">
-                <TextInput id="si-kwh" inputMode="numeric" placeholder="45,000" value={kwhText} onChange={(e) => setKwhText(e.target.value.replace(/[^\d,\s]/g, ''))} />
+                <TextInput id="si-kwh" inputMode="numeric" value={kwhText} onChange={(e) => setKwhText(e.target.value.replace(/[^\d,\s]/g, ''))} />
               </Field>
             </div>
           </Collapse>
@@ -1767,12 +1766,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
               </fieldset>
             ) : null}
             <div className="si-mt-24">
-              <Field id="si-sharp-kwh" label={isBiz ? 'I know our yearly kWh' : 'I know my yearly kWh'} error={sharpKwhError}>
+              <Field id="si-sharp-kwh" label={isBiz ? 'I know our yearly kWh' : 'I know my yearly kWh'} hint="It's on your annual statement, or in your supplier's app." error={sharpKwhError}>
                 <div className="si-inline-field">
                   <TextInput
                     id="si-sharp-kwh"
                     inputMode="numeric"
-                    placeholder={isBiz ? '45,000' : '4,200'}
                     value={sharpKwh}
                     invalid={!!sharpKwhError}
                     aria-describedby={sharpKwhError ? 'si-sharp-kwh-error' : undefined}
@@ -1822,7 +1820,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                     autoComplete="email"
                     autoCapitalize="off"
                     spellCheck={false}
-                    placeholder="you@example.ie"
                     value={emailText}
                     invalid={!!emailError}
                     onChange={(e) => setEmailText(e.target.value)}
@@ -1889,8 +1886,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           <EuroInput
             id="si-addbill"
             compact
-            placeholder={isBiz ? '1,200' : '150'}
-            value={addBillText}
+              value={addBillText}
             invalid={!!addBillError}
             onChange={(e) => {
               setAddBillText(e.target.value.replace(/[^\d.,€\s]/g, '').slice(0, 9));
@@ -2321,7 +2317,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             spellCheck={false}
             enterKeyHint="next"
             maxLength={8}
-            placeholder="D02 X285"
             value={det.eircode}
             invalid={!det.manual && !!errOf('eircode')}
             aria-describedby={!det.manual && errOf('eircode') ? 'si-eircode-error' : 'si-eircode-hint'}
@@ -2367,11 +2362,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         ) : null}
         <Collapse open={det.manual}>
           <div style={{ paddingTop: 16 }}>
-            <Field id="si-address" label="Address" error={eirValid ? null : errOf('address')} tag={lookup.status === 'down' && det.address ? <span className="si-tag si-tag--fill">From your Eircode</span> : undefined}>
+            <Field id="si-address" label="Address" hint="House number and street, then the town." error={eirValid ? null : errOf('address')} tag={lookup.status === 'down' && det.address ? <span className="si-tag si-tag--fill">From your Eircode</span> : undefined}>
               <TextInput
                 id="si-address"
                 autoComplete="street-address"
-                placeholder="House number and street, town"
                 value={det.address}
                 invalid={!eirValid && !!errOf('address')}
                 aria-describedby={!eirValid && errOf('address') ? 'si-address-error' : undefined}
@@ -2465,7 +2459,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             inputMode="tel"
             autoComplete="tel"
             enterKeyHint="next"
-            placeholder="087 123 4567"
             value={det.mobile}
             invalid={!!errOf('mobile')}
             aria-describedby={errOf('mobile') ? 'si-mobile-error' : 'si-mobile-hint'}
@@ -2483,7 +2476,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             autoCapitalize="off"
             spellCheck={false}
             enterKeyHint="go"
-            placeholder="you@example.ie"
             value={det.email}
             invalid={!!errOf('email')}
             aria-describedby={errOf('email') ? 'si-email-error' : 'si-email-hint'}

@@ -53,7 +53,6 @@ export default function IntakeDoor({
         <EuroInput
           id={fieldId}
           name="bill"
-          placeholder="150"
           suffix="a month"
           value={value}
           onChange={(e) => setValue(e.target.value.replace(/[^\d.,€\s]/g, '').slice(0, 9))}
