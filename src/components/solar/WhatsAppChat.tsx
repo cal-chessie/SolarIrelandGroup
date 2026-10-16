@@ -1061,16 +1061,20 @@ export default function WhatsAppChat() {
                 )}
 
                 {messages.length <= 2 && !isLoading && !isStreaming && (
-                  <div className="wa-fade-in px-4 sm:px-5 pb-2 flex flex-wrap gap-2">
+                  // One row of four equal tiles, the same tile as the welcome
+                  // screen's icons. As wrapping pills they broke onto two
+                  // ragged rows and ate the bottom of a phone screen.
+                  <div className="wa-fade-in px-4 sm:px-5 pb-2 grid grid-cols-4 gap-2">
                     {QUICK_ACTIONS.map((action) => {
                       const ActionIcon = action.icon;
                       return (
                         <button
                           key={action.label}
                           onClick={() => handleQuickAction(action)}
-                          className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[13px] text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                          className="min-w-0 min-h-[56px] flex flex-col items-center justify-center gap-1.5 px-1 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[12px] leading-tight text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-200 active:scale-95 cursor-pointer"
                         >
-                          <ActionIcon className="w-3 h-3" /> {action.label}
+                          <ActionIcon className="w-4 h-4 text-yellow-400 shrink-0" />
+                          <span className="whitespace-nowrap">{action.label}</span>
                         </button>
                       );
                     })}
