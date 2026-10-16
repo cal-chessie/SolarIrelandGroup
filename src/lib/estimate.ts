@@ -46,11 +46,18 @@
  *                     €200/kWp to 4 kWp, capped at €1,800 (so €1,800 needs a
  *                     full 4 kWp; a 2.5 kWp system draws €1,500). All three
  *                     old engines applied a flat €1,800 to every size.
+ * Grants (16 Oct 2026) Every grant is a dated schedule in solar-data.ts
+ *                     (GRANT_SCHEDULES, read on seai.ie), and this file holds
+ *                     the one function per grant. A battery of 5 kWh or more
+ *                     adds a flat €600 (solar + battery max €2,400); the
+ *                     estimate stays panels only, so it never prices that in.
+ *                     The NDMG is dated: an enhanced table for applications
+ *                     from 6 Oct 2026 to 6 Jul 2027, the standard one outside.
  *
  * Install pricing below is Solar Ireland's own commercial pricing, not an
  * external figure. It is the one block here Cal owns and should confirm.
  */
-import { SOLAR_DATA } from '@/lib/solar-data';
+import { SOLAR_DATA, GRANT_SCHEDULES } from '@/lib/solar-data';
 
 /** Market/regulatory inputs. Sourced above; change only with new evidence. */
 export const ENERGY = {
@@ -142,20 +149,52 @@ export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Au
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 /**
- * SEAI domestic solar PV grant.
+ * SEAI domestic solar PV grant, read from GRANT_SCHEDULES.solarPv.
  *
- * The scheme is tiered (€700/kWp for the first 2 kWp, then €200/kWp to 4 kWp),
- * but it reaches its full €1,800 at exactly 4 kWp, and 4 kWp is our domestic
- * floor. So every system we quote draws the full grant, and the site can say
- * €1,800 without a caveat. The tier maths is kept below the floor only so the
- * function stays truthful if it is ever called with a smaller size.
+ * The scheme is tiered (€700/kWp for the first 2 kWp, then €200/kWp to 4 kWp,
+ * pro rata), and it reaches its full €1,800 at exactly 4 kWp, which is our
+ * domestic floor. So every system we quote draws the full grant, and the site
+ * can say €1,800 without a caveat. The tiers below the floor are kept only so
+ * the function stays truthful if it is ever called with a smaller size.
  */
 export function seaiGrant(kwp: number): number {
-  if (kwp >= DOMESTIC_MIN_KWP) return SOLAR_DATA.grant.amount;
-  if (kwp < 2) return 0;
-  const firstTier = Math.min(kwp, 2) * 700;
-  const secondTier = Math.max(0, Math.min(kwp, 4) - 2) * 200;
-  return Math.min(Math.round(firstTier + secondTier), SOLAR_DATA.grant.amount);
+  if (!(kwp > 0)) return 0;
+  const s = GRANT_SCHEDULES.solarPv;
+  let eur = 0;
+  let from = 0;
+  for (const t of s.tiers) {
+    eur += Math.max(0, Math.min(kwp, t.uptoKwp) - from) * t.perKwpEur;
+    from = t.uptoKwp;
+  }
+  return Math.min(Math.round(eur), s.maxEur);
+}
+
+/**
+ * SEAI battery grant, read from GRANT_SCHEDULES.battery: a flat €600 for a
+ * battery of 5 kWh or more, nothing below. It does not scale with the size.
+ * The estimate never calls this (panels only); the packages do.
+ */
+export function batteryGrant(batteryKwh: number): number {
+  const b = GRANT_SCHEDULES.battery;
+  return batteryKwh >= b.minKwh ? b.flatEur : 0;
+}
+
+/** Everything SEAI pays a home: solar plus battery on one application, capped at €2,400. */
+export function homeGrant(kwp: number, batteryKwh = 0): number {
+  return Math.min(seaiGrant(kwp) + batteryGrant(batteryKwh), GRANT_SCHEDULES.battery.maxWithSolarEur);
+}
+
+/** VAT on a home battery: 0% fitted with panels in the same job, 23% fitted on its own. */
+export function batteryVatRate(withPanels: boolean): number {
+  const v = GRANT_SCHEDULES.battery.vatRate;
+  return withPanels ? v.withPanels : v.batteryOnly;
+}
+
+/** The Irish calendar date (YYYY-MM-DD) of an instant: the day a grant table is read on. */
+export function irishDate(at: Date = new Date()): string {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(at);
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
+  return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
 /**
@@ -369,10 +408,11 @@ export function fmtEur(n: number): string {
 //   - NO 4 kWp floor. A business sizes to its usage, and commercial arrays are
 //     much larger. Sizing runs up to a 500 kWp band before a roof cap.
 //   - The grant is the Non-Domestic Microgen (NDMG) scheme, NOT the domestic
-//     SEAI Solar Electricity Grant. The tiered NDMG rates below are mirrored
-//     EXACTLY from the platform's own engine (aisolar `_shared/quote.ts`
-//     `calculateNDMG`), so the website estimate and the AISolar autoresponder
-//     never show two grant figures.
+//     SEAI Solar Electricity Grant. It is a DATED table (GRANT_SCHEDULES.ndmg,
+//     read on seai.ie 16 Oct 2026): enhanced for applications from 6 Oct 2026
+//     to 6 Jul 2027, standard outside that window. The platform reads the same
+//     tables (aisolar `_shared/grants.ts`), so the website estimate and the
+//     AISolar autoresponder never show two grant figures.
 //   - Commercial VAT applies (13%), the rate the platform already uses
 //     (`VAT_COMMERCIAL` in that same file). The domestic path is 0% VAT and its
 //     install price is quoted VAT-inclusive; commercial cost is quoted ex-VAT
@@ -426,19 +466,45 @@ const COMMERCIAL_SELF_USE_MAX = 0.75;
  */
 const COMMERCIAL_DAY_SHARE = 0.75;
 
+/** The NDMG table in force for an application made on this Irish calendar date (YYYY-MM-DD). */
+export function ndmgSchedule(asOf: string = irishDate()) {
+  const hit = GRANT_SCHEDULES.ndmg.find((t) =>
+    (t.appliesFrom === null || asOf >= t.appliesFrom) && (t.appliesTo === null || asOf <= t.appliesTo));
+  if (!hit) throw new Error(`no NDMG table covers ${asOf}`);
+  return hit;
+}
+
 /**
- * Non-Domestic Microgen (NDMG) grant. Mirrored EXACTLY from aisolar
- * `_shared/quote.ts` `calculateNDMG`: €900/kWp to 2 kWp, €300/kWp to 20 kWp,
- * €200/kWp to 200 kWp, €150/kWp to 1,000 kWp, capped at €162,600. Do not
- * change here without changing it there, and never invent a different number.
+ * The NDMG table value, before the cost condition. The table is set by whole
+ * kWp, so a part kWp counts down to the whole kWp below it (36.5 kWp is priced
+ * as 36): never more than the table could pay. Under 1 kWp, nothing. Above the
+ * last band, the maximum. The platform reads the same tables (aisolar
+ * `_shared/grants.ts` `ndmgTableEur`); never invent a different number.
  */
-export function ndmgGrant(kwp: number): number {
-  if (kwp < 1) return 0;
-  let g = Math.min(kwp, 2) * 900;
-  if (kwp > 2) g += (Math.min(kwp, 20) - 2) * 300;
-  if (kwp > 20) g += (Math.min(kwp, 200) - 20) * 200;
-  if (kwp > 200) g += (Math.min(kwp, 1000) - 200) * 150;
-  return Math.min(Math.round(g), 162600);
+export function ndmgTableEur(kwp: number, asOf: string = irishDate()): number {
+  const t = ndmgSchedule(asOf);
+  const whole = Math.floor(kwp + 1e-9);
+  if (!(whole >= 1)) return 0;
+  const top = t.bands[t.bands.length - 1];
+  if (whole > top.toKwp) return t.maxEur;
+  let eur = 0;
+  for (const f of t.fixedEur) if (f.kwp <= whole) eur = f.eur;
+  for (const b of t.bands) if (whole >= b.fromKwp) eur += (Math.min(whole, b.toKwp) - b.fromKwp + 1) * b.perKwpEur;
+  return Math.min(eur, t.maxEur);
+}
+
+/**
+ * Non-Domestic Microgen (NDMG) grant a business is paid: the lower of the
+ * table and the cost share (45% in the enhanced window) of the invoiced cost.
+ * We take it on the ex-VAT price, the conservative reading (VAT is reclaimed).
+ * With no cost given, the table value comes back, to be shown as "up to".
+ */
+export function ndmgGrant(kwp: number, opts: { asOf?: string; costExVatEur?: number } = {}): number {
+  const asOf = opts.asOf ?? irishDate();
+  const table = ndmgTableEur(kwp, asOf);
+  const share = ndmgSchedule(asOf).costShareCap;
+  if (share === null || !opts.costExVatEur || !(opts.costExVatEur > 0)) return table;
+  return Math.min(table, Math.floor(opts.costExVatEur * share));
 }
 
 /** Commercial install cost before VAT and before the grant. */
@@ -506,6 +572,8 @@ export function commercialEstimate(input: {
   exportRateEur?: number;
   dayUsageKwh?: number;
   roofCapKwp?: number;
+  /** The day the estimate is made (YYYY-MM-DD, Irish): picks the NDMG table. Default today. */
+  asOf?: string;
 }): CommercialEstimateResult {
   const unitRate = input.unitRateEur && input.unitRateEur > 0 ? input.unitRateEur : COMMERCIAL_RATE_FLOOR;
   const exportRate = input.exportRateEur && input.exportRateEur > 0 ? input.exportRateEur : ENERGY.exportRateEur;
@@ -539,7 +607,7 @@ export function commercialEstimate(input: {
   const installCostExVatEur = commercialInstallCostExVatEur(systemSizeKwp);
   const vatEur = Math.round(installCostExVatEur * VAT_COMMERCIAL);
   const installCostIncVatEur = installCostExVatEur + vatEur;
-  const grantEur = ndmgGrant(systemSizeKwp);
+  const grantEur = ndmgGrant(systemSizeKwp, { asOf: input.asOf, costExVatEur: installCostExVatEur });
   const costAfterGrantEur = Math.max(installCostIncVatEur - grantEur, 0);
   const paybackYears = totalAnnualBenefitEur > 0
     ? Math.round((costAfterGrantEur / totalAnnualBenefitEur) * 10) / 10
@@ -595,7 +663,7 @@ export function commercialEstimate(input: {
 /** Convenience wrapper for the surfaces that only know a monthly commercial bill. */
 export function commercialEstimateFromMonthlyBill(
   monthlyBillEur: number,
-  opts: { unitRateEur?: number; exportRateEur?: number; roofCapKwp?: number } = {},
+  opts: { unitRateEur?: number; exportRateEur?: number; roofCapKwp?: number; asOf?: string } = {},
 ): CommercialEstimateResult {
   return commercialEstimate({
     annualUsageKwh: commercialUsageFromMonthlyBill(monthlyBillEur, opts.unitRateEur),
@@ -608,7 +676,7 @@ export function commercialEstimateFromMonthlyBill(
 export function commercialSystemOptions(
   annualUsageKwh: number,
   recommended?: number,
-  opts: { unitRateEur?: number; exportRateEur?: number } = {},
+  opts: { unitRateEur?: number; exportRateEur?: number; asOf?: string } = {},
 ) {
   const base = recommended && recommended > 0 ? recommended : sizeCommercialKwp(annualUsageKwh);
   const sizes = Array.from(

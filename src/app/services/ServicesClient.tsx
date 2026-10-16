@@ -26,6 +26,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
+import { installCostEur, homeGrant, fmtEur } from '@/lib/estimate';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
@@ -77,7 +78,7 @@ const mainServices = [
     title: 'Battery Storage',
     tagline: 'Store Your Solar Energy',
     price: '€4,000 – €8,000',
-    grant: 'Stackable with Solar PV Grant',
+    grant: `${SOLAR_DATA.batteryGrant.label} SEAI battery grant (${SOLAR_DATA.batteryGrant.minLabel})`,
     color: 'emerald',
     iconBg: 'bg-emerald-400/10',
     iconColor: 'text-emerald-400',
@@ -157,12 +158,41 @@ const additionalServices = [
   },
 ];
 
+/**
+ * Every package price is WORKED OUT, never typed: the list price from the one
+ * pricing model (installCostEur), the grant from the one grant schedule
+ * (homeGrant: the €1,800 solar grant plus the €600 battery grant, each package
+ * carrying a 5 kWh or larger battery, so €2,400), and the marketing package
+ * €1,000 off that. The payback band is the after-grant price over the
+ * package's own annual-savings range, each end to the nearest year. Cal's rule:
+ * fix one price and you have broken the table, so no price on this page can
+ * move without the rest moving with it.
+ */
+const MARKETING_PACKAGE_EUR = 1000;
+function packagePricing(kwp: number, batteryKwh: number, savingsEur: [number, number]) {
+  const list = installCostEur(kwp, batteryKwh);
+  const grant = homeGrant(kwp, batteryKwh);
+  const fastest = Math.round((list - grant) / savingsEur[1]);
+  const slowest = Math.round((list - grant) / savingsEur[0]);
+  return {
+    savings: `${fmtEur(savingsEur[0])}–${fmtEur(savingsEur[1])}`,
+    payback: fastest === slowest ? `About ${fastest} Years` : `${fastest}-${slowest} Years`,
+    price: fmtEur(list),
+    afterGrant: `${fmtEur(list - grant)} after the grant`,
+    marketingPrice: `${fmtEur(list - grant - MARKETING_PACKAGE_EUR)} if you join our marketing package`,
+    grantLabel: `${fmtEur(grant)} (${SOLAR_DATA.grant.label} solar + ${SOLAR_DATA.batteryGrant.label} battery)`,
+  };
+}
+const ESSENTIAL = packagePricing(4, 5, [1100, 1250]);
+const POPULAR = packagePricing(6, 7.5, [1700, 1900]);
+const PREMIUM = packagePricing(8, 10, [2200, 2400]);
+
 const packages = [
   {
     name: 'Essential',
-    price: '€11,400',
-    afterGrant: '€9,600 after the grant',
-    marketingPrice: '€8,600 if you join our marketing package',
+    price: ESSENTIAL.price,
+    afterGrant: ESSENTIAL.afterGrant,
+    marketingPrice: ESSENTIAL.marketingPrice,
     bestFor: 'A typical 3-bed semi that wants evening power without over-buying.',
     tag: 'Best Value',
     tier: 'entry',
@@ -173,19 +203,19 @@ const packages = [
       'Inverter': 'Hybrid Inverter',
       'Battery': '5 kWh Battery',
       'Monitoring': 'Basic App',
-      'SEAI Grant': '€1,800 (full)',
-      'Annual Savings': '€1,100–€1,250',
+      'SEAI Grant': ESSENTIAL.grantLabel,
+      'Annual Savings': ESSENTIAL.savings,
       'Energy Independence': 'Around 70%',
-      'Payback Period': '8-9 Years',
+      'Payback Period': ESSENTIAL.payback,
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,
   },
   {
     name: 'Popular',
-    price: '€13,650',
-    afterGrant: '€11,850 after the grant',
-    marketingPrice: '€10,850 if you join our marketing package',
+    price: POPULAR.price,
+    afterGrant: POPULAR.afterGrant,
+    marketingPrice: POPULAR.marketingPrice,
     bestFor: 'Bigger houses, or anyone home during the day with an EV on the way.',
     tag: 'Best All-Rounder',
     tier: 'popular',
@@ -196,19 +226,19 @@ const packages = [
       'Inverter': 'Hybrid Inverter',
       'Battery': '7.5 kWh Battery',
       'Monitoring': 'Smart App + Portal',
-      'SEAI Grant': '€1,800 (full)',
-      'Annual Savings': '€1,700–€1,900',
+      'SEAI Grant': POPULAR.grantLabel,
+      'Annual Savings': POPULAR.savings,
       'Energy Independence': 'Around 75%',
-      'Payback Period': '7-8 Years',
+      'Payback Period': POPULAR.payback,
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: true,
   },
   {
     name: 'Premium',
-    price: '€15,900',
-    afterGrant: '€14,100 after the grant',
-    marketingPrice: '€13,100 if you join our marketing package',
+    price: PREMIUM.price,
+    afterGrant: PREMIUM.afterGrant,
+    marketingPrice: PREMIUM.marketingPrice,
     bestFor: 'Large homes, heat pumps, two EVs, and the most independence we can fit.',
     tag: 'Max Savings',
     tier: 'premium',
@@ -219,10 +249,10 @@ const packages = [
       'Inverter': 'Hybrid Inverter',
       'Battery': '10 kWh Battery',
       'Monitoring': 'Full Smart Monitoring',
-      'SEAI Grant': '€1,800 + €300 EV charger',
-      'Annual Savings': '€2,200–€2,400',
+      'SEAI Grant': `${PREMIUM.grantLabel}, + €300 EV charger`,
+      'Annual Savings': PREMIUM.savings,
       'Energy Independence': 'Around 75%',
-      'Payback Period': '6-7 Years',
+      'Payback Period': PREMIUM.payback,
       'Warranty': '25-Year Panel + 5-Year Workmanship',
     },
     highlighted: false,

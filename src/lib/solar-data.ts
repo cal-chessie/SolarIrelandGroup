@@ -1,16 +1,105 @@
 
+/**
+ * Every grant the site prices with, as DATA with the dates each table applies.
+ * One schedule per scheme; src/lib/estimate.ts holds the one function per grant
+ * that reads it. Read on seai.ie on 16 Oct 2026, official sources only:
+ *   solar   /grants/home-energy-grants/individual-grants/solar-electricity-grant
+ *   battery /grants/home-energy-grants/individual-grants/battery
+ *   NDMG    /grants/business-grants/commercial-solar-pv
+ * The enhanced welfare grants (up to €9,000) depend on payments an estimate
+ * cannot know, so they are deliberately not modelled.
+ */
+export const GRANT_SCHEDULES = {
+  verifiedOn: '2026-10-16',
+  /** SEAI Solar Electricity Grant: pro rata per kWp inside each tier, capped. */
+  solarPv: {
+    source: 'https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant',
+    tiers: [
+      { uptoKwp: 2, perKwpEur: 700 },
+      { uptoKwp: 4, perKwpEur: 200 },
+    ],
+    maxEur: 1800,
+  },
+  /** SEAI battery grant: a flat amount at the minimum size or above, nothing below. */
+  battery: {
+    source: 'https://www.seai.ie/grants/home-energy-grants/individual-grants/battery',
+    minKwh: 5,
+    flatEur: 600,
+    /** Solar and battery together on one application. */
+    maxWithSolarEur: 2400,
+    /** 0% fitted with panels in the same job; 23% fitted on its own. */
+    vatRate: { withPanels: 0, batteryOnly: 0.23 },
+  },
+  /**
+   * Non-Domestic Microgen Grant, most specific table first. The enhanced table is
+   * the temporary "effective 45% rate" for NEW applications from 6 Oct 2026 to
+   * 6 Jul 2027 inclusive; outside it the standard table (half, max €162,600).
+   * SEAI pays the lower of the table and costShareCap of the invoiced cost; the
+   * source states that condition for the enhanced table only. Small sizes take
+   * the last fixed amount at or below them; each band adds per whole kWp.
+   */
+  ndmg: [
+    {
+      id: 'ndmg-enhanced-2026',
+      source: 'https://www.seai.ie/grants/business-grants/commercial-solar-pv',
+      appliesFrom: '2026-10-06',
+      appliesTo: '2027-07-06',
+      fixedEur: [
+        { kwp: 1, eur: 1800 },
+        { kwp: 2, eur: 3600 },
+        { kwp: 3, eur: 4200 },
+        { kwp: 4, eur: 4800 },
+      ],
+      bands: [
+        { fromKwp: 7, toKwp: 20, perKwpEur: 600 },
+        { fromKwp: 21, toKwp: 200, perKwpEur: 400 },
+        { fromKwp: 201, toKwp: 1000, perKwpEur: 300 },
+      ],
+      maxEur: 325200,
+      costShareCap: 0.45,
+    },
+    {
+      id: 'ndmg-standard',
+      source: 'https://www.seai.ie/grants/business-grants/commercial-solar-pv',
+      appliesFrom: null,
+      appliesTo: null,
+      fixedEur: [
+        { kwp: 1, eur: 900 },
+        { kwp: 2, eur: 2400 },
+      ],
+      bands: [
+        { fromKwp: 7, toKwp: 20, perKwpEur: 300 },
+        { fromKwp: 21, toKwp: 200, perKwpEur: 200 },
+        { fromKwp: 201, toKwp: 1000, perKwpEur: 150 },
+      ],
+      maxEur: 162600,
+      costShareCap: null,
+    },
+  ],
+} as const;
+
 export const SOLAR_DATA = {
   grant: {
-    amount: 1800,
+    amount: GRANT_SCHEDULES.solarPv.maxEur,
     label: '€1,800',
     authority: 'SEAI',
-    // SEAI conditions for the Solar PV grant: the home must have been built and
-    // occupied before 2021, have an MPRN, not have drawn solar funding before,
-    // and a post-works BER must be completed before the grant is paid. There is
-    // NO minimum BER to qualify - the site used to claim C3 or lower, which
-    // would have turned away homes that are perfectly eligible.
-    eligibility: 'Owner-occupiers of homes built and occupied before 2021, with a post-works BER',
+    // SEAI conditions for the Solar PV grant (seai.ie, 16 Oct 2026): the home
+    // must have been built and occupied before 2025, have an MPRN, not have
+    // drawn solar funding before, and a post-works BER must be completed before
+    // the grant is paid. There is NO minimum BER to qualify - the site used to
+    // claim C3 or lower, which would have turned away eligible homes.
+    eligibility: 'Owner-occupiers of homes built and occupied before 2025, with a post-works BER',
     processTime: '4-8 weeks',
+  },
+  // The SEAI battery grant: on top of the solar grant, on the same application.
+  // The site estimate stays panels only, so this is said, never priced into it.
+  batteryGrant: {
+    amount: GRANT_SCHEDULES.battery.flatEur,
+    label: '€600',
+    minKwh: GRANT_SCHEDULES.battery.minKwh,
+    minLabel: '5 kWh or more',
+    withSolarMax: GRANT_SCHEDULES.battery.maxWithSolarEur,
+    withSolarMaxLabel: '€2,400',
   },
   savings: {
     // These single figures are what the hero stats count up to, so they must be
