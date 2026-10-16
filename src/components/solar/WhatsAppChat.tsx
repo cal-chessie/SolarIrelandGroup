@@ -357,32 +357,54 @@ export default function WhatsAppChat() {
     setShowScrollBtn(el.scrollHeight - el.scrollTop - el.clientHeight > 100);
   }, []);
 
-  // The on-screen keyboard does not shrink 100dvh, so a panel anchored bottom:0
-  // leaves its composer behind the keyboard, off-screen. Pin the panel to the
-  // VISUAL viewport instead (the strip of screen actually visible above the
-  // keyboard): drive BOTH top (vv.offsetTop) and height (vv.height), and release
-  // the bottom anchor while active. Setting height alone was the old bug — with
-  // bottom:0 still pinned it trimmed the header off the top and left the input
-  // exactly where it was, behind the keyboard.
+  // On a phone the chat is a full-screen sheet, and "full screen" has to mean
+  // the part of the page the visitor can actually see: the VISUAL viewport.
+  // The keyboard shrinks it; a pinch or double-tap zoom shrinks it AND shifts
+  // it sideways. The sheet used to follow only its top and height, so on a
+  // zoomed page it opened at full page width and hung off the right edge, with
+  // the close and send buttons out of reach, and slid about under the finger
+  // (Cal, 16 Oct: "sprawled off the screen and moves around on touch").
+  // So: snap any zoom back to 100% while the chat is open, pin all four sides
+  // to the visual viewport, and restore both on close.
   useEffect(() => {
     if (!isOpen || isMinimized) return;
     const vv = window.visualViewport;
     const el = panelRef.current;
     if (!vv || !el || !window.matchMedia('(max-width: 639px)').matches) return;
-    const apply = () => {
-      el.style.height = `${vv.height}px`;
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
+    const original = meta?.getAttribute('content') ?? null;
+    if (meta && original !== null && !/maximum-scale/.test(original)) {
+      meta.setAttribute('content', `${original}, maximum-scale=1`);
+    }
+    const place = () => {
       el.style.top = `${vv.offsetTop}px`;
+      el.style.left = `${vv.offsetLeft}px`;
+      el.style.width = `${vv.width}px`;
+      el.style.height = `${vv.height}px`;
       el.style.bottom = 'auto';
+      el.style.right = 'auto';
     };
-    apply();
+    // The keyboard and a pan fire these many times a frame; place once per frame.
+    let frame = 0;
+    const apply = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(place);
+    };
+    place();
     vv.addEventListener('resize', apply);
     vv.addEventListener('scroll', apply);
     return () => {
+      cancelAnimationFrame(frame);
       vv.removeEventListener('resize', apply);
       vv.removeEventListener('scroll', apply);
-      el.style.height = '';
       el.style.top = '';
+      el.style.left = '';
+      el.style.width = '';
+      el.style.height = '';
       el.style.bottom = '';
+      el.style.right = '';
+      // Pinch-zoom comes back the moment the chat closes.
+      if (meta && original !== null) meta.setAttribute('content', original);
     };
   }, [isOpen, isMinimized]);
 
@@ -397,11 +419,16 @@ export default function WhatsAppChat() {
       return () => { delete body.dataset.sigChatOpen; };
     }
     const scrollY = window.scrollY;
+    const root = document.documentElement;
     body.style.position = 'fixed';
     body.style.top = `-${scrollY}px`;
     body.style.left = '0';
     body.style.right = '0';
     body.style.width = '100%';
+    // A frozen body still lets iOS rubber-band the page itself, which drags
+    // the sheet with it. Hold the root still too.
+    root.style.overflow = 'hidden';
+    root.style.overscrollBehavior = 'none';
     return () => {
       delete body.dataset.sigChatOpen;
       body.style.position = '';
@@ -409,6 +436,8 @@ export default function WhatsAppChat() {
       body.style.left = '';
       body.style.right = '';
       body.style.width = '';
+      root.style.overflow = '';
+      root.style.overscrollBehavior = '';
       window.scrollTo(0, scrollY);
     };
   }, [isOpen, isMinimized]);
@@ -674,7 +703,10 @@ export default function WhatsAppChat() {
            */}
       <div
         ref={panelRef}
-        className={`fixed z-50 flex flex-col overflow-hidden shadow-2xl shadow-black/50 border border-white/[0.08] transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        // Only fade and lift animate. With transition-all the sheet also
+        // animated its top/left/width/height, so on a phone it trailed 400ms
+        // behind the keyboard and every pan, visibly swimming about.
+        className={`fixed z-50 flex flex-col overflow-hidden overscroll-contain shadow-2xl shadow-black/50 border border-white/[0.08] transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 scale-[0.92] translate-y-6 pointer-events-none'
@@ -722,7 +754,7 @@ export default function WhatsAppChat() {
           <>
             {showPreChat ? (
               <div className="flex flex-col h-full">
-                <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+                <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
                       <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
@@ -732,8 +764,8 @@ export default function WhatsAppChat() {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-white">Solar Ireland</p>
                     <div className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
-                      <p className="text-xs text-green-400">Online now</p>
+                      <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
+                      <p className="text-xs text-green-400 whitespace-nowrap">Online now</p>
                     </div>
                   </div>
                   <button onClick={handleClose}
@@ -743,8 +775,8 @@ export default function WhatsAppChat() {
                   </button>
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center px-6 sm:px-8 py-10 text-center">
-                  <div className="mb-6">
+                <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col items-center px-6 sm:px-8 py-10 text-center">
+                  <div className="mt-auto mb-6">
                     <BumblebeeMascot size="lg" />
                   </div>
 
@@ -808,7 +840,7 @@ export default function WhatsAppChat() {
                     WhatsApp Us Instead
                   </a>
 
-                  <div className="flex items-center gap-1.5 mt-6 text-[10px] text-gray-400">
+                  <div className="flex items-center gap-1.5 mt-6 mb-auto text-[10px] text-gray-400">
                     <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -820,7 +852,7 @@ export default function WhatsAppChat() {
               </div>
             ) : (
               <>
-                <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+                <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
                       <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
@@ -830,11 +862,10 @@ export default function WhatsAppChat() {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-white">Solar Ireland</p>
                     <div className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
-                      <p className="text-xs text-green-400">
+                      <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
+                      <p className="text-xs text-green-400 whitespace-nowrap">
                         {isLoading || isStreaming ? 'Typing...' : 'Online now'}
                       </p>
-                      <span className="text-xs text-gray-400">&middot; Typically replies instantly</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
@@ -861,7 +892,7 @@ export default function WhatsAppChat() {
                 <div
                   ref={messagesContainerRef}
                   onScroll={handleScroll}
-                  className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-3 min-h-0"
+                  className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-5 py-4 space-y-3 min-h-0"
                   style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.08) transparent' }}
                 >
                   {chatRestored && (
@@ -995,16 +1026,20 @@ export default function WhatsAppChat() {
                 )}
 
                 {messages.length <= 2 && !isLoading && !isStreaming && (
-                  <div className="wa-fade-in px-4 sm:px-5 pb-2 flex flex-wrap gap-2">
+                  // One row of four equal tiles, the same tile as the welcome
+                  // screen's icons. As wrapping pills they broke onto two
+                  // ragged rows and ate the bottom of a phone screen.
+                  <div className="wa-fade-in px-4 sm:px-5 pb-2 grid grid-cols-4 gap-2">
                     {QUICK_ACTIONS.map((action) => {
                       const ActionIcon = action.icon;
                       return (
                         <button
                           key={action.label}
                           onClick={() => handleQuickAction(action)}
-                          className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[13px] text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                          className="min-w-0 min-h-[56px] flex flex-col items-center justify-center gap-1.5 px-1 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[12px] leading-tight text-gray-300 hover:text-white hover:border-yellow-400/30 hover:bg-yellow-400/[0.05] transition-all duration-200 active:scale-95 cursor-pointer"
                         >
-                          <ActionIcon className="w-3 h-3" /> {action.label}
+                          <ActionIcon className="w-4 h-4 text-yellow-400 shrink-0" />
+                          <span className="whitespace-nowrap">{action.label}</span>
                         </button>
                       );
                     })}

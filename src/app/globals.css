@@ -302,10 +302,9 @@
     animation: notif-shrink 6s linear forwards;
   }
 
-  /* Online status pulse */
-  .wa-online-dot {
-    position: relative;
-  }
+  /* Online status pulse. (There was a .wa-online-dot { position: relative }
+     rule here. It beat Tailwind's `absolute` on the avatar dot and dropped it
+     out of place as stray marks under the logo; the dot positions itself.) */
   .wa-pulse {
     animation: wa-pulse-anim 2s ease-in-out infinite;
   }
