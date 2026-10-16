@@ -2665,6 +2665,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           ? `${dayLong(rsDate)}. ${who || 'Your surveyor'} will arrive ${betweenLabel(rs.startsAt, rs.endsAt)} at ${placeLine()}.`
           : doneKind === 'requested' && draft.requestedDay
             ? `You asked for ${dayLong(draft.requestedDay.date)}, in the ${draft.requestedDay.part}. ${who || 'We'} will call you on ${det.mobile.trim()} to confirm a time.`
+            : doneKind === 'requested' && draft.slot
+              ? `You asked for ${dayLong(dublinDate(draft.slot.startsAt))} at ${draft.slot.label}. It isn't booked yet: ${who || 'we'} will call you on ${det.mobile.trim()} to confirm a time.`
             : doneKind === 'saved'
               ? `Our booking system didn't confirm ${draft.slot ? `${weekdayLong(dublinDate(draft.slot.startsAt))} at ${draft.slot.label}` : 'your request'} just now, so it isn't booked yet. ${who || 'We'} will call you on ${det.mobile.trim()} to confirm it, and you'll get an email once it's locked in.`
               : "We've emailed you a link to your project page, where you can see or change it."}
@@ -2717,7 +2719,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     }
     if (doneKind === 'saved') {
       return [
-        { lead: 'Now', line: 'Your details are saved on our website.', state: 'done' },
+        { lead: 'Now', line: 'Your request is with us.', state: 'done' },
         { lead: 'Soon', line: `${name} call${name === 'We' ? '' : 's'} you on ${det.mobile.trim()} to confirm a time.` },
         { lead: "Once it's locked in", line: 'Your confirmation email, with your project page link and a calendar invite.' },
       ];

@@ -250,8 +250,13 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   }
 
   console.error('[intake submit] AISolar did not accept it:', a.note);
-  const held = await holdInOutbox({ key, payload, reason: a.note }, outboxDeps());
-  if (held.held) return json(outboxAnswer(), 200);
-  console.error('[intake submit] no outbox and no owner alert configured: the homeowner is told it failed');
+  // The outbox is for a booking request, whose screen says "saved, not booked
+  // yet, we'll call you". An "email me this estimate" is answered with a plain
+  // failure instead, because its screen would say "Sent", and it was not.
+  if (ctx.asked) {
+    const held = await holdInOutbox({ key, payload, reason: a.note }, outboxDeps());
+    if (held.held) return json(outboxAnswer(), 200);
+    console.error('[intake submit] no outbox and no owner alert configured: the homeowner is told it failed');
+  }
   return a.rateLimited ? json({ ok: false, error: 'rate_limited' }, 429) : json({ ok: false, error: 'server_error' }, 502);
 }

@@ -457,6 +457,22 @@ describe('routes in live mode', () => {
     expect((mail?.body as { TextBody: string }).TextBody).toContain('Mary Byrne');
   });
 
+  it('submit: "email me this estimate" with AISolar down is a plain failure, never "Sent"', async () => {
+    setLive();
+    process.env.POSTMARK_SERVER_TOKEN = 'pm-test';
+    process.env.OWNER_ALERT_EMAIL = 'owner@example.ie';
+    process.env.OWNER_ALERT_FROM = 'site@example.ie';
+    const seen = mockFetch(() => jsonRes({ ok: false, error: 'server_error' }, 500));
+    const { POST } = await import('@/app/api/intake/submit/route');
+    const res = await POST(new Request('http://localhost/api/intake/submit', {
+      method: 'POST',
+      headers: { 'x-idempotency-key': KEY },
+      body: JSON.stringify(submitReq({ source: 'website_qualified', phone: null, eircode: null, county: null, slot: null, requestedDay: null, emailEstimate: true })),
+    }));
+    expect(res.status).toBe(502);
+    expect(seen.some((s) => s.url.includes('postmarkapp'))).toBe(false);
+  });
+
   it('handoff: the stub receiver is gone in live mode (the code posts to the portal host)', async () => {
     setLive();
     const { POST } = await import('@/app/api/intake/handoff/route');
