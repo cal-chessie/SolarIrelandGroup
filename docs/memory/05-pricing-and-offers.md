@@ -12,9 +12,17 @@ Agreed with Cal 7 Sep 2026, commit `9ed3791`.
 
 | Tier | System | Panels | Battery | List | After grant | With marketing package |
 |---|---|---|---|---|---|---|
-| Essential | 4 kWp | 8-10 | 5 kWh | €11,400 | €9,600 | €8,600 |
-| Popular | 6 kWp | 12-16 | 7.5 kWh | €13,650 | €11,850 | €10,850 |
-| Premium | 8 kWp | 16-20 | 10 kWh | €15,900 | €14,100 | €13,100 |
+| Essential | 4 kWp | 8-10 | 5 kWh | €11,400 | €9,000 | €8,000 |
+| Popular | 6 kWp | 12-16 | 7.5 kWh | €13,650 | €11,250 | €10,250 |
+| Premium | 8 kWp | 16-20 | 10 kWh | €15,900 | €13,500 | €12,500 |
+
+**16 Oct 2026: the after-grant and marketing prices each fell by €600.** SEAI's
+battery grant (a flat €600 for a battery of 5 kWh or more, solar + battery max
+€2,400; seai.ie) applies to every package, because each carries a 5 kWh or larger
+battery. List prices did not move (0% VAT on a battery fitted with the panels).
+The page now WORKS OUT every price (`installCostEur` + `homeGrant`) and the payback
+bands from them, so no figure on the table is typed. Was €9,600 / €11,850 / €14,100
+after grant and €8,600 / €10,850 / €13,100 with the marketing package.
 
 Panel counts are the 440 W maths, not a marketing range.
 

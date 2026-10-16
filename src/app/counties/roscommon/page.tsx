@@ -61,7 +61,7 @@ const FAQS = [
   {
     question: 'Is the €1,800 SEAI grant available in Roscommon?',
     answer:
-      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2021. Domestic solar also carries 0% VAT. We prepare and submit the grant paperwork for you, and a BER assessment is carried out after the work is finished, before the grant is paid.',
+      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. Domestic solar also carries 0% VAT. We prepare and submit the grant paperwork for you, and a BER assessment is carried out after the work is finished, before the grant is paid.',
   },
   {
     question: 'Do I need planning permission for solar panels in Roscommon?',

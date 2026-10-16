@@ -77,11 +77,11 @@ const checkSteps: CheckStep[] = [
     id: 'year',
     question: 'When was your home built?',
     options: [
-      { label: 'Before 2021', value: 'yes' },
-      { label: '2021 or later', value: 'no' },
+      { label: 'Before 2025', value: 'yes' },
+      { label: '2025 or later', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'Homes built before 2021 qualify. Newer builds typically have higher BER ratings or already meet energy standards.',
+    detail: 'Homes built before 2025 qualify. Newer builds typically have higher BER ratings or already meet energy standards.',
     icon: Calendar,
   },
   {
@@ -478,7 +478,7 @@ function KeyFactsRow() {
     // domestic floor is 4 kWp, and it is also the exact size the grant reaches
     // its full amount, so it is the honest number in both directions.
     { label: 'Min. system', value: `${DOMESTIC_MIN_KWP} kWp`, icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
+    { label: 'Eligible homes', value: 'Pre-2025', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER', value: 'After the work', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];
 

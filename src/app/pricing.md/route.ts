@@ -1,4 +1,4 @@
-import { installCostEur, seaiGrant, DOMESTIC_MIN_KWP, fmtEur } from '@/lib/estimate';
+import { installCostEur, seaiGrant, batteryGrant, homeGrant, DOMESTIC_MIN_KWP, fmtEur } from '@/lib/estimate';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
 /**
@@ -26,6 +26,7 @@ export function GET() {
   const panelsOnly = installCostEur(DOMESTIC_MIN_KWP);
   const withBattery = installCostEur(DOMESTIC_MIN_KWP, 5);
   const battery5 = installCostEur(0, 5) - installCostEur(0);
+  const withBatteryGrant = homeGrant(DOMESTIC_MIN_KWP, 5);
   const largest = installCostEur(9.7);
 
   const body = `# Pricing - Solar Ireland Group
@@ -44,7 +45,7 @@ Every quote is itemised after a free home survey, so the final price depends on 
 ## Solar PV + 5 kWh Battery Storage (${DOMESTIC_MIN_KWP} kWp)
 - Higher self-consumption: roughly 70-85% rather than 30-50%
 - Price: ${EUR(withBattery)}
-- Price after the ${EUR(grant)} SEAI grant: ${EUR(withBattery - grant)}
+- Price after the SEAI grants (${EUR(grant)} solar + ${EUR(batteryGrant(5))} battery): ${EUR(withBattery - withBatteryGrant)}
 
 ## How the price scales
 Larger systems cost less per kWp, because scaffolding, design, commissioning and the day's labour barely change between a small roof and a large one.
@@ -64,9 +65,9 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 
 ## Grants and incentives
 - SEAI Solar PV grant: ${EUR(grant)}, Republic of Ireland only (26 counties)
-- Eligibility: owner-occupier, home built and occupied before 2021, its own MPRN, no previous solar funding at that MPRN. There is no minimum BER; a BER assessment is carried out after the work, before the grant is paid
+- Eligibility: owner-occupier, home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN. There is no minimum BER; a BER assessment is carried out after the work, before the grant is paid
+- SEAI battery grant: ${EUR(batteryGrant(5))} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}, nothing under 5 kWh. With panels, one application covers both, up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} together
 - SEAI EV charger grant: EUR 300
-- There is no standalone SEAI battery grant
 - 0% VAT on domestic solar in Ireland
 - Clean Export Guarantee: your supplier pays for surplus you export, at least ${SOLAR_DATA.export.label}
 

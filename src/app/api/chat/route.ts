@@ -41,7 +41,9 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 - Up to €1,800, and it is tiered: €700 per kWp for the first 2 kWp, then €200 per kWp up to 4 kWp. A system of 4 kWp or more gets the full €1,800; a 2.5 kWp system would only draw €1,500. Property must be registered on a BER.
 - Homeowner must have a BER rating or get one before grant payment
 - Applied for through the SEAI portal - we handle this for customers
-- One grant per property
+- One grant per property. The home must have an MPRN and have been built and occupied before 2025
+- Battery grant: a flat €600 for a battery of 5 kWh or more, on top of the solar grant and on the same application (up to €2,400 together). Nothing under 5 kWh, and a bigger battery gets no more
+- Businesses: the Non-Domestic Microgen Grant, a different scheme. For new applications from 6 October 2026 to 6 July 2027 an enhanced table applies (up to €325,200), paying the lower of the table and 45% of the cost. Send businesses to the Bill Analyser's business option for their figure
 - Northern Ireland has separate support schemes through the NI Housing Executive
 
 **Costs:**
@@ -92,7 +94,8 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 **Battery Storage:**
 - Worth considering if self-consumption is below 45% (lots of daytime export)
 - Typically 5 kWh lithium-ion battery costs €4,000-€5,000 installed
-- Battery payback is typically 8-12 years
+- A battery of 5 kWh or more gets the €600 SEAI battery grant on top of the solar grant
+- Battery payback is typically 8-12 years before the grant
 - Not essential but can increase self-sufficiency to 80%+
 
 **Providers we work with:**

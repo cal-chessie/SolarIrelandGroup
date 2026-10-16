@@ -8,6 +8,7 @@ import {
   installCostEur,
   MONTHLY_GENERATION_SHARE,
 } from '@/lib/estimate';
+import { SOLAR_DATA } from '@/lib/solar-data';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -492,7 +493,7 @@ function runFullAnalysis(
   // panels-only by design: sizing and pricing storage is the consultant's job,
   // so this says "worth asking about" rather than putting a number on the day.
   const batteryReason = batteryWorthwhile
-    ? `Your self-consumption is around ${Math.round(selfConsumptionRatio * 100)}%, so a good share of what you make is being exported. A ${BATTERY_KWH} kWh battery would capture roughly €${batteryExtraSaving} a year of that. Worth asking about on the survey, where it can be sized to your actual day and night usage.`
+    ? `Your self-consumption is around ${Math.round(selfConsumptionRatio * 100)}%, so a good share of what you make is being exported. A ${BATTERY_KWH} kWh battery would capture roughly €${batteryExtraSaving} a year of that, and a battery of ${SOLAR_DATA.batteryGrant.minLabel} carries a ${SOLAR_DATA.batteryGrant.label} SEAI grant on top of the solar grant. Worth asking about on the survey, where it can be sized to your actual day and night usage.`
     : `Your self-consumption is already strong at around ${Math.round(selfConsumptionRatio * 100)}%, so you are using most of what you generate. A battery would add less here than it does for most homes.`;
 
   const annualCo2Saved = Math.round(best.generation * CO2_FACTOR);
