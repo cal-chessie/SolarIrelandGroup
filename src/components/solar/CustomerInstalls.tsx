@@ -144,13 +144,27 @@ function SwipeGallery({
   const constraintsRef = useRef<HTMLDivElement>(null);
   const SLIDE_INTERVAL = 4500;
 
-  // Auto-advance
+  // Auto-advance, but only while the photo is actually on screen. Each install's
+  // spec card is a different height, so every advance moved the whole page
+  // below it by tens of pixels; on a phone that kept shoving the bill analyser
+  // and a freshly opened estimate up under the navbar while the visitor was
+  // reading further down. Nobody sees a slide change off screen anyway.
+  const [photoOnScreen, setPhotoOnScreen] = useState(false);
   useEffect(() => {
+    const el = constraintsRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setPhotoOnScreen(entry.isIntersecting), { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!photoOnScreen) return;
     const timer = setTimeout(() => {
       onSelect((activeIndex + 1) % installs.length);
     }, SLIDE_INTERVAL);
     return () => clearTimeout(timer);
-  }, [activeIndex, onSelect]);
+  }, [activeIndex, onSelect, photoOnScreen]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 60;

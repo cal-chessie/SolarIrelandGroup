@@ -393,6 +393,39 @@ export default function BillAnalyser() {
     if (error) errorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [error]);
 
+  // The form is tall and the analysing card is short. Submitting swaps one for
+  // the other while the page stays where the visitor's thumb was, at the foot
+  // of the old form, so the estimate opened ABOVE the screen and nothing
+  // brought it down (Cal, 16 Oct: "the online estimate comes up it doesnt
+  // scroll up to see it"). Bring the card's top into view when the analysis
+  // starts and again when the report lands, and the confirmation when the
+  // details go in. Only when it is actually out of view, so nothing jumps.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const leadBoxRef = useRef<HTMLDivElement>(null);
+  const reveal = useCallback((el: HTMLElement | null, block: ScrollLogicalPosition, stage?: string) => {
+    if (!el) return;
+    // The stages cross-fade (the old one leaves before the new one mounts), so
+    // wait until the new stage is the only one in the card; measuring earlier
+    // put the report's top edge under the navbar. Give up after about 2s.
+    let frames = 0;
+    const tick = () => {
+      const settled = !stage || (
+        el.querySelector(`[data-stage="${stage}"]`) && el.querySelectorAll('[data-stage]').length === 1
+      );
+      if (!settled && frames++ < 120) { requestAnimationFrame(tick); return; }
+      const r = el.getBoundingClientRect();
+      const navClearance = 88;
+      if (r.top >= navClearance && r.top <= window.innerHeight * 0.4) return;
+      el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block });
+    };
+    requestAnimationFrame(tick);
+  }, [prefersReducedMotion]);
+  const showingReport = !!analysis && !isAnalyzing;
+  useEffect(() => {
+    if (isAnalyzing) reveal(cardRef.current, 'start', 'analysing');
+    else if (showingReport) reveal(cardRef.current, 'start', 'report');
+  }, [isAnalyzing, showingReport, reveal]);
+
   const [monthlyBill, setMonthlyBill] = useState('');
   const [annualUsage, setAnnualUsage] = useState('');
   const [homeType, setHomeType] = useState('Semi-detached');
@@ -570,6 +603,10 @@ export default function BillAnalyser() {
 
   // Eircode → home lookup ("that's the one we'll survey")
   const [eirHome, setEirHome] = useState<{ address: string; county?: string } | null>(null);
+  // The capture form collapses to a short confirmation; keep it on screen.
+  useEffect(() => {
+    if (leadStatus === 'sent') reveal(leadBoxRef.current, 'center');
+  }, [leadStatus, reveal]);
   useEffect(() => {
     setEirHome(null);
     const code = leadEircode.trim();
@@ -726,7 +763,7 @@ export default function BillAnalyser() {
           </p>
         </motion.div>
 
-        <motion.div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20"
+        <motion.div ref={cardRef} className="scroll-mt-24 rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden shadow-2xl shadow-black/20"
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.6, delay: 0.15 }}>
 
           <AnimatePresence mode="wait">
@@ -734,7 +771,7 @@ export default function BillAnalyser() {
                 INPUT STATE - THE INTAKE
                  */}
             {!analysis && !isAnalyzing && (
-              <motion.div key="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <motion.div key="input" data-stage="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <div className="px-6 py-4 border-b border-white/[0.06] bg-white/[0.01]">
                   <div className="flex items-center justify-center gap-0">
                     {[
@@ -1050,7 +1087,7 @@ export default function BillAnalyser() {
                 SCANNING STATE (file just uploaded)
                  */}
             {isAnalyzing && billPreviewOpen && analysisStep < ANALYSIS_STEPS.length && (
-              <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 sm:p-8">
+              <motion.div key="scanning" data-stage="analysing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 sm:p-8">
                 <ScanningOverlay billPreview={billPreview} />
               </motion.div>
             )}
@@ -1059,7 +1096,7 @@ export default function BillAnalyser() {
                 LOADING STATE (API processing)
                  */}
             {isAnalyzing && (!billPreviewOpen || analysisStep >= ANALYSIS_STEPS.length) && (
-              <motion.div key="loading" role="status" aria-live="polite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 sm:p-12">
+              <motion.div key="loading" data-stage="analysing" role="status" aria-live="polite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 sm:p-12">
                 <div className="flex flex-col items-center">
                   <div className="mb-8"><BumblebeeMascot size="hero" /></div>
                   <div className="w-full max-w-md space-y-4">
@@ -1085,7 +1122,7 @@ export default function BillAnalyser() {
                 RESULTS STATE
                  */}
             {analysis && !isAnalyzing && (
-              <motion.div key="results" aria-live="polite" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              <motion.div key="results" data-stage="report" aria-live="polite" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="px-4 sm:px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
@@ -1245,7 +1282,7 @@ export default function BillAnalyser() {
                   </div>
 
                   {/* ─── EMAIL-FIRST REPORT CAPTURE - every analysis becomes a lead ─── */}
-                  <div className="rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-4 sm:p-7">
+                  <div ref={leadBoxRef} className="scroll-mt-24 rounded-2xl bg-gradient-to-br from-amber-400/[0.1] via-amber-400/[0.04] to-transparent border border-amber-400/20 p-4 sm:p-7">
                     {leadStatus === 'sent' ? (
                       <div className="flex flex-col items-center text-center py-2" role="status" aria-live="polite">
                         <div className="w-12 h-12 rounded-full bg-green-400/15 flex items-center justify-center mb-4">
