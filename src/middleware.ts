@@ -23,6 +23,7 @@
 
 import { NextResponse } from "next/server";
 import { BLOG_SLUGS } from "@/lib/blog-slugs";
+import { portalOrigins } from "@/lib/intake/portal";
 import type { NextRequest } from "next/server";
 
 // ── ROLLOUT SWITCH ──────────────────────────────────────────────
@@ -72,7 +73,9 @@ function buildCsp(nonce: string, enforce: boolean): string {
     "worker-src 'self' blob:",
     "frame-src 'self'",
     "frame-ancestors 'self'",
-    "form-action 'self'",
+    // The intake's "Open your project page" posts a single-use code to the
+    // portal host's /h receiver (lib/intake/portal.ts holds the one list).
+    `form-action 'self' ${portalOrigins().join(" ")}`,
     "manifest-src 'self'",
     "media-src 'self'",
     // Reporting: report-to is the modern channel (group defined by the

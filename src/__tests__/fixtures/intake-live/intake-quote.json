@@ -1,0 +1,331 @@
+{
+ "status": 200,
+ "body": {
+  "rulesVersion": "ie-2026.10",
+  "rulesHash": "001d0531fbbda59a64c0aa08e08c2f78436a8bc862d63ee81b283e8c9377e993",
+  "settingsUpdatedAt": "2026-10-14T16:34:45.271902+00:00",
+  "smallestHomeSystem": {
+   "kwp": 4,
+   "grossCostEur": 8200,
+   "grantEur": 1800,
+   "netCostEur": 6400
+  },
+  "quotes": [
+   {
+    "hasBasis": true,
+    "figures": {
+     "kwp": 4,
+     "panels": 9,
+     "annualKwh": 3057,
+     "annualSavingEur": 878,
+     "selfUseSavingEur": 399,
+     "exportIncomeEur": 479,
+     "grossCostEur": 8200,
+     "grantEur": 1800,
+     "grantScheme": "SEAI",
+     "netCostEur": 6400,
+     "vatRate": 0,
+     "vatEur": 0,
+     "paybackYears": 7.3,
+     "horizonYears": 25,
+     "horizonSavingsEur": 24881,
+     "horizonNetEur": 18481,
+     "selfUsePct": 30,
+     "unitRateEur": 0.35,
+     "exportRateEur": 0.18,
+     "annualBillEur": 1320,
+     "annualBillAfterSolarEur": 442,
+     "billReductionPct": 67,
+     "monthlySavingsEur": 73.17,
+     "co2PerYearKg": 1102,
+     "treesEquivalent": 50,
+     "monthlyGeneration": [
+      122,
+      179,
+      308,
+      414,
+      498,
+      509,
+      483,
+      418,
+      327,
+      224,
+      137,
+      106
+     ],
+     "options": [
+      {
+       "kwp": 4,
+       "annualSavingEur": 878,
+       "grossCostEur": 8200,
+       "paybackYears": 7.3
+      },
+      {
+       "kwp": 5,
+       "annualSavingEur": 1098,
+       "grossCostEur": 8900,
+       "paybackYears": 6.5
+      },
+      {
+       "kwp": 6,
+       "annualSavingEur": 1317,
+       "grossCostEur": 9600,
+       "paybackYears": 5.9
+      },
+      {
+       "kwp": 7,
+       "annualSavingEur": 1509,
+       "grossCostEur": 10300,
+       "paybackYears": 5.6
+      },
+      {
+       "kwp": 8,
+       "annualSavingEur": 1680,
+       "grossCostEur": 11000,
+       "paybackYears": 5.5
+      }
+     ],
+     "indicative": false,
+     "priceBasis": "estimate",
+     "sizedAtMinimum": true
+    },
+    "assumptions": [
+     {
+      "field": "bill",
+      "value": 110,
+      "provenance": "you_told_us"
+     },
+     {
+      "field": "annualKwh",
+      "value": 3057,
+      "provenance": "you_told_us"
+     },
+     {
+      "field": "unitRate",
+      "value": 0.35,
+      "provenance": "assumed"
+     },
+     {
+      "field": "exportRate",
+      "value": 0.18,
+      "provenance": "assumed"
+     },
+     {
+      "field": "daytimeShare",
+      "value": 0.6,
+      "provenance": "assumed"
+     },
+     {
+      "field": "minKwp",
+      "value": 4,
+      "provenance": "assumed"
+     }
+    ],
+    "ignoredBillFields": [],
+    "quoteToken": "<redacted 1966 chars, 2 parts>",
+    "expiresAt": "2026-11-15T10:54:06.644Z"
+   },
+   {
+    "hasBasis": true,
+    "figures": {
+     "kwp": 4,
+     "panels": 9,
+     "annualKwh": 4154,
+     "annualSavingEur": 960,
+     "selfUseSavingEur": 525,
+     "exportIncomeEur": 435,
+     "grossCostEur": 8200,
+     "grantEur": 1800,
+     "grantScheme": "SEAI",
+     "netCostEur": 6400,
+     "vatRate": 0,
+     "vatEur": 0,
+     "paybackYears": 6.7,
+     "horizonYears": 25,
+     "horizonSavingsEur": 28165,
+     "horizonNetEur": 21765,
+     "selfUsePct": 36,
+     "unitRateEur": 0.3804,
+     "exportRateEur": 0.18,
+     "annualBillEur": 1830,
+     "annualBillAfterSolarEur": 870,
+     "billReductionPct": 52,
+     "monthlySavingsEur": 80,
+     "co2PerYearKg": 1102,
+     "treesEquivalent": 50,
+     "monthlyGeneration": [
+      122,
+      179,
+      308,
+      414,
+      498,
+      509,
+      483,
+      418,
+      327,
+      224,
+      137,
+      106
+     ],
+     "options": [
+      {
+       "kwp": 4,
+       "annualSavingEur": 960,
+       "grossCostEur": 8200,
+       "paybackYears": 6.7
+      },
+      {
+       "kwp": 5,
+       "annualSavingEur": 1153,
+       "grossCostEur": 8900,
+       "paybackYears": 6.2
+      },
+      {
+       "kwp": 6,
+       "annualSavingEur": 1368,
+       "grossCostEur": 9600,
+       "paybackYears": 5.7
+      },
+      {
+       "kwp": 7,
+       "annualSavingEur": 1597,
+       "grossCostEur": 10300,
+       "paybackYears": 5.3
+      },
+      {
+       "kwp": 8,
+       "annualSavingEur": 1825,
+       "grossCostEur": 11000,
+       "paybackYears": 5
+      }
+     ],
+     "indicative": false,
+     "priceBasis": "estimate",
+     "sizedAtMinimum": true
+    },
+    "assumptions": [
+     {
+      "field": "bill",
+      "value": 142,
+      "provenance": "from_your_bill"
+     },
+     {
+      "field": "annualKwh",
+      "value": 4154,
+      "provenance": "from_your_bill"
+     },
+     {
+      "field": "unitRate",
+      "value": 0.3804,
+      "provenance": "from_your_bill"
+     },
+     {
+      "field": "exportRate",
+      "value": 0.18,
+      "provenance": "assumed"
+     },
+     {
+      "field": "daytimeShare",
+      "value": 0.6,
+      "provenance": "from_your_bill"
+     },
+     {
+      "field": "minKwp",
+      "value": 4,
+      "provenance": "assumed"
+     }
+    ],
+    "ignoredBillFields": [],
+    "quoteToken": "<redacted 2091 chars, 2 parts>",
+    "expiresAt": "2026-11-15T10:54:06.644Z"
+   },
+   {
+    "hasBasis": true,
+    "figures": {
+     "kwp": 39.5,
+     "panels": 90,
+     "annualKwh": 43958,
+     "annualSavingEur": 8097,
+     "selfUseSavingEur": 5370,
+     "exportIncomeEur": 2727,
+     "grossCostEur": null,
+     "grantEur": 11100,
+     "grantScheme": "NDMG",
+     "netCostEur": null,
+     "vatRate": 0.135,
+     "vatEur": null,
+     "paybackYears": null,
+     "horizonYears": 25,
+     "horizonSavingsEur": null,
+     "horizonNetEur": null,
+     "selfUsePct": 60,
+     "unitRateEur": 0.24,
+     "exportRateEur": 0.18,
+     "annualBillEur": 10800,
+     "annualBillAfterSolarEur": 2703,
+     "billReductionPct": 75,
+     "monthlySavingsEur": 674.75,
+     "co2PerYearKg": 10882,
+     "treesEquivalent": 495,
+     "monthlyGeneration": [
+      1201,
+      1764,
+      3040,
+      4090,
+      4916,
+      5028,
+      4766,
+      4128,
+      3227,
+      2214,
+      1351,
+      1051
+     ],
+     "options": [],
+     "indicative": true,
+     "priceBasis": "proposal",
+     "sizedAtMinimum": false
+    },
+    "assumptions": [
+     {
+      "field": "bill",
+      "value": 900,
+      "provenance": "you_told_us"
+     },
+     {
+      "field": "annualKwh",
+      "value": 43958,
+      "provenance": "you_told_us"
+     },
+     {
+      "field": "unitRate",
+      "value": 0.24,
+      "provenance": "assumed"
+     },
+     {
+      "field": "exportRate",
+      "value": 0.18,
+      "provenance": "assumed"
+     },
+     {
+      "field": "daytimeShare",
+      "value": 0.75,
+      "provenance": "assumed"
+     }
+    ],
+    "ignoredBillFields": [],
+    "quoteToken": "<redacted 1531 chars, 2 parts>",
+    "expiresAt": "2026-11-15T10:54:06.644Z"
+   },
+   {
+    "hasBasis": false,
+    "figures": null,
+    "assumptions": [],
+    "ignoredBillFields": [],
+    "quoteToken": "<redacted 610 chars, 2 parts>",
+    "expiresAt": "2026-11-15T10:54:06.644Z"
+   }
+  ]
+ },
+ "recorded": "V5, test door, 16 Oct 2026; quote tokens redacted"
+}

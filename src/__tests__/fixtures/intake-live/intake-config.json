@@ -1,0 +1,123 @@
+{
+ "status": 200,
+ "body": {
+  "rulesVersion": "ie-2026.10",
+  "settingsUpdatedAt": "2026-10-16T09:17:09.208102+00:00",
+  "estimate": {
+   "minKwp": 4,
+   "maxKwp": 8,
+   "horizonYears": 25,
+   "exportRateEur": 0.18,
+   "unitRateDefaultEur": 0.35,
+   "suppliers": [
+    {
+     "name": "Electric Ireland",
+     "unitRateEur": 0.422
+    },
+    {
+     "name": "Bord Gáis Energy",
+     "unitRateEur": 0.412
+    },
+    {
+     "name": "SSE Airtricity",
+     "unitRateEur": 0.418
+    },
+    {
+     "name": "Energia",
+     "unitRateEur": 0.408
+    },
+    {
+     "name": "Panda",
+     "unitRateEur": 0.425
+    },
+    {
+     "name": "PrepayPower",
+     "unitRateEur": 0.442
+    },
+    {
+     "name": "Yuno",
+     "unitRateEur": 0.405
+    },
+    {
+     "name": "Community Power",
+     "unitRateEur": 0.399
+    },
+    {
+     "name": "Pinergy",
+     "unitRateEur": 0.435
+    }
+   ],
+   "minSystem": {
+    "kwp": 4,
+    "grossCostEur": 8200,
+    "grantEur": 1800,
+    "netCostEur": 6400
+   },
+   "business": {
+    "showPrice": false,
+    "showHorizon": false
+   }
+  },
+  "bill": {
+   "chips": {
+    "domestic": [
+     80,
+     120,
+     160,
+     200,
+     250,
+     300
+    ],
+    "commercial": [
+     500,
+     1000,
+     2000,
+     3000,
+     5000,
+     8000
+    ]
+   },
+   "readerEnabled": true
+  },
+  "survey": {
+   "timezone": "Europe/Dublin",
+   "visitMinutes": 45,
+   "businessVisitMinutes": 90,
+   "arrivalWindowMinutes": 120,
+   "startTimes": {
+    "weekday": [
+     "09:00",
+     "11:30",
+     "14:00"
+    ],
+    "saturday": [
+     "09:00",
+     "11:30"
+    ],
+    "sunday": []
+   },
+   "maxDaysAhead": 14,
+   "minNoticeHours": 18,
+   "holdMinutes": 10,
+   "closedDates": [
+    "2026-10-26",
+    "2026-12-25",
+    "2026-12-26",
+    "2027-01-01",
+    "2027-02-01",
+    "2027-03-17",
+    "2027-03-29",
+    "2027-05-03",
+    "2027-06-07",
+    "2027-08-02",
+    "2027-10-25",
+    "2027-12-25",
+    "2027-12-26"
+   ],
+   "homeownerFacingName": "Cal",
+   "welcomeCallName": "Cal"
+  },
+  "portalOrigin": "https://aisolar.ie"
+ },
+ "recorded": "V5, test door, 16 Oct 2026; quote tokens redacted"
+}

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { isRateLimited } from '@/lib/leadBridge';
-import { isValidEircode, normaliseEircode } from '@/lib/eircode';
+import { isValidEircode } from '@/lib/eircode';
+import { lookupEircode } from '@/lib/eircodeLookup';
 
 /**
  * GET /api/eircode?code=D02X285
@@ -11,22 +12,12 @@ import { isValidEircode, normaliseEircode } from '@/lib/eircode';
  * and the lead lands in AISolar with a real county attached.
  *
  * Degrades honestly: no key or no match returns ok:false and the UI simply
- * keeps its format-validation hint.
+ * keeps its format-validation hint. The lookup itself lives in
+ * lib/eircodeLookup.ts, shared with the intake's /api/intake/eircode.
  */
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-
-// Per-instance cache: eircodes are immutable, quota is not.
-const cache = new Map<string, ResolvedEircode>();
-
-interface ResolvedEircode {
-  ok: boolean;
-  address?: string;
-  county?: string;
-  lat?: number;
-  lng?: number;
-}
 
 export async function GET(request: Request) {
   try {
@@ -39,38 +30,9 @@ export async function GET(request: Request) {
     if (!isValidEircode(raw)) {
       return NextResponse.json({ ok: false, reason: 'invalid' }, { status: 400 });
     }
-    const code = normaliseEircode(raw);
-
-    const cached = cache.get(code);
-    if (cached) return NextResponse.json(cached);
-
-    const key = process.env.GOOGLE_MAPS_API_KEY;
-    if (!key) return NextResponse.json({ ok: false, reason: 'unavailable' });
-
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(code)}&region=ie&components=country:IE&key=${key}`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(8_000) });
-    const data = await res.json().catch(() => null);
-
-    const first = data?.status === 'OK' ? data.results?.[0] : null;
-    if (!first) {
-      const miss: ResolvedEircode = { ok: false };
-      cache.set(code, miss);
-      return NextResponse.json(miss);
-    }
-
-    const countyRaw = (first.address_components || []).find(
-      (c: { types: string[]; long_name: string }) => c.types.includes('administrative_area_level_1')
-    )?.long_name as string | undefined;
-
-    const result: ResolvedEircode = {
-      ok: true,
-      address: first.formatted_address as string,
-      county: countyRaw ? countyRaw.replace(/^County\s+/i, '') : undefined,
-      lat: first.geometry?.location?.lat,
-      lng: first.geometry?.location?.lng,
-    };
-    cache.set(code, result);
-    return NextResponse.json(result);
+    const r = await lookupEircode(raw);
+    if (r.kind === 'unavailable') return NextResponse.json({ ok: false, reason: 'unavailable' });
+    return NextResponse.json(r.value);
   } catch (error) {
     console.error('[eircode] lookup failed:', error);
     return NextResponse.json({ ok: false, reason: 'error' });
