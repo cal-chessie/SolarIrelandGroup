@@ -367,9 +367,9 @@ const timelineSteps = [
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: `After post-install BER assessment, SEAI pays ${SOLAR_DATA.grant.label} directly - deducted from your invoice.`,
+    description: `Once the works are complete and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} grant to you, the applicant. (A One Stop Shop can deduct a grant upfront, but only when several upgrades are done together.)`,
     duration: '4-8 weeks',
-    who: 'SEAI pays us',
+    who: 'SEAI pays you',
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'border-violet-400/20',

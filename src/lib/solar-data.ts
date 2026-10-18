@@ -33,15 +33,19 @@ export const GRANT_SCHEDULES = {
   /**
    * Non-Domestic Microgen Grant, most specific table first. The enhanced table is
    * the temporary "effective 45% rate" for NEW applications from 6 Oct 2026 to
-   * 6 Jul 2027 inclusive; outside it the standard table (half, max €162,600).
-   * SEAI pays the lower of the table and costShareCap of the invoiced cost; the
-   * source states that condition for the enhanced table only. Small sizes take
-   * the last fixed amount at or below them; each band adds per whole kWp.
+   * 6 Jul 2027 inclusive, read on seai.ie 16 Oct 2026. SEAI pays the lower of the
+   * table and costShareCap of the invoiced cost (stated for the enhanced table).
+   * The STANDARD table is NOT verified: seai.ie no longer publishes it, so these
+   * are our Jul 2026 bands, kept only as the fallback after 6 Jul 2027. Re-verify
+   * on seai.ie before then (src/__tests__/grants.test.ts fails from 1 Jun 2027).
+   * Small sizes take the last fixed amount at or below them; each band adds per
+   * whole kWp.
    */
   ndmg: [
     {
       id: 'ndmg-enhanced-2026',
       source: 'https://www.seai.ie/grants/business-grants/commercial-solar-pv',
+      verified: true,
       appliesFrom: '2026-10-06',
       appliesTo: '2027-07-06',
       fixedEur: [
@@ -61,6 +65,8 @@ export const GRANT_SCHEDULES = {
     {
       id: 'ndmg-standard',
       source: 'https://www.seai.ie/grants/business-grants/commercial-solar-pv',
+      // NOT verified on seai.ie (no longer published there). Re-verify before 6 Jul 2027.
+      verified: false,
       appliesFrom: null,
       appliesTo: null,
       fixedEur: [

@@ -96,3 +96,27 @@ describe('Non-Domestic Microgen Grant: two dated tables', () => {
     expect(commercialEstimate({ annualUsageKwh: 40000, asOf: '2026-10-05' }).grantEur).toBe(9800);
   });
 });
+
+describe('the NDMG tables: verified and not', () => {
+  it('the enhanced table is verified on seai.ie; the standard one is marked NOT verified', () => {
+    expect(GRANT_SCHEDULES.ndmg.map((t) => t.verified)).toEqual([true, false]);
+  });
+  it('a date that is not a real day is refused, never rolled over', () => {
+    expect(() => ndmgSchedule('2026-13-40')).toThrow(/not a real date/);
+    expect(() => ndmgSchedule('2027-02-29')).toThrow(/not a real date/);
+    expect(ndmgSchedule('2028-02-29').id).toBe('ndmg-standard');
+  });
+});
+
+describe('RE-VERIFY THE NDMG BEFORE THE WINDOW CLOSES (dated on purpose)', () => {
+  it('fails from 1 Jun 2027 until someone re-checks seai.ie', () => {
+    // The enhanced NDMG table runs to 6 Jul 2027. The table after that (the
+    // standard one in GRANT_SCHEDULES.ndmg) is NOT verified: seai.ie stopped
+    // publishing it. To clear this: read
+    // https://www.seai.ie/grants/business-grants/commercial-solar-pv, update
+    // GRANT_SCHEDULES.ndmg (and aisolar _shared/grants.ts), then move the date.
+    const RECHECK_FROM = '2027-06-01';
+    const today = irishDate(new Date());
+    expect(today < RECHECK_FROM, `It is ${today}: re-check the NDMG on seai.ie before 6 Jul 2027 (the table after that date is unverified), then update GRANT_SCHEDULES.ndmg and this date.`).toBe(true);
+  });
+});

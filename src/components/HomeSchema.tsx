@@ -220,7 +220,7 @@ const financialProductSchema = {
     "@type": "FeesAndCommissionsSpecification",
     name: "Grant Conditions",
     description:
-      "Available to owner-occupiers of homes built and occupied before 2025 with an MPRN. A BER assessment is carried out after the work is finished, before the grant is paid. Grant paid directly to the installer after completion.",
+      "Available to owner-occupiers of homes built and occupied before 2025 with an MPRN. A BER assessment is carried out after the work is finished, before the grant is paid. The grant is paid to the applicant once the works are complete (a One Stop Shop can deduct it upfront, only when several upgrades are done together).",
   },
 };
 

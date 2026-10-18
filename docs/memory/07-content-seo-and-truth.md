@@ -45,7 +45,7 @@ Sources: [SEAI solar electricity grant](https://www.seai.ie/grants/home-energy-g
 
 **The lesson:** I removed a true statement because it disagreed with my belief, and did not check the official source before calling it a truth fix. A truth pass that does not cite a source is just a second opinion.
 
-**There is no BER minimum for the grant.** Seven places said BER C3 or better was required. No such rule exists. The real requirements are: built and occupied before 2021, an MPRN, and a post-works BER. The real disqualifier is prior solar funding at the MPRN.
+**There is no BER minimum for the grant.** Seven places said BER C3 or better was required. No such rule exists. The real requirements are: built and occupied before 2025 (seai.ie, 16 Oct 2026; it was 2021 when this was first written), an MPRN, and a post-works BER. The real disqualifier is prior solar funding at the MPRN.
 
 **No em dashes** in anything a customer or Cal sees. Twelve were removed sitewide in `63e75a7`, and `scripts/integrate-blog.ts` validates against them before it will write a blog file. Regex and parsing usages are exempt.
 

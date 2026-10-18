@@ -52,7 +52,9 @@
  *                     adds a flat €600 (solar + battery max €2,400); the
  *                     estimate stays panels only, so it never prices that in.
  *                     The NDMG is dated: an enhanced table for applications
- *                     from 6 Oct 2026 to 6 Jul 2027, the standard one outside.
+ *                     from 6 Oct 2026 to 6 Jul 2027 (verified). The table used
+ *                     outside it is NOT verified on seai.ie: re-verify before
+ *                     6 Jul 2027.
  *
  * Install pricing below is Solar Ireland's own commercial pricing, not an
  * external figure. It is the one block here Cal owns and should confirm.
@@ -410,7 +412,8 @@ export function fmtEur(n: number): string {
 //   - The grant is the Non-Domestic Microgen (NDMG) scheme, NOT the domestic
 //     SEAI Solar Electricity Grant. It is a DATED table (GRANT_SCHEDULES.ndmg,
 //     read on seai.ie 16 Oct 2026): enhanced for applications from 6 Oct 2026
-//     to 6 Jul 2027, standard outside that window. The platform reads the same
+//     to 6 Jul 2027; the standard table outside that window is NOT verified on
+//     seai.ie (re-verify before 6 Jul 2027). The platform reads the same
 //     tables (aisolar `_shared/grants.ts`), so the website estimate and the
 //     AISolar autoresponder never show two grant figures.
 //   - Commercial VAT applies (13%), the rate the platform already uses
@@ -466,8 +469,14 @@ const COMMERCIAL_SELF_USE_MAX = 0.75;
  */
 const COMMERCIAL_DAY_SHARE = 0.75;
 
-/** The NDMG table in force for an application made on this Irish calendar date (YYYY-MM-DD). */
+/** The NDMG table in force for an application made on this Irish calendar date (YYYY-MM-DD).
+ *  A date that is not a real day ("2026-13-40") is refused, never rolled over. */
 export function ndmgSchedule(asOf: string = irishDate()) {
+  const ymd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(asOf);
+  const back = ymd ? new Date(Date.UTC(+ymd[1], +ymd[2] - 1, +ymd[3])) : null;
+  if (!ymd || !back || back.getUTCFullYear() !== +ymd[1] || back.getUTCMonth() !== +ymd[2] - 1 || back.getUTCDate() !== +ymd[3]) {
+    throw new Error(`"${asOf}" is not a real date`);
+  }
   const hit = GRANT_SCHEDULES.ndmg.find((t) =>
     (t.appliesFrom === null || asOf >= t.appliesFrom) && (t.appliesTo === null || asOf <= t.appliesTo));
   if (!hit) throw new Error(`no NDMG table covers ${asOf}`);
