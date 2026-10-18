@@ -249,7 +249,9 @@ const packages = [
       'Inverter': 'Hybrid Inverter',
       'Battery': '10 kWh Battery',
       'Monitoring': 'Full Smart Monitoring',
-      'SEAI Grant': `${PREMIUM.grantLabel}, + €300 EV charger`,
+      // Cal, 18 Oct: the EV charger grant is a pointer, not part of the package (no
+      // charger is in this price). SEAI home charger grant, up to EUR 300 (seai.ie, read 18 Oct 2026).
+      'SEAI Grant': `${PREMIUM.grantLabel}, plus up to €300 if you add an EV charger`,
       'Annual Savings': PREMIUM.savings,
       'Energy Independence': 'Around 75%',
       'Payback Period': PREMIUM.payback,
