@@ -1877,7 +1877,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to owner-occupiers of homes built before 2025 and is paid into your bank account by SEAI, usually within about 4-6 weeks of your post-works BER being published."
+        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to homeowners, including private landlords, of homes built and occupied before 2025, and SEAI pays it into the bank account you nominate, usually within about 4-6 weeks of your post-works BER being published."
       },
       {
         "type": "paragraph",

@@ -30,7 +30,14 @@ import {
 } from 'lucide-react';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { estimate, installCostEur, PRICING } from '@/lib/estimate';
+import { estimate, installCostEur, homeGrant, PRICING } from '@/lib/estimate';
+
+// The after-grant range, worked out by the engine rather than typed: the smallest
+// system we fit (4 kWp, panels only, solar grant) up to the Premium package
+// (8 kWp with a 10 kWh battery, solar plus battery grant).
+const NET_LOW = installCostEur(4, 0) - homeGrant(4, 0);
+const NET_HIGH = installCostEur(8, 10) - homeGrant(8, 10);
+const eurWhole = (n: number) => `€${n.toLocaleString('en-IE')}`;
 
 /* ─── Data ─── */
 
@@ -649,7 +656,7 @@ function FinancingOptions() {
         'Highest 25-year return on investment',
         'No interest costs - every cent goes to savings',
         'Best option if you have savings earning less than 7%',
-        '€6,400 to €12,800 typical out-of-pocket cost after the grant',
+        `${eurWhole(NET_LOW)} to ${eurWhole(NET_HIGH)} typical out-of-pocket cost after the grants`,
         'Instant equity increase in your property',
       ],
     },

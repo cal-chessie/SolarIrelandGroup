@@ -65,7 +65,7 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 
 ## Grants and incentives
 - SEAI Solar PV grant: ${EUR(grant)}, Republic of Ireland only (26 counties)
-- Eligibility: owner-occupier, home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN. There is no minimum BER; a BER assessment is carried out after the work, before the grant is paid
+- Eligibility: homeowners, including private landlords; home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN. There is no minimum BER; a BER assessment is carried out after the work, before the grant is paid
 - SEAI battery grant: ${EUR(batteryGrant(5))} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}, nothing under 5 kWh. With panels, one application covers both, up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} together
 - SEAI EV charger grant: EUR 300
 - 0% VAT on domestic solar in Ireland

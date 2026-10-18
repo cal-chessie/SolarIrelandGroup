@@ -198,7 +198,7 @@ const financialProductSchema = {
   "@type": "FinancialProduct",
   name: "SEAI Solar PV Grant",
   description:
-    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to owner-occupiers of homes built before 2025.",
+    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to homeowners, including private landlords, of homes built and occupied before 2025.",
   url: "https://www.seai.ie/grants/home-energy-grants/solar-pv/",
   provider: {
     "@type": "Organization",
@@ -220,7 +220,7 @@ const financialProductSchema = {
     "@type": "FeesAndCommissionsSpecification",
     name: "Grant Conditions",
     description:
-      "Available to owner-occupiers of homes built and occupied before 2025 with an MPRN. A BER assessment is carried out after the work is finished, before the grant is paid. The grant is paid to the applicant once the works are complete (a One Stop Shop can deduct it upfront, only when several upgrades are done together).",
+      "Available to homeowners, including private landlords, of homes built and occupied before 2025 with an MPRN. A post-works BER is carried out after the work is finished, before the grant is paid. SEAI pays the grant into the bank account nominated on the Request for Payment form, about 4 to 6 weeks after the post-works BER is published; by default that is the homeowner's account.",
   },
 };
 

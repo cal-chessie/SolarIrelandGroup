@@ -47,7 +47,7 @@ Solar Ireland Group is a solar installer in the Republic of Ireland. A standard 
 
 ## The SEAI grant
 - ${EUR(grant)}, Republic of Ireland only (26 counties)
-- Eligibility: owner-occupier, home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN
+- Eligibility: homeowners, including private landlords; home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN
 - There is no minimum BER. The BER assessment happens after the work, before the grant is paid
 - SEAI pays the grant into the bank account nominated on the Request for Payment form, normally about 4 to 6 weeks after the post-works BER is published. By default that is the homeowner's account
 - The SEAI battery grant is ${EUR(SOLAR_DATA.batteryGrant.amount)} for a battery of ${SOLAR_DATA.batteryGrant.minLabel} (nothing under 5 kWh), on the same application as the panels, up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} together

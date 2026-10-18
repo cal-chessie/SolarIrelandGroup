@@ -204,7 +204,7 @@ function DataTransparency() {
     { label: 'Max panels', value: '22 panels (9.7 kWp)', source: 'Standard domestic ESB connection limit' },
     { label: 'Unit rate', value: `${Math.round(ENERGY.unitRateEur * 100)}c/kWh incl. VAT`, source: 'The bottom of the 2026 Irish market band, so savings are not overstated' },
     { label: 'Standing charge', value: `€${ENERGY.standingChargeAnnualEur}/year`, source: 'Irish standing charges 2026. Solar never removes this' },
-    { label: 'SEAI grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for owner-occupiers' },
+    { label: 'SEAI grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for homeowners, including private landlords' },
     { label: 'Export rate', value: SOLAR_DATA.export.label, source: `${SOLAR_DATA.export.scheme}: the CRU minimum every supplier must pay. Some pay more` },
     { label: 'CO₂ factor', value: `${ENERGY.co2PerKwh} kg/kWh`, source: 'EirGrid marginal emission factor for Ireland' },
     { label: 'Self-consumption', value: '30-50%', source: 'What an Irish home uses directly with no battery. A battery lifts it to roughly 70-85%' },

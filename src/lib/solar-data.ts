@@ -94,7 +94,7 @@ export const SOLAR_DATA = {
     // drawn solar funding before, and a post-works BER must be completed before
     // the grant is paid. There is NO minimum BER to qualify - the site used to
     // claim C3 or lower, which would have turned away eligible homes.
-    eligibility: 'Owner-occupiers of homes built and occupied before 2025, with a post-works BER',
+    eligibility: 'Homeowners, including private landlords, of homes built and occupied before 2025, with a post-works BER',
     processTime: '4-8 weeks',
   },
   // The SEAI battery grant: on top of the solar grant, on the same application.

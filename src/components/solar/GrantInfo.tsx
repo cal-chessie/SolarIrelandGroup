@@ -70,7 +70,7 @@ const checkSteps: CheckStep[] = [
       { label: 'No, I rent', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'The SEAI grant is only available to owner-occupiers, not renters.',
+    detail: 'The SEAI grant is for homeowners, including private landlords. A tenant cannot apply, but their landlord can.',
     icon: Home,
   },
   {
@@ -367,8 +367,8 @@ const timelineSteps = [
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: `Once the works are complete and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} grant to you, the applicant. (A One Stop Shop can deduct a grant upfront, but only when several upgrades are done together.)`,
-    duration: '4-8 weeks',
+    description: `Once the works are complete and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account nominated on your Request for Payment form. By default that is your own account.`,
+    duration: '4-6 weeks',
     who: 'SEAI pays you',
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
