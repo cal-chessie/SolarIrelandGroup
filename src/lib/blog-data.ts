@@ -1166,7 +1166,7 @@ export const articles: Article[] = [
     "excerpt": "Costs, the €1,800 SEAI grant, planning rules and what a site survey checks on Cork homes - from an SEAI-registered installer working across the county.",
     "category": "county",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "17 Oct 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1196,7 +1196,7 @@ export const articles: Article[] = [
           "System size",
           "Suits",
           "Typical cost before grant",
-          "After €1,800 grant"
+          "After the SEAI grant (€1,800, or €2,400 with a 5 kWh+ battery)"
         ],
         "rows": [
           [
@@ -1215,7 +1215,7 @@ export const articles: Article[] = [
             "6 kWp + 5 kWh battery",
             "high evening use",
             "€12,800",
-            "€11,000"
+            "€10,400"
           ]
         ]
       },
@@ -1862,7 +1862,7 @@ export const articles: Article[] = [
     "excerpt": "Everything you need to know about the €1,800 SEAI solar panel grant - eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.",
     "category": "grants",
     "date": "15 Apr 2026",
-    "updated": "16 Oct 2026",
+    "updated": "17 Oct 2026",
     "readTime": "12 min read",
     "featured": true,
     "author": "Cal Chesters",
@@ -1938,16 +1938,22 @@ export const articles: Article[] = [
             "15% – 22%"
           ],
           [
-            "Battery Storage (up to 6kWh)",
+            "Battery Storage (5 kWh or more)",
+            "€600",
+            "€3,200 – €4,900",
+            "12% – 19%"
+          ],
+          [
+            "Battery Storage (under 5 kWh)",
             "No grant",
-            "€2,500 – €3,500",
+            "€2,500 – €3,200",
             "N/A"
           ],
           [
-            "Solar PV + Battery Combined",
-            "Up to €1,800",
+            "Solar PV + Battery Combined (5 kWh or more)",
+            "Up to €2,400",
             "€11,400 – €17,300",
-            "10% – 16%"
+            "14% – 21%"
           ]
         ]
       },
@@ -2115,7 +2121,7 @@ export const articles: Article[] = [
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "17 Oct 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2129,7 +2135,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panels in Ireland cost between **€6,400 and €15,500 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs €6,400 after the grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €15,500. Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
+        "text": "Solar panels in Ireland cost between **€6,400 and €14,900 after the SEAI grants** in 2026. A standard 4kWp system costs €6,400 after the €1,800 grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €14,900 after €2,400 (the €1,800 solar grant plus the €600 battery grant). Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
       },
       {
         "type": "paragraph",
@@ -2139,7 +2145,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Price Range Overview",
-        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €8,200 for a 4kWp system to €17,300 for a large 10kWp system with 10 kWh of battery storage. After the €1,800 SEAI grant, your net cost drops to between €6,400 and €15,500."
+        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €8,200 for a 4kWp system to €17,300 for a large 10kWp system with 10 kWh of battery storage. After the SEAI grants (€1,800 for the panels, plus €600 for a battery of 5 kWh or more), your net cost drops to between €6,400 and €14,900."
       },
       {
         "type": "heading",
@@ -2204,7 +2210,7 @@ export const articles: Article[] = [
           "Roof complexity - A simple pitched roof with clear access is cheapest to install. Multiple roof planes, flat roofs, or difficult access add €500–€2,000",
           "Scaffold requirements - Most installations require scaffolding, which typically costs €300–€600 extra for two-storey homes",
           "Electrical upgrades - Older homes may need a consumer unit (fuse board) upgrade or new cabling, adding €300–€1,000",
-          "Battery storage - Adding a solar battery costs roughly €3,200 for 5 kWh and about €4,900 for 10 kWh, depending on capacity and brand",
+          "Battery storage - Adding a solar battery costs roughly €3,200 for 5 kWh and about €4,900 for 10 kWh, depending on capacity and brand, before the €600 SEAI battery grant for a battery of 5 kWh or more",
           "Location - Installations in Dublin and other major cities tend to be slightly more expensive than rural areas due to higher labour costs"
         ]
       },
