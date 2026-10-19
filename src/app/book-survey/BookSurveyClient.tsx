@@ -190,7 +190,7 @@ const surveyPromises = [
   },
   {
     title: 'A price, not a pitch',
-    text: 'About 45 minutes, on site or by video. You leave knowing your roof, your system size and your price. Free, and there is nothing to sign on the day.',
+    text: 'Fifteen minutes, on site or by video. You leave knowing your roof, your system size and your price. Free, and there is nothing to sign on the day.',
     tag: 'No obligation',
   },
 ];
