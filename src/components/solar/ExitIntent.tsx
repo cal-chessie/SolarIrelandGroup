@@ -270,7 +270,7 @@ export default function ExitIntent() {
               <span className="text-gradient">on the table (ROI)</span>
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed">
-              The SEAI grant (Republic of Ireland only) is paid straight to us and comes off your invoice. Combined with savings of
+              The SEAI grant (Republic of Ireland only) is paid into the bank account you nominate once the work is done. Combined with savings of
               {' '}<span className="text-gray-400 font-medium">around €1,100 a year</span> for a typical 3-bed semi,
               your system literally pays for itself.
             </p>

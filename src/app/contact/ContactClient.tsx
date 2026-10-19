@@ -43,7 +43,7 @@ const contactMethods = [
   {
     icon: MessageCircle,
     title: 'WhatsApp',
-    description: 'Fastest way to reach us. Send a message and we\'ll reply within minutes, day or night.',
+    description: 'Fastest way to reach us. Send a message and we\'ll reply as soon as we can.',
     action: 'Start Chat',
     href: buildWhatsAppUrl({ source: 'contact-page' }),
     external: true,

@@ -416,10 +416,10 @@ export function fmtEur(n: number): string {
 //     seai.ie (re-verify before 6 Jul 2027). The platform reads the same
 //     tables (aisolar `_shared/grants.ts`), so the website estimate and the
 //     AISolar autoresponder never show two grant figures.
-//   - Commercial VAT applies (13%), the rate the platform already uses
+//   - Commercial VAT applies (13.5%), the rate the platform already uses
 //     (`VAT_COMMERCIAL` in that same file). The domestic path is 0% VAT and its
 //     install price is quoted VAT-inclusive; commercial cost is quoted ex-VAT
-//     with the 13% shown on top, then the NDMG grant taken off the gross.
+//     with the 13.5% shown on top, then the NDMG grant taken off the gross.
 //   - Higher self-consumption band. Commercial demand runs through the middle of
 //     the day, exactly when the panels produce, so a business uses far more of
 //     its generation directly than a house does.
@@ -436,7 +436,7 @@ export function fmtEur(n: number): string {
 export const COMMERCIAL_RATE_FLOOR = 0.24;
 
 /** Commercial VAT rate: mirrors aisolar `_shared/quote.ts` `VAT_COMMERCIAL`. */
-export const VAT_COMMERCIAL = 0.13;
+export const VAT_COMMERCIAL = 0.135; // the Irish reduced rate, as the platform has used since 22 Sep
 
 /** No domestic floor for a business. Commercial systems are larger; size to the
  *  usage, clamped to this band before any roof cap. Band mirrors aisolar
@@ -446,7 +446,7 @@ export const COMMERCIAL_MAX_KWP = 500;
 
 /**
  * Solar Ireland's own commercial install pricing. Not evidence, a commercial
- * decision, the mirror of the domestic `PRICING` block. Quoted EX-VAT (the 13%
+ * decision, the mirror of the domestic `PRICING` block. Quoted EX-VAT (the 13.5%
  * is added on top for a business), at a flat per-kWp that matches the platform's
  * tenant default (aisolar `pricing.ts` / `_shared/quote.ts` `DEFAULT_PRICING`
  * `perKwp: 1800`), so the site estimate agrees with the autoresponder.
@@ -557,7 +557,7 @@ export function commercialUsageFromMonthlyBill(monthlyBillEur: number, unitRateE
 }
 
 export interface CommercialEstimateResult extends EstimateResult {
-  /** The commercial VAT rate applied (fraction, e.g. 0.13). */
+  /** The commercial VAT rate applied (fraction, e.g. 0.135). */
   vatRate: number;
   /** VAT amount in euro, included in `installCostEur`. */
   vatEur: number;

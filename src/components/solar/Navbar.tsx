@@ -124,18 +124,8 @@ const mobileLinks = [
     iconColor: 'text-rose-400',
     borderHover: 'hover:border-rose-400/20',
   },
-  {
-    label: 'Portal',
-    href: '/portal',
-    icon: Shield,
-    color: 'sky',
-    description: 'Track your installation',
-    gradient: 'from-sky-400/20 to-blue-400/10',
-    iconBg: 'bg-sky-400/10',
-    iconColor: 'text-sky-400',
-    borderHover: 'hover:border-sky-400/20',
-    highlight: true,
-  },
+  // Portal hidden (19 Oct): /portal shows a sample customer for any reference
+  // until it becomes the email sign-in (Intake OS slice 4). Restore it then.
   {
     label: 'AI Bill Analyser',
     href: '/#calculator',
@@ -168,7 +158,6 @@ const desktopNavLinks = [
   { label: 'Financing', href: '/financing', isBookSurvey: false },
   { label: 'Book Survey', href: '/book-survey', isBookSurvey: true },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
-  { label: 'Portal', href: '/portal', isBookSurvey: false },
 ];
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {

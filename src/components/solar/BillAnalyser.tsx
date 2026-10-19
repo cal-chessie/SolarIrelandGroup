@@ -116,7 +116,7 @@ interface AnalysisResult {
  * exact AnalysisResult shape the domestic results view already renders, so the
  * business path reuses the same UI with commercial numbers. The maths comes
  * from the one engine (src/lib/estimate.ts commercial siblings): NDMG grant,
- * 13% commercial VAT, no 4 kWp floor.
+ * 13.5% commercial VAT, no 4 kWp floor.
  */
 function buildCommercialAnalysis(x: {
   provider: string;
@@ -1209,7 +1209,7 @@ export default function BillAnalyser() {
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
-                    <p className="text-xs text-gray-400 mt-3">The {analysis.recommendedSystem}kWp system gives you the best return on investment. A site survey will confirm your roof can fit your preferred size.</p>
+                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your home uses. A bigger system can pay back sooner by exporting more; your site survey confirms what your roof can fit.</p>
                   </div>
 
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
