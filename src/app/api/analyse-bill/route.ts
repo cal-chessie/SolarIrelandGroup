@@ -63,7 +63,8 @@ const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; stand
   'Pinergy': { dayRate: 0.435, nightRate: 0.238, standingCharge: 11.00, exportRate: 0.18 },
 };
 
-const DEFAULT_RATES = { dayRate: 0.42, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.18 };
+// 'Other' supplier: 35c, Cal's 13 Oct ruling (unit rate per supplier, else 35c), as in estimate_rules.
+const DEFAULT_RATES = { dayRate: 0.35, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.18 };
 
 
 const CO2_FACTOR = ENERGY.co2PerKwh;

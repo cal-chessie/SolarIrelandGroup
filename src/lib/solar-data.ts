@@ -141,6 +141,11 @@ export const SOLAR_DATA = {
     // the figure we can always stand over.
     ratePerKwh: 0.20,
     label: '€0.20/kWh',
+    // The rate the bill analyser's estimate uses: Cal's 13 Oct ruling, the figure in
+    // Solar Ireland's estimate_rules on the platform, so the site and the estimate
+    // email agree. Deliberately below the floor above: an estimate never over-promises.
+    estimateRatePerKwh: 0.18,
+    estimateLabel: '€0.18/kWh',
     scheme: 'Clean Export Guarantee (CEG)',
     annualRange: '€200 to €800',
   },

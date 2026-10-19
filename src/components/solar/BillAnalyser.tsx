@@ -132,8 +132,8 @@ function buildCommercialAnalysis(x: {
   const unitRateOpt = x.unitRate && x.unitRate > 0 ? x.unitRate : undefined;
   const effRate = unitRateOpt ?? COMMERCIAL_RATE_FLOOR;
   const rec = recommendedCommercialSize(x.annualUsage);
-  const e = commercialEstimate({ annualUsageKwh: x.annualUsage, systemSizeKwp: rec, unitRateEur: unitRateOpt, dayUsageKwh: x.dayUsage });
-  const comparisons = commercialSystemOptions(x.annualUsage, rec, { unitRateEur: unitRateOpt });
+  const e = commercialEstimate({ annualUsageKwh: x.annualUsage, systemSizeKwp: rec, unitRateEur: unitRateOpt, exportRateEur: SOLAR_DATA.export.estimateRatePerKwh, dayUsageKwh: x.dayUsage });
+  const comparisons = commercialSystemOptions(x.annualUsage, rec, { unitRateEur: unitRateOpt, exportRateEur: SOLAR_DATA.export.estimateRatePerKwh });
 
   const monthlyUsage = x.annualUsage / 12;
   const ratio = e.selfConsumptionPct / 100;
@@ -149,7 +149,7 @@ function buildCommercialAnalysis(x: {
       selfConsumed: Math.round(selfConsumed),
       exported: Math.round(exported),
       saving: Math.round(selfConsumed * effRate),
-      exportEarning: Math.round(exported * SOLAR_DATA.export.ratePerKwh),
+      exportEarning: Math.round(exported * SOLAR_DATA.export.estimateRatePerKwh),
     };
   });
 
@@ -1197,7 +1197,7 @@ export default function BillAnalyser() {
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
-                    <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
+                    <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.estimateLabel} via the microgeneration scheme.</p>
                   </div>
 
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
@@ -1254,7 +1254,7 @@ export default function BillAnalyser() {
                             ['Recommended system', `${analysis.recommendedSystem} kWp`, 'text-amber-400'],
                             ['Est. annual generation', `${analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh`, 'text-white'],
                             ['Self-consumption saving', `€${analysis.annualSaving.toLocaleString()}/yr`, 'text-white'],
-                            [`Export payment (${SOLAR_DATA.export.label})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
+                            [`Export payment (${SOLAR_DATA.export.estimateLabel})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
                             ['Total annual benefit', `€${analysis.totalAnnualBenefit.toLocaleString()}/yr`, 'text-amber-400 font-bold'],
                             // Commercial itemises the VAT the business pays on top of the
                             // ex-VAT install price; domestic is quoted VAT-inclusive.
