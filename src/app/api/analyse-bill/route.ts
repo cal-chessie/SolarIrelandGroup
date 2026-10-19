@@ -48,20 +48,22 @@ function isRateLimited(ip: string): boolean {
   return hits.length > RATE_LIMIT_MAX;
 }
 
+// Export at 18c for every supplier: Cal's 13 Oct ruling, and the figure Solar Ireland's
+// estimate_rules carry on the platform, so the site and the estimate email agree.
 const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; standingCharge: number; exportRate: number }> = {
-  'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
-  'ESB': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.21 },
-  'Bord Gáis Energy': { dayRate: 0.412, nightRate: 0.225, standingCharge: 10.85, exportRate: 0.21 },
-  'SSE Airtricity': { dayRate: 0.418, nightRate: 0.228, standingCharge: 10.98, exportRate: 0.21 },
-  'Energia': { dayRate: 0.408, nightRate: 0.222, standingCharge: 10.72, exportRate: 0.21 },
-  'Panda': { dayRate: 0.425, nightRate: 0.235, standingCharge: 11.30, exportRate: 0.21 },
-  'PrepayPower': { dayRate: 0.442, nightRate: 0.245, standingCharge: 9.50, exportRate: 0.21 },
-  'Yuno': { dayRate: 0.405, nightRate: 0.220, standingCharge: 10.50, exportRate: 0.21 },
-  'Community Power': { dayRate: 0.399, nightRate: 0.218, standingCharge: 10.40, exportRate: 0.21 },
-  'Pinergy': { dayRate: 0.435, nightRate: 0.238, standingCharge: 11.00, exportRate: 0.21 },
+  'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.18 },
+  'ESB': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.18 },
+  'Bord Gáis Energy': { dayRate: 0.412, nightRate: 0.225, standingCharge: 10.85, exportRate: 0.18 },
+  'SSE Airtricity': { dayRate: 0.418, nightRate: 0.228, standingCharge: 10.98, exportRate: 0.18 },
+  'Energia': { dayRate: 0.408, nightRate: 0.222, standingCharge: 10.72, exportRate: 0.18 },
+  'Panda': { dayRate: 0.425, nightRate: 0.235, standingCharge: 11.30, exportRate: 0.18 },
+  'PrepayPower': { dayRate: 0.442, nightRate: 0.245, standingCharge: 9.50, exportRate: 0.18 },
+  'Yuno': { dayRate: 0.405, nightRate: 0.220, standingCharge: 10.50, exportRate: 0.18 },
+  'Community Power': { dayRate: 0.399, nightRate: 0.218, standingCharge: 10.40, exportRate: 0.18 },
+  'Pinergy': { dayRate: 0.435, nightRate: 0.238, standingCharge: 11.00, exportRate: 0.18 },
 };
 
-const DEFAULT_RATES = { dayRate: 0.42, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.21 };
+const DEFAULT_RATES = { dayRate: 0.42, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.18 };
 
 
 const CO2_FACTOR = ENERGY.co2PerKwh;
