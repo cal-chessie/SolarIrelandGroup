@@ -418,9 +418,9 @@ export default function Footer() {
                 </p>
               </div>
               <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
-                <span className="text-gray-300 font-medium">Bill analysis and chat online any time</span>
+                <span className="text-gray-300 font-medium">Open 24/7</span>
                 <span className="mx-1.5 text-white/[0.08]">|</span>
-                Calls and WhatsApp answered as soon as we can
+                Calls, WhatsApp &amp; bill analysis answered any time
               </p>
             </div>
           </div>
