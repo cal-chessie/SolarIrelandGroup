@@ -333,7 +333,14 @@ function EligibilityChecker() {
   );
 }
 
-const timelineSteps = [
+// SEAI's own addresses for the steps the homeowner does (read on seai.ie, 20 Oct 2026).
+const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
+const BER_ASSESSOR_SEARCH = 'https://ndber.seai.ie/PASS/Assessors/Search.aspx';
+
+const timelineSteps: {
+  icon: typeof ClipboardCheck; title: string; description: string; duration: string; who: string;
+  color: string; bg: string; border: string; links?: { label: string; href: string }[];
+}[] = [
   {
     icon: ClipboardCheck,
     title: 'Free Survey',
@@ -350,6 +357,7 @@ const timelineSteps = [
     description: 'We submit your SEAI grant application on your behalf. Approval typically takes 2-4 weeks.',
     duration: '2-4 weeks',
     who: 'We handle this',
+    links: [{ label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL }],
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
     border: 'border-amber-400/20',
@@ -367,9 +375,13 @@ const timelineSteps = [
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: `Once the works are complete and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account nominated on your Request for Payment form. By default that is your own account.`,
+    description: `After the install, book your post-works BER with a registered BER assessor. We send SEAI the completion paperwork, and once your BER is published SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account you nominated. You can track it on SEAI's grant portal.`,
     duration: '4-6 weeks',
     who: 'SEAI pays you',
+    links: [
+      { label: 'Find a BER assessor', href: BER_ASSESSOR_SEARCH },
+      { label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL },
+    ],
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'border-violet-400/20',
@@ -414,6 +426,16 @@ function GrantTimeline() {
                   </span>
                 </div>
                 <p className="text-xs text-gray-400 mt-1 leading-relaxed">{step.description}</p>
+                {step.links && (
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1.5">
+                    {step.links.map((l) => (
+                      <a key={l.href + l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                        className="text-xs font-medium text-amber-400 hover:text-amber-300 underline underline-offset-2">
+                        {l.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <div className={`inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md bg-white/[0.02] text-[10px] text-gray-400`}>
                   <Shield className={`w-3 h-3 ${step.color} opacity-50`} />
                   {step.who}
@@ -552,7 +574,7 @@ export default function GrantInfo() {
           <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
             Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and submit the application on your behalf. Visit{' '}
             <a
-              href="https://www.seai.ie/grants/home-energy-grants/solar-pv/"
+              href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors font-medium"

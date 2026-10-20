@@ -427,6 +427,10 @@ export default function BillAnalyser() {
   }, [isAnalyzing, showingReport, reveal]);
 
   const [monthlyBill, setMonthlyBill] = useState('');
+  // Most Irish electricity bills come every two months (Cal, 20 Oct: "we need a
+  // bi-monthly button"). The visitor types the figure exactly as it is printed and
+  // says which it is; everything downstream still works in a monthly amount.
+  const [billPeriod, setBillPeriod] = useState<'month' | 'two_months'>('month');
   const [annualUsage, setAnnualUsage] = useState('');
   const [homeType, setHomeType] = useState('Semi-detached');
   const [provider, setProvider] = useState('Electric Ireland');
@@ -534,6 +538,7 @@ export default function BillAnalyser() {
   };
 
   const handlePreset = (preset: typeof PRESETS[0]) => {
+    setBillPeriod('month'); // presets are monthly figures
     setMonthlyBill(String(preset.bill));
     setAnnualUsage(String(preset.usage));
     setHomeType(preset.home);
@@ -542,9 +547,10 @@ export default function BillAnalyser() {
   };
 
   const handleManualAnalyse = async () => {
-    const bill = parseFloat(monthlyBill);
+    const entered = parseFloat(monthlyBill);
+    const bill = billPeriod === 'two_months' ? Math.round((entered / 2) * 100) / 100 : entered;
     const usage = parseFloat(annualUsage);
-    if (!bill || bill <= 0 || !usage || usage <= 0) { setError('Please enter your monthly bill and annual usage.'); return; }
+    if (!bill || bill <= 0 || !usage || usage <= 0) { setError('Please enter your bill and annual usage.'); return; }
     setError(null);
     setIsAnalyzing(true);
     setAnalysis(null);
@@ -943,13 +949,21 @@ export default function BillAnalyser() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
+                          <label htmlFor="mb" className="block text-sm text-gray-400">Your Bill</label>
+                          <div role="radiogroup" aria-label="How often your bill comes" className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06] w-fit">
+                            {([['month', 'Monthly'], ['two_months', 'Every 2 months']] as const).map(([v, label]) => (
+                              <button key={v} type="button" role="radio" aria-checked={billPeriod === v} onClick={() => setBillPeriod(v)}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${billPeriod === v ? 'bg-amber-400 text-black' : 'text-gray-400 hover:text-white'}`}>
+                                {label}
+                              </button>
+                            ))}
+                          </div>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
                             <input id="mb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="160" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <p className="text-[11px] text-gray-400">Found on the front of your electricity bill</p>
+                          <p className="text-[11px] text-gray-400">{billPeriod === 'two_months' ? 'The total on the front of your bill. We work out the monthly figure.' : 'Found on the front of your electricity bill'}</p>
                         </div>
                         <div className="space-y-2">
                           <label htmlFor="au" className="block text-sm text-gray-400">Annual Usage</label>
@@ -1032,13 +1046,21 @@ export default function BillAnalyser() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label htmlFor="cmb" className="block text-sm text-gray-400">Monthly Electricity Spend</label>
+                          <label htmlFor="cmb" className="block text-sm text-gray-400">Electricity Spend</label>
+                          <div role="radiogroup" aria-label="How often your bill comes" className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06] w-fit">
+                            {([['month', 'Monthly'], ['two_months', 'Every 2 months']] as const).map(([v, label]) => (
+                              <button key={v} type="button" role="radio" aria-checked={billPeriod === v} onClick={() => setBillPeriod(v)}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${billPeriod === v ? 'bg-amber-400 text-black' : 'text-gray-400 hover:text-white'}`}>
+                                {label}
+                              </button>
+                            ))}
+                          </div>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
                             <input id="cmb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="1200" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <p className="text-[11px] text-gray-400">The total on the business electricity bill</p>
+                          <p className="text-[11px] text-gray-400">{billPeriod === 'two_months' ? 'The total on the business bill. We work out the monthly figure.' : 'The total on the business electricity bill'}</p>
                         </div>
                         <div className="space-y-2">
                           <label htmlFor="cau" className="block text-sm text-gray-400">Annual Usage</label>
