@@ -212,7 +212,7 @@ function FinancingHero() {
             { icon: CreditCard, label: 'From 0% Deposit', sub: 'Many green loans' },
             { icon: Percent, label: '5.5–7.9% APR', sub: 'Green loan rates' },
             { icon: TrendingUp, label: 'Cash-Flow Positive', sub: 'Savings > repayments' },
-            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'We handle the paperwork' },
+            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'We guide you through it' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -236,7 +236,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'Transparent Pricing', desc: 'No hidden fees' },
-    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'Applied for on your behalf' },
+    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'You apply online, we guide you' },
     { icon: BadgeCheck, label: 'Green Loan Friendly', desc: 'Work with all major lenders' },
   ];
 

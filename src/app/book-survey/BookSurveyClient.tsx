@@ -638,7 +638,7 @@ export default function BookSurveyClient() {
                       </div>
                       <div>
                         <h2 className="text-white font-bold">€1,800 SEAI Grant (ROI)</h2>
-                        <p className="text-sm text-gray-500">We handle all grant paperwork for you</p>
+                        <p className="text-sm text-gray-500">We guide you through the SEAI grant</p>
                       </div>
                     </div>
 

@@ -354,9 +354,9 @@ const timelineSteps: {
   {
     icon: FileCheck,
     title: 'Grant Application',
-    description: 'We submit your SEAI grant application on your behalf. Approval typically takes 2-4 weeks.',
-    duration: '2-4 weeks',
-    who: 'We handle this',
+    description: 'Before any work starts, you apply on SEAI\'s online portal and choose Solar Ireland as your installer. We walk you through it. Once your grant offer is in, there are 8 months to complete the works.',
+    duration: 'Before work starts',
+    who: 'You apply, we guide you',
     links: [{ label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL }],
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
@@ -572,7 +572,7 @@ export default function GrantInfo() {
         >
           <Info className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
           <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and submit the application on your behalf. Visit{' '}
+            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and walk you through your application. Visit{' '}
             <a
               href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
               target="_blank"

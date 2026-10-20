@@ -111,8 +111,8 @@ export default function Hero() {
               style={{ animationDelay: '0.5s' }}
             >
               Upload your electricity bill and our AI will show you exactly what
-              solar will save you. We handle everything - survey, install,
-              and your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
+              solar will save you. We handle the survey and the install,
+              and guide you through your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
             </p>
 
             <div

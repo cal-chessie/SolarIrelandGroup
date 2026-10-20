@@ -58,7 +58,7 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 ## What is included
 - Free home survey and itemised quote
 - Free AI electricity bill analysis
-- SEAI grant application prepared and submitted on your behalf. Approval is SEAI's decision
+- SEAI grant: you apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. Approval is SEAI's decision
 - Installation by RECI-registered electricians, usually in a single day
 - ESB Networks grid connection notification and the post-works BER assessment
 - 25-year panel performance warranty; 5-year workmanship warranty (per our Terms)

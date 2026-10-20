@@ -130,7 +130,7 @@ const faqs = [
   },
   {
     question: 'Is the SEAI grant available in all 32 counties?',
-    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team is fully up to speed on the grant process for both jurisdictions and handles all the paperwork on your behalf.',
+    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team knows the grant process for both jurisdictions and guides you through every step.',
   },
   {
     question: 'How long does a solar panel installation take?',
@@ -759,7 +759,7 @@ export default function CountiesClient() {
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
                     Upload your electricity bill and we&apos;ll show you what solar would save on
                     your roof, in your county. Then book a free survey and we&apos;ll check the
-                    roof properly and handle the SEAI grant paperwork. The figures you get
+                    roof properly and guide you through the SEAI grant. The figures you get
                     are the ones we stand over.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

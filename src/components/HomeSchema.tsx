@@ -181,7 +181,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Get Your Free Home Survey",
-      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we handle the full SEAI grant application for you.",
+      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we guide you through the SEAI grant application.",
       position: 2,
     },
     {

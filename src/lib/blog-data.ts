@@ -1290,7 +1290,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We handle the SEAI grant paperwork and the free ESB Networks NC6 notification. [Book a free site survey](/book-survey) to get a firm, itemised quote."
+        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We send SEAI the grant completion paperwork and ESB Networks the free NC6 notification. [Book a free site survey](/book-survey) to get a firm, itemised quote."
       },
       {
         "type": "heading",
@@ -2027,7 +2027,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "Time-Saving Tip",
-        "body": "Many SEAI-registered installers will handle the entire grant application process on your behalf, including the BER booking. Ask about this when getting quotes - it can save you significant admin time and ensure nothing gets missed."
+        "body": "Under SEAI's process you apply for the grant yourself, online, before any work starts, naming your registered installer. A good installer walks you through it and sends SEAI the completion paperwork after the install. Ask about this when getting quotes."
       },
       {
         "type": "heading",
