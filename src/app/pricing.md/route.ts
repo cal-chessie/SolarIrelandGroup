@@ -60,7 +60,8 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 - Free AI electricity bill analysis
 - SEAI grant: you apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. Approval is SEAI's decision
 - Installation by RECI-registered electricians, usually in a single day
-- ESB Networks grid connection notification and the post-works BER assessment
+- ESB Networks NC6 grid connection notification, and the SEAI completion paperwork after the install
+- The post-works BER is booked by the homeowner with a registered BER assessor; we can help you find one
 - 25-year panel performance warranty; 5-year workmanship warranty (per our Terms)
 
 ## Grants and incentives

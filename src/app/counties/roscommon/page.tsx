@@ -61,7 +61,7 @@ const FAQS = [
   {
     question: 'Is the €1,800 SEAI grant available in Roscommon?',
     answer:
-      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. Domestic solar also carries 0% VAT. We prepare and submit the grant paperwork for you, and a BER assessment is carried out after the work is finished, before the grant is paid.',
+      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. Domestic solar also carries 0% VAT. You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork, and you book a post-works BER with a registered BER assessor before the grant is paid.',
   },
   {
     question: 'Do I need planning permission for solar panels in Roscommon?',
@@ -73,7 +73,7 @@ const FAQS = [
 export const metadata: Metadata = {
   title: 'Solar Panel Installers Roscommon | AI Bill Analyser | Solar Ireland',
   description:
-    'Solar panel installers in County Roscommon. Upload your electricity bill and our AI shows exactly what solar will save you. €1,800 SEAI grant handled, honest local quotes.',
+    'Solar panel installers in County Roscommon. Upload your electricity bill and our AI shows exactly what solar will save you. We guide you through the €1,800 SEAI grant. Honest local quotes.',
   keywords: [
     'solar panels Roscommon',
     'solar panel installers Roscommon',
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solar Panel Installers in Roscommon | Solar Ireland',
     description:
-      'Upload your bill and our AI shows what solar saves your Roscommon home. Real local installers, €1,800 SEAI grant handled, honest quotes.',
+      'Upload your bill and our AI shows what solar saves your Roscommon home. Real local installers, guidance on the €1,800 SEAI grant, honest quotes.',
     url: PAGE_URL,
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Solar Panel Installers in Roscommon | Solar Ireland',
     description:
-      'Upload your bill and our AI shows what solar saves your Roscommon home. SEAI grant handled, honest local quotes.',
+      'Upload your bill and our AI shows what solar saves your Roscommon home. SEAI grant guidance, honest local quotes.',
     images: ['https://solarirelandgroup.ie/og-counties.png'],
   },
   robots: {
@@ -144,7 +144,7 @@ export default function RoscommonPage() {
     '@id': `${PAGE_URL}#service`,
     name: 'Solar Panel Installation in County Roscommon',
     description:
-      'Residential solar PV installation across County Roscommon: free AI bill analysis, SEAI grant application, installation by RECI-certified electricians, and post-works BER assessment.',
+      'Residential solar PV installation across County Roscommon: free AI bill analysis, guidance on the SEAI grant application, installation by RECI-certified electricians, the ESB Networks NC6 notification and the SEAI completion paperwork.',
     serviceType: 'Solar Panel Installation',
     url: PAGE_URL,
     provider: { '@id': 'https://solarirelandgroup.ie/#organization' },
@@ -208,7 +208,7 @@ export default function RoscommonPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
             Upload your electricity bill and our AI shows you exactly what solar would save your Roscommon home, in
-            minutes. Real local installers, the €1,800 SEAI grant handled for you, and an honest quote with no hard sell.
+            minutes. Real local installers, guidance on the €1,800 SEAI grant, and an honest quote with no hard sell.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -249,7 +249,7 @@ export default function RoscommonPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               { icon: Sparkles, title: '1. Analyse your bill', body: 'Upload a recent electricity bill. Our AI reads your real usage and shows what solar would generate and save on your Roscommon home.' },
-              { icon: FileCheck, title: '2. Quote and grant', body: 'You get an honest, itemised quote. We prepare the €1,800 SEAI grant, the ESB Networks connection and your post-works BER.' },
+              { icon: FileCheck, title: '2. Quote and grant', body: 'You get an honest, itemised quote. You apply for the €1,800 SEAI grant online, naming us, and we guide you through it. We notify ESB Networks for your connection.' },
               { icon: CheckCircle2, title: '3. One-day install', body: 'A RECI-certified team installs and commissions the system in a single day, and you start saving from switch-on.' },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -283,7 +283,7 @@ export default function RoscommonPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               { icon: Sun, title: 'Open, unshaded roofs', body: 'Roscommon bungalows and farmhouses often have large, south-facing roofs with little shading, close to ideal for solar generation.' },
-              { icon: FileCheck, title: 'Grant and paperwork done for you', body: 'We prepare and submit the SEAI grant, handle the ESB Networks connection and arrange your post-works BER.' },
+              { icon: FileCheck, title: 'Grant guidance and the paperwork', body: 'We guide your SEAI grant application, send SEAI the completion paperwork, notify ESB Networks and help you find a BER assessor for your post-works BER.' },
               { icon: Euro, title: 'Clear numbers up front', body: 'The AI bill analyser gives you a real savings figure for your own home before you commit to anything.' },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -316,8 +316,8 @@ export default function RoscommonPage() {
           <div className="rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold sm:text-3xl">See what solar saves your Roscommon home</h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Upload your electricity bill and our AI does the rest. Real numbers for your home, the €1,800 SEAI grant
-              included, no obligation.
+              Upload your electricity bill and our AI does the rest. Real numbers for your home, before and after the €1,800
+              SEAI grant, no obligation.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link href="/solar-calculator" className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-black transition hover:bg-yellow-300">

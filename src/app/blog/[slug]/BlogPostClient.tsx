@@ -470,7 +470,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
   const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string }; secondary: { href: string; label: string } }> = {
     grants: {
       h: 'Find out what you qualify for',
-      p: 'The grant is €1,800 at 4 kWp and we prepare the paperwork. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
+      p: 'The grant is €1,800 at 4 kWp and we guide you through it. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
       primary: { href: '/solar-calculator', label: 'Check my grant and savings' },
       secondary: { href: '/book-survey?src=blog-grants', label: 'Book a free survey' },
     },

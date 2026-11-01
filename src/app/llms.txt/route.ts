@@ -25,9 +25,9 @@ export function GET() {
 
   const body = `# Solar Ireland Group
 
-> SEAI-registered solar panel installer serving Ireland. We install solar PV, battery storage and EV chargers for homes, prepare and submit the SEAI grant application, and offer a free AI electricity bill analysis that reads your actual day and night usage to estimate your savings.
+> SEAI-registered solar panel installer serving Ireland. We install solar PV, battery storage and EV chargers for homes, guide homeowners through the SEAI grant (the homeowner applies online at mgen.seai.ie before any work starts, naming us as the installer), and offer a free AI electricity bill analysis that reads your actual day and night usage to estimate your savings.
 
-Solar Ireland Group is a solar installer in the Republic of Ireland. A standard residential system is installed in a single day by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. The SEAI Solar PV grant is ${EUR(grant)} in the Republic of Ireland. We also handle the ESB Networks grid connection notification and the post-works BER assessment.
+Solar Ireland Group is a solar installer in the Republic of Ireland. A standard residential system is installed in a single day by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. The SEAI Solar PV grant is ${EUR(grant)} in the Republic of Ireland. We also send ESB Networks the NC6 grid connection notification and SEAI the grant completion paperwork. The homeowner books the post-works BER with a registered BER assessor.
 
 ## Key pages
 - [Home](${SITE}/): overview and the free AI bill analysis

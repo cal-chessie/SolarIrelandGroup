@@ -368,7 +368,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Everything above is a range because every home is different. Your exact number comes from two things: your electricity bill and your roof. Our AI bill analysis reads the day/night usage split directly from your bill and sizes a system around how your home actually uses power, then a site survey confirms the roof, shading and layout before anything is priced. From there, we handle the SEAI grant paperwork and the free ESB Networks NC6 microgeneration notification as part of the job. You can get your first estimate in minutes with the [free solar calculator](/solar-calculator)."
+        "text": "Everything above is a range because every home is different. Your exact number comes from two things: your electricity bill and your roof. Our AI bill analysis reads the day/night usage split directly from your bill and sizes a system around how your home actually uses power, then a site survey confirms the roof, shading and layout before anything is priced. From there, you apply for the SEAI grant online and we guide you through it; as part of the job we send SEAI the completion paperwork and ESB Networks the free NC6 microgeneration notification. You can get your first estimate in minutes with the [free solar calculator](/solar-calculator)."
       },
       {
         "type": "heading",
@@ -1375,7 +1375,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Your installer does. Submitting the NC6 is standard installer work and should be included in the job with nothing for you to fill in. It is also a useful quality marker: an installer who handles the NC6, the SEAI grant paperwork and the smart meter coordination as a matter of course is one who does this properly. If a quote is silent on who files the NC6, ask."
+        "text": "Your installer does. Submitting the NC6 is standard installer work and should be included in the job with nothing for you to fill in. It is also a useful quality marker: an installer who handles the NC6, sends SEAI the grant completion paperwork and coordinates the smart meter as a matter of course is one who does this properly. If a quote is silent on who files the NC6, ask."
       },
       {
         "type": "heading",
@@ -1970,7 +1970,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. Since 2023, all grant applicants must have a valid BER assessment either completed before the installation or booked to be carried out within a specified timeframe afterwards."
+        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. The scheme requires a post-works BER: once the installation is finished, you book a registered BER assessor, and SEAI pays the grant only after the new BER is published."
       },
       {
         "type": "paragraph",
@@ -1980,7 +1980,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "warning",
         "title": "Important BER Note",
-        "body": "If you plan to get your BER done after installation, you must provide the SEAI with evidence that a BER assessor has been booked before your grant application can be fully processed. Many installers can arrange this for you as part of the package."
+        "body": "SEAI pays the grant only once your post-works BER is published. Book a registered BER assessor for soon after the installation so the payment is not held up; your installer can help you find one."
       },
       {
         "type": "heading",
@@ -1996,11 +1996,11 @@ export const articles: Article[] = [
         "items": [
           "Get quotes from at least 3 SEAI-registered installers. Compare prices, panel brands, warranties, and inverter options.",
           "Choose your installer and agree on a date for the installation. Do not begin installation before getting grant pre-approval.",
-          "Apply online through the SEAI portal (seai.ie). You will need your MPRN number (found on your electricity bill), property details, and your chosen installer's SEAI registration number.",
-          "Apply online - your grant offer normally issues immediately and is valid for 8 months. Review and accept the terms.",
+          "Apply online through the SEAI grant portal (mgen.seai.ie), before any work starts. You will need your MPRN number (found on your electricity bill), property details, and your chosen installer's SEAI registration number.",
+          "Your grant offer normally issues immediately and is valid for 8 months. Review and accept the terms.",
           "Proceed with the solar panel installation. Your installer must complete the work within 8 months of the grant offer date.",
-          "After installation, submit your completion documents to the SEAI - this includes the installer's completion certificate, photos of the installation, and your BER assessment.",
-          "Receive your grant payment into your bank account, usually within 4–6 weeks of your completion documents and post-works BER being processed."
+          "After installation, your installer sends SEAI the completion paperwork, and you book your post-works BER with a registered BER assessor.",
+          "Receive your grant payment into your bank account, usually within 4–6 weeks of the completion paperwork being in and your post-works BER being published."
         ]
       },
       {
@@ -2057,8 +2057,8 @@ export const articles: Article[] = [
           ],
           [
             "Grant Application",
-            "4–6 weeks",
-            "SEAI reviews and issues offer letter"
+            "Before work starts",
+            "You apply online; the offer normally issues immediately"
           ],
           [
             "Installation",
@@ -4089,7 +4089,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Install both simultaneously - This is the most efficient approach. A combined installation means both systems are designed to work together from the start, your installer coordinates everything, and you get both grants in a single process. Total cost (after grants): €12,000–€20,000. Best if your current heating system is old and needs replacement anyway.",
+          "Install both simultaneously - This is the most efficient approach. A combined installation means both systems are designed to work together from the start, one installer schedules both jobs, and you still apply for each SEAI grant separately, before any work starts. Total cost (after grants): €12,000–€20,000. Best if your current heating system is old and needs replacement anyway.",
           "Install solar first, add heat pump later - If your current boiler or heating system is still functional, you can install solar panels now and enjoy immediate electricity savings. The SEAI solar grant is guaranteed for 2026. Add the heat pump in a year or two when your current system fails or when you are ready for the investment. Total cost is spread over time, making it easier to manage."
         ]
       },
@@ -4718,7 +4718,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The SEAI grant application process typically takes 4–6 weeks from submission to receiving your grant offer letter. After installation, you need a further 1–2 weeks to gather completion documents, and then 6–8 weeks for the grant payment to be processed. Here is the full timeline:"
+        "text": "You apply for the SEAI grant online before any work starts, and the grant offer normally issues immediately. After installation, your installer sends SEAI the completion paperwork, you book the post-works BER, and SEAI pays the grant about 4–6 weeks after the BER is published. Here is the full timeline:"
       },
       {
         "type": "table",
@@ -4734,35 +4734,35 @@ export const articles: Article[] = [
             "2–3 weeks"
           ],
           [
-            "Apply for SEAI grant",
-            "4–6 weeks",
-            "6–9 weeks"
+            "Apply for SEAI grant online",
+            "Offer normally issues immediately",
+            "2–3 weeks"
           ],
           [
             "Schedule installation",
             "2–4 weeks",
-            "8–13 weeks"
+            "4–7 weeks"
           ],
           [
             "Installation day",
             "1–2 days",
-            "~13 weeks"
+            "~7 weeks"
           ],
           [
-            "Submit completion documents",
+            "Completion paperwork (installer) and post-works BER (you book it)",
             "1–2 weeks",
-            "~15 weeks"
+            "~9 weeks"
           ],
           [
             "Receive grant payment",
-            "6–8 weeks",
-            "~21 weeks (5 months)"
+            "4–6 weeks after the BER is published",
+            "~13–15 weeks (3 to 4 months)"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "This means that if you start the process in early February, you could have your panels installed and generating by late April, with the grant payment arriving by early July. The total end-to-end timeline is approximately 5 months, which is why starting early in the year is so advantageous."
+        "text": "This means that if you start the process in early February, you could have your panels installed and generating by late March or April, with the grant payment arriving around May or June. The total end-to-end timeline is roughly 3 to 4 months, which is why starting early in the year is so advantageous."
       },
       {
         "type": "heading",

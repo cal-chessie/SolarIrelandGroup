@@ -97,8 +97,8 @@ const services = [
   { label: 'Solar PV Installation', desc: 'Residential & commercial panels' },
   { label: 'Battery Storage', desc: 'Store energy for evening use' },
   { label: 'Free Home Surveys', desc: 'No-obligation roof assessment' },
-  { label: 'SEAI Grant Assistance', desc: 'We handle the full application' },
-  { label: 'BER Assessment', desc: 'Post-install energy rating' },
+  { label: 'SEAI Grant Guidance', desc: 'You apply online, we guide you' },
+  { label: 'ESB Networks NC6', desc: 'We notify ESB Networks for you' },
 ];
 
 const serviceAreas = [

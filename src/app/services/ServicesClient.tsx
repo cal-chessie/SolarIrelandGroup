@@ -133,13 +133,13 @@ const mainServices = [
 const additionalServices = [
   {
     icon: FileText,
-    label: 'SEAI Grant Application',
-    desc: 'We prepare and submit your SEAI application and see it through to payment. Approval is SEAI\'s decision, not ours to promise.',
+    label: 'SEAI Grant Guidance',
+    desc: 'You apply online at mgen.seai.ie before work starts, naming us. We guide you and send SEAI the completion paperwork. Approval is SEAI\'s decision.',
   },
   {
     icon: BarChart3,
-    label: 'BER Assessment',
-    desc: 'Post-install Building Energy Rating to show the true energy performance of your upgraded home.',
+    label: 'Post-works BER',
+    desc: 'You book it with a registered BER assessor after the install, and we can help you find one. SEAI pays once it is published.',
   },
   {
     icon: Home,

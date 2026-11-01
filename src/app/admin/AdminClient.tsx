@@ -51,7 +51,7 @@ const MOCK = {
     { id: "1", reviewer_name: "Eamonn D.", rating: 5, text: "Absolutely brilliant service from start to finish. The team was professional, the installation was clean, and we're already seeing savings on our electricity bill. Highly recommend!", created_at: "2026-04-10T14:00:00Z", source: "google" },
     { id: "2", reviewer_name: "Rachel M.", rating: 5, text: "From initial survey to installation took 3 weeks. The GivEnergy system is fantastic and the monitoring app is brilliant. 5 stars all around.", created_at: "2026-04-09T09:00:00Z", source: "google" },
     { id: "3", reviewer_name: "David K.", rating: 4, text: "Great quality panels and professional installers. Only minor issue was scheduling the survey took longer than expected, but overall very happy with the result.", created_at: "2026-04-08T11:00:00Z", source: "google" },
-    { id: "4", reviewer_name: "Aine B.", rating: 5, text: "We got solar + battery and it's been transformative. Our bill went from EUR 220/month to EUR 40. The SEAI grant process was handled entirely by Solar Ireland.", created_at: "2026-04-07T16:00:00Z", source: "google" },
+    { id: "4", reviewer_name: "Aine B.", rating: 5, text: "We got solar + battery and it's been transformative. Our bill went from EUR 220/month to EUR 40. They walked us through the SEAI grant step by step.", created_at: "2026-04-07T16:00:00Z", source: "google" },
     { id: "5", reviewer_name: "Thomas O.", rating: 5, text: "Best investment we've made for our home. Clean, efficient, and the team was a pleasure to deal with. Would recommend to anyone considering solar.", created_at: "2026-04-06T13:00:00Z", source: "google" },
   ],
   automation: {

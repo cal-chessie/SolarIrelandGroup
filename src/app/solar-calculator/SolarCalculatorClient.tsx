@@ -156,7 +156,7 @@ function CalculatorExplainer() {
     {
       num: '04',
       title: 'Book the Survey',
-      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then handle the SEAI paperwork.',
+      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then guide you through the SEAI grant.',
     },
   ];
 

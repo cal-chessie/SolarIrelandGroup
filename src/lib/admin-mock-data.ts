@@ -120,7 +120,7 @@ export const MOCK_DASHBOARD_DATA: AdminDashboardData = {
     new_reviews_this_month: 8,
     latest: [
       { id: "r1", name: "McCarthy, Tom", rating: 5, text: "Absolutely brilliant service from start to finish. The team arrived on time, were very professional, and the system is performing above expectations. Already seeing savings on my bills!", source: "Google", date: daysAgo(2), verified: true },
-      { id: "r2", name: "Hayes, Lisa", rating: 5, text: "Solar Ireland made the whole process seamless. From the initial survey to installation, everything was handled efficiently. The SEAI grant application was sorted by them too!", source: "Google", date: daysAgo(4), verified: true },
+      { id: "r2", name: "Hayes, Lisa", rating: 5, text: "Solar Ireland made the whole process seamless. From the initial survey to installation, everything was handled efficiently. They walked us through the SEAI grant too!", source: "Google", date: daysAgo(4), verified: true },
       { id: "r3", name: "O'Sullivan, Mark", rating: 5, text: "Had panels installed 3 months ago and already saved €380 on electricity. The monitoring app is great – I can see exactly what I'm generating.", source: "Facebook", date: daysAgo(7), verified: true },
       { id: "r4", name: "Dunne, Fiona", rating: 4, text: "Very happy with the installation. Only small issue was a slight delay in scheduling the survey, but once booked everything was perfect.", source: "Google", date: daysAgo(10), verified: true },
       { id: "r5", name: "Kavanagh, Aidan", rating: 5, text: "Best investment I've made for my home. The team was incredibly knowledgeable and answered all my questions. Highly recommend!", source: "Trustpilot", date: daysAgo(14), verified: true },
@@ -128,7 +128,7 @@ export const MOCK_DASHBOARD_DATA: AdminDashboardData = {
     ],
     recent_five_star: [
       { id: "r1", name: "McCarthy, Tom", rating: 5, text: "Absolutely brilliant service from start to finish. The team arrived on time, were very professional, and the system is performing above expectations. Already seeing savings on my bills!", source: "Google", date: daysAgo(2), verified: true },
-      { id: "r2", name: "Hayes, Lisa", rating: 5, text: "Solar Ireland made the whole process seamless. From the initial survey to installation, everything was handled efficiently. The SEAI grant application was sorted by them too!", source: "Google", date: daysAgo(4), verified: true },
+      { id: "r2", name: "Hayes, Lisa", rating: 5, text: "Solar Ireland made the whole process seamless. From the initial survey to installation, everything was handled efficiently. They walked us through the SEAI grant too!", source: "Google", date: daysAgo(4), verified: true },
       { id: "r3", name: "O'Sullivan, Mark", rating: 5, text: "Had panels installed 3 months ago and already saved €380 on electricity. The monitoring app is great – I can see exactly what I'm generating.", source: "Facebook", date: daysAgo(7), verified: true },
     ],
   },

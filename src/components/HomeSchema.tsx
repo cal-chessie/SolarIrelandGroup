@@ -95,7 +95,7 @@ const serviceSchema = {
   "@id": `${SITE_URL}/#service`,
   name: "Residential Solar Panel Installation",
   description:
-    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, SEAI grant application, professional installation by RECI-certified electricians, and post-install BER assessment. Save up to €1,400/year with a €1,800 SEAI grant.",
+    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, guidance on the SEAI grant application, professional installation by RECI-certified electricians, the ESB Networks NC6 notification and the SEAI completion paperwork. Save up to €1,400/year with a €1,800 SEAI grant.",
   url: SITE_URL,
   provider: {
     "@id": `${SITE_URL}/#business`,
@@ -187,7 +187,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Installation Day",
-      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We prepare and submit your €1,800 SEAI grant application (Republic of Ireland). SEAI pays it into the account nominated on the Request for Payment form once your post-works BER is published.",
+      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We send SEAI the completion paperwork for your €1,800 grant (Republic of Ireland), which you applied for online before the work started. You book the post-works BER, and SEAI pays the grant into the account nominated on the Request for Payment form once it is published.",
       position: 3,
     },
   ],

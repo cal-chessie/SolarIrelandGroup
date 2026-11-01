@@ -95,7 +95,7 @@ const benefits = [
     stat: 'Higher',
     statLabel: 'property value',
     description:
-      "Solar panels significantly improve your Building Energy Rating - a legal requirement when selling or renting a property in Ireland. A better BER makes your home more attractive to buyers and can increase market value. We coordinate the post-install BER assessment as part of our service.",
+      "Solar panels significantly improve your Building Energy Rating - a legal requirement when selling or renting a property in Ireland. A better BER makes your home more attractive to buyers and can increase market value. After the install you book a post-works BER with a registered BER assessor, and we can help you find one.",
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'hover:border-violet-400/15',

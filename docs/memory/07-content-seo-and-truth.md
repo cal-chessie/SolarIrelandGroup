@@ -14,7 +14,8 @@ These are not style preferences. Each one exists because something false shipped
 |---|---|
 | AI bill analyser that reads the day/night split from a bill | **Claimable.** It is a live feature. |
 | WhatsApp click-to-chat as a contact channel | **Claimable.** It is a real `wa.me` link to a person. |
-| SEAI-registered, ESB Networks NC6, grant paperwork prepared and submitted | **Claimable.** |
+| SEAI-registered; we send ESB Networks the NC6 and SEAI the grant completion paperwork | **Claimable.** |
+| We apply for the grant, "handle the full application", "prepare and submit the application", arrange or coordinate the BER, "grant included" | **Never** (1 Nov 2026). SEAI's process: the homeowner applies online at mgen.seai.ie before any work starts, naming Solar Ireland; we guide them; the homeowner books the post-works BER (we may help them find an assessor). |
 | The AI chat assistant | **Claimable.** It is live and scoped. |
 | SMS or missed-call text-back | **Not on this site.** There is no Twilio or messaging provider anywhere in the codebase, checked across all nine API routes. Cal has said SMS is coming; until it ships, never promise it. (It *is* real on Renewably. Do not carry that across.) |
 | An AI agent answering WhatsApp | **No.** The `whatsapp-*` edge functions in `supabase/functions/` are dormant scaffolding that nothing calls. Their existence is not a capability. |

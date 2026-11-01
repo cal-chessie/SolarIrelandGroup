@@ -351,7 +351,7 @@ function FinancingCalculator() {
                   <Euro className="w-4 h-4 text-amber-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">SEAI Grant Automatically Applied</p>
+                  <p className="text-sm font-semibold text-white">SEAI Grant Worked Into These Figures</p>
                   <p className="text-xs text-gray-500">
                     {fmt(system.costBeforeGrant)} − {SOLAR_DATA.grant.label} grant ={' '}
                     <span className="text-green-400 font-bold">{fmt(result.netCost)} after grant</span>
@@ -736,7 +736,7 @@ function HowFinancingWorks() {
     {
       num: '01',
       title: 'Get Your Free Quote',
-      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we prepare and submit the grant application for you.',
+      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we guide you through your grant application, which you make online before any work starts.',
     },
     {
       num: '02',

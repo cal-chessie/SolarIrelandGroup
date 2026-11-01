@@ -185,8 +185,8 @@ const surveyPromises = [
   },
   {
     title: 'The full €1,800 grant',
-    text: 'Every system we fit is at least 4 kWp, which is the exact size the SEAI grant reaches its full €1,800. We prepare and submit the application and see it through. Approval is SEAI\'s decision.',
-    tag: 'Grant handled',
+    text: 'Every system we fit is at least 4 kWp, which is the exact size the SEAI grant reaches its full €1,800. You apply online at mgen.seai.ie before any work starts, naming us as your installer. We guide you through it and send SEAI the completion paperwork after the install. Approval is SEAI\'s decision.',
+    tag: 'Grant guidance',
   },
   {
     title: 'A price, not a pitch',

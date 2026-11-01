@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Solar Savings Calculator | Free Irish Solar Panel ROI Calculator',
     description:
-      'How much could solar panels save you? Enter your electricity bill and find out instantly. SEAI grant included.',
+      'How much could solar panels save you? Enter your electricity bill and find out instantly, before and after the SEAI grant.',
     images: ['/hero-solar.jpg'],
   },
   robots: {

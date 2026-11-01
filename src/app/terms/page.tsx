@@ -266,7 +266,7 @@ function TermsFAQ() {
     },
     {
       q: 'What happens if my SEAI grant application is declined?',
-      a: 'If your grant application is declined through no fault of Solar Ireland (e.g., you do not meet the eligibility criteria, your property fails BER requirements, or you previously received a grant for the same measure), you remain liable for the full contract price. We will assist you in understanding the reason for the decline and exploring alternative options.',
+      a: 'If your grant application is declined through no fault of Solar Ireland (e.g., you do not meet the eligibility criteria, or you previously received a grant for the same measure), you remain liable for the full contract price. We will assist you in understanding the reason for the decline and exploring alternative options.',
     },
     {
       q: 'How long does the installation process take?',
@@ -382,7 +382,7 @@ function TermsContentServices() {
           },
           {
             title: 'SEAI Grant Application Assistance',
-            desc: 'Guidance and administrative support with applications for grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. We assist with eligibility assessment, application preparation, BER assessment coordination, and documentation submission. Grant terms and conditions are set by SEAI and are subject to change.',
+            desc: 'Guidance with grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. You apply online at mgen.seai.ie before any work starts, naming Solar Ireland as your installer. We check your eligibility, guide you through the application and, after the installation, send SEAI the completion paperwork. You book the post-works BER with a registered BER assessor, and we can help you find one. Grant terms and conditions are set by SEAI and are subject to change.',
           },
           {
             title: 'Energy Bill Analysis and System Sizing',
@@ -459,7 +459,7 @@ function TermsContentQuotes() {
         <p className="text-sm text-gray-500 leading-relaxed">
           Every formal quote from Solar Ireland includes: all solar panels, inverter, mounting hardware,
           wiring, monitoring equipment, scaffolding, labour, ESB NC6 notification, SEAI grant application
-          assistance, BER assessment (where applicable), system commissioning, and handover documentation.
+          guidance, the SEAI completion paperwork, system commissioning, and handover documentation.
           There are no hidden charges. Any additional work required due to unforeseen circumstances (e.g.,
           structural roof repairs, electrical rewiring) will be quoted separately and require your written
           approval before proceeding.
@@ -476,7 +476,8 @@ function TermsContentSEAI() {
       <p className="text-gray-400 leading-relaxed mb-4">
         The Sustainable Energy Authority of Ireland (SEAI) offers grants to support the installation of
         solar PV systems and battery storage in Irish homes. We assist our customers with SEAI grant
-        applications as part of our service. The following terms apply to grant-related matters:
+        applications as part of our service. You apply to SEAI yourself, online, before any work starts,
+        naming Solar Ireland as your installer. The following terms apply to grant-related matters:
       </p>
 
       <Subsection>Grant Conditions</Subsection>
@@ -484,7 +485,7 @@ function TermsContentSEAI() {
         {[
           'SEAI grants are administered by SEAI and are subject to their own terms and conditions, eligibility criteria, and availability, which may change at any time without notice from Solar Ireland.',
           'Grant amounts are not guaranteed until SEAI formally approves your application and issues a grant offer letter. We provide guidance based on current scheme rules but cannot guarantee approval.',
-          'Eligibility for SEAI grants depends on factors including your property type, BER rating, MPRN, and whether you have previously received a grant for the same measure under the same or a previous scheme.',
+          'Eligibility for SEAI grants depends on factors including when your home was built and occupied, its MPRN, and whether you have previously received a grant for the same measure under the same or a previous scheme.',
           'Grant payments may be made directly to Solar Ireland on your behalf or to you directly, depending on the scheme rules and your preference. Payment timing is determined by SEAI.',
           'Solar Ireland is not a party to the grant agreement between you and SEAI. Any disputes regarding grant eligibility, amounts, or payment must be resolved directly with SEAI.',
         ].map((item) => (
@@ -512,7 +513,7 @@ function TermsContentSEAI() {
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
           'If the decline is due to factors within your control (e.g., inaccurate information, ineligibility), you remain liable for the full contract price as quoted.',
-          'If the decline is due to factors within our control (e.g., our error in the application, failure to submit required documentation), we will work with you to resolve the issue and, if necessary, adjust the contract price accordingly.',
+          'If the decline is due to factors within our control (e.g., our error in the completion paperwork, failure to submit required documentation), we will work with you to resolve the issue and, if necessary, adjust the contract price accordingly.',
           'If the decline is due to changes in SEAI scheme rules after you have signed the contract, we will discuss the impact with you and offer options including proceeding at the revised price, postponing the installation, or cancelling the contract with a full refund.',
         ].map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
@@ -589,7 +590,7 @@ function TermsContentInstallation() {
           'Demonstrate how to use the inverter, monitoring system, and battery storage (if applicable).',
           'Submit the NC6 grid connection notification to ESB Networks on your behalf.',
           'Register your installation for the Clean Export Guarantee (CEG) tariff if you have a smart meter.',
-          'Provide you with the documentation required for your SEAI grant payment claim.',
+          'Send SEAI the completion paperwork for your grant payment claim.',
         ].map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />

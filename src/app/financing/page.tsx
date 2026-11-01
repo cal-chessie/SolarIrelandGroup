@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solar Panel Financing & Payment Plans',
     description:
-      'Use our free financing calculator to see monthly repayments for solar panels in Ireland. Compare upfront vs finance with the €1,800 SEAI grant included.',
+      'Use our free financing calculator to see monthly repayments for solar panels in Ireland. Compare upfront vs finance, before and after the €1,800 SEAI grant.',
     url: PAGE_URL,
     type: 'website',
     locale: 'en_IE',

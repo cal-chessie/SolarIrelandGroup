@@ -60,11 +60,11 @@ const steps = [
     accentBorder: 'hover:border-sky-400/25',
     features: [
       'RECI-registered electricians',
-      'SEAI grant handled for you',
+      'SEAI grant: we guide you',
       'ESB grid connection sorted',
       'Saving from day one',
     ],
-    stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
+    stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant, we guide you' },
     cta: { href: '/solar-calculator', text: 'Price It On My Bill', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
