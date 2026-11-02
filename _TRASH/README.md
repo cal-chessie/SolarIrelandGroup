@@ -16,3 +16,14 @@ so the engine looked live while three copies of the maths did the real work.
 
 The home page's intake is BillAnalyser. The 5-step onboarding form replacing the
 exit popup is the natural home for this idea if it comes back.
+
+## portal-demo/ (1 Nov 2026)
+
+`PortalLandingClient`, `PortalDashboardClient` and the two portal `loading.tsx`
+skeletons. /portal took any typed "reference" and /portal/<anything> opened a
+made-up customer (sample name, reference SI-2026-0042, an 11-step timeline, a
+project manager) with HTTP 200 on the live domain, and /portal itself was
+indexable. A real homeowner could see a stranger's project (audit 1 Nov, 6f).
+Both routes now render `src/app/portal/PortalNotice.tsx`: noindex, "your project
+page link is in your emails", until the email sign-in exists. Do not restore
+these as they are: they never read the reference and never fetched anything.

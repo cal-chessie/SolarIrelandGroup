@@ -1,11 +1,9 @@
-import type { Metadata } from 'next';
-import PortalDashboardClient from './PortalDashboardClient';
+import PortalNotice, { portalMetadata } from '../PortalNotice';
 
-export const metadata: Metadata = {
-  robots: { index: false, follow: false },
-  title: 'Customer Portal',
-};
+// Any /portal/<reference> shows the same honest page. It used to open a made-up
+// customer for whatever was typed; see PortalNotice.
+export const metadata = portalMetadata;
 
-export default function PortalDashboardPage() {
-  return <PortalDashboardClient />;
+export default function PortalReferencePage() {
+  return <PortalNotice />;
 }

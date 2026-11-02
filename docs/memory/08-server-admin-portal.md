@@ -76,7 +76,9 @@ This is the most surprising thing in the repo. Know it before you touch either.
 
 Its data is 100% mock, hardcoded inside `AdminClient.tsx:19-93` as a local `MOCK` object with invented names and emails ("Sean Murphy", `sean@email.com`), fake reviews, automation rules and social posts. It never fetches anything: it does not call `/api/admin-dashboard`, and it does not import `admin-mock-data.ts` or `admin-types.ts`. Those two lib files back the API route instead, with a different shape and different fake names. So there are **two unrelated sets of mock data** in this repo.
 
-**`/portal`** is the same. `PortalLandingClient.tsx` takes a free-text reference, uppercases it and navigates to `/portal/<whatever>` with no lookup and no existence check. `PortalDashboardClient.tsx` **never reads the `[reference]` param**: no `useParams`, no fetch. Every visitor sees the identical hardcoded "John Murphy", reference `SI-2026-0042`, an 11-step timeline and a project manager called Sarah Kelly. The document Download buttons have no `href` and no handler.
+**`/portal` was retired on 1 Nov 2026** (audit item 6f): /portal and /portal/<anything> now render `src/app/portal/PortalNotice.tsx`, a noindex page (meta robots plus an `X-Robots-Tag` header in `next.config.ts`) saying the customer's project page link is in their emails, with WhatsApp, phone and email. The demo described next is parked in `_TRASH/portal-demo/`.
+
+What it was: `PortalLandingClient.tsx` takes a free-text reference, uppercases it and navigates to `/portal/<whatever>` with no lookup and no existence check. `PortalDashboardClient.tsx` **never reads the `[reference]` param**: no `useParams`, no fetch. Every visitor sees the identical hardcoded "John Murphy", reference `SI-2026-0042`, an 11-step timeline and a project manager called Sarah Kelly. The document Download buttons have no `href` and no handler.
 
 **What this means in practice:**
 
