@@ -397,7 +397,7 @@ function ResultsPanel({
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400">Clean Export Guarantee ({SOLAR_DATA.export.label})</span>
+                    <span className="text-gray-400">Export payment ({SOLAR_DATA.export.estimateLabel}, our estimate rate)</span>
                     <span className="text-amber-400 font-semibold">{fmtEur(r.annualExportEarnings)}/yr</span>
                   </div>
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">

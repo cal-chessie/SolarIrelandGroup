@@ -65,7 +65,9 @@ import { SOLAR_DATA, GRANT_SCHEDULES } from '@/lib/solar-data';
 export const ENERGY = {
   unitRateEur: 0.35,
   standingChargeAnnualEur: 250,
-  exportRateEur: SOLAR_DATA.export.ratePerKwh,
+  // Our estimate rate (18c), the same figure the bill analyser and the
+  // platform's estimate_rules use, so every calculator on the site agrees.
+  exportRateEur: SOLAR_DATA.export.estimateRatePerKwh,
   generationPerKwp: SOLAR_DATA.system.generationPerKwp,
   panelDegradationPerYear: 0.005,
   energyPriceInflationPerYear: 0.03,
