@@ -482,10 +482,8 @@ export default function Footer() {
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-400">
             <span>&copy; {new Date().getFullYear()} Solar Ireland. All rights reserved.</span>
-            <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>Company Reg: TBC</span>
-            <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>ROI Tax Reg: TBC</span>
+            {/* Company and tax registration numbers go here when Cal supplies
+                them. No "TBC" placeholder in the meantime (audit 34b). */}
           </div>
 
           <div className="flex items-center gap-4">
