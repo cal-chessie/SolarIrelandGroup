@@ -309,6 +309,22 @@ function CostMeter({ before, after }: { before: number; after: number }) {
   );
 }
 
+/**
+ * The sentence under the size cards, true for THIS set of cards: whether a
+ * bigger or a smaller size pays back sooner than the recommendation, or the
+ * recommendation is itself the fastest. Never a fixed claim.
+ */
+function paybackNote(comparisons: SystemComparison[], recommended: number): string {
+  const valid = comparisons.filter((c) => Number.isFinite(c.paybackYears) && c.paybackYears > 0);
+  const rec = valid.find((c) => c.size === recommended);
+  if (!rec || valid.length === 0) return '';
+  const fastest = valid.reduce((a, c) => (c.paybackYears < a.paybackYears ? c : a), valid[0]);
+  if (fastest.paybackYears >= rec.paybackYears) return 'It is also the fastest payback of these sizes.';
+  return fastest.size > recommended
+    ? `A bigger system (${fastest.size}kWp) pays back a little sooner by exporting more.`
+    : `A smaller system (${fastest.size}kWp) pays back a little sooner but covers less of your usage.`;
+}
+
 function SystemComparisonCards({ comparisons, recommended }: { comparisons: SystemComparison[]; recommended: number }) {
   // The badge names what is true. The recommended size is sized to the usage;
   // it is NOT always the fastest payback (a bigger array can pay back sooner by
@@ -1283,7 +1299,7 @@ export default function BillAnalyser() {
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
-                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your {analysis.isCommercial ? 'business' : 'home'} uses. A bigger system can pay back sooner by exporting more; your site survey confirms what your roof can fit.</p>
+                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your {analysis.isCommercial ? 'business' : 'home'} uses. {paybackNote(analysis.systemComparisons, analysis.recommendedSystem)} Your site survey confirms what your roof can fit.</p>
                   </div>
 
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
