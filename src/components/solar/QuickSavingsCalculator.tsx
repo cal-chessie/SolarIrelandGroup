@@ -492,7 +492,7 @@ function ResultsPanel({
       </div>
 
       <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-        Estimates based on SEAI grant rates, Met &Eacute;ireann solar irradiance data for Ireland,
+        Estimates based on SEAI grant rates, PVGIS solar generation data for Ireland,
         a {Math.round(r.unitRate * 100)}c/kWh unit rate, and {fmtEur(r.standingCharge)}/yr standing charges.
         Actual savings depend on roof orientation, shading, and your consumption patterns.
         A free site survey gives you exact figures.
