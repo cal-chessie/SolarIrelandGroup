@@ -112,6 +112,14 @@ interface AnalysisResult {
 }
 
 /**
+ * The VAT rate as printed: 0.135 -> "13.5%", never rounded to a whole number
+ * (Math.round printed the commercial rate as 14%, audit 1 Nov item 20).
+ */
+function formatVatRate(rate: number | undefined): string {
+  return `${Number(((rate ?? 0) * 100).toFixed(1))}%`;
+}
+
+/**
  * Turn a set of read or typed bill figures into a COMMERCIAL estimate, in the
  * exact AnalysisResult shape the domestic results view already renders, so the
  * business path reuses the same UI with commercial numbers. The maths comes
@@ -641,7 +649,7 @@ export default function BillAnalyser() {
         `Annual export earnings: €${a.annualExportEarning.toLocaleString()}`,
         `Total annual benefit: €${a.totalAnnualBenefit.toLocaleString()}`,
         `System cost (ex VAT): €${(a.installCostExVat ?? 0).toLocaleString()}`,
-        `VAT (${Math.round((a.vatRate ?? 0) * 100)}%): €${(a.vatAmount ?? 0).toLocaleString()}`,
+        `VAT (${formatVatRate(a.vatRate)}): €${(a.vatAmount ?? 0).toLocaleString()}`,
         `Non-Domestic Microgen (NDMG) grant: -€${a.seaiGrant.toLocaleString()} (confirmed at assessment)`,
         `Cost after grant: €${a.costAfterGrant.toLocaleString()}`,
         `Payback: ${a.paybackYears} years · ROI ${a.roiPercent}%/yr`,
@@ -1283,7 +1291,7 @@ export default function BillAnalyser() {
                             ...(analysis.isCommercial
                               ? [
                                   ['System cost (ex VAT)', `€${(analysis.installCostExVat ?? 0).toLocaleString()}`, 'text-white'],
-                                  [`VAT (${Math.round((analysis.vatRate ?? 0) * 100)}%)`, `€${(analysis.vatAmount ?? 0).toLocaleString()}`, 'text-white'],
+                                  [`VAT (${formatVatRate(analysis.vatRate)})`, `€${(analysis.vatAmount ?? 0).toLocaleString()}`, 'text-white'],
                                   ['System cost (inc VAT)', `€${analysis.installCost.toLocaleString()}`, 'text-white'],
                                 ]
                               : [['System cost (before grant)', `€${analysis.installCost.toLocaleString()}`, 'text-white']]),
