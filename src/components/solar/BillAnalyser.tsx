@@ -310,13 +310,22 @@ function CostMeter({ before, after }: { before: number; after: number }) {
 }
 
 function SystemComparisonCards({ comparisons, recommended }: { comparisons: SystemComparison[]; recommended: number }) {
+  // The badge names what is true. The recommended size is sized to the usage;
+  // it is NOT always the fastest payback (a bigger array can pay back sooner by
+  // exporting more), so "Best ROI" on it was false. The fastest payback is
+  // found from the figures on the cards and badged on its own when it differs.
+  const paybacks = comparisons.map((c) => c.paybackYears).filter((y) => Number.isFinite(y) && y > 0);
+  const fastest = paybacks.length ? Math.min(...paybacks) : null;
+  const fastestSize = fastest === null ? null : comparisons.find((c) => c.paybackYears === fastest)?.size ?? null;
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {comparisons.map((c) => {
         const isRec = c.size === recommended;
+        const isFastest = !isRec && c.size === fastestSize;
         return (
           <div key={c.size} className={`relative rounded-xl p-4 text-center transition-all border ${isRec ? 'bg-amber-400/10 border-amber-400/30 ring-1 ring-amber-400/20' : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12]'}`}>
-            {isRec && <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-amber-400 text-black text-[10px] font-bold uppercase tracking-wider rounded-full">Best ROI</span>}
+            {isRec && <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-amber-400 text-black text-[10px] font-bold uppercase tracking-wider rounded-full">Recommended</span>}
+            {isFastest && <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-sky-400 text-black text-[10px] font-bold uppercase tracking-wider rounded-full whitespace-nowrap">Fastest payback</span>}
             <p className="text-2xl font-bold text-white">{c.size}<span className="text-sm text-gray-400">kWp</span></p>
             <p className="text-xs text-gray-400 mt-1">{c.generation.toLocaleString()} kWh/yr</p>
             <div className="mt-3 pt-3 border-t border-white/[0.06]">
@@ -1115,7 +1124,7 @@ export default function BillAnalyser() {
                   )}
 
                   <p className="mt-6 text-[11px] text-gray-400 text-center leading-relaxed">
-                    Estimates based on {segment === 'business' ? 'Non-Domestic Microgen (NDMG) grant rates' : 'SEAI grant rates'}, Met Éireann solar irradiance data, and your reported usage.
+                    Estimates based on {segment === 'business' ? 'Non-Domestic Microgen (NDMG) grant rates' : 'SEAI grant rates'}, PVGIS solar generation data for Ireland, and your reported usage.
                     Actual savings depend on roof orientation, shading, and consumption patterns. A free site survey gives you exact figures.
                   </p>
                 </div>
@@ -1248,7 +1257,7 @@ export default function BillAnalyser() {
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
-                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your home uses. A bigger system can pay back sooner by exporting more; your site survey confirms what your roof can fit.</p>
+                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your {analysis.isCommercial ? 'business' : 'home'} uses. A bigger system can pay back sooner by exporting more; your site survey confirms what your roof can fit.</p>
                   </div>
 
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">

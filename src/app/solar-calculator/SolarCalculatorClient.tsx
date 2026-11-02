@@ -105,7 +105,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'No Hidden Costs', desc: 'Transparent pricing' },
-    { icon: Sun, label: 'Real Irish Data', desc: 'Met Éireann irradiance data' },
+    { icon: Sun, label: 'Real Irish Data', desc: 'PVGIS generation data' },
     { icon: Euro, label: '440W Premium Panels', desc: 'Modern high-efficiency panels' },
   ];
 
@@ -173,7 +173,7 @@ function CalculatorExplainer() {
             <span className="text-gradient">Real Irish Data</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            No fluff, no guesswork. Every figure is backed by SEAI grant rates, Met Éireann solar irradiance data, and current electricity prices from Irish providers.
+            No fluff, no guesswork. Every figure is backed by SEAI grant rates, PVGIS solar generation data, and current electricity prices from Irish providers.
           </p>
         </div>
 
