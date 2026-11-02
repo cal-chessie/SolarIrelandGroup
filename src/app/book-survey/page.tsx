@@ -134,7 +134,7 @@ const bookSchema = {
           name: 'How long does a solar survey take?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The survey typically takes 30 to 45 minutes. We assess your roof orientation, pitch, shading, structural suitability, and electrical setup. You receive your itemised quote within 48 hours.',
+            text: 'Two steps: a 15-minute phone call, then about 45 minutes at your home. At the visit we assess your roof orientation, pitch, shading, structural suitability, and electrical setup. You receive your itemised quote within 48 hours.',
           },
         },
         {

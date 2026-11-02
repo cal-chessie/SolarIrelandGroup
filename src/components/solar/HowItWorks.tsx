@@ -31,7 +31,7 @@ const steps = [
     title: 'Free Survey',
     subtitle: 'No obligation, ever',
     description:
-      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Most surveys take under 45 minutes.",
+      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Fifteen minutes on the phone first, then about 45 minutes at your home.",
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',

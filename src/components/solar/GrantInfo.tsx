@@ -344,8 +344,8 @@ const timelineSteps: {
   {
     icon: ClipboardCheck,
     title: 'Free Survey',
-    description: 'We visit your home, assess your roof, and confirm your eligibility.',
-    duration: '~45 min',
+    description: 'A 15-minute phone call, then we visit your home for about 45 minutes, assess your roof, and confirm your eligibility.',
+    duration: '15 min + ~45 min',
     who: 'We handle this',
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',

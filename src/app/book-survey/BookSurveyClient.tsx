@@ -206,7 +206,7 @@ const faqItems = [
   },
   {
     q: 'How long does the survey take?',
-    a: 'Typically 30 to 45 minutes. Our assessor checks your roof orientation and pitch, measures available space, evaluates your electrical setup, and answers all your questions. They\'ll also explain the SEAI grant process and estimated payback period.',
+    a: 'Two steps. First a 15-minute phone call, then about 45 minutes at your home or business premises. At the visit our assessor checks your roof orientation and pitch, measures available space, evaluates your electrical setup, and answers all your questions. They\'ll also explain the SEAI grant process and estimated payback period.',
   },
   {
     q: 'What areas do you cover?',
@@ -621,7 +621,10 @@ export default function BookSurveyClient() {
                 {/* Key stats */}
                 <div className="flex items-center gap-5 sm:gap-6">
                   {[
-                    { value: '30-45', unit: 'min', label: 'Survey Duration' },
+                    // The survey is two steps (canon): a 15-minute call, then
+                    // about 45 minutes on site.
+                    { value: '15', unit: 'min', label: 'Phone call first' },
+                    { value: '45', unit: 'min', label: segment === 'business' ? 'At your premises' : 'At your home' },
                     // 0% VAT is for homes only; a business pays 13.5%, so the
                     // business view never shows it.
                     ...(segment === 'business' ? [] : [{ value: '0%', unit: 'VAT', label: 'On Domestic Solar' }]),
@@ -1424,7 +1427,8 @@ export default function BookSurveyClient() {
                     <div className="space-y-4">
                       {[
                         { time: 'Straight away', text: bookingFallback ? 'We have your request and your preferred time.' : 'A confirmation email lands with your appointment details.' },
-                        { time: 'Survey Day', text: `Our assessor visits your ${segment === 'business' ? 'premises' : 'home'} for a thorough 30-45 minute roof and energy assessment.` },
+                        { time: 'Before the visit', text: 'A 15-minute phone call to go through your bill and confirm your time.' },
+                        { time: 'Survey Day', text: `Our assessor visits your ${segment === 'business' ? 'premises' : 'home'} for about 45 minutes: roof, shading and energy assessment.` },
                         { time: 'Within 48 hours', text: 'Receive your itemised quote with estimated savings, grant eligibility, and payback period.' },
                       ].map((item, i) => (
                         <div key={i} className="flex gap-3">
@@ -1520,15 +1524,15 @@ export default function BookSurveyClient() {
                 },
                 {
                   step: '02',
-                  title: 'Quick Confirmation',
-                  desc: 'We come straight back to confirm your exact time.',
+                  title: '15-Minute Call',
+                  desc: 'A 15-minute phone call to go through your bill and confirm your exact time.',
                   icon: Phone,
                   color: 'sky',
                 },
                 {
                   step: '03',
-                  title: 'Home Assessment',
-                  desc: 'Our assessor visits for 30–45 minutes, evaluates your roof, and answers every question you have.',
+                  title: segment === 'business' ? 'Site Assessment' : 'Home Assessment',
+                  desc: 'Our assessor visits for about 45 minutes, evaluates your roof, and answers every question you have.',
                   icon: Home,
                   color: 'green',
                 },
