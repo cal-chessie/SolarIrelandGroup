@@ -3,6 +3,8 @@ import { forwardLead, isRateLimited, isHoneypotTripped } from '@/lib/leadBridge'
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// forwardLead retries AISolar for up to about 27s.
+export const maxDuration = 30;
 
 interface ContactFormData {
   name: string;

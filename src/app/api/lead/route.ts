@@ -21,6 +21,8 @@ import { forwardLead, isRateLimited, isHoneypotTripped, type BridgeLead } from '
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// forwardLead retries AISolar for up to about 27s.
+export const maxDuration = 30;
 
 const ALLOWED_SOURCES = new Set([
   'website_contact',
