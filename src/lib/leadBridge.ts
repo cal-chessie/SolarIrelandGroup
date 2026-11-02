@@ -62,7 +62,9 @@ export async function forwardLead(lead: BridgeLead): Promise<BridgeResult> {
   const ingestUrl = process.env.AISOLAR_INGEST_URL;
   const sourceKey = process.env.AISOLAR_SOURCE_KEY;
 
+  let primaryFailure: string;
   if (ingestUrl && sourceKey) {
+    primaryFailure = 'unknown';
     try {
       const res = await fetch(ingestUrl, {
         method: 'POST',
@@ -74,16 +76,48 @@ export async function forwardLead(lead: BridgeLead): Promise<BridgeResult> {
         const data = await res.json().catch(() => ({}));
         return { ok: true, leadId: data.leadId ?? null };
       }
+      primaryFailure = `ingest-lead responded ${res.status}`;
       console.error('[leadBridge] ingest-lead responded', res.status);
     } catch (err) {
+      primaryFailure = `ingest-lead unreachable: ${err instanceof Error ? err.message : String(err)}`;
       console.error('[leadBridge] ingest-lead unreachable:', err);
     }
+  } else {
+    primaryFailure = 'AISOLAR_INGEST_URL or AISOLAR_SOURCE_KEY is not set';
   }
 
   // ─── Fallback: persist to SIG so nothing is ever dropped ───
+  const fallbackConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   const persisted = await persistFallback(lead);
-  if (persisted) return { ok: true, fallback: true };
+  if (persisted) {
+    // Held, but nobody watches website_leads: say so loudly in the logs.
+    console.error('[LEAD HELD, NOT IN AISOLAR]', JSON.stringify({
+      reason: primaryFailure,
+      source: lead.source,
+      store: 'website_leads (forwarded=false)',
+    }));
+    return { ok: true, fallback: true };
+  }
 
+  // Nothing captured it. The visitor is told it did not go through (the route
+  // answers 502 and every door offers WhatsApp/phone instead of a success
+  // screen). The site has no email path of its own, so the lead is written to
+  // the server log, loudly and in full, so a person can still call them back
+  // from the Vercel logs. Silence here is how leads were lost (audit 31).
+  console.error('[LEAD LOST: NOT CAPTURED ANYWHERE]', JSON.stringify({
+    reason: primaryFailure,
+    fallback: fallbackConfigured
+      ? 'website_leads insert failed (see the line above)'
+      : 'fallback store OFF: NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set',
+    source: lead.source,
+    name: lead.name,
+    email: lead.email ?? null,
+    phone: lead.phone ?? null,
+    county: lead.county ?? null,
+    eircode: lead.eircode ?? null,
+    page: (lead.meta as { page?: unknown } | undefined)?.page ?? null,
+    at: new Date().toISOString(),
+  }));
   return { ok: false };
 }
 
