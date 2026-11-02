@@ -115,7 +115,7 @@ Not exhaustive: this sweep covered the main marketing and legal surfaces, not th
 
 ### Consistent with the engine
 
-`€1,800` grant appears correctly in roughly 25 places. `€8,200` / `€6,400` for 4 kWp appears correctly in `services/layout.tsx:6,10,28`, `ServicesClient.tsx:49`, `CountiesClient.tsx:130`, `FAQ.tsx:50,66`, `FinancingClient.tsx:718`, `api/chat/route.ts:48`. `€12,400` for 10 kWp. Package prices at `ServicesClient.tsx:161-222`. Self-consumption `30-50%` without a battery, `70-85%` with. Export `€0.20/kWh`. `0%` VAT. The 25-year panel performance warranty and the 5-year workmanship warranty.
+`€1,800` grant appears correctly in roughly 25 places. `€8,200` / `€6,400` for 4 kWp appears correctly in `services/layout.tsx:6,10,28`, `ServicesClient.tsx:49`, `CountiesClient.tsx:130`, `FAQ.tsx:50,66`, `FinancingClient.tsx:718`, `api/chat/route.ts:48`. `€12,400` for 10 kWp. Package prices at `ServicesClient.tsx:161-222`. Self-consumption `30-50%` without a battery, `70-85%` with. Export `€0.18/kWh` (our estimate rate; there is no CRU minimum, 2 Nov 2026). `0%` VAT. The 25-year panel performance warranty and the 5-year workmanship warranty.
 
 ### Ranges that sit around the canon rather than on it
 

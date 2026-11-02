@@ -136,14 +136,17 @@ export const SOLAR_DATA = {
     range25yrLabel: '€25,000 to €50,000',
   },
   export: {
-    // The CRU's minimum Clean Export Guarantee obligation (CRU/24/019).
-    // Suppliers currently pay between 18.5c and 24c, so the regulated floor is
-    // the figure we can always stand over.
-    ratePerKwh: 0.20,
-    label: '€0.20/kWh',
-    // The rate the bill analyser's estimate uses: Cal's 13 Oct ruling, the figure in
+    // What is true, checked on cru.ie 2 Nov 2026: under the CRU's enduring
+    // Clean Export Guarantee decision (CRU202454, 18 June 2024) suppliers pay
+    // for exports on competitive, market-based tariffs that EACH SUPPLIER SETS,
+    // and the CRU retained a floor of zero for flat-rate export tariffs. There
+    // is no regulated minimum rate. The old "20c CRU minimum" (and the
+    // "CRU/24/019" reference) was not true and is gone from the site.
+    rateNote: 'each supplier sets its own export rate; the CRU sets no minimum above zero',
+    cruDecision: 'CRU202454 (June 2024)',
+    // The rate every estimate on the site uses: Cal's 13 Oct ruling, the figure in
     // Solar Ireland's estimate_rules on the platform, so the site and the estimate
-    // email agree. Deliberately below the floor above: an estimate never over-promises.
+    // email agree. It is our estimate rate, never a promise of what a supplier pays.
     estimateRatePerKwh: 0.18,
     estimateLabel: '€0.18/kWh',
     scheme: 'Clean Export Guarantee (CEG)',

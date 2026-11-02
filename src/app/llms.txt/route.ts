@@ -58,7 +58,7 @@ Our figures come from one published engine, not a sales spreadsheet, and every c
 - Generation: ${ENERGY.generationPerKwp} kWh per kWp per year. PVGIS for a south-facing Irish roof at 30 degrees after standard system losses
 - Unit rate: ${Math.round(ENERGY.unitRateEur * 100)}c per kWh including VAT, the bottom of the current Irish market band, so savings are not overstated
 - Standing charge: ${EUR(ENERGY.standingChargeAnnualEur)} a year, which solar never removes
-- Export: ${SOLAR_DATA.export.label}, the CRU minimum Clean Export Guarantee obligation under CRU/24/019. Suppliers may pay more
+- Export: ${SOLAR_DATA.export.estimateLabel}, our estimate rate. Under the Clean Export Guarantee each supplier sets its own export rate; the CRU sets no minimum above zero (CRU decision ${SOLAR_DATA.export.cruDecision})
 - Self-consumption: 30-50% for an Irish home with no battery, roughly 70-85% with one
 - Typical result for a 3-bed semi: ${SOLAR_DATA.savings.rangeLabel} a year, around ${SOLAR_DATA.savings.label} typical, payback about ${SOLAR_DATA.savings.paybackYears} years, ${SOLAR_DATA.savings.range25yrLabel} over 25 years
 - Estimates are panels only. A battery is sized and priced at the survey, not quoted online

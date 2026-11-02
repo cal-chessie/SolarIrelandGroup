@@ -48,7 +48,7 @@ Checked 7 Sep 2026. Each has a source. Change one only with new evidence, and up
 | Yield | 950 kWh/kWp | `ENERGY.generationPerKwp` via `SOLAR_DATA.system` | PVGIS: south-facing 30° in Dublin ≈ 972 after standard 14% system losses; national average ≈ 884. 950 describes a good roof without pretending every roof is one. |
 | Unit rate | €0.35 | `ENERGY.unitRateEur` | Electric Ireland standard 24hr rate from 1 Jul 2026 is 38.04c incl VAT; market sits 35-38c. We take the bottom of the band so we never overstate. |
 | Standing charge | €250/yr | `ENERGY.standingChargeAnnualEur` | Electric Ireland €250.77 incl VAT. **Solar never removes it**, so it is stripped out before usage is derived from a bill. |
-| Export | €0.20/kWh | `SOLAR_DATA.export.ratePerKwh` | CRU minimum Clean Export Guarantee obligation (CRU/24/019). Suppliers pay 18.5c to 24c; the regulated floor is the safe figure. |
+| Export | €0.18/kWh | `SOLAR_DATA.export.estimateRatePerKwh` (also `ENERGY.exportRateEur`) | Our estimate rate (Cal's 13 Oct ruling, the platform's estimate_rules). There is NO CRU minimum: each supplier sets its own Clean Export Guarantee rate and the CRU retained a zero floor (CRU202454, June 2024; checked on cru.ie 2 Nov 2026). The old 20c "CRU minimum" and "CRU/24/019" were false and were removed site-wide on 2 Nov 2026 (audit 27, 34b). |
 | Self-consumption | 30% to 50% | `SELF_USE_MIN` / `SELF_USE_MAX` | An Irish home with **no battery** (35-45% typical). The old engines used 65-80%, which only a battery reaches. |
 | Daytime share | 0.6 | `DEFAULT_DAY_SHARE` | Share of household electricity used while the sun is up. Overridden by a real bill's day/night split. |
 | Panel degradation | 0.5%/yr | `ENERGY.panelDegradationPerYear` | |

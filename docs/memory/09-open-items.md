@@ -101,7 +101,7 @@ All three items the first sweep left are now fixed and pushed (`398bdf6`).
 
 - **The battery article's economics** were built on 833 kWh/kWp and a
   "€0.105 effective" export rate with no basis anywhere on the site. Rebuilt on
-  the engine: 5,700 kWh for 6 kWp, export at the €0.20 CRU floor, so the
+  the engine: 5,700 kWh for 6 kWp, export at the €0.20 then called the CRU floor (2 Nov 2026: there is no CRU floor; the article now uses our 18c estimate rate, about €361 a year, 7 years on the battery), so the
   battery is worth about €318 a year and pays back in roughly 10 years on its
   own €3,200.
 - **The CEG export table** had a 4 kWp system exporting 800 to 1,200 kWh, which

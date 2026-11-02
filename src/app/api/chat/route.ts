@@ -57,7 +57,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 - South-facing unshaded roof at 35° tilt is optimal
 - A 3-bed semi can save roughly €800-€1,400/year depending on the bill; around €1,100 is typical
 - Self-consumption WITHOUT a battery is typically 30-50% in Ireland; the rest is exported. A battery lifts it to roughly 70-85%, which is why a battery is worth discussing on the survey.
-- Export: at least €0.20/kWh, the CRU's minimum Clean Export Guarantee rate that every supplier must pay. Some suppliers pay more.
+- Export: under the Clean Export Guarantee each supplier sets its own export rate. The CRU sets NO minimum rate above zero (CRU decision CRU202454, June 2024). Never say there is a CRU minimum or quote a supplier's rate. Our estimates use €0.18/kWh; say that is our estimate rate and that they should check their own supplier's export tariff.
 - Payback: typically 5-7 years after the grant, panels only
 
 **Installation:**

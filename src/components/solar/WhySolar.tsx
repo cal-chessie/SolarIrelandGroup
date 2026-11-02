@@ -81,10 +81,10 @@ const benefits = [
   {
     icon: Zap,
     title: 'Earn from Excess Energy',
-    stat: SOLAR_DATA.export.label,
-    statLabel: 'microgeneration tariff',
+    stat: SOLAR_DATA.export.estimateLabel,
+    statLabel: 'our export estimate rate',
     description:
-      `Under the Clean Export Guarantee, your energy supplier pays you ${SOLAR_DATA.export.label} for every kWh of excess solar energy you export to the national grid. Any energy your home doesn't use during the day is automatically sold - it appears as a credit on your bill.`,
+      `Under the Clean Export Guarantee, your energy supplier pays you for every kWh of excess solar energy you export to the national grid, at an export rate it sets (the CRU sets no minimum). We use ${SOLAR_DATA.export.estimateLabel} in our estimates. Any energy your home doesn't use during the day is automatically sold - it appears as a credit on your bill.`,
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
     border: 'hover:border-sky-400/15',
@@ -575,10 +575,10 @@ export default function WhySolar() {
               </h3>
               <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                 Under Ireland&apos;s Clean Export Guarantee (CEG), your electricity supplier
-                must pay you for excess solar exported to the grid. Most suppliers
-                currently offer{' '}
-                <span className="text-white font-semibold">{SOLAR_DATA.export.label}</span> - paid
-                automatically as a credit on your electricity bill. A typical 4kWp
+                must pay you for excess solar exported to the grid, at an export rate
+                each supplier sets. We use{' '}
+                <span className="text-white font-semibold">{SOLAR_DATA.export.estimateLabel}</span> in
+                our estimates. It is paid as a credit on your electricity bill. A typical 4kWp
                 system can earn €200–€400 per year from exports alone.
               </p>
             </div>

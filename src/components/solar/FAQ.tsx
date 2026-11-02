@@ -136,7 +136,7 @@ const faqs: FAQItem[] = [
     id: 12,
     question: 'What happens to electricity I don\'t use?',
     answer:
-      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
+      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the Clean Export Guarantee, your electricity supplier pays you for exported energy at an export rate it sets (the CRU sets no minimum); our estimates use ${SOLAR_DATA.export.estimateLabel}. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
     category: 'technical',
     keywords: ['export', 'sell', 'excess', 'surplus', 'grid', 'microgeneration', 'credit', 'smart meter', 'esb'],
   },
