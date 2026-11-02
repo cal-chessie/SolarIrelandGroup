@@ -24,6 +24,8 @@ const ALLOWED_MIME_TYPES = new Set([
   'application/pdf',
 ]);
 
+import { resolveBillPeriod } from '@/lib/billPeriod';
+
 const GENERIC_ANALYSIS_ERROR =
   "We couldn't analyse that bill. Please try again or enter your details manually.";
 
@@ -75,6 +77,8 @@ interface BillExtraction {
   monthlyBill: number | null;
   annualUsage: number | null;
   billingPeriod: string | null;
+  billingDays?: number | null;
+  periodUsage?: number | null;
   unitRate: number | null;
   standingCharge: number | null;
   vat: number | null;
@@ -250,9 +254,11 @@ Extract EVERYTHING you can and return ONLY a JSON object with these fields:
 {
   "provider": "electricity supplier name (e.g. Electric Ireland, ESB, Bord Gáis Energy, SSE Airtricity, Energia, Panda, Yuno, Pinergy, Community Power, PrepayPower)",
   "accountName": "the account holder's full name exactly as printed on the bill (a person's name, or a business name for a commercial bill), or null if not visible",
-  "monthlyBill": "total amount due in euros (number, e.g. 187.42)",
-  "annualUsage": "annual consumption in kWh (number). Look for 'annual', 'kWh', 'consumption'. If only a monthly reading is shown, multiply by 12",
-  "billingPeriod": "the billing period (e.g. '1 Dec 2025 to 31 Dec 2025')",
+  "monthlyBill": "the total for this bill in euros, exactly as printed, for whatever period the bill covers (number, e.g. 187.42). Do NOT convert it to a monthly figure",
+  "annualUsage": "annual consumption in kWh ONLY if the bill prints an annual or yearly figure (number), else null. Never multiply anything",
+  "periodUsage": "kWh used in this billing period as printed (number), else null",
+  "billingPeriod": "the billing period exactly as printed, e.g. '1 Dec 2025 to 31 Jan 2026'",
+  "billingDays": "the number of days the bill covers if printed (number), else null",
   "unitRate": "price per kWh in euros if shown (number, e.g. 0.422)",
   "standingCharge": "daily or monthly standing charge if shown (number)",
   "vat": "VAT rate if shown (e.g. 9 or 13.5)",
@@ -291,8 +297,42 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
 
       const billData: BillExtraction = JSON.parse(jsonMatch[0]);
 
-      monthlyBill = billData.monthlyBill || 160;
-      annualUsage = billData.annualUsage || 4800;
+      // The period comes off the bill (printed day count or the two dates).
+      // A two-month total is never read as one month, and nothing missing is
+      // ever filled with a default and shown as read: if the amount, the
+      // period or the usage cannot be read, we ask (audit 29 and 34b).
+      const period = resolveBillPeriod({
+        amountEur: billData.monthlyBill,
+        billingDays: billData.billingDays,
+        billingPeriod: billData.billingPeriod,
+        periodUsageKwh: billData.periodUsage,
+        annualUsageKwh: billData.annualUsage,
+      });
+      if (period.missing.length > 0 || period.monthlyBillEur === null || period.annualUsageKwh === null) {
+        const amount = typeof billData.monthlyBill === 'number' && billData.monthlyBill > 0 ? billData.monthlyBill : null;
+        const asks: string[] = [];
+        if (period.missing.includes('amount')) asks.push('the bill amount');
+        if (period.missing.includes('period')) asks.push('whether the bill is monthly or every two months');
+        if (period.missing.includes('usage')) asks.push('your usage in kWh (or use the auto-estimate)');
+        return NextResponse.json(
+          {
+            error: `We read your bill but could not see ${asks.join(', ')}. Please fill ${asks.length > 1 ? 'those' : 'that'} in below. We never guess it for you.`,
+            needsFigures: true,
+            missing: period.missing,
+            // What WAS read, so the visitor only types the gap.
+            partial: {
+              provider: billData.provider || null,
+              accountName: typeof billData.accountName === 'string' ? billData.accountName.trim().slice(0, 80) || null : null,
+              amountEur: amount,
+              twoMonthly: period.days !== null ? period.twoMonthly : null,
+              annualUsage: period.annualUsageKwh,
+            },
+          },
+          { status: 422 }
+        );
+      }
+      monthlyBill = period.monthlyBillEur;
+      annualUsage = period.annualUsageKwh;
       provider = billData.provider || 'Unknown';
       accountName = typeof billData.accountName === 'string' ? billData.accountName.trim().slice(0, 80) || null : null;
       billingPeriod = billData.billingPeriod || null;
@@ -308,9 +348,9 @@ Return ONLY valid JSON. No markdown, no explanation. Use null for any field you 
       confidence = 0;
       if (billData.provider) { extractedFields.push('Provider'); confidence += 20; }
       if (billData.monthlyBill) { extractedFields.push('Bill Amount'); confidence += 25; }
-      if (billData.annualUsage) { extractedFields.push('Usage (kWh)'); confidence += 25; }
+      if (billData.annualUsage || billData.periodUsage) { extractedFields.push('Usage (kWh)'); confidence += 25; }
       if (billData.unitRate) { extractedFields.push('Unit Rate'); confidence += 15; }
-      if (billData.billingPeriod) { extractedFields.push('Billing Period'); confidence += 10; }
+      if (period.days !== null) { extractedFields.push(period.twoMonthly ? 'Billing Period (2 months)' : 'Billing Period'); confidence += 10; }
       if (billData.standingCharge) { extractedFields.push('Standing Charge'); confidence += 5; }
     } else {
       const body = await request.json();

@@ -489,8 +489,10 @@ export default function BillAnalyser() {
       const res = await fetch('/api/analyse-bill', { method: 'POST', body: formData });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const e = new Error(data.error || 'Failed to analyse bill.') as Error & { unavailable?: boolean };
+        const e = new Error(data.error || 'Failed to analyse bill.') as Error & { unavailable?: boolean; needsFigures?: boolean; partial?: Record<string, unknown> };
         e.unavailable = res.status === 503 || data.uploadUnavailable === true;
+        e.needsFigures = data.needsFigures === true;
+        e.partial = data.partial && typeof data.partial === 'object' ? data.partial : undefined;
         throw e;
       }
       return data;
@@ -528,8 +530,32 @@ export default function BillAnalyser() {
         setAnalysis(data);
       }
     } catch (err: unknown) {
-      const e = err as Error & { unavailable?: boolean };
-      if (e.unavailable) {
+      const e = err as Error & { unavailable?: boolean; needsFigures?: boolean; partial?: Record<string, unknown> };
+      if (e.needsFigures) {
+        // The reader missed the amount, the period or the usage. Never fill the
+        // gap with a default: open manual entry with what WAS read filled in
+        // and ask for the rest (audit 29 and 34b).
+        const p = e.partial ?? {};
+        const amount = typeof p.amountEur === 'number' && p.amountEur > 0 ? p.amountEur : null;
+        const usage = typeof p.annualUsage === 'number' && p.annualUsage > 0 ? p.annualUsage : null;
+        setMode('manual');
+        setUploadedFile(null);
+        setBillPreview(null);
+        setBillPreviewOpen(false);
+        setMonthlyBill(amount !== null ? String(amount) : '');
+        if (p.twoMonthly === true) setBillPeriod('two_months');
+        else if (p.twoMonthly === false) setBillPeriod('month');
+        setAnnualUsage(usage !== null ? String(usage) : '');
+        if (typeof p.provider === 'string') {
+          const match = PROVIDERS.find((x) => x.toLowerCase() === (p.provider as string).trim().toLowerCase());
+          if (match) setProvider(match);
+        }
+        if (typeof p.accountName === 'string' && p.accountName.trim()) {
+          const nm = (p.accountName as string).trim().slice(0, 80);
+          setLeadName((prev) => (prev.trim() ? prev : nm));
+        }
+        setError(e.message);
+      } else if (e.unavailable) {
         // Auto-read is off; drop the visitor into manual mode with the reason.
         setMode('manual');
         setUploadedFile(null);
