@@ -83,11 +83,11 @@ Top-level fields: `name`, `email`, `phone`, `county`, `address`, `eircode`, `mon
 
 Everything else travels in `meta`, and every one of these makes the estimate less of a guess. Before 7 Sep the platform only ever saw a monthly figure and an annual usage:
 
-`page` · `homeType` · `estimatedAnnualSaving` · `surveyDate` · `surveyTime` · `segment` (domestic/commercial) · `occupants` · `provider` · `packageInterest` · `roofType` · `householdSize` · `billRead`
+`page` · `homeType` · `estimatedAnnualSaving` · `surveyDate` · `surveyTime` · `segment` (domestic/commercial) · `occupants` · `provider` · `packageInterest` · `roofType` · `householdSize` · `billRead` · `businessName` (business doors, 2 Nov 2026; also written as the first line of `message` so it reaches a person while AISolar does not store it)
 
 ### Guards on the door
 
-- **Honeypot**: hidden `company` and `website_url` fields. Tripped means accept with 200 and drop silently, so the bot learns nothing.
+- **Honeypot**: hidden `company` and `website_url` fields. Never send a real business name as `company`: it is `businessName`. Tripped means accept with 200 and drop silently, so the bot learns nothing.
 - **Rate limit**: 12 requests per IP per 60s, in-process (`leadBridge.ts`). Best effort only, since it does not survive a cold start. Real rate limiting still needs infra Cal picks.
 - **`sanitiseBillRead()`**: the analyser's read is model output and therefore untrusted. Bounded to 30 keys, keys stripped to `[\w.-]` and 40 chars, values coerced to string and cut at 120 chars.
 - **Name derivation**: AISolar requires a name plus an email or phone. Rather than reject a valid contact for want of a name, the route derives one from the email local part.

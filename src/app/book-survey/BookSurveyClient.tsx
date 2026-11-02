@@ -167,6 +167,10 @@ interface FormData {
   roofType: string;
   householdSize: string;
   currentBill: string;
+  /** 'month' or 'two_months': many Irish bills come every two months. */
+  billPeriod: string;
+  /** Business mode only. Sent as businessName, never `company` (the honeypot). */
+  businessName: string;
   preferredDate: string;
   preferredTime: string;
   interest: string[];
@@ -198,7 +202,7 @@ const surveyPromises = [
 const faqItems = [
   {
     q: 'Is the solar survey really free?',
-    a: 'Yes, 100% free with absolutely no obligation. Our SEAI-registered assessor visits your home at a time that suits you, evaluates your roof space, shading, and energy usage, then provides a detailed, honest quote. You won\'t be pressured into anything - ever.',
+    a: 'Yes, 100% free with absolutely no obligation. Our SEAI-registered assessor visits your home or business premises at a time that suits you, evaluates your roof space, shading, and energy usage, then provides a detailed, honest quote. You won\'t be pressured into anything - ever.',
   },
   {
     q: 'How long does the survey take?',
@@ -237,6 +241,8 @@ export default function BookSurveyClient() {
     roofType: '',
     householdSize: '',
     currentBill: '',
+    billPeriod: 'month',
+    businessName: '',
     preferredDate: '',
     preferredTime: '',
     interest: [],
@@ -304,8 +310,12 @@ export default function BookSurveyClient() {
         phone: d.phone || prev.phone,
         address: d.resolvedAddress || (d.eircode ? `Eircode: ${d.eircode}` : prev.address),
         currentBill: d.currentBill || prev.currentBill,
+        // The analyser hands over a monthly figure.
+        billPeriod: d.currentBill ? 'month' : prev.billPeriod,
+        businessName: d.businessName || prev.businessName,
         notes: d.notes || prev.notes,
       }));
+      if (d.segment === 'business') setSegment('business');
     } catch { /* no prefill - the form works blank */ }
   }, []);
 
@@ -363,6 +373,7 @@ export default function BookSurveyClient() {
     }
 
     if (s === 1) {
+      if (segment === 'business' && !formData.businessName.trim()) e.businessName = 'Please enter the business name';
       if (!formData.address.trim()) e.address = 'Required';
       if (!formData.county) e.county = 'Please select your county';
       if (segment === 'home' && !formData.propertyType) e.propertyType = 'Please select your property type';
@@ -466,8 +477,18 @@ export default function BookSurveyClient() {
     const propType = propertyTypes.find(p => p.value === formData.propertyType)?.label || formData.propertyType;
     const roof = roofTypes.find(r => r.value === formData.roofType)?.label || formData.roofType;
 
+    // The bill as typed, and as a monthly figure for the platform. A two-month
+    // bill is halved here, never read as one month.
+    const billEntered = Number(formData.currentBill);
+    const billTwoMonths = formData.billPeriod === 'two_months';
+    const billMonthly = Number.isFinite(billEntered) && billEntered > 0
+      ? Math.round((billTwoMonths ? billEntered / 2 : billEntered) * 100) / 100
+      : undefined;
+    const businessName = segment === 'business' ? formData.businessName.trim() : '';
+
     const message =
       `📅 SOLAR SURVEY BOOKING\n\n` +
+      (businessName ? `🏢 Business: ${businessName}\n` : '') +
       `👤 Name: ${formData.firstName} ${formData.lastName}\n` +
       `📞 Phone: ${formData.phone}\n` +
       `📧 Email: ${formData.email}\n` +
@@ -476,7 +497,11 @@ export default function BookSurveyClient() {
       (segment === 'business' ? `🏢 Business premises\n` : `🏗️ Property: ${propType}\n`) +
       `🏠 Roof: ${roof}\n` +
       (formData.householdSize ? `👨‍👩‍👧‍👦 Household: ${formData.householdSize} people\n` : '') +
-      (formData.currentBill ? `💳 Current Bill: €${formData.currentBill}/month\n` : '') +
+      (billMonthly !== undefined
+        ? (billTwoMonths
+          ? `💳 Current Bill: €${formData.currentBill} every two months (€${billMonthly}/month)\n`
+          : `💳 Current Bill: €${formData.currentBill}/month\n`)
+        : '') +
       `📆 Preferred Date: ${dateStr}\n` +
       `🕐 Preferred Time: ${timeStr}\n` +
       `☀️ Interest: ${interestStr}\n` +
@@ -495,11 +520,12 @@ export default function BookSurveyClient() {
     const res = await submitLead({
       source: 'website_survey',
       name: `${formData.firstName} ${formData.lastName}`.trim(),
+      businessName: businessName || undefined,
       email: formData.email.trim(),
       phone: formData.phone.trim() || undefined,
       county: formData.county || undefined,
       address: formData.address || undefined,
-      monthlyBill: formData.currentBill ? Number(formData.currentBill) : undefined,
+      monthlyBill: billMonthly,
       // Property type was only ever inside the message blob, so nothing could
       // query it. It maps onto the same field the analyser sends.
       homeType: segment === 'home' ? (propType || undefined) : undefined,
@@ -589,14 +615,16 @@ export default function BookSurveyClient() {
                 </h1>
 
                 <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-xl mb-8">
-                  Takes 60 seconds to book. Our SEAI-registered assessor visits your home, evaluates your roof, and delivers an honest quote with estimated savings within 48 hours.
+                  Takes 60 seconds to book. Our SEAI-registered assessor visits your {segment === 'business' ? 'premises' : 'home'}, evaluates your roof, and delivers an honest quote with estimated savings within 48 hours.
                 </p>
 
                 {/* Key stats */}
                 <div className="flex items-center gap-5 sm:gap-6">
                   {[
                     { value: '30-45', unit: 'min', label: 'Survey Duration' },
-                    { value: '0%', unit: 'VAT', label: 'On Domestic Solar' },
+                    // 0% VAT is for homes only; a business pays 13.5%, so the
+                    // business view never shows it.
+                    ...(segment === 'business' ? [] : [{ value: '0%', unit: 'VAT', label: 'On Domestic Solar' }]),
                     { value: '48', unit: 'hrs', label: 'Quote Turnaround' },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center flex-1 min-w-0">
@@ -856,6 +884,22 @@ export default function BookSurveyClient() {
                         </div>
 
                         <div className="mt-6 space-y-6">
+                          {/* Business name (business only): the installer hands over to
+                              a company, not just a person. */}
+                          {segment === 'business' && (
+                            <InputField
+                              label="Business name"
+                              icon={Building2}
+                              value={formData.businessName}
+                              onChange={(v) => update('businessName', v)}
+                              error={errors.businessName}
+                              placeholder="e.g. Murphy's Hardware Ltd"
+                              name="organization"
+                              autoComplete="organization"
+                              enterKeyHint="next"
+                            />
+                          )}
+
                           {/* Address */}
                           <InputField
                             label="Address"
@@ -980,8 +1024,25 @@ export default function BookSurveyClient() {
                             )}
                             <div>
                               <label htmlFor={currentBillId} className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
-                                Monthly Electricity Bill <span className="text-gray-600 normal-case">(optional)</span>
+                                Electricity Bill <span className="text-gray-600 normal-case">(optional)</span>
                               </label>
+                              {/* Many bills come every two months: say which, so a
+                                  two-month bill is never read as one month. */}
+                              <div className="mb-2 inline-flex p-0.5 rounded-lg bg-white/[0.04] border border-white/[0.06]" role="group" aria-label="How often your bill comes">
+                                {([['month', 'Monthly'], ['two_months', 'Every 2 months']] as const).map(([val, label]) => (
+                                  <button
+                                    key={val}
+                                    type="button"
+                                    onClick={() => update('billPeriod', val)}
+                                    aria-pressed={formData.billPeriod === val}
+                                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                                      formData.billPeriod === val ? 'bg-green-400/15 text-green-400' : 'text-gray-400 hover:text-white'
+                                    }`}
+                                  >
+                                    {label}
+                                  </button>
+                                ))}
+                              </div>
                               <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500">€</span>
                                 <input
@@ -1182,6 +1243,9 @@ export default function BookSurveyClient() {
                           <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
                             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Property Details</h3>
                             <div className="space-y-3">
+                              {segment === 'business' && formData.businessName.trim() && (
+                                <ConfirmRow icon={Building2} label="Business" value={formData.businessName.trim()} />
+                              )}
                               <ConfirmRow icon={Home} label="Address" value={`${formData.address}, ${formData.county}`} />
                               <ConfirmRow icon={Building2} label={segment === 'business' ? 'Type' : 'Property Type'} value={segment === 'business' ? 'Business premises' : (propertyTypes.find(p => p.value === formData.propertyType)?.label || formData.propertyType)} />
                               <ConfirmRow icon={Home} label="Roof Type" value={roofTypes.find(r => r.value === formData.roofType)?.label || formData.roofType} />
@@ -1360,7 +1424,7 @@ export default function BookSurveyClient() {
                     <div className="space-y-4">
                       {[
                         { time: 'Straight away', text: bookingFallback ? 'We have your request and your preferred time.' : 'A confirmation email lands with your appointment details.' },
-                        { time: 'Survey Day', text: 'Our assessor visits your home for a thorough 30-45 minute roof and energy assessment.' },
+                        { time: 'Survey Day', text: `Our assessor visits your ${segment === 'business' ? 'premises' : 'home'} for a thorough 30-45 minute roof and energy assessment.` },
                         { time: 'Within 48 hours', text: 'Receive your itemised quote with estimated savings, grant eligibility, and payback period.' },
                       ].map((item, i) => (
                         <div key={i} className="flex gap-3">
@@ -1648,7 +1712,7 @@ export default function BookSurveyClient() {
                       setStep(0);
                       setIsSubmitted(false);
                       setSubmitError(null);
-                      setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', county: '', propertyType: '', roofType: '', householdSize: '', currentBill: '', preferredDate: '', preferredTime: '', interest: [], notes: '' });
+                      setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', county: '', propertyType: '', roofType: '', householdSize: '', currentBill: '', billPeriod: 'month', businessName: '', preferredDate: '', preferredTime: '', interest: [], notes: '' });
                     }
                     stepCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}

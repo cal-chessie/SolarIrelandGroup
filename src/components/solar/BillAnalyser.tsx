@@ -608,6 +608,10 @@ export default function BillAnalyser() {
 
   // ─── Email-first report capture: the analysis becomes a lead in AISolar ───
   const [leadName, setLeadName] = useState('');
+  // A business is a company, not a person: the installer's hand-over needs its
+  // name. Sent as `businessName`, never `company` (the lead bridge treats a
+  // filled `company` as the bot honeypot and drops the lead silently).
+  const [leadBusinessName, setLeadBusinessName] = useState('');
   const [leadEmail, setLeadEmail] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
   const [leadEircode, setLeadEircode] = useState('');
@@ -703,6 +707,8 @@ export default function BillAnalyser() {
     const email = leadEmail.trim();
     const phone = leadPhone.trim();
     const eircode = leadEircode.trim().toUpperCase();
+    const businessName = analysis.isCommercial ? leadBusinessName.trim() : '';
+    if (analysis.isCommercial && businessName.length < 2) { setLeadError('Please enter the business name.'); return; }
     if (name.length < 2) { setLeadError('Please enter your name.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setLeadError('Please enter a valid email address.'); return; }
     if (phone.replace(/[^0-9]/g, '').length < 7) { setLeadError('Please enter a valid mobile number.'); return; }
@@ -712,6 +718,7 @@ export default function BillAnalyser() {
     const result = await submitLead({
       source: 'bill_analyser',
       name,
+      businessName: businessName || undefined,
       email,
       phone,
       eircode: eircode || undefined,
@@ -745,7 +752,9 @@ export default function BillAnalyser() {
             confidence: analysis.confidence,
           }
         : undefined,
-      message: buildReportText(analysis),
+      // The name also rides in the message, so it reaches a person even where
+      // the platform does not yet store meta.businessName.
+      message: (businessName ? `Business: ${businessName}\n` : '') + buildReportText(analysis),
     });
     if (result.ok) {
       setLeadFallback(result.fallback === true);
@@ -1341,6 +1350,9 @@ export default function BillAnalyser() {
                                 eircode: leadEircode.trim().toUpperCase(),
                                 resolvedAddress: eirHome ? eirHome.address.replace(/, Ireland$/, '') : '',
                                 currentBill: analysis ? String(analysis.monthlyBill) : '',
+                                // A business stays a business on the booking form.
+                                segment: analysis?.isCommercial ? 'business' : 'home',
+                                businessName: analysis?.isCommercial ? leadBusinessName.trim() : '',
                                 notes: analysis ? `From the bill analyser: ${analysis.recommendedSystem}kWp recommended, ~€${analysis.totalAnnualBenefit}/yr benefit.` : '',
                               }));
                             } catch { /* storage unavailable - form still works blank */ }
@@ -1373,6 +1385,11 @@ export default function BillAnalyser() {
                         </div>
                         <form onSubmit={handleEmailReport} className="space-y-3">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {analysis.isCommercial && (
+                              <input type="text" autoComplete="organization" placeholder="Business name" aria-label="Business name" value={leadBusinessName}
+                                onChange={(e) => { setLeadBusinessName(e.target.value); if (leadError) setLeadError(null); }}
+                                className="sm:col-span-2 w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
+                            )}
                             <input type="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={leadName}
                               onChange={(e) => { setLeadName(e.target.value); if (leadError) setLeadError(null); }}
                               className="w-full px-4 py-3.5 rounded-xl bg-black/30 border border-white/[0.1] text-white text-base placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
@@ -1390,8 +1407,8 @@ export default function BillAnalyser() {
                                 <p className={`mt-1.5 text-[11px] flex items-center gap-1 ${isValidEircode(leadEircode) ? 'text-green-400' : 'text-amber-400/80'}`}>
                                   {isValidEircode(leadEircode)
                                     ? (eirHome
-                                        ? <><Check className="w-3 h-3" /> {eirHome.address.replace(/, Ireland$/, '')} - that&apos;s the home we&apos;ll survey</>
-                                        : <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} - we&apos;ll use this to find your home for the survey</>)
+                                        ? <><Check className="w-3 h-3" /> {eirHome.address.replace(/, Ireland$/, '')} - that&apos;s the {analysis.isCommercial ? 'premises' : 'home'} we&apos;ll survey</>
+                                        : <><Check className="w-3 h-3" /> {formatEircode(leadEircode)} - we&apos;ll use this to find your {analysis.isCommercial ? 'premises' : 'home'} for the survey</>)
                                     : <>Doesn&apos;t look like a full Eircode yet (e.g. D02 X285)</>}
                                 </p>
                               )}
