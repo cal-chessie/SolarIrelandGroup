@@ -116,7 +116,7 @@ interface AnalysisResult {
  * exact AnalysisResult shape the domestic results view already renders, so the
  * business path reuses the same UI with commercial numbers. The maths comes
  * from the one engine (src/lib/estimate.ts commercial siblings): NDMG grant,
- * 13% commercial VAT, no 4 kWp floor.
+ * 13.5% commercial VAT, no 4 kWp floor.
  */
 function buildCommercialAnalysis(x: {
   provider: string;
@@ -132,8 +132,8 @@ function buildCommercialAnalysis(x: {
   const unitRateOpt = x.unitRate && x.unitRate > 0 ? x.unitRate : undefined;
   const effRate = unitRateOpt ?? COMMERCIAL_RATE_FLOOR;
   const rec = recommendedCommercialSize(x.annualUsage);
-  const e = commercialEstimate({ annualUsageKwh: x.annualUsage, systemSizeKwp: rec, unitRateEur: unitRateOpt, dayUsageKwh: x.dayUsage });
-  const comparisons = commercialSystemOptions(x.annualUsage, rec, { unitRateEur: unitRateOpt });
+  const e = commercialEstimate({ annualUsageKwh: x.annualUsage, systemSizeKwp: rec, unitRateEur: unitRateOpt, exportRateEur: SOLAR_DATA.export.estimateRatePerKwh, dayUsageKwh: x.dayUsage });
+  const comparisons = commercialSystemOptions(x.annualUsage, rec, { unitRateEur: unitRateOpt, exportRateEur: SOLAR_DATA.export.estimateRatePerKwh });
 
   const monthlyUsage = x.annualUsage / 12;
   const ratio = e.selfConsumptionPct / 100;
@@ -149,7 +149,7 @@ function buildCommercialAnalysis(x: {
       selfConsumed: Math.round(selfConsumed),
       exported: Math.round(exported),
       saving: Math.round(selfConsumed * effRate),
-      exportEarning: Math.round(exported * SOLAR_DATA.export.ratePerKwh),
+      exportEarning: Math.round(exported * SOLAR_DATA.export.estimateRatePerKwh),
     };
   });
 
@@ -427,6 +427,10 @@ export default function BillAnalyser() {
   }, [isAnalyzing, showingReport, reveal]);
 
   const [monthlyBill, setMonthlyBill] = useState('');
+  // Most Irish electricity bills come every two months (Cal, 20 Oct: "we need a
+  // bi-monthly button"). The visitor types the figure exactly as it is printed and
+  // says which it is; everything downstream still works in a monthly amount.
+  const [billPeriod, setBillPeriod] = useState<'month' | 'two_months'>('month');
   const [annualUsage, setAnnualUsage] = useState('');
   const [homeType, setHomeType] = useState('Semi-detached');
   const [provider, setProvider] = useState('Electric Ireland');
@@ -534,6 +538,7 @@ export default function BillAnalyser() {
   };
 
   const handlePreset = (preset: typeof PRESETS[0]) => {
+    setBillPeriod('month'); // presets are monthly figures
     setMonthlyBill(String(preset.bill));
     setAnnualUsage(String(preset.usage));
     setHomeType(preset.home);
@@ -542,9 +547,10 @@ export default function BillAnalyser() {
   };
 
   const handleManualAnalyse = async () => {
-    const bill = parseFloat(monthlyBill);
+    const entered = parseFloat(monthlyBill);
+    const bill = billPeriod === 'two_months' ? Math.round((entered / 2) * 100) / 100 : entered;
     const usage = parseFloat(annualUsage);
-    if (!bill || bill <= 0 || !usage || usage <= 0) { setError('Please enter your monthly bill and annual usage.'); return; }
+    if (!bill || bill <= 0 || !usage || usage <= 0) { setError('Please enter your bill and annual usage.'); return; }
     setError(null);
     setIsAnalyzing(true);
     setAnalysis(null);
@@ -943,13 +949,21 @@ export default function BillAnalyser() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label htmlFor="mb" className="block text-sm text-gray-400">Monthly Bill</label>
+                          <label htmlFor="mb" className="block text-sm text-gray-400">Your Bill</label>
+                          <div role="radiogroup" aria-label="How often your bill comes" className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06] w-fit">
+                            {([['month', 'Monthly'], ['two_months', 'Every 2 months']] as const).map(([v, label]) => (
+                              <button key={v} type="button" role="radio" aria-checked={billPeriod === v} onClick={() => setBillPeriod(v)}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${billPeriod === v ? 'bg-amber-400 text-black' : 'text-gray-400 hover:text-white'}`}>
+                                {label}
+                              </button>
+                            ))}
+                          </div>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
                             <input id="mb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="160" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <p className="text-[11px] text-gray-400">Found on the front of your electricity bill</p>
+                          <p className="text-[11px] text-gray-400">{billPeriod === 'two_months' ? 'The total on the front of your bill. We work out the monthly figure.' : 'Found on the front of your electricity bill'}</p>
                         </div>
                         <div className="space-y-2">
                           <label htmlFor="au" className="block text-sm text-gray-400">Annual Usage</label>
@@ -1032,13 +1046,21 @@ export default function BillAnalyser() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label htmlFor="cmb" className="block text-sm text-gray-400">Monthly Electricity Spend</label>
+                          <label htmlFor="cmb" className="block text-sm text-gray-400">Electricity Spend</label>
+                          <div role="radiogroup" aria-label="How often your bill comes" className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06] w-fit">
+                            {([['month', 'Monthly'], ['two_months', 'Every 2 months']] as const).map(([v, label]) => (
+                              <button key={v} type="button" role="radio" aria-checked={billPeriod === v} onClick={() => setBillPeriod(v)}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${billPeriod === v ? 'bg-amber-400 text-black' : 'text-gray-400 hover:text-white'}`}>
+                                {label}
+                              </button>
+                            ))}
+                          </div>
                           <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
                             <input id="cmb" enterKeyHint="go" type="text" inputMode="numeric" placeholder="1200" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (monthlyBill && annualUsage) handleManualAnalyse(); } }} value={monthlyBill} onChange={(e) => setMonthlyBill(e.target.value)}
                               className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-2xl font-semibold placeholder-gray-700 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/10 transition-all" />
                           </div>
-                          <p className="text-[11px] text-gray-400">The total on the business electricity bill</p>
+                          <p className="text-[11px] text-gray-400">{billPeriod === 'two_months' ? 'The total on the business bill. We work out the monthly figure.' : 'The total on the business electricity bill'}</p>
                         </div>
                         <div className="space-y-2">
                           <label htmlFor="cau" className="block text-sm text-gray-400">Annual Usage</label>
@@ -1197,7 +1219,7 @@ export default function BillAnalyser() {
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-amber-400" /> Your Electricity Cost</h4>
                     <CostMeter before={annualCost} after={costAfter} />
-                    <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.label} via the microgeneration scheme.</p>
+                    <p className="text-xs text-gray-400 mt-3">Based on {analysis.recommendedSystem}kWp system generating {analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh/year. Includes export payments at {SOLAR_DATA.export.estimateLabel} via the microgeneration scheme.</p>
                   </div>
 
                   <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
@@ -1209,7 +1231,7 @@ export default function BillAnalyser() {
                   <div>
                     <h4 className="text-sm font-semibold mb-4 flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Compare System Sizes</h4>
                     <SystemComparisonCards comparisons={analysis.systemComparisons} recommended={analysis.recommendedSystem} />
-                    <p className="text-xs text-gray-400 mt-3">The {analysis.recommendedSystem}kWp system gives you the best return on investment. A site survey will confirm your roof can fit your preferred size.</p>
+                    <p className="text-xs text-gray-400 mt-3">We recommend {analysis.recommendedSystem}kWp, sized to what your home uses. A bigger system can pay back sooner by exporting more; your site survey confirms what your roof can fit.</p>
                   </div>
 
                   <div className="rounded-xl border border-white/[0.06] overflow-hidden">
@@ -1254,7 +1276,7 @@ export default function BillAnalyser() {
                             ['Recommended system', `${analysis.recommendedSystem} kWp`, 'text-amber-400'],
                             ['Est. annual generation', `${analysis.monthlyProfile.reduce((s, m) => s + m.generation, 0).toLocaleString()} kWh`, 'text-white'],
                             ['Self-consumption saving', `€${analysis.annualSaving.toLocaleString()}/yr`, 'text-white'],
-                            [`Export payment (${SOLAR_DATA.export.label})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
+                            [`Export payment (${SOLAR_DATA.export.estimateLabel})`, `€${analysis.annualExportEarning.toLocaleString()}/yr`, 'text-white'],
                             ['Total annual benefit', `€${analysis.totalAnnualBenefit.toLocaleString()}/yr`, 'text-amber-400 font-bold'],
                             // Commercial itemises the VAT the business pays on top of the
                             // ex-VAT install price; domestic is quoted VAT-inclusive.

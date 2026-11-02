@@ -110,7 +110,7 @@ const demoSteps: InstallationStep[] = [
     id: 6,
     title: 'SEAI Grant Applied',
     subtitle: 'Grant application submitted',
-    description: "We've submitted your SEAI grant application on your behalf. The Sustainable Energy Authority of Ireland will review and approve your €1,800 grant.",
+    description: "Your SEAI grant application is in. SEAI reviews it and emails your grant offer; no work starts until you have it.",
     status: 'completed',
     date: '23 Aug 2026',
     icon: Award,

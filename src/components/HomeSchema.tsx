@@ -9,7 +9,7 @@
  * WebSite) stay in the root layout.
  */
 
-import { installCostEur, seaiGrant, DOMESTIC_MIN_KWP } from "@/lib/estimate";
+import { installCostEur, seaiGrant, homeGrant, DOMESTIC_MIN_KWP } from "@/lib/estimate";
 
 const SITE_URL = "https://solarirelandgroup.ie";
 
@@ -33,6 +33,8 @@ const panelsOnly = installCostEur(PANELS_ONLY_KWP);
 const withBattery = installCostEur(PANELS_ONLY_KWP, BATTERY_KWH);
 const premium = installCostEur(PREMIUM_KWP, PREMIUM_BATTERY_KWH);
 const grant = seaiGrant(PANELS_ONLY_KWP);
+// A package with a 5 kWh+ battery draws the €600 battery grant on top: €2,400.
+const batteryPackageGrant = homeGrant(PANELS_ONLY_KWP, BATTERY_KWH);
 const SITE_NAME = "Solar Ireland";
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
@@ -142,9 +144,9 @@ const serviceSchema = {
         priceCurrency: "EUR",
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: eur(withBattery - grant),
+          price: eur(withBattery - batteryPackageGrant),
           priceCurrency: "EUR",
-          name: `Price after €${grant.toLocaleString()} SEAI Grant`,
+          name: `Price after €${batteryPackageGrant.toLocaleString()} SEAI grants (solar + battery)`,
         },
       },
     ],
@@ -179,7 +181,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Get Your Free Home Survey",
-      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we handle the full SEAI grant application for you.",
+      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we guide you through the SEAI grant application.",
       position: 2,
     },
     {
@@ -196,7 +198,7 @@ const financialProductSchema = {
   "@type": "FinancialProduct",
   name: "SEAI Solar PV Grant",
   description:
-    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to owner-occupiers of homes built before 2021.",
+    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to homeowners, including private landlords, of homes built and occupied before 2025.",
   url: "https://www.seai.ie/grants/home-energy-grants/solar-pv/",
   provider: {
     "@type": "Organization",
@@ -205,11 +207,11 @@ const financialProductSchema = {
   },
   offers: {
     "@type": "Offer",
-    price: "1800",
+    price: eur(grant),
     priceCurrency: "EUR",
     priceSpecification: {
       "@type": "PriceSpecification",
-      price: "1800",
+      price: eur(grant),
       priceCurrency: "EUR",
       name: "SEAI Solar PV Grant Amount",
     },
@@ -218,7 +220,7 @@ const financialProductSchema = {
     "@type": "FeesAndCommissionsSpecification",
     name: "Grant Conditions",
     description:
-      "Available to owner-occupiers of homes built and occupied before 2021 with an MPRN. A BER assessment is carried out after the work is finished, before the grant is paid. Grant paid directly to the installer after completion.",
+      "Available to homeowners, including private landlords, of homes built and occupied before 2025 with an MPRN. A post-works BER is carried out after the work is finished, before the grant is paid. SEAI pays the grant into the bank account nominated on the Request for Payment form, about 4 to 6 weeks after the post-works BER is published; by default that is the homeowner's account.",
   },
 };
 

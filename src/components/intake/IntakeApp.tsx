@@ -1625,7 +1625,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         },
         ...(isBiz
           ? [
-              { name: 'Grant', value: 'Non-Domestic Microgeneration Grant (NDMG)', tag: 'assumed' as ProvTag, prov: 'assumed' as ProvTag },
+              // NDMG truths (audit 36): "up to", the lower of the table or 45%
+              // of the cost, the enhanced rates' 6 July 2027 deadline, 13.5% VAT.
+              { name: 'Grant', value: 'Non-Domestic Microgeneration Grant (NDMG), up to the lower of its table amount or 45% of the cost, at the enhanced rates for applications made by 6 July 2027', tag: 'assumed' as ProvTag, prov: 'assumed' as ProvTag },
+              { name: 'VAT', value: '13.5% VAT on business solar', tag: 'assumed' as ProvTag, prov: 'assumed' as ProvTag },
               { name: 'Price', value: 'Worked out with you at the site survey', tag: 'assumed' as ProvTag, prov: 'assumed' as ProvTag },
             ]
           : [
@@ -1670,6 +1673,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         </div>
         {isBiz ? <p className="si-body-lg si-white si-mt-16">An indicative estimate for your business. We work out the price with you at the site survey.</p> : null}
+        {isBiz ? (
+          <p className="si-small si-mt-16">
+            The NDMG pays up to the lower of its table amount or 45% of the cost. These enhanced rates are for
+            applications made by 6 July 2027. Business solar carries 13.5% VAT.
+          </p>
+        ) : null}
         <div className="si-strip" role="list">
           {isBiz ? (
             <>
@@ -1678,7 +1687,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                 <span className="si-strip__value" {...prov('estimate')}>{kwp(figures.kwp)}</span>
               </div>
               <div className="si-strip__cell" role="listitem">
-                <span className="si-strip__label">NDMG grant, about</span>
+                <span className="si-strip__label">NDMG grant, up to</span>
                 <span className="si-strip__value" {...prov('estimate')}>{eur(figures.grantEur)}</span>
               </div>
               <div className="si-strip__cell" role="listitem">
@@ -2559,7 +2568,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
                 <span className="si-strip__value" {...prov('estimate')}>{kwp(figures.kwp)}</span>
               </div>
               <div className="si-strip__cell" role="listitem">
-                <span className="si-strip__label">{isBiz ? 'NDMG grant, about' : 'After your grant'}</span>
+                <span className="si-strip__label">{isBiz ? 'NDMG grant, up to' : 'After your grant'}</span>
                 <span className="si-strip__value" {...prov('estimate')}>{isBiz ? eur(figures.grantEur) : figures.netCostEur != null ? eur(figures.netCostEur) : ''}</span>
               </div>
               <div className="si-strip__cell" role="listitem">

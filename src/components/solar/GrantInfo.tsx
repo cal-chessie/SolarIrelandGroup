@@ -70,18 +70,18 @@ const checkSteps: CheckStep[] = [
       { label: 'No, I rent', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'The SEAI grant is only available to owner-occupiers, not renters.',
+    detail: 'The SEAI grant is for homeowners, including private landlords. A tenant cannot apply, but their landlord can.',
     icon: Home,
   },
   {
     id: 'year',
     question: 'When was your home built?',
     options: [
-      { label: 'Before 2021', value: 'yes' },
-      { label: '2021 or later', value: 'no' },
+      { label: 'Before 2025', value: 'yes' },
+      { label: '2025 or later', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'Homes built before 2021 qualify. Newer builds typically have higher BER ratings or already meet energy standards.',
+    detail: 'Homes built before 2025 qualify. Newer builds typically have higher BER ratings or already meet energy standards.',
     icon: Calendar,
   },
   {
@@ -333,7 +333,14 @@ function EligibilityChecker() {
   );
 }
 
-const timelineSteps = [
+// SEAI's own addresses for the steps the homeowner does (read on seai.ie, 20 Oct 2026).
+const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
+const BER_ASSESSOR_SEARCH = 'https://ndber.seai.ie/PASS/Assessors/Search.aspx';
+
+const timelineSteps: {
+  icon: typeof ClipboardCheck; title: string; description: string; duration: string; who: string;
+  color: string; bg: string; border: string; links?: { label: string; href: string }[];
+}[] = [
   {
     icon: ClipboardCheck,
     title: 'Free Survey',
@@ -347,9 +354,10 @@ const timelineSteps = [
   {
     icon: FileCheck,
     title: 'Grant Application',
-    description: 'We submit your SEAI grant application on your behalf. Approval typically takes 2-4 weeks.',
-    duration: '2-4 weeks',
-    who: 'We handle this',
+    description: 'Before any work starts, you apply on SEAI\'s online portal and choose Solar Ireland as your installer. We walk you through it. Once your grant offer is in, there are 8 months to complete the works.',
+    duration: 'Before work starts',
+    who: 'You apply, we guide you',
+    links: [{ label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL }],
     color: 'text-amber-400',
     bg: 'bg-amber-400/10',
     border: 'border-amber-400/20',
@@ -367,9 +375,13 @@ const timelineSteps = [
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: `After post-install BER assessment, SEAI pays ${SOLAR_DATA.grant.label} directly - deducted from your invoice.`,
-    duration: '4-8 weeks',
-    who: 'SEAI pays us',
+    description: `After the install, book your post-works BER with a registered BER assessor. We send SEAI the completion paperwork, and once your BER is published SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account you nominated. You can track it on SEAI's grant portal.`,
+    duration: '4-6 weeks',
+    who: 'SEAI pays you',
+    links: [
+      { label: 'Find a BER assessor', href: BER_ASSESSOR_SEARCH },
+      { label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL },
+    ],
     color: 'text-violet-400',
     bg: 'bg-violet-400/10',
     border: 'border-violet-400/20',
@@ -414,6 +426,16 @@ function GrantTimeline() {
                   </span>
                 </div>
                 <p className="text-xs text-gray-400 mt-1 leading-relaxed">{step.description}</p>
+                {step.links && (
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1.5">
+                    {step.links.map((l) => (
+                      <a key={l.href + l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                        className="text-xs font-medium text-amber-400 hover:text-amber-300 underline underline-offset-2">
+                        {l.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <div className={`inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md bg-white/[0.02] text-[10px] text-gray-400`}>
                   <Shield className={`w-3 h-3 ${step.color} opacity-50`} />
                   {step.who}
@@ -478,7 +500,7 @@ function KeyFactsRow() {
     // domestic floor is 4 kWp, and it is also the exact size the grant reaches
     // its full amount, so it is the honest number in both directions.
     { label: 'Min. system', value: `${DOMESTIC_MIN_KWP} kWp`, icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { label: 'Eligible homes', value: 'Pre-2021', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
+    { label: 'Eligible homes', value: 'Pre-2025', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'BER', value: 'After the work', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
   ];
 
@@ -550,9 +572,9 @@ export default function GrantInfo() {
         >
           <Info className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
           <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and submit the application on your behalf. Visit{' '}
+            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and walk you through your application. Visit{' '}
             <a
-              href="https://www.seai.ie/grants/home-energy-grants/solar-pv/"
+              href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors font-medium"

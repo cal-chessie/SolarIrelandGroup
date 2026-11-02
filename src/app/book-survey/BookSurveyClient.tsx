@@ -99,6 +99,17 @@ function dublinSlotISO(day: Date, hour: number): string {
   return new Date(guess - offset).toISOString();
 }
 
+// Irish public holidays (citizensinformation.ie public holidays list). The page used
+// to offer Mon 26 Oct 2026, the October bank holiday. Extend this list each autumn;
+// the new intake reads closed days from the platform's survey settings instead.
+const IRISH_PUBLIC_HOLIDAYS = new Set([
+  '2026-10-26', '2026-12-25', '2026-12-26',
+  '2027-01-01', '2027-02-01', '2027-03-17', '2027-03-29', '2027-05-03',
+  '2027-06-07', '2027-08-02', '2027-10-25', '2027-12-25', '2027-12-26',
+]);
+const dayKey = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 function getAvailableDates(): { date: Date; label: string; dayName: string; month: string }[] {
   const dates: { date: Date; label: string; dayName: string; month: string }[] = [];
   const now = new Date();
@@ -114,6 +125,7 @@ function getAvailableDates(): { date: Date; label: string; dayName: string; mont
     // dublinSlotISO reads only the day components, so it is unaffected.
     d.setHours(0, 0, 0, 0);
     if (d.getDay() === 0) continue;
+    if (IRISH_PUBLIC_HOLIDAYS.has(dayKey(d))) continue;
     dates.push({
       date: d,
       label: d.toLocaleDateString('en-IE', { day: 'numeric', month: 'short' }),
@@ -178,7 +190,7 @@ const surveyPromises = [
   },
   {
     title: 'A price, not a pitch',
-    text: 'Fifteen minutes, on site or by video. You leave knowing your roof, your system size and your price. Free, and there is nothing to sign on the day.',
+    text: 'Fifteen minutes on the phone, then about 45 minutes at your home. You leave knowing your roof, your system size and your price. Free, and there is nothing to sign on the day.',
     tag: 'No obligation',
   },
 ];
@@ -626,7 +638,7 @@ export default function BookSurveyClient() {
                       </div>
                       <div>
                         <h2 className="text-white font-bold">€1,800 SEAI Grant (ROI)</h2>
-                        <p className="text-sm text-gray-500">We handle all grant paperwork for you</p>
+                        <p className="text-sm text-gray-500">We guide you through the SEAI grant</p>
                       </div>
                     </div>
 

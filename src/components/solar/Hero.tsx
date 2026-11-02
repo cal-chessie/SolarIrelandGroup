@@ -107,8 +107,8 @@ export default function Hero() {
               style={{ animationDelay: '0.5s' }}
             >
               Type your bill to see what solar would save you, then book a free
-              site survey on the same page. We handle the survey, the install
-              and your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
+              site survey on the same page. We handle the survey and the install,
+              and guide you through your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
             </p>
 
             {/* Intake OS: the bill field IS the door (ui-spec 6.0). It replaces

@@ -187,6 +187,7 @@ export const articles: Article[] = [
     "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -263,7 +264,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "To qualify, your home must have been built and occupied before 2021, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online before any work starts, the grant offer normally issues immediately, and it stays valid for 8 months. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "To qualify, your home must have been built and occupied before 2025, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online before any work starts, the grant offer normally issues immediately, and it stays valid for 8 months. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -337,7 +338,7 @@ export const articles: Article[] = [
           "**Heavy, unfixable shading.** A roof shadowed by tall trees or neighbouring buildings for most of the day cannot generate its way to a sensible payback. Optimisers help with partial shading; they cannot conjure light.",
           "**A very small bill.** If your home uses well under 2,000 kWh a year, your savings ceiling is low and payback stretches. Fix the usage question first.",
           "**A roof due for replacement.** Reroofing under panels means paying to remove and refit them. Do the roof first, then the panels.",
-          "**Homes built from 2021 onwards.** These do not qualify for the SEAI grant, so the same system costs €1,800 more. Solar can still stack up on a high bill, but the payback is honestly longer.",
+          "**Homes built from 2025 onwards.** These do not qualify for the SEAI grant, so the same system costs €1,800 more. Solar can still stack up on a high bill, but the payback is honestly longer.",
           "**Protected structures and ACAs.** Most rooftop solar on houses is exempted development with no rooftop area limit since S.I. 493/2022, but protected structures and architectural conservation areas still carry restrictions. Check before you plan."
         ]
       },
@@ -390,7 +391,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. The grant is **€1,800** and was held at that level for 2026, with the planned €300-a-year reductions paused. It applies to homes built and occupied before 2021 with a valid MPRN and no previous solar grant at that address, and both owner-occupiers and private landlords can claim it."
+        "text": "Yes. The grant is **€1,800** and was held at that level for 2026, with the planned €300-a-year reductions paused. It applies to homes built and occupied before 2025 with a valid MPRN and no previous solar grant at that address, and both owner-occupiers and private landlords can claim it."
       },
       {
         "type": "heading",
@@ -436,6 +437,7 @@ export const articles: Article[] = [
     "excerpt": "The full journey from site survey to switch-on: SEAI grant, installation day, the free NC6 form, the post-works BER and when export payments start.",
     "category": "guides",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -494,7 +496,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply online at seai.ie before any work starts, and the grant offer normally issues immediately. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2021 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "You apply online at seai.ie before any work starts, and the grant offer normally issues immediately. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -678,6 +680,7 @@ export const articles: Article[] = [
     "excerpt": "MPRN, day and night rates, standing charges and kWh: how to read an Irish electricity bill in 2026, and what the day/night split tells you about solar.",
     "category": "savings",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -919,7 +922,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2021 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in."
+        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in."
       },
       {
         "type": "heading",
@@ -963,6 +966,7 @@ export const articles: Article[] = [
     "excerpt": "Yes. Solar PV is counted in DEAP, the method behind every Irish BER, so it lifts your rating - and a post-works BER is already part of the grant.",
     "category": "grants",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1054,7 +1058,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "There is a real upside for you in that requirement. Because a fresh, up-to-date BER is built into the process, grant-aided solar leaves you holding a current energy certificate for the home, the same document you will need if you ever sell, rent or apply for a green mortgage. To qualify for the grant your home must have been built and occupied before 2021 and hold a valid MPRN, the 11-digit number on your electricity bill, with no previous solar grant claimed at that MPRN. Owner-occupiers and private landlords are both eligible. The full detail is in our [complete guide to the SEAI solar grant](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "There is a real upside for you in that requirement. Because a fresh, up-to-date BER is built into the process, grant-aided solar leaves you holding a current energy certificate for the home, the same document you will need if you ever sell, rent or apply for a green mortgage. To qualify for the grant your home must have been built and occupied before 2025 and hold a valid MPRN, the 11-digit number on your electricity bill, with no previous solar grant claimed at that MPRN. Owner-occupiers and private landlords are both eligible. The full detail is in our [complete guide to the SEAI solar grant](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -1162,6 +1166,7 @@ export const articles: Article[] = [
     "excerpt": "Costs, the €1,800 SEAI grant, planning rules and what a site survey checks on Cork homes - from an SEAI-registered installer working across the county.",
     "category": "county",
     "date": "5 Sep 2026",
+    "updated": "17 Oct 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1191,7 +1196,7 @@ export const articles: Article[] = [
           "System size",
           "Suits",
           "Typical cost before grant",
-          "After €1,800 grant"
+          "After the SEAI grant (€1,800, or €2,400 with a 5 kWh+ battery)"
         ],
         "rows": [
           [
@@ -1210,7 +1215,7 @@ export const articles: Article[] = [
             "6 kWp + 5 kWh battery",
             "high evening use",
             "€12,800",
-            "€11,000"
+            "€10,400"
           ]
         ]
       },
@@ -1225,7 +1230,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2021, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online before any work starts and the grant offer normally issues immediately. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2025, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online before any work starts and the grant offer normally issues immediately. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -1285,7 +1290,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We handle the SEAI grant paperwork and the free ESB Networks NC6 notification. [Book a free site survey](/book-survey) to get a firm, itemised quote."
+        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We send SEAI the grant completion paperwork and ESB Networks the free NC6 notification. [Book a free site survey](/book-survey) to get a firm, itemised quote."
       },
       {
         "type": "heading",
@@ -1505,6 +1510,7 @@ export const articles: Article[] = [
     "excerpt": "How many panels a typical 3-bed semi needs, what a 10-panel system costs after the €1,800 grant, and a worked savings example from the bill.",
     "category": "savings",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -1550,14 +1556,14 @@ export const articles: Article[] = [
           [
             "+ 5 kWh battery",
             "+ €3,200",
-            "no battery grant",
-            "+ €3,200"
+            "- €600",
+            "+ €2,600"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "Domestic solar has 0% VAT, so the prices above are what you pay - there is no VAT to add. There is no separate SEAI battery grant, so a battery is an optional extra cost you weigh on its own merits, covered in our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost)."
+        "text": "Domestic solar has 0% VAT, so the prices above are what you pay - there is no VAT to add. A battery of 5 kWh or more carries a €600 SEAI battery grant on top of the solar grant, on the same application, which is the €600 off in the table. It is still an optional extra you weigh on its own merits, covered in our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost)."
       },
       {
         "type": "heading",
@@ -1595,7 +1601,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A 4 kWp+ system - which a 10-panel install is - reaches the full €1,800. To qualify, the home must have been built and occupied before 2021, with a valid MPRN and no previous solar grant at that address."
+        "text": "A 4 kWp+ system - which a 10-panel install is - reaches the full €1,800. To qualify, the home must have been built and occupied before 2025, with a valid MPRN and no previous solar grant at that address."
       },
       {
         "type": "heading",
@@ -1657,7 +1663,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "It depends on when you use electricity. A battery stores daytime solar for use in the evening, so it helps most if your household is out during the day and heavy on power in the evening, or if you are on a time-of-use tariff. Because there is no battery grant, it pays back more slowly than the panels themselves. Weigh it with our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost)."
+        "text": "It depends on when you use electricity. A battery stores daytime solar for use in the evening, so it helps most if your household is out during the day and heavy on power in the evening, or if you are on a time-of-use tariff. Even with the €600 SEAI battery grant (for a battery of 5 kWh or more), it pays back more slowly than the panels themselves. Weigh it with our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost)."
       },
       {
         "type": "heading",
@@ -1708,6 +1714,7 @@ export const articles: Article[] = [
     "excerpt": "Can you charge an electric car from solar in Ireland? How many panels it takes, how surplus diverting works, and when to charge on the night rate instead.",
     "category": "technology",
     "date": "5 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -1805,7 +1812,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "It can tip it either way. In one sense the car is a giant battery you are already paying for, so a home battery is less essential if you can time charging to soak up surplus. In another, if the car is usually away during peak solar hours, a home battery stores that surplus for the evening instead. There is no battery grant, so weigh it on payback - our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost) walks through it."
+        "text": "It can tip it either way. In one sense the car is a giant battery you are already paying for, so a home battery is less essential if you can time charging to soak up surplus. In another, if the car is usually away during peak solar hours, a home battery stores that surplus for the evening instead. A battery of 5 kWh or more carries a €600 SEAI grant on top of the solar grant, but weigh it on payback - our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost) walks through it."
       },
       {
         "type": "heading",
@@ -1855,7 +1862,7 @@ export const articles: Article[] = [
     "excerpt": "Everything you need to know about the €1,800 SEAI solar panel grant - eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.",
     "category": "grants",
     "date": "15 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "17 Oct 2026",
     "readTime": "12 min read",
     "featured": true,
     "author": "Cal Chesters",
@@ -1870,7 +1877,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to owner-occupiers of homes built before 2021 and is paid into your bank account by SEAI, usually within about 4-6 weeks of your post-works BER being published."
+        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to homeowners, including private landlords, of homes built and occupied before 2025, and SEAI pays it into the bank account you nominate, usually within about 4-6 weeks of your post-works BER being published."
       },
       {
         "type": "paragraph",
@@ -1894,9 +1901,9 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "The property must be built before 2021 (new builds completed after this date are not eligible)",
+          "The property must be built before 2025 (new builds completed after this date are not eligible)",
           "You must be the owner of the property, or have permission from the owner to install solar panels",
-          "The home must have been built and occupied before 2021 - owner-occupiers and private landlords can both apply",
+          "The home must have been built and occupied before 2025 - owner-occupiers and private landlords can both apply",
           "The property must be located in the Republic of Ireland",
           "Your chosen installer must be a registered SEAI contractor",
           "You must not have previously received a solar PV grant for the same property"
@@ -1913,7 +1920,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The standard SEAI solar PV grant in 2026 provides €1,800 towards the cost of your installation. This is a flat-rate grant for a typical domestic system. Unfortunately, the previous battery storage grant of €600 was discontinued - there is currently no standalone SEAI grant for battery storage, which makes choosing the right battery even more important."
+        "text": "The standard SEAI solar PV grant in 2026 provides €1,800 towards the cost of your installation. This is a flat-rate grant for a typical domestic system. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. Under 5 kWh there is no battery grant, and a bigger battery gets no more, which makes choosing the right battery size even more important."
       },
       {
         "type": "table",
@@ -1931,16 +1938,22 @@ export const articles: Article[] = [
             "15% – 22%"
           ],
           [
-            "Battery Storage (up to 6kWh)",
+            "Battery Storage (5 kWh or more)",
+            "€600",
+            "€3,200 – €4,900",
+            "12% – 19%"
+          ],
+          [
+            "Battery Storage (under 5 kWh)",
             "No grant",
-            "€2,500 – €3,500",
+            "€2,500 – €3,200",
             "N/A"
           ],
           [
-            "Solar PV + Battery Combined",
-            "Up to €1,800",
+            "Solar PV + Battery Combined (5 kWh or more)",
+            "Up to €2,400",
             "€11,400 – €17,300",
-            "10% – 16%"
+            "14% – 21%"
           ]
         ]
       },
@@ -2014,7 +2027,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "Time-Saving Tip",
-        "body": "Many SEAI-registered installers will handle the entire grant application process on your behalf, including the BER booking. Ask about this when getting quotes - it can save you significant admin time and ensure nothing gets missed."
+        "body": "Under SEAI's process you apply for the grant yourself, online, before any work starts, naming your registered installer. A good installer walks you through it and sends SEAI the completion paperwork after the install. Ask about this when getting quotes."
       },
       {
         "type": "heading",
@@ -2108,7 +2121,7 @@ export const articles: Article[] = [
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "17 Oct 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2122,7 +2135,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panels in Ireland cost between **€6,400 and €15,500 after the €1,800 SEAI grant** in 2026. A standard 4kWp system costs €6,400 after the grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €15,500. Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
+        "text": "Solar panels in Ireland cost between **€6,400 and €14,900 after the SEAI grants** in 2026. A standard 4kWp system costs €6,400 after the €1,800 grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €14,900 after €2,400 (the €1,800 solar grant plus the €600 battery grant). Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
       },
       {
         "type": "paragraph",
@@ -2132,7 +2145,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Price Range Overview",
-        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €8,200 for a 4kWp system to €17,300 for a large 10kWp system with 10 kWh of battery storage. After the €1,800 SEAI grant, your net cost drops to between €6,400 and €15,500."
+        "body": "The average cost of a solar panel system in Ireland in 2026 ranges from €8,200 for a 4kWp system to €17,300 for a large 10kWp system with 10 kWh of battery storage. After the SEAI grants (€1,800 for the panels, plus €600 for a battery of 5 kWh or more), your net cost drops to between €6,400 and €14,900."
       },
       {
         "type": "heading",
@@ -2197,7 +2210,7 @@ export const articles: Article[] = [
           "Roof complexity - A simple pitched roof with clear access is cheapest to install. Multiple roof planes, flat roofs, or difficult access add €500–€2,000",
           "Scaffold requirements - Most installations require scaffolding, which typically costs €300–€600 extra for two-storey homes",
           "Electrical upgrades - Older homes may need a consumer unit (fuse board) upgrade or new cabling, adding €300–€1,000",
-          "Battery storage - Adding a solar battery costs roughly €3,200 for 5 kWh and about €4,900 for 10 kWh, depending on capacity and brand",
+          "Battery storage - Adding a solar battery costs roughly €3,200 for 5 kWh and about €4,900 for 10 kWh, depending on capacity and brand, before the €600 SEAI battery grant for a battery of 5 kWh or more",
           "Location - Installations in Dublin and other major cities tend to be slightly more expensive than rural areas due to higher labour costs"
         ]
       },
@@ -2880,7 +2893,7 @@ export const articles: Article[] = [
     "excerpt": "Solar batteries cost €3,200-€4,900 for the usual 5 to 10 kWh sizes - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
     "date": "22 Mar 2026",
-    "updated": "8 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2903,7 +2916,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Battery Market in Ireland",
-        "body": "A growing share of new Irish solar installations now include battery storage. Note: The previous €600 SEAI battery grant was discontinued - there is no standalone battery grant in 2026, making the ROI calculation more important than ever."
+        "body": "A growing share of new Irish solar installations now include battery storage. Note: SEAI pays a flat €600 grant for a battery of 5 kWh or more, on top of the solar grant and on the same application. The ROI calculation still matters more than the grant."
       },
       {
         "type": "heading",
@@ -2917,8 +2930,8 @@ export const articles: Article[] = [
       {
         "type": "callout",
         "variant": "warning",
-        "title": "Battery Grant Discontinued",
-        "body": "The previous €600 SEAI battery storage grant has been discontinued. There is no standalone grant for batteries in 2026, which means the full cost of battery storage falls to you. Factor this into your payback calculations - most batteries now take 8–12 years to pay for themselves through savings alone."
+        "title": "The €600 Battery Grant",
+        "body": "SEAI pays a flat €600 grant for a battery of 5 kWh or more, on the same application as your panels (solar and battery together up to €2,400). Under 5 kWh there is no grant, and a bigger battery gets no more. The costs below are before the grant; the payback figures further down are after it."
       },
       {
         "type": "table",
@@ -2961,7 +2974,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 5-7 years, a battery usually takes 8–12 years. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
+        "text": "The payback period for a solar battery is longer than for panels alone. While solar panels typically pay for themselves in 5-7 years, a battery usually takes 8–12 years before the €600 SEAI battery grant, and less after it. However, this varies dramatically based on your electricity usage patterns. Let us look at the numbers:"
       },
       {
         "type": "paragraph",
@@ -2969,7 +2982,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "With a 5 kWh battery, self-consumption typically rises to around 75%. That means using about 4,275 kWh directly and exporting 1,425 kWh: €1,496 off the bill (4,275 kWh at €0.35) plus €285 from the Clean Export Guarantee (1,425 kWh at €0.20). Total: about €1,781 a year. The battery is therefore worth roughly €318 a year more than panels alone, and at about €3,200 fitted that is a payback of around 10 years on the battery portion, noticeably longer than the panels themselves."
+        "text": "With a 5 kWh battery, self-consumption typically rises to around 75%. That means using about 4,275 kWh directly and exporting 1,425 kWh: €1,496 off the bill (4,275 kWh at €0.35) plus €285 from the Clean Export Guarantee (1,425 kWh at €0.20). Total: about €1,781 a year. The battery is therefore worth roughly €318 a year more than panels alone, and at about €3,200 fitted, or €2,600 after the €600 SEAI battery grant, that is a payback of around 8 years on the battery portion, still noticeably longer than the panels themselves."
       },
       {
         "type": "table",
@@ -2989,20 +3002,20 @@ export const articles: Article[] = [
           [
             "5 kWh battery + solar",
             "€1,505",
-            "€3,200",
-            "~8.7 years"
+            "€2,600",
+            "~7.1 years"
           ],
           [
             "7 kWh battery + solar",
             "€1,575",
-            "€3,900",
-            "~8.9 years"
+            "€3,300",
+            "~7.6 years"
           ],
           [
             "10 kWh battery + solar",
             "€1,645",
-            "€4,900",
-            "~9.7 years"
+            "€4,300",
+            "~8.5 years"
           ]
         ]
       },
@@ -4783,7 +4796,7 @@ export const articles: Article[] = [
     "excerpt": "Yes, private landlords can claim the €1,800 SEAI solar grant. What to know about solar on Irish rental properties - eligibility, BER benefits and getting started.",
     "category": "grants",
     "date": "15 Mar 2026",
-    "updated": "8 Sep 2026",
+    "updated": "16 Oct 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -4796,25 +4809,25 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "This is one of the most frequently asked questions we receive from property investors, and the answer is yes. The SEAI solar PV grant is open to owner-occupiers and to private landlords, for homes built and occupied before 2021. This means:"
+        "text": "This is one of the most frequently asked questions we receive from property investors, and the answer is yes. The SEAI solar PV grant is open to owner-occupiers and to private landlords, for homes built and occupied before 2025. This means:"
       },
       {
         "type": "bulletList",
         "items": [
           "Yes - if you live in the property as your main home and install solar panels on it, you are eligible for the full €1,800 grant, regardless of whether you rent out individual rooms under the Rent a Room scheme",
-          "Yes - private landlords can claim the €1,800 SEAI solar grant on rental homes built and occupied before 2021 (seai.ie 'Supports for landlords')",
-          "No - a property that was not built and occupied as a home before 2021 does not qualify, and neither does an MPRN that has already had a solar grant"
+          "Yes - private landlords can claim the €1,800 SEAI solar grant on rental homes built and occupied before 2025 (seai.ie 'Supports for landlords')",
+          "No - a property that was not built and occupied as a home before 2025 does not qualify, and neither does an MPRN that has already had a solar grant"
         ]
       },
       {
         "type": "paragraph",
-        "text": "The eligibility criteria are clear: the SEAI grant is open to owner-occupiers and private landlords, for homes built and occupied before 2021 with a valid MPRN. If you own multiple properties, you can apply for each qualifying home, but only once per MPRN, so a property that has already had a solar grant cannot claim a second one."
+        "text": "The eligibility criteria are clear: the SEAI grant is open to owner-occupiers and private landlords, for homes built and occupied before 2025 with a valid MPRN. If you own multiple properties, you can apply for each qualifying home, but only once per MPRN, so a property that has already had a solar grant cannot claim a second one."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Rent-a-Room Exemption",
-        "body": "If you live in the property as your main home and rent out a room (or rooms) under the Rent a Room Scheme, you are eligible for the full €1,800 SEAI solar grant. Having tenants does not change anything: the tests are that the home was built and occupied before 2021, has a valid MPRN, and has not had a solar grant before."
+        "body": "If you live in the property as your main home and rent out a room (or rooms) under the Rent a Room Scheme, you are eligible for the full €1,800 SEAI solar grant. Having tenants does not change anything: the tests are that the home was built and occupied before 2025, has a valid MPRN, and has not had a solar grant before."
       },
       {
         "type": "heading",

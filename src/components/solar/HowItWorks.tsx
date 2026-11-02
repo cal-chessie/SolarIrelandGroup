@@ -53,7 +53,7 @@ const steps = [
     title: 'Install & Save',
     subtitle: 'Done in a day',
     description:
-      'Our RECI-registered team installs your system in a single day. We handle the SEAI grant paperwork and ESB grid connection. You start generating clean energy - and savings - from day one.',
+      'Our RECI-registered team installs your system in a single day. We send SEAI the completion paperwork and notify ESB Networks for your grid connection. You start generating clean energy - and savings - from day one.',
     icon: Zap,
     accent: 'from-sky-400 to-blue-500',
     accentBg: 'bg-sky-400/10',
