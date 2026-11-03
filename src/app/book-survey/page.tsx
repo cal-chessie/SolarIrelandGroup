@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 import BookSurveyClient from './BookSurveyClient';
-import IntakePage from '@/components/intake/IntakePage';
-import { parseIntakeQuery } from '@/lib/intake/open';
+import { bookSurveyRedirect } from '@/lib/intake/bookSurvey';
 
 export const metadata: Metadata = {
   title: 'Book a Free Solar Survey',
   description:
-    'Pick a real time for a free, no-obligation solar site survey. Our SEAI-registered team checks your roof and gives an honest itemised quote. All 32 counties.',
+    'Pick a real time for a free, no-obligation solar site survey: a 15-minute phone call first, then about 45 minutes at your home. SEAI registered. All 32 counties.',
   alternates: {
-    canonical: 'https://solarirelandgroup.ie/book-survey',
+    canonical: 'https://solarirelandgroup.ie/estimate',
   },
   openGraph: {
     title: 'Book a Free Solar Survey',
     description:
-      'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Pick a real time online.',
+      'A free site survey: a 15-minute phone call first, then about 45 minutes at your home. SEAI registered, all 32 counties. Pick a real time online.',
     url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
     siteName: 'Solar Ireland',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Book a Free Solar Survey',
     description:
-      'Free roof assessment, savings calculation, and itemised quote. Pick a real time online.',
+      'A free site survey: a 15-minute phone call first, then about 45 minutes at your home. Pick a real time online.',
   },
 };
 
@@ -35,7 +35,7 @@ const bookSchema = {
       '@id': 'https://solarirelandgroup.ie/#service-survey',
       name: 'Free Home Solar Survey',
       description:
-        'A comprehensive, no-obligation roof and energy assessment. Our assessor evaluates roof orientation, pitch, shading, structural suitability, and electrical setup. You receive an honest itemised quote with estimated annual savings, SEAI grant eligibility, and payback period.',
+        'A free, no-obligation site survey in two steps: a 15-minute phone call first, then about 45 minutes at your home, where the surveyor checks the roof, the fuse board and the meter. Your proposal follows in your project page.',
       url: 'https://solarirelandgroup.ie/book-survey',
       provider: {
         '@id': 'https://solarirelandgroup.ie/#business',
@@ -50,10 +50,10 @@ const bookSchema = {
         '@id': 'https://solarirelandgroup.ie/#book-survey-action',
         name: 'Book Free Solar Survey',
         description:
-          'Book a free, no-obligation solar survey for your home. A SEAI-registered assessor will visit your property, evaluate your roof, and provide an honest itemised quote with estimated savings.',
+          'Book a free, no-obligation site survey for your home: a 15-minute phone call first, then about 45 minutes at your home.',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: 'https://solarirelandgroup.ie/book-survey',
+          urlTemplate: 'https://solarirelandgroup.ie/estimate',
           inLanguage: 'en-IE',
           actionPlatform: [
             'https://schema.org/DesktopWebPlatform',
@@ -94,7 +94,7 @@ const bookSchema = {
       },
       potentialAction: {
         '@type': 'ReserveAction',
-        target: 'https://solarirelandgroup.ie/book-survey',
+        target: 'https://solarirelandgroup.ie/estimate',
         result: {
           '@type': 'Reservation',
           name: 'Free Solar Home Survey',
@@ -128,7 +128,7 @@ const bookSchema = {
           name: 'Is the solar survey really free?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes, free and with no obligation. The assessor measures your roof, checks shading and reviews your usage, then gives you an itemised quote. If solar is not right for your house, they will say so on the day.',
+            text: 'Yes, free and with no obligation. The surveyor checks the roof, the fuse board and the meter and goes through your figures. If solar is not right for your house, they will say so on the day.',
           },
         },
         {
@@ -136,7 +136,7 @@ const bookSchema = {
           name: 'How long does a solar survey take?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The survey typically takes 30 to 45 minutes. We assess your roof orientation, pitch, shading, structural suitability, and electrical setup. You receive your itemised quote within 48 hours.',
+            text: 'Two steps: a 15-minute phone call first, then about 45 minutes at your home. Your proposal follows in your project page.',
           },
         },
         {
@@ -161,26 +161,23 @@ const bookSchema = {
 };
 
 /**
- * Intake OS: /book-survey keeps its URL for search and old links, and opens
- * the one intake at Screen 2 (the survey times). A magic link (?lt=) from an
- * old estimate email still gets the old booking form until slice 4 moves those
- * links to the portal sign-in, so nothing in an inbox breaks.
+ * /book-survey is a 308 to the one intake (APPLE-DECISIONS, "Doors"): the
+ * survey times, as a home unless the link said business, with src, pkg and
+ * county kept. The guard: a magic link (?lt=) from an old estimate email
+ * still renders the booking form that threads the lead token into
+ * /api/lead, so nothing in an inbox breaks (book-survey-door.test.tsx).
  */
 export default async function BookSurveyPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
-  const hasMagicLink = typeof sp.lt === 'string' && sp.lt.length > 0;
-  const q = parseIntakeQuery(sp);
+  const to = bookSurveyRedirect(sp);
+  if (to) permanentRedirect(to);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bookSchema) }}
       />
-      {hasMagicLink ? (
-        <BookSurveyClient />
-      ) : (
-        <IntakePage initial={{ ...q, door: q.door === 'direct' ? 'book-survey' : q.door, step: q.step ?? 'time', stepRaw: q.stepRaw ?? null }} />
-      )}
+      <BookSurveyClient />
     </>
   );
 }
