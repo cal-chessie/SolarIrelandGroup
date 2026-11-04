@@ -1201,9 +1201,14 @@ body[data-intake-open] .daylight-pulse {
   outline: none;
 }
 .si-euro input::placeholder {
-  color: var(--si-placeholder);
+  /* A hint of the shape of an answer, never mistaken for one: faint, light
+     weight, so an empty field reads empty at every size (design lead, 4 Nov). */
+  color: rgba(255, 255, 255, 0.2);
   opacity: 1;
-  font-weight: 600;
+  font-weight: 400;
+}
+.si-euro input:focus::placeholder {
+  color: rgba(255, 255, 255, 0.12);
 }
 .si-euro__suffix {
   padding-right: 16px;
