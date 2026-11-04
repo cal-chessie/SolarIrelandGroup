@@ -1552,7 +1552,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" footer={<footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>} />
+      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" />
+      <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );
   const doneRight = (
