@@ -62,3 +62,16 @@ describe('/book-survey: the magic-link guard', () => {
     expect(digest).toContain('308');
   });
 });
+
+describe('/book-survey: the middleware answers a real 308', () => {
+  it('no token: 308 to /estimate; a magic link passes through', async () => {
+    const { NextRequest } = await import('next/server');
+    const { middleware } = await import('@/middleware');
+    const plain = middleware(new NextRequest('https://solarirelandgroup.ie/book-survey?src=nav'));
+    expect(plain.status).toBe(308);
+    expect(plain.headers.get('location')).toBe('https://solarirelandgroup.ie/estimate?for=home&step=time&src=nav&door=book-survey');
+    const magic = middleware(new NextRequest(`https://solarirelandgroup.ie/book-survey?lt=${TOKEN}`));
+    expect(magic.status).toBe(200);
+    expect(magic.headers.get('location')).toBeNull();
+  });
+});
