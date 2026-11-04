@@ -535,13 +535,14 @@ body[data-intake-open] .daylight-pulse {
 @media (min-width: 1024px) {
   .si-main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     min-height: calc(100dvh - var(--si-header-h));
     padding-bottom: 0;
   }
   .si-lane,
   .si-lane--right {
     display: flex;
+    min-width: 0;
     padding: var(--si-lane-pad);
   }
   .si-lane--right {
@@ -1182,6 +1183,7 @@ body[data-intake-open] .daylight-pulse {
 .si-euro input {
   flex: 1;
   min-width: 0;
+  width: 0;
   height: 100%;
   padding: 0 16px 0 8px;
   background: transparent;
