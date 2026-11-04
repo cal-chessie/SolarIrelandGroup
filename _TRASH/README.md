@@ -40,3 +40,14 @@ retire once the magic link moves to the portal sign-in exchange.
 
 ## 4 Nov 2026: BillAnalyser restored
 Cal: "leave the bill analyser on the front of the website alone". src/components/solar/BillAnalyser.tsx is back in src (from 061c190) and on the homepage again in place of IntakeDoorSection. The .retired copy here is now stale; keep it only as history.
+
+## BillAnalyser.before-call-funnel.tsx.retired (4 Nov 2026)
+
+Cal's Bill Analyser as it stood at 7f8626c, before the call funnel rebuild
+(INTAKE/design/analyser-cro-spec.md, CALL-FUNNEL-PLAN.md). Retired because it
+showed invented figures on a half read (160 / 4800), the supplier table's
+rates as the customer's own, a two-month bill as "/mo", threw away the
+day/night split, ran its own engine (a second number for the same bill), and
+ended in "Send my full estimate" then "Pick my survey time". Replaced by
+src/components/solar/BillAnalyser.tsx (read, reveal, one insight, one AISolar
+saving, the free 15-minute call). Nothing imports this file.
