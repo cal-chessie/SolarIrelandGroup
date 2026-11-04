@@ -104,6 +104,6 @@ The `NEXT_PUBLIC_` Supabase values are the anon key, public by design and RLS-pr
 
 Every tracking call is gated behind `hasAnalyticsConsent()`, which reads `localStorage['solar-ireland-cookie-consent'].categories.analytics`. The one deliberate exception is `trackConsentDecision`, which fires to GA4 unconditionally because it records the consent decision itself, and would otherwise be unrecordable. It still respects consent for PostHog.
 
-Helpers: `trackWhatsAppClick`, `trackPhoneClick`, `trackEmailClick`, `trackContactFormSubmit`, `trackSurveyBooking`, `trackBillAnalyserUsage(mode)`, `trackCalculatorUsage`, `trackNewsletterSignup`, `trackExitIntent`, `trackConsentDecision`.
+Helpers: `trackWhatsAppClick`, `trackPhoneClick`, `trackEmailClick`, `trackContactFormSubmit`, `trackSurveyBooking`, `trackNewsletterSignup`, `trackConsentDecision`. (`trackBillAnalyserUsage`, `trackCalculatorUsage` and `trackExitIntent` retired with their components on 4 Nov 2026.)
 
 `LeadSourceTracker.tsx`, mounted globally in `layout.tsx:423`, is a document-level click listener: it fires `whatsapp_click` for any `wa.me` or `api.whatsapp.com` href, and a book-survey event for any `/book-survey` href or link text matching `/book.*survey|free survey/i`. It classifies on the **href** first, so the three mislabelled WhatsApp buttons noted in [06](06-frontend-and-mobile.md#the-cta-problem) do not produce false booking events. They still send the visitor to WhatsApp instead of the booking form, which is the real problem.

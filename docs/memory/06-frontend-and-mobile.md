@@ -154,3 +154,15 @@ Against that, the site currently pushes visitors to WhatsApp from roughly 25 pla
 Real `/book-survey` links exist in `Hero.tsx:150`, `Navbar` (desktop and mobile), `Footer.tsx:77`, `ExitIntent.tsx:342`, `BillAnalyser.tsx:1111` (`?src=analyser`) and `SolarCalculatorClient.tsx:285`.
 
 This is written up as work, not done, in [09 Open items](09-open-items.md).
+
+
+## The Apple pass on the intake (4 Nov 2026, branch `intake-apple`)
+
+Built to `INTAKE/design/APPLE-DECISIONS.md`. What changed for anyone touching doors or the intake:
+
+- **One intake, every door.** `/book-survey` is a 308 to `/estimate?for=home&step=time&door=book-survey`, sent from `middleware.ts` (the page streams, so a page-level redirect arrived as a 200). The guard: `?lt=` magic links are not redirected and still render `BookSurveyClient`, which threads the lead token into `/api/lead`. The rule is `bookSurveyRedirect` in `lib/intake/bookSurvey.ts`, proven by `src/__tests__/book-survey-door.test.tsx`.
+- Every price or survey link (navbar, footer, How it works, services, financing, grant checker) is an `IntakeLink`. Blog content keeps plain `/book-survey` and `/solar-calculator` links in `blog-data.ts`; `intakeOptsForHref` turns them into intake doors at render.
+- `/solar-calculator` keeps its URL; its first fold is the h1 and the bill field. The stat tiles (including the hard-coded "5-7 Year Payback") and the trust row are gone.
+- Retired to `_TRASH`: `ExitIntent`, `BillAnalyser`, `QuickSavingsCalculator`. `PageIntake` now mounts only the phone sticky bar and takes `sticky={{ scrollTo }}` or `null`.
+- The intake itself: no home-or-business screen (a pill switch on Screen 1, Home pre-set with provenance "assumed"); one hero figure and a receipt of three; "How we worked this out" as a bottom sheet under 1024 and a disclosure from 1024; Screen 2 as two views under 1024 (estimate, then times); a date strip and only real times as pills; the survey always two steps (a 15-minute call, then about 45 minutes at the home); green only for booked. Dark only.
+- The self-test is `INTAKE/build/selftest-intake.mjs` (stub server on :3031, seven widths).

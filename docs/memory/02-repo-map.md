@@ -60,7 +60,7 @@ src/
     about counties services      marketing pages
     financing blog blog/[slug]
     solar-calculator             the analyser page
-    book-survey                  the booking intake
+    book-survey                  308 to /estimate (middleware); ?lt= magic links still render the old form
     contact cookies privacy terms
     admin/  portal/[reference]/  internal-looking, currently MOCK and UNAUTHENTICATED
     api/                         9 routes, see 08
