@@ -1093,7 +1093,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         ) : null}
       </div>
-      {readerOn ? <div className="si-group">{photoRow('bill')}</div> : null}
+      {/* Just failed a read on the analyser: the photo row is not offered again here. */}
+      {readerOn && !(draft.carry && carryWhy[draft.carry.from]) ? <div className="si-group">{photoRow('bill')}</div> : null}
       {fileInput}
       <div className="si-actions" ref={actionsRef}>
         <div className="si-actions__inner">
@@ -1612,7 +1613,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   /* ── Assemble ──────────────────────────────────────────────────── */
 
   const progressState: ('done' | 'current' | 'future')[] =
-    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !wide ? ['done', 'current', 'future'] : step === 'done' ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
+    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !wide ? ['done', 'current', 'future'] : step === 'done' && !draft.result?.fallback ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
   const headerName = (step === 'time' || step === 'details') && wide ? 'Your call' : STEP_NAME[step];
   const headerCount = step === 'done' ? null : (step === 'time' && wide ? STEP_COUNT.details : STEP_COUNT[step]) ?? null;
   const showPhoneBack = depth > 1 && step !== 'done';

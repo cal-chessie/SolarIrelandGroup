@@ -184,7 +184,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
 
   /* While reading, revealing or asking on a phone, the chat bee and sticky bar step aside. */
   useEffect(() => {
-    const active = phase === 'reading' || phase === 'reveal' || phase === 'tips';
+    const active = phase !== 'door';
     if (active) document.body.dataset.analyserActive = '1';
     else delete document.body.dataset.analyserActive;
     return () => {
@@ -197,10 +197,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     if (phase === 'door') return;
     const t = setTimeout(() => {
       const h = headRef.current;
-      if (!h) return;
-      h.focus({ preventScroll: true });
-      const top = h.getBoundingClientRect().top;
-      if (top < 72 || top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - 96, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      h?.focus({ preventScroll: true });
+      // Bring the whole card into view under the site's fixed bar.
+      const box = rootRef.current;
+      if (!box) return;
+      const top = box.getBoundingClientRect().top;
+      if (top < 64 || top > window.innerHeight * 0.5) window.scrollTo({ top: window.scrollY + top - 84, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     }, 40);
     return () => clearTimeout(t);
   }, [phase]);
@@ -909,7 +911,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       {quoteStatus === 'ready' && figures ? (
         <>
           <p className="si-an-saving__fig">
-            about <b {...prov('estimate')}>{eur(figures.annualSavingEur)}</b> a year
+            About <b {...prov('estimate')}>{eur(figures.annualSavingEur)}</b> a year
           </p>
           {isBiz ? (
             <p className="si-an-line">
@@ -1012,7 +1014,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     body = (
       <div className="si-an-lanes">
         <div className="si-an-lane">{revealCard}</div>
-        <div className="si-an-lane si-an-lane--right">
+        <div className="si-an-lane si-an-lane--right si-an-card">
           {insight ? (
             <div className="si-an-insight">
               <p className="si-an-insight__lead">{insight.lead}</p>

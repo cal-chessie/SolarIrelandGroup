@@ -3165,6 +3165,8 @@ h1.si-ask__title {
 }
 .si-an-row__edit {
   min-height: 44px;
+  min-width: 44px;
+  justify-content: center;
   margin-left: auto;
 }
 .si-an-edit {

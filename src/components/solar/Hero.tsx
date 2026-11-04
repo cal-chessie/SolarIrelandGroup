@@ -50,9 +50,10 @@ export default function Hero() {
   }, []);
 
   return (
+    // A screen tall, capped, so a long reveal never sits under a screen of empty photo.
     <section
-      className="hero-section relative min-h-screen flex items-center overflow-hidden"
-      style={{ contain: 'layout' }}
+      className="hero-section relative flex items-center overflow-hidden"
+      style={{ contain: 'layout', minHeight: 'min(100svh, 1100px)' }}
     >
       {/* 
           BACKGROUND LAYERS
