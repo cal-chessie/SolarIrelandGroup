@@ -32,9 +32,9 @@ Solar Ireland Group is a solar installer in the Republic of Ireland. A standard 
 ## Key pages
 - [Home](${SITE}/): overview and the free AI bill analysis
 - [Services](${SITE}/services): solar PV, battery storage and EV charging, with package prices
-- [Solar calculator](${SITE}/solar-calculator): annual savings, payback and 25-year return from your bill
+- [Solar calculator](${SITE}/solar-calculator): how the estimate works, and the same bill question
 - [Financing](${SITE}/financing): repayment options and what you would actually borrow
-- [Book a survey](${SITE}/book-survey): free, no-obligation home survey
+- [Get an estimate and book a survey](${SITE}/estimate): your saving from your bill, then a free site survey (a 15-minute phone call, then about 45 minutes at your home)
 - [About](${SITE}/about): the team and certifications
 - [Blog](${SITE}/blog): SEAI grant guides, cost breakdowns and county guides
 - [Contact](${SITE}/contact)

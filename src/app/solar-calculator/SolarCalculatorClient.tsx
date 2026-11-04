@@ -6,14 +6,6 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
 import FAQ from '@/components/solar/FAQ';
 import {
-  Zap,
-  Euro,
-  Sun,
-  Shield,
-  Clock,
-  TrendingUp,
-  Leaf,
-  CheckCircle2,
   ArrowRight,
   MessageCircle,
   HelpCircle,
@@ -26,112 +18,29 @@ import IntakeDoorSection from '@/components/intake/IntakeDoorSection';
 import IntakeLink from '@/components/intake/IntakeLink';
 
 
-function CalculatorHero() {
-  return (
-    <section className="relative pt-32 pb-16 px-4 bg-[#0a0a0a] overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-amber-400/[0.03] to-transparent pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
-
-      <div className="max-w-4xl mx-auto text-center relative z-10">
-        <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-6">
-          <Zap className="w-3.5 h-3.5" />
-          Free Solar Calculator
-        </span>
-
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          Solar Panel{' '}
-          <span className="text-gradient">Savings Calculator</span>{' '}
-          <br />
-          for Irish Homes
-        </h1>
-
-        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          See exactly how much you could save with solar panels. Enter your electricity bill,
-          pick your home type, and get an instant personalised estimate - no signup, no hassle.
-        </p>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-          {[
-            { icon: Euro, label: '€1,800 SEAI Grant (ROI)', sub: 'Automatically included' },
-            { icon: Clock, label: '5-7 Year Payback', sub: 'After grant deduction' },
-            { icon: TrendingUp, label: `${SOLAR_DATA.savings.label25yr} Over 25 Years`, sub: 'Rising energy prices' },
-            { icon: Leaf, label: '2,500+ kg CO₂/yr', sub: 'Environmental impact' },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.label}
-                className="flex flex-col items-center text-center p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-amber-400/20 transition-colors"
-              >
-                <Icon className="w-5 h-5 text-amber-400 mb-2" />
-                <p className="text-sm font-semibold text-white">{item.label}</p>
-                <p className="text-[11px] text-gray-500 mt-0.5">{item.sub}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-function TrustBadges() {
-  const badges = [
-    { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
-    { icon: CheckCircle2, label: 'No Hidden Costs', desc: 'Transparent pricing' },
-    { icon: Sun, label: 'Real Irish Data', desc: 'Met Éireann irradiance data' },
-    { icon: Euro, label: '440W Premium Panels', desc: 'Modern high-efficiency panels' },
-  ];
-
-  return (
-    <section className="py-8 px-4 bg-[#0a0a0a] border-y border-white/[0.04]">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-          {badges.map((badge) => {
-            const Icon = badge.icon;
-            return (
-              <div key={badge.label} className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-amber-400" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{badge.label}</p>
-                  <p className="text-[11px] text-gray-500">{badge.desc}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 function CalculatorExplainer() {
   const steps = [
     {
       num: '01',
-      title: 'Upload or Type Your Bill',
+      title: 'Type your bill, or tap the closest',
       // Read from the engine, so this can never again describe rates the
-      // calculator on the same page is not using.
-      desc: `Photograph your bill and the analyser reads it, or move the slider to your monthly amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
+      // estimate on the same page is not using.
+      desc: `A rough monthly or two-monthly figure is enough, or add a photo of your bill and an AI service reads the figures off it. Without a supplier we use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
     },
     {
       num: '02',
-      title: 'Pick Your Home Type',
-      desc: 'Choose from Apartment, Semi-Detached, or Detached. This determines how many panels can fit on your roof - up to 22 premium 440W panels for larger homes.',
+      title: 'See your estimate',
+      desc: 'One figure first, your yearly saving, then the cost after your SEAI grant, the payback and the system size. Tap "How we worked this out" to see every assumption and change it.',
     },
     {
       num: '03',
-      title: 'See Your Savings',
-      desc: 'Get instant results: annual savings, monthly bill reduction, system size, payback period, and 25-year savings projection. Expand for monthly generation charts and full cost breakdown.',
+      title: 'Pick a time',
+      desc: 'Only real free times are shown. Pick one and add your Eircode, name, mobile and email. No email is needed to see the estimate.',
     },
     {
       num: '04',
-      title: 'Book the Survey',
-      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then handle the SEAI paperwork.',
+      title: 'The free site survey',
+      desc: 'Two steps: a 15-minute phone call first, then about 45 minutes at your home to check the roof, the fuse board and the meter. Your proposal follows, and we handle the SEAI paperwork.',
     },
   ];
 
@@ -240,7 +149,7 @@ function FinalCTA() {
             The survey turns a close estimate into <span className="text-gradient">your proposal</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            A free site survey takes about 45 minutes at your home, with no obligation. Pick a real time on this page.
+            A free site survey in two steps, with no obligation: a 15-minute phone call first, then about 45 minutes at your home. Pick a real time on this page.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             {/* Intake OS: this used to say "Get Free Site Survey" and open
@@ -275,13 +184,19 @@ export default function SolarCalculatorClient() {
       <Navbar />
 
       <main>
-        <CalculatorHero />
-        <TrustBadges />
-        {/* Intake OS: the one door comes first. The old analyser long form and
-            the quick slider (a second calculator on different numbers) are no
-            longer mounted; their files retire in slice 4. id="calculator"
-            keeps old #calculator links landing here. */}
-        <IntakeDoorSection id="calculator" door="calculator" heading="Your bill, your estimate" />
+        {/* Apple pass (APPLE-DECISIONS, "Doors"): the URL stays for search, the
+            first fold is the bill question. The badge, the four stat tiles
+            (including the hard-coded "5-7 Year Payback", never an engine
+            figure) and the trust row are gone. id="calculator" keeps old
+            #calculator links landing here. */}
+        <IntakeDoorSection
+          id="calculator"
+          door="calculator"
+          as="h1"
+          hero
+          heading="What would solar save you?"
+          line="Type your electricity bill and see your estimate on this page, then pick a time for a free site survey. No email needed to see it."
+        />
         <CalculatorExplainer />
         <DataTransparency />
         <FAQ />

@@ -3,7 +3,7 @@
 import IntakeApp from './IntakeApp';
 import type { IntakeOpenOptions } from '@/lib/intake/open';
 
-/** The intake as a page: a cold load or refresh of /estimate, and /book-survey. */
+/** The intake as a page: a cold load or refresh of /estimate (/book-survey is a 308 to it). */
 export default function IntakePage({ initial }: { initial: IntakeOpenOptions & { stepRaw?: string | null } }) {
   return <IntakeApp variant="page" initial={initial} />;
 }

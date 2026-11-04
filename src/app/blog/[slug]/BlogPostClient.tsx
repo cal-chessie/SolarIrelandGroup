@@ -27,6 +27,8 @@ import PageIntake from '@/components/solar/PageIntake';
 import IntakeDoor from '@/components/intake/IntakeDoor';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 import { getArticleBySlug, getRelatedArticles, type ContentSection } from '@/lib/blog-data';
+import IntakeLink from '@/components/intake/IntakeLink';
+import { intakeOptsForHref, type IntakeOpenOptions } from '@/lib/intake/open';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -123,7 +125,8 @@ function MobileTOC({ items }: { items: TOCItem[] }) {
  * Minimal inline markdown for article content: **bold** and [text](href).
  * Content comes only from our own static blog-data.ts (never user input).
  * Links render as real crawlable <a> elements, so body copy can carry
- * internal links between articles and to /book-survey.
+ * internal links between articles. An old /book-survey or /solar-calculator
+ * link renders as an intake door instead (intakeOptsForHref).
  */
 function renderInline(text: string): ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)\s]+\))/g);
@@ -137,6 +140,14 @@ function renderInline(text: string): ReactNode {
       );
     }
     const link = part.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/);
+    const intake = link ? intakeOptsForHref(link[2], 'blog-body') : null;
+    if (link && intake) {
+      return (
+        <IntakeLink key={i} opts={intake} className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">
+          {link[1]}
+        </IntakeLink>
+      );
+    }
     if (link) {
       return (
         <a
@@ -339,13 +350,23 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
                 className="pt-4"
               >
-                <Link
-                  href={section.href}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
-                >
-                  {section.text}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                {intakeOptsForHref(section.href, 'blog-cta') ? (
+                  <IntakeLink
+                    opts={intakeOptsForHref(section.href, 'blog-cta') as IntakeOpenOptions}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
+                  >
+                    {section.text}
+                    <ArrowRight className="w-4 h-4" />
+                  </IntakeLink>
+                ) : (
+                  <Link
+                    href={section.href}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
+                  >
+                    {section.text}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
               </motion.div>
             );
 

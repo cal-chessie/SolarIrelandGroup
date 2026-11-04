@@ -25,6 +25,7 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { DOMESTIC_MIN_KWP } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import IntakeLink from '@/components/intake/IntakeLink';
 
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -278,16 +279,14 @@ function EligibilityChecker() {
                       the moment was spent on a chat window instead of a booking
                       or an estimate. Both real next steps now, booking first. */}
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3">
-                    <motion.a
-                      href="/book-survey?src=grant-checker"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
+                    <IntakeLink
+                      opts={{ door: 'grant-checker', step: 'time', src: 'grant-checker' }}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
                     >
                       <Zap className="w-4 h-4" />
                       Book Free Survey
                       <ArrowRight className="w-4 h-4" />
-                    </motion.a>
+                    </IntakeLink>
                     <motion.a
                       href="#calculator"
                       whileHover={{ scale: 1.03 }}

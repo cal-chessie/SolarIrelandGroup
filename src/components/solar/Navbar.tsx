@@ -47,18 +47,6 @@ const mobileLinks = [
     borderHover: 'hover:border-amber-400/20',
   },
   {
-    label: 'Calculator',
-    href: '/solar-calculator',
-    icon: Sparkles,
-    color: 'amber',
-    description: 'Savings calculator & AI bill analyser',
-    gradient: 'from-amber-400/20 to-yellow-400/10',
-    iconBg: 'bg-amber-400/10',
-    iconColor: 'text-amber-400',
-    borderHover: 'hover:border-amber-400/20',
-    highlight: true,
-  },
-  {
     label: 'Financing',
     href: '/financing',
     icon: CreditCard,
@@ -163,9 +151,8 @@ function openIntakeHref(href: string): boolean {
 const desktopNavLinks = [
   { label: 'Services', href: '/services', isBookSurvey: false },
   { label: 'Counties', href: '/counties', isBookSurvey: false },
-  { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Book Survey', href: '/estimate?step=time&door=nav-book', isBookSurvey: false },
+  { label: 'Book a site survey', href: '/estimate?step=time&door=nav-book', isBookSurvey: false },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 

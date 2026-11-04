@@ -17,6 +17,7 @@ export default function IntakeDoorSection({
   line = 'Type your bill and see your estimate on this page, then pick a time for a free site survey. No email needed to see it.',
   segment = 'home',
   as = 'h2',
+  hero = false,
 }: {
   id?: string;
   door: string;
@@ -24,10 +25,12 @@ export default function IntakeDoorSection({
   line?: string;
   segment?: DoorSegment;
   as?: 'h1' | 'h2';
+  /** The page's first fold (under the fixed site navbar), no rule above it. */
+  hero?: boolean;
 }) {
   const H = as;
   return (
-    <section id={id} className="si-door-section" style={{ scrollMarginTop: 80 }}>
+    <section id={id} className={`si-door-section${hero ? ' si-door-section--hero' : ''}`} style={{ scrollMarginTop: 80 }}>
       <div className="si-door-section__inner">
         <div>
           <H>{heading}</H>

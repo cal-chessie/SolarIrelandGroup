@@ -2556,6 +2556,33 @@ button.si-photo:hover {
 }
 
 
+/* The door as a page's first fold (/solar-calculator): under the fixed navbar, above the fold at every size. */
+.si-door-section--hero {
+  border-top: 0;
+}
+.si-door-section--hero .si-door-section__inner {
+  padding-top: 104px;
+  padding-bottom: 56px;
+}
+.si-door-section--hero h1 {
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0;
+}
+@media (min-width: 1024px) {
+  .si-door-section--hero .si-door-section__inner {
+    padding-top: 152px;
+    padding-bottom: 96px;
+  }
+  .si-door-section--hero h1 {
+    font-size: 52px;
+    line-height: 58px;
+  }
+}
+
 /* ── Motion: CSS only, short, off when asked ────────────────── */
 
 @keyframes si-screen-in {

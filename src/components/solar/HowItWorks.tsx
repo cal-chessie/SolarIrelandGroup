@@ -5,6 +5,7 @@ import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, Check
 import { motion } from '@/lib/motion';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { openIntake } from '@/lib/intake/open';
 
 const steps = [
   {
@@ -46,7 +47,7 @@ const steps = [
     // A button that says "Book Free Survey" has to book a survey. This opened
     // WhatsApp, which is a chat window, not a booking, and it lost the lead to
     // a conversation nobody was guaranteed to answer.
-    cta: { href: '/book-survey', text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    cta: { href: '/estimate?step=time&door=how-it-works', intake: { door: 'how-it-works', step: 'time' as const }, text: 'Book a site survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',
@@ -65,7 +66,7 @@ const steps = [
       'Saving from day one',
     ],
     stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
-    cta: { href: '/solar-calculator', text: 'Price It On My Bill', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
+    cta: { href: '/estimate?door=how-it-works', intake: { door: 'how-it-works' }, text: 'Get my estimate', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
 
@@ -182,7 +183,14 @@ function StepCard({
               href={step.cta.href}
               target={step.cta.href.startsWith('http') ? '_blank' : undefined}
               rel={step.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                // Price and survey buttons open the one intake as a layer.
+                const intake = 'intake' in step.cta ? step.cta.intake : null;
+                if (!intake || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                e.preventDefault();
+                openIntake(intake);
+              }}
               className={`mt-5 sm:mt-6 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r ${step.cta.gradient} text-black text-sm font-semibold ${step.cta.shadow} hover:shadow-lg transition-all active:scale-[0.98]`}
             >
               <CtaIcon className="w-4 h-4" />

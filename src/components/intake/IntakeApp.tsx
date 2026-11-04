@@ -15,7 +15,7 @@
  *   layer : a full-screen layer over the page a door was on. The URL becomes
  *           /estimate?..., back walks the screens, and back from the first
  *           screen closes the layer onto the page exactly where it was.
- *   page  : a cold load or refresh of /estimate (or /book-survey). The same
+ *   page  : a cold load or refresh of /estimate. The same
  *           intake as the page itself.
  *
  * Every figure on screen comes from /api/intake/quote and is never derived

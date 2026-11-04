@@ -388,8 +388,8 @@ function ServiceCard({
               them off the site at the exact moment they were most interested.
               The analyser answers the question they actually have: what would
               this cost on MY bill. */}
-          <a
-            href="/solar-calculator"
+          <IntakeLink
+            opts={{ door: 'services', src: 'services' }}
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
               service.color === 'amber'
                 ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
@@ -400,7 +400,7 @@ function ServiceCard({
           >
             Get a Free Quote
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </IntakeLink>
         </div>
       </div>
     </motion.div>
@@ -464,20 +464,20 @@ export default function ServicesPage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
-                <a
-                  href="/solar-calculator"
+                <IntakeLink
+                  opts={{ door: 'services', src: 'services' }}
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                 >
                   Price It On My Bill
                   <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href="/book-survey?src=services"
+                </IntakeLink>
+                <IntakeLink
+                  opts={{ door: 'services', step: 'time', src: 'services' }}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
                 >
                   <CalendarCheck className="w-4 h-4" />
                   Book a Free Survey
-                </a>
+                </IntakeLink>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-white text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.2] transition-all"
@@ -748,14 +748,14 @@ export default function ServicesPage() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   {/* Said "Book Free Survey", opened WhatsApp. It books a
                       survey now. */}
-                  <a
-                    href="/book-survey?src=services"
+                  <IntakeLink
+                    opts={{ door: 'services', step: 'time', src: 'services' }}
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                   >
                     <Zap className="w-4 h-4" />
                     Book Free Survey
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </IntakeLink>
                   <a
                     href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                     className="inline-flex items-center gap-2.5 px-7 py-4 rounded-full border border-white/[0.15] text-white text-sm font-medium hover:bg-white/[0.05] transition-all"

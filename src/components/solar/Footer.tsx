@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
 import IntakeDoor from '@/components/intake/IntakeDoor';
+import IntakeLink from '@/components/intake/IntakeLink';
 import { useRef } from 'react';
 import {
   MessageCircle,
@@ -82,8 +83,8 @@ const FOOTER_SOCIAL = [
 
 const quickLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'Book a Survey', href: '/book-survey' },
-  { label: 'Calculator', href: '/solar-calculator' },
+  { label: 'Get my estimate', href: '/estimate?door=footer-links', intake: { door: 'footer-links' } },
+  { label: 'Book a site survey', href: '/estimate?step=time&door=footer-links', intake: { door: 'footer-links', step: 'time' as const } },
   { label: 'Financing', href: '/financing' },
   { label: 'Counties', href: '/counties' },
   { label: 'Blog', href: '/blog' },
@@ -315,13 +316,23 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
-                  >
-                    <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
-                    {link.label}
-                  </a>
+                  {'intake' in link && link.intake ? (
+                    <IntakeLink
+                      opts={link.intake}
+                      className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
+                    >
+                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
+                      {link.label}
+                    </IntakeLink>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
+                    >
+                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

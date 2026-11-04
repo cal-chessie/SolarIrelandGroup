@@ -90,3 +90,17 @@ export function openIntake(o: IntakeOpenOptions): void {
   }
   window.location.assign(intakeHref(full));
 }
+
+/**
+ * Content keeps writing plain links (blog-data.ts and the like); at render, an
+ * old /book-survey or /solar-calculator link becomes an intake door, so every
+ * price or survey link opens the one intake (APPLE-DECISIONS, "Doors").
+ * Returns null for any other link.
+ */
+export function intakeOptsForHref(href: string, door: string): IntakeOpenOptions | null {
+  const [path, query = ''] = href.split('?');
+  const q = new URLSearchParams(query);
+  if (path === '/solar-calculator') return { door, src: clean(q.get('src'), 40) ?? door };
+  if (path === '/book-survey') return { door, step: 'time', src: clean(q.get('src'), 40) ?? door };
+  return null;
+}
