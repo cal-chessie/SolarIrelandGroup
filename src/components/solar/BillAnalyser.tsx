@@ -463,7 +463,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const privacy = (
     <p className="si-an-privacy">
       This site doesn&apos;t store your bill. An AI reading service reads it and sends back the figures. We keep those figures with no name or address on them. Your name, Eircode and MPRN only reach us if you book the call.{' '}
-      <a className="si-inline" href="/privacy#bill-analyser">
+      <a className="si-inline" href="/privacy#how-we-use">
         How we handle your bill
       </a>
     </p>
