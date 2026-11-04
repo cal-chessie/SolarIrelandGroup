@@ -6,6 +6,16 @@ Everything known-and-not-done, as of 7 Sep 2026. Nothing here is a suggestion fo
 
 ---
 
+## The call funnel (4 Nov 2026, branch intake-apple, not pushed)
+
+**Superseded item 1 below.** Cal ruled on 4 Nov that the website sells one thing, the free 15-minute call; the 45-minute or remote survey is sold on the call and inside AISolar. Built on `intake-apple` to `INTAKE/design/lane-a-plan.md`:
+
+- Road 1, Cal's Bill Analyser (`src/components/solar/BillAnalyser.tsx`), is the homepage hero and `/solar-calculator`. `/api/analyse-bill` reads only (every field printed or null, the day/night split returned) and the saving is priced by `/api/intake/quote`, the same AISolar quote as Road 2.
+- Road 2, the Apple intake, ends in the same ask (`src/components/intake/CallAsk.tsx`): name, mobile, email, optional best time. No survey times, no Eircode field, no kWh required.
+- The call contract (`intent: "call"`, `bestTime`, `mprn`, `billRead` on `/api/intake/submit`) is stubbed; Lane B builds AISolar's side.
+
+Open, and not the site's to close: the live bill reader is unproven (1 Nov audit, 403); production needs `INTAKE_CONTRACT_MODE=live` and the intake door env, or both roads answer "can't work it out" and the submit fails to its ring-us state; AISolar must accept `intent: "call"`; Cal signs off the insight lines and the reading service's data terms.
+
 ## Cal's next builds
 
 **1. Book a survey as the on-site next step.** His words: *"you should be able to book a survey on the website before we lose the lead to an estimate and them leaving the site. if we send the estimate to quick we lose them to email."*
