@@ -704,7 +704,7 @@ export default function ContactClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={null} exit={false} />
+      <PageIntake sticky={null} />
     </div>
   );
 }

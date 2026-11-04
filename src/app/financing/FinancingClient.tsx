@@ -958,7 +958,7 @@ export default function FinancingClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Book a Free Survey', href: '/book-survey' }} exit={true} />
+      <PageIntake sticky={{ scrollTo: null }} />
     </div>
   );
 }

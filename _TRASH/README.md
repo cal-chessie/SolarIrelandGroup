@@ -16,3 +16,24 @@ so the engine looked live while three copies of the maths did the real work.
 
 The home page's intake is BillAnalyser. The 5-step onboarding form replacing the
 exit popup is the natural home for this idea if it comes back.
+
+## ExitIntent.tsx.retired, BillAnalyser.tsx.retired, QuickSavingsCalculator.tsx.retired (4 Nov 2026)
+
+Retired in the Apple pass on the intake (INTAKE/design/APPLE-DECISIONS.md,
+"Doors"), after a grep showed nothing imports them and the build stayed green.
+
+- ExitIntent: the old exit popup. It collected an email ("Get my free
+  estimate") and then offered /book-survey and /solar-calculator, so it was a
+  second intake on eight pages. PageIntake no longer mounts it; the
+  trackExitIntent event helper went with it.
+- BillAnalyser: the old long-form bill analyser. Not mounted anywhere since
+  the intake replaced it on /solar-calculator; trackBillAnalyserUsage went
+  with it, and so did trackCalculatorUsage (its only caller).
+- QuickSavingsCalculator: an orphaned calculator with its own copy of the
+  maths. Not mounted anywhere. One engine only (src/lib/estimate.ts, and the
+  intake renders AISolar's quote).
+
+Still in src on purpose: src/app/book-survey/BookSurveyClient.tsx. /book-survey
+is now a 308 to the intake, but a returning homeowner's magic link (?lt=)
+still renders that form, which threads the lead token into /api/lead. It can
+retire once the magic link moves to the portal sign-in exchange.

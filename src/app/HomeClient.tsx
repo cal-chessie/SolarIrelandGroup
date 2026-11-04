@@ -59,7 +59,7 @@ export default function HomeClient() {
       </main>
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Get my solar estimate', scrollTo: 'calculator' }} exit={true} />
+      <PageIntake sticky={{ scrollTo: 'calculator' }} />
     </div>
   );
 }

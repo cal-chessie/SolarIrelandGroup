@@ -1675,7 +1675,7 @@ export default function BookSurveyClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={null} exit={false} />
+      <PageIntake sticky={null} />
     </div>
   );
 }

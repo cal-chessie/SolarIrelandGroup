@@ -587,7 +587,7 @@ export default function AboutClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
+      <PageIntake sticky={{ scrollTo: null }} />
     </div>
   );
 }

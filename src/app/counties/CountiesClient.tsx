@@ -786,7 +786,7 @@ export default function CountiesClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Get my solar estimate', scrollTo: null }} exit={true} />
+      <PageIntake sticky={{ scrollTo: null }} />
 
       <script
         type="application/ld+json"

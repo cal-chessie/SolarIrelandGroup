@@ -613,7 +613,7 @@ function NotFound() {
       </main>
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Get my solar estimate', scrollTo: null }} exit={true} />
+      <PageIntake sticky={{ scrollTo: null }} />
     </div>
   );
 }
