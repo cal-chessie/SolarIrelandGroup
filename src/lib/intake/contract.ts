@@ -231,8 +231,39 @@ export type BookingOutcome =
   | 'requested'
   | 'none';
 
+/**
+ * The call funnel (CALL-FUNNEL-PLAN.md, "The call contract", 4 Nov 2026):
+ * the website sells one thing, the free 15-minute call. Both roads end in a
+ * call request. Lane B builds AISolar's side to the same fields.
+ */
+export type CallIntent = 'call';
+export type BestTime = 'morning' | 'afternoon' | 'evening' | 'any';
+export const BEST_TIMES: BestTime[] = ['morning', 'afternoon', 'evening', 'any'];
+
+/** What the bill reader read, sent with a call request so Cal has it on the call. Never in a URL. */
+export interface CallBillRead {
+  supplier: string | null;
+  periodStart: string | null;
+  periodEnd: string | null;
+  amountEur: number | null;
+  period: BillPeriod | null;
+  unitRateEur: number | null;
+  nightRateEur: number | null;
+  standingChargeAnnualEur: number | null;
+  periodKwh: number | null;
+  dayKwh: number | null;
+  nightKwh: number | null;
+  annualKwh: number | null;
+}
+
 export interface SubmitRequest {
   source: 'website_survey' | 'website_qualified';
+  /** "call": a free 15-minute call request. Name, mobile and email required; no slot, no Eircode required. */
+  intent?: CallIntent;
+  bestTime?: BestTime | null;
+  /** From the bill only, never asked. 11 digits starting 10. */
+  mprn?: string | null;
+  billRead?: CallBillRead | null;
   name: string | null;
   email: string;
   phone: string | null;
@@ -290,6 +321,8 @@ export interface SubmitResponse {
   next: 'portal' | 'check_email' | 'pick_another_time';
   /** SITE: true when the lead is held in the site's outbox (not booked). */
   fallback?: boolean;
+  /** SITE: a call request was taken (intent "call"). */
+  call?: { requested: true; bestTime: BestTime | null };
 }
 
 export interface IntakeError {
@@ -316,6 +349,50 @@ export interface BillReadResult {
 export type BillReadResponse =
   | { ok: true; read: BillReadResult }
   | { ok: false; reason: 'unreadable' | 'unavailable' | 'too_large' | 'wrong_type' };
+
+/* ------------------------------------------------------------------ */
+/*  The Bill Analyser read (SITE, /api/analyse-bill, 4 Nov 2026)        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Everything the analyser shows comes from here, and every field is either
+ * read off the bill or null. Never a default, never a supplier-table figure.
+ * Personal fields (accountName, eircode, mprn, address) come back to this
+ * browser only; they are never sent anywhere else unless the visitor books.
+ */
+export interface AnalyserRead {
+  supplier: string | null;
+  periodStart: string | null;
+  periodEnd: string | null;
+  /** Days in the billing period, from the printed dates. */
+  days: number | null;
+  /** The total for this bill, including VAT. Only with a known period. */
+  amountEur: number | null;
+  period: BillPeriod | null;
+  unitRateEur: number | null;
+  nightRateEur: number | null;
+  standingChargeEur: number | null;
+  standingChargeUnit: 'per_day' | 'per_period' | 'per_year' | null;
+  standingChargeAnnualEur: number | null;
+  /** Units used on this bill (day plus night, or the 24-hour total). */
+  periodKwh: number | null;
+  dayKwh: number | null;
+  nightKwh: number | null;
+  /** A yearly figure: printed on the bill, or worked out from this bill's units and days. */
+  annualKwh: number | null;
+  annualKwhSource: 'bill' | 'worked_out' | null;
+  accountName: string | null;
+  eircode: string | null;
+  mprn: string | null;
+  address: string | null;
+  segment: Segment | null;
+}
+
+export type AnalyserFailure = 'offline' | 'unreadable' | 'not_bill' | 'too_big' | 'wrong_type' | 'timeout' | 'rate_limited';
+
+export type AnalyserResponse =
+  | { ok: true; read: AnalyserRead }
+  | { ok: false; reason: AnalyserFailure; partial?: Partial<AnalyserRead> | null };
 
 /* ------------------------------------------------------------------ */
 /*  Eircode lookup                                                     */

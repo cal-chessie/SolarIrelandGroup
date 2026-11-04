@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { after } from 'next/server';
 import { gate, json, readJson } from '@/lib/intake/http';
-import type { SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
+import { BEST_TIMES, type SubmitRequest, type SubmitResponse } from '@/lib/intake/contract';
 import { dublinDate, isEmail, isPhone, wallTime } from '@/lib/intake/format';
 import { isValidEircode } from '@/lib/eircode';
 import { liveMode, type LiveEnv } from '@/lib/intake/mode';
@@ -49,6 +49,18 @@ function validate(b: SubmitRequest): Fields {
   if (!b || typeof b !== 'object') return { body: 'invalid' };
   if (!b.meta || (b.meta.segment !== 'domestic' && b.meta.segment !== 'commercial')) f.segment = 'invalid';
   if (typeof b.email !== 'string' || !isEmail(b.email)) f.email = 'invalid';
+  if (b.intent !== undefined && b.intent !== 'call') f.intent = 'invalid';
+  if (b.intent === 'call') {
+    // The call contract (CALL-FUNNEL-PLAN.md): name, mobile, email. No slot,
+    // no day, never an Eircode. A best time is optional and one of four.
+    if (typeof b.name !== 'string' || b.name.trim().length < 2) f.name = 'required';
+    if (typeof b.phone !== 'string' || !isPhone(b.phone)) f.phone = 'invalid';
+    if (b.slot || b.requestedDay) f.slot = 'not_for_a_call';
+    if (b.bestTime != null && !BEST_TIMES.includes(b.bestTime)) f.bestTime = 'invalid';
+    if (b.mprn != null && (typeof b.mprn !== 'string' || !/^10\d{9}$/.test(b.mprn))) f.mprn = 'invalid';
+    if (b.eircode != null && (typeof b.eircode !== 'string' || !isValidEircode(b.eircode))) f.eircode = 'invalid';
+    return f;
+  }
   const booking = !!b.slot || !!b.requestedDay;
   if (booking) {
     if (typeof b.name !== 'string' || b.name.trim().length < 2) f.name = 'required';
@@ -135,10 +147,18 @@ export async function POST(request: Request) {
     // AISolar did not answer: the site keeps the lead in its outbox and says
     // "saved, not booked yet". Nothing is booked, nothing is claimed.
     res = { ok: true, leadId: null, path: 'outbox', booking: { outcome: 'none' }, estimate: null, handoff: null, deviceToken: null, next: 'check_email', fallback: true };
+    if (body.intent === 'call') res.call = { requested: true, bestTime: body.bestTime ?? null };
   } else if (scenario === 'duplicate') {
     // Same email within 24 hours from another device: no second booking, a
     // portal link by email, and never a word about the existing booking.
     res = { ok: true, leadId: null, path: 'deduped', booking: { outcome: 'already_booked', existing: null }, estimate: null, handoff: null, deviceToken: null, next: 'check_email' };
+  } else if (body.intent === 'call') {
+    // A free 15-minute call: nothing booked in a calendar, nothing chased.
+    // The stub answers like AISolar will and forwards nothing anywhere.
+    res = {
+      ok: true, leadId, path: isNewDevice ? 'fresh' : 'threaded', booking: { outcome: 'none' }, estimate, handoff: null, deviceToken: null,
+      next: 'check_email', call: { requested: true, bestTime: body.bestTime ?? null },
+    };
   } else if (body.slot) {
     const slot = gridSlot(body.slot.startsAt);
     const holds = liveHolds();
@@ -223,7 +243,9 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
 
   const device = cookieValue(request, DEVICE);
   const payload = toIngestBody(body, device && HEX64.test(device) ? device : null);
-  const ctx = { asked: !!(payload.slot || payload.requestedDay), portalOrigins: portalOrigins() };
+  // A call request is a request someone acts on, like a booking: if AISolar
+  // does not take it, it waits in the outbox with the owner alerted.
+  const ctx = { asked: !!(payload.slot || payload.requestedDay || payload.intent === 'call'), portalOrigins: portalOrigins() };
   const vh = visitorHeaders(env, request);
 
   // One retry with the SAME key: AISolar answers a repeat with its first answer,
@@ -235,6 +257,7 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   }
 
   if (a.kind === 'answer') {
+    if (body.intent === 'call') a.body.call = { requested: true, bestTime: payload.bestTime ?? null };
     if (a.legacy) console.error('[intake submit] AISolar answered on its old path: intakeV2 is off for this door; shown as a request');
     const res = json(a.body, 200);
     if (a.deviceToken) res.headers.append('set-cookie', deviceCookie(a.deviceToken));
@@ -255,7 +278,7 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   // failure instead, because its screen would say "Sent", and it was not.
   if (ctx.asked) {
     const held = await holdInOutbox({ key, payload, reason: a.note }, outboxDeps());
-    if (held.held) return json(outboxAnswer(), 200);
+    if (held.held) return json(body.intent === 'call' ? { ...outboxAnswer(), call: { requested: true, bestTime: payload.bestTime ?? null } } : outboxAnswer(), 200);
     console.error('[intake submit] no outbox and no owner alert configured: the homeowner is told it failed');
   }
   return a.rateLimited ? json({ ok: false, error: 'rate_limited' }, 429) : json({ ok: false, error: 'server_error' }, 502);

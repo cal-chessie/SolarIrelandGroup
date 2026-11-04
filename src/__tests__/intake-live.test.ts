@@ -252,6 +252,34 @@ describe('the ingest-lead body', () => {
     expect(b.requestedDay).toBeNull();
     expect(b.leadToken).toBeUndefined();
   });
+  it('a call request (the call contract): no slot, no day, the best time, a valid MPRN and Eircode only, the bill read field by field', () => {
+    const b = toIngestBody(
+      submitReq({
+        source: 'website_survey',
+        intent: 'call',
+        bestTime: 'evening',
+        mprn: '10012345678',
+        eircode: 'd06x285',
+        requestedDay: { date: '2026-10-20', part: 'morning' },
+        billRead: { supplier: 'Electric Ireland', periodStart: '2026-08-12', periodEnd: '2026-10-10', amountEur: 284.1, period: 'two_months', unitRateEur: 0.3804, nightRateEur: 0.2105, standingChargeAnnualEur: 251, periodKwh: 720, dayKwh: 430, nightKwh: 290, annualKwh: 4450, extra: 'x' } as unknown as SubmitRequest['billRead'],
+      }),
+      null,
+    );
+    expect(b.intent).toBe('call');
+    expect(b.source).toBe('website_qualified');
+    expect(b.slot).toBeNull();
+    expect(b.requestedDay).toBeNull();
+    expect(b.bestTime).toBe('evening');
+    expect(b.mprn).toBe('10012345678');
+    expect(b.eircode).toBe('D06X285');
+    expect(Object.keys(b.billRead ?? {})).not.toContain('extra');
+    expect(b.billRead?.dayKwh).toBe(430);
+    const bad = toIngestBody(submitReq({ intent: 'call', bestTime: 'midnight' as never, mprn: '123', eircode: 'nope' }), null);
+    expect(bad.bestTime).toBeNull();
+    expect(bad.mprn).toBeNull();
+    expect(bad.eircode).toBeNull();
+    expect(bad.billRead).toBeNull();
+  });
   it('keeps the business name for a business', () => {
     const b = toIngestBody(submitReq({ meta: { ...submitReq().meta, segment: 'commercial', businessName: 'Byrne Hardware' } }), null);
     expect(b.meta).toMatchObject({ segment: 'commercial', businessName: 'Byrne Hardware' });

@@ -8,11 +8,17 @@
  * the site's HttpOnly cookie) goes as `leadToken`, which threads a returning
  * homeowner onto their own lead.
  */
-import type { SubmitRequest } from '@/lib/intake/contract';
+import { BEST_TIMES, type BestTime, type CallBillRead, type SubmitRequest } from '@/lib/intake/contract';
+import { isValidEircode, normaliseEircode } from '@/lib/eircode';
 
 export interface IngestBody {
   brand: 'solar-ireland';
   source: 'website_survey' | 'website_qualified';
+  /** The call contract: "call" with an optional best time, the MPRN and the bill read. */
+  intent?: 'call';
+  bestTime?: BestTime | null;
+  mprn?: string | null;
+  billRead?: CallBillRead | null;
   name: string | null;
   email: string;
   phone: string | null;
@@ -86,6 +92,38 @@ export function toIngestBody(b: SubmitRequest, deviceToken: string | null): Inge
       ...(slotIso ? { surveySlotISO: slotIso } : {}),
     },
   };
+  if (b.intent === 'call') {
+    body.intent = 'call';
+    body.source = 'website_qualified';
+    body.slot = null;
+    body.requestedDay = null;
+    body.bestTime = b.bestTime && BEST_TIMES.includes(b.bestTime) ? b.bestTime : null;
+    body.mprn = typeof b.mprn === 'string' && /^10\d{9}$/.test(b.mprn) ? b.mprn : null;
+    body.eircode = typeof b.eircode === 'string' && isValidEircode(b.eircode) ? normaliseEircode(b.eircode) : null;
+    body.billRead = billReadOf(b.billRead);
+  }
   if (deviceToken && HEX64.test(deviceToken)) body.leadToken = deviceToken;
   return body;
+}
+
+const day = (v: unknown): string | null => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null);
+
+/** The bill read, field by field: numbers in range or null, nothing else rides along. */
+function billReadOf(r: CallBillRead | null | undefined): CallBillRead | null {
+  if (!r || typeof r !== 'object') return null;
+  const out: CallBillRead = {
+    supplier: s(r.supplier, 60),
+    periodStart: day(r.periodStart),
+    periodEnd: day(r.periodEnd),
+    amountEur: n(r.amountEur),
+    period: r.period === 'month' || r.period === 'two_months' ? r.period : null,
+    unitRateEur: n(r.unitRateEur),
+    nightRateEur: n(r.nightRateEur),
+    standingChargeAnnualEur: n(r.standingChargeAnnualEur),
+    periodKwh: n(r.periodKwh),
+    dayKwh: n(r.dayKwh),
+    nightKwh: n(r.nightKwh),
+    annualKwh: n(r.annualKwh),
+  };
+  return Object.values(out).some((v) => v !== null) ? out : null;
 }
