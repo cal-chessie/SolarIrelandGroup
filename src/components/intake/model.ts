@@ -11,6 +11,7 @@
  */
 import type { BillReadResult, QuoteRequestItem, Segment, Slot, SubmitResponse } from '@/lib/intake/contract';
 import type { IntakeOpenOptions, IntakeStep } from '@/lib/intake/open';
+import { EMPTY_CALL, type CallDetails } from './CallAsk';
 
 export type Step = IntakeStep;
 
@@ -43,6 +44,10 @@ export interface Draft {
   holdToken: string | null;
   requestedDay: { date: string; part: 'morning' | 'afternoon' } | null;
   details: Details;
+  /** The call funnel: the ask's fields (name, mobile, email, best time). */
+  call: CallDetails;
+  /** What the Bill Analyser read and handed over (never in a URL). */
+  carry: { from: string; supplier: string | null; eircode: string | null; mprn: string | null; address: string | null } | null;
   idemKey: string | null;
   result: SubmitResponse | null;
   resultSlot: Slot | null;
@@ -88,6 +93,8 @@ export function freshDraft(o?: Partial<IntakeOpenOptions>): Draft {
     holdToken: null,
     requestedDay: null,
     details: { ...EMPTY_DETAILS },
+    call: { ...EMPTY_CALL },
+    carry: null,
     idemKey: null,
     result: null,
     resultSlot: null,
@@ -134,7 +141,8 @@ export function quoteItemOf(d: Draft): QuoteRequestItem | null {
 /** The earliest screen that has what a step needs (ux-spec 2.4). */
 export function validStep(s: Step | null, d: Draft): Step {
   if (s === 'done') return d.result ? 'done' : validStep('details', d);
-  if (s === 'details') return d.segment && (d.slot || d.requestedDay) ? 'details' : validStep('time', d);
+  // The call funnel: the ask needs only the segment (no slot, no bill).
+  if (s === 'details') return d.segment ? 'details' : 'bill';
   // No separate home-or-business screen (APPLE-DECISIONS 1): every door opens
   // on Screen 1 or 2, with the switch on Screen 1.
   if (s === 'time') return d.segment ? 'time' : 'bill';
@@ -155,7 +163,7 @@ export function loadSession(): Draft | null {
     const raw = sessionStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const d = JSON.parse(raw) as Draft;
-    return d && d.v === 1 ? { ...freshDraft(), ...d, details: { ...EMPTY_DETAILS, ...d.details } } : null;
+    return d && d.v === 1 ? { ...freshDraft(), ...d, details: { ...EMPTY_DETAILS, ...d.details }, call: { ...EMPTY_CALL, ...(d.call || {}) } } : null;
   } catch {
     return null;
   }
