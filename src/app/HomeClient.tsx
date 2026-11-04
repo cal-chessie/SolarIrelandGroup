@@ -12,7 +12,7 @@ import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
 import CustomerInstalls from '@/components/solar/CustomerInstalls';
 import GrantInfo from '@/components/solar/GrantInfo';
-import IntakeDoorSection from '@/components/intake/IntakeDoorSection';
+import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
 import Footer from '@/components/solar/Footer';
 
@@ -54,7 +54,7 @@ export default function HomeClient() {
         <GrantInfo />
         {/* Intake OS: the old analyser slot now carries the one door. Keeps
             id="calculator" so old /#calculator links still land here. */}
-        <IntakeDoorSection id="calculator" door="home-section" />
+        <BillAnalyser />
         <FAQ />
       </main>
       <Footer />

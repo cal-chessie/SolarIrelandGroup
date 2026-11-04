@@ -37,3 +37,6 @@ Still in src on purpose: src/app/book-survey/BookSurveyClient.tsx. /book-survey
 is now a 308 to the intake, but a returning homeowner's magic link (?lt=)
 still renders that form, which threads the lead token into /api/lead. It can
 retire once the magic link moves to the portal sign-in exchange.
+
+## 4 Nov 2026: BillAnalyser restored
+Cal: "leave the bill analyser on the front of the website alone". src/components/solar/BillAnalyser.tsx is back in src (from 061c190) and on the homepage again in place of IntakeDoorSection. The .retired copy here is now stale; keep it only as history.
