@@ -1,40 +1,56 @@
 import { NextResponse } from 'next/server';
-import {
-  ENERGY,
-  MONTH_NAMES,
-  estimate,
-  systemOptions,
-  recommendedSize,
-  installCostEur,
-  MONTHLY_GENERATION_SHARE,
-} from '@/lib/estimate';
-import { SOLAR_DATA } from '@/lib/solar-data';
+import type { AnalyserFailure, AnalyserRead, AnalyserResponse } from '@/lib/intake/contract';
+import { intakeMode } from '@/lib/intake/mode';
+import { scenarioOf, sleep } from '@/lib/intake/stub/state';
+import { ANALYSER_PROMPT, anonymousOf, canPrice, isNotABill, toAnalyserRead } from '@/lib/analyser/read';
+import { STUB_FAILURES, STUB_READS } from '@/lib/analyser/stub';
 
+/**
+ * POST /api/analyse-bill  (multipart, field "bill": a photo, screenshot or PDF)
+ *
+ * Cal's Bill Analyser, rebuilt for the call funnel (4 Nov 2026). It READS the
+ * bill and nothing else: every field comes back as printed or null, and the
+ * saving is priced by /api/intake/quote, the same AISolar quote the manual
+ * side shows, so one bill has one number (CALL-FUNNEL-PLAN ruling 1). The old
+ * route's own maths, its supplier-table rates shown as the customer's, and
+ * its "160" and "4800" stand-ins are gone (ruling 2).
+ *
+ * What happens to the file, exactly (the privacy line on the page says this
+ * and no more):
+ *   1. It is held in this server's memory for this one request. It is never
+ *      written to disk, logged, or kept after the answer goes back.
+ *   2. It is sent to OpenRouter (the AI reading service, model
+ *      BILL_VISION_MODEL, default google/gemini-2.5-flash) to pick out the
+ *      figures. What OpenRouter and the model provider retain is governed by
+ *      that account's settings, which no code here can see, so the page makes
+ *      no promise about them.
+ *   3. The figures come back to the visitor's browser, including the name,
+ *      Eircode, MPRN and address if printed. Those personal fields leave the
+ *      browser only if the visitor books the call (they ride on that request).
+ *   4. Anonymous figures (supplier, rates, standing charge, units, the bill
+ *      as a monthly figure) go to AISolar's bill dataset, with no name,
+ *      address, Eircode, MPRN, image or lead reference
+ *      (docs/memory/12-the-bill-dataset.md).
+ *
+ * STUB mode (INTAKE_CONTRACT_MODE=stub, never production): the file is
+ * checked for size and type and discarded unread. Nothing goes to OpenRouter
+ * or AISolar. The answer is a fixture chosen by the si_stub_scenario cookie.
+ */
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-// Defensive caps for the uploaded bill image / PDF.
-const MAX_FILE_BYTES = 5 * 1024 * 1024; // ~5MB
-const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-  'application/pdf',
-]);
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'application/pdf']);
+const READ_TIMEOUT_MS = 45_000;
 
-const GENERIC_ANALYSIS_ERROR =
-  "We couldn't analyse that bill. Please try again or enter your details manually.";
-
-// Lightweight in-memory per-IP throttle. Best-effort only: this state lives per
-// serverless instance and does NOT coordinate across instances. A real
-// distributed rate limiter still needs shared infra (Redis/KV).
-const RATE_LIMIT_MAX = 10; // requests
-const RATE_LIMIT_WINDOW_MS = 60_000; // per 60s
+// Best-effort per-IP throttle, per serverless instance. Each read costs a
+// vision call, so it stays tight.
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
 const rateLimitHits = new Map<string, number[]>();
 
-function getClientIp(request: Request): string {
+function clientIp(request: Request): string {
   const fwd = request.headers.get('x-forwarded-for');
   if (fwd) return fwd.split(',')[0].trim();
   return request.headers.get('x-real-ip') || 'unknown';
@@ -42,500 +58,125 @@ function getClientIp(request: Request): string {
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
-  const hits = (rateLimitHits.get(ip) || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+  const hits = (rateLimitHits.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
   hits.push(now);
   rateLimitHits.set(ip, hits);
+  if (rateLimitHits.size > 5000) rateLimitHits.clear();
   return hits.length > RATE_LIMIT_MAX;
 }
 
-// Export at 18c for every supplier: Cal's 13 Oct ruling, and the figure Solar Ireland's
-// estimate_rules carry on the platform, so the site and the estimate email agree.
-const PROVIDER_RATES: Record<string, { dayRate: number; nightRate: number; standingCharge: number; exportRate: number }> = {
-  'Electric Ireland': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.18 },
-  'ESB': { dayRate: 0.422, nightRate: 0.231, standingCharge: 11.18, exportRate: 0.18 },
-  'Bord Gáis Energy': { dayRate: 0.412, nightRate: 0.225, standingCharge: 10.85, exportRate: 0.18 },
-  'SSE Airtricity': { dayRate: 0.418, nightRate: 0.228, standingCharge: 10.98, exportRate: 0.18 },
-  'Energia': { dayRate: 0.408, nightRate: 0.222, standingCharge: 10.72, exportRate: 0.18 },
-  'Panda': { dayRate: 0.425, nightRate: 0.235, standingCharge: 11.30, exportRate: 0.18 },
-  'PrepayPower': { dayRate: 0.442, nightRate: 0.245, standingCharge: 9.50, exportRate: 0.18 },
-  'Yuno': { dayRate: 0.405, nightRate: 0.220, standingCharge: 10.50, exportRate: 0.18 },
-  'Community Power': { dayRate: 0.399, nightRate: 0.218, standingCharge: 10.40, exportRate: 0.18 },
-  'Pinergy': { dayRate: 0.435, nightRate: 0.238, standingCharge: 11.00, exportRate: 0.18 },
-};
+const answer = (body: AnalyserResponse, status = 200) => NextResponse.json(body, { status, headers: { 'cache-control': 'no-store' } });
+const fail = (reason: AnalyserFailure, status: number, partial: Partial<AnalyserRead> | null = null) => answer({ ok: false, reason, partial }, status);
 
-// 'Other' supplier: 35c, Cal's 13 Oct ruling (unit rate per supplier, else 35c), as in estimate_rules.
-const DEFAULT_RATES = { dayRate: 0.35, nightRate: 0.23, standingCharge: 11.00, exportRate: 0.18 };
-
-
-const CO2_FACTOR = ENERGY.co2PerKwh;
-
-interface BillExtraction {
-  provider: string | null;
-  accountName: string | null;
-  monthlyBill: number | null;
-  annualUsage: number | null;
-  billingPeriod: string | null;
-  unitRate: number | null;
-  standingCharge: number | null;
-  vat: number | null;
-  dayNightMeter: boolean;
-  confidence: number;
-  extractedFields: string[];
-}
-
-interface AnalysisResult {
-  provider: string;
-  monthlyBill: number;
-  annualUsage: number;
-  homeType: string;
-  unitRate: number;
-  standingCharge: number;
-
-  confidence: number;
-  extractedFields: string[];
-  billingPeriod: string | null;
-
-  recommendedSystem: number;
-  installCost: number;
-  seaiGrant: number;
-  costAfterGrant: number;
-
-  annualSaving: number;
-  annualExportEarning: number;
-  totalAnnualBenefit: number;
-  paybackYears: number;
-  roiPercent: number;
-
-  total25YearSavings: number;
-  co2Saved25Years: number;
-
-  monthlyProfile: {
-    month: string;
-    generation: number;
-    consumption: number;
-    selfConsumed: number;
-    exported: number;
-    saving: number;
-    exportEarning: number;
-  }[];
-
-  systemComparisons: {
-    size: number;
-    generation: number;
-    annualSaving: number;
-    annualExport: number;
-    paybackYears: number;
-    cost: number;
-    grant: number;
-  }[];
-
-  batteryWorthwhile: boolean;
-  batteryReason: string;
-  estimatedBatteryCost: number;
-  batteryPaybackYears: number;
-
-  annualCo2Saved: number;
-  treesEquiv25Years: number;
+/** The fields worth carrying to the manual side when a read cannot be priced. */
+function partialOf(read: AnalyserRead): Partial<AnalyserRead> | null {
+  const out: Partial<AnalyserRead> = {};
+  for (const [k, v] of Object.entries(read)) if (v !== null) (out as Record<string, unknown>)[k] = v;
+  return Object.keys(out).length ? out : null;
 }
 
 export async function POST(request: Request) {
+  if (isRateLimited(clientIp(request))) return fail('rate_limited', 429);
+
+  let file: File | null = null;
   try {
-    if (isRateLimited(getClientIp(request))) {
-      return NextResponse.json(
-        { error: 'Too many requests. Please wait a moment and try again.' },
-        { status: 429 }
-      );
-    }
-
-    const contentType = request.headers.get('content-type') || '';
-
-    let monthlyBill: number;
-    let annualUsage: number;
-    let provider: string = 'Unknown';
-    let homeType: string = 'Semi-detached';
-    let accountName: string | null = null;
-    let unitRate: number | null = null;
-    let standingCharge: number | null = null;
-    let billingPeriod: string | null = null;
-    let confidence = 100;
-    let extractedFields: string[] = ['All manual'];
-    // Which path produced the figures. A real bill read and a typed guess must
-    // never be mixed together in a published statistic.
-    const isUpload = contentType.includes('multipart/form-data');
-    // County, when the caller knows it (the analyser passes it through from an
-    // eircode lookup or a county-page link). Coarse by design; never an eircode.
-    let county: string | undefined;
-    // The day/night split, when the bill actually shows one. This is the single
-    // most valuable field in the dataset: it is what separates a household that
-    // can use solar from one that cannot, and nobody else in the market has it.
-    let dayUsageKwh: number | undefined;
-    let nightUsageKwh: number | undefined;
-    let hasDayNightMeter: boolean | undefined;
-
-    if (isUpload) {
-      const formData = await request.formData();
-      const file = formData.get('bill') as File | null;
-
-      if (!file) {
-        return NextResponse.json({ error: 'No file uploaded.' }, { status: 400 });
-      }
-
-      // Reject oversized uploads before doing any work.
-      if (file.size > MAX_FILE_BYTES) {
-        return NextResponse.json(
-          { error: 'That file is too large. Please upload a bill under 5MB.' },
-          { status: 413 }
-        );
-      }
-
-      // Only accept known image types or PDF before base64-encoding / calling ZAI.
-      const mimeType = file.type || 'image/jpeg';
-      if (!ALLOWED_MIME_TYPES.has(mimeType.toLowerCase())) {
-        return NextResponse.json(
-          { error: 'Unsupported file type. Please upload a photo (JPG, PNG, WEBP, HEIC) or a PDF.' },
-          { status: 415 }
-        );
-      }
-
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      // Guard again on the actual byte length (file.size can be spoofed / absent).
-      if (buffer.length > MAX_FILE_BYTES) {
-        return NextResponse.json(
-          { error: 'That file is too large. Please upload a bill under 5MB.' },
-          { status: 413 }
-        );
-      }
-      const base64 = buffer.toString('base64');
-
-      // Vision extraction runs through OpenRouter. Without a key configured we
-      // say so honestly and steer the visitor to manual entry (which needs no AI).
-      const apiKey = process.env.OPENROUTER_API_KEY;
-      if (!apiKey) {
-        return NextResponse.json(
-          {
-            error:
-              'Automatic bill reading is offline right now. Enter your monthly bill and usage manually instead - it takes 20 seconds.',
-            uploadUnavailable: true,
-          },
-          { status: 503 }
-        );
-      }
-
-      const model = process.env.BILL_VISION_MODEL || 'google/gemini-2.5-flash';
-      const abort = new AbortController();
-      const visionTimeout = setTimeout(() => abort.abort(), 45_000);
-      let visionResponse: { choices?: { message?: { content?: string } }[] };
-      try {
-        const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://solarirelandgroup.ie',
-            'X-Title': 'Solar Ireland Bill Analyser',
-          },
-          body: JSON.stringify({
-            model,
-            temperature: 0,
-            messages: [
-              {
-                role: 'user',
-                content: [
-                  {
-                    type: 'text',
-                    text: `You are an expert at reading Irish electricity bills. This is a photo/scan of an Irish electricity bill.
-
-Extract EVERYTHING you can and return ONLY a JSON object with these fields:
-{
-  "provider": "electricity supplier name (e.g. Electric Ireland, ESB, Bord Gáis Energy, SSE Airtricity, Energia, Panda, Yuno, Pinergy, Community Power, PrepayPower)",
-  "accountName": "the account holder's full name exactly as printed on the bill (a person's name, or a business name for a commercial bill), or null if not visible",
-  "monthlyBill": "total amount due in euros (number, e.g. 187.42)",
-  "annualUsage": "annual consumption in kWh (number). Look for 'annual', 'kWh', 'consumption'. If only a monthly reading is shown, multiply by 12",
-  "billingPeriod": "the billing period (e.g. '1 Dec 2025 to 31 Dec 2025')",
-  "unitRate": "price per kWh in euros if shown (number, e.g. 0.422)",
-  "standingCharge": "daily or monthly standing charge if shown (number)",
-  "vat": "VAT rate if shown (e.g. 9 or 13.5)",
-  "dayNightMeter": true if you see Day/Night or 24hr/Night readings, false if single rate,
-  "dayUsage": "day usage in kWh if shown (number)",
-  "nightUsage": "night usage in kWh if shown (number)"
-}
-
-Return ONLY valid JSON. No markdown, no explanation. Use null for any field you cannot find.`,
-                  },
-                  {
-                    type: 'image_url',
-                    image_url: {
-                      url: `data:${mimeType};base64,${base64}`,
-                    },
-                  },
-                ],
-              },
-            ],
-          }),
-          signal: abort.signal,
-        });
-        if (!aiRes.ok) {
-          throw new Error(`Vision API responded ${aiRes.status}`);
-        }
-        visionResponse = await aiRes.json();
-      } finally {
-        clearTimeout(visionTimeout);
-      }
-
-      const content = visionResponse.choices?.[0]?.message?.content || '';
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('Could not parse bill details from the image. Please try again or enter details manually.');
-      }
-
-      const billData: BillExtraction = JSON.parse(jsonMatch[0]);
-
-      monthlyBill = billData.monthlyBill || 160;
-      annualUsage = billData.annualUsage || 4800;
-      provider = billData.provider || 'Unknown';
-      accountName = typeof billData.accountName === 'string' ? billData.accountName.trim().slice(0, 80) || null : null;
-      billingPeriod = billData.billingPeriod || null;
-      unitRate = billData.unitRate;
-      standingCharge = billData.standingCharge;
-      hasDayNightMeter = billData.dayNightMeter;
-      const rawDay = Number((billData as unknown as { dayUsage?: unknown }).dayUsage);
-      const rawNight = Number((billData as unknown as { nightUsage?: unknown }).nightUsage);
-      dayUsageKwh = Number.isFinite(rawDay) && rawDay > 0 ? rawDay : undefined;
-      nightUsageKwh = Number.isFinite(rawNight) && rawNight > 0 ? rawNight : undefined;
-
-      extractedFields = [];
-      confidence = 0;
-      if (billData.provider) { extractedFields.push('Provider'); confidence += 20; }
-      if (billData.monthlyBill) { extractedFields.push('Bill Amount'); confidence += 25; }
-      if (billData.annualUsage) { extractedFields.push('Usage (kWh)'); confidence += 25; }
-      if (billData.unitRate) { extractedFields.push('Unit Rate'); confidence += 15; }
-      if (billData.billingPeriod) { extractedFields.push('Billing Period'); confidence += 10; }
-      if (billData.standingCharge) { extractedFields.push('Standing Charge'); confidence += 5; }
-    } else {
-      const body = await request.json();
-      monthlyBill = parseFloat(body.monthlyBill);
-      annualUsage = parseFloat(body.annualUsage);
-      provider = body.provider || 'Unknown';
-      homeType = body.homeType || 'Semi-detached';
-      county = typeof body.county === 'string' ? body.county : undefined;
-
-      if (!monthlyBill || monthlyBill <= 0 || !annualUsage || annualUsage <= 0) {
-        return NextResponse.json(
-          { error: 'Please provide valid monthly bill and annual usage.' },
-          { status: 400 }
-        );
-      }
-    }
-
-    const results = runFullAnalysis(monthlyBill, annualUsage, provider, homeType, unitRate, standingCharge, billingPeriod, confidence, extractedFields);
-
-    // Record the reading, anonymously. Deliberately NOT awaited: the customer
-    // waits for their estimate, never for our bookkeeping, and a failure here
-    // must never cost a lead.
-    void recordObservation({
-      source: isUpload ? 'bill_upload' : 'manual',
-      county,
-      supplier: provider,
-      unitRate,
-      standingCharge,
-      annualKwh: annualUsage,
-      dayKwh: dayUsageKwh,
-      nightKwh: nightUsageKwh,
-      hasDayNightMeter,
-      monthlyBill,
-      recommendedKwp: results.recommendedSystem,
-      propertyType: homeType,
-    });
-
-    return NextResponse.json({ ...results, accountName });
-  } catch (error: unknown) {
-    // Log the real error server-side only; never leak SDK/parse internals to the client.
-    console.error('Bill analysis error:', error);
-    return NextResponse.json(
-      { error: GENERIC_ANALYSIS_ERROR },
-      { status: 500 }
-    );
+    const form = await request.formData();
+    const f = form.get('bill');
+    file = f instanceof File ? f : null;
+  } catch {
+    file = null;
   }
+  if (!file) return fail('unreadable', 400);
+  if (file.size > MAX_FILE_BYTES) return fail('too_big', 413);
+  const mime = (file.type || 'image/jpeg').toLowerCase();
+  if (!TYPES.has(mime)) return fail('wrong_type', 415);
+
+  if (intakeMode() === 'stub') {
+    // The bytes are not read, not kept and not sent anywhere.
+    const scenario = scenarioOf(request) || 'default';
+    await sleep(scenario === 'bill_timeout' ? 3000 : scenario === 'bill_slow' ? 13_500 : 1800);
+    const f = STUB_FAILURES[scenario];
+    if (f) return fail(f.reason, f.status, f.partial);
+    return answer({ ok: true, read: STUB_READS[scenario] ?? STUB_READS.default });
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) return fail('offline', 503);
+
+  const bytes = Buffer.from(await file.arrayBuffer());
+  if (bytes.length === 0) return fail('unreadable', 400);
+  if (bytes.length > MAX_FILE_BYTES) return fail('too_big', 413);
+
+  const model = process.env.BILL_VISION_MODEL || 'google/gemini-2.5-flash';
+  // A PDF goes as a file part, an image as an image part.
+  const part =
+    mime === 'application/pdf'
+      ? { type: 'file', file: { filename: 'bill.pdf', file_data: `data:application/pdf;base64,${bytes.toString('base64')}` } }
+      : { type: 'image_url', image_url: { url: `data:${mime};base64,${bytes.toString('base64')}` } };
+
+  let content = '';
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://solarirelandgroup.ie',
+        'X-Title': 'Solar Ireland Bill Analyser',
+      },
+      body: JSON.stringify({ model, temperature: 0, messages: [{ role: 'user', content: [{ type: 'text', text: ANALYSER_PROMPT }, part] }] }),
+      signal: AbortSignal.timeout(READ_TIMEOUT_MS),
+    });
+    if (res.status === 429) return fail('rate_limited', 429);
+    if (!res.ok) {
+      console.error('[analyse-bill] reader answered', res.status);
+      return fail('offline', 503);
+    }
+    const data = (await res.json().catch(() => null)) as { choices?: { message?: { content?: string } }[] } | null;
+    content = data?.choices?.[0]?.message?.content || '';
+  } catch (err) {
+    const timedOut = err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError');
+    console.error('[analyse-bill] reader failed:', timedOut ? 'timeout' : 'network');
+    return timedOut ? fail('timeout', 504) : fail('offline', 503);
+  }
+
+  const m = content.match(/\{[\s\S]*\}/);
+  let raw: unknown = null;
+  try {
+    raw = m ? JSON.parse(m[0]) : null;
+  } catch {
+    raw = null;
+  }
+  if (!raw) return fail('unreadable', 200);
+
+  const read = toAnalyserRead(raw);
+  if (isNotABill(raw, read)) return fail('not_bill', 200);
+  if (!canPrice(read)) return fail('unreadable', 200, partialOf(read));
+
+  // Anonymous, and deliberately not awaited: the visitor never waits for our bookkeeping.
+  void recordObservation(anonymousOf(read));
+  return answer({ ok: true, read });
 }
 
 /**
- * Send one anonymous reading to the platform.
- *
- * Every bill this analyser reads is a grain of the only dataset in this market
- * nobody else can build: SEAI publishes grant counts, the trade association
- * publishes member surveys, and neither of them reads real bills. Until now
- * every reading was discarded the moment the estimate was rendered.
- *
- * What leaves this function is a fixed set of coarse figures. No name, no
- * email, no phone, no MPRN, no eircode, no address, no bill image, and no lead
- * reference. County, not eircode. The platform stamps the month itself and
- * stores no timestamp, because a precise time plus a county plus a usage
- * figure could be lined up against a lead row and re-identify a household.
- * That is what keeps the promise on the analyser honest.
- *
- * Silent by design. If the platform is unreachable, or the env is not set, the
- * customer is unaffected and never learns anything happened.
+ * One anonymous reading to the platform (docs/memory/12-the-bill-dataset.md).
+ * A fixed set of coarse figures: no name, email, phone, MPRN, Eircode,
+ * address, image or lead reference, and no timestamp. Silent by design.
  */
-async function recordObservation(o: {
-  source: 'bill_upload' | 'manual';
-  county?: string | null;
-  supplier?: string | null;
-  unitRate?: number | null;
-  standingCharge?: number | null;
-  annualKwh?: number | null;
-  dayKwh?: number | null;
-  nightKwh?: number | null;
-  hasDayNightMeter?: boolean | null;
-  monthlyBill?: number | null;
-  recommendedKwp?: number | null;
-  propertyType?: string | null;
-}): Promise<void> {
+async function recordObservation(o: ReturnType<typeof anonymousOf>): Promise<void> {
   const ingestUrl = process.env.AISOLAR_INGEST_URL;
   const sourceKey = process.env.AISOLAR_SOURCE_KEY;
   if (!ingestUrl || !sourceKey) return;
-
-  // Derived from the lead door, so one env var configures both.
   const url = ingestUrl.replace(/ingest-lead\/?$/, 'ingest-bill-observation');
   if (url === ingestUrl) return;
-
   try {
     await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-source-key': sourceKey },
-      body: JSON.stringify(o),
+      body: JSON.stringify({ source: 'bill_upload', ...o }),
       signal: AbortSignal.timeout(5000),
     });
   } catch {
     // Never surfaces. A dropped observation costs a row, not a customer.
   }
-}
-
-function getProviderRates(provider: string) {
-  const key = Object.keys(PROVIDER_RATES).find(
-    k => provider.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(provider.toLowerCase())
-  );
-  return key ? PROVIDER_RATES[key] : DEFAULT_RATES;
-}
-
-function runFullAnalysis(
-  monthlyBill: number,
-  annualUsage: number,
-  provider: string,
-  homeType: string,
-  unitRate: number | null,
-  standingCharge: number | null,
-  billingPeriod: string | null,
-  confidence: number,
-  extractedFields: string[]
-): AnalysisResult {
-  const rates = getProviderRates(provider);
-
-  const effectiveRate = unitRate || rates.dayRate;
-  const effectiveStanding = standingCharge || rates.standingCharge;
-
-  const monthlyUsage = annualUsage / 12;
-  const avgDayConsumption = monthlyUsage * 0.65; // 65% during day
-  const avgNightConsumption = monthlyUsage * 0.35; // 35% night
-
-  // One engine for the whole site: src/lib/estimate.ts. The customer's own
-  // unit rate from their bill overrides the market figure; everything else
-  // (yield, grant tiers, panels-only self-consumption) comes from there.
-  const rateOpts = { unitRateEur: effectiveRate, exportRateEur: rates.exportRate };
-  const systemComparisons: AnalysisResult['systemComparisons'] =
-    // Sizes come from the engine's own domestic range, which starts at the
-    // 4 kWp floor. Never hardcode a list here again.
-    systemOptions(annualUsage, undefined, rateOpts);
-
-  const recommendedSystem = recommendedSize(annualUsage, homeType);
-  const headline = estimate({ annualUsageKwh: annualUsage, systemSizeKwp: recommendedSystem, ...rateOpts });
-  const best = {
-    size: recommendedSystem,
-    generation: headline.annualGenerationKwh,
-    annualSaving: headline.annualSavingFromSelfUseEur,
-    annualExport: headline.annualExportEarningsEur,
-    paybackYears: headline.paybackYears,
-    cost: headline.installCostEur,
-    grant: headline.grantEur,
-  };
-
-  const monthlyProfile = MONTH_NAMES.map((month, i) => {
-    const generation = headline.annualGenerationKwh * MONTHLY_GENERATION_SHARE[i];
-    const consumption = monthlyUsage;
-    const selfConsumed = Math.min(generation * (headline.selfConsumptionPct / 100), consumption);
-    const exported = Math.max(0, generation - selfConsumed);
-    const saving = selfConsumed * effectiveRate;
-    const exportEarning = exported * rates.exportRate;
-
-    return {
-      month,
-      generation: Math.round(generation),
-      consumption: Math.round(consumption),
-      selfConsumed: Math.round(selfConsumed),
-      exported: Math.round(exported),
-      saving: Math.round(saving),
-      exportEarning: Math.round(exportEarning),
-    };
-  });
-
-  const selfConsumptionRatio = headline.selfConsumptionPct / 100;
-  const batteryWorthwhile = selfConsumptionRatio < 0.45 && annualUsage > 3500;
-  // The battery add-on comes from the engine's own pricing, not a literal. This
-  // was hardcoded at €4,500 while the engine says €3,200 for 5 kWh
-  // (batteryBaseEur 1500 + 5 x 340), so the analyser was overstating the cost
-  // by €1,300 and then computing a payback from that wrong number.
-  const BATTERY_KWH = 5;
-  const estimatedBatteryCost = installCostEur(0, BATTERY_KWH) - installCostEur(0);
-  const batteryExtraSaving = batteryWorthwhile
-    ? Math.round(best.annualExport * 0.6 * effectiveRate * 0.85) // capture 60% of export at 85% battery efficiency
-    : 0;
-  const batteryPaybackYears = batteryExtraSaving > 0
-    ? Math.round((estimatedBatteryCost / batteryExtraSaving) * 10) / 10
-    : 99;
-  // Deliberately framed as a question for the survey, not a quote. The engine is
-  // panels-only by design: sizing and pricing storage is the consultant's job,
-  // so this says "worth asking about" rather than putting a number on the day.
-  const batteryReason = batteryWorthwhile
-    ? `Your self-consumption is around ${Math.round(selfConsumptionRatio * 100)}%, so a good share of what you make is being exported. A ${BATTERY_KWH} kWh battery would capture roughly €${batteryExtraSaving} a year of that, and a battery of ${SOLAR_DATA.batteryGrant.minLabel} carries a ${SOLAR_DATA.batteryGrant.label} SEAI grant on top of the solar grant. Worth asking about on the survey, where it can be sized to your actual day and night usage.`
-    : `Your self-consumption is already strong at around ${Math.round(selfConsumptionRatio * 100)}%, so you are using most of what you generate. A battery would add less here than it does for most homes.`;
-
-  const annualCo2Saved = Math.round(best.generation * CO2_FACTOR);
-  const total25YearCo2Saved = Math.round(annualCo2Saved * 22.5); // accounting for degradation
-  const treesEquiv25Years = Math.round(total25YearCo2Saved / (22 * 25));
-
-  const total25YearSavings = headline.total25yrSavingsEur;
-
-  const netCost = best.cost - best.grant;
-  const roiPercent = Math.round(((best.annualSaving + best.annualExport) / netCost) * 100);
-
-  return {
-    provider,
-    monthlyBill: Math.round(monthlyBill * 100) / 100,
-    annualUsage: Math.round(annualUsage),
-    homeType,
-    unitRate: effectiveRate,
-    standingCharge: effectiveStanding,
-    confidence,
-    extractedFields,
-    billingPeriod,
-    recommendedSystem,
-    installCost: best.cost,
-    seaiGrant: best.grant,
-    costAfterGrant: netCost,
-    annualSaving: best.annualSaving,
-    annualExportEarning: best.annualExport,
-    totalAnnualBenefit: best.annualSaving + best.annualExport,
-    paybackYears: best.paybackYears,
-    roiPercent,
-    total25YearSavings,
-    co2Saved25Years: total25YearCo2Saved,
-    monthlyProfile,
-    systemComparisons,
-    batteryWorthwhile,
-    batteryReason,
-    estimatedBatteryCost,
-    batteryPaybackYears,
-    annualCo2Saved,
-    treesEquiv25Years,
-  };
 }
