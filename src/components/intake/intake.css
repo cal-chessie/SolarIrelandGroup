@@ -2217,6 +2217,12 @@ button.si-photo:hover {
 .si-week__empty {
   min-height: 44px;
 }
+/* 360: seven days across a 328 px column stay 44 px wide (WCAG 2.5.8). */
+@media (max-width: 374.98px) {
+  .si-week {
+    gap: 2px;
+  }
+}
 
 /* ── Details ────────────────────────────────────────────────── */
 
