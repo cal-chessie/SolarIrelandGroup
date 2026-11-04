@@ -144,8 +144,8 @@ const additionalServices = [
   },
   {
     icon: Home,
-    label: 'Free Home Survey',
-    desc: 'No-obligation roof and energy assessment with a detailed proposal tailored to your home.',
+    label: 'Free 15-Minute Call',
+    desc: 'We go through your bill and your figures with you on the phone. No visit, no obligation.',
   },
   {
     icon: Monitor,
@@ -471,13 +471,13 @@ export default function ServicesPage() {
                   Price It On My Bill
                   <ArrowRight className="w-4 h-4" />
                 </IntakeLink>
-                <IntakeLink
-                  opts={{ door: 'services', step: 'time', src: 'services' }}
+                <a
+                  href="/#calculator"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  Book a Free Survey
-                </IntakeLink>
+                  Book a Free Call
+                </a>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-white text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.2] transition-all"
@@ -742,20 +742,19 @@ export default function ServicesPage() {
                   Ready to Switch to Solar?
                 </h2>
                 <p className="text-gray-400 max-w-lg mx-auto mb-8 leading-relaxed">
-                  Get a free, no-obligation home survey and personalised quote.
+                  Snap your bill, see your saving, then book a free 15-minute call.
                   We cover all 32 counties and our installations typically take just one day.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  {/* Said "Book Free Survey", opened WhatsApp. It books a
-                      survey now. */}
-                  <IntakeLink
-                    opts={{ door: 'services', step: 'time', src: 'services' }}
+                  {/* Call funnel: the site sells the free 15-minute call only. */}
+                  <a
+                    href="/#calculator"
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                   >
                     <Zap className="w-4 h-4" />
-                    Book Free Survey
+                    Book a Free Call
                     <ArrowRight className="w-4 h-4" />
-                  </IntakeLink>
+                  </a>
                   <a
                     href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
                     className="inline-flex items-center gap-2.5 px-7 py-4 rounded-full border border-white/[0.15] text-white text-sm font-medium hover:bg-white/[0.05] transition-all"
@@ -765,7 +764,7 @@ export default function ServicesPage() {
                   </a>
                 </div>
                 <p className="text-xs text-gray-600 mt-6">
-                  We quote what the survey finds. If the sums do not work on your roof, we will tell you.
+                  We quote what we find at your home, after the call.
                 </p>
               </div>
             </div>

@@ -218,12 +218,12 @@ export default function RoscommonPage() {
             >
               Get my estimate <ArrowRight className="h-4 w-4" />
             </IntakeLink>
-            <IntakeLink
-              opts={{ door: 'county-roscommon-book', segment: 'home', step: 'time', county: 'Roscommon' }}
+            <a
+              href="/#calculator"
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 min-h-[48px] font-semibold text-white transition hover:bg-white/5"
             >
-              Book a site survey
-            </IntakeLink>
+              Book a free call
+            </a>
           </div>
         </section>
 
@@ -317,8 +317,8 @@ export default function RoscommonPage() {
           <div className="rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold sm:text-3xl">See what solar saves your Roscommon home</h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Type your electricity bill for a close estimate on the page, the €1,800 SEAI grant included, then pick a
-              time for a free site survey. No obligation.
+              Type your electricity bill for a close estimate on the page, the €1,800 SEAI grant included, then book a
+              free 15-minute call. No obligation.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <IntakeLink

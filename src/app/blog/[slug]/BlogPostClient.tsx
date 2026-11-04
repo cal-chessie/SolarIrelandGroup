@@ -498,11 +498,11 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
     },
     savings: {
       h: 'That was the average. What about your house?',
-      p: 'The numbers above are a typical Irish home. Type your bill and see your own close estimate on the page, then pick a time for a free site survey.',
+      p: 'The numbers above are a typical Irish home. Type your bill and see your own close estimate on the page, then book a free 15-minute call.',
     },
     county: {
       h: 'Get a local answer',
-      p: 'Generation, roofs and grid connection differ by county. Type your bill for a close estimate, then book a free site survey with the team covering your area.',
+      p: 'Generation, roofs and grid connection differ by county. Type your bill for a close estimate, then book a free 15-minute call.',
     },
     guides: {
       h: 'See it on your own numbers',
@@ -510,7 +510,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
     },
     technology: {
       h: 'Which of these suits your home?',
-      p: 'Panels and inverters are sized to the house, not chosen from a list. See your estimate, then book a free site survey with no obligation.',
+      p: 'Panels and inverters are sized to the house, not chosen from a list. See your estimate, then book a free 15-minute call with no obligation.',
     },
     news: {
       h: 'Work out what it means for you',

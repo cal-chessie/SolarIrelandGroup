@@ -143,11 +143,11 @@ const faqs = [
   },
   {
     question: 'Do you cover my county?',
-    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. Surveys are free everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
+    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. A free 15-minute call is open to everyone, everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
   },
   {
-    question: 'Can I get a free solar survey in my area?',
-    answer: 'Absolutely. Solar Ireland offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. The survey costs nothing and commits you to nothing. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
+    question: 'Can I talk to someone about solar in my area?',
+    answer: 'Yes. Snap your electricity bill on our Bill Analyser, see what it says and what solar could save you, then book a free 15-minute call. Cal rings you to go through your figures and answer your questions, wherever you are in the 32 counties. No visit, no obligation.',
   },
   {
     question: 'Do you serve Northern Ireland?',
@@ -400,9 +400,9 @@ function BottomStats() {
     },
     {
       icon: Building2,
-      label: 'Free Surveys in All Areas',
+      label: 'Free Call in All Areas',
       value: 'Free',
-      desc: 'No-obligation roof assessment',
+      desc: 'A 15-minute call about your bill',
       color: 'text-sky-400',
       bg: 'bg-sky-400/10',
     },
@@ -560,7 +560,7 @@ export default function CountiesClient() {
               <div className="w-px h-4 bg-white/10 hidden sm:block" />
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400/60" />
-                <span className="text-gray-400">Free survey <span className="text-white font-semibold">nationwide</span></span>
+                <span className="text-gray-400">Free call <span className="text-white font-semibold">nationwide</span></span>
               </div>
             </div>
           </div>
@@ -758,8 +758,8 @@ export default function CountiesClient() {
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
                     Type your electricity bill and see what solar would save you, in your
-                    county, on this page. Then pick a time for a free site survey: we check the
-                    roof properly and guide you through the SEAI grant.
+                    county, on this page. Then book a free 15-minute call: we go through your
+                    figures and guide you through the SEAI grant.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <IntakeLink
@@ -769,13 +769,13 @@ export default function CountiesClient() {
                       Get my estimate
                       <ArrowRight className="w-4 h-4" />
                     </IntakeLink>
-                    <IntakeLink
-                      opts={{ door: 'counties-cta-book', segment: 'home', step: 'time' }}
+                    <a
+                      href="/#calculator"
                       className="inline-flex items-center gap-2.5 px-7 min-h-[48px] rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <Calendar className="w-4 h-4" />
-                      Book a free site survey
-                    </IntakeLink>
+                      Book a free call
+                    </a>
                   </div>
                 </div>
               </div>

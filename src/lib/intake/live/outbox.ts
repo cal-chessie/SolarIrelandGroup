@@ -147,6 +147,7 @@ function askedLine(p: IngestBody): string {
 
 export function alertText(p: IngestBody, key: string, reason: string, stored: boolean): { subject: string; text: string } {
   const who = [p.name || 'No name', p.phone || p.email].join(', ');
+  const call = p.intent === 'call';
   const lines = [
     'A homeowner finished the website intake, but AISolar did not accept the lead.',
     `Reason: ${reason}`,
@@ -158,10 +159,11 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
     `Address: ${p.address || ''}`,
     `County: ${p.county || ''}`,
     `Home or business: ${p.meta.segment === 'commercial' ? `Business${p.meta.businessName ? `, ${p.meta.businessName}` : ''}` : 'Home'}`,
-    `Asked for: ${askedLine(p)}`,
+    `Asked for: ${call ? `A free 15-minute call${p.bestTime ? `, best time: ${p.bestTime === 'any' ? 'any time' : p.bestTime}` : ''}` : askedLine(p)}`,
+    ...(call && p.mprn ? [`MPRN (from their bill): ${p.mprn}`] : []),
     `Bill: ${p.monthlyBill != null ? `€${p.monthlyBill} a month` : 'not given'}`,
     '',
-    'They were told: "Saved, not booked yet. We\'ll confirm by email."',
+    call ? 'They were told: "Cal will ring you today. If it\'s late, first thing tomorrow." Ring them.' : 'They were told: "Saved, not booked yet. We\'ll confirm by email."',
     '',
     stored
       ? 'The website holds this lead and sends it again every few minutes until AISolar accepts it, with the same reference, so it can never become two leads. When it lands you get the usual new-lead alert from AISolar.'
@@ -169,7 +171,7 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
     '',
     `Reference: ${key}`,
   ];
-  return { subject: `Lead held on the website: ${who}. AISolar did not accept it.`, text: lines.join('\n') };
+  return { subject: call ? `Call requested: ${who}. Held on the website, AISolar did not accept it.` : `Lead held on the website: ${who}. AISolar did not accept it.`, text: lines.join('\n') };
 }
 
 export async function holdInOutbox(

@@ -58,11 +58,11 @@ const mobileLinks = [
     borderHover: 'hover:border-green-400/20',
   },
   {
-    label: 'Book a site survey',
-    href: '/estimate?step=time&door=nav-book',
+    label: 'Book a free call',
+    href: '/#calculator',
     icon: CalendarCheck,
     color: 'green',
-    description: 'Pick a real time for a free site survey',
+    description: 'A free 15-minute call about your bill',
     gradient: 'from-green-400/20 to-emerald-400/10',
     iconBg: 'bg-green-400/10',
     iconColor: 'text-green-400',
@@ -152,7 +152,7 @@ const desktopNavLinks = [
   { label: 'Services', href: '/services', isBookSurvey: false },
   { label: 'Counties', href: '/counties', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Book a site survey', href: '/estimate?step=time&door=nav-book', isBookSurvey: false },
+  { label: 'Book a free call', href: '/#calculator', isBookSurvey: false },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 
@@ -403,19 +403,18 @@ function MobileMenu({
             {/* Intake OS: one amber primary, "Get my estimate"; booking is the
                 secondary. Green stays for done, found and booked. */}
             <button
-              onClick={() => navigateTo('/estimate?door=nav-menu-cta')}
+              onClick={() => navigateTo('/#calculator')}
               className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] active:scale-[0.98] transition-transform"
             >
-              Get my estimate
+              Book a free call
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => navigateTo('/estimate?step=time&door=nav-menu-book')}
+              onClick={() => navigateTo('/estimate?door=nav-menu-manual')}
               className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl border border-white/[0.14] bg-transparent text-white font-medium text-[15px] active:scale-[0.98] transition-transform mt-3"
             >
-              <CalendarCheck className="w-4 h-4" />
-              Book a site survey
+              No bill to hand? Get my estimate
             </button>
 
             <div className="flex items-center gap-2 mt-3">
@@ -471,7 +470,7 @@ function MobileMenu({
                   <div className="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center mx-auto mb-1.5">
                     <CalendarCheck className="w-4 h-4 text-emerald-400" />
                   </div>
-                  <p className="text-[10px] font-semibold text-gray-400">Free Survey</p>
+                  <p className="text-[10px] font-semibold text-gray-400">Free 15-min Call</p>
                 </div>
               </div>
             </div>
@@ -623,14 +622,13 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
                 clipped the survey CTA. The secondary CTA waits for xl. */}
-            {/* Intake OS (DECISIONS 3): one primary nav button, "Get my
-                estimate", in amber. "Book a site survey" lives in the links
-                and the menu. */}
+            {/* Call funnel (4 Nov 2026): the site sells one thing, the free
+                15-minute call. The one primary goes to the Bill Analyser. */}
             <button
-              onClick={() => navigateTo('/estimate?door=nav')}
+              onClick={() => navigateTo('/#calculator')}
               className="inline-flex items-center min-h-[44px] bg-amber-400 hover:bg-amber-300 text-black font-semibold text-sm px-5 rounded-full active:scale-95 transition-colors whitespace-nowrap"
             >
-              Get my estimate
+              Book a free call
             </button>
           </div>
 

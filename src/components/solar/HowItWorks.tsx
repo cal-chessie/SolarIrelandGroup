@@ -13,41 +13,40 @@ const steps = [
     title: 'Upload Your Bill',
     subtitle: 'AI-powered analysis',
     description:
-      'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds - giving you a personalised savings estimate before you even talk to us.',
+      'Snap your electricity bill or upload the PDF. Our AI reads your supplier, your unit rate and your day and night split, and shows you the saving before you talk to anyone.',
     icon: Upload,
     accent: 'from-amber-400 to-orange-500',
     accentBg: 'bg-amber-400/10',
     accentBorder: 'hover:border-amber-400/25',
     features: [
       'Camera snap or file upload',
-      'Reads all Irish providers',
-      'Instant savings estimate',
+      'Reads your day and night split',
+      'Your saving on the page',
       'No sign-up required',
     ],
-    stat: { value: '~30', unit: 'seconds', label: 'to get your results' },
-    cta: { href: '#calculator', text: 'Try the AI Analyser', icon: Camera, gradient: 'from-amber-500 to-amber-400', shadow: 'hover:shadow-amber-500/20' },
+    stat: { value: '1', unit: 'bill', label: 'is all it needs' },
+    cta: { href: '/#calculator', text: 'Analyse my bill', icon: Camera, gradient: 'from-amber-500 to-amber-400', shadow: 'hover:shadow-amber-500/20' },
   },
   {
     number: '02',
-    title: 'Free Survey',
-    subtitle: 'No obligation, ever',
+    title: 'Free 15-Minute Call',
+    subtitle: 'No visit, no obligation',
     description:
-      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Most surveys take under 45 minutes.",
+      'Cal rings you to go through your figures and answer your questions. Nobody comes to the house unless you ask for it after the call.',
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
     accentBorder: 'hover:border-emerald-400/25',
     features: [
-      'Roof & shading assessment',
-      'Usage pattern review',
-      'Honest recommendation',
+      'Your figures, gone through with you',
+      'Your questions answered',
+      'The SEAI grant explained',
       'Zero cost, zero pressure',
     ],
-    stat: { value: '~45', unit: 'minutes', label: 'for a full survey' },
-    // A button that says "Book Free Survey" has to book a survey. This opened
-    // WhatsApp, which is a chat window, not a booking, and it lost the lead to
-    // a conversation nobody was guaranteed to answer.
-    cta: { href: '/estimate?step=time&door=how-it-works', intake: { door: 'how-it-works', step: 'time' as const }, text: 'Book a site survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    stat: { value: '15', unit: 'minutes', label: 'on the phone' },
+    // Call funnel (4 Nov 2026): the site sells the free 15-minute call only.
+    // The button goes to the Bill Analyser, which ends in the call.
+    cta: { href: '/#calculator', text: 'Book a free call', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',

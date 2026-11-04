@@ -410,7 +410,7 @@ export default function ContactClient() {
                 transition={{ duration: 0.6 }}
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
-                Have a question about solar panels? Want to book a free survey?
+                Have a question about solar panels? Want a free 15-minute call?
                 Just want to chat? We&apos;re real people - reach out anytime
                 and we&apos;ll get back to you fast.
               </motion.p>
@@ -418,22 +418,22 @@ export default function ContactClient() {
               {/* Intake OS: the top card on /contact opens the one intake. The
                   form below stays for questions only. */}
               <div className="mt-8 max-w-2xl rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 sm:p-6">
-                <p className="text-base sm:text-lg font-semibold text-white">Want a price or a free site survey?</p>
+                <p className="text-base sm:text-lg font-semibold text-white">Want your saving and a free 15-minute call?</p>
                 <p className="mt-1 text-sm text-gray-400">
-                  Type your bill for a close estimate on the page, then pick a real time. No email needed to see it.
+                  Snap your bill and see what it says and what solar could save you, then book a free call. Nothing to sign up for to see it.
                 </p>
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <IntakeLink
-                    opts={{ door: 'contact', step: 'bill' }}
+                  <a
+                    href="/#calculator"
                     className="inline-flex items-center justify-center gap-2 min-h-[52px] px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] transition-colors"
                   >
-                    Get my estimate
-                  </IntakeLink>
+                    Analyse my bill
+                  </a>
                   <IntakeLink
-                    opts={{ door: 'contact-book', step: 'time', segment: 'home' }}
+                    opts={{ door: 'contact', step: 'bill' }}
                     className="inline-flex items-center justify-center gap-2 min-h-[52px] px-5 rounded-xl border border-white/[0.14] text-white font-medium text-[15px] hover:bg-white/[0.06] transition-colors"
                   >
-                    Book a site survey
+                    No bill to hand? Get my estimate
                   </IntakeLink>
                 </div>
               </div>

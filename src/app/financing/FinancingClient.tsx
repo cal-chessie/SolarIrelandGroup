@@ -200,12 +200,12 @@ function FinancingHero() {
           >
             Price it on my bill
           </IntakeLink>
-          <IntakeLink
-            opts={{ door: 'financing', step: 'time', src: 'financing' }}
+          <a
+            href="/#calculator"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap hover:bg-green-400/20 transition-all active:scale-[0.98]"
           >
-            Book a free survey
-          </IntakeLink>
+            Book a free call
+          </a>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
@@ -477,12 +477,12 @@ function FinancingCalculator() {
                 {/* The calculator answered the question and then offered
                     nothing. This is the highest intent moment on the page. */}
                 <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <IntakeLink
-                    opts={{ door: 'financing', step: 'time', src: 'financing-calc' }}
+                  <a
+                    href="/#calculator"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]"
                   >
-                    Book a survey to confirm these figures
-                  </IntakeLink>
+                    Book a free call to go through them
+                  </a>
                   <IntakeLink
                     opts={{ door: 'financing', src: 'financing' }}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.12] bg-white/[0.03] text-gray-300 hover:text-white text-sm whitespace-nowrap transition-all"
@@ -737,7 +737,7 @@ function HowFinancingWorks() {
     {
       num: '01',
       title: 'Get Your Free Quote',
-      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we prepare and submit the grant application for you.',
+      desc: 'Start with a free 15-minute call about your bill. Then we assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we prepare and submit the grant application for you.',
     },
     {
       num: '02',

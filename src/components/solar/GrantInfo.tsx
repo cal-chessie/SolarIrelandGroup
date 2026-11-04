@@ -25,7 +25,6 @@ import {
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { DOMESTIC_MIN_KWP } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import IntakeLink from '@/components/intake/IntakeLink';
 
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -271,7 +270,7 @@ function EligibilityChecker() {
                     Based on your answers, you appear eligible for the <AnimatedGrant show={isRevealed} /> SEAI Solar PV grant.
                   </p>
                   {hasUnsure && (
-                    <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything during your free survey.</p>
+                    <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything with you on a free 15-minute call.</p>
                   )}
                   {/* Someone who has just been told they qualify is the highest
                       intent visitor on this page. This used to hand them to
@@ -279,22 +278,14 @@ function EligibilityChecker() {
                       the moment was spent on a chat window instead of a booking
                       or an estimate. Both real next steps now, booking first. */}
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3">
-                    <IntakeLink
-                      opts={{ door: 'grant-checker', step: 'time', src: 'grant-checker' }}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
+                    <a
+                      href="/#calculator"
+                      className="inline-flex items-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
                     >
                       <Zap className="w-4 h-4" />
-                      Book Free Survey
+                      See it on my bill, then book a free call
                       <ArrowRight className="w-4 h-4" />
-                    </IntakeLink>
-                    <motion.a
-                      href="#calculator"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                    >
-                      See it on my bill
-                    </motion.a>
+                    </a>
                   </div>
                 </motion.div>
               ) : (
@@ -342,9 +333,9 @@ const timelineSteps: {
 }[] = [
   {
     icon: ClipboardCheck,
-    title: 'Free Survey',
-    description: 'We visit your home, assess your roof, and confirm your eligibility.',
-    duration: '~45 min',
+    title: 'Free 15-Minute Call',
+    description: 'We go through your bill and your figures with you and confirm your eligibility.',
+    duration: '15 min',
     who: 'We handle this',
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
@@ -391,7 +382,7 @@ function GrantTimeline() {
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       <h3 className="text-lg sm:text-xl font-bold text-white mb-2">How the grant works</h3>
-      <p className="text-xs text-gray-400 mb-6">From survey to savings - we handle the hard parts</p>
+      <p className="text-xs text-gray-400 mb-6">From the first call to savings, we handle the hard parts</p>
 
       <div className="space-y-0">
         {timelineSteps.map((step, i) => {
@@ -571,7 +562,7 @@ export default function GrantInfo() {
         >
           <Info className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
           <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and walk you through your application. Visit{' '}
+            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details with you and walk you through your application. Visit{' '}
             <a
               href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
               target="_blank"

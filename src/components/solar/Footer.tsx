@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
-import IntakeDoor from '@/components/intake/IntakeDoor';
 import IntakeLink from '@/components/intake/IntakeLink';
 import { useRef } from 'react';
 import {
@@ -83,8 +82,8 @@ const FOOTER_SOCIAL = [
 
 const quickLinks = [
   { label: 'Services', href: '/services' },
+  { label: 'Book a free call', href: '/#calculator' },
   { label: 'Get my estimate', href: '/estimate?door=footer-links', intake: { door: 'footer-links' } },
-  { label: 'Book a site survey', href: '/estimate?step=time&door=footer-links', intake: { door: 'footer-links', step: 'time' as const } },
   { label: 'Financing', href: '/financing' },
   { label: 'Counties', href: '/counties' },
   { label: 'Blog', href: '/blog' },
@@ -96,7 +95,7 @@ const quickLinks = [
 const services = [
   { label: 'Solar PV Installation', desc: 'Residential & commercial panels' },
   { label: 'Battery Storage', desc: 'Store energy for evening use' },
-  { label: 'Free Home Surveys', desc: 'No-obligation roof assessment' },
+  { label: 'Free 15-Minute Call', desc: 'Your bill and your figures, gone through with you' },
   { label: 'SEAI Grant Assistance', desc: 'We handle the full application' },
   { label: 'BER Assessment', desc: 'Post-install energy rating' },
 ];
@@ -137,12 +136,19 @@ function PreFooterCTA() {
             See what solar would save you
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed">
-            Type your bill and your estimate appears on the page, before anyone
-            rings you. Then pick a real time for a free site survey.
+            Snap your bill and your saving appears on the page, before anyone
+            rings you. Then book a free 15-minute call.
           </p>
         </div>
         <div className="lg:justify-self-end w-full lg:max-w-[560px]">
-          <IntakeDoor door="footer" segment="home" />
+          <div className="flex flex-col gap-3">
+            <a href="/#calculator" className="inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[17px] transition-colors">
+              Analyse my bill
+            </a>
+            <IntakeLink opts={{ door: 'footer' }} className="inline-flex items-center justify-center min-h-[44px] text-[15px] text-gray-300 underline underline-offset-4 decoration-white/30 hover:text-white">
+              No bill to hand? Answer 3 quick questions
+            </IntakeLink>
+          </div>
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ export default function IntakeDoorSection({
   id,
   door,
   heading = 'See what solar would save you',
-  line = 'Type your bill and see your estimate on this page, then pick a time for a free site survey. No email needed to see it.',
+  line = 'Type your bill and see your estimate on this page, then book a free 15-minute call. No email needed to see it.',
   segment = 'home',
   as = 'h2',
   hero = false,

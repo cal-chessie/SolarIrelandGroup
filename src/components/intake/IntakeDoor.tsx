@@ -71,7 +71,7 @@ export default function IntakeDoor({
               openIntake({ door: `${door}-book`, segment, step: 'time' });
             }}
           >
-            Just book a free survey
+            Just book a free call
           </a>
         ) : null}
         {businessLink ? (

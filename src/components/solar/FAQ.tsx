@@ -72,7 +72,7 @@ const faqs: FAQItem[] = [
     id: 4,
     question: 'What is the SEAI grant and am I eligible?',
     answer:
-      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must own the home (private landlords can apply too), it must have been built and occupied before 2025 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER to qualify: a BER assessment is done after the work is finished, before the grant is paid, and we arrange it. SEAI pays the grant into the bank account nominated on the Request for Payment form once the work is complete and the post-works BER is published, normally about 4 to 6 weeks later. By default that account is yours. We verify your eligibility during the free survey and walk you through the application. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
+      `The SEAI offers a Solar PV grant of ${SOLAR_DATA.grant.label} towards the cost of installing solar panels on your home. This grant is available in the Republic of Ireland (26 counties) only - Northern Ireland has separate support schemes. To be eligible, you must own the home (private landlords can apply too), it must have been built and occupied before 2025 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER to qualify: a BER assessment is done after the work is finished, before the grant is paid, and we arrange it. SEAI pays the grant into the bank account nominated on the Request for Payment form once the work is complete and the post-works BER is published, normally about 4 to 6 weeks later. By default that account is yours. We check your eligibility with you and walk you through the application. <a href="#grant-info" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Check if you qualify</a>`,
     category: 'grants',
     keywords: ['grant', 'seai', 'eligibility', 'eligible', 'government', 'apply', '1800', '€1,800'],
   },
@@ -80,7 +80,7 @@ const faqs: FAQItem[] = [
     id: 5,
     question: 'How does the SEAI grant application work?',
     answer:
-      `It's straightforward, and we guide you through it. After your free survey, you apply for the grant online on SEAI's portal (mgen.seai.ie), naming us as your installer. Once your grant offer is in, we proceed with the installation. After the system is commissioned and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} into the bank account nominated on the Request for Payment form, normally about 4 to 6 weeks later. By default that is your own account. We will tell you at quote stage whether we can take the grant directly instead and quote you the net price.`,
+      `It's straightforward, and we guide you through it. Once you go ahead, you apply for the grant online on SEAI's portal (mgen.seai.ie), naming us as your installer. Once your grant offer is in, we proceed with the installation. After the system is commissioned and the post-works BER is published, SEAI pays the ${SOLAR_DATA.grant.label} into the bank account nominated on the Request for Payment form, normally about 4 to 6 weeks later. By default that is your own account. We will tell you at quote stage whether we can take the grant directly instead and quote you the net price.`,
     category: 'grants',
     keywords: ['grant', 'apply', 'application', 'process', 'paperwork', 'how does it work', 'seai'],
   },
@@ -96,7 +96,7 @@ const faqs: FAQItem[] = [
     id: 7,
     question: 'Do I need planning permission?',
     answer:
-      'In the vast majority of cases, no. Solar panels are considered exempted development in Ireland under certain conditions: the panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements during the free survey.',
+      'In the vast majority of cases, no. Solar panels are considered exempted development in Ireland under certain conditions: the panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements for your home before we quote.',
     category: 'install',
     keywords: ['planning', 'permission', 'council', 'allowed', 'legal', 'regulations', 'planning permission'],
   },
@@ -104,7 +104,7 @@ const faqs: FAQItem[] = [
     id: 8,
     question: 'Will solar panels work on my roof?',
     answer:
-      'Solar panels work on most Irish roof types - tiled, slate, and metal. South-facing roofs with a pitch of 30-40 degrees are optimal, but east/west-facing roofs still produce excellent results (typically 80-85% of a south-facing output). During the free survey, we assess your roof orientation, pitch, shading from trees or buildings, and structural suitability to give you an honest recommendation.',
+      'Solar panels work on most Irish roof types - tiled, slate, and metal. South-facing roofs with a pitch of 30-40 degrees are optimal, but east/west-facing roofs still produce excellent results (typically 80-85% of a south-facing output). Before we quote, we assess your roof orientation, pitch, shading from trees or buildings, and structural suitability to give you an honest recommendation.',
     category: 'install',
     keywords: ['roof', 'work', 'suitable', 'type', 'slate', 'tile', 'flat', 'pitch', 'orientation'],
   },
@@ -128,7 +128,7 @@ const faqs: FAQItem[] = [
     id: 11,
     question: 'Do you offer battery storage?',
     answer:
-      `Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to roughly 70-85%. A 5 kWh battery adds about ${fmtEur(installCostEur(0, 5) - installCostEur(0))} to a system, and a battery of ${SOLAR_DATA.batteryGrant.minLabel} carries a ${SOLAR_DATA.batteryGrant.label} SEAI grant on top of the solar grant. It pays back more slowly than the panels do, which is exactly why we size it on the survey against your real day and night usage rather than guessing here. Worth considering if you are out during the day, have an EV, or want to maximise your energy independence.`,
+      `Yes. A battery stores excess electricity generated during the day for use in the evening or overnight, increasing your self-consumption to roughly 70-85%. A 5 kWh battery adds about ${fmtEur(installCostEur(0, 5) - installCostEur(0))} to a system, and a battery of ${SOLAR_DATA.batteryGrant.minLabel} carries a ${SOLAR_DATA.batteryGrant.label} SEAI grant on top of the solar grant. It pays back more slowly than the panels do, which is why we size it against your real day and night usage, read from your bill, rather than guessing here. Worth considering if you are out during the day, have an EV, or want to maximise your energy independence.`,
     category: 'technical',
     keywords: ['battery', 'storage', 'tesla', 'powerwall', 'store', 'night', 'evening'],
   },
