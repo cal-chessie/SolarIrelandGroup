@@ -6,7 +6,7 @@
  * signal: status is a word plus a mark.
  */
 import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
-import { ArrowRight, CircleAlert } from 'lucide-react';
+import { ArrowRight, CircleAlert, WifiOff } from 'lucide-react';
 
 export function Spinner() {
   return <span className="si-spinner" aria-hidden="true" />;
@@ -22,11 +22,14 @@ export function PrimaryButton({
   arrow = true,
   ariaLabel,
   form,
+  offlineLabel,
 }: {
   label: ReactNode;
   busyLabel?: ReactNode;
   busy?: boolean;
+  /** Never silently disabled: the button says why it is waiting (ui-spec 4.13). */
   offline?: boolean;
+  offlineLabel?: string;
   type?: 'submit' | 'button';
   onClick?: () => void;
   arrow?: boolean;
@@ -55,6 +58,13 @@ export function PrimaryButton({
           <Spinner />
           <span>{busyLabel || 'Working'}</span>
         </>
+      ) : offline && !offlineLabel ? (
+        <>
+          <WifiOff size={18} aria-hidden="true" />
+          <span>Waiting for a connection</span>
+        </>
+      ) : offline && offlineLabel ? (
+        <span>{offlineLabel}</span>
       ) : (
         <>
           <span>{label}</span>

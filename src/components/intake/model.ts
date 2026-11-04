@@ -29,7 +29,8 @@ export interface Draft {
   v: 1;
   flowId: string;
   segment: Segment | null;
-  segmentProv: 'from_page' | 'you_told_us' | null;
+  /** 'assumed': a door that did not know, opened as a home with the switch on screen (APPLE-DECISIONS 1). */
+  segmentProv: 'from_page' | 'you_told_us' | 'assumed' | null;
   billText: string;
   per: 'month' | '2months';
   bill: number | null;
@@ -134,9 +135,10 @@ export function quoteItemOf(d: Draft): QuoteRequestItem | null {
 export function validStep(s: Step | null, d: Draft): Step {
   if (s === 'done') return d.result ? 'done' : validStep('details', d);
   if (s === 'details') return d.segment && (d.slot || d.requestedDay) ? 'details' : validStep('time', d);
-  if (s === 'time') return d.segment ? 'time' : 'segment';
-  if (s === 'bill') return d.segment ? 'bill' : 'segment';
-  return 'segment';
+  // No separate home-or-business screen (APPLE-DECISIONS 1): every door opens
+  // on Screen 1 or 2, with the switch on Screen 1.
+  if (s === 'time') return d.segment ? 'time' : 'bill';
+  return 'bill';
 }
 
 /* ------------------------------------------------------------------ */
