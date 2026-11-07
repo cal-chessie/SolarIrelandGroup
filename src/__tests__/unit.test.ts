@@ -81,8 +81,7 @@ describe('buildWhatsAppUrl', () => {
   it('generates hero source message', () => {
     const url = buildWhatsAppUrl({ source: 'hero' });
     const decoded = decodeURIComponent(url.split('text=')[1]);
-    expect(decoded).toContain('free 15-minute call');
-    expect(decoded).not.toMatch(/survey/i);
+    expect(decoded).toContain('free survey');
   });
 
   it('generates custom message when provided', () => {

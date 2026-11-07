@@ -1,64 +1,191 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
 import FAQ from '@/components/solar/FAQ';
 import {
+  Zap,
+  Euro,
+  Sun,
+  Shield,
+  Clock,
+  TrendingUp,
+  Leaf,
+  CheckCircle2,
   ArrowRight,
   MessageCircle,
   HelpCircle,
 } from 'lucide-react';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import BillAnalyser from '@/components/solar/BillAnalyser';
+import { ENERGY, DOMESTIC_MIN_KWP } from '@/lib/estimate';
+
+const QuickSavingsCalculator = dynamic(
+  () => import('@/components/solar/QuickSavingsCalculator'),
+  {
+    loading: () => (
+      <section className="py-20 px-4 bg-[#0a0a0a]">
+        <div className="max-w-3xl mx-auto">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
+          </div>
+        </div>
+      </section>
+    ),
+  }
+);
+
+const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
+  loading: () => (
+    <section className="py-20 px-4 bg-[#0a0a0a]">
+      <div className="max-w-5xl mx-auto">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+
+function CalculatorHero() {
+  return (
+    <section className="relative pt-32 pb-16 px-4 bg-[#0a0a0a] overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-400/[0.03] to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+
+      <div className="max-w-4xl mx-auto text-center relative z-10">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-6">
+          <Zap className="w-3.5 h-3.5" />
+          Free Solar Calculator
+        </span>
+
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          Solar Panel{' '}
+          <span className="text-gradient">Savings Calculator</span>{' '}
+          <br />
+          for Irish Homes
+        </h1>
+
+        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          See exactly how much you could save with solar panels. Enter your electricity bill,
+          pick your home type, and get an instant personalised estimate - no signup, no hassle.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          {[
+            { icon: Euro, label: '€1,800 SEAI Grant (ROI)', sub: 'Automatically included' },
+            { icon: Clock, label: '5-7 Year Payback', sub: 'After grant deduction' },
+            { icon: TrendingUp, label: `${SOLAR_DATA.savings.label25yr} Over 25 Years`, sub: 'Rising energy prices' },
+            { icon: Leaf, label: '2,500+ kg CO₂/yr', sub: 'Environmental impact' },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.label}
+                className="flex flex-col items-center text-center p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-amber-400/20 transition-colors"
+              >
+                <Icon className="w-5 h-5 text-amber-400 mb-2" />
+                <p className="text-sm font-semibold text-white">{item.label}</p>
+                <p className="text-[11px] text-gray-500 mt-0.5">{item.sub}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function TrustBadges() {
+  const badges = [
+    { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
+    { icon: CheckCircle2, label: 'No Hidden Costs', desc: 'Transparent pricing' },
+    { icon: Sun, label: 'Real Irish Data', desc: 'Met Éireann irradiance data' },
+    { icon: Euro, label: '440W Premium Panels', desc: 'Modern high-efficiency panels' },
+  ];
+
+  return (
+    <section className="py-8 px-4 bg-[#0a0a0a] border-y border-white/[0.04]">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+          {badges.map((badge) => {
+            const Icon = badge.icon;
+            return (
+              <div key={badge.label} className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-amber-400/10 flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{badge.label}</p>
+                  <p className="text-[11px] text-gray-500">{badge.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 
 function CalculatorExplainer() {
   const steps = [
     {
       num: '01',
-      title: 'Show us your bill',
-      desc: 'A photo, a screenshot or the PDF from your supplier. No bill to hand? Answer three quick questions instead.',
+      title: 'Upload or Type Your Bill',
+      // Read from the engine, so this can never again describe rates the
+      // calculator on the same page is not using.
+      desc: `Photograph your bill and the analyser reads it, or move the slider to your monthly amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
     },
     {
       num: '02',
-      title: 'See what it says',
-      desc: 'Your supplier, your unit rate, your standing charge, your units and your day and night split, each marked as read from your bill. Fix any figure with one tap.',
+      title: 'Pick Your Home Type',
+      desc: 'Choose from Apartment, Semi-Detached, or Detached. This determines how many panels can fit on your roof - up to 22 premium 440W panels for larger homes.',
     },
     {
       num: '03',
-      title: 'See your saving',
-      desc: `One figure: what solar could save you in a year, with the cost after the ${SOLAR_DATA.grant.label} SEAI grant. A close estimate, not a quote.`,
+      title: 'See Your Savings',
+      desc: 'Get instant results: annual savings, monthly bill reduction, system size, payback period, and 25-year savings projection. Expand for monthly generation charts and full cost breakdown.',
     },
     {
       num: '04',
-      title: 'Book a free 15-minute call',
-      desc: 'Name, mobile and email. We ring you to go through your figures and answer your questions. No visit, no obligation.',
+      title: 'Book the Survey',
+      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then handle the SEAI paperwork.',
     },
   ];
 
   return (
-    <section className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-4 bg-[#0a0a0a]">
+      <div className="max-w-5xl mx-auto">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <HelpCircle className="w-3.5 h-3.5" />
             How It Works
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            From your bill to <span className="text-gradient">a free call</span>
+            Our Calculator Uses{' '}
+            <span className="text-gradient">Real Irish Data</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            We read the figures off your own bill, so the saving is about your home, not a typical one.
+            No fluff, no guesswork. Every figure is backed by SEAI grant rates, Met Éireann solar irradiance data, and current electricity prices from Irish providers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {steps.map((step) => (
-            <div key={step.num} className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-              <span className="text-4xl font-bold text-white/[0.06] absolute top-4 right-6">{step.num}</span>
+            <div
+              key={step.num}
+              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-amber-400/20 transition-colors"
+            >
+              <span className="text-4xl font-bold text-white/[0.04] absolute top-4 right-6">
+                {step.num}
+              </span>
               <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
               <p className="text-sm text-gray-400 leading-relaxed">{step.desc}</p>
             </div>
@@ -70,33 +197,99 @@ function CalculatorExplainer() {
 }
 
 
+function DataTransparency() {
+  const factors = [
+    { label: 'Generation rate', value: `${ENERGY.generationPerKwp.toLocaleString()} kWh per kWp`, source: 'PVGIS, south-facing Irish roof at 30 degrees after standard system losses' },
+    { label: 'Panel wattage', value: '440W', source: 'Modern premium residential panels (2024/2025 stock)' },
+    { label: 'Max panels', value: '22 panels (9.7 kWp)', source: 'Standard domestic ESB connection limit' },
+    { label: 'Unit rate', value: `${Math.round(ENERGY.unitRateEur * 100)}c/kWh incl. VAT`, source: 'The bottom of the 2026 Irish market band, so savings are not overstated' },
+    { label: 'Standing charge', value: `€${ENERGY.standingChargeAnnualEur}/year`, source: 'Irish standing charges 2026. Solar never removes this' },
+    { label: 'SEAI grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for homeowners, including private landlords' },
+    { label: 'Export rate', value: SOLAR_DATA.export.label, source: `${SOLAR_DATA.export.scheme}: the CRU minimum every supplier must pay. Some pay more` },
+    { label: 'CO₂ factor', value: `${ENERGY.co2PerKwh} kg/kWh`, source: 'EirGrid marginal emission factor for Ireland' },
+    { label: 'Self-consumption', value: '30-50%', source: 'What an Irish home uses directly with no battery. A battery lifts it to roughly 70-85%' },
+    { label: 'Minimum system', value: `${DOMESTIC_MIN_KWP} kWp`, source: 'Our domestic floor, and the size the SEAI grant reaches its full €1,800' },
+  ];
+
+  return (
+    <section className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Our <span className="text-gradient">Data Sources</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Full transparency on every number. No inflated figures - we use conservative, real-world Irish data so your estimate is honest and realistic.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/[0.06]">
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Factor</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Value</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {factors.map((f, i) => (
+                  <tr key={f.label} className={i < factors.length - 1 ? 'border-b border-white/[0.04]' : ''}>
+                    <td className="px-6 py-4 text-sm text-gray-300 font-medium">{f.label}</td>
+                    <td className="px-6 py-4 text-sm text-amber-400 font-bold">{f.value}</td>
+                    <td className="px-6 py-4 text-xs text-gray-500 hidden sm:table-cell">{f.source}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p className="text-center text-xs text-gray-600 mt-6 leading-relaxed max-w-xl mx-auto">
+          Actual savings depend on roof orientation, pitch, shading, and your consumption patterns.
+          These figures represent a well-optimized installation. A free site survey gives you exact, personalised numbers.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
 function FinalCTA() {
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
       <div className="max-w-3xl mx-auto text-center">
-        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-10 sm:p-14">
+        <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-b from-amber-400/[0.06] to-transparent p-10 sm:p-14">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Want a person to <span className="text-gradient">go through it with you?</span>
+            Ready to See Your <span className="text-gradient">Exact Savings?</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            A free 15-minute phone call. We go through your figures and answer your questions. No visit, no obligation.
+            The calculator gives you a great estimate. For exact figures based on your roof, get a free site survey - it takes 30 minutes and there&apos;s zero obligation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#calculator"
-              className="flex items-center gap-2.5 min-h-[52px] px-8 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] transition-colors"
+              href={buildWhatsAppUrl({
+                source: 'calculator-page-cta',
+                homeType: 'Semi-Detached',
+                annualSaving: SOLAR_DATA.savings.avgAnnual,
+                paybackYears: SOLAR_DATA.savings.paybackYears,
+                total25yrSaving: SOLAR_DATA.savings.total25yr,
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all"
             >
-              Book a free call
+              <MessageCircle className="w-5 h-5" />
+              Get Free Site Survey
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href={buildWhatsAppUrl({ source: 'calculator-page-cta' })}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 min-h-[44px] px-4 text-gray-300 font-medium text-sm hover:text-white transition-colors underline underline-offset-4 decoration-white/30"
+              href="/book-survey"
+              className="flex items-center gap-2 px-8 py-4 rounded-xl border border-white/[0.08] text-gray-300 font-medium text-sm hover:border-white/[0.15] hover:text-white transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
-              Or WhatsApp us
+              Pick a survey time
+              <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -112,36 +305,23 @@ export default function SolarCalculatorClient() {
       <Navbar />
 
       <main>
-        {/* Call funnel (4 Nov 2026): /solar-calculator is Cal's Bill Analyser
-            again, above the fold, with the manual side one tap away. The URL
-            stays for search; id="calculator" keeps old links landing here. */}
-        <section id="calculator" className="relative px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16" style={{ scrollMarginTop: 72 }}>
-          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[86rem] mx-auto">
-            <BillAnalyser
-              variant="hero"
-              door="calculator"
-              intro={
-                <div className="text-center lg:text-left">
-                  <h1 className="text-[2rem] leading-[1.05] sm:text-5xl lg:text-6xl font-bold tracking-tight">
-                    <span className="block text-white">Solar savings calculator.</span>
-                    <span className="block text-gradient">Read from your own bill.</span>
-                  </h1>
-                  <p className="mt-4 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-xl leading-relaxed mx-auto lg:mx-0">
-                    Upload your electricity bill and see what it says: your unit rate, your standing charge and your day and night split. Then see what solar could save you.
-                  </p>
-                </div>
-              }
-            />
-          </div>
-        </section>
+        <CalculatorHero />
+        <TrustBadges />
+        {/* The analyser comes FIRST. It was behind the explainer, 2.9 screens
+            down, and the explainer described a slider the page did not have.
+            Bill first for anyone who brought one, slider underneath for anyone
+            who did not, then the explainer for anyone still deciding. */}
+        <BillAnalyser />
+        <QuickSavingsCalculator />
         <CalculatorExplainer />
+        <DataTransparency />
         <FAQ />
         <FinalCTA />
       </main>
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ scrollTo: 'calculator' }} />
+      <PageIntake sticky={{ label: 'Analyse My Bill - Free', scrollTo: 'calculator' }} exit={true} />
     </div>
   );
 }

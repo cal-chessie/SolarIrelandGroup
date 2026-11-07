@@ -23,8 +23,6 @@
 
 import { NextResponse } from "next/server";
 import { BLOG_SLUGS } from "@/lib/blog-slugs";
-import { portalOrigins } from "@/lib/intake/portal";
-import { bookSurveyRedirect } from "@/lib/intake/bookSurvey";
 import type { NextRequest } from "next/server";
 
 // ── ROLLOUT SWITCH ──────────────────────────────────────────────
@@ -74,9 +72,7 @@ function buildCsp(nonce: string, enforce: boolean): string {
     "worker-src 'self' blob:",
     "frame-src 'self'",
     "frame-ancestors 'self'",
-    // The intake's "Open your project page" posts a single-use code to the
-    // portal host's /h receiver (lib/intake/portal.ts holds the one list).
-    `form-action 'self' ${portalOrigins().join(" ")}`,
+    "form-action 'self'",
     "manifest-src 'self'",
     "media-src 'self'",
     // Reporting: report-to is the modern channel (group defined by the
@@ -120,17 +116,6 @@ export function middleware(request: NextRequest) {
       status: 404,
       headers: { "x-robots-tag": "noindex, nofollow" },
     });
-  }
-
-  /* ─── 3b. /book-survey is a 308 to the one intake ─── */
-  // In middleware for the same reason as 3: the page streams (it has a
-  // loading.tsx), so a redirect thrown there would arrive as a 200 with a
-  // client-side hop. The guard lives in bookSurveyRedirect: a magic link
-  // (?lt=) returns null and falls through to the booking form that threads
-  // the lead token (src/__tests__/book-survey-door.test.tsx).
-  if (url.pathname === "/book-survey") {
-    const to = bookSurveyRedirect(Object.fromEntries(url.searchParams));
-    if (to) return NextResponse.redirect(new URL(to, request.url), 308);
   }
 
   /* ─── 4. Per-request CSP nonce ─── */

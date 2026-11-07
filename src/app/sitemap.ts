@@ -19,6 +19,7 @@ const PAGE_DATES: Record<string, string> = {
   "/terms": "2026-04-01T00:00:00+00:00",
   "/cookies": "2026-04-01T00:00:00+00:00",
   "/solar-calculator": "2026-04-09T00:00:00+00:00",
+  "/book-survey": "2026-04-09T00:00:00+00:00",
   "/financing": "2026-04-09T00:00:00+00:00",
 };
 
@@ -90,6 +91,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/solar-calculator`,
       lastModified: PAGE_DATES["/solar-calculator"],
       changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/book-survey`,
+      lastModified: PAGE_DATES["/book-survey"],
+      changeFrequency: "monthly",
       priority: 0.95,
     },
     {

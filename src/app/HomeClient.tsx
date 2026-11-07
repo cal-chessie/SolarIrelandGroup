@@ -12,6 +12,7 @@ import HowItWorks from '@/components/solar/HowItWorks';
 import WhySolar from '@/components/solar/WhySolar';
 import CustomerInstalls from '@/components/solar/CustomerInstalls';
 import GrantInfo from '@/components/solar/GrantInfo';
+import BillAnalyser from '@/components/solar/BillAnalyser';
 import FAQ from '@/components/solar/FAQ';
 import Footer from '@/components/solar/Footer';
 
@@ -51,13 +52,12 @@ export default function HomeClient() {
         <WhySolar />
         <CustomerInstalls />
         <GrantInfo />
-        {/* The Bill Analyser is the hero now (id="calculator" moved with it,
-            so old /#calculator links land on it). No second copy down here. */}
+        <BillAnalyser />
         <FAQ />
       </main>
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ scrollTo: 'calculator' }} />
+      <PageIntake sticky={{ label: 'See My Savings - Free', scrollTo: 'calculator' }} exit={true} />
     </div>
   );
 }

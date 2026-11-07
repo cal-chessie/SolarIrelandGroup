@@ -51,3 +51,6 @@ day/night split, ran its own engine (a second number for the same bill), and
 ended in "Send my full estimate" then "Pick my survey time". Replaced by
 src/components/solar/BillAnalyser.tsx (read, reveal, one insight, one AISolar
 saving, the free 15-minute call). Nothing imports this file.
+
+## 5 Nov 2026: rollback to the live site
+Cal: "wtf are you doing changing my whole fucking site". Every file outside the Bill Analyser and the manual intake (/estimate) was restored to the live site (dbbf329). Files the branch had added outside that set are parked here under rollback-2026-11-05/. Kept: BillAnalyser.tsx, components/intake, lib/intake, lib/analyser, app/estimate, api/intake, api/analyse-bill, lib/eircodeLookup.ts, their tests, plus two invisible helpers (lib/bottomLayer.ts intake flag, eslint.config.mjs warnings).

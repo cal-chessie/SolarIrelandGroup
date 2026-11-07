@@ -29,7 +29,6 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
-import IntakeLink from '@/components/intake/IntakeLink';
 import ScrollProgress from '@/components/solar/ScrollProgress';
 
 
@@ -143,11 +142,11 @@ const faqs = [
   },
   {
     question: 'Do you cover my county?',
-    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. A free 15-minute call is open to everyone, everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
+    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. Surveys are free everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
   },
   {
-    question: 'Can I talk to someone about solar in my area?',
-    answer: 'Yes. Snap your electricity bill on our Bill Analyser, see what it says and what solar could save you, then book a free 15-minute call. Cal rings you to go through your figures and answer your questions, wherever you are in the 32 counties. No visit, no obligation.',
+    question: 'Can I get a free solar survey in my area?',
+    answer: 'Absolutely. Solar Ireland offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. The survey costs nothing and commits you to nothing. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
   },
   {
     question: 'Do you serve Northern Ireland?',
@@ -201,10 +200,11 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
   const isActive = county.status === 'active';
   const localPage = COUNTY_PAGES[county.name] ?? null;
 
-  // Intake OS: the card opens the one intake with the county as context (it
-  // never changes a figure; the Eircode overrides it). Not WhatsApp, so the
-  // county page produces a lead of its own with the county attached.
-  const intakeOpts = { door: 'county', segment: 'home' as const, step: 'bill' as const, county: county.name };
+  // The card leads into the bill analyser, not WhatsApp. Thirty two cards all
+  // handing the visitor to a chat window meant the county page could not
+  // produce a lead of its own: the analyser reads their bill, builds the
+  // estimate and puts the lead into the platform with the county attached.
+  const analyserUrl = `/solar-calculator?county=${encodeURIComponent(county.name)}`;
 
   return (
     <div
@@ -294,13 +294,13 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
       )}
 
       <div className="flex items-center gap-2">
-        <IntakeLink
-          opts={intakeOpts}
-          className="flex-1 flex items-center justify-center gap-2 px-4 min-h-[44px] rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
+        <a
+          href={analyserUrl}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
         >
           <Zap className="w-3.5 h-3.5" />
           Check My Savings
-        </IntakeLink>
+        </a>
         <a
           href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
           aria-label={`Call Solar Ireland about ${county.name}`}
@@ -400,9 +400,9 @@ function BottomStats() {
     },
     {
       icon: Building2,
-      label: 'Free Call in All Areas',
+      label: 'Free Surveys in All Areas',
       value: 'Free',
-      desc: 'A 15-minute call about your bill',
+      desc: 'No-obligation roof assessment',
       color: 'text-sky-400',
       bg: 'bg-sky-400/10',
     },
@@ -560,7 +560,7 @@ export default function CountiesClient() {
               <div className="w-px h-4 bg-white/10 hidden sm:block" />
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400/60" />
-                <span className="text-gray-400">Free call <span className="text-white font-semibold">nationwide</span></span>
+                <span className="text-gray-400">Free survey <span className="text-white font-semibold">nationwide</span></span>
               </div>
             </div>
           </div>
@@ -757,24 +757,26 @@ export default function CountiesClient() {
                     Ready to Go Solar?
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
-                    Type your electricity bill and see what solar would save you, in your
-                    county, on this page. Then book a free 15-minute call: we go through your
-                    figures and guide you through the SEAI grant.
+                    Upload your electricity bill and we&apos;ll show you what solar would save on
+                    your roof, in your county. Then book a free survey and we&apos;ll check the
+                    roof properly and guide you through the SEAI grant. The figures you get
+                    are the ones we stand over.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <IntakeLink
-                      opts={{ door: 'counties-cta', segment: 'home', step: 'bill' }}
-                      className="inline-flex items-center gap-2.5 px-7 min-h-[48px] rounded-full bg-amber-400 text-black font-bold text-sm hover:bg-amber-300 transition-colors active:scale-[0.98]"
-                    >
-                      Get my estimate
-                      <ArrowRight className="w-4 h-4" />
-                    </IntakeLink>
                     <a
-                      href="/#calculator"
-                      className="inline-flex items-center gap-2.5 px-7 min-h-[48px] rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
+                      href="/solar-calculator"
+                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/30 hover:bg-yellow-300 transition-all active:scale-[0.98]"
+                    >
+                      <Zap className="w-4 h-4" />
+                      Check My Savings
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                    <a
+                      href="/book-survey"
+                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <Calendar className="w-4 h-4" />
-                      Book a free call
+                      Book a Free Survey
                     </a>
                   </div>
                 </div>
@@ -786,7 +788,7 @@ export default function CountiesClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ scrollTo: null }} />
+      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
 
       <script
         type="application/ld+json"

@@ -5,7 +5,6 @@ import { Upload, Home, Zap, ArrowRight, ChevronRight, Clock, Shield, Leaf, Check
 import { motion } from '@/lib/motion';
 import BumblebeeMascot from './BumblebeeMascot';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { openIntake } from '@/lib/intake/open';
 
 const steps = [
   {
@@ -13,40 +12,41 @@ const steps = [
     title: 'Upload Your Bill',
     subtitle: 'AI-powered analysis',
     description:
-      'Snap your electricity bill or upload the PDF. Our AI reads your supplier, your unit rate and your day and night split, and shows you the saving before you talk to anyone.',
+      'Drop a photo of your electricity bill into our AI analyser. It reads your provider, usage, and spend in seconds - giving you a personalised savings estimate before you even talk to us.',
     icon: Upload,
     accent: 'from-amber-400 to-orange-500',
     accentBg: 'bg-amber-400/10',
     accentBorder: 'hover:border-amber-400/25',
     features: [
       'Camera snap or file upload',
-      'Reads your day and night split',
-      'Your saving on the page',
+      'Reads all Irish providers',
+      'Instant savings estimate',
       'No sign-up required',
     ],
-    stat: { value: '1', unit: 'bill', label: 'is all it needs' },
-    cta: { href: '/#calculator', text: 'Analyse my bill', icon: Camera, gradient: 'from-amber-500 to-amber-400', shadow: 'hover:shadow-amber-500/20' },
+    stat: { value: '~30', unit: 'seconds', label: 'to get your results' },
+    cta: { href: '#calculator', text: 'Try the AI Analyser', icon: Camera, gradient: 'from-amber-500 to-amber-400', shadow: 'hover:shadow-amber-500/20' },
   },
   {
     number: '02',
-    title: 'Free 15-Minute Call',
-    subtitle: 'No visit, no obligation',
+    title: 'Free Survey',
+    subtitle: 'No obligation, ever',
     description:
-      'Cal rings you to go through your figures and answer your questions. Nobody comes to the house unless you ask for it after the call.',
+      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Most surveys take under 45 minutes.",
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
     accentBorder: 'hover:border-emerald-400/25',
     features: [
-      'Your figures, gone through with you',
-      'Your questions answered',
-      'The SEAI grant explained',
+      'Roof & shading assessment',
+      'Usage pattern review',
+      'Honest recommendation',
       'Zero cost, zero pressure',
     ],
-    stat: { value: '15', unit: 'minutes', label: 'on the phone' },
-    // Call funnel (4 Nov 2026): the site sells the free 15-minute call only.
-    // The button goes to the Bill Analyser, which ends in the call.
-    cta: { href: '/#calculator', text: 'Book a free call', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    stat: { value: '~45', unit: 'minutes', label: 'for a full survey' },
+    // A button that says "Book Free Survey" has to book a survey. This opened
+    // WhatsApp, which is a chat window, not a booking, and it lost the lead to
+    // a conversation nobody was guaranteed to answer.
+    cta: { href: '/book-survey', text: 'Book Free Survey', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',
@@ -65,7 +65,7 @@ const steps = [
       'Saving from day one',
     ],
     stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
-    cta: { href: '/estimate?door=how-it-works', intake: { door: 'how-it-works' }, text: 'Get my estimate', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
+    cta: { href: '/solar-calculator', text: 'Price It On My Bill', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];
 
@@ -182,14 +182,7 @@ function StepCard({
               href={step.cta.href}
               target={step.cta.href.startsWith('http') ? '_blank' : undefined}
               rel={step.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              onClick={(e) => {
-                e.stopPropagation();
-                // Price and survey buttons open the one intake as a layer.
-                const intake = 'intake' in step.cta ? step.cta.intake : null;
-                if (!intake || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-                e.preventDefault();
-                openIntake(intake);
-              }}
+              onClick={(e) => e.stopPropagation()}
               className={`mt-5 sm:mt-6 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r ${step.cta.gradient} text-black text-sm font-semibold ${step.cta.shadow} hover:shadow-lg transition-all active:scale-[0.98]`}
             >
               <CtaIcon className="w-4 h-4" />

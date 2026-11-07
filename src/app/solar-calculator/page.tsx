@@ -11,7 +11,7 @@ const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 export const metadata: Metadata = {
   title: 'Solar Savings Calculator',
   description:
-    'Upload your electricity bill and see what it says: your unit rate, standing charge and day and night split. Then see what solar could save you, after the €1,800 SEAI grant.',
+    'Free solar savings calculator for Irish homes. See your annual savings, payback period and 25-year projection, including the €1,800 SEAI grant.',
   alternates: {
     canonical: CALC_URL,
     languages: {
@@ -78,11 +78,15 @@ function CalculatorSchema() {
       url: 'https://solarirelandgroup.ie',
     },
     featureList: [
-      'Reads your electricity bill from a photo, screenshot or PDF',
-      'Shows your unit rate, standing charge and day and night split',
-      'Annual savings estimate',
-      'Cost after the SEAI grant',
-      'Free 15-minute call to go through your figures',
+      'Instant annual savings calculation',
+      'System size recommendation',
+      'Payback period estimation',
+      '25-year savings projection',
+      'Monthly generation breakdown',
+      'Self-consumption analysis',
+      'Clean Export Guarantee earnings',
+      'CO2 offset calculation',
+      'SEAI grant integration',
     ],
   };
 

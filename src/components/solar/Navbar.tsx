@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { usePathname } from 'next/navigation';
-import { openIntake, parseIntakeQuery, INTAKE_PATH } from '@/lib/intake/open';
 import {
   X,
   Zap,
@@ -47,6 +46,18 @@ const mobileLinks = [
     borderHover: 'hover:border-amber-400/20',
   },
   {
+    label: 'Calculator',
+    href: '/solar-calculator',
+    icon: Sparkles,
+    color: 'amber',
+    description: 'Savings calculator & AI bill analyser',
+    gradient: 'from-amber-400/20 to-yellow-400/10',
+    iconBg: 'bg-amber-400/10',
+    iconColor: 'text-amber-400',
+    borderHover: 'hover:border-amber-400/20',
+    highlight: true,
+  },
+  {
     label: 'Financing',
     href: '/financing',
     icon: CreditCard,
@@ -58,11 +69,11 @@ const mobileLinks = [
     borderHover: 'hover:border-green-400/20',
   },
   {
-    label: 'Book a free call',
-    href: '/#calculator',
+    label: 'Book Survey',
+    href: '/book-survey',
     icon: CalendarCheck,
     color: 'green',
-    description: 'A free 15-minute call about your bill',
+    description: 'Book a free home solar assessment',
     gradient: 'from-green-400/20 to-emerald-400/10',
     iconBg: 'bg-green-400/10',
     iconColor: 'text-green-400',
@@ -116,11 +127,11 @@ const mobileLinks = [
   // Portal hidden (19 Oct): /portal shows a sample customer for any reference
   // until it becomes the email sign-in (Intake OS slice 4). Restore it then.
   {
-    label: 'Get my estimate',
-    href: '/estimate?door=nav-menu',
+    label: 'AI Bill Analyser',
+    href: '/#calculator',
     icon: Zap,
     color: 'amber',
-    description: 'Type your bill, see what solar saves',
+    description: 'Upload your bill, see savings',
     gradient: 'from-amber-400/20 to-yellow-400/10',
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',
@@ -139,20 +150,13 @@ const mobileLinks = [
   },
 ];
 
-/** Intake OS: every estimate or booking link in the nav opens the one intake. */
-function openIntakeHref(href: string): boolean {
-  if (!href.startsWith(INTAKE_PATH)) return false;
-  const q = parseIntakeQuery(new URLSearchParams(href.split('?')[1] || ''));
-  openIntake({ door: q.door, segment: q.segment, step: q.step });
-  return true;
-}
-
 // Desktop nav - all 7 links with proper styling
 const desktopNavLinks = [
   { label: 'Services', href: '/services', isBookSurvey: false },
   { label: 'Counties', href: '/counties', isBookSurvey: false },
+  { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Book a free call', href: '/#calculator', isBookSurvey: false },
+  { label: 'Book Survey', href: '/book-survey', isBookSurvey: true },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 
@@ -227,7 +231,6 @@ function MobileMenu({
     (href: string) => {
       onClose();
       setTimeout(() => {
-        if (openIntakeHref(href)) return;
         if (href.startsWith('/')) {
           if (href.includes('#')) {
             const [path, hash] = href.split('#');
@@ -400,21 +403,22 @@ function MobileMenu({
             }`}
             style={{ transitionDelay: isOpen ? '400ms' : '0ms' }}
           >
-            {/* Intake OS: one amber primary, "Get my estimate"; booking is the
-                secondary. Green stays for done, found and booked. */}
             <button
               onClick={() => navigateTo('/#calculator')}
-              className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[15px] active:scale-[0.98] transition-transform"
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
             >
-              Book a free call
+              <Zap className="w-4 h-4" />
+              Analyse My Bill
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => navigateTo('/estimate?door=nav-menu-manual')}
-              className="w-full min-h-[52px] flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl border border-white/[0.14] bg-transparent text-white font-medium text-[15px] active:scale-[0.98] transition-transform mt-3"
+              onClick={() => navigateTo('/book-survey')}
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
             >
-              No bill to hand? Get my estimate
+              <CalendarCheck className="w-4 h-4" />
+              Book Free Survey
+              <ArrowRight className="w-4 h-4" />
             </button>
 
             <div className="flex items-center gap-2 mt-3">
@@ -470,7 +474,7 @@ function MobileMenu({
                   <div className="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center mx-auto mb-1.5">
                     <CalendarCheck className="w-4 h-4 text-emerald-400" />
                   </div>
-                  <p className="text-[10px] font-semibold text-gray-400">Free 15-min Call</p>
+                  <p className="text-[10px] font-semibold text-gray-400">Free Survey</p>
                 </div>
               </div>
             </div>
@@ -525,7 +529,6 @@ export default function Navbar() {
   }, []);
 
   const navigateTo = (href: string) => {
-    if (openIntakeHref(href)) return;
     if (href.startsWith('/') && !href.startsWith('/#')) {
       window.location.href = href;
     } else if (href.startsWith('/#')) {
@@ -622,13 +625,17 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
                 clipped the survey CTA. The secondary CTA waits for xl. */}
-            {/* Call funnel (4 Nov 2026): the site sells one thing, the free
-                15-minute call. The one primary goes to the Bill Analyser. */}
             <button
               onClick={() => navigateTo('/#calculator')}
-              className="inline-flex items-center min-h-[44px] bg-amber-400 hover:bg-amber-300 text-black font-semibold text-sm px-5 rounded-full active:scale-95 transition-colors whitespace-nowrap"
+              className="hidden xl:inline-flex bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
             >
-              Book a free call
+              Analyse Bill
+            </button>
+            <button
+              onClick={() => navigateTo('/book-survey')}
+              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
+            >
+              Book Free Survey
             </button>
           </div>
 

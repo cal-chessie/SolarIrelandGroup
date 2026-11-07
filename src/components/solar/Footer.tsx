@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
-import IntakeLink from '@/components/intake/IntakeLink';
 import { useRef } from 'react';
 import {
+  CalendarCheck,
   MessageCircle,
   Mail,
   MapPin,
   Phone,
+  ArrowRight,
   ChevronUp,
   Sun,
   ShieldCheck,
@@ -82,8 +83,8 @@ const FOOTER_SOCIAL = [
 
 const quickLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'Book a free call', href: '/#calculator' },
-  { label: 'Get my estimate', href: '/estimate?door=footer-links', intake: { door: 'footer-links' } },
+  { label: 'Book a Survey', href: '/book-survey' },
+  { label: 'Calculator', href: '/solar-calculator' },
   { label: 'Financing', href: '/financing' },
   { label: 'Counties', href: '/counties' },
   { label: 'Blog', href: '/blog' },
@@ -95,7 +96,7 @@ const quickLinks = [
 const services = [
   { label: 'Solar PV Installation', desc: 'Residential & commercial panels' },
   { label: 'Battery Storage', desc: 'Store energy for evening use' },
-  { label: 'Free 15-Minute Call', desc: 'Your bill and your figures, gone through with you' },
+  { label: 'Free Home Surveys', desc: 'No-obligation roof assessment' },
   { label: 'SEAI Grant Assistance', desc: 'We handle the full application' },
   { label: 'BER Assessment', desc: 'Post-install energy rating' },
 ];
@@ -122,36 +123,62 @@ const trustBadges = [
 ];
 
 
-/**
- * Intake OS: the footer band carries the one door (ux-spec 2.2): the bill
- * field for a home, with "Just book a free survey" and "Solar for a business"
- * under it. It replaces "See what your roof is worth" and its three links.
- */
 function PreFooterCTA() {
   return (
-    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/[0.08] p-6 sm:p-10 lg:p-12">
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12">
-        <div className="text-left">
+    <motion.div
+      className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.7 }}
+    >
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.06] rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-amber-400/[0.04] rounded-full blur-[60px] pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+        <div className="flex-1 text-center lg:text-left">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
-            See what solar would save you
+            See what your roof is worth
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed">
-            Snap your bill and your saving appears on the page, before anyone
-            rings you. Then book a free 15-minute call.
+          <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed mx-auto lg:mx-0">
+            Send us a photo of your electricity bill. You get your system size,
+            your yearly saving and your payback in about fifteen seconds, before
+            anyone rings you. Or skip ahead and book the survey.
           </p>
         </div>
-        <div className="lg:justify-self-end w-full lg:max-w-[560px]">
-          <div className="flex flex-col gap-3">
-            <a href="/#calculator" className="inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-semibold text-[17px] transition-colors">
-              Analyse my bill
-            </a>
-            <IntakeLink opts={{ door: 'footer' }} className="inline-flex items-center justify-center min-h-[44px] text-[15px] text-gray-300 underline underline-offset-4 decoration-white/30 hover:text-white">
-              No bill to hand? Answer 3 quick questions
-            </IntakeLink>
-          </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+          <motion.a
+            href="/solar-calculator"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm whitespace-nowrap shadow-lg shadow-amber-400/20"
+          >
+            <Zap className="w-4 h-4" />
+            Solar Calculator
+            <ArrowRight className="w-4 h-4" />
+          </motion.a>
+          <motion.a
+            href="/book-survey"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
+          >
+            <CalendarCheck className="w-4 h-4" />
+            Book a Free Survey
+          </motion.a>
+          <a
+            href={buildWhatsAppUrl({ source: 'footer' })}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors whitespace-nowrap"
+          >
+            <MessageCircle className="w-4 h-4 text-green-400" />
+            or WhatsApp us
+          </a>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -322,23 +349,13 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  {'intake' in link && link.intake ? (
-                    <IntakeLink
-                      opts={link.intake}
-                      className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
-                    >
-                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
-                      {link.label}
-                    </IntakeLink>
-                  ) : (
-                    <a
-                      href={link.href}
-                      className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
-                    >
-                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
-                      {link.label}
-                    </a>
-                  )}
+                  <a
+                    href={link.href}
+                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
+                  >
+                    <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
+                    {link.label}
+                  </a>
                 </li>
               ))}
             </ul>

@@ -1,24 +1,43 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import MobileStickyCTA from './MobileStickyCTA';
 
+const ExitIntent = dynamic(() => import('./ExitIntent'), { ssr: false });
+
 /**
- * The sticky bar on phones, mounted per page. It opens the one intake, so it
- * takes no label or link of its own (the old label and href props were
- * ignored and are gone, so nobody thinks they work).
+ * The two catch-them-before-they-go widgets, mounted per page with the next
+ * step that actually suits that page.
  *
- * The old exit popup (ExitIntent) is retired to _TRASH (APPLE-DECISIONS,
- * "Doors"): it collected an email and offered /book-survey and
- * /solar-calculator, a second intake on eight pages.
+ * They used to live in HomeClient only, so eleven pages had no sticky CTA and
+ * no exit capture at all: a visitor who landed on a county page or a blog
+ * article from search could read the whole thing and leave without ever being
+ * offered anything.
  *
- * Deliberately NOT mounted globally from the layout: /contact (already an
- * intake card), the legal pages and the portal carry no sticky bar.
+ * Deliberately NOT mounted globally from the layout. Two kinds of page should
+ * not have these:
+ *
+ *   - /book-survey and /contact, where the visitor is already mid-intake. An
+ *     exit popup over a half-filled form is hostile, and a sticky bar competes
+ *     with the thing it is trying to sell.
+ *   - /privacy, /terms, /cookies and the portal, where someone is reading a
+ *     legal document or checking their own installation. Selling there is rude
+ *     and it is not what they came for.
  */
 export default function PageIntake({
   sticky,
+  exit = true,
 }: {
   /** Pass null for pages that should not carry a sticky bar. */
-  sticky?: { scrollTo?: string | null } | null;
+  sticky?: { label: string; scrollTo?: string | null; href?: string } | null;
+  exit?: boolean;
 }) {
-  return sticky ? <MobileStickyCTA scrollTo={sticky.scrollTo ?? null} /> : null;
+  return (
+    <>
+      {sticky ? (
+        <MobileStickyCTA label={sticky.label} scrollTo={sticky.scrollTo ?? null} href={sticky.href} />
+      ) : null}
+      {exit ? <ExitIntent /> : null}
+    </>
+  );
 }

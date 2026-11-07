@@ -4,14 +4,18 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import DaylightTrack from './DaylightTrack';
 import {
+  MessageCircle,
+  ArrowRight,
   Shield,
+  Zap,
   Sun,
   CheckCircle2,
   Star,
   ChevronDown,
+  CalendarCheck,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import BillAnalyser from './BillAnalyser';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 
 export default function Hero() {
@@ -50,10 +54,9 @@ export default function Hero() {
   }, []);
 
   return (
-    // A screen tall, capped, so a long reveal never sits under a screen of empty photo.
     <section
-      className="hero-section relative flex items-center overflow-hidden"
-      style={{ contain: 'layout', minHeight: 'min(100svh, 1100px)' }}
+      className="hero-section relative min-h-screen flex items-center overflow-hidden"
+      style={{ contain: 'layout' }}
     >
       {/* 
           BACKGROUND LAYERS
@@ -77,51 +80,134 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* CONTENT: Cal's Bill Analyser is the hero door (CALL-FUNNEL-PLAN
-          ruling 3). The promise on the left, the upload on the right; once a
-          bill is chosen the analyser takes the whole width in place. */}
-      <div id="calculator" style={{ scrollMarginTop: 72 }} className="relative z-10 w-full max-w-6xl xl:max-w-[74rem] 2xl:max-w-[86rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 sm:pb-28">
-        <div className="hero-fade-up" style={{ animationDelay: '0.2s' }}>
-          <BillAnalyser
-            variant="hero"
-            door="hero"
-            intro={
-              <div className="text-center lg:text-left">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/40 text-amber-400 border border-white/[0.15]">
-                  <Sun className="w-3.5 h-3.5" />
-                  SEAI Registered Installer
+      {/* 
+          CONTENT
+           */}
+      <div className="relative z-10 w-full max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-28 sm:pb-32">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-6">
+          <div className="max-w-2xl flex-1 min-w-0 text-center lg:text-left">
+            <span
+              className="hero-fade-up inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-black/40 text-amber-400 border border-white/[0.15]"
+              style={{ animationDelay: '0.1s' }}
+            >
+              <Sun className="w-3.5 h-3.5" />
+              SEAI Registered Installer
+            </span>
+
+
+            <div className="mt-6 sm:mt-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95]">
+                <span className="hero-lcp block">
+                  <span className="text-white">Your Energy.</span>
                 </span>
-                <h1 className="mt-5 sm:mt-7 text-[2rem] leading-[1.05] sm:text-5xl lg:text-6xl xl:text-[4.25rem] font-bold tracking-tight">
-                  <span className="hero-lcp block text-white">Snap your electricity bill.</span>
-                  <span className="hero-lcp block text-gradient hero-sheen">See what solar would save you.</span>
-                </h1>
-                <p className="mt-4 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-xl leading-relaxed mx-auto lg:mx-0">
-                  We read your supplier, your unit rate and your day and night split, then show you the saving. Free, and nothing to sign up for to see it.
-                </p>
-                <div className="mt-6 hidden sm:flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
-                  {[
-                    { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
-                    { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
-                    { icon: Star, label: '25-Year Warranty', color: 'text-sky-400' },
-                  ].map((item) => (
-                    <div key={item.label} className="flex items-center gap-1.5 text-xs text-gray-300">
-                      <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
-                      <span>{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-8 hidden lg:flex items-center gap-6">
-                  <div ref={bumblebeeRef} className="transition-transform duration-500 ease-out" style={{ willChange: 'transform' }}>
-                    <Image src="/bumblebee-hero.webp" alt="Solar Ireland Bumblebee" width={112} height={112} className={`w-24 h-24 ${loaded ? 'bumblebee-float' : ''}`} />
-                  </div>
-                  <DaylightTrack className="shrink-0" />
-                </div>
+                <span className="hero-lcp block">
+                  <span className="text-gradient hero-sheen">Your Asset.</span>
+                </span>
+              </h1>
+            </div>
+
+            <p
+              className="hero-fade-up mt-5 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-lg xl:max-w-2xl leading-relaxed mx-auto lg:mx-0"
+              style={{ animationDelay: '0.5s' }}
+            >
+              Upload your electricity bill and our AI will show you exactly what
+              solar will save you. We handle the survey and the install,
+              and guide you through your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
+            </p>
+
+            <div
+              className="hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto lg:items-start"
+              style={{ animationDelay: '0.65s' }}
+            >
+              {/* PRIMARY CTA - Analyse Bill */}
+              <button
+                onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hero-cta-shimmer inline-flex items-center justify-center whitespace-nowrap gap-2 px-7 xl:px-9 py-3.5 xl:py-4 rounded-full border border-transparent bg-amber-400 text-black font-bold text-sm xl:text-base tracking-wide shadow-lg shadow-amber-400/15 w-full sm:w-auto sm:shrink-0 hover:bg-amber-300 transition-all duration-200 active:scale-[0.98]"
+              >
+                <Zap className="w-4 h-4" />
+                Analyse My Bill - Free
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+
+              {/* SECONDARY CTAs */}
+              {/* Stacked below sm. Side by side they were 166px each at 375px,
+                  which wrapped "Book Free Survey" onto two lines and left the
+                  pair looking broken. */}
+              <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full sm:w-auto">
+                <a
+                  href={buildWhatsAppUrl({ source: 'hero' })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-white/[0.12] bg-black/30 text-white text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-white/[0.08] hover:border-white/25 transition-all duration-200 active:scale-[0.98]"
+                >
+                  <MessageCircle className="w-4 h-4 text-green-400" />
+                  WhatsApp Us
+                </a>
+                <a
+                  href="/book-survey"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
+                >
+                  <CalendarCheck className="w-4 h-4" />
+                  Book Free Survey
+                </a>
               </div>
-            }
-          />
+            </div>
+
+            <div
+              className="hero-fade-up mt-8 sm:mt-10"
+              style={{ animationDelay: '0.8s' }}
+            >
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-x-5">
+                {[
+                  { icon: Shield, label: 'RECI Registered', color: 'text-green-400' },
+                  { icon: CheckCircle2, label: 'SEAI Certified', color: 'text-amber-400' },
+                  { icon: Star, label: '25-Year Warranty', color: 'text-sky-400' },
+                ].map((item, i) => (
+                  <div key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-300">
+                    <item.icon className={`w-3.5 h-3.5 ${item.color}`} />
+                    <span>{item.label}</span>
+                    {i < 2 && <span className="text-white/20 ml-1 hidden sm:inline">·</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="min-w-0 shrink lg:mt-4 flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:gap-6">
+            <div
+              ref={bumblebeeRef}
+              className="hero-fade-up transition-transform duration-500 ease-out"
+              style={{ animationDelay: '0.4s', willChange: 'transform' }}
+            >
+              <Image
+                src="/bumblebee-hero.webp"
+                alt="Solar Ireland Bumblebee"
+                width={160}
+                height={160}
+                className={`w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 ${loaded ? 'bumblebee-float' : ''}`}
+              />
+            </div>
+
+            {/* Where the sun actually is, right now, over Ireland. Sits to the
+                bee's right so the two read as one object.
+
+                The right margin on phones keeps it clear of the chat FAB, which
+                is fixed at bottom-6 right-6 and sits ON TOP of this. Measured at
+                375px: the pill ran to x=333 and the FAB starts at x=291, so the
+                last word was painted over and the label read "Panels resti".
+                Same 5.5rem clearance MobileStickyCTA reserves, and for the same
+                reason. */}
+            <DaylightTrack
+              className="hero-fade-up shrink-0 mr-12 sm:mr-0"
+              style={{ animationDelay: '0.55s' }}
+            />
+          </div>
         </div>
 
-        <div className="hero-fade-up mt-10 sm:mt-14 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-5 text-[11px] sm:text-xs text-gray-400" style={{ animationDelay: '0.9s' }}>
+        <div
+          className="hero-fade-up mt-12 sm:mt-14 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-5 text-[11px] sm:text-xs text-gray-400"
+          style={{ animationDelay: '0.9s' }}
+        >
           {SOLAR_DATA.serviceAreas.map((area) => (
             <span key={area} className="flex items-center gap-1.5">
               <span className="w-1 h-1 rounded-full bg-green-400/60" />
@@ -131,7 +217,7 @@ export default function Hero() {
           <span className="text-white/10">|</span>
           <span className="flex items-center gap-1.5">
             <span className="w-1 h-1 rounded-full bg-amber-400/60" />
-            Free 15-minute call, all 32 counties
+            Free surveys nationwide
           </span>
         </div>
       </div>

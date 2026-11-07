@@ -194,11 +194,35 @@ export function trackSurveyBooking(): void {
   });
 }
 
+/** Bill analyser usage */
+export function trackBillAnalyserUsage(mode: 'upload' | 'manual'): void {
+  trackEvent({
+    event: 'bill_analyser_used',
+    properties: { mode, page: window.location.pathname },
+  });
+}
+
+/** Calculator interaction */
+export function trackCalculatorUsage(): void {
+  trackEvent({
+    event: 'savings_calculator_used',
+    properties: { page: window.location.pathname },
+  });
+}
+
 /** Newsletter signup */
 export function trackNewsletterSignup(source: string): void {
   trackEvent({
     event: 'newsletter_signup',
     properties: { source, page: window.location.pathname },
+  });
+}
+
+/** Exit intent trigger */
+export function trackExitIntent(action: string): void {
+  trackEvent({
+    event: 'exit_intent',
+    properties: { action, page: window.location.pathname },
   });
 }
 

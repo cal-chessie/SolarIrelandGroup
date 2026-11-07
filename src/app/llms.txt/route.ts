@@ -32,10 +32,9 @@ Solar Ireland Group is a solar installer in the Republic of Ireland. A standard 
 ## Key pages
 - [Home](${SITE}/): overview and the free AI bill analysis
 - [Services](${SITE}/services): solar PV, battery storage and EV charging, with package prices
-- [Solar calculator](${SITE}/solar-calculator): how the estimate works, and the same bill question
+- [Solar calculator](${SITE}/solar-calculator): annual savings, payback and 25-year return from your bill
 - [Financing](${SITE}/financing): repayment options and what you would actually borrow
-- [Bill Analyser](${SITE}/#calculator): upload your electricity bill, see what it says (unit rate, standing charge, day and night split) and what solar could save you, then book a free 15-minute call
-- [Estimate without a bill](${SITE}/estimate): three quick questions, then the same free call
+- [Book a survey](${SITE}/book-survey): free, no-obligation home survey
 - [About](${SITE}/about): the team and certifications
 - [Blog](${SITE}/blog): SEAI grant guides, cost breakdowns and county guides
 - [Contact](${SITE}/contact)
@@ -62,7 +61,7 @@ Our figures come from one published engine, not a sales spreadsheet, and every c
 - Export: ${SOLAR_DATA.export.label}, the CRU minimum Clean Export Guarantee obligation under CRU/24/019. Suppliers may pay more
 - Self-consumption: 30-50% for an Irish home with no battery, roughly 70-85% with one
 - Typical result for a 3-bed semi: ${SOLAR_DATA.savings.rangeLabel} a year, around ${SOLAR_DATA.savings.label} typical, payback about ${SOLAR_DATA.savings.paybackYears} years, ${SOLAR_DATA.savings.range25yrLabel} over 25 years
-- Estimates are panels only. A battery is sized and priced with you after the call, not quoted online
+- Estimates are panels only. A battery is sized and priced at the survey, not quoted online
 
 ## Facts
 - Coverage: all 32 counties. The SEAI grant applies in the 26 Republic of Ireland counties

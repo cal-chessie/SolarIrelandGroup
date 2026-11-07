@@ -1,6 +1,5 @@
 'use client';
 
-import IntakeLink from '@/components/intake/IntakeLink';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
@@ -144,8 +143,8 @@ const additionalServices = [
   },
   {
     icon: Home,
-    label: 'Free 15-Minute Call',
-    desc: 'We go through your bill and your figures with you on the phone. No visit, no obligation.',
+    label: 'Free Home Survey',
+    desc: 'No-obligation roof and energy assessment with a detailed proposal tailored to your home.',
   },
   {
     icon: Monitor,
@@ -388,8 +387,8 @@ function ServiceCard({
               them off the site at the exact moment they were most interested.
               The analyser answers the question they actually have: what would
               this cost on MY bill. */}
-          <IntakeLink
-            opts={{ door: 'services', src: 'services' }}
+          <a
+            href="/solar-calculator"
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
               service.color === 'amber'
                 ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
@@ -400,7 +399,7 @@ function ServiceCard({
           >
             Get a Free Quote
             <ArrowRight className="w-4 h-4" />
-          </IntakeLink>
+          </a>
         </div>
       </div>
     </motion.div>
@@ -464,19 +463,19 @@ export default function ServicesPage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
-                <IntakeLink
-                  opts={{ door: 'services', src: 'services' }}
+                <a
+                  href="/solar-calculator"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                 >
                   Price It On My Bill
                   <ArrowRight className="w-4 h-4" />
-                </IntakeLink>
+                </a>
                 <a
-                  href="/#calculator"
+                  href="/book-survey?src=services"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  Book a Free Call
+                  Book a Free Survey
                 </a>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
@@ -701,11 +700,11 @@ export default function ServicesPage() {
                       ))}
                     </div>
 
-                    {/* Into the one intake, not out to WhatsApp. The package they
-                        picked rides along as context (ux-spec 5.4), so it reaches
-                        Cal and we know which tier pulled the lead. */}
-                    <IntakeLink
-                      opts={{ door: 'package', segment: 'home', step: 'bill', pkg: pkg.name.toLowerCase() }}
+                    {/* Into the analyser, not out to WhatsApp. The package they
+                        picked rides along so it reaches the brief and we know
+                        which tier pulled the lead. */}
+                    <a
+                      href={`/solar-calculator?pkg=${encodeURIComponent(pkg.name.toLowerCase())}`}
                       className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         pkg.highlighted
                           ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-400/15'
@@ -714,7 +713,7 @@ export default function ServicesPage() {
                     >
                       Price this on my bill
                       <ArrowRight className="w-4 h-4" />
-                    </IntakeLink>
+                    </a>
                   </div>
                 </motion.div>
               ))}
@@ -742,17 +741,18 @@ export default function ServicesPage() {
                   Ready to Switch to Solar?
                 </h2>
                 <p className="text-gray-400 max-w-lg mx-auto mb-8 leading-relaxed">
-                  Snap your bill, see your saving, then book a free 15-minute call.
+                  Get a free, no-obligation home survey and personalised quote.
                   We cover all 32 counties and our installations typically take just one day.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  {/* Call funnel: the site sells the free 15-minute call only. */}
+                  {/* Said "Book Free Survey", opened WhatsApp. It books a
+                      survey now. */}
                   <a
-                    href="/#calculator"
+                    href="/book-survey?src=services"
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                   >
                     <Zap className="w-4 h-4" />
-                    Book a Free Call
+                    Book Free Survey
                     <ArrowRight className="w-4 h-4" />
                   </a>
                   <a
@@ -764,7 +764,7 @@ export default function ServicesPage() {
                   </a>
                 </div>
                 <p className="text-xs text-gray-600 mt-6">
-                  We quote what we find at your home, after the call.
+                  We quote what the survey finds. If the sums do not work on your roof, we will tell you.
                 </p>
               </div>
             </div>
@@ -774,7 +774,7 @@ export default function ServicesPage() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ scrollTo: null }} />
+      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
     </div>
   );
 }

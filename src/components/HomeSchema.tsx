@@ -95,7 +95,7 @@ const serviceSchema = {
   "@id": `${SITE_URL}/#service`,
   name: "Residential Solar Panel Installation",
   description:
-    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, a free 15-minute call, SEAI grant application, professional installation by RECI-certified electricians, and post-install BER assessment. Save up to €1,400/year with a €1,800 SEAI grant.",
+    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, SEAI grant application, professional installation by RECI-certified electricians, and post-install BER assessment. Save up to €1,400/year with a €1,800 SEAI grant.",
   url: SITE_URL,
   provider: {
     "@id": `${SITE_URL}/#business`,
@@ -180,8 +180,8 @@ const howToSchema = {
     },
     {
       "@type": "HowToStep",
-      name: "Book a Free 15-Minute Call",
-      text: "Cal rings you to go through your figures and answer your questions. No visit, no obligation. We guide you through the SEAI grant application.",
+      name: "Get Your Free Home Survey",
+      text: "Our RECI-certified team visits your home to assess your roof, orientation, shading, and electrical setup. We give you an honest, itemised quote with no hidden costs - and we guide you through the SEAI grant application.",
       position: 2,
     },
     {

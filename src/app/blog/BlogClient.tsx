@@ -503,7 +503,7 @@ export default function BlogClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ scrollTo: null }} />
+      <PageIntake sticky={{ label: 'Price It On My Bill', href: '/solar-calculator' }} exit={true} />
     </div>
   );
 }
