@@ -8,11 +8,11 @@
  * invented and only shaped to pass the format checks.
  */
 import type { AnalyserFailure, AnalyserRead } from '@/lib/intake/contract';
-import { toAnalyserRead } from './read';
+import { toAnalyserRead, type BillRead } from './read';
 
 const raw = (o: Record<string, unknown>) => toAnalyserRead({ isElectricityBill: true, ...o });
 
-export const STUB_READS: Record<string, AnalyserRead> = {
+export const STUB_READS: Record<string, BillRead> = {
   // A two-month day and night bill: the main case and the AISolar fact.
   default: raw({
     supplier: 'Electric Ireland',
@@ -31,6 +31,39 @@ export const STUB_READS: Record<string, AnalyserRead> = {
     eircode: 'D06 X285',
     mprn: '10012345678',
     supplyAddress: '14 Elm Road, Rathmines, Dublin 6',
+  }),
+  // A two-month smart bill: day, night and a separate 5pm to 7pm peak line.
+  bill_smart: raw({
+    supplier: 'Electric Ireland',
+    periodStart: '2026-08-14',
+    periodEnd: '2026-10-12',
+    amountDueEur: 318.65,
+    unitRateEur: 0.3651,
+    nightRateEur: 0.1876,
+    peakRateEur: 0.4512,
+    standingChargeEur: 0.6849,
+    standingChargeUnit: 'per_day',
+    dayKwh: 420,
+    nightKwh: 260,
+    peakKwh: 110,
+    totalKwh: 790,
+    accountName: 'Niamh Doyle',
+    isBusiness: false,
+    eircode: 'A92 F2X4',
+  }),
+  // A two-month bill on one 24-hour rate: no night rate, no peak. (Scenario
+  // names are letters and underscores only, the cookie pattern in stub/state.ts.)
+  bill_flat: raw({
+    supplier: 'Bord Gáis Energy',
+    periodStart: '2026-08-05',
+    periodEnd: '2026-10-03',
+    amountDueEur: 251.8,
+    unitRateEur: 0.3795,
+    standingChargeEur: 0.7134,
+    standingChargeUnit: 'per_day',
+    totalKwh: 560,
+    accountName: 'Tom Ryan',
+    isBusiness: false,
   }),
   // A one-month single-rate bill, no Eircode on it.
   bill_single: raw({

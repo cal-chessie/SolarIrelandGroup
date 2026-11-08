@@ -31,8 +31,10 @@ Return ONLY a JSON object with these fields, copied exactly as printed. Use null
   "nightRateEur": "the price per kWh in euro for the night rate, or null if there is no night rate",
   "standingChargeEur": "the standing charge amount as printed, as a number",
   "standingChargeUnit": "per_day, per_period or per_year, whichever the bill states for that amount",
-  "dayKwh": "kWh used at the day rate in this billing period, or null on a single rate bill",
+  "peakRateEur": "the price per kWh in euro for a separate peak rate (on smart tariffs often 5pm to 7pm), ONLY if the bill prints one, else null",
+  "dayKwh": "kWh used at the day rate in this billing period, not counting any peak units, or null on a single rate bill",
   "nightKwh": "kWh used at the night rate in this billing period, or null",
+  "peakKwh": "kWh used at the peak rate in this billing period, ONLY if the bill prints a separate peak line, else null",
   "totalKwh": "total kWh used in this billing period",
   "annualKwh": "a yearly consumption figure in kWh ONLY if the bill prints one, else null",
   "accountName": "the account holder's name exactly as printed, or null",
@@ -44,6 +46,20 @@ Return ONLY a JSON object with these fields, copied exactly as printed. Use null
 No markdown, no explanation.`;
 
 type Obj = Record<string, unknown>;
+
+/**
+ * The read this route returns: the contract's AnalyserRead plus the peak
+ * line of a smart tariff (8 Nov 2026). Both peak fields are read off the bill
+ * or null, never invented, and only count beside a day reading, the same rule
+ * as the night line. They travel as extra fields on the same JSON, so the
+ * contract type is untouched and older readers simply ignore them.
+ */
+export type BillRead = AnalyserRead & {
+  /** The peak rate per unit, when the bill prints a separate peak rate. */
+  peakRateEur: number | null;
+  /** Units at the peak rate on this bill, when printed. */
+  peakKwh: number | null;
+};
 
 const num = (v: unknown, lo: number, hi: number): number | null => {
   const n = typeof v === 'number' ? v : typeof v === 'string' ? Number(v.replace(/[€,\s]/g, '')) : NaN;
@@ -82,7 +98,7 @@ export function periodOf(days: number | null): AnalyserRead['period'] {
   return null;
 }
 
-export function toAnalyserRead(raw: unknown): AnalyserRead {
+export function toAnalyserRead(raw: unknown): BillRead {
   const r = (raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {}) as Obj;
   const periodStart = isoDay(r.periodStart);
   const periodEnd = isoDay(r.periodEnd);
@@ -90,8 +106,9 @@ export function toAnalyserRead(raw: unknown): AnalyserRead {
 
   const dayKwh = num(r.dayKwh, 1, 5_000_000);
   const nightKwh = dayKwh !== null ? num(r.nightKwh, 0, 5_000_000) : null;
+  const peakKwh = dayKwh !== null ? num(r.peakKwh, 0, 5_000_000) : null;
   const total = num(r.totalKwh, 1, 5_000_000);
-  const periodKwh = total ?? (dayKwh !== null ? dayKwh + (nightKwh ?? 0) : null);
+  const periodKwh = total ?? (dayKwh !== null ? dayKwh + (nightKwh ?? 0) + (peakKwh ?? 0) : null);
 
   const printedAnnual = num(r.annualKwh, 100, 10_000_000);
   let annualKwh: number | null = printedAnnual;
@@ -129,6 +146,8 @@ export function toAnalyserRead(raw: unknown): AnalyserRead {
     period: periodOf(days),
     unitRateEur: num(r.unitRateEur, 0.05, 1.5),
     nightRateEur: dayKwh !== null ? num(r.nightRateEur, 0.02, 1.5) : null,
+    peakRateEur: dayKwh !== null ? num(r.peakRateEur, 0.05, 2) : null,
+    peakKwh,
     standingChargeEur: sc !== null && unit ? sc : null,
     standingChargeUnit: sc !== null ? unit : null,
     standingChargeAnnualEur: standingAnnual,

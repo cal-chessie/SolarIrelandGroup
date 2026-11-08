@@ -90,7 +90,34 @@ describe('the analyser read', () => {
     expect(a.monthlyBill).toBeCloseTo(144.04, 1);
   });
 
+  it('a smart bill: the peak rate and peak units come back as printed, beside a day reading only', () => {
+    const r = toAnalyserRead({ dayKwh: 420, nightKwh: 260, peakKwh: 110, unitRateEur: 0.3651, nightRateEur: 0.1876, peakRateEur: '€0.4512' });
+    expect(r.peakRateEur).toBe(0.4512);
+    expect(r.peakKwh).toBe(110);
+    expect(r.periodKwh).toBe(790);
+    const single = toAnalyserRead({ totalKwh: 310, unitRateEur: 0.39, peakRateEur: 0.45, peakKwh: 40 });
+    expect(single.peakRateEur).toBeNull();
+    expect(single.peakKwh).toBeNull();
+  });
+
+  it('never invents a peak: a day and night bill with no peak line has none', () => {
+    expect(STUB_READS.default.peakRateEur).toBeNull();
+    expect(STUB_READS.default.peakKwh).toBeNull();
+    expect(toAnalyserRead({ dayKwh: 400, nightKwh: 200, peakRateEur: 'n/a', peakKwh: null }).peakRateEur).toBeNull();
+  });
+
+  it('the anonymous record does not carry the peak line (AISolar owns that shape)', () => {
+    expect(Object.keys(anonymousOf(STUB_READS.bill_smart))).not.toContain('peakRateEur');
+  });
+
   it('the stub fixtures are honest reads too', () => {
+    expect(STUB_READS.bill_smart.peakRateEur).toBe(0.4512);
+    expect(STUB_READS.bill_smart.peakKwh).toBe(110);
+    expect(STUB_READS.bill_smart.period).toBe('two_months');
+    expect(STUB_READS.bill_flat.nightRateEur).toBeNull();
+    expect(STUB_READS.bill_flat.peakRateEur).toBeNull();
+    expect(STUB_READS.bill_flat.dayKwh).toBeNull();
+    expect(STUB_READS.bill_flat.unitRateEur).toBe(0.3795);
     expect(STUB_READS.default.period).toBe('two_months');
     expect(STUB_READS.bill_single.dayKwh).toBeNull();
     expect(STUB_READS.bill_partial.period).toBeNull();

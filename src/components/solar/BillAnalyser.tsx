@@ -31,6 +31,7 @@ import { getConfig, getQuotes } from '@/components/intake/api';
 import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
 import { Spinner } from '@/components/intake/ui';
 import { CARRY_KEY, type AnalyserCarry } from '@/components/intake/carry';
+import type { BillRead } from '@/lib/analyser/read';
 
 type Phase = 'door' | 'tips' | 'reading' | 'reveal' | 'failed' | 'done';
 type Failure = { reason: AnalyserFailure; partial: Partial<AnalyserRead> | null };
@@ -123,7 +124,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const [preview, setPreview] = useState<{ url: string | null; pdf: boolean } | null>(null);
   const [stage, setStage] = useState<'sending' | 'reading' | 'still'>('sending');
   const [progress, setProgress] = useState(0);
-  const [read, setRead] = useState<AnalyserRead | null>(null);
+  const [read, setRead] = useState<BillRead | null>(null);
   const [failure, setFailure] = useState<Failure | null>(null);
   const [perPick, setPerPick] = useState<'month' | 'two_months' | null>(null);
   const [kwhEdit, setKwhEdit] = useState<{ open: boolean; text: string; value: number | null; error: string | null }>({ open: false, text: '', value: null, error: null });
@@ -221,8 +222,16 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const period = read?.period ?? perPick;
   const amount = amountEdit.value ?? read?.amountEur ?? null;
   const annualKwh = kwhEdit.value ?? read?.annualKwh ?? null;
-  const split = useMemo(() => (read && read.dayKwh !== null && read.nightKwh !== null && read.dayKwh + read.nightKwh > 0 ? { day: read.dayKwh, night: read.nightKwh } : null), [read]);
-  const dayPct = split ? Math.round((split.day / (split.day + split.night)) * 100) : null;
+  // Day, night and (on a smart bill) peak units, as printed. Peak units are
+  // evening units on the day side of the meter, so the quote counts them as day.
+  const split = useMemo(
+    () => (read && read.dayKwh !== null && read.nightKwh !== null && read.dayKwh + read.nightKwh + (read.peakKwh ?? 0) > 0 ? { day: read.dayKwh, night: read.nightKwh, peak: read.peakKwh ?? 0 } : null),
+    [read],
+  );
+  const splitTotal = split ? split.day + split.night + split.peak : 0;
+  const dayPct = split ? Math.round((split.day / splitTotal) * 100) : null;
+  const peakPct = split && split.peak > 0 ? Math.round((split.peak / splitTotal) * 100) : null;
+  const nightPct = split && dayPct !== null ? 100 - dayPct - (peakPct ?? 0) : null;
   const knownSupplier = useMemo(() => {
     const s = read?.supplier;
     if (!s || !config) return null;
@@ -238,9 +247,9 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     let dayA: number | undefined;
     let nightA: number | undefined;
     if (split) {
-      const base = annualKwh ?? (read.days ? ((split.day + split.night) * 365) / read.days : null);
+      const base = annualKwh ?? (read.days ? (splitTotal * 365) / read.days : null);
       if (base) {
-        dayA = Math.round((base * split.day) / (split.day + split.night));
+        dayA = Math.round((base * (split.day + split.peak)) / splitTotal);
         nightA = Math.round(base - dayA);
       }
     }
@@ -257,7 +266,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         nightKwh: nightA,
       },
     };
-  }, [read, amount, period, annualKwh, split, seg, knownSupplier]);
+  }, [read, amount, period, annualKwh, split, splitTotal, seg, knownSupplier]);
   const qKey = qItem ? JSON.stringify(qItem) : null;
 
   useEffect(() => {
@@ -353,7 +362,9 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     const d = r.data;
     if (r.status === 0 || !d) return fail('offline');
     if (!d.ok) return fail(d.reason, d.partial ?? null);
-    const rd = d.read;
+    // The peak line rides beside the contract's fields; an older reader may not send it.
+    const extra = d.read as Partial<BillRead>;
+    const rd: BillRead = { ...d.read, peakRateEur: extra.peakRateEur ?? null, peakKwh: extra.peakKwh ?? null };
     setRead(rd);
     if (rd.segment) setSegment(rd.segment);
     if (rd.accountName && !details.name) setDetails((x) => ({ ...x, name: rd.accountName ?? '' }));
@@ -652,6 +663,11 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               read.nightRateEur !== null ? (
                 <>
                   Day <span {...prov('from_your_bill')}>{cents(read.unitRateEur)}</span>, night <span {...prov('from_your_bill')}>{cents(read.nightRateEur)}</span>
+                  {read.peakRateEur !== null ? (
+                    <>
+                      , peak <span {...prov('from_your_bill')}>{cents(read.peakRateEur)}</span>
+                    </>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -808,18 +824,25 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
             {r.k === 'amount' || r.k === 'yearly' ? editor(r.k) : null}
           </div>
         ))}
-        {split && dayPct !== null ? (
+        {split && dayPct !== null && nightPct !== null ? (
           <div className="si-an-row si-an-row--split" style={{ animationDelay: `${rows.length * 70}ms` }} data-row="split">
-            <dt>Day and night</dt>
+            <dt>{peakPct !== null ? 'Day, peak and night' : 'Day and night'}</dt>
             <dd>
               <span className="si-an-row__value">
-                <span {...prov('from_your_bill')}>{dayPct}%</span> day, <span {...prov('from_your_bill')}>{100 - dayPct}%</span> night
+                <span {...prov('from_your_bill')}>{dayPct}%</span> day,{' '}
+                {peakPct !== null ? (
+                  <>
+                    <span {...prov('from_your_bill')}>{peakPct}%</span> peak,{' '}
+                  </>
+                ) : null}
+                <span {...prov('from_your_bill')}>{nightPct}%</span> night
               </span>
               {tag('bill')}
             </dd>
             <div className="si-an-split" aria-hidden="true">
               <span className="si-an-split__day" style={{ width: `${dayPct}%` }} />
-              <span className="si-an-split__night" style={{ width: `${100 - dayPct}%` }} />
+              {peakPct !== null ? <span className="si-an-split__day" style={{ width: `${peakPct}%`, background: 'var(--si-fg)' }} /> : null}
+              <span className="si-an-split__night" style={{ width: `${nightPct}%` }} />
             </div>
           </div>
         ) : read.unitRateEur !== null ? (
@@ -865,21 +888,8 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               <span {...prov('from_your_bill')}>{dayPct}%</span> of what you use is on your day rate, at <span {...prov('from_your_bill')}>{cents(read.unitRateEur)}</span> a unit. Solar panels work in daylight, so those are the units they replace.
             </>
           ),
-          support:
-            100 - dayPct >= 50 ? (
-              <>
-                Most of your use is at night. A battery can keep daytime solar for the evening, and SEAI pays a <span {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</span> grant on a battery of {SOLAR_DATA.batteryGrant.minLabel}.
-              </>
-            ) : (
-              <>
-                Your night units{read.nightRateEur !== null ? (
-                  <>
-                    {' '}at <span {...prov('from_your_bill')}>{cents(read.nightRateEur)}</span>
-                  </>
-                ) : null}{' '}
-                are already cheaper. We size panels to your day use, not your whole bill.
-              </>
-            ),
+          // The battery has its own case below; this line stays on the panels.
+          support: <>We size panels to your day use, not your whole bill.</>,
         }
       : read.unitRateEur !== null && exportRate !== null
         ? {
@@ -904,6 +914,108 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         About <span {...prov('from_your_bill')}>{eur(read.standingChargeAnnualEur)}</span> a year of your bill is standing charge. That stays whatever you do. Solar works on the rest.
       </p>
     ) : null;
+
+  /*
+   * The battery case, built only from this bill (Cal, 8 Nov 2026: "a good
+   * reason for a battery on peak hours and night rate which you need a
+   * consultant to further review"). Rates and units as printed, the SEAI
+   * battery grant as the one assumed figure, and no battery saving or price:
+   * the site's estimate is panels only, the battery is the consultant's to
+   * size. It is also the honest reason for the call, because whether a
+   * battery pays turns on when the home uses power, which no bill shows.
+   */
+  const battery: { variant: 'peak' | 'night' | 'single'; body: ReactNode } | null = (() => {
+    if (!read || read.unitRateEur === null) return null;
+    const day = read.unitRateEur;
+    const grant = !isBiz ? (
+      <p className="si-an-line">
+        SEAI pays a <span {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</span> grant on a battery of {SOLAR_DATA.batteryGrant.minLabel.replace(' kWh', '\u00a0kWh')}.
+      </p>
+    ) : null;
+    if (read.peakRateEur !== null || read.nightRateEur !== null) {
+      const hasPeak = read.peakRateEur !== null;
+      const lead = hasPeak ? (
+        <p className="si-an-insight__lead">
+          Your peak rate is <span {...prov('from_your_bill')}>{cents(read.peakRateEur as number)}</span> a unit. Those are your dearest units, the ones a battery covers.
+        </p>
+      ) : (
+        <p className="si-an-insight__lead">
+          Your night rate is <span {...prov('from_your_bill')}>{cents(read.nightRateEur as number)}</span> a unit, against <span {...prov('from_your_bill')}>{cents(day)}</span> by day.
+        </p>
+      );
+      const peakLine = hasPeak ? (
+        <p className="si-an-line">
+          Peak is usually 5pm to 7pm on a smart tariff.
+          {read.peakKwh !== null && read.peakKwh > 0 ? (
+            <>
+              {' '}
+              <span {...prov('from_your_bill')}>{num(read.peakKwh)}</span> units on this bill were at that rate.
+            </>
+          ) : null}
+        </p>
+      ) : null;
+      const nightLine =
+        read.nightRateEur !== null ? (
+          <p className="si-an-line">
+            {hasPeak ? (
+              <>
+                Your night rate is <span {...prov('from_your_bill')}>{cents(read.nightRateEur)}</span>, against <span {...prov('from_your_bill')}>{cents(day)}</span> by day.{' '}
+              </>
+            ) : null}
+            {nightPct !== null ? (
+              <>
+                <span {...prov('from_your_bill')}>{nightPct}%</span> of your units are already at night.{' '}
+              </>
+            ) : null}
+            A battery can store cheap night units, or daytime solar, and use them in the evening instead of buying at the {hasPeak ? 'peak or day' : 'day'} rate.
+          </p>
+        ) : (
+          <p className="si-an-line">A battery can keep daytime solar for the evening instead of buying at the peak rate.</p>
+        );
+      return {
+        variant: hasPeak ? 'peak' : 'night',
+        body: (
+          <>
+            {lead}
+            {peakLine}
+            {nightLine}
+            {grant}
+            <p className="si-an-line">
+              Whether a battery pays for your home depends on when you use power: evenings, an EV, a heat pump, the immersion. A bill can&apos;t show that, so the saving below is for panels only. A consultant reviews your home&apos;s energy use with you on the free 15-minute call.
+            </p>
+          </>
+        ),
+      };
+    }
+    return {
+      variant: 'single',
+      body: (
+        <>
+          <p className="si-an-line">
+            Your bill is on one 24-hour rate of <span {...prov('from_your_bill')}>{cents(day)}</span> a unit, so there is no cheaper night rate to store. A battery here would keep daytime solar for the evening.{' '}
+            {!isBiz ? (
+              <>
+                SEAI pays a <span {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</span> grant on a battery of {SOLAR_DATA.batteryGrant.minLabel.replace(' kWh', '\u00a0kWh')}.{' '}
+              </>
+            ) : null}
+            Whether it pays depends on when you use power, which a bill can&apos;t show. A consultant goes through that with you on the call.
+          </p>
+        </>
+      ),
+    };
+  })();
+
+  useEffect(() => {
+    if (phase === 'reveal' && battery) track('battery_view', { variant: battery.variant, flow_id: fid });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, battery?.variant]);
+
+  const batteryBlock = battery ? (
+    <div className="si-an-saving si-an-battery" data-battery={battery.variant}>
+      <p className="si-an-kicker">A battery, from your bill</p>
+      {battery.body}
+    </div>
+  ) : null;
 
   const savingBlock = (
     <div className="si-an-saving" ref={savingRef}>
@@ -975,9 +1087,13 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
         online={online}
-        heading="Want a person to check this with you?"
+        heading={battery ? 'Want a consultant to look at your energy use?' : 'Want a person to check this with you?'}
         headingLevel="h3"
-        sub={`A free 15-minute phone call with ${who || 'Solar Ireland'}. We go through your figures and answer your questions. No visit, no obligation.`}
+        sub={
+          battery
+            ? `A free 15-minute phone call with ${who || 'Solar Ireland'}. We go through your figures and when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
+            : `A free 15-minute phone call with ${who || 'Solar Ireland'}. We go through your figures and answer your questions. No visit, no obligation.`
+        }
         ctx={{
           segment: seg,
           door,
@@ -1024,6 +1140,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
           ) : standingLine ? (
             <div className="si-an-insight">{standingLine}</div>
           ) : null}
+          {batteryBlock}
           {savingBlock}
           {ask}
         </div>
@@ -1041,14 +1158,20 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       data-reason={phase === 'failed' ? failure?.reason : undefined}
       data-wide={wide ? 'true' : 'false'}
     >
-      {variant === 'hero' && !wide ? (
-        <div className="si-an-hero">
-          <div className="si-an-hero__intro">{intro}</div>
-          <div className="si-an-hero__door">{body}</div>
+      {/* Equal gutters at every width: the site's own section container
+          (WhySolar), so neither lane sits flush to a screen edge. */}
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
+          {variant === 'hero' && !wide ? (
+            <div className="si-an-hero">
+              <div className="si-an-hero__intro">{intro}</div>
+              <div className="si-an-hero__door">{body}</div>
+            </div>
+          ) : (
+            <div className="si-an-body">{body}</div>
+          )}
         </div>
-      ) : (
-        <div className="si-an-body">{body}</div>
-      )}
+      </div>
       {stickyOn ? (
         <div className="si-an-sticky">
           <button

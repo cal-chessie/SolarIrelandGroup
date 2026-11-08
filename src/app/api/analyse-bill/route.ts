@@ -32,6 +32,12 @@ import { STUB_FAILURES, STUB_READS } from '@/lib/analyser/stub';
  *      address, Eircode, MPRN, image or lead reference
  *      (docs/memory/12-the-bill-dataset.md).
  *
+ * The peak line (8 Nov 2026): on a smart tariff the bill prints a separate
+ * peak rate and peak units (often 5pm to 7pm). Both come back as printed or
+ * null, as extra fields beside the contract's (BillRead in read.ts), so the
+ * page can make the battery case from the homeowner's own bill. They are not
+ * added to the anonymous observation, whose shape AISolar's ingest owns.
+ *
  * STUB mode (INTAKE_CONTRACT_MODE=stub, never production): the file is
  * checked for size and type and discarded unread. Nothing goes to OpenRouter
  * or AISolar. The answer is a fixture chosen by the si_stub_scenario cookie.
