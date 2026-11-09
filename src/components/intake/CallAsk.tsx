@@ -665,34 +665,58 @@ function saveContact() {
 }
 
 /** The confirmation, the same on both roads. */
+/**
+ * What the confirmation says, and what a screen reader hears. `held` is the
+ * submit's `fallback`: AISolar did not take it yet, the site's outbox holds it
+ * and the owner has it by email (lib/intake/live/outbox.ts). Nothing has been
+ * emailed to the homeowner, so the held state never says "check your inbox".
+ */
+export function callDoneCopy(o: { held: boolean; who: string | null; first: string }): { title: string; facts: string; announce: string } {
+  const by = o.who || 'We';
+  if (o.held) {
+    return {
+      title: `Saved. ${by} will ring you today.`,
+      facts: "If it's late, first thing tomorrow.",
+      announce: `Saved. ${by} will ring you today.`,
+    };
+  }
+  return {
+    title: `Thanks, ${o.first}. Your full estimate is on its way.`,
+    facts: `Check your inbox. ${o.who ? `${o.who} rings` : 'We ring'} you today to talk it through. If it's late, first thing tomorrow.`,
+    announce: 'Your full estimate is on its way.',
+  };
+}
+
 export function CallDone({
   details,
   who,
   headingRef,
   headingLevel = 'h2',
   footer,
+  held = false,
 }: {
   details: CallDetails;
   who: string | null;
   headingRef?: React.Ref<HTMLHeadingElement>;
   headingLevel?: 'h1' | 'h2';
   footer?: ReactNode;
+  /** The submit answered `fallback`: held on the site, not yet with AISolar. */
+  held?: boolean;
 }) {
   const H = headingLevel;
   const fname = firstName(details.name) || 'there';
+  const copy = callDoneCopy({ held, who, first: fname });
   return (
-    <div className="si-done-call">
+    <div className="si-done-call" data-call-done={held ? 'held' : 'sent'}>
       <span className="si-done-mark" aria-hidden="true">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12.5l4.5 4.5L19 7.5" />
         </svg>
       </span>
       <H className="si-ask__title si-mt-24" ref={headingRef} tabIndex={-1}>
-        Thanks, {fname}. Your full estimate is on its way.
+        {copy.title}
       </H>
-      <p className="si-facts">
-        Check your inbox. {who ? `${who} rings` : 'We ring'} you today to talk it through. If it&apos;s late, first thing tomorrow.
-      </p>
+      <p className="si-facts">{copy.facts}</p>
       <p className="si-done-call__line">
         We&apos;ll ring <b className="si-white">{details.mobile.trim()}</b>.{details.bestTime ? ` ${BEST_LINE[details.bestTime]}` : ''}
       </p>

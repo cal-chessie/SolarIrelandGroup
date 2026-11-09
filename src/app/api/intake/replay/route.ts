@@ -16,7 +16,9 @@ import { outboxDeps, replayDue } from '@/lib/intake/live/outbox';
  *
  * Who calls it: any scheduler holding the secret (a Vercel cron sends the
  * Bearer header itself when CRON_SECRET is set; AISolar's pg_cron can call it
- * too). Every accepted live submit also sends due leads, at most every five
+ * too). vercel.json runs it daily at 07:00 UTC: the project is on Vercel's
+ * Hobby plan, which refuses a cron more often than once a day. Every 10
+ * minutes ("*\/10 * * * *") needs Pro, or AISolar's pg_cron. Every accepted live submit also sends due leads, at most every five
  * minutes per server, so the outbox drains the moment AISolar is back.
  *
  * Answers counts only, never a lead. Live mode only.

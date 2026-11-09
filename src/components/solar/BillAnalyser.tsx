@@ -29,7 +29,7 @@ import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
-import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
+import { CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
 import { Spinner } from '@/components/intake/ui';
 import { CARRY_KEY, type AnalyserCarry } from '@/components/intake/carry';
 import type { BillRead } from '@/lib/analyser/read';
@@ -120,6 +120,7 @@ const FAIL_COPY: Record<AnalyserFailure, { title: string; line: string }> = {
 
 export default function BillAnalyser({ variant = 'section', door = 'analyser', intro }: { variant?: 'hero' | 'section'; door?: string; intro?: ReactNode }) {
   const [phase, setPhase] = useState<Phase>('door');
+  const [held, setHeld] = useState(false);
   const [segment, setSegment] = useState<Segment>('domestic');
   const [config, setConfig] = useState<IntakeConfig | null>(null);
   const [preview, setPreview] = useState<{ url: string | null; pdf: boolean } | null>(null);
@@ -430,10 +431,11 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     openIntake({ door: `analyser-${why}`, segment: (p?.segment ?? segment) === 'commercial' ? 'business' : 'home', step: bill ? 'time' : 'bill', bill, per });
   };
 
-  const onSent = (_res: SubmitResponse, d: CallDetails) => {
+  const onSent = (res: SubmitResponse, d: CallDetails) => {
     setDetails(d);
+    setHeld(!!res.fallback);
     setPhase('done');
-    setAnnounce('Your full estimate is on its way.');
+    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '' }).announce);
   };
 
   const onDrop = (e: DragEvent) => {
@@ -1127,7 +1129,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
 
   const doneCard = (
     <div className="si-an-card si-an-done">
-      <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" />
+      <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} />
     </div>
   );
 

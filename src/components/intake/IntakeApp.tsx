@@ -39,7 +39,7 @@ import { setIntakeOpen, useCookieBannerVisible } from '@/lib/bottomLayer';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { CallAsk, CallDone, type CallDetails } from './CallAsk';
+import { CallAsk, CallDone, callDoneCopy, type CallDetails } from './CallAsk';
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
 import {
@@ -810,7 +810,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    setAnnounce('Your full estimate is on its way.');
+    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '' }).announce);
   };
 
   /* ── Pieces ────────────────────────────────────────────────────── */
@@ -1556,7 +1556,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" />
+      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );

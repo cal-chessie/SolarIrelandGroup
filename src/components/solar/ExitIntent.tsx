@@ -76,6 +76,7 @@ export default function ExitIntent() {
   const [quotes, setQuotes] = useState<{ at: Quote; low: Quote; high: Quote } | null>(null);
   const [quoteState, setQuoteState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
+  const [held, setHeld] = useState(false);
   const [fid, setFid] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLHeadingElement>(null);
@@ -365,8 +366,9 @@ export default function ExitIntent() {
           billRead: null,
           carry: null,
         }}
-        onSent={(_res, d) => {
+        onSent={(res, d) => {
           setDetails(d);
+          setHeld(!!res.fallback);
           setLs(EXIT_KEYS.leadSent, '1');
           funnel('quiz_submitted', { door: 'exit-quiz', segment, extras: extras.length, flow_id: fid });
           setStage('done');
@@ -374,7 +376,7 @@ export default function ExitIntent() {
       />
     );
   } else {
-    body = <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" />;
+    body = <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} />;
   }
 
   return (

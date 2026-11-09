@@ -58,7 +58,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   const [segment, setSegment] = useState<Segment>(startSegment);
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
   const [config, setConfig] = useState<IntakeConfig | null>(null);
-  const [sent, setSent] = useState<CallDetails | null>(null);
+  const [sent, setSent] = useState<{ d: CallDetails; held: boolean } | null>(null);
   const [fid, setFid] = useState('');
   const [online, setOnline] = useState(true);
   const doneRef = useRef<HTMLHeadingElement>(null);
@@ -138,7 +138,8 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   if (sent) {
     card = (
       <CallDone
-        details={sent}
+        details={sent.d}
+        held={sent.held}
         who={who}
         headingRef={doneRef}
         headingLevel="h2"
@@ -190,7 +191,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
             // Thread only onto a link that resolved: a dead or expired link sends as a fresh call.
             linkToken: link.state === 'ready' ? token : null,
           }}
-          onSent={(_res, d) => setSent(d)}
+          onSent={(res, d) => setSent({ d, held: !!res.fallback })}
         />
       </>
     );
