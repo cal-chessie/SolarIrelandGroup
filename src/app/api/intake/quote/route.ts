@@ -21,6 +21,9 @@ import { scenarioOf } from '@/lib/intake/stub/state';
  */
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// Calls AISolar with its own deadlines (submit: up to 12s + 0.8s + 9s, then the outbox); 60s is the plan's
+// ceiling the other AISolar routes already use, so a slow answer is never cut off by the platform first.
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const blocked = gate(request);

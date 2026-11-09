@@ -38,6 +38,9 @@ import { cookieValue, liveHolds, scenarioOf, sleep, store } from '@/lib/intake/s
  */
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// Calls AISolar with its own deadlines (submit: up to 12s + 0.8s + 9s, then the outbox); 60s is the plan's
+// ceiling the other AISolar routes already use, so a slow answer is never cut off by the platform first.
+export const maxDuration = 60;
 
 const DEVICE = 'si_device';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
