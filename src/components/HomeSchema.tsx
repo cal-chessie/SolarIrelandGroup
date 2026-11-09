@@ -45,7 +45,8 @@ const webPageSchema = {
     {
       "@type": "WebPage",
       "@id": SITE_URL,
-      name: "Solar Ireland | SEAI Registered Solar Panel Installers",
+      // Matches the home <title> (src/app/page.tsx).
+      name: "Solar Panels Ireland | Free Bill Analysis | Solar Ireland",
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       inLanguage: "en-IE",
@@ -56,7 +57,9 @@ const webPageSchema = {
         "@id": `${SITE_URL}/#business`,
       },
       datePublished: "2024-01-15T00:00:00+00:00",
-      dateModified: new Date().toISOString(),
+      // A real revision date, not "now": a dateModified that changes on every
+      // request tells crawlers nothing and reads as a freshness trick.
+      dateModified: "2026-11-09T00:00:00+00:00",
       primaryImageOfPage: {
         "@type": "ImageObject",
         url: `${SITE_URL}/hero-solar.jpg`,

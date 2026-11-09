@@ -710,9 +710,15 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               initial="hidden"
               animate="visible"
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-base sm:text-lg text-gray-400 leading-relaxed max-w-3xl mb-6"
+              className={
+                article.answer
+                  ? 'text-base sm:text-lg text-gray-200 leading-relaxed max-w-3xl mb-6 border-l-2 border-amber-400/60 pl-4'
+                  : 'text-base sm:text-lg text-gray-400 leading-relaxed max-w-3xl mb-6'
+              }
             >
-              {article.excerpt}
+              {/* The direct answer to the searched question, when the article
+                  has one; otherwise the excerpt, as before. */}
+              {article.answer ? renderInline(article.answer) : article.excerpt}
             </motion.p>
 
             <motion.div
@@ -737,6 +743,13 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               <div className="flex items-center gap-1.5 text-xs">
                 <Clock className="w-3.5 h-3.5" />
                 {article.readTime}
+              </div>
+              <div className="flex items-center gap-1.5 text-xs">
+                <Sun className="w-3.5 h-3.5 text-amber-400/80" />
+                <span>
+                  <Link href="/" className="hover:text-amber-400 transition-colors">Solar Ireland</Link>
+                  , SEAI-registered installer since 2019
+                </span>
               </div>
               {article.updated && article.updated !== article.date && (
                 <div className="flex items-center gap-1.5 text-xs text-amber-400/90" title="This article was reviewed and updated after publication">
