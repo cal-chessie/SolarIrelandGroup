@@ -208,7 +208,9 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
               <p className="si-callpage__sub">
                 A phone call with {name}, not a visit. We go through your electricity bill and what solar would save you, and answer anything about the SEAI grant. No obligation.
               </p>
-              <p className="si-group-label si-mt-32">On the call we&apos;ll</p>
+            </section>
+            <section className="si-callpage__more-lane" aria-label="What happens on the call">
+              <p className="si-group-label">On the call we&apos;ll</p>
               <ul className="si-done-call__list">
                 <li>Go through your figures with you</li>
                 <li>Answer anything you want to ask about solar and the SEAI grant</li>

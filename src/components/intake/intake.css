@@ -3376,21 +3376,28 @@ h1.si-ask__title {
   display: grid;
   gap: 32px;
 }
+/* Phone and tablet: headline, then the card, then the detail, so the ask is
+   on the first screen. From 1024: headline and detail on the left, card right. */
+.si-callpage__lanes {
+  grid-template-areas: 'intro' 'card' 'more';
+}
+.si-callpage__intro { grid-area: intro; }
+.si-callpage__card { grid-area: card; }
+.si-callpage__more-lane { grid-area: more; }
 @media (min-width: 1024px) {
   .si-callpage__lanes {
     grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
-    gap: 64px;
+    grid-template-areas: 'intro card' 'more card';
+    grid-template-rows: auto 1fr;
+    column-gap: 64px;
+    row-gap: 32px;
     align-items: start;
-  }
-  .si-callpage__intro {
-    position: sticky;
-    top: 136px;
   }
 }
 @media (min-width: 1440px) {
   .si-callpage__lanes {
     grid-template-columns: minmax(0, 1fr) minmax(0, 38rem);
-    gap: 96px;
+    column-gap: 96px;
   }
 }
 .si-callpage__h1 {
@@ -3420,7 +3427,7 @@ h1.si-ask__title {
   color: var(--si-fg-muted);
   max-inline-size: 58ch;
 }
-.si-callpage__intro .si-done-call__list {
+.si-callpage__more-lane .si-done-call__list {
   margin-top: 12px;
 }
 .si-callpage__alt {
