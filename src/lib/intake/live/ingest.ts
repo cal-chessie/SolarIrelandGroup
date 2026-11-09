@@ -10,6 +10,7 @@
  */
 import { BEST_TIMES, type BestTime, type CallBillRead, type SubmitRequest } from '@/lib/intake/contract';
 import { isValidEircode, normaliseEircode } from '@/lib/eircode';
+import { LINK_TOKEN } from '@/lib/intake/linkToken';
 
 export interface IngestBody {
   brand: 'solar-ireland';
@@ -104,7 +105,7 @@ export function toIngestBody(b: SubmitRequest, deviceToken: string | null): Inge
   }
   if (deviceToken && HEX64.test(deviceToken)) body.leadToken = deviceToken;
   // The magic link names the lead outright, so it wins over this browser's cookie.
-  if (b.intent === 'call' && typeof b.linkToken === 'string' && HEX64.test(b.linkToken)) body.leadToken = b.linkToken;
+  if (b.intent === 'call' && typeof b.linkToken === 'string' && LINK_TOKEN.test(b.linkToken)) body.leadToken = b.linkToken;
   return body;
 }
 

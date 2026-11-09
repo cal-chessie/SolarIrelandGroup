@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { isRateLimited } from '@/lib/leadBridge';
 import { intakeMode } from '@/lib/intake/mode';
 import { stubLinkContext } from '@/lib/intake/stub/linkContext';
+import { parseLinkToken } from '@/lib/intake/linkToken';
 
 /**
  * GET /api/survey-context?lt=<lead token>
@@ -22,8 +23,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ ok: false }, { status: 429 });
     }
     const { searchParams } = new URL(request.url);
-    const lt = searchParams.get('lt') || '';
-    if (lt.length < 32 || lt.length > 128) {
+    const lt = parseLinkToken(searchParams.get('lt'));
+    if (!lt) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 

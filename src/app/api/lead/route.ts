@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { forwardLead, isRateLimited, isHoneypotTripped, type BridgeLead } from '@/lib/leadBridge';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { parseLinkToken } from '@/lib/intake/linkToken';
 
 // Every failure the visitor can see names the phone number: nothing fails silently.
 const PHONE = SOLAR_DATA.provider.phone;
@@ -56,11 +57,10 @@ function isoOrUndef(v: unknown): string | undefined {
   if (!Number.isFinite(t)) return undefined;
   return new Date(t).toISOString();
 }
-/** The homeowner's magic-link token (?lt=). Accept only a clean, bounded token
- *  so nothing else can ride this field into the platform. */
+/** The homeowner's magic-link token (?lt=): the 64-hex shape AISolar mints
+ *  (lib/intake/linkToken.ts), so nothing else can ride this field into the platform. */
 function tokenOrUndef(v: unknown): string | undefined {
-  const s = typeof v === 'string' ? v.trim() : '';
-  return /^[A-Za-z0-9_-]{32,128}$/.test(s) ? s : undefined;
+  return parseLinkToken(v) ?? undefined;
 }
 
 

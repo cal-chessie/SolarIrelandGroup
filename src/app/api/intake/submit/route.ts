@@ -5,6 +5,7 @@ import { BEST_TIMES, type SubmitRequest, type SubmitResponse } from '@/lib/intak
 import { dublinDate, isEmail, isPhone, wallTime } from '@/lib/intake/format';
 import { isValidEircode } from '@/lib/eircode';
 import { liveMode, type LiveEnv } from '@/lib/intake/mode';
+import { LINK_TOKEN, parseLinkToken } from '@/lib/intake/linkToken';
 import { portalOrigins } from '@/lib/intake/portal';
 import { adaptSubmit, outboxAnswer } from '@/lib/intake/live/adapt';
 import { callAISolar, visitorHeaders } from '@/lib/intake/live/client';
@@ -59,7 +60,6 @@ function validate(b: SubmitRequest): Fields {
     if (b.bestTime != null && !BEST_TIMES.includes(b.bestTime)) f.bestTime = 'invalid';
     if (b.mprn != null && (typeof b.mprn !== 'string' || !/^10\d{9}$/.test(b.mprn))) f.mprn = 'invalid';
     if (b.eircode != null && (typeof b.eircode !== 'string' || !isValidEircode(b.eircode))) f.eircode = 'invalid';
-    if (b.linkToken != null && (typeof b.linkToken !== 'string' || !HEX64.test(b.linkToken))) f.linkToken = 'invalid';
     return f;
   }
   const booking = !!b.slot || !!b.requestedDay;
@@ -77,6 +77,15 @@ function validate(b: SubmitRequest): Fields {
     f.requestedDay = 'invalid';
   }
   return f;
+}
+
+/**
+ * A magic link that is not the 64-hex shape AISolar mints (lib/intake/linkToken.ts)
+ * is dropped, never refused: the request still goes through as a fresh call,
+ * so a mangled link can never make the button fail on every tap.
+ */
+function cleanLinkToken(b: SubmitRequest): void {
+  if (b && typeof b === 'object' && b.linkToken != null) b.linkToken = parseLinkToken(b.linkToken);
 }
 
 /** The honeypots stay honeypots: a filled `company` or `website_url` is a bot, told it worked. */
@@ -118,6 +127,7 @@ export async function POST(request: Request) {
 
   const body = (await readJson(request)) as SubmitRequest | null;
   if (!body) return json({ ok: false, error: 'invalid' }, 400);
+  cleanLinkToken(body);
 
   // The honeypots stay honeypots: a filled `company` or `website_url` is a bot.
   if (isBot(body)) return json(BOT_ANSWER);
@@ -142,7 +152,7 @@ export async function POST(request: Request) {
   }
   const leadId = `stub-${deviceToken.slice(0, 12)}`;
   // A magic link (?lt=) names the lead it belongs to: the request threads onto it.
-  const viaLink = body.intent === 'call' && typeof body.linkToken === 'string' && HEX64.test(body.linkToken);
+  const viaLink = body.intent === 'call' && typeof body.linkToken === 'string' && LINK_TOKEN.test(body.linkToken);
 
   let res: SubmitResponse;
 
@@ -240,6 +250,7 @@ function kickReplay(env: LiveEnv) {
 async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   const body = (await readJson(request)) as SubmitRequest | null;
   if (!body) return json({ ok: false, error: 'invalid' }, 400);
+  cleanLinkToken(body);
   if (isBot(body)) return json(BOT_ANSWER);
   const fields = validate(body);
   if (Object.keys(fields).length) return json({ ok: false, error: 'invalid', fields }, 400);
@@ -253,7 +264,7 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   // A magic link may be the lead's access token (older emails) or its booking
   // token: ingest-lead v2 reads the first from this header, the second from
   // body.leadToken (set by toIngestBody). Either way it threads, never duplicates.
-  if (body.intent === 'call' && typeof body.linkToken === 'string' && HEX64.test(body.linkToken)) vh['x-access-token'] = body.linkToken;
+  if (body.intent === 'call' && typeof body.linkToken === 'string' && LINK_TOKEN.test(body.linkToken)) vh['x-access-token'] = body.linkToken;
 
   // One retry with the SAME key: AISolar answers a repeat with its first answer,
   // finishes a half-done one, or says it is still busy. Never a second lead.

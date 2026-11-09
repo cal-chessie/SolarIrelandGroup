@@ -26,11 +26,11 @@ import { getConfig } from '@/components/intake/api';
 import type { IntakeConfig, Segment } from '@/lib/intake/contract';
 import { isEmail, isPhone } from '@/lib/intake/format';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { parseLinkToken } from '@/lib/intake/linkToken';
 import '@/components/intake/intake.css';
 
 const PHONE = SOLAR_DATA.provider.phone;
 const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
-const LT = /^[A-Za-z0-9_-]{32,128}$/;
 
 function flowId(): string {
   const b = new Uint8Array(8);
@@ -52,7 +52,8 @@ interface LinkContext {
 type Link = { state: 'none' } | { state: 'loading' } | { state: 'ready'; full: boolean; ctx: LinkContext } | { state: 'failed' };
 
 export default function BookSurveyClient({ lt, segment: startSegment, src }: { lt: string | null; segment: Segment; src: string | null }) {
-  const token = lt && LT.test(lt) ? lt : null;
+  // Only the 64-hex token AISolar mints: anything else is the cold form, never a card that fails on every tap.
+  const token = parseLinkToken(lt);
   const [link, setLink] = useState<Link>(token ? { state: 'loading' } : { state: 'none' });
   const [segment, setSegment] = useState<Segment>(startSegment);
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
@@ -186,7 +187,8 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
             quoteToken: null,
             billRead: null,
             carry: null,
-            linkToken: token,
+            // Thread only onto a link that resolved: a dead or expired link sends as a fresh call.
+            linkToken: link.state === 'ready' ? token : null,
           }}
           onSent={(_res, d) => setSent(d)}
         />
