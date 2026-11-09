@@ -694,8 +694,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book your free site survey",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/install-1.webp"
@@ -1183,8 +1183,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a free site survey and we will show you the rating gain and the savings for your own home",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/blog/do-solar-panels-improve-ber-rating-ireland.webp"
@@ -1361,8 +1361,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey for Your Cork Home",
-        "href": "/book-survey"
+        "text": "Check my savings: a free estimate for your Cork home",
+        "href": "/solar-calculator"
       }
     ]
   },
@@ -1534,8 +1534,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey - We Handle the NC6",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate (we handle the NC6)",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/blog/nc6-form-solar-grid-connection-ireland.webp"
@@ -1893,8 +1893,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey for Solar and EV Charging",
-        "href": "/book-survey"
+        "text": "Check my savings: a free estimate for solar and EV charging",
+        "href": "/solar-calculator"
       }
     ]
   },
@@ -3348,8 +3348,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Survey - We Will Check Planning for You",
-        "href": "/#calculator"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ]
   },
