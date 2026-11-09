@@ -579,7 +579,7 @@ export default function WhySolar() {
                 currently offer{' '}
                 <span className="text-white font-semibold">{SOLAR_DATA.export.label}</span> - paid
                 automatically as a credit on your electricity bill. A typical 4kWp
-                system can earn €200–€400 per year from exports alone.
+                system with no battery earns roughly €400–€550 a year from exports alone, depending on how much you use at home.
               </p>
             </div>
           </div>

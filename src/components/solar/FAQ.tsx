@@ -96,7 +96,7 @@ const faqs: FAQItem[] = [
     id: 7,
     question: 'Do I need planning permission?',
     answer:
-      'In the vast majority of cases, no. Solar panels are considered exempted development in Ireland under certain conditions: the panels must not extend more than 50cm from the roof surface, and the total area must not exceed 12 square metres or 50% of the roof area, whichever is less. Exceptions apply for protected structures and certain designated areas. We check all planning requirements during the free survey.',
+      'In the vast majority of cases, no. Solar panels are considered exempted development in Ireland under certain conditions: since October 2022 (S.I. 493 of 2022) rooftop panels on a house have no area limit, as long as they sit within 15cm of a pitched roof (50cm on a flat roof) and at least 50cm from the roof edge. Exceptions apply for protected structures, Architectural Conservation Areas and panels on walls. We check all planning requirements during the free survey.',
     category: 'install',
     keywords: ['planning', 'permission', 'council', 'allowed', 'legal', 'regulations', 'planning permission'],
   },
@@ -136,7 +136,7 @@ const faqs: FAQItem[] = [
     id: 12,
     question: 'What happens to electricity I don\'t use?',
     answer:
-      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, this can add €150-€300 per year to your savings. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
+      `Any excess electricity your panels generate that you don't use is automatically exported to the grid. Under the ESB microgeneration support scheme, your electricity supplier pays you ${SOLAR_DATA.export.label} for exported energy. For a typical ${SOLAR_DATA.system.avgSizeKwp} kWp system, with no battery this adds roughly €400-€550 a year, depending on how much you use at home. The export payment appears as a credit on your electricity bill - it's all handled automatically through your smart meter. <a href="#why-solar" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Learn about the Clean Export Guarantee</a>`,
     category: 'technical',
     keywords: ['export', 'sell', 'excess', 'surplus', 'grid', 'microgeneration', 'credit', 'smart meter', 'esb'],
   },

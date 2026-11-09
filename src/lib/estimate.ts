@@ -31,9 +31,11 @@
  * Standing charge     €250/yr. Electric Ireland is €250.77 incl VAT. Solar
  *                     never removes this, so it is stripped out before we
  *                     derive usage from a bill.
- * Export 20c/kWh      The CRU minimum Clean Export Guarantee obligation
- *                     (CRU/24/019). Suppliers currently pay between 18.5c and
- *                     24c, so the regulated floor is the safe figure.
+ * Export 20c/kWh      A typical supplier rate under the Clean Export
+ *                     Guarantee. The CRU sets no minimum export rate (its
+ *                     enduring CEG decision, CRU202454, keeps market-based
+ *                     tariffs); suppliers currently pay between 18.5c and 24c,
+ *                     so 20c sits at the cautious end of the market.
  * Yield 950 kWh/kWp   PVGIS for a south-facing roof at 30 degrees in Dublin is
  *                     about 972 kWh/kWp/yr after standard 14% system losses;
  *                     the national average is about 884. 950 describes a good

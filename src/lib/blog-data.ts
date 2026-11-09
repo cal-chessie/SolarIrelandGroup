@@ -263,8 +263,8 @@ export const articles: Article[] = [
             "€800-1,400"
           ],
           [
-            "Typical export income (4kWp)",
-            "€200-400 a year"
+            "Typical export income (4kWp, no battery)",
+            "€400-550 a year"
           ],
           [
             "Typical payback",
@@ -338,7 +338,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 19c and 24c per kWh, typically around 20c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system earns **€200-400 a year**. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
+        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 18.5c and 24c per kWh, typically around 20c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system with no battery earns **roughly €400 to €550 a year**, depending on how much of its output you use at home. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
       },
       {
         "type": "callout",
@@ -513,7 +513,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Planning permission is not a step for most homes. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit, with exceptions near aerodromes and for protected structures. The detail is in our [planning rules guide](/blog/planning-permission-solar-panels-ireland)."
+        "text": "Planning permission is not a step for most homes. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit; protected structures and homes in an Architectural Conservation Area need to check first. The detail is in our [planning rules guide](/blog/planning-permission-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -587,7 +587,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.20. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home earns €200-400 a year from export, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
+        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.20. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home with no battery earns roughly €400 to €550 a year from export, depending on how much it uses at home, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -1313,7 +1313,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For almost all Cork houses, no. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit. The exceptions are homes in a Solar Safeguarding Zone near an aerodrome, protected structures, and buildings in an Architectural Conservation Area, which do need to check. Our [planning rules guide](/blog/planning-permission-solar-panels-ireland) has the detail."
+        "text": "For almost all Cork houses, no. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit. The exceptions are protected structures and homes in an Architectural Conservation Area, which do need to check, and panels on a wall, which are never exempt. Our [planning rules guide](/blog/planning-permission-solar-panels-ireland) has the detail."
       },
       {
         "type": "heading",
@@ -1354,7 +1354,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Rural homes often have larger roofs and higher electricity use (wells, pumps, larger houses), which can mean a bigger system and more saving. Export income under the Clean Export Guarantee, typically €200 to €400 a year on a 4 kWp system, is the same wherever you are."
+        "text": "Rural homes often have larger roofs and higher electricity use (wells, pumps, larger houses), which can mean a bigger system and more saving. Export income under the Clean Export Guarantee, typically roughly €400 to €550 a year on a 4 kWp system with no battery, depending on how much you use at home, is the same wherever you are."
       },
       {
         "type": "divider"
@@ -1477,7 +1477,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. To earn Clean Export Guarantee (CEG) payments you need two things in place: a smart meter, so your export can be measured, and your system registered with ESB Networks via the NC6, so the grid knows there is a generator at your MPRN. With both sorted, your supplier pays you for exported units - typically €200 to €400 a year on a 4 kWp system, and the first €400 a year of that income is tax-exempt. More in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained) and our [smart meter guide](/blog/smart-meter-required-solar-panels-ireland)."
+        "text": "Yes. To earn Clean Export Guarantee (CEG) payments you need two things in place: a smart meter, so your export can be measured, and your system registered with ESB Networks via the NC6, so the grid knows there is a generator at your MPRN. With both sorted, your supplier pays you for exported units - typically roughly €400 to €550 a year on a 4 kWp system with no battery, depending on how much you use at home, and the first €400 a year of that income is tax-exempt. More in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained) and our [smart meter guide](/blog/smart-meter-required-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -1684,7 +1684,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Whatever you generate and do not use is exported and paid for by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 they run roughly €0.19 to €0.24 per kWh - and a typical semi earns €200 to €400 a year from export, with the first €400 tax-exempt. Detail in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained)."
+        "text": "Whatever you generate and do not use is exported and paid for by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 they run roughly €0.185 to €0.24 per kWh - and a typical semi with no battery earns roughly €450 to €550 a year from export on 10 panels (less with a battery, which keeps more of the surplus at home), with the first €400 tax-exempt. Detail in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained)."
       },
       {
         "type": "heading",
@@ -1802,7 +1802,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Charge the car, in almost every case. Exporting a unit earns you the Clean Export Guarantee rate - roughly €0.19 to €0.24 per kWh in 2026. Using that same unit to charge your car saves you buying it from the grid at the full day rate, which is much higher. So a kWh put into the car is worth noticeably more than a kWh exported. Diverting surplus to the EV is one of the best uses of your solar."
+        "text": "Charge the car, in almost every case. Exporting a unit earns you the Clean Export Guarantee rate - roughly €0.185 to €0.24 per kWh in 2026. Using that same unit to charge your car saves you buying it from the grid at the full day rate, which is much higher. So a kWh put into the car is worth noticeably more than a kWh exported. Diverting surplus to the EV is one of the best uses of your solar."
       },
       {
         "type": "heading",
@@ -2382,7 +2382,10 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-in-winter-do-they-work",
     "title": "Solar Panels in Winter: Do They Actually Work?",
-    "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 25-35% of their peak-month output during the darker months.",
+    "seoTitle": "Do Solar Panels Work in Winter? Yes, Even in December",
+    "seoDescription": "Yes. Panels run on daylight, not heat. A 6 kWp roof in Ireland still makes 120 to 220 kWh in December. Month-by-month figures for an Irish roof.",
+    "answer": "Yes. Solar panels run on daylight, not heat, so they keep generating through an Irish winter, just less. A typical 6kWp system still makes about 120 to 220 kWh in December, roughly a fifth of its best summer month, and cold weather actually helps panel efficiency. Summer surplus and export payments carry the year.",
+    "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 20-35% of their peak-month output during the darker months.",
     "category": "guides",
     "date": "8 Apr 2026",
     "updated": "9 Nov 2026",
@@ -2399,7 +2402,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "**Yes, solar panels absolutely work during Irish winters.** A typical 6kWp system generates approximately 30–50% of its summer output between November and February - producing 150–250 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland's climate."
+        "text": "**Yes, solar panels absolutely work during Irish winters.** From November to February a typical 6kWp system makes roughly 20 to 35% of what it makes in its best summer month, and still produces 120 to 220 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland's climate."
       },
       {
         "type": "paragraph",
@@ -2409,7 +2412,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Winter Output in Ireland",
-        "body": "A typical 6kWp solar PV system in Ireland generates approximately 30–50% of its summer output during the winter months (November through February). While this is less than summer, it still contributes meaningfully to your electricity needs."
+        "body": "In each winter month (November through February) a typical 6kWp solar PV system in Ireland makes roughly 20 to 35% of what it makes in June, its best month. The table below shows each month. While this is less than summer, it still contributes meaningfully to your electricity needs."
       },
       {
         "type": "heading",
@@ -2582,6 +2585,8 @@ export const articles: Article[] = [
     "slug": "clean-export-guarantee-explained",
     "title": "Clean Export Guarantee Explained: Get Paid for Your Excess Solar",
     "seoTitle": "Clean Export Guarantee Explained: What You Earn in 2026",
+    "seoDescription": "Your supplier pays for every kWh you export, 18.5c to 24c in 2026, and the first €400 a year is tax-free. How it works and why a smart meter matters.",
+    "answer": "The Clean Export Guarantee pays you for every kWh of surplus solar you send to the grid. Each supplier sets its own rate, roughly 18.5c to 24c per kWh in 2026, and the first €400 a year is tax-free. A smart meter records your export so your supplier can pay it as a credit on your bill.",
     "image": "/blog/clean-export-guarantee-explained.webp",
     "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and how supplier export rates are set.",
     "category": "grants",
@@ -2599,7 +2604,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners **€0.20 per kilowatt-hour** for surplus solar electricity exported to the grid. This government-backed scheme, launched in 2022, requires energy suppliers to pay you for every unit of excess solar power your panels generate. For a typical 6kWp system, CEG earnings add €250–€378 per year on top of your bill savings - and the payment appears automatically as a credit on your electricity bill via your smart meter."
+        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners for surplus solar electricity exported to the grid, at a rate each supplier sets for itself: roughly 18.5c to 24c per kWh in 2026, with **€0.20 per kWh** a fair typical figure. The scheme, launched in 2022, requires electricity suppliers to pay you for every unit you export. What you earn depends on how much of your generation you use at home; the table further down shows the range by system size. The payment appears as a credit on your electricity bill, measured by your smart meter."
       },
       {
         "type": "paragraph",
@@ -2661,13 +2666,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "While the CRU sets a minimum CEG rate of €0.20/kWh, many energy suppliers compete by offering higher rates or additional perks. Here is a comparison of the leading supplier CEG offerings as of early 2026:"
+        "text": "The CRU (Commission for Regulation of Utilities) oversees the Clean Export Guarantee but does not set a minimum export rate. Each supplier sets its own CEG tariff on a competitive basis, and in 2026 those rates sit roughly between 18.5c and 24c per kWh. You are paid by whichever supplier you buy your electricity from, so the export rate is one more thing to compare when your contract comes up for renewal. The rules themselves are published at [cru.ie](https://www.cru.ie)."
       },
       {
         "type": "callout",
         "variant": "tip",
         "title": "Switch and Save",
-        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check comparison sites like bonkers.ie and Switcher.ie at least once a year to ensure you are on the best available rate. A rate increase from €0.20 to €0.24/kWh could add €60–€100 per year to your CEG earnings."
+        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check your supplier's current export tariff at least once a year, and compare it whenever your contract renews. A rate increase from €0.20 to €0.24/kWh adds about €100 to €160 a year to your CEG earnings on a 4 to 6kWp system with no battery."
       },
       {
         "type": "heading",
@@ -3182,6 +3187,8 @@ export const articles: Article[] = [
     "slug": "planning-permission-solar-panels-ireland",
     "title": "Planning Permission for Solar Panels in Ireland - What You Need to Know",
     "seoTitle": "Planning Permission for Solar Panels in Ireland: Usually Not",
+    "seoDescription": "Most Irish homes don't need it. Since October 2022 rooftop solar on a house has no area limit. Exceptions: protected structures, ACAs and wall panels.",
+    "answer": "Usually not. Since October 2022, rooftop solar panels on an Irish house are exempted development with no rooftop area limit, under S.I. No. 493 of 2022. You may need planning permission if the house is a protected structure or sits in an Architectural Conservation Area, or for wall-mounted panels or a ground array over 25 square metres.",
     "image": "/blog/planning-permission-solar-panels-ireland.webp",
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
@@ -3223,18 +3230,18 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "Since October 2022 there is no area limit for rooftop solar on houses, unless your home is in a Solar Safeguarding Zone near an aerodrome (300 square metre cap) or is a protected structure or in an Architectural Conservation Area (this is measured as the total footprint of all panels combined)",
-          "No solar panel should extend more than 50 centimetres above the existing roof surface (measured from the highest point of the roof tiles/slates to the top of the panel)",
-          "The solar panels must be installed on the roof - not on walls, fences, or freestanding structures (ground-mounted solar requires separate planning)",
-          "The installation must be on a house or apartment building - not on a shed, garage, or outbuilding (with limited exceptions)",
-          "Panels should not project beyond the external wall of the building at any point"
+          "Since October 2022 there is no area limit for rooftop solar on a house, wherever it is, including in a Solar Safeguarding Zone (the 300 square metre cap in those zones applies to business, industrial and other non-domestic roofs, not houses)",
+          "The panels must sit no more than 15 centimetres above the plane of a pitched roof, or 50 centimetres above a flat roof",
+          "Panels on a wall of a house are not exempt. Free-standing panels in the garden are exempt up to 25 square metres in total, no higher than 2.5 metres, not in front of the house, and leaving at least 25 square metres of private open space to the rear or side",
+          "The exemption covers the roof of a house and the roof of a shed, garage or other ancillary building within its grounds. It does not cover apartments",
+          "The panels must be at least 50 centimetres from the edge of the roof, and must not cause hazardous glint or glare"
         ]
       },
       {
         "type": "callout",
         "variant": "info",
-        "title": "12 Square Metres Explained",
-        "body": "Twelve square metres is approximately 8–10 standard solar panels (depending on panel size). This is enough for a 4–5kWp system, which is sufficient for most smaller Irish households. For larger systems (6kWp+), you may need to split panels across multiple roof planes or apply for planning permission if you want them all on one roof."
+        "title": "The old 12 square metre limit is gone",
+        "body": "Older guides still quote a 12 square metre cap on rooftop solar for houses. That rule was replaced in October 2022 by S.I. No. 493 of 2022, the Planning and Development Act 2000 (Exempted Development) (No. 3) Regulations 2022. For a house that is not a protected structure and not in an Architectural Conservation Area, there is now no rooftop area limit, so a 6kWp or larger system can go on one roof without planning permission. The text is on [irishstatutebook.ie](https://www.irishstatutebook.ie/eli/2022/si/493/made/en/print)."
       },
       {
         "type": "heading",
@@ -3250,9 +3257,9 @@ export const articles: Article[] = [
         "items": [
           "Protected structures - If your home is a protected structure or a proposed protected structure, you will need planning permission for any external alteration, including solar panels. This includes Georgian, Victorian, and Edwardian buildings in certain areas.",
           "Architectural conservation areas (ACAs) - If your property is located within a designated ACA, special rules apply. Some ACAs restrict solar panel installations that are visible from the street.",
-          "Solar Safeguarding Zones - Homes near certain aerodromes fall in a Solar Safeguarding Zone, where a 300 square metre roof cap applies; almost everywhere else there is no area limit since October 2022.",
-          "Flat roof installations - Panels on flat roofs that project above the parapet wall may require planning permission, depending on the height of the parapet.",
-          "Listed buildings - Similar to protected structures, buildings on the National Inventory of Architectural Heritage require planning permission.",
+          "Wall-mounted panels - Solar panels on any wall of a house are not exempted development, so they need planning permission.",
+          "Flat roof installations - Panels on a flat roof are exempt if they sit no more than 50 centimetres above the roof and at least 50 centimetres from its edge; higher frames need planning permission.",
+          "Heritage listings - Your council's Record of Protected Structures is what decides whether your home is a protected structure. If you are unsure, check it with the local planning department before you book.",
           "Ground-mounted solar - Free-standing panels in your garden are exempt up to 25 square metres, subject to remaining garden-space conditions; larger ground arrays need planning permission."
         ]
       },
@@ -3313,14 +3320,14 @@ export const articles: Article[] = [
             "Check with local planning department"
           ],
           [
-            "Flat roof (below parapet)",
+            "Flat roof (panels within 50cm of the roof)",
             "No",
             "Must also be 50cm from the roof edge"
           ],
           [
-            "Flat roof (above parapet)",
-            "Maybe",
-            "Depends on height and visibility"
+            "Flat roof (panels raised more than 50cm)",
+            "Yes",
+            "Outside the exemption"
           ],
           [
             "Ground-mounted panels",
@@ -3328,14 +3335,14 @@ export const articles: Article[] = [
             "Exempt up to 25m²; larger arrays need permission"
           ],
           [
-            "Apartment block (own apartment only)",
-            "No",
-            "Exempted for individual units"
+            "Apartment",
+            "Usually yes",
+            "Apartments are not covered by the house exemption"
           ],
           [
-            "Solar Safeguarding Zone (near an aerodrome)",
-            "Maybe",
-            "300m² roof cap applies in these zones"
+            "Panels on a wall of the house",
+            "Yes",
+            "Wall-mounted panels on a house are not exempt"
           ]
         ]
       },
@@ -3927,7 +3934,7 @@ export const articles: Article[] = [
     "slug": "solar-panels-and-heat-pumps-perfect-partnership",
     "title": "Solar Panels and Heat Pumps: The Perfect Partnership",
     "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
-    "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes - with up to €14,300 in combined SEAI grants available.",
+    "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",
     "date": "20 Apr 2026",
     "updated": "9 Nov 2026",
@@ -4028,11 +4035,11 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "SEAI Grants: Up to €14,300 Combined"
+        "text": "SEAI Grants: Heat Pump and Solar Combined"
       },
       {
         "type": "paragraph",
-        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and they can be combined for up to €14,300 in government funding: up to €12,500 for an air-source heat pump (including the €4,000 renewable heat bonus paid after 12 months) plus €1,800 for solar PV."
+        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and you can claim both: the heat pump system grant, which SEAI increased from 6 October 2026 and which depends on your dwelling type and the heating system you replace, plus up to €1,800 for solar PV (and €600 more for a battery of 5 kWh or more). Check the current heat pump amounts on [seai.ie](https://www.seai.ie) before you budget."
       },
       {
         "type": "callout",
@@ -4147,7 +4154,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Whichever approach you choose, the combination of solar PV and a heat pump delivers the lowest long-term energy costs of any heating solution available to Irish homeowners. With combined grants of up to €14,300, BER improvements of 2–3 ratings, and annual energy savings of €1,500–€2,000, it is an investment that pays for itself and then pays you back for decades."
+        "text": "Whichever approach you choose, the combination of solar PV and a heat pump delivers the lowest long-term energy costs of any heating solution available to Irish homeowners. With the SEAI heat pump and solar grants combined, a better BER rating, and annual energy savings of €1,500–€2,000, it is an investment that pays for itself and then pays you back for decades."
       },
       {
         "type": "divider"
@@ -4563,6 +4570,8 @@ export const articles: Article[] = [
     "slug": "best-time-of-year-to-get-solar-panels-ireland",
     "title": "Best Time of Year to Get Solar Panels in Ireland",
     "seoTitle": "Best Time of Year to Get Solar Panels in Ireland? Not Summer",
+    "seoDescription": "April to September makes about 70% of an Irish roof's yearly output. Month-by-month figures, installer lead times, and the case for a winter install.",
+    "answer": "There is no bad month, because any 12 months on the roof makes the same yearly total. Spring is the strongest time to install: you go straight into the long days, and you avoid the summer rush when installer lead times are longest. April to September makes about 70% of an Irish roof's yearly output.",
     "image": "/blog/best-time-of-year-to-get-solar-panels-ireland.webp",
     "excerpt": "Is there an ideal season to install solar panels? We break down month-by-month generation data, seasonal advantages, and SEAI processing times to help you decide when to go solar.",
     "category": "savings",
