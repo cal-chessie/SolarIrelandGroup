@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
 import { useRef } from 'react';
 import {
-  CalendarCheck,
   MessageCircle,
   Mail,
   MapPin,
@@ -128,7 +127,6 @@ const trustBadges = [
 
 
 function PreFooterCTA() {
-  const pathname = usePathname();
   return (
     <motion.div
       className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
@@ -162,15 +160,6 @@ function PreFooterCTA() {
             <Zap className="w-4 h-4" />
             Solar Calculator
             <ArrowRight className="w-4 h-4" />
-          </motion.a>
-          <motion.a
-            href={savingsHref(pathname)}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
-          >
-            <CalendarCheck className="w-4 h-4" />
-            Check my savings
           </motion.a>
           <a
             href={buildWhatsAppUrl({ source: 'footer' })}

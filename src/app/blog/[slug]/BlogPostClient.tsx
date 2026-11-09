@@ -467,42 +467,36 @@ function NewsletterSection() {
  * county piece ends with wanting someone local.
  */
 function ArticleCTA({ category, title }: { category: string; title: string }) {
-  const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string }; secondary: { href: string; label: string } }> = {
+  const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string } }> = {
     grants: {
       h: 'Find out what you qualify for',
       p: 'The grant is €1,800 at 4 kWp and we prepare the paperwork. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
-      primary: { href: '/solar-calculator', label: 'Check my grant and savings' },
-      secondary: { href: '/solar-calculator?src=blog-grants', label: 'Check my savings' },
+      primary: { href: '/solar-calculator?src=blog-grants', label: 'Check my grant and savings' },
     },
     savings: {
       h: 'That was the average. What about your house?',
       p: 'The numbers above are a typical Irish home. Yours depends on your usage, your roof and your day-night split. The analyser reads your actual bill and tells you.',
-      primary: { href: '/solar-calculator', label: 'Analyse my bill' },
-      secondary: { href: '/solar-calculator?src=blog-savings', label: 'Check my savings' },
+      primary: { href: '/solar-calculator?src=blog-savings', label: 'Analyse my bill' },
     },
     county: {
       h: 'Get a local answer',
       p: 'Generation, roof types and grid connection differ by county. Book a free survey and the team covering your area will confirm what your roof can actually do.',
       primary: { href: '/solar-calculator?src=blog-county', label: 'Check my savings' },
-      secondary: { href: '/solar-calculator', label: 'Price it on my bill first' },
     },
     guides: {
       h: 'See it on your own numbers',
       p: 'Everything above is general. Thirty seconds with your electricity bill turns it into your system size, your saving and your payback.',
-      primary: { href: '/solar-calculator', label: 'Price it on my bill' },
-      secondary: { href: '/solar-calculator?src=blog-guide', label: 'Check my savings' },
+      primary: { href: '/solar-calculator?src=blog-guide', label: 'Price it on my bill' },
     },
     technology: {
       h: 'Which of these suits your roof?',
       p: 'Panels, inverters and batteries are sized to the house, not chosen from a list. The survey is free and there is no obligation.',
       primary: { href: '/solar-calculator?src=blog-tech', label: 'Check my savings' },
-      secondary: { href: '/solar-calculator', label: 'See what it would save' },
     },
     news: {
       h: 'Work out what it means for you',
       p: 'Policy moves. Your bill is the thing that decides whether solar is worth it for your house today.',
-      primary: { href: '/solar-calculator', label: 'Analyse my bill' },
-      secondary: { href: '/solar-calculator?src=blog-news', label: 'Check my savings' },
+      primary: { href: '/solar-calculator?src=blog-news', label: 'Analyse my bill' },
     },
   };
   const c = byCategory[category] ?? byCategory.guides;
@@ -514,9 +508,6 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <a href={c.primary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]">
             {c.primary.label}
-          </a>
-          <a href={c.secondary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-gray-300 hover:text-white text-sm whitespace-nowrap transition-all">
-            {c.secondary.label}
           </a>
         </div>
         <p className="sr-only">Related to: {title}</p>

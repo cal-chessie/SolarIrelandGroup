@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   Star,
   ChevronDown,
-  CalendarCheck,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -142,13 +141,6 @@ export default function Hero() {
                 >
                   <MessageCircle className="w-4 h-4 text-green-400" />
                   WhatsApp Us
-                </a>
-                <a
-                  href="#calculator"
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center whitespace-nowrap gap-2 px-6 xl:px-8 py-3.5 xl:py-4 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm xl:text-base font-medium w-full sm:w-auto hover:bg-green-400/20 hover:border-green-400/40 transition-all duration-200 active:scale-[0.98]"
-                >
-                  <CalendarCheck className="w-4 h-4" />
-                  Check my savings
                 </a>
               </div>
             </div>

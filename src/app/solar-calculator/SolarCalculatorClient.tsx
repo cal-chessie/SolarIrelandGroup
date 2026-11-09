@@ -254,13 +254,6 @@ function FinalCTA() {
               Check my savings
               <ArrowRight className="w-4 h-4" />
             </a>
-            <a
-              href="#calculator"
-              className="flex items-center gap-2 px-8 py-4 rounded-xl border border-white/[0.08] text-gray-300 font-medium text-sm hover:border-white/[0.15] hover:text-white transition-all"
-            >
-              Read my bill first
-              <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
         </div>
       </div>
