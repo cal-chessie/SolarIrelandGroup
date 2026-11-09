@@ -16,11 +16,12 @@
  * straight".
  */
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { CircleAlert, MapPin, MessageCircle, Phone, UserPlus } from 'lucide-react';
+import { CircleAlert, MapPin, MessageCircle, Phone, PhoneIncoming, UserPlus } from 'lucide-react';
 import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
 import { firstName, isEmail, isPhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
+import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
 import { Banner, Field, PrimaryButton, TextInput } from './ui';
@@ -54,6 +55,96 @@ export interface CallContext {
   quoteToken: string | null;
   billRead: CallBillRead | null;
   carry: CallCarry | null;
+  /** The magic link (?lt=) this ask was opened from, so the call threads onto that lead. */
+  linkToken?: string | null;
+}
+
+/* ------------------------------------------------------------------ */
+/*  The returning visitor: this device already asked for a call        */
+/* ------------------------------------------------------------------ */
+
+const MEMORY_KEY = 'si_call_requested';
+const MEMORY_DAYS = 7;
+
+export interface CallMemory {
+  v: 1;
+  at: number;
+  first: string | null;
+  bestTime: BestTime | null;
+}
+
+/** First name and time only: never the mobile, email or anything from the bill. */
+export function rememberCall(d: CallDetails): void {
+  try {
+    const m: CallMemory = { v: 1, at: Date.now(), first: firstName(d.name) || null, bestTime: d.bestTime };
+    localStorage.setItem(MEMORY_KEY, JSON.stringify(m));
+  } catch {
+    /* private mode: the ask simply shows again next time */
+  }
+}
+
+export function readCallMemory(now = Date.now()): CallMemory | null {
+  try {
+    const raw = localStorage.getItem(MEMORY_KEY);
+    if (!raw) return null;
+    const m = JSON.parse(raw) as CallMemory;
+    if (!m || m.v !== 1 || typeof m.at !== 'number' || now - m.at > MEMORY_DAYS * 86400000 || m.at > now + 60000) return null;
+    return m;
+  } catch {
+    return null;
+  }
+}
+
+export function forgetCall(): void {
+  try {
+    localStorage.removeItem(MEMORY_KEY);
+  } catch {
+    /* nothing to forget */
+  }
+}
+
+const dublinDay = (t: number) => new Intl.DateTimeFormat('en-IE', { timeZone: 'Europe/Dublin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(t);
+const dublinWeekday = (t: number) => new Intl.DateTimeFormat('en-IE', { timeZone: 'Europe/Dublin', weekday: 'long' }).format(t);
+
+/** What a returning visitor sees instead of a blank form. */
+export function CallRemembered({
+  memory,
+  who,
+  onAnother,
+  headingLevel = 'h2',
+}: {
+  memory: CallMemory;
+  who: string | null;
+  onAnother: () => void;
+  headingLevel?: 'h1' | 'h2' | 'h3';
+}) {
+  const H = headingLevel;
+  const today = dublinDay(memory.at) === dublinDay(Date.now());
+  const name = who || 'We';
+  const verb = who ? 'is' : 'are';
+  return (
+    <div className="si-ask si-ask--remembered" data-call-remembered="">
+      <span className="si-done-mark" aria-hidden="true">
+        <PhoneIncoming size={24} />
+      </span>
+      <H className="si-ask__title si-mt-24">
+        {today ? `${name} ${verb} ringing you today${memory.first ? `, ${memory.first}` : ''}.` : `You asked for a free call on ${dublinWeekday(memory.at)}.`}
+      </H>
+      <p className="si-ask__sub">
+        {today
+          ? `Your free 15-minute call is booked in. If it's late, first thing tomorrow.${memory.bestTime ? ` ${BEST_LINE[memory.bestTime]}` : ''}`
+          : `If ${who || 'we'} ${who ? "hasn't" : "haven't"} reached you yet, ring us on ${PHONE} and we'll take it from there.`}
+      </p>
+      <div className="si-ask__go si-ask__go--row">
+        <a className="si-btn si-btn--secondary" href={PHONE_HREF}>
+          <Phone size={18} aria-hidden="true" /> Ring us on {PHONE}
+        </a>
+        <button type="button" className="si-btn--quiet" onClick={onAnother}>
+          Not you, or need another call?
+        </button>
+      </div>
+    </div>
+  );
 }
 
 const BEST: { v: BestTime; t: string }[] = [
@@ -102,6 +193,8 @@ export function CallAsk({
   sub,
   online = true,
   actionsRef,
+  confirm = false,
+  cta = 'Book my free call',
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -116,7 +209,70 @@ export function CallAsk({
   sub?: ReactNode;
   online?: boolean;
   actionsRef?: React.Ref<HTMLDivElement>;
+  /** Details already known (a magic link): show them as one "Is this you?" tap, with a way to change them. */
+  confirm?: boolean;
+  /** The primary's label. */
+  cta?: string;
 }) {
+  const [memory, setMemory] = useState<CallMemory | null>(null);
+  const [another, setAnother] = useState(false);
+  useEffect(() => {
+    setMemory(readCallMemory());
+  }, []);
+  if (memory && !another) {
+    return (
+      <CallRemembered
+        memory={memory}
+        who={who}
+        headingLevel={headingLevel}
+        onAnother={() => {
+          forgetCall();
+          setAnother(true);
+        }}
+      />
+    );
+  }
+  return (
+    <CallForm
+      {...{ idPrefix, details, onDetails, ctx, who, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta }}
+    />
+  );
+}
+
+function CallForm({
+  idPrefix,
+  details,
+  onDetails,
+  ctx,
+  who,
+  onSent,
+  bar,
+  heading,
+  headingLevel = 'h2',
+  headingRef,
+  sub,
+  online = true,
+  actionsRef,
+  confirm,
+  cta,
+}: {
+  idPrefix: string;
+  details: CallDetails;
+  onDetails: (d: Partial<CallDetails>) => void;
+  ctx: CallContext;
+  who: string | null;
+  onSent: (res: SubmitResponse, d: CallDetails) => void;
+  bar?: (button: ReactNode, extra: ReactNode) => ReactNode;
+  heading: ReactNode;
+  headingLevel?: 'h1' | 'h2' | 'h3';
+  headingRef?: React.Ref<HTMLHeadingElement>;
+  sub?: ReactNode;
+  online?: boolean;
+  actionsRef?: React.Ref<HTMLDivElement>;
+  confirm: boolean;
+  cta: string;
+}) {
+  const [editing, setEditing] = useState(!confirm);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [typing, setTyping] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -137,6 +293,7 @@ export function CallAsk({
     if (viewed.current) return;
     viewed.current = true;
     track('ask_view', { segment: ctx.segment, door: ctx.door, flow_id: ctx.flowId });
+    funnel('ask_shown', { door: ctx.door, segment: ctx.segment, confirm, flow_id: ctx.flowId });
   }, [ctx.segment, ctx.door, ctx.flowId]);
 
   useEffect(() => {
@@ -200,6 +357,7 @@ export function CallAsk({
       requestedDay: null,
       emailEstimate: false,
       billRead: ctx.billRead,
+      linkToken: ctx.linkToken ?? null,
       meta: {
         segment: ctx.segment,
         businessName: null,
@@ -226,15 +384,19 @@ export function CallAsk({
       setIssue({ kind: 'rate' });
       setRateLeft(60);
       track('ask_error', { reason: 'rate_limited', flow_id: ctx.flowId });
+      funnel('submit_error', { door: ctx.door, reason: 'rate_limited', flow_id: ctx.flowId });
       return;
     }
     if (r.status !== 200 || !res || !res.ok) {
       setIssue({ kind: 'failed' });
       track('ask_error', { reason: r.status === 400 ? 'invalid' : 'failed', ms: Date.now() - started, flow_id: ctx.flowId });
+      funnel('submit_error', { door: ctx.door, reason: r.status === 400 ? 'invalid' : r.status === 0 ? 'offline' : 'failed', flow_id: ctx.flowId });
       return;
     }
     keyRef.current = null;
     track('call_booked', { segment: ctx.segment, door: ctx.door, held: !!res.fallback, best_time: details.bestTime, ms: Date.now() - started, flow_id: ctx.flowId });
+    funnel('submit_ok', { door: ctx.door, segment: ctx.segment, held: !!res.fallback, threaded: res.path === 'threaded', flow_id: ctx.flowId });
+    rememberCall(details);
     onSent(res, details);
   };
 
@@ -244,11 +406,17 @@ export function CallAsk({
     setTyping(null);
     const first = ORDER.find((k) => errors[k]);
     if (first) {
+      if (!editing) {
+        // Something on file does not pass: open the fields, focus the first one.
+        setEditing(true);
+        setTimeout(() => document.getElementById(id(first))?.focus(), 0);
+      }
       setSummary(count === 1 ? 'One thing to add before we can book your call.' : `${count} things to add before we can book your call.`);
       const el = document.getElementById(id(first));
       el?.focus({ preventScroll: true });
       el?.scrollIntoView({ block: 'center' });
       track('ask_error', { field: first, flow_id: ctx.flowId });
+      funnel('submit_error', { door: ctx.door, reason: `missing_${first}`, flow_id: ctx.flowId });
       return;
     }
     setSummary(null);
@@ -283,7 +451,7 @@ export function CallAsk({
   );
 
   const label =
-    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : 'Book my free call';
+    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : cta;
   const button = (
     <PrimaryButton
       label={label}
@@ -294,11 +462,19 @@ export function CallAsk({
       offlineLabel={rateLeft > 0 ? `Try again in ${rateLeft}s` : undefined}
     />
   );
-  const extra = slow ? (
-    <p className="si-still" role="status">
-      Still working. Please keep this page open.
-    </p>
-  ) : null;
+  // Cal's same-day promise (4 Nov), right where the thumb lands.
+  const extra = (
+    <>
+      <p className="si-ask__promise">
+        <Phone size={14} aria-hidden="true" /> {who || 'We'} will ring you today. If it&apos;s late, first thing tomorrow.
+      </p>
+      {slow ? (
+        <p className="si-still" role="status">
+          Still working. Please keep this page open.
+        </p>
+      ) : null}
+    </>
+  );
 
   const field = (k: 'name' | 'mobile' | 'email') => {
     const common = { readOnly: busy, invalid: !!errOf(k), onBlur: () => touch(k) };
@@ -377,13 +553,42 @@ export function CallAsk({
           {count === 1 ? 'One thing to add before we can book your call.' : `${count} things to add before we can book your call.`}
         </p>
       ) : null}
-      <div className="si-ask__fields">
-        {field('name')}
-        <div className="si-form__pair">
-          {field('mobile')}
-          {field('email')}
+      {editing ? (
+        <div className="si-ask__fields">
+          {field('name')}
+          <div className="si-form__pair">
+            {field('mobile')}
+            {field('email')}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="si-ask__me" data-call-confirm="">
+          <dl>
+            <div>
+              <dt>Name</dt>
+              <dd>{details.name.trim()}</dd>
+            </div>
+            <div>
+              <dt>Mobile</dt>
+              <dd>{details.mobile.trim()}</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd>{details.email.trim()}</dd>
+            </div>
+          </dl>
+          <button
+            type="button"
+            className="si-btn--quiet"
+            onClick={() => {
+              setEditing(true);
+              setTimeout(() => document.getElementById(id('name'))?.focus(), 0);
+            }}
+          >
+            Not right? Change my details
+          </button>
+        </div>
+      )}
       <fieldset className="si-ask__best">
         <legend className="si-label">
           Best time to ring <span className="si-ask__opt">optional</span>

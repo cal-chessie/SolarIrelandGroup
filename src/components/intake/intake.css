@@ -2776,6 +2776,65 @@ h1.si-ask__title {
   margin-bottom: 20px;
 }
 
+/* The same-day promise, under the button where the thumb lands. */
+.si-ask__promise {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--si-fg-muted);
+}
+.si-ask__promise > svg {
+  flex: none;
+  color: var(--si-green);
+}
+
+/* "Is this you?": details already on file, one tap to book. */
+.si-ask__me {
+  margin-top: 24px;
+}
+.si-ask__me dl {
+  display: grid;
+  gap: 1px;
+  border-radius: var(--si-r);
+  overflow: hidden;
+  background: var(--si-line);
+}
+.si-ask__me dl > div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--si-raise);
+}
+.si-ask__me dt {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--si-fg-muted);
+}
+.si-ask__me dd {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.si-ask__me .si-btn--quiet {
+  margin-top: 12px;
+}
+
+/* The returning visitor's card. */
+.si-ask--remembered .si-done-mark {
+  color: var(--si-green);
+}
+.si-ask__go--row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
 /* ── The confirmation ───────────────────────────────────────── */
 
 .si-done-call__line {
