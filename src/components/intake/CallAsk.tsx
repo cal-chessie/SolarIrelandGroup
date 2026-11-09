@@ -2,7 +2,7 @@
 
 /**
  * The one ending of both roads (CALL-FUNNEL-PLAN, 4 Nov 2026): name, mobile,
- * email, an optional best time to ring, and "Book my free call". The Bill
+ * email, an optional best time to ring, and "Ring me with my figures". The Bill
  * Analyser (Road 1) and the Apple intake (Road 2) both render this, so the
  * ask, its errors, its failures and its confirmation are word for word the
  * same on both.
@@ -194,7 +194,7 @@ export function CallAsk({
   online = true,
   actionsRef,
   confirm = false,
-  cta = 'Book my free call',
+  cta = 'Ring me with my figures',
 }: {
   idPrefix: string;
   details: CallDetails;

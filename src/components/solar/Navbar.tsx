@@ -32,6 +32,9 @@ const SOCIAL_LINKS = [
   { href: 'https://www.threads.com/@solarireland', label: 'Threads', color: 'hover:text-white hover:border-white/30' },
 ] as const;
 
+/** "Check my savings" lands on the Bill Analyser: in place on the homepage, the calculator page anywhere else. */
+const savingsHref = (pathname: string) => (pathname === '/' ? '/#calculator' : '/solar-calculator');
+
 // Mobile nav - all pages + sections
 const mobileLinks = [
   {
@@ -69,7 +72,7 @@ const mobileLinks = [
     borderHover: 'hover:border-green-400/20',
   },
   {
-    label: 'Free 15-minute call',
+    label: 'Check my savings',
     href: '/book-survey',
     icon: CalendarCheck,
     color: 'green',
@@ -156,7 +159,7 @@ const desktopNavLinks = [
   { label: 'Counties', href: '/counties', isBookSurvey: false },
   { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Free 15-minute call', href: '/book-survey', isBookSurvey: true },
+  { label: 'Check my savings', href: '/book-survey', isBookSurvey: true },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 
@@ -327,8 +330,8 @@ function MobileMenu({
 
               return (
                 <button
-                  key={link.href}
-                  onClick={() => navigateTo(link.href)}
+                  key={link.label}
+                  onClick={() => navigateTo(link.href === '/book-survey' ? savingsHref(pathname) : link.href)}
                   style={{
                     transitionDelay: isOpen ? `${50 + i * 30}ms` : '0ms',
                   }}
@@ -404,20 +407,11 @@ function MobileMenu({
             style={{ transitionDelay: isOpen ? '400ms' : '0ms' }}
           >
             <button
-              onClick={() => navigateTo('/#calculator')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
-            >
-              <Zap className="w-4 h-4" />
-              Analyse My Bill
-              <ArrowRight className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => navigateTo('/book-survey')}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
+              onClick={() => navigateTo(savingsHref(pathname))}
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15"
             >
               <CalendarCheck className="w-4 h-4" />
-              Free 15-minute call
+              Check my savings
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -594,8 +588,8 @@ export default function Navbar() {
                 : activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <button
-                  key={link.href}
-                  onClick={() => navigateTo(link.href)}
+                  key={link.label}
+                  onClick={() => navigateTo(link.isBookSurvey ? savingsHref(pathname) : link.href)}
                   className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
                     link.isBookSurvey
                       ? 'text-green-400 font-semibold'
@@ -626,16 +620,10 @@ export default function Navbar() {
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
                 clipped the survey CTA. The secondary CTA waits for xl. */}
             <button
-              onClick={() => navigateTo('/#calculator')}
-              className="hidden xl:inline-flex bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 whitespace-nowrap"
-            >
-              Analyse Bill
-            </button>
-            <button
-              onClick={() => navigateTo('/book-survey')}
+              onClick={() => navigateTo(savingsHref(pathname))}
               className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
-              Free 15-minute call
+              Check my savings
             </button>
           </div>
 

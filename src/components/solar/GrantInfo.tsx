@@ -279,13 +279,13 @@ function EligibilityChecker() {
                       or an estimate. Both real next steps now, booking first. */}
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3">
                     <motion.a
-                      href="/book-survey?src=grant-checker"
+                      href="#calculator"
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
                     >
                       <Zap className="w-4 h-4" />
-                      Free 15-minute call
+                      Check my savings
                       <ArrowRight className="w-4 h-4" />
                     </motion.a>
                     <motion.a

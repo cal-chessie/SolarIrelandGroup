@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { motion, useInView } from '@/lib/motion';
 import { useRef } from 'react';
@@ -81,9 +82,12 @@ const FOOTER_SOCIAL = [
 ];
 
 
+/** "Check my savings" lands on the Bill Analyser: in place on the homepage, the calculator page anywhere else. */
+const savingsHref = (pathname: string | null) => (pathname === '/' ? '#calculator' : '/solar-calculator');
+
 const quickLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'Free 15-minute call', href: '/book-survey' },
+  { label: 'Check my savings', href: '/book-survey' },
   { label: 'Calculator', href: '/solar-calculator' },
   { label: 'Financing', href: '/financing' },
   { label: 'Counties', href: '/counties' },
@@ -124,6 +128,7 @@ const trustBadges = [
 
 
 function PreFooterCTA() {
+  const pathname = usePathname();
   return (
     <motion.div
       className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
@@ -159,13 +164,13 @@ function PreFooterCTA() {
             <ArrowRight className="w-4 h-4" />
           </motion.a>
           <motion.a
-            href="/book-survey"
+            href={savingsHref(pathname)}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
           >
             <CalendarCheck className="w-4 h-4" />
-            Free 15-minute call
+            Check my savings
           </motion.a>
           <a
             href={buildWhatsAppUrl({ source: 'footer' })}
@@ -288,6 +293,7 @@ function TrustBadgesRow() {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
   const footerRef = useRef<HTMLElement>(null);
   const isInView = useInView(footerRef, { once: true, margin: '-50px' });
 
@@ -350,7 +356,7 @@ export default function Footer() {
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={link.href}
+                    href={link.href === '/book-survey' ? savingsHref(pathname) : link.href}
                     className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
                   >
                     <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />

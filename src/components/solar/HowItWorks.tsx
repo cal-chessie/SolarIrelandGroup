@@ -46,7 +46,7 @@ const steps = [
     // A button that says "Book Free Survey" has to book a survey. This opened
     // WhatsApp, which is a chat window, not a booking, and it lost the lead to
     // a conversation nobody was guaranteed to answer.
-    cta: { href: '/book-survey', text: 'Free 15-minute call', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
+    cta: { href: '#calculator', text: 'Check my savings', icon: CalendarIcon, gradient: 'from-emerald-500 to-teal-400', shadow: 'hover:shadow-emerald-500/20' },
   },
   {
     number: '03',

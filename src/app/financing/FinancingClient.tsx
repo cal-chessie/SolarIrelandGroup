@@ -200,10 +200,10 @@ function FinancingHero() {
             Price it on my bill
           </a>
           <a
-            href="/book-survey?src=financing"
+            href="/solar-calculator?src=financing"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap hover:bg-green-400/20 transition-all active:scale-[0.98]"
           >
-            Free 15-minute call
+            Check my savings
           </a>
         </div>
 
@@ -477,10 +477,10 @@ function FinancingCalculator() {
                     nothing. This is the highest intent moment on the page. */}
                 <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
-                    href="/book-survey?src=financing-calc"
+                    href="/solar-calculator?src=financing-calc"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]"
                   >
-                    Free 15-minute call
+                    Check my savings
                   </a>
                   <a
                     href="/solar-calculator"
@@ -958,7 +958,7 @@ export default function FinancingClient() {
 
       <Footer />
       <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Free 15-minute call', href: '/book-survey' }} exit={true} />
+      <PageIntake sticky={{ label: 'Check my savings', href: '/solar-calculator' }} exit={true} />
     </div>
   );
 }

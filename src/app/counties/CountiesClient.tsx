@@ -772,11 +772,11 @@ export default function CountiesClient() {
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
-                      href="/book-survey"
+                      href="/solar-calculator"
                       className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <Calendar className="w-4 h-4" />
-                      Free 15-minute call
+                      Check my savings
                     </a>
                   </div>
                 </div>

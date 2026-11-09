@@ -218,10 +218,10 @@ export default function RoscommonPage() {
               <Sparkles className="h-4 w-4" /> Analyse My Bill
             </Link>
             <Link
-              href="/book-survey"
+              href="/solar-calculator"
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 font-semibold text-white transition hover:bg-white/5"
             >
-              Free 15-minute call
+              Check my savings
             </Link>
           </div>
         </section>

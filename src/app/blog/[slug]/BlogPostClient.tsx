@@ -472,37 +472,37 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
       h: 'Find out what you qualify for',
       p: 'The grant is €1,800 at 4 kWp and we prepare the paperwork. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
       primary: { href: '/solar-calculator', label: 'Check my grant and savings' },
-      secondary: { href: '/book-survey?src=blog-grants', label: 'Free 15-minute call' },
+      secondary: { href: '/solar-calculator?src=blog-grants', label: 'Check my savings' },
     },
     savings: {
       h: 'That was the average. What about your house?',
       p: 'The numbers above are a typical Irish home. Yours depends on your usage, your roof and your day-night split. The analyser reads your actual bill and tells you.',
       primary: { href: '/solar-calculator', label: 'Analyse my bill' },
-      secondary: { href: '/book-survey?src=blog-savings', label: 'Free 15-minute call' },
+      secondary: { href: '/solar-calculator?src=blog-savings', label: 'Check my savings' },
     },
     county: {
       h: 'Get a local answer',
       p: 'Generation, roof types and grid connection differ by county. Book a free survey and the team covering your area will confirm what your roof can actually do.',
-      primary: { href: '/book-survey?src=blog-county', label: 'Free 15-minute call' },
+      primary: { href: '/solar-calculator?src=blog-county', label: 'Check my savings' },
       secondary: { href: '/solar-calculator', label: 'Price it on my bill first' },
     },
     guides: {
       h: 'See it on your own numbers',
       p: 'Everything above is general. Thirty seconds with your electricity bill turns it into your system size, your saving and your payback.',
       primary: { href: '/solar-calculator', label: 'Price it on my bill' },
-      secondary: { href: '/book-survey?src=blog-guide', label: 'Free 15-minute call' },
+      secondary: { href: '/solar-calculator?src=blog-guide', label: 'Check my savings' },
     },
     technology: {
       h: 'Which of these suits your roof?',
       p: 'Panels, inverters and batteries are sized to the house, not chosen from a list. The survey is free and there is no obligation.',
-      primary: { href: '/book-survey?src=blog-tech', label: 'Free 15-minute call' },
+      primary: { href: '/solar-calculator?src=blog-tech', label: 'Check my savings' },
       secondary: { href: '/solar-calculator', label: 'See what it would save' },
     },
     news: {
       h: 'Work out what it means for you',
       p: 'Policy moves. Your bill is the thing that decides whether solar is worth it for your house today.',
       primary: { href: '/solar-calculator', label: 'Analyse my bill' },
-      secondary: { href: '/book-survey?src=blog-news', label: 'Free 15-minute call' },
+      secondary: { href: '/solar-calculator?src=blog-news', label: 'Check my savings' },
     },
   };
   const c = byCategory[category] ?? byCategory.guides;

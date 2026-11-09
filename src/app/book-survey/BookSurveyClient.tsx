@@ -168,7 +168,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           who={who}
           online={online}
           confirm={confirm}
-          cta="Book my free 15-minute call"
+          cta="Ring me with my figures"
           heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : 'Who should we ring?'}
           headingLevel="h2"
           sub={confirm ? 'One tap and the call is booked. Say when suits best, if you like.' : undefined}

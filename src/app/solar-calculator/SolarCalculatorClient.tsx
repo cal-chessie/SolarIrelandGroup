@@ -268,11 +268,11 @@ function FinalCTA() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="/book-survey?src=calculator"
+              href="#calculator"
               className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all"
             >
               <MessageCircle className="w-5 h-5" />
-              Free 15-minute call
+              Check my savings
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
