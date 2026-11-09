@@ -168,10 +168,10 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           who={who}
           online={online}
           confirm={confirm}
-          cta="Ring me with my figures"
-          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : 'Who should we ring?'}
+          cta="Send my full estimate"
+          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : 'Where should we send your estimate?'}
           headingLevel="h2"
-          sub={confirm ? 'One tap and the call is booked. Say when suits best, if you like.' : undefined}
+          sub={confirm ? 'One tap and your full estimate is on its way. Say when suits best for the call, if you like.' : undefined}
           ctx={{
             segment,
             door: 'book-survey',

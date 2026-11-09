@@ -2,7 +2,7 @@
 
 /**
  * The one ending of both roads (CALL-FUNNEL-PLAN, 4 Nov 2026): name, mobile,
- * email, an optional best time to ring, and "Ring me with my figures". The Bill
+ * email, an optional best time to ring, and "Send my full estimate". The Bill
  * Analyser (Road 1) and the Apple intake (Road 2) both render this, so the
  * ask, its errors, its failures and its confirmation are word for word the
  * same on both.
@@ -16,7 +16,7 @@
  * straight".
  */
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { CircleAlert, MapPin, MessageCircle, Phone, PhoneIncoming, UserPlus } from 'lucide-react';
+import { CircleAlert, Mail, MapPin, MessageCircle, Phone, PhoneIncoming, UserPlus } from 'lucide-react';
 import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
 import { firstName, isEmail, isPhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
@@ -194,7 +194,7 @@ export function CallAsk({
   online = true,
   actionsRef,
   confirm = false,
-  cta = 'Ring me with my figures',
+  cta = 'Send my full estimate',
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -411,7 +411,7 @@ function CallForm({
         setEditing(true);
         setTimeout(() => document.getElementById(id(first))?.focus(), 0);
       }
-      setSummary(count === 1 ? 'One thing to add before we can book your call.' : `${count} things to add before we can book your call.`);
+      setSummary(count === 1 ? 'One thing to add before we can send your estimate.' : `${count} things to add before we can send your estimate.`);
       const el = document.getElementById(id(first));
       el?.focus({ preventScroll: true });
       el?.scrollIntoView({ block: 'center' });
@@ -457,16 +457,18 @@ function CallForm({
       label={label}
       arrow={false}
       busy={busy}
-      busyLabel="Booking your call"
+      busyLabel="Sending your estimate"
       offline={!online || rateLeft > 0}
       offlineLabel={rateLeft > 0 ? `Try again in ${rateLeft}s` : undefined}
     />
   );
-  // Cal's same-day promise (4 Nov), right where the thumb lands.
+  // Cal, 9 Nov: the button sells the estimate; the call follows it. The
+  // promise sits right where the thumb lands. (The request is still
+  // intent "call"; AISolar's call email carries the estimate.)
   const extra = (
     <>
       <p className="si-ask__promise">
-        <Phone size={14} aria-hidden="true" /> {who || 'We'} will ring you today. If it&apos;s late, first thing tomorrow.
+        <Mail size={14} aria-hidden="true" /> We email it to you now. {who ? `${who} rings` : 'We ring'} today to talk it through.
       </p>
       {slow ? (
         <p className="si-still" role="status">
@@ -550,7 +552,7 @@ function CallForm({
       {summary && showAll && count > 0 ? (
         <p className="si-err-summary" role="status">
           <CircleAlert size={16} aria-hidden="true" />
-          {count === 1 ? 'One thing to add before we can book your call.' : `${count} things to add before we can book your call.`}
+          {count === 1 ? 'One thing to add before we can send your estimate.' : `${count} things to add before we can send your estimate.`}
         </p>
       ) : null}
       {editing ? (
@@ -686,10 +688,10 @@ export function CallDone({
         </svg>
       </span>
       <H className="si-ask__title si-mt-24" ref={headingRef} tabIndex={-1}>
-        Thanks, {fname}. Your free call is booked in.
+        Thanks, {fname}. Your full estimate is on its way.
       </H>
       <p className="si-facts">
-        {who || 'We'} will ring you today. If it&apos;s late, first thing tomorrow.
+        Check your inbox. {who ? `${who} rings` : 'We ring'} you today to talk it through. If it&apos;s late, first thing tomorrow.
       </p>
       <p className="si-done-call__line">
         We&apos;ll ring <b className="si-white">{details.mobile.trim()}</b>.{details.bestTime ? ` ${BEST_LINE[details.bestTime]}` : ''}

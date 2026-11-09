@@ -5,7 +5,7 @@
  *
  * Road 1 of two. Upload a bill, we read it, we show what it says, one thing
  * they did not know, one saving (AISolar's figure, the same quote the manual
- * side shows), then name, mobile, email and "Ring me with my figures". Built to
+ * side shows), then name, mobile, email and "Send my full estimate". Built to
  * INTAKE/design/analyser-cro-spec.md under CALL-FUNNEL-PLAN.md (and Cal's
  * answers there, which win), in the Apple intake's visual language.
  *
@@ -297,7 +297,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qKey]);
 
-  /* Phones: the sticky "Ring me with my figures" shows once the saving is seen and the ask is not. */
+  /* Phones: the sticky "Send my full estimate" shows once the saving is seen and the ask is not. */
   useEffect(() => {
     if (phase !== 'reveal' || typeof IntersectionObserver === 'undefined') {
       setStickyOn(false);
@@ -427,7 +427,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const onSent = (_res: SubmitResponse, d: CallDetails) => {
     setDetails(d);
     setPhase('done');
-    setAnnounce('Your free call is booked in.');
+    setAnnounce('Your full estimate is on its way.');
   };
 
   const onDrop = (e: DragEvent) => {
@@ -1092,12 +1092,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
         online={online}
-        heading={battery ? 'Want a consultant to look at your energy use?' : 'Want a person to check this with you?'}
+        heading="Where should we send your full estimate?"
         headingLevel="h3"
         sub={
           battery
-            ? `A free 15-minute phone call with ${who || 'Solar Ireland'}. We go through your figures and when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
-            : `A free 15-minute phone call with ${who || 'Solar Ireland'}. We go through your figures and answer your questions. No visit, no obligation.`
+            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} about when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
+            : `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`
         }
         ctx={{
           segment: seg,
@@ -1191,7 +1191,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               setTimeout(() => el?.focus({ preventScroll: true }), 350);
             }}
           >
-            Ring me with my figures
+            Send my full estimate
           </button>
         </div>
       ) : null}

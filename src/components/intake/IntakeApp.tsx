@@ -72,7 +72,7 @@ const STEP_NAME: Record<Step, string> = {
   bill: 'Your bill',
   time: 'Your estimate',
   details: 'Your call',
-  done: 'Call booked',
+  done: 'Estimate sent',
 };
 const STEP_COUNT: Partial<Record<Step, string>> = { bill: '1 of 3', time: '2 of 3', details: '3 of 3' };
 
@@ -810,7 +810,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    setAnnounce('Your free call is booked in.');
+    setAnnounce('Your full estimate is on its way.');
   };
 
   /* ── Pieces ────────────────────────────────────────────────────── */
@@ -1462,7 +1462,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             arrow={false}
             label={
               <span className="si-btn__in">
-                Book my free call <ChevronRight size={18} aria-hidden="true" />
+                Get my full estimate <ChevronRight size={18} aria-hidden="true" />
               </span>
             }
             onClick={() => go('details')}
@@ -1516,10 +1516,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         onDetails={updateCall}
         who={who}
         online={online}
-        heading="Book your free 15-minute call"
+        heading="Where should we send your full estimate?"
         headingLevel={asH1 ? 'h1' : 'h2'}
         headingRef={asH1 ? h1Ref : undefined}
-        sub={`A phone call with ${who || 'Solar Ireland'}. We go through your figures and answer your questions. No visit, no obligation.`}
+        sub={`Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`}
         ctx={{
           segment: seg || 'domestic',
           door: draft.door,
