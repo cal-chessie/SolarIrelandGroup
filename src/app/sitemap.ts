@@ -8,19 +8,22 @@ const SITE_URL = "https://solarirelandgroup.ie";
 /* Per-page lastModified dates - update these when you edit a page.
    Google uses these to prioritise crawl frequency. */
 const PAGE_DATES: Record<string, string> = {
-  "/": "2026-04-08T00:00:00+00:00",
+  // 9 Nov 2026 SEO/AEO pass: new titles/descriptions on home, about, contact,
+  // calculator and financing; a rewritten financing answer section; a new post
+  // listed on /blog. Blog posts take their lastmod from `updated` below.
+  "/": "2026-11-09T00:00:00+00:00",
   "/services": "2026-04-01T00:00:00+00:00",
   "/counties": "2026-04-01T00:00:00+00:00",
   "/counties/roscommon": "2026-09-13T00:00:00+00:00",
-  "/blog": "2026-04-08T00:00:00+00:00",
-  "/about": "2026-03-15T00:00:00+00:00",
-  "/contact": "2026-03-15T00:00:00+00:00",
+  "/blog": "2026-11-09T00:00:00+00:00",
+  "/about": "2026-11-09T00:00:00+00:00",
+  "/contact": "2026-11-09T00:00:00+00:00",
   "/privacy": "2026-02-01T00:00:00+00:00",
   "/terms": "2026-04-01T00:00:00+00:00",
   "/cookies": "2026-04-01T00:00:00+00:00",
-  "/solar-calculator": "2026-04-09T00:00:00+00:00",
+  "/solar-calculator": "2026-11-09T00:00:00+00:00",
   "/book-survey": "2026-04-09T00:00:00+00:00",
-  "/financing": "2026-04-09T00:00:00+00:00",
+  "/financing": "2026-11-09T00:00:00+00:00",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {

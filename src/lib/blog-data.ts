@@ -191,6 +191,10 @@ export const articles: Article[] = [
         "body": "A solar system that is watched will tell you when something is wrong long before it costs you. That is the whole job - and the app does most of it for you."
       },
       {
+        "type": "paragraph",
+        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
+      },
+      {
         "type": "cta",
         "text": "Thinking about solar? Start with your bill",
         "href": "/solar-calculator"
@@ -283,7 +287,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "To qualify, your home must have been built and occupied before 2025, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online before any work starts, the grant offer normally issues immediately, and it stays valid for 8 months. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "To qualify, your home must have been built and occupied before 2025, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online and wait for SEAI's letter of offer before any work starts, and you then have 8 months to complete the installation. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -518,7 +522,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply online at seai.ie before any work starts, and the grant offer normally issues immediately. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -779,7 +783,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your property's connection to the electricity network (esbnetworks.ie). ESB Networks assigns it to the connection point, not to you or your supplier, so it never changes - not when you switch supplier, not when you move house, not even when the meter itself is replaced."
+        "text": "The MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your property's connection to the electricity network (esbnetworks.ie). The full walkthrough, with every place to look for it, is in [what is my MPRN and where to find it](/blog/what-is-my-mprn-number-ireland). ESB Networks assigns it to the connection point, not to you or your supplier, so it never changes - not when you switch supplier, not when you move house, not even when the meter itself is replaced."
       },
       {
         "type": "paragraph",
@@ -1258,7 +1262,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2025, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online before any work starts and the grant offer normally issues immediately. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2025, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online and wait for SEAI's letter of offer before any work starts. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -1482,7 +1486,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Your MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your electricity connection. It is printed on your bill. The NC6 uses it to register your solar system against the correct connection, which is why an accurate MPRN is one of the details the installer confirms at survey."
+        "text": "Your MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your electricity connection. It is printed on your bill; see [what is my MPRN and where to find it](/blog/what-is-my-mprn-number-ireland). The NC6 uses it to register your solar system against the correct connection, which is why an accurate MPRN is one of the details the installer confirms at survey."
       },
       {
         "type": "heading",
@@ -1566,7 +1570,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Around 10 panels for a typical household. Modern panels are about 440W each, so 10 panels is roughly 4.4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households, or homes with an EV or heat pump, often go to 12 to 16 panels. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "Around 10 panels for a typical household. Modern panels are about 440W each, so 10 panels is roughly 4.4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households often need 11 to 14 panels, and homes with an EV and a heat pump 15 to 20. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "heading",
@@ -1721,7 +1725,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Possibly. Higher usage, an EV or a heat pump can justify 12 to 16 panels. The bill tells us - a larger annual usage means a larger system earns its keep. Try the [solar calculator](/solar-calculator) for a personalised size."
+        "text": "Possibly. Higher usage can justify 11 to 14 panels, and an EV plus a heat pump 15 to 20. The bill tells us - a larger annual usage means a larger system earns its keep. Try the [solar calculator](/solar-calculator) for a personalised size."
       },
       {
         "type": "heading",
@@ -1774,13 +1778,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "As a rough guide, a 4 kWp system (about 10 panels) generates in the order of 3,500 to 4,000 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. EV owners often add a few extra panels (12 to 16) so more of the car's charging can come from solar across more of the year."
+        "text": "As a rough guide, a 4 kWp system (about 10 panels) generates about 3,800 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. Add the car's usage to a typical home's 4,200 kWh and our savings engine sizes the system at about 6 to 6.5 kWp, or 14 to 15 panels, so more of the car's charging can come from solar across more of the year."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Solar is seasonal, driving is not",
-        "body": "Your panels make roughly three to four times as much in June as in December, but you drive all year. That is why solar covers a big share of summer charging and a smaller share in winter, and why the night rate still matters for EV owners."
+        "body": "Your panels make roughly four to five times as much in June as in December, but you drive all year. That is why solar covers a big share of summer charging and a smaller share in winter, and why the night rate still matters for EV owners."
       },
       {
         "type": "heading",
@@ -1816,7 +1820,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 10 panels, an EV household often benefits from 12 to 16, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 10 panels, an EV household usually lands on 14 to 15, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "table",
@@ -1833,12 +1837,12 @@ export const articles: Article[] = [
           ],
           [
             "One EV",
-            "~5-6 kWp (12-16 panels)",
+            "~6-6.5 kWp (14-15 panels)",
             "Extra generation charges the car"
           ],
           [
             "EV + heat pump",
-            "6 kWp+ and up",
+            "~6.5-9 kWp (15-20 panels)",
             "High all-round usage rewards a larger system"
           ]
         ]
@@ -2212,21 +2216,21 @@ export const articles: Article[] = [
         "rows": [
           [
             "4kWp",
-            "10–12 panels",
+            "9–10 panels",
             "€8,200",
             "€6,400",
             "€800 – €1,100"
           ],
           [
             "6kWp",
-            "14–16 panels",
+            "about 14 panels",
             "€9,600",
             "€7,800",
             "€1,000 – €1,300"
           ],
           [
             "10kWp",
-            "22–26 panels",
+            "about 23 panels",
             "€12,400",
             "€10,600",
             "€1,200 – €1,800"
@@ -2235,7 +2239,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The 6kWp system is by far the most popular choice for Irish households, as it provides an excellent balance between upfront cost, roof space requirements, and annual savings. It is large enough to cover a significant portion of the average Irish household's annual electricity consumption (approximately 4,200 kWh) while remaining affordable."
+        "text": "For the average Irish household using about 4,200 kWh a year (the CRU typical figure), our savings engine sizes the system at 4 kWp, about 10 panels. That is also the domestic floor: 4 kWp is exactly where the SEAI grant reaches its full €1,800, and below it the fixed costs barely move while the generation and the grant fall away. A 6kWp system suits bigger households and homes with an EV or a heat pump. Count panels in 440W units: the [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland) has the sizing by household, and the [free solar calculator](/solar-calculator) sizes yours from your bill."
       },
       {
         "type": "heading",
@@ -2278,7 +2282,7 @@ export const articles: Article[] = [
         "items": [
           "BER Assessment: €200–€350 (required for the SEAI grant)",
           "ESB Networks NC6 connection notification: free for domestic micro-generation (your installer submits it for you)",
-          "Smart meter upgrade: Usually free from ESB Networks, but may involve a wait time of 4–8 weeks",
+          "Smart meter: free from ESB Networks, and not needed before install day; it is only needed to be paid for export",
           "Scaffolding: €300–€600 for typical two-storey homes",
           "Ground-mounted systems: €2,000–€5,000 more than roof-mounted equivalents",
           "Bird protection: €200–€400 if pigeons are known to nest under panels in your area"
@@ -2291,7 +2295,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With domestic unit rates of roughly €0.35/kWh including VAT (the standing charge is separate, and solar never removes it), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
       },
       {
         "type": "table",
@@ -2363,7 +2367,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Waiting for prices to fall further is a risky strategy - every month you delay is a month of missed electricity savings. For homeowners with a suitable roof, the best time to install solar panels is now."
+        "text": "Waiting for prices to fall further is a risky strategy - every month you delay is a month of missed electricity savings. For the full verdict on savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026); if you plan to borrow, the [solar panel loans guide](/financing) shows the monthly repayments; and the [free solar savings calculator](/solar-calculator) prices it on your own bill."
       },
       {
         "type": "divider"
@@ -3607,13 +3611,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Several factors make Dublin uniquely positioned for solar adoption: high electricity prices (among the highest in the country due to urban network charges), a large number of suitable roof types, excellent installer availability, and a dense population of environmentally conscious homeowners. Dublin City Council has also been proactive in streamlining the process for solar installations, and the county has some of the highest smart meter penetration rates in Ireland."
+        "text": "Several factors make Dublin well placed for solar: a large number of suitable roof types, from 1930s semis to modern estates, plenty of SEAI-registered installers, and the same national rooftop exemption as everywhere else, so most Dublin houses need no planning permission. If you are weighing it up from scratch, start with [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026)."
       },
       {
         "type": "callout",
         "variant": "stat",
         "title": "Dublin Solar Stats",
-        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. The average 6kWp system in Dublin generates approximately 5,700 kWh per year, saving homeowners €900–€1,200 annually on electricity bills."
+        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. A 6kWp system on a good south-facing Dublin roof generates about 5,700 kWh a year, and a typical Irish system saves €800 to €1,400 a year."
       },
       {
         "type": "heading",
@@ -3622,7 +3626,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panel installation costs in Dublin are slightly higher than the national average, primarily due to higher labour costs, parking charges for installation crews, and the logistical challenges of working in a densely populated urban area. However, the increased competition among Dublin-based installers has kept prices competitive."
+        "text": "Solar is priced nationally, so a Dublin home pays the same as anywhere else in Ireland for the same system. What can add cost in Dublin is access: tight terraces, parking for the crew and scaffolding on busy streets. A good quote itemises those so you can see them. The full national price breakdown is in [how much solar panels cost in Ireland](/blog/how-much-do-solar-panels-cost-ireland-2026)."
       },
       {
         "type": "table",
@@ -3634,19 +3638,19 @@ export const articles: Article[] = [
         ],
         "rows": [
           [
-            "4kWp (10–12 panels)",
+            "4kWp (9–10 panels)",
             "€8,200",
             "€8,200",
             "€6,400"
           ],
           [
-            "6kWp (14–16 panels)",
+            "6kWp (about 14 panels)",
             "€9,600",
             "€9,600",
             "€7,800"
           ],
           [
-            "10kWp (22–26 panels)",
+            "10kWp (about 23 panels)",
             "€12,400",
             "€12,400",
             "€10,600"
@@ -3655,7 +3659,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin costs are in line with the national market, because solar is priced nationally rather than county by county. What does differ is the return: at an average urban electricity rate of €0.40/kWh (including standing charges and VAT), a 6kWp system in Dublin pays for itself in approximately 5.5–6.5 years, slightly faster than the national average of about 6 years."
+        "text": "Dublin costs are in line with the national market, because solar is priced nationally rather than county by county. Electricity unit rates are also set nationally by each supplier, so the return in Dublin matches the national picture: most systems pay for themselves in about 6 to 7 years. Your own payback depends on your usage and day/night split, which the [free solar calculator](/solar-calculator) reads from your bill."
       },
       {
         "type": "heading",
@@ -3715,7 +3719,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin has consistently led the country in SEAI grant applications for solar panels. The county accounts for consistently the largest share of national solar grant applications (SEAI), in line with its large share of the national housing stock (CSO). This reflects the higher energy costs in Dublin, greater environmental awareness, and easier access to SEAI-registered installers."
+        "text": "Dublin has the largest number of homes in Ireland, so it is the largest single market for grant-aided solar. SEAI publishes the running national totals at [seai.ie](https://www.seai.ie): more than 100,000 Irish homes have been grant-aided for solar since 2018, and 2025 was a record year."
       },
       {
         "type": "heading",
@@ -3763,17 +3767,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin's solar resource is comparable to the rest of Ireland, with a slight advantage in coastal areas due to less cloud cover compared to inland counties. A typical 6kWp system in Dublin will generate approximately 5,000–5,500 kWh per year, depending on roof orientation, pitch, and shading. This is slightly above the national average, partly due to Dublin's coastal location benefiting from clearer coastal skies."
-      },
-      {
-        "type": "paragraph",
-        "text": "The urban heat island effect also provides a marginal benefit. Dublin city centre is typically 1–2°C warmer than surrounding rural areas, which can slightly increase panel efficiency during cooler months (though excessive heat in summer is counterproductive, the Irish climate rarely gets warm enough for this to be a concern)."
+        "text": "Dublin's solar resource is good by Irish standards. PVGIS, the European Commission's solar model, puts a south-facing roof at a 30 degree pitch in Dublin at about 970 kWh per kWp a year after normal system losses, against a national average of about 884. Our estimates use 950 kWh per kWp, so a 6kWp system on a good Dublin roof makes about 5,700 kWh a year, less on an east, west or shaded roof."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Dublin vs National Comparison",
-        "body": "electricity prices are set nationally by supplier, so Dublin's solar economics match the national picture, but also save 5–10% more with solar. The net financial advantage of going solar in Dublin is slightly better than in most other Irish counties."
+        "body": "Electricity prices are set nationally by each supplier, and solar is priced nationally, so Dublin's solar economics match the national picture. A good south-facing Dublin roof generates a little more than the national average, which nudges the return in your favour."
       },
       {
         "type": "heading",
@@ -3797,7 +3797,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a payback period of just 5.5–6.5 years and 25+ years of free electricity ahead, there has never been a better time to make the switch."
+        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch."
       },
       {
         "type": "divider"
@@ -5035,6 +5035,147 @@ export const articles: Article[] = [
         "type": "cta",
         "text": "Explore Solar Options for Your Property - Get Expert Advice",
         "href": "/#calculator"
+      }
+    ]
+  },
+  {
+    "slug": "what-is-my-mprn-number-ireland",
+    "title": "What Is My MPRN Number and Where Do I Find It?",
+    "seoTitle": "MPRN Number Ireland: What It Is and Where to Find Yours",
+    "seoDescription": "Your MPRN is the 11-digit number, starting with 10, on the front of every Irish electricity bill. Where to find it, and why the SEAI grant and NC6 need it.",
+    "answer": "Your MPRN (Meter Point Reference Number) is the 11-digit number that identifies your home's connection to the electricity network. It starts with 10 and is printed on the front of every electricity bill, usually near your account number. It stays the same when you switch supplier, and you need it for the SEAI solar grant.",
+    "excerpt": "The MPRN is the 11-digit number on the front of your electricity bill. What it is, where to find it, why it never changes, and why you need it for solar.",
+    "category": "guides",
+    "date": "9 Nov 2026",
+    "readTime": "4 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-sky-400/10",
+    "iconColor": "text-sky-400",
+    "image": "/blog/how-to-read-electricity-bill-ireland-solar.webp",
+    "content": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What is an MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "MPRN stands for **Meter Point Reference Number**. It is the unique 11-digit number ESB Networks gives to the point where your home connects to the electricity network (esbnetworks.ie). It belongs to the connection, not to you and not to your supplier, so it identifies the property's supply for as long as that connection exists."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Where do I find my MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "On your electricity bill. Every Irish supplier prints the MPRN on the bill, usually on the front page near your account number, and it always starts with the digits **10**. If you pay online, it is also in your supplier account, and it appears on the paperwork from when you switched supplier."
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "**Your electricity bill** - the quickest place to look; check near the account number on page one",
+          "**Your supplier's app or online account** - usually under account or meter details",
+          "**ESB Networks** - if you cannot find a bill, ESB Networks can trace the MPRN from your address (esbnetworks.ie)"
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "title": "The bill you already have is enough",
+        "body": "The same bill that shows your MPRN also shows your usage and your day/night split. Upload it to the [free solar calculator](/solar-calculator) and the bill analysis reads the numbers that size your system, so you only have to find one document."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "MPRN vs account number vs GPRN"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Number",
+          "What it identifies",
+          "Does it change?"
+        ],
+        "rows": [
+          [
+            "MPRN (11 digits, starts with 10)",
+            "Your home's electricity connection, set by ESB Networks",
+            "No, it stays with the property"
+          ],
+          [
+            "Account number",
+            "Your account with your electricity supplier",
+            "Yes, when you switch supplier"
+          ],
+          [
+            "GPRN",
+            "Your gas connection, set by Gas Networks Ireland",
+            "No, but it is a gas number and not used for solar"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Why do you need your MPRN for solar panels?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Three parts of going solar run on your MPRN. The [SEAI solar grant](/blog/complete-guide-seai-solar-grant-2026) application asks for it, and the grant is paid once per MPRN, so a connection that has already had a solar grant cannot claim again. Your installer uses it to file the free [ESB Networks NC6 notification](/blog/nc6-form-solar-grid-connection-ireland), which registers your system against your connection. And your supplier uses it to pay you for export under the [Clean Export Guarantee](/blog/clean-export-guarantee-explained)."
+      },
+      {
+        "type": "paragraph",
+        "text": "Everything else on the bill is useful too. Our guide to [reading an Irish electricity bill](/blog/how-to-read-electricity-bill-ireland-solar) walks through the kWh, unit rates and standing charge, and [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) shows what those numbers mean for payback."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Frequently asked questions"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does my MPRN change if I switch electricity supplier?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. The MPRN belongs to the connection point, so it stays the same when you switch supplier. Your account number changes; your MPRN does not."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does my MPRN change if the meter is replaced?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. A new meter, including a smart meter, is fitted to the same connection point, so the MPRN stays the same."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "How many digits is an MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Eleven, and it starts with 10. If the number you are looking at is a different length, it is probably your account number."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can I find my MPRN without a bill?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. Check your supplier's app or online account, or contact ESB Networks, which can trace the MPRN from your address."
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "cta",
+        "text": "Check my savings: upload the bill with your MPRN for a free estimate",
+        "href": "/solar-calculator?src=blog-mprn"
       }
     ]
   }
