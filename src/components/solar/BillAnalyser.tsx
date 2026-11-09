@@ -1157,6 +1157,9 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   return (
     <div
       ref={rootRef}
+      // Every "Analyse my bill" door on the site links to #calculator (nav,
+      // hero, sticky bar, footer). One analyser per page, so the id is safe.
+      id="calculator"
       className={`si-analyser si-an--${variant}`}
       data-phase={phase}
       data-segment={seg}

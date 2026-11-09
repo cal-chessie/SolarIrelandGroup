@@ -2890,6 +2890,7 @@ h1.si-ask__title {
 
 .si-analyser {
   position: relative;
+  scroll-margin-top: 80px;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
