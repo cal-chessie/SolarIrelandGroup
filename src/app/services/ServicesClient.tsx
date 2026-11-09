@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
-  CalendarCheck,
   Sparkles,
   Sun,
   Battery,
@@ -464,18 +463,11 @@ export default function ServicesPage() {
 
               <div className="flex flex-wrap items-center gap-4">
                 <a
-                  href="/solar-calculator"
+                  href="/solar-calculator?src=services"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                 >
                   Price It On My Bill
                   <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href="/solar-calculator?src=services"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
-                >
-                  <CalendarCheck className="w-4 h-4" />
-                  Check my savings
                 </a>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
