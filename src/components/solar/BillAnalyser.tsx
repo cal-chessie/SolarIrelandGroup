@@ -121,6 +121,7 @@ const FAIL_COPY: Record<AnalyserFailure, { title: string; line: string }> = {
 export default function BillAnalyser({ variant = 'section', door = 'analyser', intro }: { variant?: 'hero' | 'section'; door?: string; intro?: ReactNode }) {
   const [phase, setPhase] = useState<Phase>('door');
   const [held, setHeld] = useState(false);
+  const [sentEstimate, setSentEstimate] = useState(true);
   const [segment, setSegment] = useState<Segment>('domestic');
   const [config, setConfig] = useState<IntakeConfig | null>(null);
   const [preview, setPreview] = useState<{ url: string | null; pdf: boolean } | null>(null);
@@ -431,11 +432,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     openIntake({ door: `analyser-${why}`, segment: (p?.segment ?? segment) === 'commercial' ? 'business' : 'home', step: bill ? 'time' : 'bill', bill, per });
   };
 
-  const onSent = (res: SubmitResponse, d: CallDetails) => {
+  const onSent = (res: SubmitResponse, d: CallDetails, sent: { estimate: boolean }) => {
     setDetails(d);
     setHeld(!!res.fallback);
+    setSentEstimate(sent.estimate);
     setPhase('done');
-    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '' }).announce);
+    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate }).announce);
   };
 
   const onDrop = (e: DragEvent) => {
@@ -1100,10 +1102,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
         online={online}
-        heading="Where should we send your full estimate?"
+        heading={quote?.quoteToken ? 'Where should we send your full estimate?' : `Where should ${who || 'we'} ring you?`}
         headingLevel="h3"
         sub={
-          battery
+          !quote?.quoteToken
+            ? `A free 15-minute call with ${who || 'Solar Ireland'} to work out your estimate with you and answer your questions. No visit, no obligation.`
+            : battery
             ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} about when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
             : `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`
         }
@@ -1129,7 +1133,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
 
   const doneCard = (
     <div className="si-an-card si-an-done">
-      <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} />
+      <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />
     </div>
   );
 

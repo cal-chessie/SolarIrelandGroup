@@ -8,8 +8,13 @@
  * or time picker, no survey slot, no Eircode. The 45-minute or remote survey
  * is sold on the call and inside AISolar.
  *
- *  - Cold: the shared ask (CallAsk), name, mobile, email, optional best time.
- *  - ?lt= with full details on file: "Is this you?" and one button.
+ *  - Cold: one bill question first (the same chips as the exit quiz and the
+ *    intake, home or business), priced through /api/intake/quote so the
+ *    request carries a quote token and AISolar emails a real estimate. Then
+ *    the shared ask (CallAsk). Skipping the bill is fine: the ask then
+ *    promises a call, never an estimate (H2, 9 Nov review).
+ *  - ?lt= with full details on file: "Is this you?" and one button. A bill on
+ *    file is priced silently; no bill on file asks the one question first.
  *  - ?lt= with something missing: the form, prefilled with what is on file.
  *  - A device that already asked: "Cal is ringing you today" (inside CallAsk).
  *
@@ -22,15 +27,20 @@ import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
-import { getConfig } from '@/components/intake/api';
-import type { IntakeConfig, Segment } from '@/lib/intake/contract';
-import { isEmail, isPhone } from '@/lib/intake/format';
+import { getConfig, getQuotes, monthlyBillItem } from '@/components/intake/api';
+import type { IntakeConfig, Quote, Segment } from '@/lib/intake/contract';
+import { eur, isEmail, isPhone } from '@/lib/intake/format';
+import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { parseLinkToken } from '@/lib/intake/linkToken';
 import '@/components/intake/intake.css';
 
 const PHONE = SOLAR_DATA.provider.phone;
 const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
+const FALLBACK_CHIPS = { domestic: [80, 120, 160, 220, 300], commercial: [300, 600, 1000, 2000, 4000] };
+
+/** The bill question's answer: a tapped amount, or skipped (the call works it out). */
+type Bill = { amount: number; orMore: boolean; from: 'chip' | 'link' } | 'skipped' | null;
 
 function flowId(): string {
   const b = new Uint8Array(8);
@@ -58,7 +68,13 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   const [segment, setSegment] = useState<Segment>(startSegment);
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
   const [config, setConfig] = useState<IntakeConfig | null>(null);
-  const [sent, setSent] = useState<{ d: CallDetails; held: boolean } | null>(null);
+  const [sent, setSent] = useState<{ d: CallDetails; held: boolean; estimate: boolean } | null>(null);
+  const [bill, setBill] = useState<Bill>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [pricing, setPricing] = useState(false);
+  const billHeadRef = useRef<HTMLHeadingElement>(null);
+  const askHeadRef = useRef<HTMLHeadingElement>(null);
+  const priceSeq = useRef(0);
   const [fid, setFid] = useState('');
   const [online, setOnline] = useState(true);
   const doneRef = useRef<HTMLHeadingElement>(null);
@@ -115,7 +131,56 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
     if (sent) doneRef.current?.focus({ preventScroll: false });
   }, [sent]);
 
-  const ctx = link.state === 'ready' ? link.ctx : null;
+  /** Price the bill through the one engine (/api/intake/quote); the token is what makes AISolar email the estimate. */
+  const price = (seg: Segment, amount: number) => {
+    const seq = ++priceSeq.current;
+    setPricing(true);
+    setQuote(null);
+    getQuotes([monthlyBillItem(seg, amount)]).then((r) => {
+      if (seq !== priceSeq.current) return;
+      setPricing(false);
+      setQuote(r && r[0]?.quoteToken ? r[0] : null);
+    });
+  };
+
+  /* A bill on file from the magic link: priced quietly, no question asked. */
+  const linkBill = link.state === 'ready' ? link.ctx.monthlyBill ?? null : null;
+  useEffect(() => {
+    if (linkBill == null || !(linkBill > 0) || bill !== null) return;
+    setBill({ amount: Math.round(linkBill), orMore: false, from: 'link' });
+    price(segment, linkBill);
+    // segment is read once here; a later switch re-asks the bill (pickSegment).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linkBill]);
+
+  const pickSegment = (v: Segment) => {
+    if (v === segment) return;
+    setSegment(v);
+    // Home and business chips differ: a bill tapped for one is not an answer for the other.
+    if (bill !== null && bill !== 'skipped') {
+      priceSeq.current += 1;
+      setBill(null);
+      setQuote(null);
+      setPricing(false);
+    }
+  };
+
+  const answerBill = (b: Bill) => {
+    setBill(b);
+    if (b && b !== 'skipped') price(segment, b.amount);
+    else {
+      priceSeq.current += 1;
+      setQuote(null);
+      setPricing(false);
+    }
+    if (b === null) {
+      setTimeout(() => billHeadRef.current?.focus({ preventScroll: true }), 30);
+      return;
+    }
+    funnel('quiz_answered', { door: 'book-survey', step: 'bill', value: b === 'skipped' ? 'skipped' : 'given', flow_id: fid });
+    setTimeout(() => askHeadRef.current?.focus({ preventScroll: true }), 30);
+  };
+
   const confirm = link.state === 'ready' && link.full;
   const name = who || 'Solar Ireland';
 
@@ -127,7 +192,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           ['commercial', 'My business'],
         ] as const
       ).map(([v, t]) => (
-        <button key={v} type="button" className="si-chip si-chip--name" aria-pressed={segment === v} onClick={() => setSegment(v)}>
+        <button key={v} type="button" className="si-chip si-chip--name" aria-pressed={segment === v} onClick={() => pickSegment(v)}>
           {t}
         </button>
       ))}
@@ -140,6 +205,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
       <CallDone
         details={sent.d}
         held={sent.held}
+        estimate={sent.estimate}
         who={who}
         headingRef={doneRef}
         headingLevel="h2"
@@ -159,10 +225,54 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         Finding your details
       </div>
     );
-  } else {
+  } else if (bill === null) {
+    const chips = (config?.bill.chips ?? FALLBACK_CHIPS)[segment];
     card = (
       <>
         {segmentPick}
+        <div className="si-callpage__bill" data-bill-question="">
+          <h2 className="si-ask__title" ref={billHeadRef} tabIndex={-1}>
+            Roughly what&apos;s your electricity bill a month?
+          </h2>
+          <p className="si-ask__sub">One tap. It turns into your full estimate, sent by email, before {name} rings you.</p>
+          <div className="si-exit__chips" role="group" aria-label="Your monthly electricity bill">
+            {chips.map((a, i) => {
+              const orMore = i === chips.length - 1;
+              return (
+                <button key={a} type="button" className="si-chip si-chip--name" onClick={() => answerBill({ amount: a, orMore, from: 'chip' })}>
+                  {eur(a)}
+                  {orMore ? '+' : ''}
+                </button>
+              );
+            })}
+          </div>
+          <button type="button" className="si-btn--quiet si-callpage__skip" onClick={() => answerBill('skipped')}>
+            Not sure? Skip this and {who || 'we'} will work it out with you on the call
+          </button>
+        </div>
+      </>
+    );
+  } else if (pricing) {
+    card = (
+      <div className="si-callpage__finding" role="status" aria-live="polite">
+        <span className="si-callpage__pulse" aria-hidden="true" />
+        Working out your estimate
+      </div>
+    );
+  } else {
+    const priced = bill !== 'skipped' && quote?.figures ? { amount: bill.amount, saving: quote.figures.annualSavingEur } : null;
+    card = (
+      <>
+        {segmentPick}
+        {bill !== 'skipped' && bill.from === 'chip' ? (
+          <p className="si-callpage__billset">
+            Bill: about {eur(bill.amount)}
+            {bill.orMore ? '+' : ''} a month.{' '}
+            <button type="button" className="si-btn--quiet" onClick={() => answerBill(null)}>
+              Change
+            </button>
+          </p>
+        ) : null}
         <CallAsk
           idPrefix="si-bs"
           details={details}
@@ -171,9 +281,20 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           online={online}
           confirm={confirm}
           cta="Send my full estimate"
-          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : 'Where should we send your estimate?'}
+          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : quote ? 'Where should we send your estimate?' : `Where should ${who || 'we'} ring you?`}
           headingLevel="h2"
-          sub={confirm ? 'One tap and your full estimate is on its way. Say when suits best for the call, if you like.' : undefined}
+          headingRef={askHeadRef}
+          sub={
+            confirm
+              ? quote
+                ? 'One tap and your full estimate is on its way. Say when suits best for the call, if you like.'
+                : `One tap and ${who || 'we'} will ring you today. Say when suits best, if you like.`
+              : priced
+                ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. Your full estimate shows how.`
+                : bill !== 'skipped' && !quote
+                  ? `We couldn't work out your estimate just now. ${who || 'We'} will work it out with you on the call.`
+                  : undefined
+          }
           ctx={{
             segment,
             door: 'book-survey',
@@ -181,17 +302,18 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
             pkg: null,
             countyContext: null,
             flowId: fid,
-            monthlyBill: ctx?.monthlyBill ?? null,
+            monthlyBill: bill && bill !== 'skipped' ? bill.amount : null,
             annualKwh: null,
-            billPeriod: null,
+            billPeriod: bill && bill !== 'skipped' ? 'month' : null,
             supplier: null,
-            quoteToken: null,
+            // The priced bill: AISolar emails the estimate only when this rides with the call.
+            quoteToken: quote?.quoteToken ?? null,
             billRead: null,
             carry: null,
             // Thread only onto a link that resolved: a dead or expired link sends as a fresh call.
             linkToken: link.state === 'ready' ? token : null,
           }}
-          onSent={(res, d) => setSent({ d, held: !!res.fallback })}
+          onSent={(res, d, s) => setSent({ d, held: !!res.fallback, estimate: s.estimate })}
         />
       </>
     );

@@ -38,3 +38,21 @@ describe('the replay cron', () => {
     expect([dom, mon, dow]).toEqual(['*', '*', '*']);
   });
 });
+
+describe('no priced bill, no estimate promise (H2)', () => {
+  it('the ask without a quote token sells the call, not an email', async () => {
+    const { askCopy } = await import('@/components/intake/CallAsk');
+    const c = askCopy({ estimate: false, who: 'Cal' });
+    expect(c.cta).not.toMatch(/estimate/i);
+    expect(c.promise).toBe('Cal will ring you today and work out your estimate with you.');
+    expect(`${c.cta} ${c.promise} ${c.busy}`).not.toMatch(/email|inbox|on its way|send my/i);
+    expect(askCopy({ estimate: true, who: 'Cal' }).cta).toBe('Send my full estimate');
+  });
+  it('the confirmation without one never says the estimate is on its way', () => {
+    render(<CallDone details={details} who="Cal" estimate={false} />);
+    const text = document.body.textContent || '';
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Cal will ring you today.');
+    expect(text).toContain('Cal will work out your estimate with you on the call.');
+    expect(text).not.toMatch(/inbox|on its way/i);
+  });
+});

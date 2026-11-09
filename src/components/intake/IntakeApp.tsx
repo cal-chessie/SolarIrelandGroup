@@ -800,17 +800,17 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   };
 
   /** The call is booked in: the confirmation replaces the form, and back leaves the flow. */
-  const onCallSent = (res: SubmitResponse, details: CallDetails) => {
+  const onCallSent = (res: SubmitResponse, details: CallDetails, sent: { estimate: boolean }) => {
     clearDeviceDraft();
     const d = draftRef.current;
-    const next = { ...d, call: details, result: res };
+    const next = { ...d, call: details, result: res, callEstimate: sent.estimate };
     setDraft(next);
     draftRef.current = next;
     saveSession(next);
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '' }).announce);
+    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate }).announce);
   };
 
   /* ── Pieces ────────────────────────────────────────────────────── */
@@ -1516,10 +1516,14 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         onDetails={updateCall}
         who={who}
         online={online}
-        heading="Where should we send your full estimate?"
+        heading={quote?.quoteToken ? 'Where should we send your full estimate?' : `Where should ${who || 'we'} ring you?`}
         headingLevel={asH1 ? 'h1' : 'h2'}
         headingRef={asH1 ? h1Ref : undefined}
-        sub={`Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`}
+        sub={
+          quote?.quoteToken
+            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`
+            : `A free 15-minute call with ${who || 'Solar Ireland'} to work out your estimate with you and answer your questions. No visit, no obligation.`
+        }
         ctx={{
           segment: seg || 'domestic',
           door: draft.door,
@@ -1556,7 +1560,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} />
+      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );

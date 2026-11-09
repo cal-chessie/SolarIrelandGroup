@@ -77,6 +77,7 @@ export default function ExitIntent() {
   const [quoteState, setQuoteState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
   const [held, setHeld] = useState(false);
+  const [sentEstimate, setSentEstimate] = useState(true);
   const [fid, setFid] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLHeadingElement>(null);
@@ -318,7 +319,7 @@ export default function ExitIntent() {
           </>
         ) : (
           <p className="si-exit__sub" role="alert">
-            We couldn&apos;t work that out just now. Send us your details and your full estimate follows, or ring us on{' '}
+            We couldn&apos;t work that out just now. Leave your details and {who || 'we'} will ring you today and work it out with you, or ring us on{' '}
             <a className="si-inline" href={PHONE_HREF}>
               {PHONE}
             </a>
@@ -335,7 +336,7 @@ export default function ExitIntent() {
               setStage('ask');
             }}
           >
-            Get my full estimate
+            {quoteState === 'ready' ? 'Get my full estimate' : `Ask ${who || 'us'} to ring me`}
           </button>
         </div>
       </>
@@ -347,7 +348,7 @@ export default function ExitIntent() {
         details={details}
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
-        heading="Where should we send your full estimate?"
+        heading={quotes?.at.quoteToken ? 'Where should we send your full estimate?' : `Where should ${who || 'we'} ring you?`}
         headingLevel="h2"
         headingRef={headRef}
         ctx={{
@@ -366,9 +367,10 @@ export default function ExitIntent() {
           billRead: null,
           carry: null,
         }}
-        onSent={(res, d) => {
+        onSent={(res, d, sent) => {
           setDetails(d);
           setHeld(!!res.fallback);
+          setSentEstimate(sent.estimate);
           setLs(EXIT_KEYS.leadSent, '1');
           funnel('quiz_submitted', { door: 'exit-quiz', segment, extras: extras.length, flow_id: fid });
           setStage('done');
@@ -376,7 +378,7 @@ export default function ExitIntent() {
       />
     );
   } else {
-    body = <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} />;
+    body = <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />;
   }
 
   return (

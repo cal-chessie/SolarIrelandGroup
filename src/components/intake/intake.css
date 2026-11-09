@@ -3442,6 +3442,23 @@ h1.si-ask__title {
   gap: 8px;
   margin-bottom: 24px;
 }
+.si-callpage__bill .si-exit__chips {
+  margin-top: 24px;
+}
+.si-callpage__skip {
+  margin-top: 20px;
+  display: block;
+  text-align: left;
+}
+.si-callpage__billset {
+  margin: 0 0 16px;
+  font-size: 15px;
+  color: var(--si-fg-muted);
+}
+.si-callpage__billset .si-btn--quiet {
+  display: inline;
+  margin-left: 4px;
+}
 .si-callpage__finding {
   display: flex;
   align-items: center;

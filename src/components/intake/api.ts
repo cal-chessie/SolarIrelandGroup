@@ -58,6 +58,11 @@ export function cachedQuote(q: QuoteRequestItem): Quote | null {
   return quoteCache.get(quoteKey(q)) ?? null;
 }
 
+/** A monthly bill as a quote request: the same shape the exit quiz and /book-survey price. */
+export function monthlyBillItem(segment: Segment, amountEur: number): QuoteRequestItem {
+  return { segment, bill: { amountEur: Math.round(amountEur), period: 'month' }, annualKwh: null, supplier: null, homeType: 'unknown', billRead: null };
+}
+
 export async function getQuotes(items: QuoteRequestItem[]): Promise<Quote[] | null> {
   const missing = items.filter((i) => !quoteCache.has(quoteKey(i)));
   if (missing.length) {

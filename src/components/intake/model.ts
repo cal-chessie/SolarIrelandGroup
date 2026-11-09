@@ -50,6 +50,8 @@ export interface Draft {
   carry: { from: string; supplier: string | null; eircode: string | null; mprn: string | null; address: string | null } | null;
   idemKey: string | null;
   result: SubmitResponse | null;
+  /** The call went with a priced bill, so an estimate email is coming (absent means yes, as before). */
+  callEstimate?: boolean;
   resultSlot: Slot | null;
   emailSentTo: string | null;
   door: string;

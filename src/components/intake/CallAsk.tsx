@@ -176,6 +176,30 @@ function track(event: string, properties: Record<string, string | number | boole
 type Issue = null | { kind: 'failed' } | { kind: 'rate' };
 
 /**
+ * The ask's own words, by whether an estimate will really be emailed. With a
+ * priced bill: "Send my full estimate" and "We email it to you now". Without
+ * one (the bill was skipped, or could not be priced): nothing about an email,
+ * Cal works the estimate out with them on the call.
+ */
+export function askCopy(o: { estimate: boolean; who: string | null }): { cta: string; promise: string; busy: string; before: string } {
+  const by = o.who || 'We';
+  if (o.estimate) {
+    return {
+      cta: 'Send my full estimate',
+      promise: `We email it to you now. ${o.who ? `${o.who} rings` : 'We ring'} today to talk it through.`,
+      busy: 'Sending your estimate',
+      before: 'before we can send your estimate',
+    };
+  }
+  return {
+    cta: 'Ring me today',
+    promise: `${by} will ring you today and work out your estimate with you.`,
+    busy: 'Sending',
+    before: `before ${o.who || 'we'} can ring you`,
+  };
+}
+
+/**
  * The form. `bar` renders the primary inside the intake's sticky action bar
  * (Road 2 on phones); otherwise the button sits under the fields.
  */
@@ -201,7 +225,7 @@ export function CallAsk({
   onDetails: (d: Partial<CallDetails>) => void;
   ctx: CallContext;
   who: string | null;
-  onSent: (res: SubmitResponse, d: CallDetails) => void;
+  onSent: (res: SubmitResponse, d: CallDetails, sent: { estimate: boolean }) => void;
   bar?: (button: ReactNode, extra: ReactNode) => ReactNode;
   heading: ReactNode;
   headingLevel?: 'h1' | 'h2' | 'h3';
@@ -211,7 +235,7 @@ export function CallAsk({
   actionsRef?: React.Ref<HTMLDivElement>;
   /** Details already known (a magic link): show them as one "Is this you?" tap, with a way to change them. */
   confirm?: boolean;
-  /** The primary's label. */
+  /** The primary's label when an estimate will be emailed (a priced bill rides with the request). */
   cta?: string;
 }) {
   const [memory, setMemory] = useState<CallMemory | null>(null);
@@ -261,7 +285,7 @@ function CallForm({
   onDetails: (d: Partial<CallDetails>) => void;
   ctx: CallContext;
   who: string | null;
-  onSent: (res: SubmitResponse, d: CallDetails) => void;
+  onSent: (res: SubmitResponse, d: CallDetails, sent: { estimate: boolean }) => void;
   bar?: (button: ReactNode, extra: ReactNode) => ReactNode;
   heading: ReactNode;
   headingLevel?: 'h1' | 'h2' | 'h3';
@@ -288,6 +312,10 @@ function CallForm({
 
   const id = (k: string) => `${idPrefix}-${k}`;
   const whoOr = who || 'we';
+  // The estimate email is AISolar's answer to a priced bill (the quote token).
+  // No token, no estimate: the copy never promises one (H2, 9 Nov review).
+  const estimate = !!ctx.quoteToken;
+  const ask = askCopy({ estimate, who });
 
   useEffect(() => {
     if (viewed.current) return;
@@ -397,7 +425,7 @@ function CallForm({
     track('call_booked', { segment: ctx.segment, door: ctx.door, held: !!res.fallback, best_time: details.bestTime, ms: Date.now() - started, flow_id: ctx.flowId });
     funnel('submit_ok', { door: ctx.door, segment: ctx.segment, held: !!res.fallback, threaded: res.path === 'threaded', flow_id: ctx.flowId });
     rememberCall(details);
-    onSent(res, details);
+    onSent(res, details, { estimate });
   };
 
   const onSubmit = (e: FormEvent) => {
@@ -411,7 +439,7 @@ function CallForm({
         setEditing(true);
         setTimeout(() => document.getElementById(id(first))?.focus(), 0);
       }
-      setSummary(count === 1 ? 'One thing to add before we can send your estimate.' : `${count} things to add before we can send your estimate.`);
+      setSummary(count === 1 ? `One thing to add ${ask.before}.` : `${count} things to add ${ask.before}.`);
       const el = document.getElementById(id(first));
       el?.focus({ preventScroll: true });
       el?.scrollIntoView({ block: 'center' });
@@ -451,13 +479,13 @@ function CallForm({
   );
 
   const label =
-    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : cta;
+    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : estimate ? cta : ask.cta;
   const button = (
     <PrimaryButton
       label={label}
       arrow={false}
       busy={busy}
-      busyLabel="Sending your estimate"
+      busyLabel={ask.busy}
       offline={!online || rateLeft > 0}
       offlineLabel={rateLeft > 0 ? `Try again in ${rateLeft}s` : undefined}
     />
@@ -468,7 +496,7 @@ function CallForm({
   const extra = (
     <>
       <p className="si-ask__promise">
-        <Mail size={14} aria-hidden="true" /> We email it to you now. {who ? `${who} rings` : 'We ring'} today to talk it through.
+        {estimate ? <Mail size={14} aria-hidden="true" /> : <Phone size={14} aria-hidden="true" />} {ask.promise}
       </p>
       {slow ? (
         <p className="si-still" role="status">
@@ -520,7 +548,7 @@ function CallForm({
         </Field>
       );
     return (
-      <Field id={id('email')} label="Email" hint="So you have a note of your figures and the call." error={errOf('email')}>
+      <Field id={id('email')} label="Email" hint={estimate ? 'So you have a note of your figures and the call.' : 'So you have a note of the call.'} error={errOf('email')}>
         <TextInput
           id={id('email')}
           name="email"
@@ -552,7 +580,7 @@ function CallForm({
       {summary && showAll && count > 0 ? (
         <p className="si-err-summary" role="status">
           <CircleAlert size={16} aria-hidden="true" />
-          {count === 1 ? 'One thing to add before we can send your estimate.' : `${count} things to add before we can send your estimate.`}
+          {count === 1 ? `One thing to add ${ask.before}.` : `${count} things to add ${ask.before}.`}
         </p>
       ) : null}
       {editing ? (
@@ -640,7 +668,7 @@ function CallForm({
         </div>
       )}
       <p className="si-legal">
-        We only use your details for this call and your estimate.{' '}
+        We only use your details for this call{estimate ? ' and your estimate' : ''}.{' '}
         <a href="/privacy" target="_blank" rel="noopener">
           Privacy notice
         </a>
@@ -671,13 +699,21 @@ function saveContact() {
  * and the owner has it by email (lib/intake/live/outbox.ts). Nothing has been
  * emailed to the homeowner, so the held state never says "check your inbox".
  */
-export function callDoneCopy(o: { held: boolean; who: string | null; first: string }): { title: string; facts: string; announce: string } {
+export function callDoneCopy(o: { held: boolean; who: string | null; first: string; estimate?: boolean }): { title: string; facts: string; announce: string } {
   const by = o.who || 'We';
   if (o.held) {
     return {
       title: `Saved. ${by} will ring you today.`,
       facts: "If it's late, first thing tomorrow.",
       announce: `Saved. ${by} will ring you today.`,
+    };
+  }
+  if (o.estimate === false) {
+    // No priced bill went with it: no estimate email is coming, so none is promised.
+    return {
+      title: `Thanks${o.first ? `, ${o.first}` : ''}. ${by} will ring you today.`,
+      facts: `${by} will work out your estimate with you on the call. If it's late, first thing tomorrow.`,
+      announce: `Sent. ${by} will ring you today.`,
     };
   }
   return {
@@ -694,6 +730,7 @@ export function CallDone({
   headingLevel = 'h2',
   footer,
   held = false,
+  estimate = true,
 }: {
   details: CallDetails;
   who: string | null;
@@ -702,12 +739,14 @@ export function CallDone({
   footer?: ReactNode;
   /** The submit answered `fallback`: held on the site, not yet with AISolar. */
   held?: boolean;
+  /** A priced bill went with the request, so AISolar emails the estimate. */
+  estimate?: boolean;
 }) {
   const H = headingLevel;
   const fname = firstName(details.name) || 'there';
-  const copy = callDoneCopy({ held, who, first: fname });
+  const copy = callDoneCopy({ held, who, first: fname, estimate });
   return (
-    <div className="si-done-call" data-call-done={held ? 'held' : 'sent'}>
+    <div className="si-done-call" data-call-done={held ? 'held' : estimate ? 'sent' : 'call'}>
       <span className="si-done-mark" aria-hidden="true">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12.5l4.5 4.5L19 7.5" />
