@@ -8,10 +8,13 @@ export const fetchCache = 'force-no-store';
 
 const PAGE_URL = 'https://solarirelandgroup.ie/financing';
 
+const META_TITLE = 'Solar Panel Loans Ireland: Monthly Repayment Calculator';
+const META_DESCRIPTION =
+  'Work out monthly repayments on a solar loan in Ireland, compare paying upfront against finance, and see what the €1,800 SEAI grant takes off the total.';
+
 export const metadata: Metadata = {
-  title: 'Solar Panel Financing & Payment Plans',
-  description:
-    'Solar panel financing in Ireland. Use our free calculator to see monthly repayments, compare upfront versus finance, and how the €1,800 SEAI grant helps.',
+  title: { absolute: META_TITLE },
+  description: META_DESCRIPTION,
   alternates: {
     canonical: PAGE_URL,
     languages: {
@@ -20,9 +23,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Solar Panel Financing & Payment Plans',
-    description:
-      'Use our free financing calculator to see monthly repayments for solar panels in Ireland. Compare upfront vs finance with the €1,800 SEAI grant included.',
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     url: PAGE_URL,
     type: 'website',
     locale: 'en_IE',
@@ -38,9 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Panel Financing Ireland | Payment Plans & Calculator',
-    description:
-      'Free payment plan calculator. See monthly repayments and compare financing options for solar panels in Ireland.',
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     images: ['/og-financing.jpg'],
   },
   robots: {

@@ -52,15 +52,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // is why an unknown slug used to render the 404 page with an HTTP 200.
   if (!article) notFound();
 
-  // Bound the share-card title the same way as <title> (<=60) so blog og:title
-  // and twitter:title do not truncate mid-phrase on social/link previews.
-  const ogTitle = metaTitleForArticle(article.title);
-  const ogDescription = article.excerpt;
+  // A hand-written seoTitle wins outright: it is never cut at ": " or " - ",
+  // because the clause after the colon is usually the question people search.
+  // Without one, the old derived title applies, so nothing changes by accident.
+  // The same value bounds og:title and twitter:title.
+  const metaTitle = article.seoTitle ?? metaTitleForArticle(article.title);
+  const metaDescription = article.seoDescription ?? article.excerpt;
+  const ogTitle = metaTitle;
+  const ogDescription = metaDescription;
 
   return {
     // Absolute (bypasses the "%s | Solar Ireland" template) to keep <title> <=60.
-    title: { absolute: metaTitleForArticle(article.title) },
-    description: article.excerpt,
+    title: { absolute: metaTitle },
+    description: metaDescription,
     alternates: {
       canonical: `${SITE_URL}/blog/${slug}`,
     },
@@ -101,7 +105,7 @@ function getArticleSchema(slug: string) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
-    description: article.excerpt,
+    description: article.seoDescription ?? article.excerpt,
     author: {
       '@type': 'Person',
       name: article.author,
