@@ -26,6 +26,7 @@ import type { AnalyserFailure, AnalyserRead, AnalyserResponse, CallBillRead, Int
 import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeHref, openIntake } from '@/lib/intake/open';
 import { trackEvent } from '@/lib/analytics';
+import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
 import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
@@ -176,6 +177,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       if (es.some((e) => e.isIntersecting) && !viewed.current) {
         viewed.current = true;
         track('analyser_view', { variant, door });
+        funnel('analyser_viewed', { door, variant });
         io.disconnect();
       }
     });
@@ -337,12 +339,14 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     setPhase('failed');
     setAnnounce(FAIL_COPY[reason].title);
     track('read_fail', { reason, flow_id: fid });
+    funnel('read_fail', { door, reason, flow_id: fid });
   };
 
   const onFile = async (raw: File | undefined, method: 'camera' | 'file' | 'drop') => {
     if (!raw) return;
     const run = (runRef.current += 1);
     track('upload_start', { method, segment, flow_id: fid });
+    funnel('upload_started', { door, method, segment, flow_id: fid });
     const okType = /^image\//.test(raw.type) || raw.type === 'application/pdf' || /\.(pdf|jpe?g|png|webp|heic|heif)$/i.test(raw.name);
     if (!okType) return fail('wrong_type');
     const file = await shrink(raw);
@@ -378,6 +382,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       flow_id: fid,
     });
     track('reveal_view', { flow_id: fid });
+    funnel('read_ok', { door, has_split: rd.dayKwh !== null && rd.nightKwh !== null, flow_id: fid });
   };
 
   const openCamera = () => {

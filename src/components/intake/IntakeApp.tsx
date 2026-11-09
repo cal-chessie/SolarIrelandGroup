@@ -37,6 +37,7 @@ import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeHref, type IntakeOpenOptions } from '@/lib/intake/open';
 import { setIntakeOpen, useCookieBannerVisible } from '@/lib/bottomLayer';
 import { trackEvent } from '@/lib/analytics';
+import { funnel } from '@/lib/intake/funnel';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { CallAsk, CallDone, type CallDetails } from './CallAsk';
 import { takeCarry } from './carry';
@@ -742,18 +743,21 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null;
     setPhoto({ status: 'reading', preview, where });
     track('intake_photo', { result: 'started' });
+    funnel('upload_started', { door: 'intake', method: 'photo' });
     const started = Date.now();
     const r = await readBillPhoto(file);
     if (preview) URL.revokeObjectURL(preview);
     if (!r.ok) {
       setPhoto({ status: r.reason === 'unreadable' ? 'unreadable' : 'error', preview: null, where });
       track('intake_photo', { result: 'failed', ms: Date.now() - started });
+      funnel('read_fail', { door: 'intake', reason: r.reason });
       // The row changes in place; nothing ever sits under the bar (ui-spec 4.5).
       setTimeout(() => photoRowRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 40);
       return;
     }
     const read = r.read;
     track('intake_photo', { result: 'read', ms: Date.now() - started, fields_read: Object.values(read).filter((v) => v != null).length });
+    funnel('read_ok', { door: 'intake' });
     const supplierKnown = read.supplier && config?.estimate.suppliers.some((s) => s.name === read.supplier) ? read.supplier : null;
     // "Updated" only when an estimate on screen changes; a first read is not an update.
     if (where === 'time' && stepRef.current === 'time') sharpenTick.current += 1;
