@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { isRateLimited } from '@/lib/leadBridge';
+import { intakeMode } from '@/lib/intake/mode';
+import { stubLinkContext } from '@/lib/intake/stub/linkContext';
 
 /**
  * GET /api/survey-context?lt=<lead token>
@@ -23,6 +25,12 @@ export async function GET(request: Request) {
     const lt = searchParams.get('lt') || '';
     if (lt.length < 32 || lt.length > 128) {
       return NextResponse.json({ ok: false }, { status: 400 });
+    }
+
+    // Stub (never production): fixture links, so the call ask can be built and shot.
+    if (intakeMode() === 'stub') {
+      const fx = stubLinkContext(lt);
+      return NextResponse.json(fx ? { ok: true, ...fx } : { ok: false });
     }
 
     const ingestUrl = process.env.AISOLAR_INGEST_URL;

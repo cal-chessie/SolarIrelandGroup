@@ -59,6 +59,7 @@ function validate(b: SubmitRequest): Fields {
     if (b.bestTime != null && !BEST_TIMES.includes(b.bestTime)) f.bestTime = 'invalid';
     if (b.mprn != null && (typeof b.mprn !== 'string' || !/^10\d{9}$/.test(b.mprn))) f.mprn = 'invalid';
     if (b.eircode != null && (typeof b.eircode !== 'string' || !isValidEircode(b.eircode))) f.eircode = 'invalid';
+    if (b.linkToken != null && (typeof b.linkToken !== 'string' || !HEX64.test(b.linkToken))) f.linkToken = 'invalid';
     return f;
   }
   const booking = !!b.slot || !!b.requestedDay;
@@ -140,6 +141,8 @@ export async function POST(request: Request) {
     S.devices.set(deviceToken, device);
   }
   const leadId = `stub-${deviceToken.slice(0, 12)}`;
+  // A magic link (?lt=) names the lead it belongs to: the request threads onto it.
+  const viaLink = body.intent === 'call' && typeof body.linkToken === 'string' && HEX64.test(body.linkToken);
 
   let res: SubmitResponse;
 
@@ -156,7 +159,7 @@ export async function POST(request: Request) {
     // A free 15-minute call: nothing booked in a calendar, nothing chased.
     // The stub answers like AISolar will and forwards nothing anywhere.
     res = {
-      ok: true, leadId, path: isNewDevice ? 'fresh' : 'threaded', booking: { outcome: 'none' }, estimate, handoff: null, deviceToken: null,
+      ok: true, leadId, path: isNewDevice && !viaLink ? 'fresh' : 'threaded', booking: { outcome: 'none' }, estimate, handoff: null, deviceToken: null,
       next: 'check_email', call: { requested: true, bestTime: body.bestTime ?? null },
     };
   } else if (body.slot) {
@@ -247,6 +250,10 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   // does not take it, it waits in the outbox with the owner alerted.
   const ctx = { asked: !!(payload.slot || payload.requestedDay || payload.intent === 'call'), portalOrigins: portalOrigins() };
   const vh = visitorHeaders(env, request);
+  // A magic link may be the lead's access token (older emails) or its booking
+  // token: ingest-lead v2 reads the first from this header, the second from
+  // body.leadToken (set by toIngestBody). Either way it threads, never duplicates.
+  if (body.intent === 'call' && typeof body.linkToken === 'string' && HEX64.test(body.linkToken)) vh['x-access-token'] = body.linkToken;
 
   // One retry with the SAME key: AISolar answers a repeat with its first answer,
   // finishes a half-done one, or says it is still busy. Never a second lead.

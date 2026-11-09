@@ -252,6 +252,13 @@ describe('the ingest-lead body', () => {
     expect(b.requestedDay).toBeNull();
     expect(b.leadToken).toBeUndefined();
   });
+  it('a magic link (?lt=) names the lead on a call: it wins over the device cookie, and a bad one is dropped', () => {
+    const linked = toIngestBody(submitReq({ intent: 'call', slot: null, requestedDay: null, linkToken: HEX('a') }), HEX('c'));
+    expect(linked.leadToken).toBe(HEX('a'));
+    const bad = toIngestBody(submitReq({ intent: 'call', slot: null, requestedDay: null, linkToken: 'not-a-token' }), HEX('c'));
+    expect(bad.leadToken).toBe(HEX('c'));
+    expect(Object.keys(linked)).not.toContain('linkToken');
+  });
   it('a call request (the call contract): no slot, no day, the best time, a valid MPRN and Eircode only, the bill read field by field', () => {
     const b = toIngestBody(
       submitReq({

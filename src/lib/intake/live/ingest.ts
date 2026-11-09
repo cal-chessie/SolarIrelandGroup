@@ -103,6 +103,8 @@ export function toIngestBody(b: SubmitRequest, deviceToken: string | null): Inge
     body.billRead = billReadOf(b.billRead);
   }
   if (deviceToken && HEX64.test(deviceToken)) body.leadToken = deviceToken;
+  // The magic link names the lead outright, so it wins over this browser's cookie.
+  if (b.intent === 'call' && typeof b.linkToken === 'string' && HEX64.test(b.linkToken)) body.leadToken = b.linkToken;
   return body;
 }
 

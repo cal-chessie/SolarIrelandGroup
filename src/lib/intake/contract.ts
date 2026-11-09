@@ -263,6 +263,12 @@ export interface SubmitRequest {
   bestTime?: BestTime | null;
   /** From the bill only, never asked. 11 digits starting 10. */
   mprn?: string | null;
+  /**
+   * The homeowner's own magic link (?lt= from an estimate email, 64 hex).
+   * Threads the call request onto their existing lead, never a second one.
+   * Server side only on the way out: never echoed, never in a URL we build.
+   */
+  linkToken?: string | null;
   billRead?: CallBillRead | null;
   name: string | null;
   email: string;
