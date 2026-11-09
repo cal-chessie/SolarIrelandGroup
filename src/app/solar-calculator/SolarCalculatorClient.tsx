@@ -11,9 +11,6 @@ import {
   Euro,
   Sun,
   Shield,
-  Clock,
-  TrendingUp,
-  Leaf,
   CheckCircle2,
   ArrowRight,
   MessageCircle,
@@ -21,21 +18,6 @@ import {
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { ENERGY, DOMESTIC_MIN_KWP } from '@/lib/estimate';
-
-const QuickSavingsCalculator = dynamic(
-  () => import('@/components/solar/QuickSavingsCalculator'),
-  {
-    loading: () => (
-      <section className="py-20 px-4 bg-[#0a0a0a]">
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-12 flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin" />
-          </div>
-        </div>
-      </section>
-    ),
-  }
-);
 
 const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
   loading: () => (
@@ -70,16 +52,15 @@ function CalculatorHero() {
         </h1>
 
         <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          See exactly how much you could save with solar panels. Enter your electricity bill,
-          pick your home type, and get an instant personalised estimate - no signup, no hassle.
+          See what solar would save you, read from your own electricity bill. Upload it or type
+          in the amount, and see your saving straight away, with nothing to sign up for.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        {/* Only the grant stays: the payback, 25-year and CO2 cards were
+            figures the analyser above does not produce (Cal, 9 Nov). */}
+        <div className="flex justify-center max-w-3xl mx-auto">
           {[
-            { icon: Euro, label: '€1,800 SEAI Grant (ROI)', sub: 'Automatically included' },
-            { icon: Clock, label: '5-7 Year Payback', sub: 'After grant deduction' },
-            { icon: TrendingUp, label: `${SOLAR_DATA.savings.label25yr} Over 25 Years`, sub: 'Rising energy prices' },
-            { icon: Leaf, label: '2,500+ kg CO₂/yr', sub: 'Environmental impact' },
+            { icon: Euro, label: `${SOLAR_DATA.grant.label} SEAI Grant (ROI)`, sub: 'Automatically included' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -138,24 +119,22 @@ function CalculatorExplainer() {
     {
       num: '01',
       title: 'Upload or Type Your Bill',
-      // Read from the engine, so this can never again describe rates the
-      // calculator on the same page is not using.
-      desc: `Photograph your bill and the analyser reads it, or move the slider to your monthly amount. We use ${Math.round(ENERGY.unitRateEur * 100)}c/kWh including VAT, the bottom of the current Irish market band, and €${ENERGY.standingChargeAnnualEur} a year in standing charges, which solar never removes.`,
+      desc: 'Take a photo of your bill or upload the PDF, and the analyser reads your unit rate, standing charge and day and night split. No bill to hand? Answer 3 quick questions instead.',
     },
     {
       num: '02',
-      title: 'Pick Your Home Type',
-      desc: 'Choose from Apartment, Semi-Detached, or Detached. This determines how many panels can fit on your roof - up to 22 premium 440W panels for larger homes.',
+      title: 'See Your Saving and Battery Case',
+      desc: `One yearly saving, priced by the same engine as your full estimate. If your bill is heavy at night, you also see whether a battery is worth a look, with the ${SOLAR_DATA.batteryGrant.label} SEAI battery grant.`,
     },
     {
       num: '03',
-      title: 'See Your Savings',
-      desc: 'Get instant results: annual savings, monthly bill reduction, system size, payback period, and 25-year savings projection. Expand for monthly generation charts and full cost breakdown.',
+      title: 'Get Your Full Estimate by Email',
+      desc: 'Add your name, mobile and email, and your full estimate goes to your inbox.',
     },
     {
       num: '04',
-      title: 'Book the Survey',
-      desc: 'Happy with the numbers? Book a free site survey and we will confirm them against your actual roof, then handle the SEAI paperwork.',
+      title: 'Cal Rings to Talk It Through',
+      desc: "A free 15-minute call today, or first thing tomorrow if it's late. He goes through your figures and answers your questions. No visit, no obligation.",
     },
   ];
 
@@ -247,7 +226,7 @@ function DataTransparency() {
 
         <p className="text-center text-xs text-gray-600 mt-6 leading-relaxed max-w-xl mx-auto">
           Actual savings depend on roof orientation, pitch, shading, and your consumption patterns.
-          These figures represent a well-optimized installation. A free site survey gives you exact, personalised numbers.
+          These figures represent a well-optimized installation. Your full estimate is priced on your own bill, and Cal goes through it with you on the call.
         </p>
       </div>
     </section>
@@ -264,7 +243,7 @@ function FinalCTA() {
             Ready to See Your <span className="text-gradient">Exact Savings?</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            The calculator gives you a great estimate. For exact figures based on your roof, get a free site survey - it takes 30 minutes and there&apos;s zero obligation.
+            Read your bill above and your full estimate comes by email, priced on your own usage. Then a free 15-minute call to go through it. No visit, no obligation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -303,7 +282,6 @@ export default function SolarCalculatorClient() {
             road, one tap away. */}
         <BillAnalyser door="calculator" />
         <TrustBadges />
-        <QuickSavingsCalculator />
         <CalculatorExplainer />
         <DataTransparency />
         <FAQ />

@@ -148,7 +148,7 @@ function PreFooterCTA() {
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed mx-auto lg:mx-0">
             Send us a photo of your electricity bill. You get your system size,
             your yearly saving and your payback in about fifteen seconds, before
-            anyone rings you. Or skip ahead and book the survey.
+            anyone rings you. Then your full estimate comes by email.
           </p>
         </div>
 
