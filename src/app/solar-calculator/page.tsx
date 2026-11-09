@@ -9,9 +9,9 @@ export const fetchCache = 'force-no-store';
 const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 
 export const metadata: Metadata = {
-  title: 'Solar Savings Calculator',
+  title: { absolute: 'Solar Panel Calculator Ireland: Savings From Your Bill' },
   description:
-    'Free solar savings calculator for Irish homes. See your annual savings, payback period and 25-year projection, including the €1,800 SEAI grant.',
+    'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
   alternates: {
     canonical: CALC_URL,
     languages: {
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Solar Savings Calculator Ireland | How Much Can You Save?',
+    title: 'Solar Panel Calculator Ireland: Savings From Your Bill',
     description:
-      'Free solar calculator for Irish homes. See your annual savings, payback period and 25-year ROI from your actual bill, including the €1,800 SEAI grant.',
+      'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
     url: CALC_URL,
     type: 'website',
     locale: 'en_IE',
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Savings Calculator | Free Irish Solar Panel ROI Calculator',
+    title: 'Solar Panel Calculator Ireland: Savings From Your Bill',
     description:
-      'How much could solar panels save you? Enter your electricity bill and find out instantly. SEAI grant included.',
+      'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
     images: ['/hero-solar.jpg'],
   },
   robots: {

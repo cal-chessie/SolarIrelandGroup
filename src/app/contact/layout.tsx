@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us & Book a Free Survey',
+  // The site sells the free estimate (bill analysis), not the survey, so the
+  // contact title says estimate. No "15-minute call" wording.
+  title: { absolute: 'Contact Solar Ireland | Free Solar Estimate From Your Bill' },
   description:
-    'Get in touch with Solar Ireland. WhatsApp, phone, email, or fill in our contact form. Free no-obligation solar survey across all 32 counties.',
+    'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
   openGraph: {
-    title: 'Contact Us & Book a Free Survey',
+    title: 'Contact Solar Ireland | Free Solar Estimate From Your Bill',
     description:
-      'Get in touch with Solar Ireland. WhatsApp, phone, email, or contact form. Free no-obligation solar survey.',
+      'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
     url: 'https://solarirelandgroup.ie/contact',
     siteName: 'Solar Ireland',
     locale: 'en_IE',
@@ -23,9 +25,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Solar Ireland | Free Solar Survey',
+    title: 'Contact Solar Ireland | Free Solar Estimate From Your Bill',
     description:
-      'WhatsApp, phone, email, or contact form. Free solar survey.',
+      'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
     images: ['https://solarirelandgroup.ie/og-contact.png'],
   },
   alternates: {

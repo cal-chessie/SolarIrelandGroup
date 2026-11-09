@@ -2,9 +2,9 @@
  * The blog slugs that exist, as a tiny standalone module.
  *
  * middleware.ts needs this to 404 unknown /blog/* URLs, and it cannot import
- * blog-data.ts: that file is ~4,800 lines of article bodies and middleware
- * runs on every document request. Generated from blog-data.ts by
- * scripts/gen-blog-slugs.ts; re-run it when articles change.
+ * blog-data.ts: that file is ~5,000 lines of article bodies and middleware
+ * runs on every document request. Kept by hand: add the slug here whenever an
+ * article is added. src/__tests__/blog-slugs.test.ts fails if the two drift.
  */
 export const BLOG_SLUGS: ReadonlySet<string> = new Set([
   'are-solar-panels-worth-it-ireland-2026',
@@ -32,4 +32,5 @@ export const BLOG_SLUGS: ReadonlySet<string> = new Set([
   'solar-panels-rental-property-landlord-guide',
   'do-solar-panels-add-value-to-your-home-ireland',
   'solar-panel-maintenance-ireland-do-they-need-cleaning',
+  'what-is-my-mprn-number-ireland',
 ]);

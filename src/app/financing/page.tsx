@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import FinancingClient from './FinancingClient';
+import { FINANCING_FAQS } from './financing-faq';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -8,10 +9,13 @@ export const fetchCache = 'force-no-store';
 
 const PAGE_URL = 'https://solarirelandgroup.ie/financing';
 
+const META_TITLE = 'Solar Panel Loans Ireland: Monthly Repayment Calculator';
+const META_DESCRIPTION =
+  'Work out monthly repayments on a solar loan in Ireland, compare paying upfront against finance, and see what the €1,800 SEAI grant takes off the total.';
+
 export const metadata: Metadata = {
-  title: 'Solar Panel Financing & Payment Plans',
-  description:
-    'Solar panel financing in Ireland. Use our free calculator to see monthly repayments, compare upfront versus finance, and how the €1,800 SEAI grant helps.',
+  title: { absolute: META_TITLE },
+  description: META_DESCRIPTION,
   alternates: {
     canonical: PAGE_URL,
     languages: {
@@ -20,9 +24,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Solar Panel Financing & Payment Plans',
-    description:
-      'Use our free financing calculator to see monthly repayments for solar panels in Ireland. Compare upfront vs finance with the €1,800 SEAI grant included.',
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     url: PAGE_URL,
     type: 'website',
     locale: 'en_IE',
@@ -38,9 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Panel Financing Ireland | Payment Plans & Calculator',
-    description:
-      'Free payment plan calculator. See monthly repayments and compare financing options for solar panels in Ireland.',
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     images: ['/og-financing.jpg'],
   },
   robots: {
@@ -64,9 +66,9 @@ function FinancingSchema() {
         __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'WebApplication',
-          name: 'Solar Panel Financing Calculator',
+          name: 'Solar Panel Loan Repayment Calculator',
           description:
-            'Free financing calculator for solar panels in Ireland. Calculate monthly repayments, compare payment plans, and see how the SEAI grant affects your financing.',
+            'Free solar loan repayment calculator for Irish homes. Work out monthly repayments at the rate your lender quotes, compare paying upfront against a loan, and see how the SEAI grant affects what you borrow.',
           url: PAGE_URL,
           applicationCategory: 'FinanceApplication',
           operatingSystem: 'Web',
@@ -95,40 +97,12 @@ function FinancingFAQSchema() {
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
           '@id': PAGE_URL + '#faq',
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'Can I get finance for solar panels in Ireland?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Several Irish banks and credit unions offer green loans specifically for solar panel installations. Typical rates range from 5.5% to 8.9% APR, with repayment terms from 3 to 10 years. Many customers find that their monthly savings on electricity bills exceed their loan repayments from day one.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'How does the SEAI grant work with financing?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'The €1,800 SEAI grant applies in the Republic of Ireland only. SEAI pays it into the bank account nominated on the Request for Payment form, once the completion documents are in and the post-works BER is published, normally about 4 to 6 weeks later. By default that is your own account. Ask us before arranging finance, because it decides whether you borrow the full €8,200 or the €6,400 after-grant figure.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'Is it better to pay upfront or finance solar panels?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Paying upfront gives the best return on investment - a typical payback of 5-7 years. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar can still deliver significant long-term savings.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'What deposit do I need for solar panel finance?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Many green loans in Ireland require no deposit at all. The SEAI grant effectively acts as a deposit since it reduces the total installation cost. Some providers offer 100% finance on solar panel installations up to €15,000, with flexible repayment terms.',
-              },
-            },
-          ],
+          // The same array the visible FAQ renders, so the two cannot drift.
+          mainEntity: FINANCING_FAQS.map((f) => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
         }),
       }}
     />

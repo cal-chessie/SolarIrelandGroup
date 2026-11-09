@@ -31,6 +31,7 @@ import {
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { estimate, installCostEur, homeGrant, PRICING } from '@/lib/estimate';
+import { FINANCING_ANSWER, FINANCING_FAQS } from './financing-faq';
 
 // The after-grant range, worked out by the engine rather than typed: the smallest
 // system we fit (4 kWp, panels only, solar grant) up to the Premium package
@@ -72,11 +73,18 @@ const SYSTEM_PRESETS = [4, 5, 6, 8, 9.7].map((kwp, i) => ({
   })(),
 }));
 
+/**
+ * Loan terms with ONE example rate. Not an offer and not any lender's APR:
+ * every Irish lender sets its own, and the page used to print a rate per term
+ * labelled "Representative APR" that nobody had sourced. 7% is a round
+ * illustration so the maths can run; the page says so next to it.
+ */
+const EXAMPLE_RATE = 7;
 const FINANCE_TERMS = [
-  { months: 36, label: '3 years', rate: 5.9 },
-  { months: 60, label: '5 years', rate: 6.4 },
-  { months: 84, label: '7 years', rate: 6.9 },
-  { months: 120, label: '10 years', rate: 7.9 },
+  { months: 36, label: '3 years', rate: EXAMPLE_RATE },
+  { months: 60, label: '5 years', rate: EXAMPLE_RATE },
+  { months: 84, label: '7 years', rate: EXAMPLE_RATE },
+  { months: 120, label: '10 years', rate: EXAMPLE_RATE },
 ];
 
 const DEPOSIT_OPTIONS = [0, 10, 20, 30, 50];
@@ -209,9 +217,9 @@ function FinancingHero() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
           {[
-            { icon: CreditCard, label: 'From 0% Deposit', sub: 'Many green loans' },
-            { icon: Percent, label: '5.5–7.9% APR', sub: 'Green loan rates' },
-            { icon: TrendingUp, label: 'Cash-Flow Positive', sub: 'Savings > repayments' },
+            { icon: CreditCard, label: 'Banks & Credit Unions', sub: 'Green and home improvement loans' },
+            { icon: Percent, label: 'Your Lender Sets the APR', sub: 'Compare the rate you are quoted' },
+            { icon: TrendingUp, label: 'Savings vs Repayments', sub: 'See both side by side' },
             { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'We guide you through it' },
           ].map((item) => {
             const Icon = item.icon;
@@ -232,12 +240,58 @@ function FinancingHero() {
   );
 }
 
+/**
+ * The direct answer to the loans searches ("solar panel loans", "loan for
+ * solar panels"), as plain server-rendered text near the top, plus the three
+ * facts that decide how much you borrow. Official sources only, no rates.
+ */
+function FinancingShortAnswer() {
+  return (
+    <section className="px-4 pb-12 bg-[#0a0a0a]">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+          Can you get a loan for <span className="text-gradient">solar panels in Ireland?</span>
+        </h2>
+        <p className="text-base sm:text-lg text-gray-200 leading-relaxed border-l-2 border-green-400/60 pl-4 mb-6">
+          {FINANCING_ANSWER}
+        </p>
+        <ul className="space-y-3">
+          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+            <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
+            <span>
+              <span className="text-white font-semibold">What a system costs:</span> a 4 kWp system is{' '}
+              {eurWhole(installCostEur(4))} installed, or {eurWhole(NET_LOW)} after the SEAI grant. See the{' '}
+              <a href="/blog/how-much-do-solar-panels-cost-ireland-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">full solar panel cost guide</a>.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+            <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
+            <span>
+              <span className="text-white font-semibold">When the grant arrives:</span> after the work and the post-works BER, so plan to fund the full price first. The{' '}
+              <a href="/blog/complete-guide-seai-solar-grant-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">SEAI solar grant guide</a>{' '}
+              covers the steps.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+            <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
+            <span>
+              <span className="text-white font-semibold">Whether it pays:</span> compare your repayment with the monthly saving. Start with{' '}
+              <a href="/blog/are-solar-panels-worth-it-ireland-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">are solar panels worth it in Ireland</a>, then get your own figure from the{' '}
+              <a href="/solar-calculator?src=financing-answer" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">free solar savings calculator</a>.
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'Transparent Pricing', desc: 'No hidden fees' },
     { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'You apply online, we guide you' },
-    { icon: BadgeCheck, label: 'Green Loan Friendly', desc: 'Work with all major lenders' },
+    { icon: BadgeCheck, label: 'Lender-Ready Quotes', desc: 'Itemised for a loan application' },
   ];
 
   return (
@@ -372,7 +426,7 @@ function FinancingCalculator() {
               2. Deposit Amount
             </h3>
             <p className="text-xs text-gray-500 mb-5">
-              Choose how much to pay upfront. Many green loans require no deposit - the grant acts as your deposit.
+              Choose how much to pay upfront. Whether a deposit is needed is up to your lender.
             </p>
             <div className="flex flex-wrap gap-2">
               {DEPOSIT_OPTIONS.map((d) => (
@@ -407,7 +461,9 @@ function FinancingCalculator() {
               3. Loan Term &amp; Rate
             </h3>
             <p className="text-xs text-gray-500 mb-5">
-              Longer terms mean lower monthly payments but more interest overall.
+              Longer terms mean lower monthly payments but more interest overall. The calculator uses an
+              example rate of {EXAMPLE_RATE}% so the sums can run: it is not an offer or any lender&apos;s APR.
+              Use the rate your bank or credit union actually quotes you.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {FINANCE_TERMS.map((t) => (
@@ -425,7 +481,7 @@ function FinancingCalculator() {
                 >
                   <p className="text-sm font-bold text-white">{t.label}</p>
                   <p className="text-lg font-bold text-sky-400 mt-1">{t.rate}%</p>
-                  <p className="text-[10px] text-gray-600 mt-0.5">Representative APR</p>
+                  <p className="text-[10px] text-gray-600 mt-0.5">Example rate, not an offer</p>
                 </button>
               ))}
             </div>
@@ -453,7 +509,7 @@ function FinancingCalculator() {
                   {fmtDec(result.monthlyPayment)}
                 </p>
                 <p className="text-sm text-gray-400">
-                  over {termMonths} months at {term.rate}% APR
+                  over {termMonths} months at an example rate of {term.rate}%
                 </p>
 
                 {isCashFlowPositive && (
@@ -527,8 +583,8 @@ function FinancingCalculator() {
                     <span className="font-semibold text-white">About the grant timing.</span>{' '}
                     These figures assume the {SOLAR_DATA.grant.label} grant is applied to your price
                     up front. SEAI pays the grant into whichever bank account is nominated on the
-                    Request for Payment form, normally about 4 to 6 weeks after your post-works BER
-                    is published, and by default that account is yours. Ask us at quote stage which
+                    Request for Payment form (SEAI says to allow 4 to 6 weeks once it has all the
+                    completion documents and the post-works BER), and by default that account is yours. Ask us at quote stage which
                     applies to your job, because if the grant comes to you the amount you borrow at
                     the start is {fmt(result.systemCost)}, not {fmt(result.netCost)}.
                   </p>
@@ -627,20 +683,20 @@ function FinancingCalculator() {
 function FinancingOptions() {
   const options = [
     {
-      title: 'Green Loan (Recommended)',
+      title: 'Green or Home Improvement Loan',
       icon: Banknote,
       color: 'green',
-      tag: 'Most Popular',
+      tag: 'Flexible',
       tagColor: 'bg-green-400/10 text-green-400',
       iconBg: 'bg-green-400/10',
       iconColor: 'text-green-400',
       items: [
-        '5.5–7.9% APR from Irish banks & credit unions',
-        'Repayment terms from 3 to 10 years',
-        'Typically no deposit required',
-        'SEAI grant reduces the loan amount automatically',
-        'Monthly savings often exceed repayments from day one',
-        'Available from AIB, Bank of Ireland, PTSB, credit unions',
+        'Offered by Irish banks and credit unions',
+        'Each lender sets its own rate, term and deposit rules',
+        'Compare the APR and total cost of credit you are quoted',
+        'The SEAI grant arrives after the work, so you can put it against the loan',
+        'Solar on its own is not covered by the SBCI Home Energy Upgrade Loan',
+        'Use the calculator above with the rate you are actually offered',
       ],
     },
     {
@@ -652,27 +708,27 @@ function FinancingOptions() {
       iconBg: 'bg-amber-400/10',
       iconColor: 'text-amber-400',
       items: [
-        'Fastest payback: 5–7 years after SEAI grant',
+        'Fastest payback: about 6 to 7 years after the SEAI grant',
         'Highest 25-year return on investment',
         'No interest costs - every cent goes to savings',
-        'Best option if you have savings earning less than 7%',
+        'Worth comparing with what your savings currently earn',
         `${eurWhole(NET_LOW)} to ${eurWhole(NET_HIGH)} typical out-of-pocket cost after the grants`,
-        'Instant equity increase in your property',
+        'A better BER rating for the house',
       ],
     },
     {
       title: 'Mortgage Top-Up',
       icon: CreditCard,
       color: 'sky',
-      tag: 'Lowest Rate',
+      tag: 'Ask Your Lender',
       tagColor: 'bg-sky-400/10 text-sky-400',
       iconBg: 'bg-sky-400/10',
       iconColor: 'text-sky-400',
       items: [
-        'Add solar cost to your existing mortgage',
-        'Typically the lowest interest rate available',
-        'Spread over remaining mortgage term (15–25 years)',
-        'Monthly impact is minimal on a large mortgage',
+        'Add solar cost to your existing mortgage, where your lender allows it',
+        'Mortgage rates are usually lower than personal loan rates',
+        'Spread over the remaining mortgage term',
+        'A long term can mean more interest in total: compare the full cost',
         'SEAI grant reduces the amount you need to add',
         'Speak to your lender about green mortgage top-ups',
       ],
@@ -735,13 +791,13 @@ function HowFinancingWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Get Your Free Quote',
-      desc: 'Book a free, no-obligation site survey. We assess your roof, recommend the optimal system size, and provide a detailed itemised quote. Prices are shown both before and after the SEAI grant, and we prepare and submit the grant application for you.',
+      title: 'Get Your Free Estimate',
+      desc: 'Upload a bill to the free solar calculator for your system size, saving and payback, then talk it through with us on a call. A site survey confirms the roof and you get an itemised quote, with prices shown before and after the SEAI grant.',
     },
     {
       num: '02',
-      title: 'Apply for Green Finance',
-      desc: 'If you choose to finance, we can recommend lenders currently offering competitive green loan rates. Most Irish banks and credit unions have dedicated solar/energy efficiency loans with rates from 5.5% APR. The application is straightforward and typically takes 3–5 business days.',
+      title: 'Arrange Your Finance',
+      desc: 'If you choose to borrow, take the itemised quote to your bank or credit union. Each lender sets its own rate, term and approval time, so compare the APR and total cost of credit you are quoted. Solar on its own is not covered by the SBCI Home Energy Upgrade Loan.',
     },
     {
       num: '03',
@@ -751,7 +807,7 @@ function HowFinancingWorks() {
     {
       num: '04',
       title: 'Start Saving Immediately',
-      desc: 'Your system starts generating electricity the same day. With a green loan, your monthly savings on electricity often exceed your loan repayment from the very first month - meaning solar costs you nothing extra and actually puts money in your pocket from day one.',
+      desc: 'Your system starts generating electricity the same day. Depending on the rate and term, your monthly saving on electricity can come close to, or beat, your loan repayment, and the SEAI grant follows a few weeks after the paperwork is in.',
     },
   ];
 
@@ -793,41 +849,10 @@ function HowFinancingWorks() {
 }
 
 function FinancingFAQ() {
-  const faqs = [
-    {
-      q: 'Can I get finance for solar panels in Ireland?',
-      a: `Yes. Several Irish banks and credit unions offer green loans specifically for solar panel installations. Typical rates range from 5.5% to 8.9% APR, with repayment terms from 3 to 10 years. AIB, Bank of Ireland, and PTSB all have dedicated green loan products. Many customers find that their monthly savings on electricity bills exceed their loan repayments from day one, making the decision a no-brainer. We can recommend suitable lenders during your free survey.`,
-    },
-    {
-      q: 'How does the SEAI grant work with financing?',
-      a: `The ${SOLAR_DATA.grant.label} SEAI grant applies in the Republic of Ireland only. SEAI pays it into the bank account nominated on the Request for Payment form, once your completion documents are in and the post-works BER has been published, normally about 4 to 6 weeks later. By default that account is yours, so the usual pattern is that you pay the full price and the grant follows. A registered contractor can also offer the price net of the grant instead, with our account nominated on that form. Ask us which applies to your job before you arrange finance, because it changes whether you borrow ${'$'}{fmtEur(installCostEur(DOMESTIC_MIN_KWP))} or ${'$'}{fmtEur(installCostEur(DOMESTIC_MIN_KWP) - SOLAR_DATA.grant.amount)} on a ${'$'}{DOMESTIC_MIN_KWP} kWp system.`,
-    },
-    {
-      q: 'Is it better to pay upfront or finance solar panels?',
-      a: `It depends on your circumstances. Paying upfront gives the best pure return on investment - a typical payback of 5–7 years - because there are no interest costs. However, financing can be cash-flow positive from day one if your monthly electricity savings exceed your loan repayments. With green loan rates as low as 5.5% APR, financed solar still delivers €20,000–€35,000 in net savings over 25 years. If your savings are earning less than 5% in a deposit account, financing at 5.5% while earning 18% ROI on solar makes financial sense.`,
-    },
-    {
-      q: 'What deposit do I need for solar panel finance?',
-      a: `Many green loans in Ireland require no deposit at all - you can borrow 100% of the post-grant cost. The SEAI grant effectively acts as a deposit since it reduces the total installation cost before you even need to borrow. Some lenders offer green loans up to €15,000 with no deposit and flexible repayment terms. Even a small deposit of 10–20% can significantly reduce your monthly repayments and total interest paid.`,
-    },
-    {
-      q: 'Can I add solar to my existing mortgage?',
-      a: `Yes, this is called a mortgage top-up and it can be the cheapest option. Because mortgage rates (typically 3.5–4.5%) are lower than personal loan rates, your monthly cost is minimal when spread over your remaining mortgage term. For example, adding €6,400 to a €200,000 mortgage over 20 years adds roughly €39 a month. Contact your existing lender to ask about green or energy-efficiency mortgage top-ups. Not all lenders offer this, but most major Irish banks do.`,
-    },
-    {
-      q: 'What if I sell my house before the loan is paid off?',
-      a: `Solar panels improve your BER, and a better BER is worth real money when you sell. We would not put a figure on it for your house: that depends on the property and the market on the day. You have a few options: pay off the remaining loan balance from the sale proceeds (the increase in property value usually covers this), transfer the loan to your new property, or the buyer can assume the green loan in some cases. Either way, solar is a net positive for your property value and selling price.`,
-    },
-    {
-      q: 'Are there any government-backed green finance schemes?',
-      a: `While the Irish government doesn&apos;t directly offer solar loans, the SEAI grant significantly reduces your upfront cost. Additionally, the Home Energy Upgrade Loan scheme, launched in partnership with the Strategic Banking Corporation of Ireland (SBCI), offers reduced-rate loans for energy efficiency improvements including solar panels. These loans are available through participating lenders at rates that can be 1–2% lower than standard personal loans. We can check your eligibility during the survey.`,
-    },
-    {
-      q: 'How quickly can I get approved for a green loan?',
-      a: `Most green loan applications are approved within 3–5 business days. Online applications through your bank are typically fastest. Credit union loans may take slightly longer (5–7 days) but often offer more competitive rates. We recommend applying for finance before or immediately after your free survey so everything is in place for installation day. There&apos;s no obligation to proceed even if you&apos;re pre-approved.`,
-    },
-  ];
-
+  // One source for the visible FAQ and the FAQPage schema (financing-faq.ts).
+  // The old inline list printed unsourced APRs, wrongly said the SBCI loan
+  // covers solar on its own, and showed a literal "${fmtEur(...)}" to readers.
+  const faqs = FINANCING_FAQS;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -948,6 +973,7 @@ export default function FinancingClient() {
 
       <main>
         <FinancingHero />
+        <FinancingShortAnswer />
         <TrustBadges />
         <FinancingCalculator />
         <FinancingOptions />

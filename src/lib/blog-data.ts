@@ -11,7 +11,19 @@ export type ContentSection =
 
 export interface Article {
   slug: string;
+  /** The H1, the JSON-LD headline and the breadcrumb name. Never the <title>
+   *  when seoTitle is set. */
   title: string;
+  /** Search-result title (50 to 60 chars). Used for <title> and og/twitter
+   *  title only. Omit it and the title is derived from `title` as before. */
+  seoTitle?: string;
+  /** Meta description (140 to 155 chars). Used for the meta description,
+   *  og/twitter description and the Article JSON-LD description. Omit it and
+   *  `excerpt` is used, as before. `excerpt` stays the blog-card copy. */
+  seoDescription?: string;
+  /** A 40 to 60 word direct answer to the exact question the page is searched
+   *  for. Shown under the H1 in place of the excerpt. */
+  answer?: string;
   excerpt: string;
   category: string;
   date: string;
@@ -103,9 +115,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panel-maintenance-ireland-do-they-need-cleaning",
     "title": "Solar Panel Maintenance in Ireland: Do They Need Cleaning?",
+    "seoTitle": "Do Solar Panels Need Cleaning in Ireland? Rarely. Here's Why",
+    "seoDescription": "Irish rain does most of the cleaning and panels have no moving parts. The short list of real solar maintenance: monitoring, one inverter swap, warranties.",
+    "answer": "Rarely. Irish rain rinses tilted panels clean, and there are no moving parts, so most homes do nothing for years without losing meaningful output. Cleaning is only worth it on a very shallow roof, under heavy trees or with persistent bird mess. The real maintenance is watching your monitoring app and one inverter replacement over the system's life.",
     "excerpt": "Almost none. Irish rain does most of the work, panels have no moving parts, and most homeowners do nothing for years. Here is the honest, short list of what solar panels actually need.",
     "category": "guides",
     "date": "13 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -175,6 +191,10 @@ export const articles: Article[] = [
         "body": "A solar system that is watched will tell you when something is wrong long before it costs you. That is the whole job - and the app does most of it for you."
       },
       {
+        "type": "paragraph",
+        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
+      },
+      {
         "type": "cta",
         "text": "Thinking about solar? Start with your bill",
         "href": "/solar-calculator"
@@ -184,10 +204,13 @@ export const articles: Article[] = [
   {
     "slug": "are-solar-panels-worth-it-ireland-2026",
     "title": "Are Solar Panels Worth It in Ireland? 2026 Verdict",
+    "seoTitle": "Are Solar Panels Worth It in Ireland? For Most Homes, Yes",
+    "seoDescription": "Typical savings of €800 to €1,400 a year, payback in 5 to 7 years, and the €1,800 SEAI grant still in place. When it pays, and the cases where it doesn't.",
+    "answer": "Yes, for most Irish homes. A typical system saves €800 to €1,400 a year and pays for itself in 5 to 7 years, with the €1,800 SEAI grant and 0% VAT still in place. A 4 kWp system costs €6,400 after the grant. It is not worth it on a heavily shaded roof or a very small bill.",
     "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -240,8 +263,8 @@ export const articles: Article[] = [
             "€800-1,400"
           ],
           [
-            "Typical export income (4kWp)",
-            "€200-400 a year"
+            "Typical export income (4kWp, no battery)",
+            "€400-550 a year"
           ],
           [
             "Typical payback",
@@ -264,13 +287,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "To qualify, your home must have been built and occupied before 2025, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online before any work starts, the grant offer normally issues immediately, and it stays valid for 8 months. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "To qualify, your home must have been built and occupied before 2025, have a valid MPRN (the 11-digit meter point number on your bill), and have received no previous solar grant at that MPRN. Both owner-occupiers and private landlords are eligible - a point plenty of people get wrong. You apply online and wait for SEAI's letter of offer before any work starts, and you then have 8 months to complete the installation. The full walkthrough is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "How the grant is actually paid",
-        "body": "SEAI pays the grant directly to **your bank account** by EFT, usually within about 4-6 weeks of your completion documents and post-works BER being published. It is not deducted from the installer's invoice, so budget for the gross price and treat the €1,800 as a rebate that follows."
+        "body": "SEAI pays the grant directly to **your bank account** by EFT. SEAI says to allow 4 to 6 weeks once it has all your completion documents and the post-works BER, longer if the home is picked for an inspection. It is not deducted from the installer's invoice, so budget for the gross price and treat the €1,800 as a rebate that follows."
       },
       {
         "type": "heading",
@@ -315,7 +338,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 19c and 24c per kWh, typically around 20c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system earns **€200-400 a year**. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
+        "text": "Every unit you export is bought by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 these sit roughly between 18.5c and 24c per kWh, typically around 20c - and the CRU oversees the scheme but does not set a minimum rate, so it pays to compare when your contract renews. You need a smart meter for metered export payments, and a typical 4kWp system with no battery earns **roughly €400 to €550 a year**, depending on how much of its output you use at home. The first €400 of annual export income is exempt from income tax, per citizensinformation.ie. How the payments, rates and metering fit together is covered in our [Clean Export Guarantee explainer](/blog/clean-export-guarantee-explained)."
       },
       {
         "type": "callout",
@@ -434,10 +457,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panel-installation-process-ireland",
     "title": "Solar Installation in Ireland: Step by Step (2026)",
+    "seoTitle": "Solar Panel Installation in Ireland: 6 Steps, 4-8 Weeks",
+    "seoDescription": "On the roof in 1 to 2 days, start to finish in about 4 to 8 weeks. Site survey, SEAI grant, install day, the free NC6, the post-works BER and export pay.",
+    "answer": "A typical Irish home solar installation takes 1 to 2 days on the roof and about 4 to 8 weeks from start to finish. The six steps are a site survey, the SEAI grant application, installation day, the free NC6 notification to ESB Networks, a post-works BER, and registering for Clean Export Guarantee payments.",
     "excerpt": "The full journey from site survey to switch-on: SEAI grant, installation day, the free NC6 form, the post-works BER and when export payments start.",
     "category": "guides",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -487,7 +513,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Planning permission is not a step for most homes. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit, with exceptions near aerodromes and for protected structures. The detail is in our [planning rules guide](/blog/planning-permission-solar-panels-ireland)."
+        "text": "Planning permission is not a step for most homes. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit; protected structures and homes in an Architectural Conservation Area need to check first. The detail is in our [planning rules guide](/blog/planning-permission-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -496,7 +522,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply online at seai.ie before any work starts, and the grant offer normally issues immediately. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -561,7 +587,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.20. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home earns €200-400 a year from export, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
+        "text": "Once your system is live and the NC6 is in, electricity you export earns credit under the Clean Export Guarantee (CEG). Two things need to be true: you need a smart meter, and your supplier needs you registered on their export tariff. Each supplier sets its own rate; in 2026 rates run roughly €0.19-0.24 per kWh, typically around €0.20. The credit appears on your normal electricity bills, so exactly when it starts depends on your supplier's billing cycle. A typical 4kWp home with no battery earns roughly €400 to €550 a year from export, depending on how much it uses at home, and the first €400 a year of export income is tax-exempt (citizensinformation.ie). No smart meter yet? Here is [how the smart meter requirement works](/blog/smart-meter-required-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -584,7 +610,7 @@ export const articles: Article[] = [
           [
             "SEAI grant application",
             "You, online at seai.ie",
-            "Offer normally issues immediately; valid 8 months"
+            "Wait for the letter of offer; 8 months to complete"
           ],
           [
             "Scheduling and materials",
@@ -668,8 +694,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book your free site survey",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/install-1.webp"
@@ -757,7 +783,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your property's connection to the electricity network (esbnetworks.ie). ESB Networks assigns it to the connection point, not to you or your supplier, so it never changes - not when you switch supplier, not when you move house, not even when the meter itself is replaced."
+        "text": "The MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your property's connection to the electricity network (esbnetworks.ie). The full walkthrough, with every place to look for it, is in [what is my MPRN and where to find it](/blog/what-is-my-mprn-number-ireland). ESB Networks assigns it to the connection point, not to you or your supplier, so it never changes - not when you switch supplier, not when you move house, not even when the meter itself is replaced."
       },
       {
         "type": "paragraph",
@@ -963,10 +989,13 @@ export const articles: Article[] = [
   {
     "slug": "do-solar-panels-improve-ber-rating-ireland",
     "title": "Do Solar Panels Improve Your BER Rating in Ireland?",
+    "seoTitle": "Do Solar Panels Improve Your BER Rating? Yes, Here's Why",
+    "seoDescription": "Yes. Solar PV counts in DEAP, the method behind every Irish BER, so it lifts your rating. How far it moves, and why the grant already requires a new BER.",
+    "answer": "Yes. Solar PV is counted in DEAP, the official method behind every Irish Building Energy Rating, so generating your own electricity lowers your home's calculated energy use and lifts the rating. How far it moves depends on where you start and the size of the system, and a post-works BER is already required for the SEAI grant.",
     "excerpt": "Yes. Solar PV is counted in DEAP, the method behind every Irish BER, so it lifts your rating - and a post-works BER is already part of the grant.",
     "category": "grants",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1154,8 +1183,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a free site survey and we will show you the rating gain and the savings for your own home",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/blog/do-solar-panels-improve-ber-rating-ireland.webp"
@@ -1163,10 +1192,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-cork-complete-guide",
     "title": "Solar Panels in Cork: The Complete 2026 Guide",
+    "seoTitle": "Solar Panels in Cork 2026: Cost, €1,800 Grant and Payback",
+    "seoDescription": "A 4 kWp Cork home system costs €6,400 after the €1,800 SEAI grant and saves €800 to €1,400 a year. Costs by size, planning and what a Cork survey checks.",
+    "answer": "Yes, for most Cork homes. Solar costs the same in Cork as anywhere in Ireland: a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant, with 0% VAT. It saves €800 to €1,400 a year and pays back in about 6 years, once a site survey confirms the roof.",
     "excerpt": "Costs, the €1,800 SEAI grant, planning rules and what a site survey checks on Cork homes - from an SEAI-registered installer working across the county.",
     "category": "county",
     "date": "5 Sep 2026",
-    "updated": "17 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1175,7 +1207,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical system costs **€8,200 to €12,400 before the €1,800 SEAI grant**, saves €800 to €1,400 a year, and pays for itself in about 6 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details."
+        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical system costs **€8,200 to €12,800 before the SEAI grant**, saves €800 to €1,400 a year, and pays for itself in about 6 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details."
       },
       {
         "type": "paragraph",
@@ -1188,7 +1220,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home system runs roughly €8,200 to €12,400 before the grant, depending on size, roof complexity and whether you add a battery. After the **€1,800 SEAI grant** and with 0% VAT, most homeowners are looking at €6,400 to €10,600 out of pocket for panels only."
+        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home system runs roughly €8,200 to €12,800 before the grant, depending on size and whether you add a battery. After the SEAI grant (**€1,800**, or €2,400 with a 5 kWh+ battery) and with 0% VAT, most homeowners are looking at €6,400 to €10,400 out of pocket, as the table shows."
       },
       {
         "type": "table",
@@ -1230,7 +1262,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2025, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online before any work starts and the grant offer normally issues immediately. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "The same national grant applies in Cork: up to **€1,800** for solar PV. To qualify, the home must have been built and occupied before 2025, have a valid MPRN, and not have had a previous solar grant at that address. Owner-occupiers and private landlords can both apply. You apply online and wait for SEAI's letter of offer before any work starts. Full detail is in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -1281,7 +1313,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For almost all Cork houses, no. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit. The exceptions are homes in a Solar Safeguarding Zone near an aerodrome, protected structures, and buildings in an Architectural Conservation Area, which do need to check. Our [planning rules guide](/blog/planning-permission-solar-panels-ireland) has the detail."
+        "text": "For almost all Cork houses, no. Since October 2022 (S.I. 493 of 2022), rooftop solar on houses is exempted development with no roof area limit. The exceptions are protected structures and homes in an Architectural Conservation Area, which do need to check, and panels on a wall, which are never exempt. Our [planning rules guide](/blog/planning-permission-solar-panels-ireland) has the detail."
       },
       {
         "type": "heading",
@@ -1322,24 +1354,28 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Rural homes often have larger roofs and higher electricity use (wells, pumps, larger houses), which can mean a bigger system and more saving. Export income under the Clean Export Guarantee, typically €200 to €400 a year on a 4 kWp system, is the same wherever you are."
+        "text": "Rural homes often have larger roofs and higher electricity use (wells, pumps, larger houses), which can mean a bigger system and more saving. Export income under the Clean Export Guarantee, typically roughly €400 to €550 a year on a 4 kWp system with no battery, depending on how much you use at home, is the same wherever you are."
       },
       {
         "type": "divider"
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey for Your Cork Home",
-        "href": "/book-survey"
+        "text": "Check my savings: a free estimate for your Cork home",
+        "href": "/solar-calculator"
       }
     ]
   },
   {
     "slug": "nc6-form-solar-grid-connection-ireland",
     "title": "The NC6 Form Explained: Connecting Solar to the Grid",
+    "seoTitle": "ESB NC6 Form: What It Is, Who Files It, Why It's Free",
+    "seoDescription": "The NC6 is ESB Networks' free microgeneration notification for home solar. Your installer files it, and it helps unlock Clean Export Guarantee payments.",
+    "answer": "The NC6 is ESB Networks' free microgeneration notification: the form that tells the grid operator a small solar system is connected at your home. Your installer submits it after the install, registered to your MPRN, and it costs you nothing. It is part of what lets your supplier pay you under the Clean Export Guarantee.",
     "excerpt": "What the ESB Networks NC6 microgeneration form is, who submits it, why it is free, and how it unlocks your Clean Export Guarantee payments.",
     "category": "guides",
     "date": "5 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -1441,7 +1477,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. To earn Clean Export Guarantee (CEG) payments you need two things in place: a smart meter, so your export can be measured, and your system registered with ESB Networks via the NC6, so the grid knows there is a generator at your MPRN. With both sorted, your supplier pays you for exported units - typically €200 to €400 a year on a 4 kWp system, and the first €400 a year of that income is tax-exempt. More in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained) and our [smart meter guide](/blog/smart-meter-required-solar-panels-ireland)."
+        "text": "Yes. To earn Clean Export Guarantee (CEG) payments you need two things in place: a smart meter, so your export can be measured, and your system registered with ESB Networks via the NC6, so the grid knows there is a generator at your MPRN. With both sorted, your supplier pays you for exported units - typically roughly €400 to €550 a year on a 4 kWp system with no battery, depending on how much you use at home, and the first €400 a year of that income is tax-exempt. More in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained) and our [smart meter guide](/blog/smart-meter-required-solar-panels-ireland)."
       },
       {
         "type": "heading",
@@ -1450,7 +1486,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Your MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your electricity connection. It is printed on your bill. The NC6 uses it to register your solar system against the correct connection, which is why an accurate MPRN is one of the details the installer confirms at survey."
+        "text": "Your MPRN (Meter Point Reference Number) is the unique 11-digit number that identifies your electricity connection. It is printed on your bill; see [what is my MPRN and where to find it](/blog/what-is-my-mprn-number-ireland). The NC6 uses it to register your solar system against the correct connection, which is why an accurate MPRN is one of the details the installer confirms at survey."
       },
       {
         "type": "heading",
@@ -1498,8 +1534,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey - We Handle the NC6",
-        "href": "/book-survey"
+        "text": "Check my savings: get a free estimate (we handle the NC6)",
+        "href": "/solar-calculator"
       }
     ],
     "image": "/blog/nc6-form-solar-grid-connection-ireland.webp"
@@ -1507,10 +1543,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-3-bed-semi-ireland-cost",
     "title": "Solar Panels for a 3-Bed Semi in Ireland: 2026 Costs",
+    "seoTitle": "Solar Panels for a 3-Bed Semi in Ireland: Cost and Payback",
+    "seoDescription": "A typical 3-bed semi needs about 10 panels (4 to 4.4 kWp). Cost before and after the €1,800 SEAI grant, yearly savings and a worked payback example.",
+    "answer": "A typical 3-bed semi in Ireland needs about 10 panels, a 4 to 4.4 kWp system. It costs €8,200 to €8,480 installed, or €6,400 to €6,680 after the €1,800 SEAI grant, with 0% VAT. On 4,200 kWh a year it saves about €1,050 a year and pays back in about 6 years.",
     "excerpt": "How many panels a typical 3-bed semi needs, what a 10-panel system costs after the €1,800 grant, and a worked savings example from the bill.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -1518,7 +1557,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "A typical 3-bed semi in Ireland needs about **10 panels, roughly a 4 to 4.4 kWp system**. That costs €8,200 to €8,500 before the grant, or **€6,400 to €6,700 after the €1,800 SEAI grant** with 0% VAT. It saves most semis €800 to €1,400 a year and pays for itself in about 6 years."
+        "text": "A typical 3-bed semi in Ireland needs about **10 panels, roughly a 4 to 4.4 kWp system**. That costs €8,200 to €8,480 before the grant, or **€6,400 to €6,680 after the €1,800 SEAI grant** with 0% VAT. It saves most semis €800 to €1,400 a year and pays for itself in about 6 years."
       },
       {
         "type": "paragraph",
@@ -1531,7 +1570,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Around 10 panels for a typical household. Modern panels are about 440W each, so 10 panels is roughly 4.4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households, or homes with an EV or heat pump, often go to 12 to 16 panels. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "Around 10 panels for a typical household. Modern panels are about 440W each, so 10 panels is roughly 4.4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households often need 11 to 14 panels, and homes with an EV and a heat pump 15 to 20. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "heading",
@@ -1549,9 +1588,9 @@ export const articles: Article[] = [
         "rows": [
           [
             "10 panels (~4.4 kWp)",
-            "€8,500",
+            "€8,480",
             "- €1,800",
-            "€6,700"
+            "€6,680"
           ],
           [
             "+ 5 kWh battery",
@@ -1619,17 +1658,17 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Take a semi with a €200-a-month electricity bill and a fairly typical day/night usage split. A 4.4 kWp system covers a large chunk of daytime use directly, and exports the surplus. In round figures:"
+        "text": "Take a semi using 4,200 kWh a year (the CRU typical household figure) with no battery. A 4.4 kWp system covers a large chunk of daytime use directly, and exports the surplus. Run through the same savings engine our calculator uses (950 kWh per kWp, 35c a unit, 20c export):"
       },
       {
         "type": "bulletList",
         "items": [
-          "System: ~4.4 kWp, 10 panels",
-          "Cost after grant: ~€6,700",
-          "Self-use saving: the electricity you stop buying during the day",
-          "Export income: roughly €200 - €400 a year under the Clean Export Guarantee (first €400/yr tax-exempt)",
-          "Combined annual benefit: around €900 - €1,300",
-          "Payback: roughly 6 years"
+          "System: ~4.4 kWp, 10 panels, about 4,180 kWh a year",
+          "Cost after grant: €6,680",
+          "Self-use saving: about 1,440 kWh used at home, worth about €505 a year",
+          "Export income: about 2,740 kWh at 20c, worth about €547 a year under the Clean Export Guarantee (the first €400 a year is tax-exempt)",
+          "Combined annual benefit: about €1,050",
+          "Payback: about 6.3 years"
         ]
       },
       {
@@ -1645,7 +1684,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Whatever you generate and do not use is exported and paid for by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 they run roughly €0.19 to €0.24 per kWh - and a typical semi earns €200 to €400 a year from export, with the first €400 tax-exempt. Detail in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained)."
+        "text": "Whatever you generate and do not use is exported and paid for by your electricity supplier under the Clean Export Guarantee. Each supplier sets its own rate - in 2026 they run roughly €0.185 to €0.24 per kWh - and a typical semi with no battery earns roughly €450 to €550 a year from export on 10 panels (less with a battery, which keeps more of the surplus at home), with the first €400 tax-exempt. Detail in our [Clean Export Guarantee guide](/blog/clean-export-guarantee-explained)."
       },
       {
         "type": "heading",
@@ -1686,7 +1725,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Possibly. Higher usage, an EV or a heat pump can justify 12 to 16 panels. The bill tells us - a larger annual usage means a larger system earns its keep. Try the [solar calculator](/solar-calculator) for a personalised size."
+        "text": "Possibly. Higher usage can justify 11 to 14 panels, and an EV plus a heat pump 15 to 20. The bill tells us - a larger annual usage means a larger system earns its keep. Try the [solar calculator](/solar-calculator) for a personalised size."
       },
       {
         "type": "heading",
@@ -1711,10 +1750,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-ev-charger-ireland",
     "title": "Solar Panels and EV Charging in Ireland: 2026 Guide",
+    "seoTitle": "Charge an EV From Solar Panels in Ireland? Yes, Here's How",
+    "seoDescription": "An EV home typically needs 14 to 15 panels. How a solar-aware charger diverts surplus into the car, and when the night rate beats daytime solar charging.",
+    "answer": "Yes. A solar-aware charger diverts surplus solar into the car instead of exporting it, and a kWh in the car is worth more than a kWh exported. Because Irish generation is seasonal, most EV homes mix daytime solar with the cheap night rate. An EV home typically needs 14 to 15 panels, about 6 to 6.5 kWp.",
     "excerpt": "Can you charge an electric car from solar in Ireland? How many panels it takes, how surplus diverting works, and when to charge on the night rate instead.",
     "category": "technology",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -1736,13 +1778,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "As a rough guide, a 4 kWp system (about 10 panels) generates in the order of 3,500 to 4,000 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. EV owners often add a few extra panels (12 to 16) so more of the car's charging can come from solar across more of the year."
+        "text": "As a rough guide, a 4 kWp system (about 10 panels) generates about 3,800 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. Add the car's usage to a typical home's 4,200 kWh and our savings engine sizes the system at about 6 to 6.5 kWp, or 14 to 15 panels, so more of the car's charging can come from solar across more of the year."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Solar is seasonal, driving is not",
-        "body": "Your panels make roughly three to four times as much in June as in December, but you drive all year. That is why solar covers a big share of summer charging and a smaller share in winter, and why the night rate still matters for EV owners."
+        "body": "Your panels make roughly four to five times as much in June as in December, but you drive all year. That is why solar covers a big share of summer charging and a smaller share in winter, and why the night rate still matters for EV owners."
       },
       {
         "type": "heading",
@@ -1760,7 +1802,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Charge the car, in almost every case. Exporting a unit earns you the Clean Export Guarantee rate - roughly €0.19 to €0.24 per kWh in 2026. Using that same unit to charge your car saves you buying it from the grid at the full day rate, which is much higher. So a kWh put into the car is worth noticeably more than a kWh exported. Diverting surplus to the EV is one of the best uses of your solar."
+        "text": "Charge the car, in almost every case. Exporting a unit earns you the Clean Export Guarantee rate - roughly €0.185 to €0.24 per kWh in 2026. Using that same unit to charge your car saves you buying it from the grid at the full day rate, which is much higher. So a kWh put into the car is worth noticeably more than a kWh exported. Diverting surplus to the EV is one of the best uses of your solar."
       },
       {
         "type": "heading",
@@ -1778,7 +1820,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 10 panels, an EV household often benefits from 12 to 16, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 10 panels, an EV household usually lands on 14 to 15, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "table",
@@ -1795,12 +1837,12 @@ export const articles: Article[] = [
           ],
           [
             "One EV",
-            "~5-6 kWp (12-16 panels)",
+            "~6-6.5 kWp (14-15 panels)",
             "Extra generation charges the car"
           ],
           [
             "EV + heat pump",
-            "6 kWp+ and up",
+            "~6.5-9 kWp (15-20 panels)",
             "High all-round usage rewards a larger system"
           ]
         ]
@@ -1851,18 +1893,21 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Site Survey for Solar and EV Charging",
-        "href": "/book-survey"
+        "text": "Check my savings: a free estimate for solar and EV charging",
+        "href": "/solar-calculator"
       }
     ]
   },
   {
     "slug": "complete-guide-seai-solar-grant-2026",
     "title": "The Complete Guide to the SEAI Solar Grant in 2026",
+    "seoTitle": "SEAI Solar Grant 2026: €1,800 + €600 Battery. How to Apply",
+    "seoDescription": "€1,800 for panels, €600 more for a 5 kWh+ battery. Who qualifies, how to apply before work starts, the post-works BER step and when SEAI pays you back.",
+    "answer": "The SEAI solar grant in 2026 is up to €1,800 for solar panels, the full amount at 4 kWp or more, plus a flat €600 for a battery of 5 kWh or more, so €2,400 at most. Your home must be built and occupied before 2025. Apply online and get SEAI's letter of offer before any work starts.",
     "excerpt": "Everything you need to know about the €1,800 SEAI solar panel grant - eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.",
     "category": "grants",
     "date": "15 Apr 2026",
-    "updated": "17 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "12 min read",
     "featured": true,
     "author": "Cal Chesters",
@@ -1877,7 +1922,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to homeowners, including private landlords, of homes built and occupied before 2025, and SEAI pays it into the bank account you nominate, usually within about 4-6 weeks of your post-works BER being published."
+        "text": "The SEAI solar panel grant in Ireland is **€1,800** in 2026. This government-backed payment from the Sustainable Energy Authority of Ireland covers a significant portion of a typical residential solar PV installation, reducing the out-of-pocket cost for homeowners. The grant is available to homeowners, including private landlords, of homes built and occupied before 2025, and SEAI pays it into the bank account you nominate. SEAI says to allow 4 to 6 weeks for payment once it has all the completion paperwork, including the post-works BER, and longer if your home is picked for an inspection."
       },
       {
         "type": "paragraph",
@@ -1920,7 +1965,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The standard SEAI solar PV grant in 2026 provides €1,800 towards the cost of your installation. This is a flat-rate grant for a typical domestic system. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. Under 5 kWh there is no battery grant, and a bigger battery gets no more, which makes choosing the right battery size even more important."
+        "text": "The standard SEAI solar PV grant in 2026 provides up to €1,800 towards the cost of your installation. It is tiered: €700 per kWp for the first 2 kWp, then €200 per kWp up to 4 kWp, so any system of 4 kWp or more gets the full €1,800. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. Under 5 kWh there is no battery grant, and a bigger battery gets no more, which makes choosing the right battery size even more important."
       },
       {
         "type": "table",
@@ -1995,12 +2040,12 @@ export const articles: Article[] = [
         "type": "numberedList",
         "items": [
           "Get quotes from at least 3 SEAI-registered installers. Compare prices, panel brands, warranties, and inverter options.",
-          "Choose your installer and agree on a date for the installation. Do not begin installation before getting grant pre-approval.",
+          "Choose your installer and agree on a date for the installation. Do not begin installation before you have SEAI's letter of offer.",
           "Apply online through the SEAI portal (seai.ie). You will need your MPRN number (found on your electricity bill), property details, and your chosen installer's SEAI registration number.",
-          "Apply online - your grant offer normally issues immediately and is valid for 8 months. Review and accept the terms.",
+          "Wait for SEAI's letter of offer, review it and accept it (SEAI gives you 30 days to accept). From approval you have 8 months to complete the installation.",
           "Proceed with the solar panel installation. Your installer must complete the work within 8 months of the grant offer date.",
           "After installation, submit your completion documents to the SEAI - this includes the installer's completion certificate, photos of the installation, and your BER assessment.",
-          "Receive your grant payment into your bank account, usually within 4–6 weeks of your completion documents and post-works BER being processed."
+          "Receive your grant payment into your bank account. SEAI says to allow 4 to 6 weeks once it has all the completion documents, including the post-works BER, and longer if your home is selected for an inspection."
         ]
       },
       {
@@ -2015,7 +2060,7 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "Starting installation before receiving grant pre-approval - this can invalidate your entire claim",
+          "Starting installation before receiving SEAI's letter of offer - this can invalidate your entire claim",
           "Using an installer who is not SEAI-registered - always verify registration on the SEAI website",
           "Not having a BER assessment completed or booked within the required timeframe",
           "Submitting incomplete documentation - ensure all photos, certificates, and forms are included",
@@ -2040,7 +2085,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "However, it is worth applying early in the year rather than waiting. The application process takes approximately 4–6 weeks for pre-approval, plus 6–8 weeks for payment after completion. Starting your journey in spring means you can have your system installed and generating electricity by summer - when solar output in Ireland is at its peak."
+        "text": "However, it is worth applying early in the year rather than waiting. There are two waits to plan around: SEAI's letter of offer, which you must have before any work starts, and the payment, which SEAI says to allow 4 to 6 weeks for once it has every completion document (longer if your home is picked for an inspection). Starting your journey in spring means you can have your system installed and generating electricity by summer - when solar output in Ireland is at its peak."
       },
       {
         "type": "table",
@@ -2057,8 +2102,8 @@ export const articles: Article[] = [
           ],
           [
             "Grant Application",
-            "4–6 weeks",
-            "SEAI reviews and issues offer letter"
+            "Before any work",
+            "Apply online and wait for SEAI's letter of offer"
           ],
           [
             "Installation",
@@ -2077,7 +2122,7 @@ export const articles: Article[] = [
           ],
           [
             "Grant Payment",
-            "6–8 weeks",
+            "4–6 weeks",
             "SEAI processes and pays into your bank"
           ]
         ]
@@ -2118,10 +2163,13 @@ export const articles: Article[] = [
   {
     "slug": "how-much-do-solar-panels-cost-ireland-2026",
     "title": "How Much Do Solar Panels Cost in Ireland? (2026 Prices)",
+    "seoTitle": "How Much Do Solar Panels Cost in Ireland? €6,400 After Grant",
+    "seoDescription": "A 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant. Prices for 4 to 10 kWp, batteries, hidden costs and payback explained.",
+    "answer": "A 4 kWp solar system, about 10 panels, costs €8,200 installed in Ireland in 2026, or €6,400 after the €1,800 SEAI grant, with 0% VAT. A 6 kWp system is €9,600, or €7,800 net. Adding a 5 kWh battery costs about €3,200 and earns a further €600 grant. Most homes pay back in 6 to 7 years.",
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
-    "updated": "17 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2168,21 +2216,21 @@ export const articles: Article[] = [
         "rows": [
           [
             "4kWp",
-            "10–12 panels",
+            "9–10 panels",
             "€8,200",
             "€6,400",
             "€800 – €1,100"
           ],
           [
             "6kWp",
-            "14–16 panels",
+            "about 14 panels",
             "€9,600",
             "€7,800",
             "€1,000 – €1,300"
           ],
           [
             "10kWp",
-            "22–26 panels",
+            "about 23 panels",
             "€12,400",
             "€10,600",
             "€1,200 – €1,800"
@@ -2191,7 +2239,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The 6kWp system is by far the most popular choice for Irish households, as it provides an excellent balance between upfront cost, roof space requirements, and annual savings. It is large enough to cover a significant portion of the average Irish household's annual electricity consumption (approximately 4,200 kWh) while remaining affordable."
+        "text": "For the average Irish household using about 4,200 kWh a year (the CRU typical figure), our savings engine sizes the system at 4 kWp, about 10 panels. That is also the domestic floor: 4 kWp is exactly where the SEAI grant reaches its full €1,800, and below it the fixed costs barely move while the generation and the grant fall away. A 6kWp system suits bigger households and homes with an EV or a heat pump. Count panels in 440W units: the [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland) has the sizing by household, and the [free solar calculator](/solar-calculator) sizes yours from your bill."
       },
       {
         "type": "heading",
@@ -2234,7 +2282,7 @@ export const articles: Article[] = [
         "items": [
           "BER Assessment: €200–€350 (required for the SEAI grant)",
           "ESB Networks NC6 connection notification: free for domestic micro-generation (your installer submits it for you)",
-          "Smart meter upgrade: Usually free from ESB Networks, but may involve a wait time of 4–8 weeks",
+          "Smart meter: free from ESB Networks, and not needed before install day; it is only needed to be paid for export",
           "Scaffolding: €300–€600 for typical two-storey homes",
           "Ground-mounted systems: €2,000–€5,000 more than roof-mounted equivalents",
           "Bird protection: €200–€400 if pigeons are known to nest under panels in your area"
@@ -2247,7 +2295,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With current all-in domestic electricity prices of roughly €0.35/kWh (including standing charges and VAT), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With domestic unit rates of roughly €0.35/kWh including VAT (the standing charge is separate, and solar never removes it), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
       },
       {
         "type": "table",
@@ -2319,7 +2367,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Waiting for prices to fall further is a risky strategy - every month you delay is a month of missed electricity savings. For homeowners with a suitable roof, the best time to install solar panels is now."
+        "text": "Waiting for prices to fall further is a risky strategy - every month you delay is a month of missed electricity savings. For the full verdict on savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026); if you plan to borrow, the [solar panel loans guide](/financing) shows the monthly repayments; and the [free solar savings calculator](/solar-calculator) prices it on your own bill."
       },
       {
         "type": "divider"
@@ -2334,10 +2382,13 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-in-winter-do-they-work",
     "title": "Solar Panels in Winter: Do They Actually Work?",
-    "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 25-35% of their peak-month output during the darker months.",
+    "seoTitle": "Do Solar Panels Work in Winter? Yes, Even in December",
+    "seoDescription": "Yes. Panels run on daylight, not heat. A 6 kWp roof in Ireland still makes 120 to 220 kWh in December. Month-by-month figures for an Irish roof.",
+    "answer": "Yes. Solar panels run on daylight, not heat, so they keep generating through an Irish winter, just less. A typical 6kWp system still makes about 120 to 220 kWh in December, roughly a fifth of its best summer month, and cold weather actually helps panel efficiency. Summer surplus and export payments carry the year.",
+    "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 20-35% of their peak-month output during the darker months.",
     "category": "guides",
     "date": "8 Apr 2026",
-    "updated": "7 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -2351,7 +2402,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "**Yes, solar panels absolutely work during Irish winters.** A typical 6kWp system generates approximately 30–50% of its summer output between November and February - producing 150–250 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland's climate."
+        "text": "**Yes, solar panels absolutely work during Irish winters.** From November to February a typical 6kWp system makes roughly 20 to 35% of what it makes in its best summer month, and still produces 120 to 220 kWh in December alone. Solar panels work on daylight, not direct sunshine, so even on overcast winter days they generate meaningful electricity. Modern panels are specifically designed for low-light conditions like Ireland's climate."
       },
       {
         "type": "paragraph",
@@ -2361,7 +2412,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Winter Output in Ireland",
-        "body": "A typical 6kWp solar PV system in Ireland generates approximately 30–50% of its summer output during the winter months (November through February). While this is less than summer, it still contributes meaningfully to your electricity needs."
+        "body": "In each winter month (November through February) a typical 6kWp solar PV system in Ireland makes roughly 20 to 35% of what it makes in June, its best month. The table below shows each month. While this is less than summer, it still contributes meaningfully to your electricity needs."
       },
       {
         "type": "heading",
@@ -2457,7 +2508,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "As you can see, winter generation is lower - but it is far from zero. A 6kWp system will still produce 150–250 kWh in December, which is enough to cover a significant portion of your baseline electricity needs like lighting, fridge, and electronics."
+        "text": "As you can see, winter generation is lower - but it is far from zero. A 6kWp system will still produce 120 to 220 kWh in December, which is enough to cover a significant portion of your baseline electricity needs like lighting, fridge, and electronics."
       },
       {
         "type": "heading",
@@ -2533,11 +2584,14 @@ export const articles: Article[] = [
   {
     "slug": "clean-export-guarantee-explained",
     "title": "Clean Export Guarantee Explained: Get Paid for Your Excess Solar",
+    "seoTitle": "Clean Export Guarantee Explained: What You Earn in 2026",
+    "seoDescription": "Your supplier pays for every kWh you export, 18.5c to 24c in 2026, and the first €400 a year is tax-free. How it works and why a smart meter matters.",
+    "answer": "The Clean Export Guarantee pays you for every kWh of surplus solar you send to the grid. Each supplier sets its own rate, roughly 18.5c to 24c per kWh in 2026, and the first €400 a year is tax-free. A smart meter records your export so your supplier can pay it as a credit on your bill.",
     "image": "/blog/clean-export-guarantee-explained.webp",
-    "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and which suppliers offer the best rates.",
+    "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and how supplier export rates are set.",
     "category": "grants",
     "date": "4 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -2550,7 +2604,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners **€0.20 per kilowatt-hour** for surplus solar electricity exported to the grid. This government-backed scheme, launched in 2022, requires energy suppliers to pay you for every unit of excess solar power your panels generate. For a typical 6kWp system, CEG earnings add €250–€378 per year on top of your bill savings - and the payment appears automatically as a credit on your electricity bill via your smart meter."
+        "text": "The Clean Export Guarantee (CEG) pays Irish homeowners for surplus solar electricity exported to the grid, at a rate each supplier sets for itself: roughly 18.5c to 24c per kWh in 2026, with **€0.20 per kWh** a fair typical figure. The scheme, launched in 2022, requires electricity suppliers to pay you for every unit you export. What you earn depends on how much of your generation you use at home; the table further down shows the range by system size. The payment appears as a credit on your electricity bill, measured by your smart meter."
       },
       {
         "type": "paragraph",
@@ -2608,17 +2662,17 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "Best Supplier Rates in 2026"
+        "text": "How Supplier Export Rates Are Set in 2026"
       },
       {
         "type": "paragraph",
-        "text": "While the CRU sets a minimum CEG rate of €0.20/kWh, many energy suppliers compete by offering higher rates or additional perks. Here is a comparison of the leading supplier CEG offerings as of early 2026:"
+        "text": "The CRU (Commission for Regulation of Utilities) oversees the Clean Export Guarantee but does not set a minimum export rate. Each supplier sets its own CEG tariff on a competitive basis, and in 2026 those rates sit roughly between 18.5c and 24c per kWh. You are paid by whichever supplier you buy your electricity from, so the export rate is one more thing to compare when your contract comes up for renewal. The rules themselves are published at [cru.ie](https://www.cru.ie)."
       },
       {
         "type": "callout",
         "variant": "tip",
         "title": "Switch and Save",
-        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check comparison sites like bonkers.ie and Switcher.ie at least once a year to ensure you are on the best available rate. A rate increase from €0.20 to €0.24/kWh could add €60–€100 per year to your CEG earnings."
+        "body": "CEG rates are not fixed - suppliers adjust them periodically. Check your supplier's current export tariff at least once a year, and compare it whenever your contract renews. A rate increase from €0.20 to €0.24/kWh adds about €100 to €160 a year to your CEG earnings on a 4 to 6kWp system with no battery."
       },
       {
         "type": "heading",
@@ -2627,7 +2681,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "CEG earnings depend on the size of your system, your daytime electricity consumption, and the orientation of your panels. A household that uses most of its solar generation during the day will export less (and earn less from CEG) but save more on bills. Conversely, a household that is out during the day will export more and earn more from CEG."
+        "text": "CEG earnings depend on the size of your system, your daytime electricity consumption, and the orientation of your panels. A household that uses most of its solar generation during the day will export less (and earn less from CEG) but save more on bills. Conversely, a household that is out during the day will export more and earn more from CEG. The figures below assume no battery: a battery keeps more of your surplus in the house for the evening, so your export, and your CEG income, falls while your bill saving rises."
       },
       {
         "type": "table",
@@ -2676,7 +2730,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Ensure you have a smart meter installed. Contact ESB Networks at 01 698 5005 if you are unsure.",
+          "Ensure you have a smart meter installed. If you are unsure, check with ESB Networks through esbnetworks.ie.",
           "Once your solar system is installed and commissioned, your installer should register it with ESB Networks as a microgeneration unit (under 11kW).",
           "Contact your energy supplier and inform them you now have a solar PV system. They will update your account to reflect your new export capability.",
           "Ask your supplier to put you on their CEG tariff. They may require a copy of your ESB microgeneration certificate.",
@@ -2700,11 +2754,14 @@ export const articles: Article[] = [
   {
     "slug": "east-vs-south-vs-west-facing-roofs-solar",
     "title": "East vs South vs West-Facing Roofs: Which Is Best for Solar?",
+    "seoTitle": "East vs South vs West Roofs for Solar: Only North Struggles",
+    "seoDescription": "South gives 100%, east or west about 80 to 85%, an east-west split 85 to 90%, and self-use can close the gap. Irish figures and payback by roof.",
+    "answer": "South-facing roofs produce the most, but east and west-facing roofs still make about 80 to 85% as much, and an east-west split spreads generation across the day, which often suits how a home uses power. In Ireland only a north-facing roof, at roughly 50 to 55%, is genuinely unsuitable on its own.",
     "image": "/install-6.webp",
     "excerpt": "Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.",
     "category": "guides",
     "date": "28 Mar 2026",
-    "updated": "7 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -2978,7 +3035,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Without a battery, a 6 kWp system generates about 5,700 kWh a year. An Irish home with no storage uses roughly 30 to 50% of that as it is made, so take a typical 38%: about 2,150 kWh used directly and 3,550 kWh exported. That is €753 off the bill (2,150 kWh at €0.35) plus €710 from the Clean Export Guarantee (3,550 kWh at €0.20, the CRU minimum every supplier must pay). Total: about €1,463 a year."
+        "text": "Without a battery, a 6 kWp system generates about 5,700 kWh a year. An Irish home with no storage uses roughly 30 to 50% of that as it is made, so take a typical 38%: about 2,150 kWh used directly and 3,550 kWh exported. That is €753 off the bill (2,150 kWh at €0.35) plus €710 from the Clean Export Guarantee (3,550 kWh at €0.20, a typical 2026 supplier export rate; each supplier sets its own). Total: about €1,463 a year."
       },
       {
         "type": "paragraph",
@@ -3129,11 +3186,14 @@ export const articles: Article[] = [
   {
     "slug": "planning-permission-solar-panels-ireland",
     "title": "Planning Permission for Solar Panels in Ireland - What You Need to Know",
+    "seoTitle": "Planning Permission for Solar Panels in Ireland: Usually Not",
+    "seoDescription": "Most Irish homes don't need it. Since October 2022 rooftop solar on a house has no area limit. Exceptions: protected structures, ACAs and wall panels.",
+    "answer": "Usually not. Since October 2022, rooftop solar panels on an Irish house are exempted development with no rooftop area limit, under S.I. No. 493 of 2022. You may need planning permission if the house is a protected structure or sits in an Architectural Conservation Area, or for wall-mounted panels or a ground array over 25 square metres.",
     "image": "/blog/planning-permission-solar-panels-ireland.webp",
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
     "date": "18 Mar 2026",
-    "updated": "6 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-rose-400/10",
@@ -3170,18 +3230,18 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "Since October 2022 there is no area limit for rooftop solar on houses, unless your home is in a Solar Safeguarding Zone near an aerodrome (300 square metre cap) or is a protected structure or in an Architectural Conservation Area (this is measured as the total footprint of all panels combined)",
-          "No solar panel should extend more than 50 centimetres above the existing roof surface (measured from the highest point of the roof tiles/slates to the top of the panel)",
-          "The solar panels must be installed on the roof - not on walls, fences, or freestanding structures (ground-mounted solar requires separate planning)",
-          "The installation must be on a house or apartment building - not on a shed, garage, or outbuilding (with limited exceptions)",
-          "Panels should not project beyond the external wall of the building at any point"
+          "Since October 2022 there is no area limit for rooftop solar on a house, wherever it is, including in a Solar Safeguarding Zone (the 300 square metre cap in those zones applies to business, industrial and other non-domestic roofs, not houses)",
+          "The panels must sit no more than 15 centimetres above the plane of a pitched roof, or 50 centimetres above a flat roof",
+          "Panels on a wall of a house are not exempt. Free-standing panels in the garden are exempt up to 25 square metres in total, no higher than 2.5 metres, not in front of the house, and leaving at least 25 square metres of private open space to the rear or side",
+          "The exemption covers the roof of a house and the roof of a shed, garage or other ancillary building within its grounds. It does not cover apartments",
+          "The panels must be at least 50 centimetres from the edge of the roof, and must not cause hazardous glint or glare"
         ]
       },
       {
         "type": "callout",
         "variant": "info",
-        "title": "12 Square Metres Explained",
-        "body": "Twelve square metres is approximately 8–10 standard solar panels (depending on panel size). This is enough for a 4–5kWp system, which is sufficient for most smaller Irish households. For larger systems (6kWp+), you may need to split panels across multiple roof planes or apply for planning permission if you want them all on one roof."
+        "title": "The old 12 square metre limit is gone",
+        "body": "Older guides still quote a 12 square metre cap on rooftop solar for houses. That rule was replaced in October 2022 by S.I. No. 493 of 2022, the Planning and Development Act 2000 (Exempted Development) (No. 3) Regulations 2022. For a house that is not a protected structure and not in an Architectural Conservation Area, there is now no rooftop area limit, so a 6kWp or larger system can go on one roof without planning permission. The text is on [irishstatutebook.ie](https://www.irishstatutebook.ie/eli/2022/si/493/made/en/print)."
       },
       {
         "type": "heading",
@@ -3197,9 +3257,9 @@ export const articles: Article[] = [
         "items": [
           "Protected structures - If your home is a protected structure or a proposed protected structure, you will need planning permission for any external alteration, including solar panels. This includes Georgian, Victorian, and Edwardian buildings in certain areas.",
           "Architectural conservation areas (ACAs) - If your property is located within a designated ACA, special rules apply. Some ACAs restrict solar panel installations that are visible from the street.",
-          "Solar Safeguarding Zones - Homes near certain aerodromes fall in a Solar Safeguarding Zone, where a 300 square metre roof cap applies; almost everywhere else there is no area limit since October 2022.",
-          "Flat roof installations - Panels on flat roofs that project above the parapet wall may require planning permission, depending on the height of the parapet.",
-          "Listed buildings - Similar to protected structures, buildings on the National Inventory of Architectural Heritage require planning permission.",
+          "Wall-mounted panels - Solar panels on any wall of a house are not exempted development, so they need planning permission.",
+          "Flat roof installations - Panels on a flat roof are exempt if they sit no more than 50 centimetres above the roof and at least 50 centimetres from its edge; higher frames need planning permission.",
+          "Heritage listings - Your council's Record of Protected Structures is what decides whether your home is a protected structure. If you are unsure, check it with the local planning department before you book.",
           "Ground-mounted solar - Free-standing panels in your garden are exempt up to 25 square metres, subject to remaining garden-space conditions; larger ground arrays need planning permission."
         ]
       },
@@ -3260,14 +3320,14 @@ export const articles: Article[] = [
             "Check with local planning department"
           ],
           [
-            "Flat roof (below parapet)",
+            "Flat roof (panels within 50cm of the roof)",
             "No",
-            "Exempted if not visible above parapet"
+            "Must also be 50cm from the roof edge"
           ],
           [
-            "Flat roof (above parapet)",
-            "Maybe",
-            "Depends on height and visibility"
+            "Flat roof (panels raised more than 50cm)",
+            "Yes",
+            "Outside the exemption"
           ],
           [
             "Ground-mounted panels",
@@ -3275,14 +3335,14 @@ export const articles: Article[] = [
             "Exempt up to 25m²; larger arrays need permission"
           ],
           [
-            "Apartment block (own apartment only)",
-            "No",
-            "Exempted for individual units"
+            "Apartment",
+            "Usually yes",
+            "Apartments are not covered by the house exemption"
           ],
           [
-            "Solar Safeguarding Zone (near an aerodrome)",
-            "Maybe",
-            "300m² roof cap applies in these zones"
+            "Panels on a wall of the house",
+            "Yes",
+            "Wall-mounted panels on a house are not exempt"
           ]
         ]
       },
@@ -3295,8 +3355,8 @@ export const articles: Article[] = [
       },
       {
         "type": "cta",
-        "text": "Book a Free Survey - We Will Check Planning for You",
-        "href": "/#calculator"
+        "text": "Check my savings: get a free estimate from your bill",
+        "href": "/solar-calculator"
       }
     ]
   },
@@ -3534,11 +3594,14 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-dublin-ultimate-guide",
     "title": "Solar Panels in Dublin: The Ultimate 2026 Guide",
+    "seoTitle": "Solar Panels Dublin 2026: Cost, €1,800 Grant and Payback",
+    "seoDescription": "A 4 kWp Dublin home system costs €6,400 after the €1,800 SEAI grant. Roof types from Victorian terraces to new estates, council areas and planning checks.",
+    "answer": "Yes, solar works well in Dublin. Prices are national, so a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant, and a typical system saves €800 to €1,400 a year. Most Dublin roofs suit solar; check first if your home is a protected structure or in an Architectural Conservation Area.",
     "image": "/install-4.webp",
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
     "date": "6 Mar 2026",
-    "updated": "8 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "11 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-orange-400/10",
@@ -3555,13 +3618,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Several factors make Dublin uniquely positioned for solar adoption: high electricity prices (among the highest in the country due to urban network charges), a large number of suitable roof types, excellent installer availability, and a dense population of environmentally conscious homeowners. Dublin City Council has also been proactive in streamlining the process for solar installations, and the county has some of the highest smart meter penetration rates in Ireland."
+        "text": "Several factors make Dublin well placed for solar: a large number of suitable roof types, from 1930s semis to modern estates, plenty of SEAI-registered installers, and the same national rooftop exemption as everywhere else, so most Dublin houses need no planning permission. If you are weighing it up from scratch, start with [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026)."
       },
       {
         "type": "callout",
         "variant": "stat",
         "title": "Dublin Solar Stats",
-        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. The average 6kWp system in Dublin generates approximately 5,700 kWh per year, saving homeowners €900–€1,200 annually on electricity bills."
+        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. A 6kWp system on a good south-facing Dublin roof generates about 5,700 kWh a year, and a typical Irish system saves €800 to €1,400 a year."
       },
       {
         "type": "heading",
@@ -3570,7 +3633,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panel installation costs in Dublin are slightly higher than the national average, primarily due to higher labour costs, parking charges for installation crews, and the logistical challenges of working in a densely populated urban area. However, the increased competition among Dublin-based installers has kept prices competitive."
+        "text": "Solar is priced nationally, so a Dublin home pays the same as anywhere else in Ireland for the same system. What can add cost in Dublin is access: tight terraces, parking for the crew and scaffolding on busy streets. A good quote itemises those so you can see them. The full national price breakdown is in [how much solar panels cost in Ireland](/blog/how-much-do-solar-panels-cost-ireland-2026)."
       },
       {
         "type": "table",
@@ -3582,19 +3645,19 @@ export const articles: Article[] = [
         ],
         "rows": [
           [
-            "4kWp (10–12 panels)",
+            "4kWp (9–10 panels)",
             "€8,200",
             "€8,200",
             "€6,400"
           ],
           [
-            "6kWp (14–16 panels)",
+            "6kWp (about 14 panels)",
             "€9,600",
             "€9,600",
             "€7,800"
           ],
           [
-            "10kWp (22–26 panels)",
+            "10kWp (about 23 panels)",
             "€12,400",
             "€12,400",
             "€10,600"
@@ -3603,7 +3666,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin costs are in line with the national market, because solar is priced nationally rather than county by county. What does differ is the return: at an average urban electricity rate of €0.40/kWh (including standing charges and VAT), a 6kWp system in Dublin pays for itself in approximately 5.5–6.5 years, slightly faster than the national average of about 6 years."
+        "text": "Dublin costs are in line with the national market, because solar is priced nationally rather than county by county. Electricity unit rates are also set nationally by each supplier, so the return in Dublin matches the national picture: most systems pay for themselves in about 6 to 7 years. Your own payback depends on your usage and day/night split, which the [free solar calculator](/solar-calculator) reads from your bill."
       },
       {
         "type": "heading",
@@ -3663,7 +3726,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin has consistently led the country in SEAI grant applications for solar panels. The county accounts for consistently the largest share of national solar grant applications (SEAI), in line with its large share of the national housing stock (CSO). This reflects the higher energy costs in Dublin, greater environmental awareness, and easier access to SEAI-registered installers."
+        "text": "Dublin has the largest number of homes in Ireland, so it is the largest single market for grant-aided solar. SEAI publishes the running national totals at [seai.ie](https://www.seai.ie): more than 100,000 Irish homes have been grant-aided for solar since 2018, and 2025 was a record year."
       },
       {
         "type": "heading",
@@ -3711,17 +3774,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin's solar resource is comparable to the rest of Ireland, with a slight advantage in coastal areas due to less cloud cover compared to inland counties. A typical 6kWp system in Dublin will generate approximately 5,000–5,500 kWh per year, depending on roof orientation, pitch, and shading. This is slightly above the national average, partly due to Dublin's coastal location benefiting from clearer coastal skies."
-      },
-      {
-        "type": "paragraph",
-        "text": "The urban heat island effect also provides a marginal benefit. Dublin city centre is typically 1–2°C warmer than surrounding rural areas, which can slightly increase panel efficiency during cooler months (though excessive heat in summer is counterproductive, the Irish climate rarely gets warm enough for this to be a concern)."
+        "text": "Dublin's solar resource is good by Irish standards. PVGIS, the European Commission's solar model, puts a south-facing roof at a 30 degree pitch in Dublin at about 970 kWh per kWp a year after normal system losses, against a national average of about 884. Our estimates use 950 kWh per kWp, so a 6kWp system on a good Dublin roof makes about 5,700 kWh a year, less on an east, west or shaded roof."
       },
       {
         "type": "callout",
         "variant": "info",
         "title": "Dublin vs National Comparison",
-        "body": "electricity prices are set nationally by supplier, so Dublin's solar economics match the national picture, but also save 5–10% more with solar. The net financial advantage of going solar in Dublin is slightly better than in most other Irish counties."
+        "body": "Electricity prices are set nationally by each supplier, and solar is priced nationally, so Dublin's solar economics match the national picture. A good south-facing Dublin roof generates a little more than the national average, which nudges the return in your favour."
       },
       {
         "type": "heading",
@@ -3745,7 +3804,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a payback period of just 5.5–6.5 years and 25+ years of free electricity ahead, there has never been a better time to make the switch."
+        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch."
       },
       {
         "type": "divider"
@@ -3827,7 +3886,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "While the headline grant figure of €1,800 is the same as it has been since 2022, the real-world value of that grant has actually increased. Solar panel prices in Ireland have fallen since 2021, driven by manufacturing overcapacity in China, more efficient supply chains, and increased competition among Irish installers."
+        "text": "While the headline grant figure of €1,800 has been held rather than cut, the real-world value of that grant has actually increased. Solar panel prices in Ireland have fallen since 2021, driven by manufacturing overcapacity in China, more efficient supply chains, and increased competition among Irish installers."
       },
       {
         "type": "paragraph",
@@ -3875,10 +3934,10 @@ export const articles: Article[] = [
     "slug": "solar-panels-and-heat-pumps-perfect-partnership",
     "title": "Solar Panels and Heat Pumps: The Perfect Partnership",
     "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
-    "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes - with up to €14,300 in combined SEAI grants available.",
+    "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",
     "date": "20 Apr 2026",
-    "updated": "7 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -3976,11 +4035,11 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "SEAI Grants: Up to €14,300 Combined"
+        "text": "SEAI Grants: Heat Pump and Solar Combined"
       },
       {
         "type": "paragraph",
-        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and they can be combined for up to €14,300 in government funding: up to €12,500 for an air-source heat pump (including the €4,000 renewable heat bonus paid after 12 months) plus €1,800 for solar PV."
+        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and you can claim both: the heat pump system grant, which SEAI increased from 6 October 2026 and which depends on your dwelling type and the heating system you replace, plus up to €1,800 for solar PV (and €600 more for a battery of 5 kWh or more). Check the current heat pump amounts on [seai.ie](https://www.seai.ie) before you budget."
       },
       {
         "type": "callout",
@@ -4095,7 +4154,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Whichever approach you choose, the combination of solar PV and a heat pump delivers the lowest long-term energy costs of any heating solution available to Irish homeowners. With combined grants of up to €14,300, BER improvements of 2–3 ratings, and annual energy savings of €1,500–€2,000, it is an investment that pays for itself and then pays you back for decades."
+        "text": "Whichever approach you choose, the combination of solar PV and a heat pump delivers the lowest long-term energy costs of any heating solution available to Irish homeowners. With the SEAI heat pump and solar grants combined, a better BER rating, and annual energy savings of €1,500–€2,000, it is an investment that pays for itself and then pays you back for decades."
       },
       {
         "type": "divider"
@@ -4110,10 +4169,14 @@ export const articles: Article[] = [
   {
     "slug": "smart-meter-required-solar-panels-ireland",
     "title": "Is a Smart Meter Required for Solar Panels in Ireland?",
+    "seoTitle": "Do You Need a Smart Meter for Solar Panels? Not to Generate",
+    "seoDescription": "Your panels work without one. A smart meter records the exact kWh you export so your supplier can pay you under the Clean Export Guarantee. How to get one.",
+    "answer": "No, not to generate. Solar panels work and cut your bill from day one without a smart meter. You need one to be paid for the electricity you export under the Clean Export Guarantee, because it records exactly how many kWh you send to the grid. ESB Networks fits them, and most Irish homes already have one.",
     "image": "/blog/smart-meter-required-solar-panels-ireland.webp",
     "excerpt": "A smart meter is essential if you want to earn money from your excess solar through the Clean Export Guarantee. Here is how to check if you have one and how to get one installed for free.",
     "category": "guides",
     "date": "14 Apr 2026",
+    "updated": "9 Nov 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4122,11 +4185,11 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "The Short Answer: Yes, You Need a Smart Meter"
+        "text": "The Short Answer: Not to Generate, Yes to Get Paid for Export"
       },
       {
         "type": "paragraph",
-        "text": "If you are planning to install solar panels and want to earn money from the electricity you export to the grid through the Clean Export Guarantee (CEG), you absolutely need a smart meter. Without one, your solar installer can still connect your system to the grid, but you will have no way to measure or get paid for the surplus electricity you send back. It is like having a shop but no till - you are giving away your product for free."
+        "text": "You do not need a smart meter for your panels to work. The system generates and cuts your bill from the day it is commissioned, meter or no meter. Where a smart meter matters is the Clean Export Guarantee (CEG): it records exactly how many kWh you send to the grid, so your supplier can pay you for each one. Without it, your export is not measured, so you are leaving export income on the table. It is like having a shop but no till."
       },
       {
         "type": "paragraph",
@@ -4135,8 +4198,8 @@ export const articles: Article[] = [
       {
         "type": "callout",
         "variant": "warning",
-        "title": "Apply Before Your Solar Installation",
-        "body": "Without a smart meter, you cannot register for the Clean Export Guarantee. The installation process for a smart meter typically takes 4–8 weeks, so start this process well before your solar panel installation date. You do not want your panels sitting on your roof, generating free electricity for the grid, while you wait for a meter."
+        "title": "No need to wait for the meter",
+        "body": "You do not need a smart meter before install day, and you should not delay your panels for one. Check whether you already have one (most Irish homes do), and if not, request one from ESB Networks around the time you book. Your bill savings start on day one; export payments start once the meter is fitted and your supplier registers you for the Clean Export Guarantee."
       },
       {
         "type": "heading",
@@ -4165,8 +4228,7 @@ export const articles: Article[] = [
         "items": [
           "Look at your meter - Smart meters have a digital display (sometimes with scrolling text) and typically display your consumption in kWh. They are usually white or grey rectangular boxes, larger than old analogue meters. If your meter has a spinning disc or small dials, it is not a smart meter.",
           "Check your electricity bill - Some suppliers include smart meter data on your bill, showing half-hourly or daily consumption patterns. If your bill includes this level of detail, you likely have a smart meter.",
-          "Check online - Visit the ESB Networks website at esbnetworks.ie and use their \"Check My Meter\" tool. Enter your MPRN number (found on your electricity bill) to see your meter type.",
-          "Call ESB Networks - Phone 01 698 5005 with your MPRN number and ask if your property has a smart meter installed."
+          "Ask ESB Networks - Contact ESB Networks through esbnetworks.ie with your MPRN (the 11-digit number on your electricity bill) and ask whether your property has a smart meter installed."
         ]
       },
       {
@@ -4181,7 +4243,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Visit esbnetworks.ie/smartmeters and submit a smart meter request form, or call 01 698 5005.",
+          "Request a smart meter from ESB Networks through esbnetworks.ie.",
           "Provide your MPRN number and contact details. ESB Networks will schedule a survey of your meter location.",
           "An ESB Networks contractor will visit your property to assess the meter location and confirm installation requirements. This usually happens within 2–4 weeks of your request.",
           "The smart meter installation itself takes 1–2 hours. You may experience a brief power interruption (typically less than 30 minutes) during the swap.",
@@ -4191,7 +4253,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The total process from request to activation typically takes 4–8 weeks. We strongly recommend starting this process at least 2 months before your planned solar installation date to ensure everything is ready."
+        "text": "The timing depends on ESB Networks' schedule in your area. It does not hold up your installation: your panels generate and cut your bill from day one, and export payments start once the meter is in and your supplier has registered you. Requesting it when you book your installation is plenty early."
       },
       {
         "type": "heading",
@@ -4245,7 +4307,7 @@ export const articles: Article[] = [
         "type": "numberedList",
         "items": [
           "Request smart meter from ESB Networks (if you don't already have one)",
-          "Smart meter installed and activated (4–8 weeks from request)",
+          "Smart meter installed and activated (this can happen before or after your panels go in)",
           "Solar panels installed by SEAI-registered installer (1–2 days)",
           "Installer registers your system with ESB Networks as a microgeneration unit",
           "Contact your energy supplier to inform them of your solar installation",
@@ -4257,7 +4319,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "Don't Worry - It Is Easier Than It Sounds",
-        "body": "Most solar installers handle steps 4–6 on your behalf as part of their installation package. Your main responsibility is ensuring you have a smart meter before installation day. Everything else can typically be managed by your installer."
+        "body": "Most solar installers handle steps 4–6 on your behalf as part of their installation package. Your main job is making sure a smart meter is fitted so your export can be paid; it does not have to be there before installation day. Everything else can typically be managed by your installer."
       },
       {
         "type": "divider"
@@ -4272,11 +4334,14 @@ export const articles: Article[] = [
   {
     "slug": "how-many-solar-panels-do-i-need-ireland",
     "title": "How Many Solar Panels Do I Need in Ireland?",
+    "seoTitle": "How Many Solar Panels Do I Need? Most Irish Homes: About 10",
+    "seoDescription": "Start with the kWh on your bill, not the roof. Most Irish homes need 4 to 4.5 kWp, about 10 panels. Sizing by household, roof space and orientation.",
+    "answer": "Most Irish homes need about 10 panels, a 4 to 4.5 kWp system, sized to generate about 85% of a typical 4,000 to 5,000 kWh a year. Larger families need 10 to 14 panels, and homes with an EV and a heat pump 15 to 20. Your bill's annual kWh decides the number, not the roof.",
     "image": "/blog/how-many-solar-panels-do-i-need-ireland.webp",
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
     "category": "guides",
     "date": "2 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4324,42 +4389,42 @@ export const articles: Article[] = [
             "1–2 people (low usage)",
             "2,500–3,500 kWh",
             "4 kWp",
-            "10 panels",
+            "9–10 panels",
             "3,800 kWh"
           ],
           [
             "1–2 people (medium usage)",
             "3,500–4,500 kWh",
-            "4–5 kWp",
-            "10–13 panels",
-            "3,800–4,750 kWh"
+            "4 kWp",
+            "9–10 panels",
+            "3,800 kWh"
           ],
           [
             "3–4 people",
             "4,000–5,000 kWh",
-            "5–6 kWp",
-            "13–16 panels",
-            "4,750–5,700 kWh"
+            "4–4.5 kWp",
+            "9–10 panels",
+            "3,800–4,275 kWh"
           ],
           [
             "5+ people",
             "5,000–6,500 kWh",
-            "7–10 kWp",
-            "18–26 panels",
-            "6,650–9,500 kWh"
+            "4.5–6 kWp",
+            "10–14 panels",
+            "4,275–5,700 kWh"
           ],
           [
             "EV + heat pump home",
             "7,000–10,000 kWh",
-            "8–12 kWp",
-            "20–32 panels",
-            "7,600–11,400 kWh"
+            "6.5–9 kWp",
+            "15–20 panels",
+            "6,175–8,550 kWh"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are designed to cover a significant portion of your annual usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
+        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are the ones our savings engine recommends: an array that generates about 85% of your annual usage, rounded to the nearest half kWp and counted in 440W panels, so it covers a significant portion of your usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
       },
       {
         "type": "heading",
@@ -4368,14 +4433,14 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panel systems are measured in kilowatt-peak (kWp), which represents the maximum power output under standard test conditions. A modern residential solar panel typically has a capacity of 350–430 watts (0.35–0.43 kWp). To calculate the number of panels you need, divide your target system size by the individual panel wattage."
+        "text": "Solar panel systems are measured in kilowatt-peak (kWp), which represents the maximum power output under standard test conditions. A modern residential solar panel typically has a capacity of 400–450 watts (0.40–0.45 kWp). To calculate the number of panels you need, divide your target system size by the individual panel wattage."
       },
       {
         "type": "bulletList",
         "items": [
-          "A 400W panel is the most common choice for Irish residential installations in 2026",
-          "A 4kWp system requires approximately 10 panels (10 × 400W = 4,000W = 4kWp)",
-          "A 6kWp system requires approximately 15 panels (15 × 400W = 6,000W = 6kWp)",
+          "Our estimates count in 440W panels, a common size for Irish residential installations in 2026",
+          "A 4kWp system needs 9 to 10 panels (10 × 440W = 4.4kWp)",
+          "A 6kWp system needs about 14 panels (14 × 440W = 6.16kWp)",
           "Each panel measures approximately 1.7m tall by 1.0m wide, requiring about 1.7m² of roof space",
           "You should allow approximately 10cm gaps between panels for mounting rails and ventilation"
         ]
@@ -4406,19 +4471,19 @@ export const articles: Article[] = [
           ],
           [
             "6 kWp",
-            "15 panels",
+            "14 panels",
             "~28 m²",
             "7m × 4m clear area"
           ],
           [
             "8 kWp",
-            "20 panels",
+            "18 panels",
             "~38 m²",
             "10m × 4m clear area"
           ],
           [
             "10 kWp",
-            "25 panels",
+            "23 panels",
             "~47 m²",
             "12m × 4m clear area"
           ]
@@ -4463,7 +4528,7 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "Inverter capacity - Your installer should fit an inverter that is oversized relative to your initial panel count, leaving room for expansion. For example, if you start with 10 panels (4kWp), a 6kW inverter would allow you to add up to 5 more panels later without replacing the inverter.",
+          "Inverter capacity - Your installer should fit an inverter that is oversized relative to your initial panel count, leaving room for expansion. For example, if you start with 10 panels (4.4kWp), a 6kW inverter would allow you to add up to 4 more panels later without replacing the inverter.",
           "Grant timing - The SEAI grant is per property, not per installation. If you claim the €1,800 grant for your initial system, you cannot claim it again when you expand. Factor the full grant into your initial installation.",
           "Roof planning - When designing your initial system, ask your installer to plan the mounting rails for the maximum potential array, even if only some positions are filled initially. This makes expansion much cheaper later.",
           "Cost of expansion - Adding panels to an existing system typically costs €300–€500 per panel (less than the initial installation cost because the inverter, scaffolding, and electrical infrastructure are already in place)."
@@ -4484,7 +4549,7 @@ export const articles: Article[] = [
         "type": "numberedList",
         "items": [
           "Start with your annual electricity usage (find it on your electricity bill) - this is the most important factor",
-          "4kWp is the smallest system worth fitting and suits 1–2 person homes: below that the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4kWp is exactly where the SEAI grant reaches its full €1,800. A 5–6kWp system suits 3–4 person homes, and a 7–10kWp system suits larger families or homes with EVs and heat pumps",
+          "4kWp is the smallest system worth fitting and suits 1–2 person homes: below that the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4kWp is exactly where the SEAI grant reaches its full €1,800. Most 1 to 4 person homes land on 4 to 4.5kWp, about 10 panels; larger families need 4.5 to 6kWp, and homes with an EV and a heat pump 6.5 to 9kWp",
           "Each panel requires approximately 1.7m² of roof space plus gaps - measure your available roof area before getting quotes",
           "South-facing roofs are optimal, but east and west-facing roofs are still highly viable (80–85% output)",
           "If budget is tight, start with 4kWp and expand later - just ensure your inverter and mounting rails are sized for future expansion",
@@ -4504,11 +4569,14 @@ export const articles: Article[] = [
   {
     "slug": "best-time-of-year-to-get-solar-panels-ireland",
     "title": "Best Time of Year to Get Solar Panels in Ireland",
+    "seoTitle": "Best Time of Year to Get Solar Panels in Ireland? Not Summer",
+    "seoDescription": "April to September makes about 70% of an Irish roof's yearly output. Month-by-month figures, installer lead times, and the case for a winter install.",
+    "answer": "There is no bad month, because any 12 months on the roof makes the same yearly total. Spring is the strongest time to install: you go straight into the long days, and you avoid the summer rush when installer lead times are longest. April to September makes about 70% of an Irish roof's yearly output.",
     "image": "/blog/best-time-of-year-to-get-solar-panels-ireland.webp",
     "excerpt": "Is there an ideal season to install solar panels? We break down month-by-month generation data, seasonal advantages, and SEAI processing times to help you decide when to go solar.",
     "category": "savings",
     "date": "25 Mar 2026",
-    "updated": "8 Sep 2026",
+    "updated": "9 Nov 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -4530,8 +4598,8 @@ export const articles: Article[] = [
       {
         "type": "callout",
         "variant": "stat",
-        "title": "Timing Matters",
-        "body": "Installing in March versus December means an extra ~2,000 kWh in your first year - worth roughly €400 to €700 depending on how much you self-consume rather than export. That is the equivalent of about six months of free electricity just from choosing the right installation month."
+        "title": "Timing changes the start, not the total",
+        "body": "Any 12 months on the roof collects the same yearly output, about 3,800 kWh for a 4kWp system, whichever month you start in. What the install month changes is how fast the first returns show up: a spring install goes straight into the long days, so the first bills after installation show the biggest drop, while a winter install starts slowly and catches up by summer."
       },
       {
         "type": "heading",
@@ -4647,7 +4715,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Spring is widely considered the best time to install solar panels in Ireland, and for good reason. Your SEAI grant offer normally issues immediately when you apply online; allow a few weeks for installer scheduling and ESB Networks processing, meaning if you apply in February or early March, your system will be installed and generating by April - just as the generation curve begins its steep upward climb. By installing in spring, you capture the entire April-to-September high-generation window in your first year."
+        "text": "Spring is widely considered the best time to install solar panels in Ireland, and for good reason. You apply online and wait for SEAI's letter of offer before any work starts; allow a few weeks for that and for installer scheduling, meaning if you apply in February or early March, your system will be installed and generating by April - just as the generation curve begins its steep upward climb. By installing in spring, you capture the entire April-to-September high-generation window in your first year."
       },
       {
         "type": "bulletList",
@@ -4718,7 +4786,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The SEAI grant application process typically takes 4–6 weeks from submission to receiving your grant offer letter. After installation, you need a further 1–2 weeks to gather completion documents, and then 6–8 weeks for the grant payment to be processed. Here is the full timeline:"
+        "text": "You apply for the SEAI grant online and must have the letter of offer before any work starts; how long that takes varies, so apply as soon as you have chosen your installer. After installation you need a week or two to gather the completion documents and the post-works BER, and SEAI says to allow 4 to 6 weeks for payment once it has them all (longer if your home is picked for an inspection). Here is a typical timeline:"
       },
       {
         "type": "table",
@@ -4734,8 +4802,8 @@ export const articles: Article[] = [
             "2–3 weeks"
           ],
           [
-            "Apply for SEAI grant",
-            "4–6 weeks",
+            "Apply for SEAI grant, wait for the offer",
+            "Varies (allow up to 4–6 weeks)",
             "6–9 weeks"
           ],
           [
@@ -4755,14 +4823,14 @@ export const articles: Article[] = [
           ],
           [
             "Receive grant payment",
-            "6–8 weeks",
-            "~21 weeks (5 months)"
+            "4–6 weeks",
+            "~19 weeks (4 to 5 months)"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "This means that if you start the process in early February, you could have your panels installed and generating by late April, with the grant payment arriving by early July. The total end-to-end timeline is approximately 5 months, which is why starting early in the year is so advantageous."
+        "text": "This means that if you start the process in early February, you could have your panels installed and generating by late April, with the grant payment arriving by June or early July. The total end-to-end timeline is roughly 4 to 5 months, which is why starting early in the year is so advantageous."
       },
       {
         "type": "heading",
@@ -4771,7 +4839,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every month you delay installing solar panels is a month of free electricity you are not getting. With the average Irish household paying approximately €0.40/kWh for electricity, even a modest winter month of 100 kWh generation would save you €40. Over a full year of waiting, that is €1,400 in savings you have permanently lost - not borrowed, but lost forever."
+        "text": "Every month you delay installing solar panels is a month of free electricity you are not getting. At a typical unit rate of about €0.35/kWh, even a modest winter month of 100 kWh used at home saves you about €35. Over a full year of waiting, a typical system's €800 to €1,400 of savings is permanently lost - not borrowed, but lost forever."
       },
       {
         "type": "callout",
@@ -4792,11 +4860,14 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-rental-property-landlord-guide",
     "title": "Solar Panels for Rental Properties: A Landlord's Guide",
+    "seoTitle": "Can Landlords Get the SEAI Solar Grant? Yes, the Full €1,800",
+    "seoDescription": "Private landlords can claim €1,800 on rental homes built and occupied before 2025, once per MPRN. Eligibility, BER gains and the tenant setup.",
+    "answer": "Yes. Private landlords can claim the full €1,800 SEAI solar grant on a rental home built and occupied before 2025, once per MPRN. If you own several qualifying homes, each can claim once. The tenant usually keeps the bill saving; the landlord gains the better BER.",
     "image": "/blog/solar-panels-rental-property-landlord-guide.webp",
     "excerpt": "Yes, private landlords can claim the €1,800 SEAI solar grant. What to know about solar on Irish rental properties - eligibility, BER benefits and getting started.",
     "category": "grants",
     "date": "15 Mar 2026",
-    "updated": "16 Oct 2026",
+    "updated": "9 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -4841,11 +4912,11 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 3,
-        "text": "the Accelerated Capital Allowance (ACA)"
+        "text": "The Accelerated Capital Allowance (ACA)"
       },
       {
         "type": "paragraph",
-        "text": "For landlords who own commercial properties or mixed-use buildings, the Accelerated Capital Allowance (ACA) lets you write off the full cost of qualifying energy-efficient equipment - including solar panels - against your taxable profits in the year of purchase. This can significantly reduce the effective cost of installation. ECAs are administered by the Sustainable Energy Authority of Ireland (SEAI) on behalf of the Revenue Commissioners."
+        "text": "For landlords who hold commercial or mixed-use property through a company, the Accelerated Capital Allowance (ACA) lets the company write off the full cost of qualifying energy-efficient equipment against its taxable profits in the year of purchase, instead of over eight years. Revenue runs the allowance; SEAI keeps the Triple E register of the equipment that qualifies. Whether your particular solar equipment and ownership structure qualify is a question for your accountant before you buy."
       },
       {
         "type": "heading",
@@ -4890,7 +4961,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "One of the most compelling reasons for landlords to install solar panels on rental properties is the impact on the Building Energy Rating (BER). A better BER rating makes the property more attractive to tenants, may be required by future regulations, and can justify higher rents."
+        "text": "One of the most compelling reasons for landlords to install solar panels on rental properties is the impact on the Building Energy Rating (BER). A better BER rating makes the property more attractive to tenants, is printed on every rental advert, and may be required by future minimum-standard rules."
       },
       {
         "type": "paragraph",
@@ -4905,23 +4976,18 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "Rent Premium Potential"
+        "text": "What About Rent? The Honest Answer"
       },
       {
         "type": "paragraph",
-        "text": "Irish rental market data increasingly shows that energy-efficient properties with solar panels command a measurable rent premium. Tenants are willing to pay more for homes with lower energy bills, particularly in a market where electricity costs have risen significantly in recent years."
-      },
-      {
-        "type": "paragraph",
-        "text": "Based on current market data from Daft.ie and the Residential Tenancies Board:"
+        "text": "We do not quote a rent premium for solar, because there is no published Irish figure that isolates one, and in Rent Pressure Zones the rent you can charge is set by the rules rather than by the property's features. Check the current rent rules with the Residential Tenancies Board (rtb.ie) before you assume anything about rent."
       },
       {
         "type": "bulletList",
         "items": [
-          "Solar can make a rental more attractive to tenants and cut their running costs, depending on the location and system size",
-          "Over a year, this represents €600–€1,200 in additional rental income",
-          "Combined with the tenant's electricity savings of €600–€1,200 per year, the total value proposition of solar is €1,200–€2,400 per year",
-          "For a 6kWp system at €7,800 after the €1,800 grant, this means a payback period of roughly 7 to 13 years purely from the rent premium - before counting any other benefits"
+          "The value a landlord can count on is indirect: a better BER on the advert, lower running costs for the tenant, and a property better placed for future minimum energy standards",
+          "The direct saving goes to whoever pays the electricity bill, which in most Irish tenancies is the tenant",
+          "For a 6kWp system at €7,800 after the €1,800 grant, the case is strongest where the landlord also gains, for example common-area supply in a multi-unit building or a property the landlord plans to live in or sell"
         ]
       },
       {
@@ -4965,7 +5031,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The numbers stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI grant, and generates roughly €1,000–€1,400 per year in combined electricity savings and CEG payments. If the property also commands a rent premium of €75/month (€900/year), the total annual benefit is approximately €1,900–€2,300, giving a payback period of about 3 to 4 years. Over 25 years, the net profit could exceed €30,000."
+        "text": "The numbers can stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI grant, and generates roughly €1,000–€1,400 a year in combined electricity savings and CEG payments. The catch is who receives that: in most tenancies the tenant pays the electricity bill, so the bill saving and the export income are theirs. The landlord's return is the better BER, a property that is easier to let, and readiness for future minimum standards. We do not count a rent premium, because there is no published Irish figure for one."
       },
       {
         "type": "paragraph",
@@ -4978,6 +5044,147 @@ export const articles: Article[] = [
         "type": "cta",
         "text": "Explore Solar Options for Your Property - Get Expert Advice",
         "href": "/#calculator"
+      }
+    ]
+  },
+  {
+    "slug": "what-is-my-mprn-number-ireland",
+    "title": "What Is My MPRN Number and Where Do I Find It?",
+    "seoTitle": "MPRN Number Ireland: What It Is and Where to Find Yours",
+    "seoDescription": "Your MPRN is the 11-digit number, starting with 10, on the front of every Irish electricity bill. Where to find it, and why the SEAI grant and NC6 need it.",
+    "answer": "Your MPRN (Meter Point Reference Number) is the 11-digit number that identifies your home's connection to the electricity network. It starts with 10 and is printed on the front of every electricity bill, usually near your account number. It stays the same when you switch supplier, and you need it for the SEAI solar grant.",
+    "excerpt": "The MPRN is the 11-digit number on the front of your electricity bill. What it is, where to find it, why it never changes, and why you need it for solar.",
+    "category": "guides",
+    "date": "9 Nov 2026",
+    "readTime": "4 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-sky-400/10",
+    "iconColor": "text-sky-400",
+    "image": "/blog/how-to-read-electricity-bill-ireland-solar.webp",
+    "content": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What is an MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "MPRN stands for **Meter Point Reference Number**. It is the unique 11-digit number ESB Networks gives to the point where your home connects to the electricity network (esbnetworks.ie). It belongs to the connection, not to you and not to your supplier, so it identifies the property's supply for as long as that connection exists."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Where do I find my MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "On your electricity bill. Every Irish supplier prints the MPRN on the bill, usually on the front page near your account number, and it always starts with the digits **10**. If you pay online, it is also in your supplier account, and it appears on the paperwork from when you switched supplier."
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "**Your electricity bill** - the quickest place to look; check near the account number on page one",
+          "**Your supplier's app or online account** - usually under account or meter details",
+          "**ESB Networks** - if you cannot find a bill, ESB Networks can trace the MPRN from your address (esbnetworks.ie)"
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "title": "The bill you already have is enough",
+        "body": "The same bill that shows your MPRN also shows your usage and your day/night split. Upload it to the [free solar calculator](/solar-calculator) and the bill analysis reads the numbers that size your system, so you only have to find one document."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "MPRN vs account number vs GPRN"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Number",
+          "What it identifies",
+          "Does it change?"
+        ],
+        "rows": [
+          [
+            "MPRN (11 digits, starts with 10)",
+            "Your home's electricity connection, set by ESB Networks",
+            "No, it stays with the property"
+          ],
+          [
+            "Account number",
+            "Your account with your electricity supplier",
+            "Yes, when you switch supplier"
+          ],
+          [
+            "GPRN",
+            "Your gas connection, set by Gas Networks Ireland",
+            "No, but it is a gas number and not used for solar"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Why do you need your MPRN for solar panels?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Three parts of going solar run on your MPRN. The [SEAI solar grant](/blog/complete-guide-seai-solar-grant-2026) application asks for it, and the grant is paid once per MPRN, so a connection that has already had a solar grant cannot claim again. Your installer uses it to file the free [ESB Networks NC6 notification](/blog/nc6-form-solar-grid-connection-ireland), which registers your system against your connection. And your supplier uses it to pay you for export under the [Clean Export Guarantee](/blog/clean-export-guarantee-explained)."
+      },
+      {
+        "type": "paragraph",
+        "text": "Everything else on the bill is useful too. Our guide to [reading an Irish electricity bill](/blog/how-to-read-electricity-bill-ireland-solar) walks through the kWh, unit rates and standing charge, and [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) shows what those numbers mean for payback."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Frequently asked questions"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does my MPRN change if I switch electricity supplier?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. The MPRN belongs to the connection point, so it stays the same when you switch supplier. Your account number changes; your MPRN does not."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does my MPRN change if the meter is replaced?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. A new meter, including a smart meter, is fitted to the same connection point, so the MPRN stays the same."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "How many digits is an MPRN?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Eleven, and it starts with 10. If the number you are looking at is a different length, it is probably your account number."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can I find my MPRN without a bill?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. Check your supplier's app or online account, or contact ESB Networks, which can trace the MPRN from your address."
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "cta",
+        "text": "Check my savings: upload the bill with your MPRN for a free estimate",
+        "href": "/solar-calculator?src=blog-mprn"
       }
     ]
   }

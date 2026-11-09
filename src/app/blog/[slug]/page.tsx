@@ -52,15 +52,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // is why an unknown slug used to render the 404 page with an HTTP 200.
   if (!article) notFound();
 
-  // Bound the share-card title the same way as <title> (<=60) so blog og:title
-  // and twitter:title do not truncate mid-phrase on social/link previews.
-  const ogTitle = metaTitleForArticle(article.title);
-  const ogDescription = article.excerpt;
+  // A hand-written seoTitle wins outright: it is never cut at ": " or " - ",
+  // because the clause after the colon is usually the question people search.
+  // Without one, the old derived title applies, so nothing changes by accident.
+  // The same value bounds og:title and twitter:title.
+  const metaTitle = article.seoTitle ?? metaTitleForArticle(article.title);
+  const metaDescription = article.seoDescription ?? article.excerpt;
+  const ogTitle = metaTitle;
+  const ogDescription = metaDescription;
 
   return {
     // Absolute (bypasses the "%s | Solar Ireland" template) to keep <title> <=60.
-    title: { absolute: metaTitleForArticle(article.title) },
-    description: article.excerpt,
+    title: { absolute: metaTitle },
+    description: metaDescription,
     alternates: {
       canonical: `${SITE_URL}/blog/${slug}`,
     },
@@ -101,7 +105,7 @@ function getArticleSchema(slug: string) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
-    description: article.excerpt,
+    description: article.seoDescription ?? article.excerpt,
     author: {
       '@type': 'Person',
       name: article.author,
@@ -121,8 +125,11 @@ function getArticleSchema(slug: string) {
     },
     publisher: {
       '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
       name: 'Solar Ireland',
       url: SITE_URL,
+      foundingDate: '2019',
+      description: 'SEAI-registered solar installer covering all 32 counties of Ireland since 2019.',
       logo: {
         '@type': 'ImageObject',
         url: `${SITE_URL}/logo-icon-512.png`,
@@ -148,6 +155,47 @@ function getArticleSchema(slug: string) {
     }, 0),
     articleSection: article.category.charAt(0).toUpperCase() + article.category.slice(1),
     inLanguage: 'en-IE',
+  };
+}
+
+/** Strip the inline markdown the article renderer understands (**bold** and
+ *  [text](href)) so schema text matches what a reader sees. */
+function plainText(text: string): string {
+  return text.replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1');
+}
+
+/**
+ * FAQPage schema, only where the article really has an FAQ block: an H2 that
+ * reads "Frequently asked questions" (or "FAQ"), followed by H3 questions each
+ * answered by the paragraphs under them, up to the next H2. Nothing is
+ * invented: every Question and Answer is visible text on the page. Google
+ * retired FAQ rich results in May 2026; the markup is kept because it still
+ * helps AI search parse the page.
+ */
+function getFaqSchema(slug: string) {
+  const article = getArticleBySlug(slug);
+  if (!article) return null;
+  const start = article.content.findIndex(
+    (s) => s.type === 'heading' && s.level === 2 && /frequently asked questions|\bfaqs?\b/i.test(s.text),
+  );
+  if (start === -1) return null;
+  const qa: { q: string; a: string[] }[] = [];
+  for (const s of article.content.slice(start + 1)) {
+    if (s.type === 'heading' && s.level === 2) break;
+    if (s.type === 'heading' && s.level === 3) qa.push({ q: s.text, a: [] });
+    else if (s.type === 'paragraph' && qa.length > 0) qa[qa.length - 1].a.push(plainText(s.text));
+  }
+  const pairs = qa.filter((p) => p.a.length > 0);
+  if (pairs.length === 0) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${SITE_URL}/blog/${slug}#faq`,
+    mainEntity: pairs.map((p) => ({
+      '@type': 'Question',
+      name: p.q,
+      acceptedAnswer: { '@type': 'Answer', text: p.a.join(' ') },
+    })),
   };
 }
 
@@ -177,9 +225,16 @@ export default async function BlogPostPage({ params }: Props) {
 
   const articleSchema = getArticleSchema(slug);
   const breadcrumbSchema = getBreadcrumbSchema(slug);
+  const faqSchema = getFaqSchema(slug);
 
   return (
     <>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       {articleSchema && (
         <script
           type="application/ld+json"

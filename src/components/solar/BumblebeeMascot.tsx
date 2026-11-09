@@ -38,7 +38,7 @@ export default function BumblebeeMascot({
     return (
       <Image
         src={src}
-        alt="Solar Ireland Bumblebee Mascot"
+        alt=""
         width={config.w}
         height={config.h}
         className={`${sizeClass} ${className}`}
@@ -50,7 +50,7 @@ export default function BumblebeeMascot({
   return (
     <Image
       src={src}
-      alt="Solar Ireland Bumblebee Mascot"
+      alt=""
       width={config.w}
       height={config.h}
       className={`bumblebee-float ${sizeClass} ${className}`}
