@@ -120,7 +120,13 @@ export async function submitIntake(body: SubmitRequest, idempotencyKey: string) 
 }
 
 export async function lookupEircode(code: string): Promise<EircodeResponse> {
-  const r = await call<EircodeResponse>(`/api/intake/eircode?code=${encodeURIComponent(code.replace(/\s+/g, ''))}`, { timeoutMs: 9000 });
+  // POST: an Eircode names a home, so it never rides in a URL (M6).
+  const r = await call<EircodeResponse>('/api/intake/eircode', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ code: code.replace(/\s+/g, '') }),
+    timeoutMs: 9000,
+  });
   if (r.data && typeof r.data === 'object' && 'ok' in r.data) return r.data;
   return { ok: false, reason: 'unavailable' };
 }

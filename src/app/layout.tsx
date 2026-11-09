@@ -422,7 +422,16 @@ export default async function RootLayout({
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
+                // A magic link (?lt=) is a homeowner's key: GA4 gets the URL without it (M6).
+                function siLoc(){
+                  try {
+                    var u = new URL(window.location.href);
+                    ['lt', 'token', 'access_token', 'booking_token'].forEach(function (k) { u.searchParams.delete(k); });
+                    return u.href;
+                  } catch (e) { return window.location.origin + window.location.pathname; }
+                }
                 gtag('js', new Date());
+                gtag('set', { page_location: siLoc() });
 
                 // Check consent before configuring GA4
                 try {
@@ -431,6 +440,7 @@ export default async function RootLayout({
                     gtag('consent', 'update', { analytics_storage: 'granted' });
                     gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                       page_path: window.location.pathname,
+                      page_location: siLoc(),
                       cookie_flags: 'SameSite=None;Secure',
                     });
                   } else {
@@ -447,6 +457,7 @@ export default async function RootLayout({
                     gtag('consent', 'update', { analytics_storage: 'granted' });
                     gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                       page_path: window.location.pathname,
+                      page_location: siLoc(),
                       cookie_flags: 'SameSite=None;Secure',
                     });
                   } else {

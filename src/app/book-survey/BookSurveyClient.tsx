@@ -31,6 +31,7 @@ import { getConfig, getQuotes, monthlyBillItem } from '@/components/intake/api';
 import type { IntakeConfig, Quote, Segment } from '@/lib/intake/contract';
 import { eur, isEmail, isPhone } from '@/lib/intake/format';
 import { funnel } from '@/lib/intake/funnel';
+import { stripSensitiveParams } from '@/lib/privacyUrl';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { parseLinkToken } from '@/lib/intake/linkToken';
 import '@/components/intake/intake.css';
@@ -97,13 +98,26 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
     };
   }, []);
 
-  /* The magic link: fetch the prefill server side (the token is the auth). */
+  /* The magic link leaves the address bar at once (M6): never in history, a bookmark, a screenshot or analytics. */
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('lt')) return;
+    window.history.replaceState(window.history.state, '', stripSensitiveParams(url.href));
+  }, []);
+
+  /* The magic link: fetch the prefill server side by POST (the token is the auth). */
   useEffect(() => {
     if (!token) return;
     let alive = true;
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 9000);
-    fetch(`/api/survey-context?lt=${encodeURIComponent(token)}`, { signal: ctrl.signal, cache: 'no-store' })
+    fetch('/api/survey-context', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ lt: token }),
+      signal: ctrl.signal,
+      cache: 'no-store',
+    })
       .then((r) => r.json())
       .catch(() => null)
       .then((d: LinkContext | null) => {

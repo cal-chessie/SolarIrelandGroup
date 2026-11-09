@@ -1,4 +1,4 @@
-import { gate, json } from '@/lib/intake/http';
+import { gate, json, readJson } from '@/lib/intake/http';
 import { isValidEircode, normaliseEircode } from '@/lib/eircode';
 import { lookupEircode } from '@/lib/eircodeLookup';
 import { liveMode } from '@/lib/intake/mode';
@@ -7,7 +7,10 @@ import { scenarioOf } from '@/lib/intake/stub/state';
 import type { EircodeResponse } from '@/lib/intake/contract';
 
 /**
- * GET /api/intake/eircode?code=D06X285
+ * POST /api/intake/eircode   { "code": "D06X285" }
+ *
+ * POST, not GET (M6, 9 Nov review): an Eircode names a home, so it stays out
+ * of URLs, access logs and Referer headers.
  *
  * The intake's address lookup.
  *
@@ -20,11 +23,12 @@ import type { EircodeResponse } from '@/lib/intake/contract';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   const blocked = gate(request, 60);
   if (blocked) return blocked;
 
-  const code = new URL(request.url).searchParams.get('code') || '';
+  const body = (await readJson(request)) as { code?: unknown } | null;
+  const code = typeof body?.code === 'string' ? body.code.slice(0, 20) : '';
   if (!isValidEircode(code)) return json({ ok: false, reason: 'invalid' } satisfies EircodeResponse, 400);
 
   if (liveMode()) {

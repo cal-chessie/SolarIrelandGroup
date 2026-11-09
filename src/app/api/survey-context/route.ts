@@ -5,7 +5,10 @@ import { stubLinkContext } from '@/lib/intake/stub/linkContext';
 import { parseLinkToken } from '@/lib/intake/linkToken';
 
 /**
- * GET /api/survey-context?lt=<lead token>
+ * POST /api/survey-context   { "lt": "<lead token>" }
+ *
+ * POST, never GET (M6, 9 Nov review): the token is the homeowner's key to
+ * their own details, so it stays out of URLs, access logs and Referer headers.
  *
  * Resolves an estimate-email magic link into the prefill subset by calling
  * AISolar's lead-context function server-side (URL derived from the ingest
@@ -20,13 +23,13 @@ export const dynamic = 'force-dynamic';
 // ceiling the other AISolar routes already use, so a slow answer is never cut off by the platform first.
 export const maxDuration = 60;
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     if (isRateLimited(request)) {
       return NextResponse.json({ ok: false }, { status: 429 });
     }
-    const { searchParams } = new URL(request.url);
-    const lt = parseLinkToken(searchParams.get('lt'));
+    const body = (await request.json().catch(() => null)) as { lt?: unknown } | null;
+    const lt = parseLinkToken(body?.lt);
     if (!lt) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }

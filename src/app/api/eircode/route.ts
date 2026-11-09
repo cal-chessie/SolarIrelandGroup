@@ -3,7 +3,10 @@ import { isRateLimited } from '@/lib/leadBridge';
 import { isValidEircode, normaliseEircode } from '@/lib/eircode';
 
 /**
- * GET /api/eircode?code=D02X285
+ * POST /api/eircode   { "code": "D02X285" }
+ *
+ * POST, not GET (M6, 9 Nov review): an Eircode names a home, so it stays out
+ * of URLs, access logs and Referer headers.
  *
  * Resolves a valid Eircode to the home it belongs to via Google Geocoding
  * (server-side key, never shipped to the browser). Returns address, county
@@ -28,14 +31,14 @@ interface ResolvedEircode {
   lng?: number;
 }
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     if (isRateLimited(request)) {
       return NextResponse.json({ ok: false, reason: 'rate_limited' }, { status: 429 });
     }
 
-    const { searchParams } = new URL(request.url);
-    const raw = searchParams.get('code') || '';
+    const body = (await request.json().catch(() => null)) as { code?: unknown } | null;
+    const raw = typeof body?.code === 'string' ? body.code.slice(0, 20) : '';
     if (!isValidEircode(raw)) {
       return NextResponse.json({ ok: false, reason: 'invalid' }, { status: 400 });
     }

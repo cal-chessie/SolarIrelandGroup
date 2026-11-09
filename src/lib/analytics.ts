@@ -14,6 +14,8 @@
 /*  Cookie consent check                                              */
 /* ------------------------------------------------------------------ */
 
+import { stripSensitiveParams } from '@/lib/privacyUrl';
+
 const CONSENT_KEY = 'solar-ireland-cookie-consent';
 
 function hasAnalyticsConsent(): boolean {
@@ -122,8 +124,12 @@ export function trackPageView(path: string): void {
   if (!hasAnalyticsConsent()) return;
 
   if (gaEnabled()) {
+    // Never the homeowner's magic link (?lt=) in GA4 (M6).
+    const page_location = stripSensitiveParams(window.location.href);
+    gtag('set', { page_location });
     gtag('config', getGaId(), {
       page_path: path,
+      page_location,
     });
   }
 

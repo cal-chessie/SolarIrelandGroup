@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import posthog from 'posthog-js';
+import { scrubPostHogEvent } from '@/lib/privacyUrl';
 
 /**
  * PostHog Provider - Solar Ireland
@@ -44,6 +45,8 @@ export default function PostHogProvider() {
         // Auto-capture: pageviews, clicks, form submissions
         capture_pageview: false, // We handle this manually in analytics.ts
         capture_pageleave: true,
+        // A magic link (?lt=) is a homeowner's key: strip it from every URL PostHog records (M6).
+        before_send: (event) => scrubPostHogEvent(event),
         // Disable by default - will be enabled when consent is given
         loaded: (ph) => {
           // Check consent state on load

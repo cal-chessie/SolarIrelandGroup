@@ -67,3 +67,18 @@ describe('/book-survey cold', () => {
     expect(document.body.textContent).not.toMatch(/inbox|on its way/i);
   });
 });
+
+describe('/book-survey?lt= (M6)', () => {
+  it('takes the token out of the address bar at once and sends it by POST, never in a URL', async () => {
+    const lt = 'a'.repeat(64);
+    window.history.replaceState(null, '', `/book-survey?lt=${lt}&utm_source=email`);
+    const { default: BookSurveyClient } = await import('@/app/book-survey/BookSurveyClient');
+    render(<BookSurveyClient lt={lt} segment="domestic" src={null} />);
+    await waitFor(() => expect(window.location.search).toBe('?utm_source=email'));
+    await waitFor(() => expect(sent.some((s) => s.url.includes('/api/survey-context'))).toBe(true));
+    const ctx = sent.find((s) => s.url.includes('/api/survey-context'))!;
+    expect(ctx.url).not.toContain(lt);
+    expect(ctx.body).toEqual({ lt });
+    expect(sent.every((s) => !s.url.includes(lt))).toBe(true);
+  });
+});

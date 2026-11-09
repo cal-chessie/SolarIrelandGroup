@@ -227,3 +227,45 @@ describe('mobile and refused calls (M1)', () => {
     expect(seen.some((s) => s.url.includes('postmarkapp'))).toBe(false);
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  M6: the magic link and the Eircode stay out of URLs and analytics   */
+/* ------------------------------------------------------------------ */
+
+describe('keys out of URLs and analytics (M6)', () => {
+  it('strips lt and token params, keeps attribution', async () => {
+    const { stripSensitiveParams } = await import('@/lib/privacyUrl');
+    expect(stripSensitiveParams(`https://solarirelandgroup.ie/book-survey?lt=${HEX('a')}&utm_source=email`)).toBe('https://solarirelandgroup.ie/book-survey?utm_source=email');
+    expect(stripSensitiveParams(`/book-survey?lt=${HEX('a')}`)).toBe('/book-survey');
+    expect(stripSensitiveParams('/x?token=1&src=blog#top')).toBe('/x?src=blog#top');
+    expect(stripSensitiveParams('https://solarirelandgroup.ie/?utm_source=a')).toBe('https://solarirelandgroup.ie/?utm_source=a');
+  });
+  it('PostHog before_send scrubs every URL-shaped property', async () => {
+    const { scrubPostHogEvent } = await import('@/lib/privacyUrl');
+    const e = scrubPostHogEvent({
+      properties: { $current_url: `https://solarirelandgroup.ie/book-survey?lt=${HEX('a')}`, $referrer: `https://x.ie/?token=abc`, other: 3, $set_once: { $initial_current_url: `https://solarirelandgroup.ie/book-survey?lt=${HEX('a')}` } },
+      $set: { $current_url: '/book-survey?lt=zz' },
+    });
+    expect(JSON.stringify(e)).not.toMatch(/lt=|token=/);
+    expect(e.properties?.$current_url).toBe('https://solarirelandgroup.ie/book-survey');
+  });
+  it('/api/survey-context takes the token by POST only', async () => {
+    process.env.INTAKE_CONTRACT_MODE = 'stub';
+    const mod = await import('@/app/api/survey-context/route');
+    expect((mod as Record<string, unknown>).GET).toBeUndefined();
+    const res = await mod.POST(new Request('http://localhost/api/survey-context', { method: 'POST', body: JSON.stringify({ lt: HEX('a') }), headers: { 'x-forwarded-for': '198.51.100.7' } }));
+    expect(await res.json()).toMatchObject({ ok: true, name: 'Mary Kelly' });
+    const bad = await mod.POST(new Request('http://localhost/api/survey-context', { method: 'POST', body: JSON.stringify({ lt: 'not-a-token' }), headers: { 'x-forwarded-for': '198.51.100.8' } }));
+    expect(bad.status).toBe(400);
+  });
+  it('the Eircode lookups take the code by POST only', async () => {
+    process.env.INTAKE_CONTRACT_MODE = 'stub';
+    const intake = await import('@/app/api/intake/eircode/route');
+    expect((intake as Record<string, unknown>).GET).toBeUndefined();
+    const res = await intake.POST(new Request('http://localhost/api/intake/eircode', { method: 'POST', body: JSON.stringify({ code: 'D06X285' }) }));
+    expect(await res.json()).toMatchObject({ ok: true, county: 'Dublin' });
+    const site = await import('@/app/api/eircode/route');
+    expect((site as Record<string, unknown>).GET).toBeUndefined();
+    expect(typeof site.POST).toBe('function');
+  });
+});
