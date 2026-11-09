@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { forwardLead, isRateLimited, isHoneypotTripped } from '@/lib/leadBridge';
+import { SOLAR_DATA } from '@/lib/solar-data';
+
+// Every failure the visitor can see names the phone number: nothing fails silently.
+const PHONE = SOLAR_DATA.provider.phone;
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -55,15 +59,15 @@ export async function POST(request: NextRequest) {
       source: 'website_contact',
       name: name.trim().slice(0, 120),
       email: email.trim().toLowerCase().slice(0, 254),
-      phone: body.phone?.trim().slice(0, 40) || undefined,
-      county: body.county?.trim().slice(0, 60) || undefined,
+      phone: typeof body.phone === 'string' ? body.phone.trim().slice(0, 40) || undefined : undefined,
+      county: typeof body.county === 'string' ? body.county.trim().slice(0, 60) || undefined : undefined,
       message: message.trim().slice(0, 2000),
       meta: { page: '/contact' },
     });
 
     if (!result.ok) {
       return NextResponse.json(
-        { error: 'We could not send that just now. Please email sales@solarirelandgroup.ie or WhatsApp us.' },
+        { error: `We could not send that just now. Ring us on ${PHONE}, WhatsApp us or email sales@solarirelandgroup.ie.` },
         { status: 502 }
       );
     }
@@ -77,7 +81,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('[Contact Form] Error processing submission:', error);
     return NextResponse.json(
-      { error: 'Something went wrong. Please try again later.' },
+      { error: `Something went wrong sending that. Ring us on ${PHONE} or WhatsApp us.` },
       { status: 500 }
     );
   }

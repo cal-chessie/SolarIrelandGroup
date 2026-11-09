@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import { forwardLead, isRateLimited, isHoneypotTripped, type BridgeLead } from '@/lib/leadBridge';
+import { SOLAR_DATA } from '@/lib/solar-data';
+
+// Every failure the visitor can see names the phone number: nothing fails silently.
+const PHONE = SOLAR_DATA.provider.phone;
 
 /**
  * POST /api/lead
@@ -155,10 +159,10 @@ export async function POST(request: Request) {
     }
 
     // Nothing captured the lead - tell the UI so it can offer WhatsApp/phone.
-    return NextResponse.json({ error: 'We could not submit that just now. Please try WhatsApp or call us.' }, { status: 502 });
+    return NextResponse.json({ error: `We could not submit that just now. Ring us on ${PHONE} or WhatsApp us.` }, { status: 502 });
   } catch (error) {
     console.error('[lead] Failed to process lead:', error);
-    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 });
+    return NextResponse.json({ error: `Something went wrong. Try again, or ring us on ${PHONE}.` }, { status: 500 });
   }
 }
 
