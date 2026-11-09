@@ -28,6 +28,9 @@ export const FUNNEL_STEPS = [
   'ask_shown',
   'submit_ok',
   'submit_error',
+  'quiz_shown',
+  'quiz_answered',
+  'quiz_submitted',
 ] as const;
 export type FunnelStep = (typeof FUNNEL_STEPS)[number];
 

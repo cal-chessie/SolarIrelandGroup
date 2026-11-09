@@ -3484,3 +3484,141 @@ h1.si-ask__title {
     width: 100%;
   }
 }
+
+/* ── The exit quiz (9 Nov) ──────────────────────────────────────
+   Desktop: a centred card. Phone: a bottom sheet, never full screen.
+   Calm entry, none at all with reduced motion. */
+.si-analyser.si-exit {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .si-analyser.si-exit {
+    align-items: center;
+    padding: 24px;
+  }
+}
+.si-exit__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--si-scrim);
+  animation: si-exit-fade var(--si-dur-2) var(--si-ease-out) both;
+}
+.si-exit__card {
+  position: relative;
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  background: var(--si-lane);
+  box-shadow: var(--si-shadow-sheet);
+  border-radius: var(--si-r-lg) var(--si-r-lg) 0 0;
+  padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+  animation: si-exit-up var(--si-dur-3) var(--si-ease-out) both;
+}
+@media (min-width: 768px) {
+  .si-exit__card {
+    max-width: 520px;
+    border-radius: var(--si-r-lg);
+    padding: 28px 32px 32px;
+  }
+}
+.si-exit__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.si-exit__x {
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--si-fg-muted);
+}
+.si-exit__x:hover {
+  background: var(--si-hover);
+  color: var(--si-fg);
+}
+.si-exit__h {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  outline: none;
+}
+.si-exit__sub {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--si-fg-muted);
+}
+.si-exit__big {
+  margin-top: 16px;
+  font-size: 40px;
+  line-height: 44px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.si-exit__big span {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--si-fg-muted);
+  letter-spacing: 0;
+}
+.si-exit__chips {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+@media (min-width: 430px) {
+  .si-exit__chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.si-exit__chips--two,
+.si-exit__chips--stack {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 430px) {
+  .si-exit__chips--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.si-exit__chips .si-chip {
+  min-height: 52px;
+}
+.si-exit__go {
+  margin-top: 24px;
+}
+.si-exit__go .si-btn--primary {
+  width: 100%;
+}
+.si-exit__no {
+  margin-top: 16px;
+  display: block;
+  margin-inline: auto;
+}
+@keyframes si-exit-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes si-exit-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-exit__scrim,
+  .si-exit__card {
+    animation: none;
+  }
+}

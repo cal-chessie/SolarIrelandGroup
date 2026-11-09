@@ -347,6 +347,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     const run = (runRef.current += 1);
     track('upload_start', { method, segment, flow_id: fid });
     funnel('upload_started', { door, method, segment, flow_id: fid });
+    // The exit quiz never interrupts someone who has started on their bill.
+    try {
+      sessionStorage.setItem('si_analyser_started', '1');
+    } catch {
+      /* private mode */
+    }
     const okType = /^image\//.test(raw.type) || raw.type === 'application/pdf' || /\.(pdf|jpe?g|png|webp|heic|heif)$/i.test(raw.name);
     if (!okType) return fail('wrong_type');
     const file = await shrink(raw);

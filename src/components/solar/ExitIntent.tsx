@@ -1,420 +1,398 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import Image from 'next/image';
-import {
-  X,
-  MessageCircle,
-  ArrowRight,
-  LayoutDashboard,
-  Users,
-  Shield,
-  Clock,
-  Star,
-  TrendingUp,
-} from 'lucide-react';
+/**
+ * The exit quiz (Cal, 9 Nov 2026). Three one-tap questions, an honest saving
+ * range, then the same ask as every other road ("Send my full estimate").
+ *
+ * When it may open is lib/intake/exitGate.ts: never over a form someone is
+ * filling, never on /estimate or /book-survey, never after the analyser has
+ * started or a lead was sent, desktop exit intent only after 20 seconds,
+ * phones after 45 seconds and half the page (or a fast scroll up), once a
+ * week, and dismissed means gone.
+ *
+ * The range comes from the one engine, through the same /api/intake/quote
+ * path the analyser and the manual road use: the bill they tapped, priced
+ * 15% either side because they said "roughly". No maths here. The submit is
+ * the call contract (intent "call"), with the quiz answers in the lead's
+ * attribution (meta.pkg) and the door "exit-quiz".
+ */
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
+import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
+import { getConfig, getQuotes } from '@/components/intake/api';
+import type { IntakeConfig, Quote, QuoteRequestItem, Segment } from '@/lib/intake/contract';
+import { eur } from '@/lib/intake/format';
+import { EXIT_KEYS, exitMayOpen, readExitState, type ExitTrigger } from '@/lib/intake/exitGate';
+import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { trackExitIntent } from '@/lib/analytics';
-import { submitLead } from '@/lib/submitLead';
+import '@/components/intake/intake.css';
 
+const PHONE = SOLAR_DATA.provider.phone;
+const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
+const FALLBACK_CHIPS = { domestic: [80, 120, 160, 220, 300], commercial: [300, 600, 1000, 2000, 4000] };
+const EXTRAS = [
+  { v: 'ev', t: 'An electric car' },
+  { v: 'heat_pump', t: 'A heat pump' },
+  { v: 'battery', t: 'A home battery' },
+] as const;
+type Extra = (typeof EXTRAS)[number]['v'];
+type Stage = 'segment' | 'bill' | 'extras' | 'result' | 'ask' | 'done';
 
-const SESSION_KEY = 'solar-ireland-exit-seen';
-const PAGE_VISITS_KEY = 'solar-ireland-page-visits';
-const MIN_TIME_ON_PAGE_MS = 25_000; // hard floor before any trigger fires
-const IDLE_FALLBACK_MS = 60_000; // auto-show only after a full minute
-
+function flowId(): string {
+  const b = new Uint8Array(8);
+  crypto.getRandomValues(b);
+  return Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+}
+const setLs = (k: string, v: string) => {
+  try {
+    localStorage.setItem(k, v);
+  } catch {
+    /* private mode */
+  }
+};
+const setSs = (k: string, v: string) => {
+  try {
+    sessionStorage.setItem(k, v);
+  } catch {
+    /* private mode */
+  }
+};
+const item = (segment: Segment, amountEur: number): QuoteRequestItem => ({
+  segment,
+  bill: { amountEur: Math.round(amountEur), period: 'month' },
+  annualKwh: null,
+  supplier: null,
+  homeType: 'unknown',
+  billRead: null,
+});
 
 export default function ExitIntent() {
-  const [show, setShow] = useState(false);
-  const [exitEmail, setExitEmail] = useState('');
-  const [exitStatus, setExitStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
-  const [exitError, setExitError] = useState<string | null>(null);
-  const [exitFallback, setExitFallback] = useState(false);
-  const hasTriggered = useRef(false);
+  const [open, setOpen] = useState(false);
+  const [stage, setStage] = useState<Stage>('segment');
+  const [segment, setSegment] = useState<Segment>('domestic');
+  const [bill, setBill] = useState<{ amount: number; orMore: boolean } | null>(null);
+  const [extras, setExtras] = useState<Extra[]>([]);
+  const [config, setConfig] = useState<IntakeConfig | null>(null);
+  const [quotes, setQuotes] = useState<{ at: Quote; low: Quote; high: Quote } | null>(null);
+  const [quoteState, setQuoteState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
+  const [fid, setFid] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const pageLoadTimeRef = useRef(0);
+  const headRef = useRef<HTMLHeadingElement>(null);
+  const fired = useRef(false);
 
-  const exitEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(exitEmail);
+  const who = config?.survey.homeownerFacingName ?? null;
 
-  const handleExitEmail = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!exitEmailValid || exitStatus === 'submitting') return;
-    setExitStatus('submitting');
-    setExitError(null);
-    trackExitIntent('email-submit');
-    const res = await submitLead({ source: 'exit_intent', email: exitEmail.trim() });
-    // Never claim an inbox we did not reach. On the fallback path the details
-    // are captured but no automated estimate goes out, so the copy softens.
-    if (!res.ok) {
-      setExitStatus('idle');
-      setExitError("That didn't go through. Try WhatsApp below and we'll pick it up.");
-      return;
-    }
-    setExitFallback(!!res.fallback);
-    setExitStatus('done');
-  }, [exitEmail, exitEmailValid, exitStatus]);
-
-
-  const trigger = useCallback(() => {
-    if (hasTriggered.current) return;
-    // Never fire over an open chat conversation.
-    if (document.body.dataset.sigChatOpen === '1') return;
-    const timeOnPage = Date.now() - pageLoadTimeRef.current;
-    // Never fire in the first 25s, regardless of how many pages were visited.
-    if (timeOnPage < MIN_TIME_ON_PAGE_MS) return;
-    hasTriggered.current = true;
-    setTimeout(() => setShow(true), 350);
+  /* Remember typing anywhere on the site this session: the quiz never interrupts a form. */
+  useEffect(() => {
+    const onInput = (e: Event) => {
+      if (cardRef.current?.contains(e.target as Node)) return;
+      setSs(EXIT_KEYS.typed, '1');
+    };
+    document.addEventListener('input', onInput, true);
+    readExitState(); // stamps the site start time on the first page
+    return () => document.removeEventListener('input', onInput, true);
   }, []);
 
+  const tryOpen = useCallback((t: ExitTrigger) => {
+    if (fired.current) return;
+    const phone = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024;
+    if (!exitMayOpen(readExitState(), t, phone)) return;
+    fired.current = true;
+    setLs(EXIT_KEYS.shownAt, String(Date.now()));
+    setSs(EXIT_KEYS.legacySeen, '1');
+    setFid(flowId());
+    setOpen(true);
+    funnel('quiz_shown', { door: 'exit-quiz', trigger: t.kind });
+    getConfig().then((c) => c && setConfig(c));
+  }, []);
+
+  /* Triggers: desktop exit intent; phone scroll depth and a fast scroll up. */
   useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY)) return;
-
-    // Increment page visit counter for this session
-    const visits = parseInt(sessionStorage.getItem(PAGE_VISITS_KEY) || '0', 10) + 1;
-    sessionStorage.setItem(PAGE_VISITS_KEY, visits.toString());
-
-    // Record when this page loaded
-    pageLoadTimeRef.current = Date.now();
-
-    const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY < 0) trigger();
+    const onLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) tryOpen({ kind: 'exit-intent' });
     };
-    document.documentElement.addEventListener('mouseleave', onMouseLeave);
-
-    let tabHidden = false;
-    const onVisChange = () => {
-      if (document.visibilityState === 'hidden') {
-        tabHidden = true;
-      } else if (tabHidden) {
-        tabHidden = false;
-        trigger();
-      }
-    };
-    document.addEventListener('visibilitychange', onVisChange);
-
-    let maxScroll = 0;
-    let scrollTimer: ReturnType<typeof setTimeout>;
+    document.documentElement.addEventListener('mouseleave', onLeave);
+    let lastY = window.scrollY;
+    let lastT = performance.now();
+    let maxDepth = 0;
     const onScroll = () => {
-      const st = window.scrollY;
-      if (st > maxScroll) maxScroll = st;
-      if (maxScroll > 900 && st < 150) {
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
-          maxScroll = 0;
-          trigger();
-        }, 300);
-      }
+      const y = window.scrollY;
+      const t = performance.now();
+      const room = document.documentElement.scrollHeight - window.innerHeight;
+      if (room > 0) maxDepth = Math.max(maxDepth, y / room);
+      const v = (lastY - y) / Math.max(1, t - lastT); // px per ms, up is positive
+      if (v > 2.5 && lastY - y > 120 && maxDepth > 0.25) tryOpen({ kind: 'fast-up' });
+      else if (maxDepth >= 0.5) tryOpen({ kind: 'scroll-depth', depth: maxDepth });
+      lastY = y;
+      lastT = t;
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-
-    const idleTimer = setTimeout(trigger, IDLE_FALLBACK_MS);
-
+    // A phone reader who stops at half way still gets it once 45 seconds pass.
+    const tick = setInterval(() => {
+      if (maxDepth >= 0.5) tryOpen({ kind: 'scroll-depth', depth: maxDepth });
+    }, 5000);
     return () => {
-      document.documentElement.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('visibilitychange', onVisChange);
+      document.documentElement.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('scroll', onScroll);
-      clearTimeout(scrollTimer);
-      clearTimeout(idleTimer);
+      clearInterval(tick);
     };
-  }, [trigger]);
+  }, [tryOpen]);
 
+  const close = useCallback(
+    (how: 'x' | 'no_thanks' | 'escape' | 'scrim' | 'done') => {
+      setOpen(false);
+      if (how !== 'done') setLs(EXIT_KEYS.dismissed, '1');
+      funnel('quiz_answered', { door: 'exit-quiz', step: 'closed', how, at: stage });
+    },
+    [stage],
+  );
+
+  /* Focus into the card, Escape closes, Tab stays inside. */
   useEffect(() => {
-    if (!show) return;
-    // iOS Safari ignores overflow:hidden for touch scrolling, so the page
-    // scrolled behind the modal. position:fixed is the lock that actually holds.
-    const body = document.body;
-    const scrollY = window.scrollY;
-    const prev = { overflow: body.style.overflow, position: body.style.position, top: body.style.top, width: body.style.width };
-    body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.width = '100%';
-    return () => {
-      body.style.overflow = prev.overflow;
-      body.style.position = prev.position;
-      body.style.top = prev.top;
-      body.style.width = prev.width;
-      window.scrollTo(0, scrollY);
-    };
-  }, [show]);
-
-  const close = useCallback(() => {
-    setShow(false);
-    sessionStorage.setItem(SESSION_KEY, '1');
-  }, []);
-
-  const handleCTA = useCallback(() => {
-    close();
-  }, [close]);
-
-  useEffect(() => {
-    if (!show) return;
-
-    // Move focus into the dialog when it opens.
-    const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 0);
-
-    const getFocusable = (): HTMLElement[] => {
-      const card = cardRef.current;
-      if (!card) return [];
-      return Array.from(
-        card.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
-    };
-
+    if (!open) return;
+    const t = setTimeout(() => headRef.current?.focus(), 30);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        close();
-        return;
-      }
-      if (e.key !== 'Tab') return;
-
-      const focusable = getFocusable();
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const active = document.activeElement as HTMLElement | null;
-
-      // Keep focus trapped inside the dialog card.
-      if (!cardRef.current?.contains(active)) {
-        e.preventDefault();
-        first.focus();
-        return;
-      }
-      if (e.shiftKey && active === first) {
+      if (e.key === 'Escape') return close('escape');
+      if (e.key !== 'Tab' || !cardRef.current) return;
+      const f = [...cardRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && active === last) {
+      } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
         first.focus();
       }
     };
-
     document.addEventListener('keydown', onKey);
     return () => {
-      clearTimeout(focusTimer);
+      clearTimeout(t);
       document.removeEventListener('keydown', onKey);
     };
-  }, [show, close]);
+  }, [open, close, stage]);
 
-  if (!show) return null;
+  /* Each new question: focus its heading so a screen reader hears it. */
+  useEffect(() => {
+    if (open) setTimeout(() => headRef.current?.focus(), 30);
+  }, [stage, open]);
 
-  const whatsappUrl = buildWhatsAppUrl({
-    source: 'exit-intent',
-    customMessage:
-      "Hi Solar Ireland! I was on your site and I'm really interested in solar panels. I'd love to hear about the project portal and get a free roof survey.",
-  });
+  const answer = (step: string, value: string) => funnel('quiz_answered', { door: 'exit-quiz', step, value, flow_id: fid });
 
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Special offer before you leave"
-    >
-      <div className="exit-intent-backdrop absolute inset-0 bg-black/60" onClick={close} />
+  const price = (seg: Segment, amount: number) => {
+    setQuoteState('loading');
+    getQuotes([item(seg, amount), item(seg, amount * 0.85), item(seg, amount * 1.15)]).then((r) => {
+      if (r && r.length === 3 && r.every((q) => q.figures)) {
+        setQuotes({ at: r[0], low: r[1], high: r[2] });
+        setQuoteState('ready');
+      } else {
+        setQuotes(null);
+        setQuoteState('error');
+      }
+    });
+  };
 
-      <div
-        ref={cardRef}
-        className="exit-intent-card relative w-full max-w-[480px] max-h-[92dvh] flex flex-col rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
-      >
-        <div className="relative h-1 w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500" />
-          <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+  if (!open) return null;
+
+  const chips = (config?.bill.chips ?? FALLBACK_CHIPS)[segment];
+  const step = stage === 'segment' ? 1 : stage === 'bill' ? 2 : stage === 'extras' ? 3 : null;
+  const low = quotes?.low.figures?.annualSavingEur ?? null;
+  const high = quotes?.high.figures?.annualSavingEur ?? null;
+
+  let body;
+  if (stage === 'segment') {
+    body = (
+      <>
+        <h2 className="si-exit__h" ref={headRef} tabIndex={-1}>
+          Is this for your home or a business?
+        </h2>
+        <div className="si-exit__chips si-exit__chips--two">
+          {(
+            [
+              ['domestic', 'My home'],
+              ['commercial', 'A business'],
+            ] as const
+          ).map(([v, t]) => (
+            <button
+              key={v}
+              type="button"
+              className="si-chip si-chip--name"
+              onClick={() => {
+                setSegment(v);
+                answer('segment', v);
+                setStage('bill');
+              }}
+            >
+              {t}
+            </button>
+          ))}
         </div>
-
-        <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
-          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3">
-            <Image
-              src="/logo-sm.webp"
-              alt="Solar Ireland"
-              width={120}
-              height={135}
-              className="h-9 sm:h-10 w-auto opacity-90"
-            />
-            <span className="font-bold text-white text-base tracking-wide opacity-90">
-              Solar Ireland
-            </span>
-          </div>
+      </>
+    );
+  } else if (stage === 'bill') {
+    body = (
+      <>
+        <h2 className="si-exit__h" ref={headRef} tabIndex={-1}>
+          Roughly what&apos;s your electricity bill a month?
+        </h2>
+        <div className="si-exit__chips">
+          {chips.map((a, i) => {
+            const orMore = i === chips.length - 1;
+            return (
+              <button
+                key={a}
+                type="button"
+                className="si-chip si-chip--name"
+                onClick={() => {
+                  setBill({ amount: a, orMore });
+                  answer('bill', String(a));
+                  price(segment, a);
+                  setStage('extras');
+                }}
+              >
+                {eur(a)}
+                {orMore ? '+' : ''}
+              </button>
+            );
+          })}
+        </div>
+      </>
+    );
+  } else if (stage === 'extras') {
+    body = (
+      <>
+        <h2 className="si-exit__h" ref={headRef} tabIndex={-1}>
+          Do you have, or want, any of these?
+        </h2>
+        <p className="si-exit__sub">Tap any that apply. Optional.</p>
+        <div className="si-exit__chips si-exit__chips--stack">
+          {EXTRAS.map((x) => (
+            <button
+              key={x.v}
+              type="button"
+              className="si-chip si-chip--name"
+              aria-pressed={extras.includes(x.v)}
+              onClick={() => setExtras((e) => (e.includes(x.v) ? e.filter((y) => y !== x.v) : [...e, x.v]))}
+            >
+              {x.t}
+            </button>
+          ))}
+        </div>
+        <div className="si-exit__go">
           <button
-            ref={closeBtnRef}
-            onClick={() => { trackExitIntent('dismiss'); close(); }}
-            className="exit-intent-el exit-intent-el-0 w-11 h-11 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
-            aria-label="Close"
+            type="button"
+            className="si-btn si-btn--primary"
+            onClick={() => {
+              answer('extras', extras.join(',') || 'none');
+              setStage('result');
+            }}
           >
-            <X className="w-4 h-4" />
+            Show my saving
           </button>
         </div>
-
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-yellow-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="relative p-6 sm:p-7 pt-4 overflow-y-auto flex-1 min-h-0">
-          <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
-            </span>
-            <span className="text-[11px] text-green-400/90 font-medium">
-              SEAI-registered installer covering all 32 counties
-            </span>
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-2 mb-4">
-            <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
-              Wait - don&apos;t leave{' '}
-              <span className="text-gradient">€1,800</span>{' '}
-              <br />
-              <span className="text-gradient">on the table (ROI)</span>
-            </h3>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              The SEAI grant (Republic of Ireland only) is paid into the bank account you nominate once the work is done. Combined with savings of
-              {' '}<span className="text-gray-400 font-medium">around €1,100 a year</span> for a typical 3-bed semi,
-              your system literally pays for itself.
+      </>
+    );
+  } else if (stage === 'result') {
+    body = (
+      <>
+        <h2 className="si-exit__h" ref={headRef} tabIndex={-1}>
+          {quoteState === 'ready' && low !== null && high !== null ? 'Roughly what solar would save you' : 'Your saving'}
+        </h2>
+        {quoteState === 'loading' || quoteState === 'idle' ? (
+          <p className="si-exit__sub" role="status">
+            Working it out
+          </p>
+        ) : quoteState === 'ready' && low !== null && high !== null ? (
+          <>
+            <p className="si-exit__big" data-figure="" data-prov="aisolar_quote">
+              {bill?.orMore ? `From ${eur(low)}` : `${eur(Math.min(low, high))} to ${eur(Math.max(low, high))}`}
+              <span> a year</span>
             </p>
-          </div>
-
-          <div className="space-y-2 mb-4">
-            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400/10 to-yellow-500/[0.05] border border-yellow-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <LayoutDashboard className="w-[18px] h-[18px] text-yellow-400" />
-              </div>
-              <div>
-                <h3 className="text-[13px] font-bold text-white mb-0.5">
-                  Track Your Project in Real Time
-                </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Your personal portal shows every milestone - survey, design, install,
-                  commissioning. You&apos;re never left wondering what&apos;s happening.
-                </p>
-              </div>
-            </div>
-
-            <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-[18px] h-[18px] text-green-400" />
-              </div>
-              <div>
-                <h3 className="text-[13px] font-bold text-white mb-0.5">
-                  Talk Directly With the Team
-                </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Message your project manager and installers directly. No call centres,
-                  no tickets - just real people who know your name and your roof.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-5 flex-wrap">
-            {[
-              { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
-              { icon: Clock, label: '1-Day Install', color: 'text-yellow-400/70' },
-              { icon: TrendingUp, label: '0% VAT on Solar', color: 'text-sky-400/70' },
-            ].map(({ icon: Icon, label, color }) => (
-              <div
-                key={label}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]"
-              >
-                <Icon className={`w-3 h-3 ${color}`} />
-                <span className="text-[10px] text-gray-400 font-medium">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-7">
-            {exitStatus === 'done' ? (
-              <div className="w-full">
-                <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
-                  <Shield className="w-4 h-4" />
-                  Got it. A member of our team will be in touch.
-                </div>
-                {/* An email on its own tells us nothing about the house, so we
-                    cannot estimate from it. Offer the two things that turn this
-                    into a real number: a time to talk, or their actual bill. */}
-                <p className="mt-3 text-[13px] text-gray-400 text-center">
-                  Want it sooner, or exact?
-                </p>
-                <div className="mt-2 flex flex-col sm:flex-row gap-2.5">
-                  <a
-                    href="/book-survey"
-                    onClick={() => { trackExitIntent('callback-click'); close(); }}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] text-[13px] text-gray-200 hover:bg-white/[0.07] transition-colors"
-                  >
-                    <Clock className="w-4 h-4 text-yellow-400" /> Free 15-minute call
-                  </a>
-                  <a
-                    href="/solar-calculator"
-                    onClick={() => { trackExitIntent('bill-estimate-click'); close(); }}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-[13px] hover:bg-yellow-300 transition-colors"
-                  >
-                    <TrendingUp className="w-4 h-4" /> Exact figures from my bill
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
-                <label htmlFor="exit-email" className="sr-only">Email address</label>
-                <input
-                  id="exit-email"
-                  type="email"
-                  required
-                  value={exitEmail}
-                  onChange={(e) => setExitEmail(e.target.value)}
-                  placeholder="your@email.ie"
-                  autoComplete="email"
-                  inputMode="email"
-                  enterKeyHint="send"
-                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-base placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
-                />
-                <button
-                  type="submit"
-                  disabled={!exitEmailValid || exitStatus === 'submitting'}
-                  className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-yellow-400 text-black font-bold text-[14px] hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {exitStatus === 'submitting' ? 'Sending...' : <>Get my free estimate <ArrowRight className="w-4 h-4" /></>}
-                </button>
-              </form>
-            )}
-            {exitError && (
-              <p className="mt-2 text-[13px] text-red-400" role="alert">{exitError}</p>
-            )}
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => { trackExitIntent('whatsapp-click'); handleCTA(); }}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-200"
-            >
-              <MessageCircle className="w-4 h-4 text-green-400" />
-              <span className="text-[13px]">WhatsApp us instead</span>
+            <p className="si-exit__sub">
+              On a bill of about {eur(bill?.amount ?? 0)} a month, from the same engine as your full estimate. Your own bill makes it exact.
+              {extras.length ? ' We will look at the extras you picked on the call.' : ''}
+            </p>
+          </>
+        ) : (
+          <p className="si-exit__sub" role="alert">
+            We couldn&apos;t work that out just now. Send us your details and your full estimate follows, or ring us on{' '}
+            <a className="si-inline" href={PHONE_HREF}>
+              {PHONE}
             </a>
-            <button
-              onClick={() => { trackExitIntent('dismiss'); close(); }}
-              className="px-5 py-3 rounded-xl text-[13px] text-gray-400 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
-            >
-              Maybe later
-            </button>
-          </div>
-
-          <div className="exit-intent-el exit-intent-el-9 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
-            <span className="flex items-center gap-1 text-[10px] text-gray-400">
-              <Shield className="w-3 h-3" />
-              {SOLAR_DATA.certifications[0]}
-            </span>
-            <span className="text-gray-800">·</span>
-            <span className="text-[10px] text-gray-400">
-              {SOLAR_DATA.certifications[1]}
-            </span>
-            <span className="text-gray-800">·</span>
-            <span className="text-[10px] text-gray-400">No spam</span>
-          </div>
+            .
+          </p>
+        )}
+        <div className="si-exit__go">
+          <button
+            type="button"
+            className="si-btn si-btn--primary"
+            disabled={quoteState === 'loading'}
+            onClick={() => {
+              answer('result', quoteState);
+              setStage('ask');
+            }}
+          >
+            Get my full estimate
+          </button>
         </div>
+      </>
+    );
+  } else if (stage === 'ask') {
+    body = (
+      <CallAsk
+        idPrefix="si-exit"
+        details={details}
+        onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
+        who={who}
+        heading="Where should we send your full estimate?"
+        headingLevel="h2"
+        headingRef={headRef}
+        ctx={{
+          segment,
+          door: 'exit-quiz',
+          src: 'exit-quiz',
+          // The quiz answers ride in the lead's attribution, which AISolar keeps.
+          pkg: `quiz:${segment === 'commercial' ? 'business' : 'home'};bill=${bill?.amount ?? ''}${bill?.orMore ? '+' : ''};extras=${extras.join(',') || 'none'}`,
+          countyContext: null,
+          flowId: fid,
+          monthlyBill: bill?.amount ?? null,
+          annualKwh: null,
+          billPeriod: bill ? 'month' : null,
+          supplier: null,
+          quoteToken: quotes?.at.quoteToken ?? null,
+          billRead: null,
+          carry: null,
+        }}
+        onSent={(_res, d) => {
+          setDetails(d);
+          setLs(EXIT_KEYS.leadSent, '1');
+          funnel('quiz_submitted', { door: 'exit-quiz', segment, extras: extras.length, flow_id: fid });
+          setStage('done');
+        }}
+      />
+    );
+  } else {
+    body = <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" />;
+  }
+
+  return (
+    <div className="si-analyser si-exit" data-exit-quiz="" data-stage={stage}>
+      <div className="si-exit__scrim" onClick={() => close(stage === 'done' ? 'done' : 'scrim')} aria-hidden="true" />
+      <div className="si-exit__card" ref={cardRef} role="dialog" aria-modal="true" aria-label="Three quick questions about your solar saving">
+        <div className="si-exit__top">
+          <p className="si-an-kicker">{step ? `Question ${step} of 3` : stage === 'done' ? 'Done' : 'Your saving'}</p>
+          <button type="button" className="si-exit__x" aria-label="Close" onClick={() => close(stage === 'done' ? 'done' : 'x')}>
+            <X size={20} aria-hidden="true" />
+          </button>
+        </div>
+        {body}
+        {stage !== 'done' && stage !== 'ask' ? (
+          <button type="button" className="si-btn--quiet si-exit__no" onClick={() => close('no_thanks')}>
+            No thanks
+          </button>
+        ) : null}
       </div>
     </div>
   );

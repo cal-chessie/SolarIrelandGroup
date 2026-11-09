@@ -862,7 +862,7 @@ export default function WhatsAppChat() {
                     </form>
                   )}
                   {prechatLeadStatus === 'error' && (
-                    <p className="w-full text-[13px] text-red-400 mb-3 -mt-1" role="alert">Check that email address and try again, or use WhatsApp below.</p>
+                    <p className="w-full text-[13px] text-red-400 mb-3 -mt-1" role="alert">That didn&apos;t go through. Check the email address and try again, or ring us on {SOLAR_DATA.provider.phone}.</p>
                   )}
 
                   <a

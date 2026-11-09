@@ -1,0 +1,421 @@
+'use client';
+
+import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
+import {
+  X,
+  MessageCircle,
+  ArrowRight,
+  LayoutDashboard,
+  Users,
+  Shield,
+  Clock,
+  Star,
+  TrendingUp,
+} from 'lucide-react';
+import { SOLAR_DATA } from '@/lib/solar-data';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { trackExitIntent } from '@/lib/analytics';
+import { submitLead } from '@/lib/submitLead';
+
+
+const SESSION_KEY = 'solar-ireland-exit-seen';
+const PAGE_VISITS_KEY = 'solar-ireland-page-visits';
+const MIN_TIME_ON_PAGE_MS = 25_000; // hard floor before any trigger fires
+const IDLE_FALLBACK_MS = 60_000; // auto-show only after a full minute
+
+
+export default function ExitIntent() {
+  const [show, setShow] = useState(false);
+  const [exitEmail, setExitEmail] = useState('');
+  const [exitStatus, setExitStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
+  const [exitError, setExitError] = useState<string | null>(null);
+  const [exitFallback, setExitFallback] = useState(false);
+  const hasTriggered = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const pageLoadTimeRef = useRef(0);
+
+  const exitEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(exitEmail);
+
+  const handleExitEmail = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!exitEmailValid || exitStatus === 'submitting') return;
+    setExitStatus('submitting');
+    setExitError(null);
+    trackExitIntent('email-submit');
+    const res = await submitLead({ source: 'exit_intent', email: exitEmail.trim() });
+    // Never claim an inbox we did not reach. On the fallback path the details
+    // are captured but no automated estimate goes out, so the copy softens.
+    if (!res.ok) {
+      setExitStatus('idle');
+      setExitError("That didn't go through. Try WhatsApp below and we'll pick it up.");
+      return;
+    }
+    setExitFallback(!!res.fallback);
+    setExitStatus('done');
+  }, [exitEmail, exitEmailValid, exitStatus]);
+
+
+  const trigger = useCallback(() => {
+    if (hasTriggered.current) return;
+    // Never fire over an open chat conversation.
+    if (document.body.dataset.sigChatOpen === '1') return;
+    const timeOnPage = Date.now() - pageLoadTimeRef.current;
+    // Never fire in the first 25s, regardless of how many pages were visited.
+    if (timeOnPage < MIN_TIME_ON_PAGE_MS) return;
+    hasTriggered.current = true;
+    setTimeout(() => setShow(true), 350);
+  }, []);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+
+    // Increment page visit counter for this session
+    const visits = parseInt(sessionStorage.getItem(PAGE_VISITS_KEY) || '0', 10) + 1;
+    sessionStorage.setItem(PAGE_VISITS_KEY, visits.toString());
+
+    // Record when this page loaded
+    pageLoadTimeRef.current = Date.now();
+
+    const onMouseLeave = (e: MouseEvent) => {
+      if (e.clientY < 0) trigger();
+    };
+    document.documentElement.addEventListener('mouseleave', onMouseLeave);
+
+    let tabHidden = false;
+    const onVisChange = () => {
+      if (document.visibilityState === 'hidden') {
+        tabHidden = true;
+      } else if (tabHidden) {
+        tabHidden = false;
+        trigger();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisChange);
+
+    let maxScroll = 0;
+    let scrollTimer: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      const st = window.scrollY;
+      if (st > maxScroll) maxScroll = st;
+      if (maxScroll > 900 && st < 150) {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          maxScroll = 0;
+          trigger();
+        }, 300);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const idleTimer = setTimeout(trigger, IDLE_FALLBACK_MS);
+
+    return () => {
+      document.documentElement.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('visibilitychange', onVisChange);
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(scrollTimer);
+      clearTimeout(idleTimer);
+    };
+  }, [trigger]);
+
+  useEffect(() => {
+    if (!show) return;
+    // iOS Safari ignores overflow:hidden for touch scrolling, so the page
+    // scrolled behind the modal. position:fixed is the lock that actually holds.
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const prev = { overflow: body.style.overflow, position: body.style.position, top: body.style.top, width: body.style.width };
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.width = '100%';
+    return () => {
+      body.style.overflow = prev.overflow;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [show]);
+
+  const close = useCallback(() => {
+    setShow(false);
+    sessionStorage.setItem(SESSION_KEY, '1');
+  }, []);
+
+  const handleCTA = useCallback(() => {
+    close();
+  }, [close]);
+
+  useEffect(() => {
+    if (!show) return;
+
+    // Move focus into the dialog when it opens.
+    const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 0);
+
+    const getFocusable = (): HTMLElement[] => {
+      const card = cardRef.current;
+      if (!card) return [];
+      return Array.from(
+        card.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+    };
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      // Keep focus trapped inside the dialog card.
+      if (!cardRef.current?.contains(active)) {
+        e.preventDefault();
+        first.focus();
+        return;
+      }
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKey);
+    return () => {
+      clearTimeout(focusTimer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [show, close]);
+
+  if (!show) return null;
+
+  const whatsappUrl = buildWhatsAppUrl({
+    source: 'exit-intent',
+    customMessage:
+      "Hi Solar Ireland! I was on your site and I'm really interested in solar panels. I'd love to hear about the project portal and get a free roof survey.",
+  });
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Special offer before you leave"
+    >
+      <div className="exit-intent-backdrop absolute inset-0 bg-black/60" onClick={close} />
+
+      <div
+        ref={cardRef}
+        className="exit-intent-card relative w-full max-w-[480px] max-h-[92dvh] flex flex-col rounded-2xl bg-[#0e0e0e] border border-white/[0.06] shadow-2xl shadow-black/60 overflow-hidden"
+      >
+        <div className="relative h-1 w-full overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500" />
+          <div className="exit-intent-shimmer-bar absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        </div>
+
+        <div className="flex items-center justify-between px-6 pt-5 pb-1 sm:px-8">
+          <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3">
+            <Image
+              src="/logo-sm.webp"
+              alt="Solar Ireland"
+              width={120}
+              height={135}
+              className="h-9 sm:h-10 w-auto opacity-90"
+            />
+            <span className="font-bold text-white text-base tracking-wide opacity-90">
+              Solar Ireland
+            </span>
+          </div>
+          <button
+            ref={closeBtnRef}
+            onClick={() => { trackExitIntent('dismiss'); close(); }}
+            className="exit-intent-el exit-intent-el-0 w-11 h-11 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/[0.12] transition-all duration-200"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-yellow-400/[0.03] rounded-full blur-[80px] pointer-events-none" />
+
+        <div className="relative p-6 sm:p-7 pt-4 overflow-y-auto flex-1 min-h-0">
+          <div className="exit-intent-el exit-intent-el-1 flex items-center gap-2 mb-5 px-3 py-2 rounded-full bg-green-500/[0.06] border border-green-500/[0.1] w-fit">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+            </span>
+            <span className="text-[11px] text-green-400/90 font-medium">
+              SEAI-registered installer covering all 32 counties
+            </span>
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-2 mb-4">
+            <h3 className="text-2xl sm:text-[28px] font-bold text-white leading-[1.15] mb-2.5 tracking-tight">
+              Wait - don&apos;t leave{' '}
+              <span className="text-gradient">€1,800</span>{' '}
+              <br />
+              <span className="text-gradient">on the table (ROI)</span>
+            </h3>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              The SEAI grant (Republic of Ireland only) is paid into the bank account you nominate once the work is done. Combined with savings of
+              {' '}<span className="text-gray-400 font-medium">around €1,100 a year</span> for a typical 3-bed semi,
+              your system literally pays for itself.
+            </p>
+          </div>
+
+          <div className="space-y-2 mb-4">
+            <div className="exit-intent-el exit-intent-el-3 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400/10 to-yellow-500/[0.05] border border-yellow-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <LayoutDashboard className="w-[18px] h-[18px] text-yellow-400" />
+              </div>
+              <div>
+                <h3 className="text-[13px] font-bold text-white mb-0.5">
+                  Track Your Project in Real Time
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Your personal portal shows every milestone - survey, design, install,
+                  commissioning. You&apos;re never left wondering what&apos;s happening.
+                </p>
+              </div>
+            </div>
+
+            <div className="exit-intent-el exit-intent-el-4 group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.015] border border-white/[0.05] hover:bg-white/[0.025] hover:border-white/[0.08] transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400/10 to-green-500/[0.05] border border-green-400/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-[18px] h-[18px] text-green-400" />
+              </div>
+              <div>
+                <h3 className="text-[13px] font-bold text-white mb-0.5">
+                  Talk Directly With the Team
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Message your project manager and installers directly. No call centres,
+                  no tickets - just real people who know your name and your roof.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mb-5 flex-wrap">
+            {[
+              { icon: Shield, label: 'SEAI Registered', color: 'text-green-400/70' },
+              { icon: Clock, label: '1-Day Install', color: 'text-yellow-400/70' },
+              { icon: TrendingUp, label: '0% VAT on Solar', color: 'text-sky-400/70' },
+            ].map(({ icon: Icon, label, color }) => (
+              <div
+                key={label}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]"
+              >
+                <Icon className={`w-3 h-3 ${color}`} />
+                <span className="text-[10px] text-gray-400 font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-7">
+            {exitStatus === 'done' ? (
+              <div className="w-full">
+                <div className="flex items-center justify-center gap-2.5 w-full px-6 py-[15px] rounded-xl bg-green-500/[0.08] border border-green-400/20 text-green-400 font-semibold text-[14px]">
+                  <Shield className="w-4 h-4" />
+                  Got it. A member of our team will be in touch.
+                </div>
+                {/* An email on its own tells us nothing about the house, so we
+                    cannot estimate from it. Offer the two things that turn this
+                    into a real number: a time to talk, or their actual bill. */}
+                <p className="mt-3 text-[13px] text-gray-400 text-center">
+                  Want it sooner, or exact?
+                </p>
+                <div className="mt-2 flex flex-col sm:flex-row gap-2.5">
+                  <a
+                    href="/book-survey"
+                    onClick={() => { trackExitIntent('callback-click'); close(); }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] text-[13px] text-gray-200 hover:bg-white/[0.07] transition-colors"
+                  >
+                    <Clock className="w-4 h-4 text-yellow-400" /> Free 15-minute call
+                  </a>
+                  <a
+                    href="/solar-calculator"
+                    onClick={() => { trackExitIntent('bill-estimate-click'); close(); }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-[13px] hover:bg-yellow-300 transition-colors"
+                  >
+                    <TrendingUp className="w-4 h-4" /> Exact figures from my bill
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleExitEmail} className="flex flex-col sm:flex-row items-stretch gap-2.5">
+                <label htmlFor="exit-email" className="sr-only">Email address</label>
+                <input
+                  id="exit-email"
+                  type="email"
+                  required
+                  value={exitEmail}
+                  onChange={(e) => setExitEmail(e.target.value)}
+                  placeholder="your@email.ie"
+                  autoComplete="email"
+                  inputMode="email"
+                  enterKeyHint="send"
+                  className="flex-1 px-4 py-[13px] rounded-xl bg-white/[0.04] border border-white/[0.1] text-white text-base placeholder:text-gray-500 focus:outline-none focus:border-yellow-400/40"
+                />
+                <button
+                  type="submit"
+                  disabled={!exitEmailValid || exitStatus === 'submitting'}
+                  className="exit-intent-cta inline-flex items-center justify-center gap-2 px-6 py-[13px] rounded-xl bg-yellow-400 text-black font-bold text-[14px] hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {exitStatus === 'submitting' ? 'Sending...' : <>Get my free estimate <ArrowRight className="w-4 h-4" /></>}
+                </button>
+              </form>
+            )}
+            {exitError && (
+              <p className="mt-2 text-[13px] text-red-400" role="alert">{exitError}</p>
+            )}
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-8 flex items-center gap-2.5 mt-3">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => { trackExitIntent('whatsapp-click'); handleCTA(); }}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-200"
+            >
+              <MessageCircle className="w-4 h-4 text-green-400" />
+              <span className="text-[13px]">WhatsApp us instead</span>
+            </a>
+            <button
+              onClick={() => { trackExitIntent('dismiss'); close(); }}
+              className="px-5 py-3 rounded-xl text-[13px] text-gray-400 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.15] transition-all duration-200"
+            >
+              Maybe later
+            </button>
+          </div>
+
+          <div className="exit-intent-el exit-intent-el-9 flex items-center justify-center gap-4 mt-4 pt-3 border-t border-white/[0.04]">
+            <span className="flex items-center gap-1 text-[10px] text-gray-400">
+              <Shield className="w-3 h-3" />
+              {SOLAR_DATA.certifications[0]}
+            </span>
+            <span className="text-gray-800">·</span>
+            <span className="text-[10px] text-gray-400">
+              {SOLAR_DATA.certifications[1]}
+            </span>
+            <span className="text-gray-800">·</span>
+            <span className="text-[10px] text-gray-400">No spam</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
