@@ -36,12 +36,23 @@ function getGaId(): string | undefined {
   return process.env.NEXT_PUBLIC_GA_ID;
 }
 
+/**
+ * gtag.js only acts on Arguments objects in dataLayer; a plain array (what
+ * this helper used to push) is ignored, so no custom event ever reached GA4.
+ * Use the page's own gtag() when the layout has defined it, otherwise push
+ * `arguments` exactly as Google's snippet does.
+ */
 function gtag(...args: unknown[]): void {
   if (typeof window === 'undefined') return;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const w = window as any;
+  if (typeof w.gtag === 'function') {
+    w.gtag(...args);
+    return;
+  }
   w.dataLayer = w.dataLayer || [];
-  w.dataLayer.push(args);
+  // eslint-disable-next-line prefer-rest-params
+  w.dataLayer.push(arguments);
 }
 
 function gaEnabled(): boolean {

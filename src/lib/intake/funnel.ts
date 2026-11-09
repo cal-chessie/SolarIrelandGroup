@@ -13,9 +13,8 @@
  * Consent-gated on the same cookie choice as lib/analytics.ts: nothing fires
  * until the visitor has said yes to analytics.
  *
- * Why not lib/analytics trackEvent: its gtag helper pushes a plain array onto
- * dataLayer, and gtag.js only reads Arguments objects, so GA4 never receives
- * those events. Calling the page's own window.gtag avoids that.
+ * It calls the page's own window.gtag directly (lib/analytics now does the
+ * same, since its old plain-array push never reached GA4).
  *
  * Never personal data: no name, mobile, email, Eircode or bill figures.
  */
