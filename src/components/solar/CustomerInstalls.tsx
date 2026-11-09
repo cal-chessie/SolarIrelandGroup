@@ -470,7 +470,7 @@ export default function CustomerInstalls() {
                   with a fact we can stand over. */}
               <div className="text-right">
                 <p className="text-2xl font-bold text-amber-400">{SOLAR_DATA.grant.label}</p>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wider">SEAI grant handled</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider">SEAI solar grant</p>
               </div>
             </motion.div>
           </div>

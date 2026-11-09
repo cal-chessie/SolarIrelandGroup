@@ -2,7 +2,8 @@
  * leadBridge - server-only forwarding core shared by every lead route.
  *
  * One implementation of "get this lead into AISolar, never lose it":
- *   1. POST to AISolar ingest-lead with the server-only x-source-key.
+ *   1. POST to AISolar ingest-lead with the server-only x-source-key, up to
+ *      three tries so a momentary outage does not drop the lead.
  *   2. Fallback to SIG's own `website_leads` table if AISolar is unreachable.
  *
  * /api/lead and /api/contact both import this so the two doors can never
@@ -57,33 +58,82 @@ export function isHoneypotTripped(body: Record<string, unknown>): boolean {
   return filled(body.company) || filled(body.website_url);
 }
 
+// Three tries, 8s each, 1s then 2s apart: at most about 27s, inside the
+// routes' maxDuration of 30s.
+const INGEST_ATTEMPTS = 3;
+const INGEST_TIMEOUT_MS = 8_000;
+const INGEST_BACKOFF_MS = 1_000;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export async function forwardLead(lead: BridgeLead): Promise<BridgeResult> {
   // ─── Primary: AISolar ingest-lead ───
   const ingestUrl = process.env.AISOLAR_INGEST_URL;
   const sourceKey = process.env.AISOLAR_SOURCE_KEY;
 
+  let primaryFailure: string;
   if (ingestUrl && sourceKey) {
-    try {
-      const res = await fetch(ingestUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-source-key': sourceKey },
-        body: JSON.stringify(lead),
-        signal: AbortSignal.timeout(10_000),
-      });
-      if (res.ok) {
-        const data = await res.json().catch(() => ({}));
-        return { ok: true, leadId: data.leadId ?? null };
+    primaryFailure = 'unknown';
+    // A blip (AISolar or Supabase down for a moment, a slow cold start) used to
+    // lose the lead on the first try. Try up to three times. A 4xx is not
+    // retried: a refused key or a bad body will not fix itself in two seconds.
+    for (let attempt = 1; attempt <= INGEST_ATTEMPTS; attempt++) {
+      try {
+        const res = await fetch(ingestUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-source-key': sourceKey },
+          body: JSON.stringify(lead),
+          signal: AbortSignal.timeout(INGEST_TIMEOUT_MS),
+        });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          if (attempt > 1) console.warn('[leadBridge] ingest-lead answered on attempt', attempt);
+          return { ok: true, leadId: data.leadId ?? null };
+        }
+        primaryFailure = `ingest-lead responded ${res.status} (attempt ${attempt})`;
+        console.error('[leadBridge] ingest-lead responded', res.status, 'attempt', attempt);
+        if (res.status < 500 && res.status !== 429) break;
+      } catch (err) {
+        primaryFailure = `ingest-lead unreachable (attempt ${attempt}): ${err instanceof Error ? err.message : String(err)}`;
+        console.error('[leadBridge] ingest-lead unreachable, attempt', attempt, err);
       }
-      console.error('[leadBridge] ingest-lead responded', res.status);
-    } catch (err) {
-      console.error('[leadBridge] ingest-lead unreachable:', err);
+      if (attempt < INGEST_ATTEMPTS) await sleep(INGEST_BACKOFF_MS * attempt);
     }
+  } else {
+    primaryFailure = 'AISOLAR_INGEST_URL or AISOLAR_SOURCE_KEY is not set';
   }
 
   // ─── Fallback: persist to SIG so nothing is ever dropped ───
+  const fallbackConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   const persisted = await persistFallback(lead);
-  if (persisted) return { ok: true, fallback: true };
+  if (persisted) {
+    // Held, but nobody watches website_leads: say so loudly in the logs.
+    console.error('[LEAD HELD, NOT IN AISOLAR]', JSON.stringify({
+      reason: primaryFailure,
+      source: lead.source,
+      store: 'website_leads (forwarded=false)',
+    }));
+    return { ok: true, fallback: true };
+  }
 
+  // Nothing captured it. The visitor is told it did not go through (the route
+  // answers 502 and every door offers WhatsApp/phone instead of a success
+  // screen). The site has no email path of its own, so the lead is written to
+  // the server log, loudly and in full, so a person can still call them back
+  // from the Vercel logs. Silence here is how leads were lost (audit 31).
+  console.error('[LEAD LOST: NOT CAPTURED ANYWHERE]', JSON.stringify({
+    reason: primaryFailure,
+    fallback: fallbackConfigured
+      ? 'website_leads insert failed (see the line above)'
+      : 'fallback store OFF: NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set',
+    source: lead.source,
+    name: lead.name,
+    email: lead.email ?? null,
+    phone: lead.phone ?? null,
+    county: lead.county ?? null,
+    eircode: lead.eircode ?? null,
+    page: (lead.meta as { page?: unknown } | undefined)?.page ?? null,
+    at: new Date().toISOString(),
+  }));
   return { ok: false };
 }
 

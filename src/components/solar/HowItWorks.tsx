@@ -31,7 +31,7 @@ const steps = [
     title: 'Free Survey',
     subtitle: 'No obligation, ever',
     description:
-      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Most surveys take under 45 minutes.",
+      "We visit your home to assess your roof, shading and energy usage. If your roof is wrong for solar, we will say so on the day and you will not hear from us again. Fifteen minutes on the phone first, then about 45 minutes at your home.",
     icon: Home,
     accent: 'from-emerald-400 to-teal-500',
     accentBg: 'bg-emerald-400/10',
@@ -60,11 +60,11 @@ const steps = [
     accentBorder: 'hover:border-sky-400/25',
     features: [
       'RECI-registered electricians',
-      'SEAI grant handled for you',
+      'SEAI grant: we guide you',
       'ESB grid connection sorted',
       'Saving from day one',
     ],
-    stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant included' },
+    stat: { value: SOLAR_DATA.grant.label, unit: '', label: 'SEAI grant, we guide you' },
     cta: { href: '/solar-calculator', text: 'Price It On My Bill', icon: Wrench, gradient: 'from-sky-500 to-blue-400', shadow: 'hover:shadow-sky-500/20' },
   },
 ];

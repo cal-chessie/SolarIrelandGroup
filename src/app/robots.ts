@@ -12,12 +12,15 @@ import type { MetadataRoute } from "next";
  *    price of being cited.
  *  - BLOCK the bulk scrapers that take content for training with no attribution
  *    and send nothing back (CCBot, Bytespider).
- *  - `/api/` and `/admin/` are off-limits to everyone; `/portal/` is the
- *    customer login area and has no crawl value.
+ *  - `/api/` and `/admin/` are off-limits to everyone. `/portal` and
+ *    `/portal/<anything>` are deliberately NOT disallowed: they are a short
+ *    noindex page (a customer's project page link is in their emails), and a
+ *    crawler has to be allowed to fetch a page to see its noindex. Disallowing
+ *    them would let old /portal URLs linger in the index.
  */
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = "https://solarirelandgroup.ie";
-  const disallow = ["/api/", "/admin/", "/portal/"];
+  const disallow = ["/api/", "/admin/"];
 
   // Bots that get the standard "allow everything except private areas" rule.
   const allowed = [

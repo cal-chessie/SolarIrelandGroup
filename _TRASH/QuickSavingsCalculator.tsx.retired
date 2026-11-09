@@ -397,7 +397,7 @@ function ResultsPanel({
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400">Clean Export Guarantee ({SOLAR_DATA.export.label})</span>
+                    <span className="text-gray-400">Export payment ({SOLAR_DATA.export.estimateLabel}, our estimate rate)</span>
                     <span className="text-amber-400 font-semibold">{fmtEur(r.annualExportEarnings)}/yr</span>
                   </div>
                   <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
@@ -492,7 +492,7 @@ function ResultsPanel({
       </div>
 
       <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-        Estimates based on SEAI grant rates, Met &Eacute;ireann solar irradiance data for Ireland,
+        Estimates based on SEAI grant rates, PVGIS solar generation data for Ireland,
         a {Math.round(r.unitRate * 100)}c/kWh unit rate, and {fmtEur(r.standingCharge)}/yr standing charges.
         Actual savings depend on roof orientation, shading, and your consumption patterns.
         A free site survey gives you exact figures.

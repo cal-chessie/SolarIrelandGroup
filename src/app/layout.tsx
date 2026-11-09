@@ -299,7 +299,7 @@ const localBusinessSchema = {
           "@type": "Service",
           name: "Residential Solar PV Installation",
           description:
-            "Complete solar panel installation for Irish homes, including survey, SEAI grant application, installation, and commissioning.",
+            "Complete solar panel installation for Irish homes, including survey, SEAI grant guidance, installation, and commissioning.",
         },
       },
       {

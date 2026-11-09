@@ -96,7 +96,7 @@ const checkSteps: CheckStep[] = [
       { label: 'Yes, already claimed', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid, and we arrange it.',
+    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid. You book it with a registered BER assessor, and we can help you find one.',
     icon: FileCheck,
   },
 ];
@@ -344,8 +344,8 @@ const timelineSteps: {
   {
     icon: ClipboardCheck,
     title: 'Free Survey',
-    description: 'We visit your home, assess your roof, and confirm your eligibility.',
-    duration: '~45 min',
+    description: 'A 15-minute phone call, then we visit your home for about 45 minutes, assess your roof, and confirm your eligibility.',
+    duration: '15 min + ~45 min',
     who: 'We handle this',
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
@@ -392,7 +392,7 @@ function GrantTimeline() {
   return (
     <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
       <h3 className="text-lg sm:text-xl font-bold text-white mb-2">How the grant works</h3>
-      <p className="text-xs text-gray-400 mb-6">From survey to savings - we handle the hard parts</p>
+      <p className="text-xs text-gray-400 mb-6">From survey to savings, and who does each step</p>
 
       <div className="space-y-0">
         {timelineSteps.map((step, i) => {

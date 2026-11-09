@@ -12,10 +12,14 @@
    JSONP-bypassable). JSON-LD blocks are type="application/ld+json" data and
    are never executed, so script-src does not touch them.
 
-   Currently in the REPORT-ONLY rollout phase: the policy is emitted as
-   Content-Security-Policy-Report-Only, violations are posted to
-   /api/csp-report, and nothing is blocked. Flip ENFORCE_IN_PRODUCTION to true
-   once the reports are clean.
+   ENFORCED in production since 2 Nov 2026 (audit 35): 42 pages (every route,
+   every blog post, a 404) loaded at 390 and 1440 under the enforced policy
+   with zero securitypolicyviolation events, and the app hydrates and responds.
+   Production loads no GA and no PostHog today (no GA id in the live HTML, no
+   PostHog key in the live bundles). If either is switched on, re-run that
+   check first: GA4 and PostHog can call hosts not listed in connect-src.
+   Violations are still posted to /api/csp-report. To roll back, set
+   ENFORCE_IN_PRODUCTION to false (report-only).
 
    Other security headers (HSTS, nosniff, Referrer-Policy, Permissions-Policy,
    COOP/CORP, X-Frame-Options) stay in next.config.ts.
@@ -32,7 +36,7 @@ import type { NextRequest } from "next/server";
 //         hydration re-render either.
 // true  = enforce in production.
 // Development is always report-only (Fast Refresh needs 'unsafe-eval').
-const ENFORCE_IN_PRODUCTION = false;
+const ENFORCE_IN_PRODUCTION = true;
 
 /** Path that collects CSP violation reports during the rollout. */
 const CSP_REPORT_PATH = "/api/csp-report";
@@ -65,7 +69,10 @@ function buildCsp(nonce: string, enforce: boolean): string {
     // Tailwind + next/font inject inline <style>, and React writes inline
     // style attributes. Inline-style injection is low risk, so allow it.
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com",
+    // blob: is the on-page preview of a bill photo the visitor has just picked
+    // (URL.createObjectURL in the analyser and the intake). Without it the
+    // enforced policy blanks that preview.
+    "img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com",
     "font-src 'self'",
     `connect-src ${connectSrc.join(" ")}`,
     // PostHog session replay spins up workers from blob: URLs.

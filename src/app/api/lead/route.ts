@@ -25,6 +25,8 @@ const PHONE = SOLAR_DATA.provider.phone;
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// forwardLead retries AISolar for up to about 27s.
+export const maxDuration = 30;
 
 const ALLOWED_SOURCES = new Set([
   'website_contact',
@@ -131,6 +133,9 @@ export async function POST(request: Request) {
       leadToken: tokenOrUndef(body.leadToken),
       meta: {
         page: str(body.page, MAX.generic) || undefined,
+        // The business's own name (business doors). `businessName`, never
+        // `company`: a filled `company` is the honeypot above.
+        businessName: str(body.businessName, MAX.generic) || undefined,
         homeType: str(body.homeType, MAX.generic) || undefined,
         estimatedAnnualSaving: posNum(body.estimatedAnnualSaving) ?? undefined,
         surveyDate: str(body.surveyDate, MAX.generic) || undefined,

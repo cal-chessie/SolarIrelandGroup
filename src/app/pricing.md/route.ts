@@ -60,7 +60,8 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 - Free AI electricity bill analysis
 - SEAI grant: you apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. Approval is SEAI's decision
 - Installation by RECI-registered electricians, usually in a single day
-- ESB Networks grid connection notification and the post-works BER assessment
+- ESB Networks NC6 grid connection notification, and the SEAI completion paperwork after the install
+- The post-works BER is booked by the homeowner with a registered BER assessor; we can help you find one
 - 25-year panel performance warranty; 5-year workmanship warranty (per our Terms)
 
 ## Grants and incentives
@@ -69,7 +70,7 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 - SEAI battery grant: ${EUR(batteryGrant(5))} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}, nothing under 5 kWh. With panels, one application covers both, up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} together
 - SEAI EV charger grant: EUR 300
 - 0% VAT on domestic solar in Ireland
-- Clean Export Guarantee: your supplier pays for surplus you export, at least ${SOLAR_DATA.export.label}
+- Clean Export Guarantee: your supplier pays for surplus you export at a rate it sets; the CRU sets no minimum above zero (CRU decision ${SOLAR_DATA.export.cruDecision}). Our estimates use ${SOLAR_DATA.export.estimateLabel}
 
 ## How the grant is paid
 SEAI pays the grant into the bank account nominated on the Request for Payment form, normally about 4 to 6 weeks after the post-works BER is published. By default that account is the homeowner's. A registered contractor may instead offer the price net of the grant, with their account nominated on that form. We confirm which applies at quote stage.

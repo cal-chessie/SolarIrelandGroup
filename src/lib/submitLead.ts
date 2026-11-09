@@ -18,6 +18,9 @@ export type LeadSource =
 export interface LeadInput {
   source: LeadSource;
   name?: string;
+  /** The business's name on the business doors. Never send it as `company`:
+   *  that is the honeypot field and a filled one drops the lead silently. */
+  businessName?: string;
   email?: string;
   phone?: string;
   county?: string;

@@ -25,9 +25,9 @@ export function GET() {
 
   const body = `# Solar Ireland Group
 
-> SEAI-registered solar panel installer serving all 32 counties of Ireland since 2019. Start with a free bill analysis: upload an electricity bill and get a free estimate of your system size, savings, SEAI grant and payback, read from your actual day and night usage. Then a call with our team to go through it. We install solar PV, battery storage and EV chargers for homes and handle the SEAI grant paperwork.
+> SEAI-registered solar panel installer serving all 32 counties of Ireland since 2019. Start with a free bill analysis: upload an electricity bill and get a free estimate of your system size, savings, SEAI grant and payback, read from your actual day and night usage. Then a call with our team to go through it. We install solar PV, battery storage and EV chargers for homes and guide homeowners through the SEAI grant (the homeowner applies online at mgen.seai.ie before any work starts, naming us as the installer).
 
-Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 2019. How it works: 1) free bill analysis and estimate on the website, 2) a call to go through your numbers, 3) a site survey and an itemised quote, 4) installation, usually in a single day, by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. The SEAI Solar PV grant is ${EUR(grant)} in the Republic of Ireland. We also handle the ESB Networks grid connection notification and the post-works BER assessment.
+Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 2019. How it works: 1) free bill analysis and estimate on the website, 2) a call to go through your numbers, 3) a site survey and an itemised quote, 4) installation, usually in a single day, by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. The SEAI Solar PV grant is ${EUR(grant)} in the Republic of Ireland. We also send ESB Networks the NC6 grid connection notification and SEAI the grant completion paperwork. The homeowner books the post-works BER with a registered BER assessor.
 
 ## Key pages
 - [Solar calculator](${SITE}/solar-calculator): the free bill analysis and estimate: system size, annual savings, payback and 25-year return from your bill
@@ -70,7 +70,7 @@ Our figures come from one published engine, not a sales spreadsheet, and every c
 - Generation: ${ENERGY.generationPerKwp} kWh per kWp per year. PVGIS for a south-facing Irish roof at 30 degrees after standard system losses
 - Unit rate: ${Math.round(ENERGY.unitRateEur * 100)}c per kWh including VAT, the bottom of the current Irish market band, so savings are not overstated
 - Standing charge: ${EUR(ENERGY.standingChargeAnnualEur)} a year, which solar never removes
-- Export: ${SOLAR_DATA.export.label}, a typical supplier rate under the Clean Export Guarantee. Each supplier sets its own export rate (roughly 18.5c to 24c per kWh in 2026); the CRU oversees the scheme and sets no minimum rate
+- Export: ${SOLAR_DATA.export.estimateLabel}, our estimate rate. Under the Clean Export Guarantee each supplier sets its own export rate; the CRU sets no minimum above zero (CRU decision ${SOLAR_DATA.export.cruDecision}). A typical 4 kWp home with no battery earns roughly EUR 410 to EUR 480 a year from export at that rate
 - Self-consumption: 30-50% for an Irish home with no battery, roughly 70-85% with one
 - Typical result for a 3-bed semi: ${SOLAR_DATA.savings.rangeLabel} a year, around ${SOLAR_DATA.savings.label} typical, payback about ${SOLAR_DATA.savings.paybackYears} years, ${SOLAR_DATA.savings.range25yrLabel} over 25 years
 - Estimates are panels only. A battery is sized and priced after the call and the survey, not quoted online

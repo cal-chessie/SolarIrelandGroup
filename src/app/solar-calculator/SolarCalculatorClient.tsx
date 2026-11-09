@@ -85,7 +85,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'No Hidden Costs', desc: 'Transparent pricing' },
-    { icon: Sun, label: 'Real Irish Data', desc: 'Met Éireann irradiance data' },
+    { icon: Sun, label: 'Real Irish Data', desc: 'PVGIS generation data' },
     { icon: Euro, label: '440W Premium Panels', desc: 'Modern high-efficiency panels' },
   ];
 
@@ -151,7 +151,7 @@ function CalculatorExplainer() {
             <span className="text-gradient">Real Irish Data</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            No fluff, no guesswork. Every figure is backed by SEAI grant rates, Met Éireann solar irradiance data, and current electricity prices from Irish providers.
+            No fluff, no guesswork. Every figure is backed by SEAI grant rates, PVGIS solar generation data, and current electricity prices from Irish providers.
           </p>
         </div>
 
@@ -183,7 +183,7 @@ function DataTransparency() {
     { label: 'Unit rate', value: `${Math.round(ENERGY.unitRateEur * 100)}c/kWh incl. VAT`, source: 'The bottom of the 2026 Irish market band, so savings are not overstated' },
     { label: 'Standing charge', value: `€${ENERGY.standingChargeAnnualEur}/year`, source: 'Irish standing charges 2026. Solar never removes this' },
     { label: 'SEAI grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for homeowners, including private landlords' },
-    { label: 'Export rate', value: SOLAR_DATA.export.label, source: `${SOLAR_DATA.export.scheme}: a typical supplier rate. Each supplier sets its own` },
+    { label: 'Export rate', value: SOLAR_DATA.export.estimateLabel, source: `Our estimate rate. Under the ${SOLAR_DATA.export.scheme} each supplier sets its own rate; the CRU sets no minimum (CRU decision ${SOLAR_DATA.export.cruDecision})` },
     { label: 'CO₂ factor', value: `${ENERGY.co2PerKwh} kg/kWh`, source: 'EirGrid marginal emission factor for Ireland' },
     { label: 'Self-consumption', value: '30-50%', source: 'What an Irish home uses directly with no battery. A battery lifts it to roughly 70-85%' },
     { label: 'Minimum system', value: `${DOMESTIC_MIN_KWP} kWp`, source: 'Our domestic floor, and the size the SEAI grant reaches its full €1,800' },

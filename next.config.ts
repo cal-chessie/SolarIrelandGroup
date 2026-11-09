@@ -82,6 +82,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // /portal is an honest "your link is in your emails" page, never indexed
+        // (it used to open a sample customer for any reference).
+        source: "/portal",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/portal/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         // HTML pages — never cache so updates always show immediately
         source: "/((?!api|_next|favicon|robots|sitemap|manifest).*)",
         headers: [

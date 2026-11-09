@@ -111,7 +111,7 @@ All three items the first sweep left are now fixed and pushed (`398bdf6`).
 
 - **The battery article's economics** were built on 833 kWh/kWp and a
   "€0.105 effective" export rate with no basis anywhere on the site. Rebuilt on
-  the engine: 5,700 kWh for 6 kWp, export at the €0.20 CRU floor, so the
+  the engine: 5,700 kWh for 6 kWp, export at the €0.20 then called the CRU floor (2 Nov 2026: there is no CRU floor; the article now uses our 18c estimate rate, about €361 a year, 7 years on the battery), so the
   battery is worth about €318 a year and pays back in roughly 10 years on its
   own €3,200.
 - **The CEG export table** had a 4 kWp system exporting 800 to 1,200 kWh, which
@@ -158,7 +158,7 @@ The site used to state the net-of-grant version as fact in seven places, includi
 
 **The testimonial conflict.** An earlier memory recorded Sarah O'Brien, Michael Murphy and Emma Kavanagh as **real and owner-confirmed**. I removed them on 7 Sep (`1c30569`) as invented. The site now carries no testimonials at all. If they are real and permissioned, they go back today. This needs his answer, not my judgement.
 
-**`/admin` and `/portal` are unauthenticated pages showing invented customers.** No real data can leak, but they present fake names and a fabricated 18% conversion rate as this business's numbers, to anyone with the URL. `robots.ts` disallows them, which stops well-behaved crawlers and nothing else. The decision is what those pages are for, not a patch. See [08](08-server-admin-portal.md).
+**`/admin` is an unauthenticated page showing invented customers.** (`/portal` was taken offline on 1 Nov 2026: a noindex "your project page link is in your emails" page until the email sign-in; see [08](08-server-admin-portal.md).) No real data can leak, but they present fake names and a fabricated 18% conversion rate as this business's numbers, to anyone with the URL. `robots.ts` disallows them, which stops well-behaved crawlers and nothing else. The decision is what those pages are for, not a patch. See [08](08-server-admin-portal.md).
 
 > **Cal's call, 8 Sep 2026: noted, fix in a few sessions.** Deliberately deferred, not forgotten. Do not quietly wire either page to real data in the meantime, and do not spend a session on it unprompted. When it comes up, the question to answer first is what these pages are *for*: a sales demo, a real customer portal, or neither. The answer decides whether they get auth, get rebuilt on live data, or get retired to `_TRASH`. Until then the risk is reputational only, and it is a known, accepted one.
 

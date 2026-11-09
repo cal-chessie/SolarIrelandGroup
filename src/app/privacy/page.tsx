@@ -72,7 +72,7 @@ function PrivacyContent() {
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
           'Full name, email address, phone number, and postal address',
-          'Property address and ESB Meter Point Reference Number (MPRN) for SEAI grant applications',
+          'Property address and ESB Meter Point Reference Number (MPRN) for the SEAI grant paperwork and the ESB Networks NC6 notification',
           'BER rating, property type, roof orientation, and construction details from site surveys',
           'Electricity usage data including uploaded bills, energy provider details, and consumption figures',
           'Payment information including bank details for grant refunds and invoicing',
@@ -129,7 +129,7 @@ function PrivacyContent() {
           },
           {
             title: 'SEAI Grant Applications & Compliance',
-            desc: 'Your property details, MPRN, and BER rating are submitted to the Sustainable Energy Authority of Ireland (SEAI) to process your grant application. We coordinate with ESB Networks for grid connection notifications and ensure all work complies with NSAI standards.',
+            desc: 'You apply for your SEAI grant yourself. After your install we send the Sustainable Energy Authority of Ireland (SEAI) your property details and MPRN in the grant completion paperwork, and we send ESB Networks your grid connection notification, and ensure all work complies with NSAI standards.',
           },
           {
             title: 'Post-Installation Support & Warranty',
@@ -179,7 +179,7 @@ function PrivacyContent() {
           {
             basis: 'Contractual Necessity',
             article: 'Art. 6(1)(b)',
-            desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.',
+            desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, sending SEAI your grant completion paperwork, or communicating with you about your active project. Without this data, we cannot provide our services.',
           },
           {
             basis: 'Legitimate Interest',
@@ -216,7 +216,7 @@ function PrivacyContent() {
         {[
           {
             name: 'SEAI (Sustainable Energy Authority of Ireland)',
-            purpose: 'Processing your SEAI grant application, verifying our installer registration, and submitting compliance reports as required by the grant scheme terms and conditions.',
+            purpose: 'Processing your SEAI grant (you apply to SEAI directly; we send the completion paperwork after your install), verifying our installer registration, and the compliance reports the grant scheme requires.',
           },
           {
             name: 'ESB Networks',
@@ -1242,7 +1242,7 @@ function PrivacyContentSection2() {
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
           'Full name, email address, phone number, and postal address',
-          'Property address and ESB Meter Point Reference Number (MPRN) for SEAI grant applications',
+          'Property address and ESB Meter Point Reference Number (MPRN) for the SEAI grant paperwork and the ESB Networks NC6 notification',
           'BER rating, property type, roof orientation, and construction details from site surveys',
           'Electricity usage data including uploaded bills, energy provider details, and consumption figures',
           'Payment information including bank details for grant refunds and invoicing',
@@ -1300,7 +1300,7 @@ function PrivacyContentSection3() {
       <div className="grid gap-3 mb-6">
         {[
           { title: 'Providing Quotes & Solar Installation Services', desc: 'We use your contact details, property information, and energy usage data to prepare accurate solar installation quotes, conduct site surveys, design your system, schedule installation dates, and manage your project from initial enquiry through to commissioning and handover.' },
-          { title: 'SEAI Grant Applications & Compliance', desc: 'Your property details, MPRN, and BER rating are submitted to the Sustainable Energy Authority of Ireland (SEAI) to process your grant application. We coordinate with ESB Networks for grid connection notifications and ensure all work complies with NSAI standards.' },
+          { title: 'SEAI Grant Applications & Compliance', desc: 'You apply for your SEAI grant yourself. After your install we send the Sustainable Energy Authority of Ireland (SEAI) your property details and MPRN in the grant completion paperwork, and we send ESB Networks your grid connection notification, and ensure all work complies with NSAI standards.' },
           { title: 'Post-Installation Support & Warranty', desc: 'We retain your installation records, system specifications, and contact details to provide ongoing warranty support, handle maintenance enquiries, and process any guarantee claims that may arise during the warranty period.' },
           { title: 'Marketing Communications (Consent-Based Only)', desc: 'With your explicit consent only, we may send you information about new services, seasonal promotions, solar energy news, or policy updates affecting your solar investment via email or WhatsApp. You can withdraw consent at any time using the unsubscribe link in any communication or by contacting us directly.' },
           { title: 'AI Bill Analyser', desc: 'When you use our AI Bill Analyser, the bill you upload is read to produce your estimate and is then deleted. It is not retained and is not used to train any model. We do keep an anonymous record of what the bill showed: the county, the supplier, the unit rate and standing charge, the annual usage and the day/night split, and the month. That record holds no name, email, phone number, address, Eircode or MPRN, carries no link to your enquiry, and is stored with the month only rather than a date and time, so it cannot be matched back to you. We use it to understand what Irish households actually pay and use, and to publish aggregate research. Because it identifies nobody, it is not personal data under GDPR.' },
@@ -1330,7 +1330,7 @@ function PrivacyContentSection4() {
       <div className="grid gap-3 mb-6">
         {[
           { basis: 'Consent', article: 'Art. 6(1)(a)', desc: 'When you explicitly opt in - for example, ticking a box to receive marketing emails, agreeing to optional cookie categories, or consenting to smart meter data sharing. You can withdraw consent at any time without affecting the lawfulness of processing carried out before withdrawal.' },
-          { basis: 'Contractual Necessity', article: 'Art. 6(1)(b)', desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, submitting a grant application on your behalf, or communicating with you about your active project. Without this data, we cannot provide our services.' },
+          { basis: 'Contractual Necessity', article: 'Art. 6(1)(b)', desc: 'When processing is necessary to deliver the service you have requested - such as installing solar panels on your property, sending SEAI your grant completion paperwork, or communicating with you about your active project. Without this data, we cannot provide our services.' },
           { basis: 'Legitimate Interest', article: 'Art. 6(1)(f)', desc: 'When processing serves a genuine business interest that does not override your rights and freedoms - such as website analytics, fraud prevention, service quality monitoring, and direct marketing to existing customers where you have not opted out.' },
           { basis: 'Legal Obligation', article: 'Art. 6(1)(c)', desc: 'When processing is required by law - such as retaining financial records for 7 years under Irish tax law, reporting to SEAI for grant compliance, responding to valid legal requests from authorities, or maintaining insurance documentation as required by our professional indemnity policies.' },
         ].map((item) => (
@@ -1359,7 +1359,7 @@ function PrivacyContentSection5() {
       </p>
       <div className="grid gap-3 mb-6">
         {[
-          { name: 'SEAI (Sustainable Energy Authority of Ireland)', purpose: 'Processing your SEAI grant application, verifying our installer registration, and submitting compliance reports as required by the grant scheme terms and conditions.' },
+          { name: 'SEAI (Sustainable Energy Authority of Ireland)', purpose: 'Processing your SEAI grant (you apply to SEAI directly; we send the completion paperwork after your install), verifying our installer registration, and the compliance reports the grant scheme requires.' },
           { name: 'ESB Networks', purpose: 'Submitting NC6 grid connection notifications, registering for the Clean Export Guarantee (CEG) tariff, and coordinating smart meter installation or data sharing with your consent.' },
           { name: 'Insurance Providers', purpose: 'Supporting public liability and professional indemnity insurance claims, providing installation documentation for policy compliance, and maintaining records as required by our insurers.' },
           { name: 'Subcontractors & Specialist Partners', purpose: 'Engaging RECI-registered electricians, scaffolding contractors, roofing specialists, and BER assessors who are contractually bound to process your data only for the specific installation task and to delete it upon completion.' },

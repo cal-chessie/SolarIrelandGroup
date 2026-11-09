@@ -100,8 +100,8 @@ const services = [
   { label: 'Solar PV Installation', desc: 'Residential & commercial panels' },
   { label: 'Battery Storage', desc: 'Store energy for evening use' },
   { label: 'Free Home Surveys', desc: 'No-obligation roof assessment' },
-  { label: 'SEAI Grant Assistance', desc: 'We handle the full application' },
-  { label: 'BER Assessment', desc: 'Post-install energy rating' },
+  { label: 'SEAI Grant Guidance', desc: 'You apply online, we guide you' },
+  { label: 'ESB Networks NC6', desc: 'We notify ESB Networks for you' },
 ];
 
 const serviceAreas = [
@@ -477,10 +477,8 @@ export default function Footer() {
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-400">
             <span>&copy; {new Date().getFullYear()} Solar Ireland. All rights reserved.</span>
-            <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>Company Reg: TBC</span>
-            <span className="hidden sm:inline text-white/[0.06]">·</span>
-            <span>ROI Tax Reg: TBC</span>
+            {/* Company and tax registration numbers go here when Cal supplies
+                them. No "TBC" placeholder in the meantime (audit 34b). */}
           </div>
 
           <div className="flex items-center gap-4">

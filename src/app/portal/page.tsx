@@ -1,24 +1,8 @@
-import type { Metadata } from 'next';
-import PortalLandingClient from './PortalLandingClient';
+import PortalNotice, { portalMetadata } from './PortalNotice';
 
-export const metadata: Metadata = {
-  title: 'Customer Portal | Track Your Solar Installation | Solar Ireland',
-  description:
-    'Track every step of your solar panel installation in real time. View your progress, download documents, and stay updated on your SEAI grant application.',
-  alternates: {
-    canonical: 'https://solarirelandgroup.ie/portal',
-  },
-  openGraph: {
-    title: 'Customer Portal | Solar Ireland',
-    description:
-      'Track your solar installation progress in real time. View milestones, documents, and SEAI grant status.',
-    url: 'https://solarirelandgroup.ie/portal',
-    type: 'website',
-    siteName: 'Solar Ireland',
-    locale: 'en_IE',
-  },
-};
+// No sample customer, no reference box: see PortalNotice.
+export const metadata = portalMetadata;
 
 export default function PortalPage() {
-  return <PortalLandingClient />;
+  return <PortalNotice />;
 }

@@ -77,7 +77,7 @@ const valueProps = [
 
 const teamMembers = [
   { initials: 'CC', name: 'Cal Chesters', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland to cut through the noise and give homeowners a better experience.' },
-  { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly - from survey scheduling to SEAI grant applications and aftercare.' },
+  { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly - from survey scheduling to SEAI completion paperwork and aftercare.' },
   { initials: 'JK', name: 'James Kelly', role: 'Senior Electrician (RECI)', bio: 'RECI-certified with extensive experience in solar PV wiring, battery integration, and grid connections.' },
   { initials: 'EO', name: 'Emma O\'Brien', role: 'Customer Care', bio: 'First point of contact for most customers. Emma makes sure every question is answered and every concern addressed.' },
 ];
@@ -93,7 +93,7 @@ const certifications = [
 const stats = [
   { value: '0%', label: 'VAT on Solar', icon: CheckCircle2 },
   { value: '32', label: 'Counties Served', icon: MapPin },
-  { value: '\u20AC1,800', label: 'SEAI Grant Handled', icon: Euro },
+  { value: '\u20AC1,800', label: 'SEAI Grant Guidance', icon: Euro },
 ];
 
 const fadeUp = {

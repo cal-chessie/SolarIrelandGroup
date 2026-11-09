@@ -38,9 +38,9 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 ## Your Knowledge Base (2026 - Ireland only)
 
 **SEAI Grant (Republic of Ireland only - 26 counties):**
-- Up to €1,800, and it is tiered: €700 per kWp for the first 2 kWp, then €200 per kWp up to 4 kWp. A system of 4 kWp or more gets the full €1,800; a 2.5 kWp system would only draw €1,500. Property must be registered on a BER.
-- Homeowner must have a BER rating or get one before grant payment
-- Applied for through the SEAI portal - we handle this for customers
+- Up to €1,800, and it is tiered: €700 per kWp for the first 2 kWp, then €200 per kWp up to 4 kWp. A system of 4 kWp or more gets the full €1,800; a 2.5 kWp system would only draw €1,500. There is no minimum BER to qualify.
+- A post-works BER is required: after the install the homeowner books it with a registered BER assessor (we can help them find one), and SEAI pays once it is published. Never say we arrange or book the BER
+- The homeowner applies online at mgen.seai.ie before any work starts, naming the installer; we guide them through it
 - One grant per property. The home must have an MPRN and have been built and occupied before 2025
 - Battery grant: a flat €600 for a battery of 5 kWh or more, on top of the solar grant and on the same application (up to €2,400 together). Nothing under 5 kWh, and a bigger battery gets no more
 - Businesses: the Non-Domestic Microgen Grant, a different scheme. For new applications from 6 October 2026 to 6 July 2027 an enhanced table applies (up to €325,200), paying the lower of the table and 45% of the cost. Send businesses to the Bill Analyser's business option for their figure
@@ -57,7 +57,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 - South-facing unshaded roof at 35° tilt is optimal
 - A 3-bed semi can save roughly €800-€1,400/year depending on the bill; around €1,100 is typical
 - Self-consumption WITHOUT a battery is typically 30-50% in Ireland; the rest is exported. A battery lifts it to roughly 70-85%, which is why a battery is worth discussing on the survey.
-- Export: about €0.20/kWh, a typical Clean Export Guarantee rate. Each supplier sets its own export rate (roughly 18.5c to 24c per kWh); the CRU sets no minimum.
+- Export: under the Clean Export Guarantee each supplier sets its own export rate. The CRU sets NO minimum rate above zero (CRU decision CRU202454, June 2024). Never say there is a CRU minimum or quote a supplier's rate. Our estimates use €0.18/kWh; say that is our estimate rate and that they should check their own supplier's export tariff.
 - Payback: typically 5-7 years after the grant, panels only
 
 **Installation:**

@@ -59,3 +59,14 @@ Cal: "wtf are you doing changing my whole fucking site". Every file outside the 
 Cal's 12/10 brief: every road ends in the free 15-minute call. The old /book-survey survey form (date and time picker, property questions, /api/lead post) is parked as twelve-2026-11-09/BookSurveyClient.survey-form.tsx.retired. The URL stays (live estimate emails link to it with ?lt=); the page now renders the shared call ask. Nothing imports the parked file.
 Also 9 Nov: the old savings slider (components/solar/QuickSavingsCalculator.tsx), the site engine's second number under the Bill Analyser on /solar-calculator, is parked as twelve-2026-11-09/QuickSavingsCalculator.slider.tsx.retired (Cal said yes). Nothing imports it.
 Also 9 Nov: the old exit popup (an email box plus "Free 15-minute call", fired on tab return, any scroll-up and a 60-second idle timer, including over half-filled forms) is parked as twelve-2026-11-09/ExitIntent.email-popup.tsx.retired. Replaced by the exit quiz in components/solar/ExitIntent.tsx.
+
+## portal-demo/ (1 Nov 2026)
+
+`PortalLandingClient`, `PortalDashboardClient` and the two portal `loading.tsx`
+skeletons. /portal took any typed "reference" and /portal/<anything> opened a
+made-up customer (sample name, reference SI-2026-0042, an 11-step timeline, a
+project manager) with HTTP 200 on the live domain, and /portal itself was
+indexable. A real homeowner could see a stranger's project (audit 1 Nov, 6f).
+Both routes now render `src/app/portal/PortalNotice.tsx`: noindex, "your project
+page link is in your emails", until the email sign-in exists. Do not restore
+these as they are: they never read the reference and never fetched anything.

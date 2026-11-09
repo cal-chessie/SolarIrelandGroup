@@ -470,7 +470,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
   const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string } }> = {
     grants: {
       h: 'Find out what you qualify for',
-      p: 'The grant is €1,800 at 4 kWp and we prepare the paperwork. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
+      p: 'The grant is €1,800 at 4 kWp and we guide you through it. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
       primary: { href: '/solar-calculator?src=blog-grants', label: 'Check my grant and savings' },
     },
     savings: {
@@ -480,7 +480,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
     },
     county: {
       h: 'Get a local answer',
-      p: 'Generation, roof types and grid connection differ by county. Book a free survey and the team covering your area will confirm what your roof can actually do.',
+      p: 'Generation, roof types and grid connection differ by county. Put your bill through the analyser, then a free 15-minute call with the team covering your area goes through what your roof can actually do.',
       primary: { href: '/solar-calculator?src=blog-county', label: 'Check my savings' },
     },
     guides: {

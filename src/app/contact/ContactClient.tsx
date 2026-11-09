@@ -533,7 +533,7 @@ export default function ContactClient() {
                       'Costs nothing, commits you to nothing',
                       'Honest assessment of your home',
                       'Itemised quote within 48 hours',
-                      'SEAI grant application handled for you',
+                      'Guidance on your SEAI grant application',
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />

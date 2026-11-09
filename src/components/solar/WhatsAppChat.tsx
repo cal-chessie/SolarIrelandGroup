@@ -70,7 +70,7 @@ const FOLLOW_UP_MAP = [
   { keywords: ['grant', 'seai', '€1,800', 'eligib'], suggestions: [
     'Am I eligible for the grant?',
     'How long does the grant take?',
-    'Do you handle the application?',
+    'How do I apply for the grant?',
   ]},
   { keywords: ['install', 'roof', 'scaffold', 'how long'], suggestions: [
     'Do I need planning permission?',
