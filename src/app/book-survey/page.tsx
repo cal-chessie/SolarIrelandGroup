@@ -1,17 +1,23 @@
 import type { Metadata } from 'next';
 import BookSurveyClient from './BookSurveyClient';
+import { parseIntakeQuery } from '@/lib/intake/open';
 
+/**
+ * /book-survey: the free 15-minute call (12/10 brief, 9 Nov 2026). The URL is
+ * kept because live estimate emails link here with ?lt=. No survey is sold on
+ * the website: the survey is agreed on the call.
+ */
 export const metadata: Metadata = {
-  title: 'Book a Free Solar Survey',
+  title: 'Book a Free 15-Minute Solar Call',
   description:
-    'Book a free, no-obligation solar survey in 60 seconds. Our SEAI-registered team assesses your roof and gives an honest itemised quote. All 32 counties.',
+    'Book a free 15-minute phone call with Solar Ireland. We go through your electricity bill, what solar would save you and the SEAI grant. No visit, no obligation.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
-    title: 'Book a Free Solar Survey',
+    title: 'Book a Free 15-Minute Solar Call',
     description:
-      'Free roof assessment, savings calculation, and itemised quote. SEAI-registered installers covering all 32 counties. Book in under 60 seconds.',
+      'A free phone call, not a visit. We go through your bill, your solar savings and the SEAI grant. We ring you today, or first thing tomorrow if it is late.',
     url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
     siteName: 'Solar Ireland',
@@ -19,9 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Book a Free Solar Survey',
-    description:
-      'Free roof assessment, savings calculation, and itemised quote. Book in under 60 seconds.',
+    title: 'Book a Free 15-Minute Solar Call',
+    description: 'A free phone call, not a visit. Your bill, your solar savings and the SEAI grant. No obligation.',
   },
 };
 
@@ -30,91 +35,48 @@ const bookSchema = {
   '@graph': [
     {
       '@type': 'Service',
-      '@id': 'https://solarirelandgroup.ie/#service-survey',
-      name: 'Free Home Solar Survey',
+      '@id': 'https://solarirelandgroup.ie/#service-call',
+      name: 'Free 15-Minute Solar Call',
       description:
-        'A comprehensive, no-obligation roof and energy assessment. Our assessor evaluates roof orientation, pitch, shading, structural suitability, and electrical setup. You receive an honest itemised quote with estimated annual savings, SEAI grant eligibility, and payback period.',
+        'A free, no-obligation 15-minute phone call. We go through your electricity bill, what solar panels would save you and the SEAI grant, and agree the next step with you if you want one.',
       url: 'https://solarirelandgroup.ie/book-survey',
-      provider: {
-        '@id': 'https://solarirelandgroup.ie/#business',
-      },
-      serviceType: 'Solar Panel Site Survey',
-      areaServed: {
-        '@type': 'Country',
-        name: 'Ireland',
-      },
+      provider: { '@id': 'https://solarirelandgroup.ie/#business' },
+      serviceType: 'Solar consultation call',
+      areaServed: { '@type': 'Country', name: 'Ireland' },
       potentialAction: {
-        '@type': 'ReserveAction',
-        '@id': 'https://solarirelandgroup.ie/#book-survey-action',
-        name: 'Book Free Solar Survey',
-        description:
-          'Book a free, no-obligation solar survey for your home. A SEAI-registered assessor will visit your property, evaluate your roof, and provide an honest itemised quote with estimated savings.',
+        '@type': 'CommunicateAction',
+        '@id': 'https://solarirelandgroup.ie/#book-call-action',
+        name: 'Book a free 15-minute call',
         target: {
           '@type': 'EntryPoint',
           urlTemplate: 'https://solarirelandgroup.ie/book-survey',
           inLanguage: 'en-IE',
-          actionPlatform: [
-            'https://schema.org/DesktopWebPlatform',
-            'https://schema.org/MobileWebPlatform',
-          ],
-        },
-        result: {
-          '@type': 'Reservation',
-          name: 'Free Solar Home Survey',
+          actionPlatform: ['https://schema.org/DesktopWebPlatform', 'https://schema.org/MobileWebPlatform'],
         },
       },
       offers: {
         '@type': 'Offer',
         price: '0',
         priceCurrency: 'EUR',
-        priceSpecification: {
-          '@type': 'PriceSpecification',
-          price: '0',
-          priceCurrency: 'EUR',
-          name: 'Free - No Obligation',
-        },
         availability: 'https://schema.org/InStock',
       },
     },
     {
       '@type': 'WebPage',
       '@id': 'https://solarirelandgroup.ie/book-survey',
-      name: 'Book a Free Solar Survey',
-      description:
-        'Book your free no-obligation solar survey. SEAI-registered assessors covering all 32 counties of Ireland.',
+      name: 'Book a Free 15-Minute Solar Call',
+      description: 'Book a free 15-minute phone call about solar for your home or business. No visit, no obligation.',
       url: 'https://solarirelandgroup.ie/book-survey',
       inLanguage: 'en-IE',
-      isPartOf: {
-        '@id': 'https://solarirelandgroup.ie/#website',
-      },
-      about: {
-        '@id': 'https://solarirelandgroup.ie/#business',
-      },
-      potentialAction: {
-        '@type': 'ReserveAction',
-        target: 'https://solarirelandgroup.ie/book-survey',
-        result: {
-          '@type': 'Reservation',
-          name: 'Free Solar Home Survey',
-        },
-      },
+      isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
+      about: { '@id': 'https://solarirelandgroup.ie/#business' },
     },
     {
       '@type': 'BreadcrumbList',
       '@id': 'https://solarirelandgroup.ie/book-survey#breadcrumb',
       itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: 'Home',
-          item: 'https://solarirelandgroup.ie',
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: 'Book a Survey',
-          item: 'https://solarirelandgroup.ie/book-survey',
-        },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solarirelandgroup.ie' },
+        { '@type': 'ListItem', position: 2, name: 'Free 15-minute call', item: 'https://solarirelandgroup.ie/book-survey' },
       ],
     },
     {
@@ -123,34 +85,20 @@ const bookSchema = {
       mainEntity: [
         {
           '@type': 'Question',
-          name: 'Is the solar survey really free?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes, free and with no obligation. The assessor measures your roof, checks shading and reviews your usage, then gives you an itemised quote. If solar is not right for your house, they will say so on the day.',
-          },
+          name: 'Is the call really free?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Yes. It is a free 15-minute phone call with no obligation. Nobody visits your home to book it.' },
         },
         {
           '@type': 'Question',
-          name: 'How long does a solar survey take?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'The survey typically takes 30 to 45 minutes. We assess your roof orientation, pitch, shading, structural suitability, and electrical setup. You receive your itemised quote within 48 hours.',
-          },
+          name: 'When will you ring me?',
+          acceptedAnswer: { '@type': 'Answer', text: "Today. If it's late, first thing tomorrow. You can tell us whether mornings, afternoons or evenings suit best." },
         },
         {
           '@type': 'Question',
-          name: 'What areas do you cover?',
+          name: 'What happens on the call?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'We cover all 32 counties across Ireland. Our assessors are based in Dublin, Cork, Galway, and Limerick, so we can reach most locations within a few days.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What happens after I book?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Your confirmation email arrives straight away, and a member of our team will be in touch to confirm your exact time. On the day, our assessor evaluates your property and goes through your figures with you.',
+            text: 'We go through your figures with you, answer anything you want to ask about solar and the SEAI grant, and agree the next step with you if you want one.',
           },
         },
       ],
@@ -158,14 +106,16 @@ const bookSchema = {
   ],
 };
 
-export default function BookSurveyPage() {
+export default async function BookSurveyPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const q = parseIntakeQuery(sp);
+  const raw = Array.isArray(sp.lt) ? sp.lt[0] : sp.lt;
+  const forv = Array.isArray(sp.segment) ? sp.segment[0] : sp.segment;
+  const business = q.segment === 'business' || forv === 'business' || forv === 'commercial';
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(bookSchema) }}
-      />
-      <BookSurveyClient />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bookSchema) }} />
+      <BookSurveyClient lt={typeof raw === 'string' ? raw : null} segment={business ? 'commercial' : 'domestic'} src={q.src ?? null} />
     </>
   );
 }

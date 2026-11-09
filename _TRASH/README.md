@@ -54,3 +54,6 @@ saving, the free 15-minute call). Nothing imports this file.
 
 ## 5 Nov 2026: rollback to the live site
 Cal: "wtf are you doing changing my whole fucking site". Every file outside the Bill Analyser and the manual intake (/estimate) was restored to the live site (dbbf329). Files the branch had added outside that set are parked here under rollback-2026-11-05/. Kept: BillAnalyser.tsx, components/intake, lib/intake, lib/analyser, app/estimate, api/intake, api/analyse-bill, lib/eircodeLookup.ts, their tests, plus two invisible helpers (lib/bottomLayer.ts intake flag, eslint.config.mjs warnings).
+
+## 9 Nov 2026: /book-survey becomes the call ask
+Cal's 12/10 brief: every road ends in the free 15-minute call. The old /book-survey survey form (date and time picker, property questions, /api/lead post) is parked as twelve-2026-11-09/BookSurveyClient.survey-form.tsx.retired. The URL stays (live estimate emails link to it with ?lt=); the page now renders the shared call ask. Nothing imports the parked file.

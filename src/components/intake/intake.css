@@ -3356,3 +3356,123 @@ h1.si-ask__title {
     transition-duration: 0ms !important;
   }
 }
+
+/* ── /book-survey: the call ask as a page (12/10 brief) ─────────
+   Two lanes from 1024 (what the call is, the card), one column below.
+   On a phone the button rides at the bottom of the screen, in thumb
+   reach, until the form ends. */
+.si-callpage {
+  padding-top: 104px;
+  padding-bottom: 64px;
+}
+@media (min-width: 1024px) {
+  .si-callpage {
+    padding-top: 136px;
+    padding-bottom: 96px;
+  }
+}
+.si-callpage__lanes {
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .si-callpage__lanes {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    gap: 64px;
+    align-items: start;
+  }
+  .si-callpage__intro {
+    position: sticky;
+    top: 136px;
+  }
+}
+@media (min-width: 1440px) {
+  .si-callpage__lanes {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 38rem);
+    gap: 96px;
+  }
+}
+.si-callpage__h1 {
+  margin-top: 12px;
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .si-callpage__h1 {
+    font-size: 44px;
+    line-height: 50px;
+  }
+}
+@media (min-width: 1440px) {
+  .si-callpage__h1 {
+    font-size: 52px;
+    line-height: 58px;
+  }
+}
+.si-callpage__sub {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--si-fg-muted);
+  max-inline-size: 58ch;
+}
+.si-callpage__intro .si-done-call__list {
+  margin-top: 12px;
+}
+.si-callpage__alt {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+.si-callpage__seg {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.si-callpage__finding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 240px;
+  justify-content: center;
+  font-size: 17px;
+  color: var(--si-fg-muted);
+}
+.si-callpage__pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--si-amber);
+  animation: si-callpage-pulse 1.1s var(--si-ease) infinite alternate;
+}
+@keyframes si-callpage-pulse {
+  from { opacity: 0.35; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-callpage__pulse { animation: none; }
+}
+.si-callpage__more {
+  margin-top: 24px;
+}
+@media (max-width: 767px) {
+  .si-callpage__card {
+    animation: none;
+  }
+  .si-callpage .si-ask__go {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-inline: -20px;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--si-lane) 78%, rgba(17, 17, 17, 0));
+  }
+  .si-callpage .si-ask__go .si-btn--primary {
+    width: 100%;
+  }
+}

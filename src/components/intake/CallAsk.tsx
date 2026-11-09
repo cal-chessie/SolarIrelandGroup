@@ -294,7 +294,7 @@ function CallForm({
     viewed.current = true;
     track('ask_view', { segment: ctx.segment, door: ctx.door, flow_id: ctx.flowId });
     funnel('ask_shown', { door: ctx.door, segment: ctx.segment, confirm, flow_id: ctx.flowId });
-  }, [ctx.segment, ctx.door, ctx.flowId]);
+  }, [ctx.segment, ctx.door, ctx.flowId, confirm]);
 
   useEffect(() => {
     if (!busy) {
