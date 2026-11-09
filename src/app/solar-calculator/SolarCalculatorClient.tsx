@@ -19,7 +19,6 @@ import {
   MessageCircle,
   HelpCircle,
 } from 'lucide-react';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { ENERGY, DOMESTIC_MIN_KWP } from '@/lib/estimate';
 
@@ -269,26 +268,18 @@ function FinalCTA() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href={buildWhatsAppUrl({
-                source: 'calculator-page-cta',
-                homeType: 'Semi-Detached',
-                annualSaving: SOLAR_DATA.savings.avgAnnual,
-                paybackYears: SOLAR_DATA.savings.paybackYears,
-                total25yrSaving: SOLAR_DATA.savings.total25yr,
-              })}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/book-survey?src=calculator"
               className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all"
             >
               <MessageCircle className="w-5 h-5" />
-              Get Free Site Survey
+              Free 15-minute call
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href="/book-survey"
+              href="#calculator"
               className="flex items-center gap-2 px-8 py-4 rounded-xl border border-white/[0.08] text-gray-300 font-medium text-sm hover:border-white/[0.15] hover:text-white transition-all"
             >
-              Pick a survey time
+              Read my bill first
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
@@ -306,12 +297,12 @@ export default function SolarCalculatorClient() {
 
       <main>
         <CalculatorHero />
+        {/* Cal's Bill Analyser, the same one as the homepage, straight under
+            the headline (12/10 brief): it was below the trust badges. Its
+            "No bill to hand? Answer 3 quick questions" link is the type-it-in
+            road, one tap away. */}
+        <BillAnalyser door="calculator" />
         <TrustBadges />
-        {/* The analyser comes FIRST. It was behind the explainer, 2.9 screens
-            down, and the explainer described a slider the page did not have.
-            Bill first for anyone who brought one, slider underneath for anyone
-            who did not, then the explainer for anyone still deciding. */}
-        <BillAnalyser />
         <QuickSavingsCalculator />
         <CalculatorExplainer />
         <DataTransparency />
