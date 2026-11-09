@@ -159,3 +159,71 @@ describe('misconfigured intake (H1)', () => {
     resetMisconfigReport();
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  M1: the mobile AISolar accepts, and a refused call is never dropped */
+/* ------------------------------------------------------------------ */
+
+describe('mobile and refused calls (M1)', () => {
+  const AISOLAR_PHONE = /^[+0-9 ()-]{7,20}$/;
+  it('normalises to digits, + and spaces, never adding or dropping a digit', async () => {
+    const { normalisePhone, isPhone } = await import('@/lib/intake/format');
+    const cases: [string, string][] = [
+      ['087.123.4567', '087 123 4567'],
+      ['(087) 123-4567', '087 123 4567'],
+      ['  0871234567 ', '0871234567'],
+      ['+353 87 123 4567', '+353 87 123 4567'],
+      ['+353.87.123.4567', '+353 87 123 4567'],
+      ['087/123/4567', '087 123 4567'],
+      ['+44 7700 900 123', '+44 7700 900 123'],
+    ];
+    for (const [raw, want] of cases) {
+      const got = normalisePhone(raw);
+      expect(got).toBe(want);
+      expect(got).toMatch(/^\+?[0-9 ]+$/);
+      expect(got.replace(/\D/g, '')).toBe(raw.replace(/\D/g, ''));
+      if (isPhone(raw)) expect(got).toMatch(AISOLAR_PHONE);
+    }
+  });
+  it('the ingest body carries the normalised mobile', () => {
+    expect(toIngestBody(callReq({ phone: '087.123.4567' }), null).phone).toBe('087 123 4567');
+  });
+  it('a call AISolar refuses (400) is held parked in the outbox and the owner told to add it by hand', async () => {
+    setLive();
+    process.env.POSTMARK_SERVER_TOKEN = 'pm-test';
+    process.env.OWNER_ALERT_EMAIL = 'owner@example.ie';
+    process.env.OWNER_ALERT_FROM = 'site@example.ie';
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const seen = mockFetch((url) => (url.includes('postmarkapp') ? jsonRes({ ErrorCode: 0 }) : jsonRes({ ok: false, error: 'invalid', fields: { phone: 'invalid' } }, 400)));
+    const { POST } = await import('@/app/api/intake/submit/route');
+    const res = await POST(new Request('http://localhost/api/intake/submit', { method: 'POST', headers: { 'x-idempotency-key': KEY }, body: JSON.stringify(callReq()) }));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({ path: 'outbox', fallback: true, call: { requested: true } });
+    expect(seen.filter((s) => s.url.endsWith('/ingest-lead'))).toHaveLength(1);
+    const mail = seen.find((s) => s.url.includes('postmarkapp'))?.body as { Subject: string; TextBody: string };
+    expect(mail.Subject).toContain('It needs a person');
+    expect(mail.TextBody).toContain('Mary Byrne');
+  });
+  it('the outbox stores a refused lead parked, so the replay never resends it', async () => {
+    const { holdInOutbox } = await import('@/lib/intake/live/outbox');
+    const inserted: Record<string, unknown>[] = [];
+    const store = { findByKey: async () => null, insert: async (r: Record<string, unknown>) => (inserted.push(r), true), listPending: async () => [], update: async () => true };
+    const sent: string[] = [];
+    const r = await holdInOutbox({ key: KEY, payload: toIngestBody(callReq(), null), reason: 'aisolar_refused', refused: true }, { store, alert: { send: async (_s, t) => (sent.push(t), true) }, now: () => new Date() });
+    expect(r.held).toBe(true);
+    expect((inserted[0].meta as { parked?: boolean }).parked).toBe(true);
+    expect(sent[0]).toContain('Add it in AISolar by hand');
+  });
+  it('a 409 (same key still in flight) is a duplicate: never held, never alerted', async () => {
+    setLive();
+    process.env.POSTMARK_SERVER_TOKEN = 'pm-test';
+    process.env.OWNER_ALERT_EMAIL = 'owner@example.ie';
+    process.env.OWNER_ALERT_FROM = 'site@example.ie';
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const seen = mockFetch((url) => (url.includes('postmarkapp') ? jsonRes({ ErrorCode: 0 }) : jsonRes({ ok: false, error: 'server_error', reason: 'in_flight' }, 409)));
+    const { POST } = await import('@/app/api/intake/submit/route');
+    const res = await POST(new Request('http://localhost/api/intake/submit', { method: 'POST', headers: { 'x-idempotency-key': KEY }, body: JSON.stringify(callReq()) }));
+    expect(res.status).toBe(502);
+    expect(seen.some((s) => s.url.includes('postmarkapp'))).toBe(false);
+  });
+});

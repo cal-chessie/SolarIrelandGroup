@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { forwardLead, isRateLimited, isHoneypotTripped, type BridgeLead } from '@/lib/leadBridge';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { parseLinkToken } from '@/lib/intake/linkToken';
+import { normalisePhone } from '@/lib/intake/format';
 
 // Every failure the visitor can see names the phone number: nothing fails silently.
 const PHONE = SOLAR_DATA.provider.phone;
@@ -99,7 +100,7 @@ export async function POST(request: Request) {
     }
 
     const email = str(body.email, MAX.email).toLowerCase();
-    const phone = str(body.phone, MAX.phone);
+    const phone = normalisePhone(str(body.phone, MAX.phone));
     let name = str(body.name, MAX.name);
 
     // AISolar requires name + (email or phone). Never lose a valid contact for

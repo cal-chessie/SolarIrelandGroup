@@ -18,7 +18,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { CircleAlert, Mail, MapPin, MessageCircle, Phone, PhoneIncoming, UserPlus } from 'lucide-react';
 import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
-import { firstName, isEmail, isPhone } from '@/lib/intake/format';
+import { firstName, isEmail, isPhone, normalisePhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
@@ -345,7 +345,7 @@ function CallForm({
       bestTime: details.bestTime,
       name: details.name.trim(),
       email: details.email.trim(),
-      phone: details.mobile.trim(),
+      phone: normalisePhone(details.mobile),
       eircode: eircode && useEircode ? eircode.replace(/\s+/g, '') : null,
       county: null,
       address: eircode && useEircode ? carry?.address ?? null : null,

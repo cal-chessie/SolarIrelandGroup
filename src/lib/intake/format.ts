@@ -192,6 +192,24 @@ export function isPhone(v: string): boolean {
   return /^\+\d{8,15}$/.test(s) && !s.startsWith('+353');
 }
 
+/**
+ * A mobile as AISolar accepts it (/^[+0-9 ()-]{7,20}$/), cut down further to
+ * digits, a leading + and single spaces: "087.123.4567" becomes
+ * "087 123 4567", "(087) 123-4567" becomes "087 123 4567". If the spaced form
+ * would pass 20 characters the spaces go. Never adds or drops a digit.
+ */
+export function normalisePhone(v: string): string {
+  const t = v.trim();
+  const plus = t.startsWith('+') ? '+' : '';
+  const body = t
+    .replace(/[.\-()/]/g, ' ')
+    .replace(/[^0-9 ]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const spaced = `${plus}${body}`;
+  return spaced.length <= 20 ? spaced : `${plus}${body.replace(/ /g, '')}`;
+}
+
 /** The 26 counties of the Republic, then the 6 of Northern Ireland. */
 export const ROI_COUNTIES = [
   'Carlow', 'Cavan', 'Clare', 'Cork', 'Donegal', 'Dublin', 'Galway', 'Kerry', 'Kildare', 'Kilkenny',

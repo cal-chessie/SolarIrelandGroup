@@ -213,7 +213,7 @@ export type SubmitAdapted =
   /** AISolar refused the request itself (400): the form shows its failure state; replaying cannot help. */
   | { kind: 'invalid'; status: 400; body: IntakeError; note: string }
   /** No usable answer: retry with the same idempotency key, then the outbox. */
-  | { kind: 'retry'; rateLimited: boolean; note: string };
+  | { kind: 'retry'; rateLimited: boolean; note: string; duplicate?: boolean };
 
 export interface SubmitContext {
   /** The homeowner asked for a time (a slot or a requested day). */
@@ -227,6 +227,9 @@ export function adaptSubmit(r: CallResult, ctx: SubmitContext): SubmitAdapted {
     const fields = isObj(r.data.fields) ? (r.data.fields as Record<string, string>) : undefined;
     return { kind: 'invalid', status: 400, body: { ok: false, error: 'invalid', ...(fields ? { fields } : {}) }, note: why(r) };
   }
+  // 409: AISolar is still working on this same idempotency key (a double tap). A duplicate, not a failure:
+  // retry and it answers with the first result. Never held, never alerted.
+  if (r.status === 409) return { kind: 'retry', rateLimited: false, note: why(r), duplicate: true };
   if (r.status !== 200 || !isObj(r.data) || r.data.ok !== true) return { kind: 'retry', rateLimited: r.status === 429, note: why(r) };
   const d = r.data;
 

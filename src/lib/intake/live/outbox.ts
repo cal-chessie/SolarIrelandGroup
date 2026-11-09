@@ -174,8 +174,12 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
   return { subject: call ? `Call requested: ${who}. Held on the website, AISolar did not accept it.` : `Lead held on the website: ${who}. AISolar did not accept it.`, text: lines.join('\n') };
 }
 
+/** The owner-alert line for a lead AISolar refused as sent: replaying cannot help, a person must add it. */
+const REFUSED_LINE = 'AISolar refused this lead as sent, so the website has stopped retrying it. Add it in AISolar by hand.';
+
 export async function holdInOutbox(
-  e: { key: string; payload: IngestBody; reason: string },
+  /** refused: AISolar answered a 4xx for it. Stored parked (the replay skips it) and the alert says add it by hand. */
+  e: { key: string; payload: IngestBody; reason: string; refused?: boolean },
   deps: OutboxDeps,
 ): Promise<{ held: boolean; stored: boolean; alerted: boolean; repeat: boolean }> {
   const now = deps.now();
@@ -197,6 +201,7 @@ export async function holdInOutbox(
           lastError: e.reason,
           nextAttemptAt: new Date(now.getTime() + 60_000).toISOString(),
           heldAt: now.toISOString(),
+          ...(e.refused ? { parked: true } : {}),
         };
         stored = await deps.store.insert({
           source: p.source,
@@ -220,7 +225,9 @@ export async function holdInOutbox(
   let alerted = false;
   if (!repeat && deps.alert) {
     const { subject, text } = alertText(e.payload, e.key, e.reason, stored);
-    alerted = await deps.alert.send(subject, text);
+    alerted = e.refused
+      ? await deps.alert.send(`${subject} It needs a person.`, stored ? text.replace(/The website holds this lead[^\n]*/, REFUSED_LINE) : text)
+      : await deps.alert.send(subject, text);
   }
   return { held: stored || alerted, stored, alerted, repeat };
 }
@@ -273,7 +280,7 @@ export async function replayDue(deps: ReplayDeps, limit = 10): Promise<ReplayRep
       await deps.store.update(row.id, { meta: { ...m, parked: true, lastError: a.note } });
       if (deps.alert) {
         const { text } = alertText(m.payload, m.idempotencyKey, a.note, true);
-        await deps.alert.send(`Held website lead refused by AISolar: ${m.payload.name || m.payload.email}. It needs a person.`, text.replace(/The website holds this lead[^\n]*/, 'AISolar refused this lead as sent, so the website has stopped retrying it. Add it in AISolar by hand.'));
+        await deps.alert.send(`Held website lead refused by AISolar: ${m.payload.name || m.payload.email}. It needs a person.`, text.replace(/The website holds this lead[^\n]*/, REFUSED_LINE));
       }
       report.parked += 1;
     } else {

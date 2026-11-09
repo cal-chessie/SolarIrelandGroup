@@ -11,6 +11,7 @@
 import { BEST_TIMES, type BestTime, type CallBillRead, type SubmitRequest } from '@/lib/intake/contract';
 import { isValidEircode, normaliseEircode } from '@/lib/eircode';
 import { LINK_TOKEN } from '@/lib/intake/linkToken';
+import { normalisePhone } from '@/lib/intake/format';
 
 export interface IngestBody {
   brand: 'solar-ireland';
@@ -68,7 +69,8 @@ export function toIngestBody(b: SubmitRequest, deviceToken: string | null): Inge
     source: b.source === 'website_qualified' ? 'website_qualified' : 'website_survey',
     name: s(b.name, 200),
     email: String(b.email).trim().toLowerCase().slice(0, 254),
-    phone: s(b.phone, 40),
+    // Digits, + and spaces only, as AISolar's phone check expects (M1).
+    phone: typeof b.phone === 'string' && b.phone.trim() ? normalisePhone(b.phone) || null : null,
     eircode: s(b.eircode, 12),
     county: s(b.county, 60),
     address: s(b.address, 300),

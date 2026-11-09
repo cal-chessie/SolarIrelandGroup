@@ -290,7 +290,18 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
   }
   if (a.kind === 'invalid') {
     console.error('[intake submit] AISolar refused the request:', a.note);
+    // A call is a person waiting for Cal to ring (M1): a refusal must never drop
+    // it. Held parked (a replay cannot help) and the owner told to add it by hand.
+    if (body.intent === 'call') {
+      const held = await holdInOutbox({ key, payload, reason: `aisolar_refused: ${a.note}`, refused: true }, outboxDeps());
+      if (held.held) return json({ ...outboxAnswer(), call: { requested: true, bestTime: payload.bestTime ?? null } }, 200);
+    }
     return json(a.body, 400);
+  }
+  if (a.duplicate) {
+    // AISolar is still finishing this same key: the browser's retry gets the first answer.
+    console.warn('[intake submit] same key still in flight at AISolar:', a.note);
+    return json({ ok: false, error: 'server_error' }, 502);
   }
 
   console.error('[intake submit] AISolar did not accept it:', a.note);
