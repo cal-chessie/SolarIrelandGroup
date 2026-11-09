@@ -94,3 +94,68 @@ describe('magic-link tokens (M2)', () => {
     expect(toIngestBody(callReq({ linkToken: 'x'.repeat(64) }), null)).not.toHaveProperty('leadToken');
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  H1: a misconfigured live intake is never silent                     */
+/* ------------------------------------------------------------------ */
+
+describe('misconfigured intake (H1)', () => {
+  it('names which variable is wrong, never its value', async () => {
+    const { intakeMisconfig } = await import('@/lib/intake/mode');
+    expect(intakeMisconfig()).toEqual([]);
+    process.env.INTAKE_CONTRACT_MODE = 'live';
+    expect(intakeMisconfig()).toEqual(['INTAKE_AISOLAR_URL is missing', 'INTAKE_SOURCE_KEY is missing']);
+    process.env.INTAKE_AISOLAR_URL = 'http://secret-host.example/functions/v1';
+    process.env.INTAKE_SOURCE_KEY = 'short';
+    const p = intakeMisconfig();
+    expect(p).toHaveLength(2);
+    expect(p.join(' ')).not.toContain('secret-host');
+    expect(p.join(' ')).not.toContain('short');
+    setLive();
+    expect(intakeMisconfig()).toEqual([]);
+    delete process.env.INTAKE_CONTRACT_MODE;
+    process.env.VERCEL_ENV = 'production';
+    expect(intakeMisconfig()).toEqual(['INTAKE_CONTRACT_MODE is missing on production']);
+  });
+
+  it('logs once per cold start and alerts the owner at most once an hour', async () => {
+    const { reportMisconfig, resetMisconfigReport, ALERT_EVERY_MS } = await import('@/lib/intake/misconfig');
+    resetMisconfigReport();
+    process.env.INTAKE_CONTRACT_MODE = 'live';
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const sent: string[] = [];
+    const alert = { send: async (s: string) => (sent.push(s), true) };
+    const defer = (p: Promise<unknown>) => void p;
+    const t0 = 1_800_000_000_000;
+    reportMisconfig({ alert, now: t0, defer });
+    reportMisconfig({ alert, now: t0 + 60_000, defer });
+    reportMisconfig({ alert, now: t0 + ALERT_EVERY_MS - 1, defer });
+    await Promise.resolve();
+    expect(err).toHaveBeenCalledTimes(1);
+    expect(String(err.mock.calls[0][0])).toContain('INTAKE_AISOLAR_URL is missing');
+    expect(sent).toEqual(['Website intake is OFF: a setting is wrong']);
+    reportMisconfig({ alert, now: t0 + ALERT_EVERY_MS + 1, defer });
+    await Promise.resolve();
+    expect(sent).toHaveLength(2);
+    expect(err).toHaveBeenCalledTimes(1);
+    resetMisconfigReport();
+  });
+
+  it('a route behind the gate reports it and answers 503', async () => {
+    const { resetMisconfigReport } = await import('@/lib/intake/misconfig');
+    resetMisconfigReport();
+    process.env.INTAKE_CONTRACT_MODE = 'live';
+    process.env.POSTMARK_SERVER_TOKEN = 'pm-test';
+    process.env.OWNER_ALERT_EMAIL = 'owner@example.ie';
+    process.env.OWNER_ALERT_FROM = 'site@example.ie';
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const seen = mockFetch(() => jsonRes({ ErrorCode: 0 }));
+    const { GET } = await import('@/app/api/intake/config/route');
+    const res = await GET(new Request('http://localhost/api/intake/config'));
+    expect(res.status).toBe(503);
+    await new Promise((r) => setTimeout(r, 10));
+    expect(err).toHaveBeenCalled();
+    expect(seen.filter((s) => s.url.includes('postmarkapp'))).toHaveLength(1);
+    resetMisconfigReport();
+  });
+});

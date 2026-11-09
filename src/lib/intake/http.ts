@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { intakeMode, UNAVAILABLE } from './mode';
+import { reportMisconfig } from './misconfig';
 
 /**
  * Shared plumbing for the /api/intake/* routes.
@@ -42,7 +43,10 @@ export function json(body: unknown, status = 200, headers: Record<string, string
 
 /** Fail closed: 503 unless the stub is explicitly on; 429 when over the limit. */
 export function gate(request: Request, max?: number): Response | null {
-  if (intakeMode() === 'off') return json(UNAVAILABLE, 503);
+  if (intakeMode() === 'off') {
+    reportMisconfig();
+    return json(UNAVAILABLE, 503);
+  }
   if (intakeRateLimited(request, max)) return json({ ok: false, error: 'rate_limited' }, 429);
   return null;
 }

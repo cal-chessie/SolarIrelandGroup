@@ -48,6 +48,28 @@ export function liveEnv(): LiveEnv | null {
   return { base: base.replace(/\/+$/, ''), sourceKey };
 }
 
+/**
+ * Why the intake is off when it should not be, naming each variable and what
+ * is wrong with it, never its value. Empty when the mode is what was asked for
+ * (live and complete, stub off production, or off on purpose off production).
+ */
+export function intakeMisconfig(): string[] {
+  const flag = process.env.INTAKE_CONTRACT_MODE;
+  if (flag === 'live') {
+    const out: string[] = [];
+    const base = (process.env.INTAKE_AISOLAR_URL || '').trim();
+    const key = (process.env.INTAKE_SOURCE_KEY || '').trim();
+    if (!base) out.push('INTAKE_AISOLAR_URL is missing');
+    else if (!BASE.test(base)) out.push('INTAKE_AISOLAR_URL is not an https Supabase functions base (https://<ref>.supabase.co/functions/v1)');
+    if (!key) out.push('INTAKE_SOURCE_KEY is missing');
+    else if (!KEY.test(key)) out.push('INTAKE_SOURCE_KEY is not a door key (16 to 200 of A-Z a-z 0-9 _ -)');
+    return out;
+  }
+  if (process.env.VERCEL_ENV !== 'production') return [];
+  if (flag === 'stub') return ['INTAKE_CONTRACT_MODE is "stub" on production, where the stub never runs; set it to "live"'];
+  return [flag ? `INTAKE_CONTRACT_MODE is not "live" on production` : 'INTAKE_CONTRACT_MODE is missing on production'];
+}
+
 export function intakeMode(): IntakeMode {
   const flag = process.env.INTAKE_CONTRACT_MODE;
   if (flag === 'live') return liveEnv() ? 'live' : 'off';
