@@ -221,7 +221,7 @@ export default function RoscommonPage() {
               href="/book-survey"
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 font-semibold text-white transition hover:bg-white/5"
             >
-              Book a survey
+              Free 15-minute call
             </Link>
           </div>
         </section>

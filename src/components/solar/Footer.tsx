@@ -83,7 +83,7 @@ const FOOTER_SOCIAL = [
 
 const quickLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'Book a Survey', href: '/book-survey' },
+  { label: 'Free 15-minute call', href: '/book-survey' },
   { label: 'Calculator', href: '/solar-calculator' },
   { label: 'Financing', href: '/financing' },
   { label: 'Counties', href: '/counties' },
@@ -165,7 +165,7 @@ function PreFooterCTA() {
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-green-400/30 bg-green-400/10 text-green-400 font-medium text-sm whitespace-nowrap"
           >
             <CalendarCheck className="w-4 h-4" />
-            Book a Free Survey
+            Free 15-minute call
           </motion.a>
           <a
             href={buildWhatsAppUrl({ source: 'footer' })}

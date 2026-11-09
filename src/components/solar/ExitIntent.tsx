@@ -343,7 +343,7 @@ export default function ExitIntent() {
                     onClick={() => { trackExitIntent('callback-click'); close(); }}
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] text-[13px] text-gray-200 hover:bg-white/[0.07] transition-colors"
                   >
-                    <Clock className="w-4 h-4 text-yellow-400" /> Pick a time to talk
+                    <Clock className="w-4 h-4 text-yellow-400" /> Free 15-minute call
                   </a>
                   <a
                     href="/solar-calculator"

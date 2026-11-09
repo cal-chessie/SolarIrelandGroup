@@ -69,7 +69,7 @@ const mobileLinks = [
     borderHover: 'hover:border-green-400/20',
   },
   {
-    label: 'Book Survey',
+    label: 'Free 15-minute call',
     href: '/book-survey',
     icon: CalendarCheck,
     color: 'green',
@@ -156,7 +156,7 @@ const desktopNavLinks = [
   { label: 'Counties', href: '/counties', isBookSurvey: false },
   { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Book Survey', href: '/book-survey', isBookSurvey: true },
+  { label: 'Free 15-minute call', href: '/book-survey', isBookSurvey: true },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 
@@ -417,7 +417,7 @@ function MobileMenu({
               className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15 mt-3"
             >
               <CalendarCheck className="w-4 h-4" />
-              Book Free Survey
+              Free 15-minute call
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -635,7 +635,7 @@ export default function Navbar() {
               onClick={() => navigateTo('/book-survey')}
               className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
-              Book Free Survey
+              Free 15-minute call
             </button>
           </div>
 

@@ -285,7 +285,7 @@ function EligibilityChecker() {
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
                     >
                       <Zap className="w-4 h-4" />
-                      Book Free Survey
+                      Free 15-minute call
                       <ArrowRight className="w-4 h-4" />
                     </motion.a>
                     <motion.a

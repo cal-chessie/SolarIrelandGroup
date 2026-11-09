@@ -475,7 +475,7 @@ export default function ServicesPage() {
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-green-400/25 bg-green-400/10 text-green-400 text-sm font-medium whitespace-nowrap hover:bg-green-400/20 transition-all"
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  Book a Free Survey
+                  Free 15-minute call
                 </a>
                 <a
                   href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
@@ -752,7 +752,7 @@ export default function ServicesPage() {
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
                   >
                     <Zap className="w-4 h-4" />
-                    Book Free Survey
+                    Free 15-minute call
                     <ArrowRight className="w-4 h-4" />
                   </a>
                   <a

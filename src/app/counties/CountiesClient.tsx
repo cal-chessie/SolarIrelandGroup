@@ -776,7 +776,7 @@ export default function CountiesClient() {
                       className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-gray-300 text-sm hover:bg-white/[0.06] hover:text-white transition-all active:scale-[0.98]"
                     >
                       <Calendar className="w-4 h-4" />
-                      Book a Free Survey
+                      Free 15-minute call
                     </a>
                   </div>
                 </div>
