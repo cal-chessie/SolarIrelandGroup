@@ -17,6 +17,9 @@ export const portalMetadata: Metadata = {
   title: 'Your Project Page',
   description: 'Your Solar Ireland project page link is in the emails we sent you.',
   robots: { index: false, follow: false },
+  // No canonical: the layout's default points at the homepage, which on a
+  // noindex page is a mixed signal (Google-safety check, 9 Nov). None at all is clean.
+  alternates: { canonical: null },
 };
 
 export default function PortalNotice() {
