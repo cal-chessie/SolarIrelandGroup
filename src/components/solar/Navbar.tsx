@@ -159,7 +159,6 @@ const desktopNavLinks = [
   { label: 'Counties', href: '/counties', isBookSurvey: false },
   { label: 'Calculator', href: '/solar-calculator', isBookSurvey: false },
   { label: 'Financing', href: '/financing', isBookSurvey: false },
-  { label: 'Check my savings', href: '/book-survey', isBookSurvey: true },
   { label: 'Blog', href: '/blog', isBookSurvey: false },
 ];
 
