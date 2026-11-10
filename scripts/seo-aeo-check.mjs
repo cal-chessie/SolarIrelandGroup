@@ -41,10 +41,33 @@ const PAGES = [
   '/blog/solar-panels-rental-property-landlord-guide',
   '/blog/solar-panel-maintenance-ireland-do-they-need-cleaning',
   '/blog/what-is-my-mprn-number-ireland',
+  // 10 Nov 2026 feedback batches: pages changed, and the two new pages.
+  '/services',
+  '/counties',
+  '/counties/roscommon',
+  '/commercial-solar-grant',
+  '/blog/seai-battery-grant-600-explained',
+  '/blog/do-solar-panels-add-value-to-your-home-ireland',
+  '/blog/how-to-read-electricity-bill-ireland-solar',
+  '/blog/battery-storage-is-it-worth-the-extra-cost',
+  '/blog/solar-panels-and-heat-pumps-perfect-partnership',
+  '/blog/seai-grant-stay-e1800-2026-what-it-means',
   // Must be UNCHANGED (on hold): reported, not length-gated.
   '/blog/longi-vs-jinko-vs-trina-best-solar-panels',
 ];
-const HOLD = new Set(['/blog/longi-vs-jinko-vs-trina-best-solar-panels']);
+// Reported, not length-gated: the on-hold post, and pages the 10 Nov batches
+// touched only in body copy whose meta predates the 9 Nov pass (their
+// lengths and og mismatches are pre-existing, logged in
+// INTAKE/seo/google-safety-check.md, and out of the batches' scope).
+const HOLD = new Set([
+  '/blog/longi-vs-jinko-vs-trina-best-solar-panels',
+  '/services',
+  '/counties',
+  '/counties/roscommon',
+  '/blog/do-solar-panels-add-value-to-your-home-ireland',
+  '/blog/battery-storage-is-it-worth-the-extra-cost',
+  '/blog/seai-grant-stay-e1800-2026-what-it-means',
+]);
 
 const decode = (s) =>
   s.replace(/&amp;/g, '&').replace(/&#x27;|&#39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
