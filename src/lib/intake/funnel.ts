@@ -36,6 +36,19 @@ export type FunnelStep = (typeof FUNNEL_STEPS)[number];
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
+/**
+ * A monthly bill as a coarse band for analytics (M7, 9 Nov review): the raw
+ * amount is the homeowner's own figure and never goes to GA4 or PostHog.
+ */
+export function billBand(segment: 'domestic' | 'commercial', amountEur: number): string {
+  const edges = segment === 'commercial' ? [500, 1000, 2500] : [100, 150, 250];
+  const [a, b, c] = edges;
+  if (amountEur < a) return `under_${a}`;
+  if (amountEur < b) return `${a}_${b}`;
+  if (amountEur < c) return `${b}_${c}`;
+  return `${c}_plus`;
+}
+
 const CONSENT_KEY = 'solar-ireland-cookie-consent';
 
 function consented(): boolean {

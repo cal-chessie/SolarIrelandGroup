@@ -23,7 +23,7 @@ import { getConfig, getQuotes } from '@/components/intake/api';
 import type { IntakeConfig, Quote, QuoteRequestItem, Segment } from '@/lib/intake/contract';
 import { eur } from '@/lib/intake/format';
 import { EXIT_KEYS, exitMayOpen, readExitState, type ExitTrigger } from '@/lib/intake/exitGate';
-import { funnel } from '@/lib/intake/funnel';
+import { billBand, funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import '@/components/intake/intake.css';
 
@@ -249,7 +249,8 @@ export default function ExitIntent() {
                 className="si-chip si-chip--name"
                 onClick={() => {
                   setBill({ amount: a, orMore });
-                  answer('bill', String(a));
+                  // A band, never the amount itself (M7).
+                  answer('bill', billBand(segment, a));
                   price(segment, a);
                   setStage('extras');
                 }}

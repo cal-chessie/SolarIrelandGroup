@@ -430,10 +430,18 @@ export default async function RootLayout({
                     return u.href;
                   } catch (e) { return window.location.origin + window.location.pathname; }
                 }
+                // Consent mode first (M7): everything denied before the js call and any
+                // config, so GA collects nothing until the visitor says yes.
+                gtag('consent', 'default', {
+                  analytics_storage: 'denied',
+                  ad_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                });
                 gtag('js', new Date());
                 gtag('set', { page_location: siLoc() });
 
-                // Check consent before configuring GA4
+                // Configure GA4 only once analytics consent is on record.
                 try {
                   var consent = JSON.parse(localStorage.getItem('solar-ireland-cookie-consent') || '{}');
                   if (consent.categories && consent.categories.analytics) {
@@ -443,11 +451,9 @@ export default async function RootLayout({
                       page_location: siLoc(),
                       cookie_flags: 'SameSite=None;Secure',
                     });
-                  } else {
-                    gtag('consent', 'default', { analytics_storage: 'denied' });
                   }
                 } catch (e) {
-                  gtag('consent', 'default', { analytics_storage: 'denied' });
+                  /* stays denied */
                 }
 
                 // Listen for consent changes
