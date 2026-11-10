@@ -34,7 +34,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type
 import { Building2, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, House, Camera, Info, WifiOff, X } from 'lucide-react';
 import type { BillReadResult, CallBillRead, IntakeConfig, Quote, Segment, SubmitResponse } from '@/lib/intake/contract';
 import { cents, eur, kwp, num, years } from '@/lib/intake/format';
-import { intakeHref, type IntakeOpenOptions } from '@/lib/intake/open';
+import { intakeExitPath, intakeHref, type IntakeOpenOptions } from '@/lib/intake/open';
 import { setIntakeOpen, useCookieBannerVisible } from '@/lib/bottomLayer';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
@@ -256,13 +256,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       else finishClose();
       return;
     }
-    let to = '/';
-    try {
-      const ref = document.referrer ? new URL(document.referrer) : null;
-      if (ref && ref.origin === window.location.origin && ref.pathname !== '/estimate') to = ref.pathname + ref.search;
-    } catch {
-      /* default home */
-    }
+    // Back where they came from (the door's page, or a same-site referrer), never off-site; else the homepage analyser.
+    const to = intakeExitPath();
     window.location.assign(to);
   }, [finishClose, variant]);
 

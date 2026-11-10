@@ -72,9 +72,59 @@ export function parseIntakeQuery(q: URLSearchParams | Record<string, string | st
   };
 }
 
+/** Where the intake's close and "Back to the site" go when nothing better is known: the homepage analyser. */
+export const INTAKE_EXIT_DEFAULT = '/#calculator';
+const ENTRY_KEY = 'si-intake-entry';
+
+/** A same-site path to return to, or null: must start with one "/", and never the intake itself. */
+export function safeReturnPath(v: string | null | undefined): string | null {
+  if (!v || typeof v !== 'string' || v.length > 400) return null;
+  if (!v.startsWith('/') || v.startsWith('//') || v.includes('\\')) return null;
+  const path = v.split(/[?#]/)[0];
+  if (path === INTAKE_PATH || path.startsWith(`${INTAKE_PATH}/`)) return null;
+  return v;
+}
+
+/** Remember the page a door was opened from, for this tab only (no personal data: a path). */
+export function rememberIntakeEntry(): void {
+  if (typeof window === 'undefined') return;
+  const here = safeReturnPath(window.location.pathname + window.location.search + window.location.hash);
+  if (!here) return;
+  try {
+    sessionStorage.setItem(ENTRY_KEY, here);
+  } catch {
+    /* the referrer, then the default, still work */
+  }
+}
+
+/**
+ * Where leaving the intake page goes: the page they opened it from (stored
+ * by the door, else a same-origin referrer), never off-site, defaulting to
+ * the homepage analyser.
+ */
+export function intakeExitPath(): string {
+  try {
+    const stored = safeReturnPath(sessionStorage.getItem(ENTRY_KEY));
+    if (stored) return stored;
+  } catch {
+    /* fall through */
+  }
+  try {
+    const ref = document.referrer ? new URL(document.referrer) : null;
+    if (ref && ref.origin === window.location.origin) {
+      const p = safeReturnPath(ref.pathname + ref.search + ref.hash);
+      if (p && p !== '/') return p;
+    }
+  } catch {
+    /* fall through */
+  }
+  return INTAKE_EXIT_DEFAULT;
+}
+
 /** Open the intake from any door. Falls back to a plain navigation. */
 export function openIntake(o: IntakeOpenOptions): void {
   if (typeof window === 'undefined') return;
+  rememberIntakeEntry();
   // Carry the page's own context (?src, ?pkg, ?county) unless the door set it.
   const here = new URLSearchParams(window.location.search);
   const full: IntakeOpenOptions = {
