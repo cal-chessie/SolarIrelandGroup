@@ -9,7 +9,6 @@ import {
   MessageCircle,
   Phone,
   Mail,
-  Clock,
   MapPin,
   ArrowRight,
   Send,
@@ -76,9 +75,8 @@ const contactMethods = [
   },
 ];
 
-// Deliberately not an hours table. The front desk is open 24/7, so a
-// Monday-to-Friday grid invites the reader to look for the closed day.
-const officeHours: { day: string; hours: string; current: boolean }[] = [];
+// No "Office Hours" card (Cal, 11 Nov): the front desk is open 24/7, and a
+// card with that title suggests a closed door.
 
 const provinces = [
   {
@@ -416,8 +414,9 @@ export default function ContactClient() {
                 transition={{ duration: 0.6 }}
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
-                Have a question about solar panels? Want to book a free survey?
-                Just want to chat? We&apos;re real people - reach out anytime
+                Have a question about solar panels? Want a free estimate?{' '}
+                <Link href="/solar-calculator" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Check my savings</Link>{' '}
+                and upload your bill. Just want to chat? We&apos;re real people - reach out anytime
                 and we&apos;ll get back to you fast.
               </motion.p>
             </motion.div>
@@ -500,34 +499,6 @@ export default function ContactClient() {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: 0.15 }}
               >
-                <div className="glass-card rounded-2xl p-6">
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="w-9 h-9 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                      <Clock className="w-4.5 h-4.5 text-amber-400" />
-                    </div>
-                    <h3 className="text-base font-bold text-white">Office Hours</h3>
-                  </div>
-
-                  <div className="space-y-3">
-                    {officeHours.map((item) => (
-                      <div
-                        key={item.day}
-                        className="flex items-center justify-between py-2 px-3 rounded-lg bg-white/[0.02] border border-white/[0.04]"
-                      >
-                        <span className="text-sm text-gray-300">{item.day}</span>
-                        <span className={`text-sm font-medium ${item.hours === 'Closed' ? 'text-gray-600' : 'text-white'}`}>
-                          {item.hours}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-green-400/5 border border-green-400/10">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-xs text-green-400 font-medium">Typically replies within minutes</span>
-                  </div>
-                </div>
-
                 <div className="glass-card rounded-2xl p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-9 h-9 rounded-lg bg-sky-400/10 flex items-center justify-center">

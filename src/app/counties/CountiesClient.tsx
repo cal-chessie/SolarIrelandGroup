@@ -142,11 +142,11 @@ const faqs = [
   },
   {
     question: 'Do you cover my county?',
-    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. Surveys are free everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
+    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. The free estimate works everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
   },
   {
-    question: 'Can I get a free solar survey in my area?',
-    answer: 'Absolutely. Solar Ireland Group offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. The survey costs nothing and commits you to nothing. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
+    question: 'Can I get a free solar estimate in my area?',
+    answer: 'Yes, in all 32 counties. Upload a recent electricity bill to Check my savings and you get a close estimate of the system size, yearly saving and payback for your home, with the SEAI grant built in for the 26 Republic of Ireland counties. It costs nothing and commits you to nothing. If your home suits solar, a site survey comes next to confirm the exact system. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
   },
   {
     question: 'Do you serve Northern Ireland?',
@@ -409,9 +409,9 @@ function BottomStats() {
     },
     {
       icon: Building2,
-      label: 'Free Surveys in All Areas',
+      label: 'Free Estimate in All Areas',
       value: 'Free',
-      desc: 'No-obligation roof assessment',
+      desc: 'From your electricity bill',
       color: 'text-sky-400',
       bg: 'bg-sky-400/10',
     },
@@ -569,7 +569,7 @@ export default function CountiesClient() {
               <div className="w-px h-4 bg-white/10 hidden sm:block" />
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400/60" />
-                <span className="text-gray-400">Free survey <span className="text-white font-semibold">nationwide</span></span>
+                <span className="text-gray-400">Free estimate <span className="text-white font-semibold">nationwide</span></span>
               </div>
             </div>
           </div>
@@ -767,9 +767,9 @@ export default function CountiesClient() {
                   </h2>
                   <p className="text-gray-400 text-base max-w-lg mx-auto mb-6 leading-relaxed">
                     Upload your electricity bill and we&apos;ll show you what solar would save on
-                    your roof, in your county. Then book a free survey and we&apos;ll check the
-                    roof properly and guide you through the SEAI grant. The figures you get
-                    are the ones we stand over.
+                    your roof, in your county: a free estimate with the SEAI grant built in.
+                    If your home suits solar, we check the roof properly and guide you
+                    through the grant. The figures you get are the ones we stand over.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a

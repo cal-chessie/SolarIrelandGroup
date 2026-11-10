@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar Installation in All 32 Counties',
   description:
-    'Solar panel installers across all 32 counties, Dublin to Donegal. Compare prices, SEAI grants and generation estimates, and book a free survey near you.',
+    'Solar panel installers across all 32 counties, Dublin to Donegal. Compare prices, SEAI grants and generation estimates, and get a free estimate from your bill.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/counties',
     languages: {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solar Installation in All 32 Counties',
     description:
-      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free solar survey near you.',
+      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free solar estimate from your bill.',
     url: 'https://solarirelandgroup.ie/counties',
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Solar Installation in All 32 Counties',
     description:
-      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free survey.',
+      'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free estimate.',
     images: ['https://solarirelandgroup.ie/og-counties.png'],
   },
 };
