@@ -77,3 +77,24 @@ export function funnel(step: FunnelStep, props: Props = {}): void {
     /* measurement never breaks the funnel */
   }
 }
+
+/** The roads a lead arrives by, for `lead_source` on generate_lead. */
+export type LeadRoad = 'analyser' | 'intake' | 'book-survey' | 'exit-quiz' | 'contact';
+
+/**
+ * GA4's recommended `generate_lead` event, once per successful lead submit
+ * (10 Nov 2026). `value` is 0: a call request has no booked value yet.
+ * Same consent gate as funnel(). Never personal data: only the road.
+ */
+export function generateLead(road: LeadRoad): void {
+  if (typeof window === 'undefined') return;
+  const payload = { currency: 'EUR', value: 0, lead_source: road };
+  try {
+    const w = window as unknown as { __siLeads?: (typeof payload)[]; gtag?: (...a: unknown[]) => void };
+    w.__siLeads = [...(w.__siLeads ?? []), payload].slice(-RECENT_MAX);
+    if (!consented()) return;
+    if (typeof w.gtag === 'function') w.gtag('event', 'generate_lead', payload);
+  } catch {
+    /* measurement never breaks the funnel */
+  }
+}

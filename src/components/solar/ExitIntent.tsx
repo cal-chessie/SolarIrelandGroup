@@ -367,6 +367,7 @@ export default function ExitIntent() {
         ctx={{
           segment,
           door: 'exit-quiz',
+          road: 'exit-quiz',
           src: 'exit-quiz',
           // The quiz answers ride in the lead's attribution, which AISolar keeps.
           pkg: `quiz:${segment === 'commercial' ? 'business' : 'home'};bill=${bill?.amount ?? ''}${bill?.orMore ? '+' : ''};extras=${extras.join(',') || 'none'}`,

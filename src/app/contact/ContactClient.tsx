@@ -29,6 +29,7 @@ import ScrollProgress from '@/components/solar/ScrollProgress';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackContactFormSubmit } from '@/lib/analytics';
+import { funnel, generateLead } from '@/lib/intake/funnel';
 
 
 const counties = [
@@ -155,12 +156,18 @@ function ContactForm() {
         body: JSON.stringify(formData),
       });
       if (!res.ok) {
+        funnel('submit_error', { door: 'contact', reason: res.status === 429 ? 'rate_limited' : res.status === 400 ? 'invalid' : 'failed' });
         const data = await res.json().catch(() => ({ error: 'Submission failed.' }));
         throw new Error(data.error || 'Submission failed');
       }
       setSubmitted(true);
       trackContactFormSubmit();
+      generateLead('contact');
     } catch (err) {
+      // A network failure never reached the !res.ok branch above.
+      if (!(err instanceof Error) || err.name === 'TypeError') {
+        funnel('submit_error', { door: 'contact', reason: 'offline' });
+      }
       // Show what the server actually said (e.g. the message is too short) so
       // the visitor can fix it, not a dead end that blames the connection.
       const msg = err instanceof Error ? err.message : '';

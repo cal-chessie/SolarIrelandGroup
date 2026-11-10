@@ -21,7 +21,7 @@ import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } f
 import { firstName, isEmail, isPhone, normalisePhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
-import { funnel } from '@/lib/intake/funnel';
+import { funnel, generateLead, type LeadRoad } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
 import { Banner, Field, PrimaryButton, TextInput } from './ui';
@@ -57,6 +57,8 @@ export interface CallContext {
   carry: CallCarry | null;
   /** The magic link (?lt=) this ask was opened from, so the call threads onto that lead. */
   linkToken?: string | null;
+  /** Which road the lead came by, for GA4 generate_lead (never sent to the API). */
+  road?: LeadRoad;
 }
 
 /* ------------------------------------------------------------------ */
@@ -424,6 +426,7 @@ function CallForm({
     keyRef.current = null;
     track('call_booked', { segment: ctx.segment, door: ctx.door, held: !!res.fallback, best_time: details.bestTime, ms: Date.now() - started, flow_id: ctx.flowId });
     funnel('submit_ok', { door: ctx.door, segment: ctx.segment, held: !!res.fallback, threaded: res.path === 'threaded', flow_id: ctx.flowId });
+    generateLead(ctx.road ?? 'intake');
     rememberCall(details);
     onSent(res, details, { estimate });
   };
