@@ -23,6 +23,7 @@ import {
   Euro,
   Clock,
   ChevronDown,
+  ExternalLink,
 } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
 import { installCostEur, homeGrant, fmtEur } from '@/lib/estimate';
@@ -30,7 +31,8 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
-import { SOLAR_DATA } from '@/lib/solar-data';
+import { ndmgDoubledLine, ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
+import IntakeLink from '@/components/intake/IntakeLink';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const fadeUp = {
@@ -593,6 +595,44 @@ export default function ServicesPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* 
+            FOR BUSINESSES: the doubled NDMG, while its window is open
+             */}
+        {ndmgDoubledLive() ? (
+          <section className="py-16 sm:py-24 border-t border-white/[0.04]" id="business" aria-labelledby="business-heading">
+            <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="glass-card rounded-2xl p-6 sm:p-8 lg:p-10 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-center">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-amber-400 mb-3">Commercial solar</p>
+                  <h2 id="business-heading" className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                    The business grant is doubled until {SOLAR_DATA.ndmgDoubled.toLabel}
+                  </h2>
+                  <p className="text-gray-400 leading-relaxed">{ndmgDoubledLine()}</p>
+                  <p className="text-gray-400 leading-relaxed mt-3">
+                    Every business roof gets an on-site survey before we quote, and the analyser reads a business bill as a business.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <IntakeLink
+                    opts={{ door: 'services-business', segment: 'business', step: 'bill' }}
+                    className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm"
+                  >
+                    See my business savings <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </IntakeLink>
+                  <a
+                    href={SOLAR_DATA.ndmgDoubled.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 min-h-[44px] text-sm text-gray-400 hover:text-white transition-colors"
+                  >
+                    The grant on seai.ie <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         {/* 
             COMPARISON TABLE

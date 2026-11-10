@@ -44,6 +44,7 @@ import { askHeadline, CallAsk, CallDone, callDoneCopy, type CallDetails } from '
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
 import { roughQuote } from '@/lib/intake/roughQuote';
+import { ndmgDoubledLine, ndmgDoubledLive } from '@/lib/solar-data';
 import {
   clearDeviceDraft,
   doorFromSeg,
@@ -1074,6 +1075,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         {isBiz ? 'Roughly what does the business spend on electricity?' : "Roughly what's your electricity bill?"}
       </h1>
       <p className="si-hint">{isBiz ? "A rough figure is fine. It's the total on a recent bill for the premises." : "A rough figure is fine. It's the total on the front of your bill."}</p>
+      {isBiz && ndmgDoubledLive() ? (
+        <p className="si-help" data-ndmg="">
+          {ndmgDoubledLine()}
+        </p>
+      ) : null}
       <div className="si-group">
         {amountField}
         {draft.per === '2months' && billNow != null && !billError ? (

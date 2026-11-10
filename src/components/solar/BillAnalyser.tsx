@@ -27,7 +27,7 @@ import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeHref, openIntake } from '@/lib/intake/open';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
-import { SOLAR_DATA } from '@/lib/solar-data';
+import { ndmgDoubledLine, ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
 import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
 import { askHeadline, CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
@@ -531,6 +531,11 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       <p className="si-an-kicker">{isBiz ? 'Bill Analyser, for a business' : 'Bill Analyser'}</p>
       <h2 className="si-an-door__title">{isBiz ? 'Show us the business bill. We will show you what it says.' : "Show us your bill. We'll show you what it says."}</h2>
       <p className="si-an-door__sub">Upload it, or just type what you pay. You see your figures straight away, with nothing to sign up for.</p>
+      {isBiz && ndmgDoubledLive() ? (
+        <p className="si-an-help si-an-ndmg" data-ndmg="">
+          {ndmgDoubledLine()}
+        </p>
+      ) : null}
       <div className="si-an-roads" role="group" aria-label="Two ways to see your figures">
         <button type="button" className="si-photo si-an-road" onClick={() => fileRef.current?.click()} data-an-upload="">
           <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
@@ -575,6 +580,11 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         <button type="button" className="si-btn--quiet" onClick={() => setSegment(isBiz ? 'domestic' : 'commercial')}>
           {isBiz ? 'A home bill? Read it as a home' : 'Business bill? Read it as a business'}
         </button>
+        {!isBiz && ndmgDoubledLive() ? (
+          <p className="si-an-privacy" data-ndmg-short="">
+            The SEAI business grant is doubled to up to {SOLAR_DATA.ndmgDoubled.maxLabel} until {SOLAR_DATA.ndmgDoubled.toLabel}.
+          </p>
+        ) : null}
       </div>
       {inputs}
     </div>

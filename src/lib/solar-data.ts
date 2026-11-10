@@ -113,6 +113,20 @@ export const SOLAR_DATA = {
     eligibility: 'Homeowners, including private landlords, of homes built and occupied before 2025, with a post-works BER',
     processTime: '4-8 weeks',
   },
+  // The SEAI Non-Domestic Microgen Grant in its doubled window (read on
+  // seai.ie 16 Oct 2026): for NEW applications from 6 Oct 2026 to 6 Jul 2027,
+  // paid at the lower of the table or 45% of the invoiced cost. Copy says the
+  // end date every time; ndmgDoubledLive() hides it once the window closes.
+  ndmgDoubled: {
+    name: 'Non-Domestic Microgen Grant',
+    maxEur: GRANT_SCHEDULES.ndmg[0].maxEur,
+    maxLabel: '€325,200',
+    fromLabel: '6 Oct 2026',
+    toLabel: '6 Jul 2027',
+    appliesTo: GRANT_SCHEDULES.ndmg[0].appliesTo,
+    costShareLabel: '45%',
+    source: GRANT_SCHEDULES.ndmg[0].source,
+  },
   // The SEAI battery grant: on top of the solar grant, on the same application.
   // The site estimate stays panels only, so this is said, never priced into it.
   batteryGrant: {
@@ -200,3 +214,14 @@ export const SOLAR_DATA = {
     label: 'All 32 counties across Ireland',
   },
 } as const;
+
+/** True while the doubled NDMG window is open on this Irish calendar day. */
+export function ndmgDoubledLive(today: string = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Dublin' }).format(new Date())): boolean {
+  return today <= SOLAR_DATA.ndmgDoubled.appliesTo;
+}
+
+/** The one line every business surface uses, so the wording never drifts. */
+export function ndmgDoubledLine(): string {
+  const n = SOLAR_DATA.ndmgDoubled;
+  return `SEAI's ${n.name} is doubled to up to ${n.maxLabel} for applications from ${n.fromLabel} to ${n.toLabel}, paid at the lower of the SEAI table or ${n.costShareLabel} of cost.`;
+}

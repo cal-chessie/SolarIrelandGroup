@@ -3203,7 +3203,7 @@ export const articles: Article[] = [
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
     "date": "18 Mar 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-rose-400/10",
@@ -3246,6 +3246,12 @@ export const articles: Article[] = [
           "The exemption covers the roof of a house and the roof of a shed, garage or other ancillary building within its grounds. It does not cover apartments",
           "The panels must be at least 50 centimetres from the edge of the roof, and must not cause hazardous glint or glare"
         ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "The business grant is doubled until 6 Jul 2027",
+        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. Details on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
       },
       {
         "type": "callout",
@@ -4939,6 +4945,12 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "The SEAI operates a separate Non-Domestic Microgen Scheme for small-scale renewable energy installations on commercial and non-domestic properties. While primarily aimed at businesses, this scheme can be relevant for landlords of small commercial premises, offices, or mixed-use properties. The scheme supports solar PV systems up to 1,000 kWp (seai.ie) and includes assistance with grid connection and registration."
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "The business grant is doubled until 6 Jul 2027",
+        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. Details on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
       },
       {
         "type": "heading",
