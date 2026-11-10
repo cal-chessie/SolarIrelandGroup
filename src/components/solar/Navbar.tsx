@@ -478,7 +478,7 @@ function MobileMenu({
             </div>
 
             <p className="text-[10px] text-gray-400 text-center mt-4">
-              © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installer
+              © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installers
             </p>
           </div>
         </div>

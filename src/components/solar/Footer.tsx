@@ -112,7 +112,7 @@ const serviceAreas = [
 ];
 
 const certifications = [
-  { icon: ShieldCheck, label: 'SEAI Registered Installer', color: 'text-green-400' },
+  { icon: ShieldCheck, label: 'SEAI Registered Installers', color: 'text-green-400' },
   { icon: CheckCircle2, label: 'RECI Certified Electrician', color: 'text-amber-400' },
   { icon: Zap, label: 'Safe Electric Approved', color: 'text-sky-400' },
   { icon: Star, label: 'NSAI Compliant (ET101)', color: 'text-violet-400' },

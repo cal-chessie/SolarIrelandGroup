@@ -90,7 +90,7 @@ export default function Hero() {
               style={{ animationDelay: '0.1s' }}
             >
               <Sun className="w-3.5 h-3.5" />
-              SEAI Registered Installer
+              SEAI Registered Installers
             </span>
 
 

@@ -83,7 +83,7 @@ const teamMembers = [
 ];
 
 const certifications = [
-  { icon: ShieldCheck, label: 'SEAI Registered Installer', desc: 'Approved by the Sustainable Energy Authority of Ireland for solar PV installations.', color: 'text-green-400' },
+  { icon: ShieldCheck, label: 'SEAI Registered Installers', desc: 'Approved by the Sustainable Energy Authority of Ireland for solar PV installations.', color: 'text-green-400' },
   { icon: CheckCircle2, label: 'RECI Certified', desc: 'All electrical work carried out by Registered Electrical Contractors of Ireland.', color: 'text-amber-400' },
   { icon: Zap, label: 'Safe Electric Approved', desc: 'Compliant with the National Rules for Electrical Installation (NSAI ET101).', color: 'text-sky-400' },
   { icon: Star, label: 'NSAI Compliant', desc: 'All installations meet NSAI standards for quality and safety.', color: 'text-violet-400' },
