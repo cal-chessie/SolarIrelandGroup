@@ -837,7 +837,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   /* ── Pieces ────────────────────────────────────────────────────── */
 
   const prov = (p: ProvTag | 'estimate' | 'settings') => ({ 'data-figure': '', 'data-prov': p });
-  const waLink = WA('Hi Solar Ireland Group, I have a question about solar.');
+  const waLink = WA('Hi Solar Ireland, I have a question about solar.');
 
   const trustLine = (
     <p className="si-foot-line">
@@ -1691,7 +1691,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
               <ChevronLeft size={22} aria-hidden="true" />
             </button>
           ) : (
-            <a className="si-mark" href="/" aria-label="Solar Ireland Group home">
+            <a className="si-mark" href="/" aria-label="Solar Ireland home">
               <img src="/logo-sm.webp" alt="" width={28} height={32} />
             </a>
           )}
@@ -1708,7 +1708,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           <div className="si-header__half si-header__half--left">
             <a className="si-mark" href="/">
               <img src="/logo-sm.webp" alt="" width={32} height={36} />
-              <span className="si-mark__name">Solar Ireland Group</span>
+              <span className="si-mark__name">Solar Ireland</span>
             </a>
             {depth > 1 && step !== 'done' ? (
               <button type="button" className="si-header-link si-header-back" onClick={back}>

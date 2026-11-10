@@ -353,7 +353,7 @@ const timelineSteps: {
   {
     icon: FileCheck,
     title: 'Grant Application',
-    description: 'Before any work starts, you apply on SEAI\'s online portal and choose Solar Ireland Group as your installer. We walk you through it. Once your grant offer is in, there are 8 months to complete the works.',
+    description: 'Before any work starts, you apply on SEAI\'s online portal and choose Solar Ireland as your installer. We walk you through it. Once your grant offer is in, there are 8 months to complete the works.',
     duration: 'Before work starts',
     who: 'You apply, we guide you',
     links: [{ label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL }],
