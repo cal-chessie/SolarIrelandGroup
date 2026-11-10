@@ -30,7 +30,7 @@ import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
 import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
-import { CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
+import { askHeadline, CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
 import { Spinner } from '@/components/intake/ui';
 import { CARRY_KEY, type AnalyserCarry } from '@/components/intake/carry';
 import type { BillRead } from '@/lib/analyser/read';
@@ -1143,15 +1143,9 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
         online={online}
-        heading={quote?.quoteToken ? 'Where should we send your full estimate?' : `Where should ${who || 'we'} ring you?`}
+        heading={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery }).heading}
         headingLevel="h3"
-        sub={
-          !quote?.quoteToken
-            ? `A free 15-minute call with ${who || 'Solar Ireland Group'} to work out your estimate with you and answer your questions. No visit, no obligation.`
-            : battery
-            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} about when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
-            : `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} to go through it and answer your questions. No visit, no obligation.`
-        }
+        sub={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery }).sub}
         ctx={{
           segment: seg,
           door,

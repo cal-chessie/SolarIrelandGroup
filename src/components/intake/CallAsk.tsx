@@ -179,7 +179,7 @@ type Issue = null | { kind: 'failed' } | { kind: 'rate' };
 
 /**
  * The ask's own words, by whether an estimate will really be emailed. With a
- * priced bill: "Send my full estimate" and "We email it to you now". Without
+ * priced bill: "Send my full estimate" and the same-day call line. Without
  * one (the bill was skipped, or could not be priced): nothing about an email,
  * Cal works the estimate out with them on the call.
  */
@@ -188,7 +188,7 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
   if (o.estimate) {
     return {
       cta: 'Send my full estimate',
-      promise: `We email it to you now. ${o.who ? `${o.who} rings` : 'We ring'} today to talk it through.`,
+      promise: 'Then we give you a quick ring today to go through it.',
       busy: 'Sending your estimate',
       before: 'before we can send your estimate',
     };
@@ -198,6 +198,35 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
     promise: `${by} will ring you today and work out your estimate with you.`,
     busy: 'Sending',
     before: `before ${o.who || 'we'} can ring you`,
+  };
+}
+
+/**
+ * The ask's heading and sub, one set of words for every door (Cal, 10 Nov:
+ * getting their details and sending the estimate comes first, the call
+ * second). `estimate`: a priced quote rides with the request, so the email
+ * really goes. `rough`: the figures on screen are the local rough estimate,
+ * so nothing is emailed now; the call works out the full one. Neither: no
+ * bill at all, and the copy promises only the call.
+ */
+export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean }): { heading: string; sub: string } {
+  if (o.estimate) {
+    return {
+      heading: 'Where should we send your estimate?',
+      sub: o.battery
+        ? "Your full estimate lands in your inbox now. Then we give you a quick ring about when your home uses power, so you know whether a battery is worth adding, and send you a proposal with final numbers. No visit, no obligation."
+        : "Your full estimate lands in your inbox now. Then we give you a quick ring to check what a bill can't tell us, like your roof and when you use power, and send you a proposal with final numbers. No visit, no obligation.",
+    };
+  }
+  if (o.rough) {
+    return {
+      heading: 'Want your full estimate?',
+      sub: "We give you a quick ring today to check what a bill can't tell us, like your roof and when you use power, then send you a proposal with final numbers. No visit, no obligation.",
+    };
+  }
+  return {
+    heading: 'Where should we ring you?',
+    sub: "We give you a quick ring today to work out your estimate with you and check what a bill can't tell us, like your roof and when you use power. Then we send you a proposal with final numbers. No visit, no obligation.",
   };
 }
 

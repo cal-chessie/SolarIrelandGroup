@@ -40,7 +40,7 @@ import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
-import { CallAsk, CallDone, callDoneCopy, type CallDetails } from './CallAsk';
+import { askHeadline, CallAsk, CallDone, callDoneCopy, type CallDetails } from './CallAsk';
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
 import { roughQuote } from '@/lib/intake/roughQuote';
@@ -1550,14 +1550,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         onDetails={updateCall}
         who={who}
         online={online}
-        heading={quote?.quoteToken ? 'Where should we send your full estimate?' : `Where should ${who || 'we'} ring you?`}
+        heading={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures }).heading}
         headingLevel={asH1 ? 'h1' : 'h2'}
         headingRef={asH1 ? h1Ref : undefined}
-        sub={
-          quote?.quoteToken
-            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} to go through it and answer your questions. No visit, no obligation.`
-            : `A free 15-minute call with ${who || 'Solar Ireland Group'} to work out your estimate with you and answer your questions. No visit, no obligation.`
-        }
+        sub={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures }).sub}
         ctx={{
           segment: seg || 'domestic',
           door: draft.door,

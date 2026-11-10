@@ -50,7 +50,7 @@ import {
   LayoutDashboard,
   type LucideIcon,
 } from 'lucide-react';
-import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
+import { askHeadline, CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
 import { getConfig, getQuotes } from '@/components/intake/api';
 import type { IntakeConfig, Quote, QuoteRequestItem, Segment } from '@/lib/intake/contract';
 import { eur } from '@/lib/intake/format';
@@ -596,16 +596,17 @@ export default function ExitIntent() {
           heading={
             quotes?.at.quoteToken && !evOnly ? (
               <>
-                Where should we send your <span className="text-gradient">full estimate?</span>
+                Where should we send your <span className="text-gradient">estimate?</span>
               </>
             ) : (
               <>
-                Where should {who || 'we'} <span className="text-gradient">ring you?</span>
+                Where should we <span className="text-gradient">ring you?</span>
               </>
             )
           }
           headingLevel="h2"
           headingRef={headRef}
+          sub={askHeadline({ estimate: !!(quotes?.at.quoteToken && !evOnly) }).sub}
           ctx={{
             segment,
             door: 'exit-quiz',

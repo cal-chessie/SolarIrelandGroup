@@ -26,7 +26,7 @@ import { ChevronRight, Phone } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
-import { CallAsk, CallDone, CallRemembered, EMPTY_CALL, forgetCall, readCallMemory, type CallDetails, type CallMemory } from '@/components/intake/CallAsk';
+import { askHeadline, CallAsk, CallDone, CallRemembered, EMPTY_CALL, forgetCall, readCallMemory, type CallDetails, type CallMemory } from '@/components/intake/CallAsk';
 import { getConfig, getQuotes, monthlyBillItem } from '@/components/intake/api';
 import type { IntakeConfig, Quote, Segment } from '@/lib/intake/contract';
 import { eur, isEmail, isPhone } from '@/lib/intake/format';
@@ -310,7 +310,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           online={online}
           confirm={confirm}
           cta="Send my full estimate"
-          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : quote ? 'Where should we send your estimate?' : `Where should ${who || 'we'} ring you?`}
+          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : askHeadline({ estimate: !!quote }).heading}
           headingLevel="h2"
           headingRef={askHeadRef}
           sub={
@@ -319,10 +319,8 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
                 ? 'One tap and your full estimate is on its way. Say when suits best for the call, if you like.'
                 : `One tap and ${who || 'we'} will ring you today. Say when suits best, if you like.`
               : priced
-                ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. Your full estimate shows how.`
-                : bill !== 'skipped' && !quote
-                  ? `We couldn't work out your estimate just now. ${who || 'We'} will work it out with you on the call.`
-                  : undefined
+                ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. ${askHeadline({ estimate: true }).sub}`
+                : askHeadline({ estimate: !!quote }).sub
           }
           ctx={{
             segment,
