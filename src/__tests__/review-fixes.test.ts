@@ -316,3 +316,28 @@ describe('bill uploads (M9)', () => {
     expect(await res.json()).toMatchObject({ reason: 'too_large' });
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  M11: the Cork post's figures are the engine's                       */
+/* ------------------------------------------------------------------ */
+
+describe('Cork post figures come from estimate.ts (M11)', () => {
+  it('every row of the table is the engine, panels only', async () => {
+    const { estimate } = await import('@/lib/estimate');
+    const { getArticleBySlug } = await import('@/lib/blog-data');
+    const post = getArticleBySlug('solar-panels-cork-complete-guide') as unknown as { content: { type: string; rows?: string[][] }[] };
+    const table = post.content.find((c) => c.type === 'table')!;
+    const eur = (n: number) => `€${n.toLocaleString('en-IE')}`;
+    const cases: [number, 'semi' | 'detached'][] = [[4200, 'semi'], [5500, 'detached'], [6500, 'detached']];
+    cases.forEach(([kwh, home], i) => {
+      const e = estimate({ annualUsageKwh: kwh, homeId: home });
+      const row = table.rows![i];
+      expect(row[0]).toContain(`${e.systemSizeKwp} kWp (${e.panels} panels)`);
+      expect(row[1]).toContain(kwh.toLocaleString('en-IE'));
+      expect(row.slice(2, 5)).toEqual([eur(e.installCostEur), eur(e.costAfterGrantEur), eur(e.totalAnnualBenefitEur)]);
+      expect(row[5]).toBe(`about ${Math.round(e.paybackYears)} years`);
+    });
+    const all = JSON.stringify(post);
+    for (const gone of ['12,800', '10,400', '€800 to €1,400', '2,400 with']) expect(all).not.toContain(gone);
+  });
+});

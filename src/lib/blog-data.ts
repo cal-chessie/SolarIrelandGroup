@@ -1193,8 +1193,8 @@ export const articles: Article[] = [
     "slug": "solar-panels-cork-complete-guide",
     "title": "Solar Panels in Cork: The Complete 2026 Guide",
     "seoTitle": "Solar Panels in Cork 2026: Cost, €1,800 Grant and Payback",
-    "seoDescription": "A 4 kWp Cork home system costs €6,400 after the €1,800 SEAI grant and saves €800 to €1,400 a year. Costs by size, planning and what a Cork survey checks.",
-    "answer": "Yes, for most Cork homes. Solar costs the same in Cork as anywhere in Ireland: a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant, with 0% VAT. It saves €800 to €1,400 a year and pays back in about 6 years, once a site survey confirms the roof.",
+    "seoDescription": "A 4 kWp Cork home system costs €6,400 after the €1,800 SEAI grant and saves about €920 a year, panels only. Costs by size, planning and survey checks.",
+    "answer": "Yes, for most Cork homes. Solar costs the same in Cork as anywhere in Ireland: a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant, with 0% VAT. For a 3-bed semi using 4,200 kWh a year it saves about €920 a year and pays back in about 7 years, panels only, once a site survey confirms the roof.",
     "excerpt": "Costs, the €1,800 SEAI grant, planning rules and what a site survey checks on Cork homes - from an SEAI-registered installer working across the county.",
     "category": "county",
     "date": "5 Sep 2026",
@@ -1207,7 +1207,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical system costs **€8,200 to €12,800 before the SEAI grant**, saves €800 to €1,400 a year, and pays for itself in about 6 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details."
+        "text": "Yes, solar panels are worth it for most Cork homes in 2026. A typical panel system costs **€8,200 to €9,600 before the SEAI grant**, saves about €920 to €1,390 a year, and pays for itself in about 6 to 7 years. Domestic solar carries 0% VAT, and Cork's mix of coastal and rural roofs is well suited to it once a site survey confirms the details. The assumptions behind every figure are under the table below."
       },
       {
         "type": "paragraph",
@@ -1220,36 +1220,48 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home system runs roughly €8,200 to €12,800 before the grant, depending on size and whether you add a battery. After the SEAI grant (**€1,800**, or €2,400 with a 5 kWh+ battery) and with 0% VAT, most homeowners are looking at €6,400 to €10,400 out of pocket, as the table shows."
+        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home panel system runs €8,200 to €9,600 before the grant, depending on size. After the SEAI grant (**€1,800**) and with 0% VAT, most homeowners are looking at €6,400 to €7,800 out of pocket, as the table shows. A battery is sized and priced with you on the call, from how your home actually uses power, so it is not in these figures."
       },
       {
         "type": "table",
         "headers": [
           "System size",
-          "Suits",
-          "Typical cost before grant",
-          "After the SEAI grant (€1,800, or €2,400 with a 5 kWh+ battery)"
+          "Typical Cork home",
+          "Cost before grant",
+          "After the €1,800 SEAI grant",
+          "Saving a year",
+          "Payback"
         ],
         "rows": [
           [
-            "4 kWp (~10 panels)",
-            "3-bed semi",
+            "4 kWp (9 panels)",
+            "3-bed semi, 4,200 kWh a year",
             "€8,200",
-            "€6,400"
+            "€6,400",
+            "€920",
+            "about 7 years"
           ],
           [
-            "6 kWp (~14 panels)",
-            "4-bed detached",
+            "5 kWp (11 panels)",
+            "4-bed detached, 5,500 kWh a year",
+            "€8,900",
+            "€7,100",
+            "€1,158",
+            "about 6 years"
+          ],
+          [
+            "6 kWp (14 panels)",
+            "larger detached, 6,500 kWh a year",
             "€9,600",
-            "€7,800"
-          ],
-          [
-            "6 kWp + 5 kWh battery",
-            "high evening use",
-            "€12,800",
-            "€10,400"
+            "€7,800",
+            "€1,387",
+            "about 6 years"
           ]
         ]
+      },
+      {
+        "type": "paragraph",
+        "text": "How these are worked out: our estimate engine, panels only, no battery. Usage is a year's electricity for that home (4,200 kWh is a bill of about €143 a month), priced at 35c a unit, the bottom of the current market band. Panels generate 950 kWh per kWp a year on a good roof, about a third or more of it used at home and the rest exported at 18c under the Clean Export Guarantee. The saving is the bill you no longer pay plus the export income; payback is the cost after the grant divided by that saving. Conservative on purpose, so a survey can meet or beat it."
       },
       {
         "type": "paragraph",
