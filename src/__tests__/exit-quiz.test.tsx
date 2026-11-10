@@ -78,7 +78,7 @@ describe('exit quiz analytics (M7)', () => {
   });
 });
 
-describe.skip('exit quiz scrim (M8)', () => {
+describe('exit quiz scrim (M8)', () => {
   it('before any typing: a scrim tap closes it, and only for the week, never forever', async () => {
     await openQuiz();
     fireEvent.click(scrim());

@@ -9,7 +9,9 @@
  *  - after the Bill Analyser has started, or while the intake is open, or
  *    over an open chat;
  *  - after a lead was sent from this device;
- *  - within 7 days of the last time it was shown; ever again once dismissed.
+ *  - within 7 days of the last time it was shown; ever again once dismissed
+ *    on purpose (the X, No thanks, Escape). A tap on the scrim is not a no:
+ *    the 7-day rule decides (M8).
  * Desktop: exit intent only, after 20 seconds on the site.
  * Phone: after 45 seconds and half the page scrolled, or a fast scroll up
  * (after 20 seconds).

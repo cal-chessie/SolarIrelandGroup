@@ -3620,6 +3620,24 @@ h1.si-ask__title {
 .si-exit__go .si-btn--primary {
   width: 100%;
 }
+.si-exit__leave {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--si-amber);
+  background: rgba(255, 185, 0, 0.08);
+}
+.si-exit__leave p {
+  margin: 0;
+  font-weight: 600;
+}
+.si-exit__leave-go {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
 .si-exit__no {
   margin-top: 16px;
   display: block;

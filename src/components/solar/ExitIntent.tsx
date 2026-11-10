@@ -77,6 +77,7 @@ export default function ExitIntent() {
   const [quoteState, setQuoteState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const [details, setDetails] = useState<CallDetails>(EMPTY_CALL);
   const [held, setHeld] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const [sentEstimate, setSentEstimate] = useState(true);
   const [fid, setFid] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
@@ -144,7 +145,10 @@ export default function ExitIntent() {
   const close = useCallback(
     (how: 'x' | 'no_thanks' | 'escape' | 'scrim' | 'done') => {
       setOpen(false);
-      if (how !== 'done') setLs(EXIT_KEYS.dismissed, '1');
+      setLeaving(false);
+      // A deliberate no (the X, No thanks, Escape) means gone. A stray tap on the
+      // scrim only closes it: the 7-day rule (shownAt) decides when it may return (M8).
+      if (how !== 'done' && how !== 'scrim') setLs(EXIT_KEYS.dismissed, '1');
       funnel('quiz_answered', { door: 'exit-quiz', step: 'closed', how, at: stage });
     },
     [stage],
@@ -197,6 +201,14 @@ export default function ExitIntent() {
   };
 
   if (!open) return null;
+
+  const typed = !!(details.name.trim() || details.mobile.trim() || details.email.trim());
+  const onScrim = () => {
+    if (stage === 'done') return close('done');
+    // Never throw away what someone typed on a stray tap (M8): ask first.
+    if (stage === 'ask' && typed) return setLeaving(true);
+    close('scrim');
+  };
 
   const chips = (config?.bill.chips ?? FALLBACK_CHIPS)[segment];
   const step = stage === 'segment' ? 1 : stage === 'bill' ? 2 : stage === 'extras' ? 3 : null;
@@ -384,7 +396,7 @@ export default function ExitIntent() {
 
   return (
     <div className="si-analyser si-exit" data-exit-quiz="" data-stage={stage}>
-      <div className="si-exit__scrim" onClick={() => close(stage === 'done' ? 'done' : 'scrim')} aria-hidden="true" />
+      <div className="si-exit__scrim" onClick={onScrim} aria-hidden="true" />
       <div className="si-exit__card" ref={cardRef} role="dialog" aria-modal="true" aria-label="Three quick questions about your solar saving">
         <div className="si-exit__top">
           <p className="si-an-kicker">{step ? `Question ${step} of 3` : stage === 'done' ? 'Done' : 'Your saving'}</p>
@@ -392,6 +404,19 @@ export default function ExitIntent() {
             <X size={20} aria-hidden="true" />
           </button>
         </div>
+        {leaving ? (
+          <div className="si-exit__leave" role="alertdialog" aria-labelledby="si-exit-leave">
+            <p id="si-exit-leave">Leave? Your details will be lost.</p>
+            <div className="si-exit__leave-go">
+              <button type="button" className="si-btn si-btn--secondary si-btn--sm" onClick={() => setLeaving(false)} autoFocus>
+                Stay
+              </button>
+              <button type="button" className="si-btn--quiet" onClick={() => close('scrim')}>
+                Leave
+              </button>
+            </div>
+          </div>
+        ) : null}
         {body}
         {stage !== 'done' && stage !== 'ask' ? (
           <button type="button" className="si-btn--quiet si-exit__no" onClick={() => close('no_thanks')}>
