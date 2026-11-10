@@ -120,6 +120,9 @@ const FAIL_COPY: Record<AnalyserFailure, { title: string; line: string }> = {
   rate_limited: { title: 'Give us a minute.', line: "You've sent a few bills quickly. Try again shortly, or answer 3 questions now." },
 };
 
+/** How many analysers are on screen right now (see the in-view effect below). */
+let analysersInView = 0;
+
 export default function BillAnalyser({ variant = 'section', door = 'analyser', intro }: { variant?: 'hero' | 'section'; door?: string; intro?: ReactNode }) {
   const [phase, setPhase] = useState<Phase>('door');
   const [held, setHeld] = useState(false);
@@ -188,6 +191,28 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     io.observe(el);
     return () => io.disconnect();
   }, [variant, door]);
+
+  /* While the analyser is on screen, the chat bee and its toast step aside on a
+     phone (intake.css): at the door they could sit over "Take a photo of my
+     bill". A page can carry two analysers, so the flag counts them. */
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    let counted = false;
+    const set = (on: boolean) => {
+      if (on === counted) return;
+      counted = on;
+      analysersInView += on ? 1 : -1;
+      if (analysersInView > 0) document.body.dataset.analyserInView = '1';
+      else delete document.body.dataset.analyserInView;
+    };
+    const io = new IntersectionObserver((es) => set(es.some((e) => e.isIntersecting)), { threshold: 0.1 });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      set(false);
+    };
+  }, []);
 
   /* While reading, revealing or asking on a phone, the chat bee and sticky bar step aside. */
   useEffect(() => {

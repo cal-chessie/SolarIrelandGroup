@@ -3332,6 +3332,15 @@ h1.si-ask__title {
   }
 }
 
+/* While the analyser is on screen on a phone (Cal, 11 Nov), the chat bee and
+   its toast step aside: they could cover "Take a photo of my bill". */
+@media (max-width: 1023.98px) {
+  body[data-analyser-in-view] button[aria-label='Open chat'],
+  body[data-analyser-in-view] div[role='button'][aria-label='Open chat'] {
+    display: none !important;
+  }
+}
+
 /* While the analyser reads, reveals or asks on a phone, the chat and sticky bar step aside. */
 @media (max-width: 1023.98px) {
   body[data-analyser-active] button[aria-label='Open chat'],
