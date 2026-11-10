@@ -152,10 +152,6 @@ function SwipeGallery({
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/20" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
-
-            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 pb-4">
-              <p className="text-sm font-semibold text-white">{installs[activeIndex].caption}</p>
-            </div>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -252,7 +248,7 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
                 src={inst.src}
                 alt=""
                 fill
-                sizes="(max-width: 1024px) 22vw, 96px"
+                sizes="80px"
                 className="object-cover"
                 draggable={false}
               />
