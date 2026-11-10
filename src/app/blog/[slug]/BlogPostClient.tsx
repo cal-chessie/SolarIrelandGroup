@@ -480,7 +480,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
     },
     county: {
       h: 'Get a local answer',
-      p: 'Generation, roof types and grid connection differ by county. Put your bill through the analyser, then a free 15-minute call with the team covering your area goes through what your roof can actually do.',
+      p: 'Generation, roof types and grid connection differ by county. Check your savings on your own bill first, then a free 15-minute call with the team covering your area goes through what your roof can actually do.',
       primary: { href: '/solar-calculator?src=blog-county', label: 'Check my savings' },
     },
     guides: {

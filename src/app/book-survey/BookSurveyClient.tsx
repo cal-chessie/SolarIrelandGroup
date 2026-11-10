@@ -340,12 +340,12 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto si-callpage__lanes">
             <section className="si-callpage__intro" aria-labelledby="si-bs-h1">
-              <p className="si-an-kicker">Free 15-minute call</p>
+              <p className="si-an-kicker">Free estimate and call</p>
               <h1 id="si-bs-h1" className="si-callpage__h1">
-                Book your free 15-minute call
+                Get your full solar estimate
               </h1>
               <p className="si-callpage__sub">
-                A phone call with {name}, not a visit. We go through your electricity bill and what solar would save you, and answer anything about the SEAI grant. No obligation.
+                Tell us roughly what your electricity bill is and we email your full estimate. Then {name} rings you for a free 15-minute call, not a visit, to go through it and answer anything about the SEAI grant. No obligation.
               </p>
             </section>
             <section className="si-callpage__more-lane" aria-label="What happens on the call">
@@ -364,7 +364,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
                 </a>
               </div>
             </section>
-            <section className="si-an-card si-callpage__card" aria-label="Book the call">
+            <section className="si-an-card si-callpage__card" aria-label="Your estimate and call">
               {card}
             </section>
           </div>

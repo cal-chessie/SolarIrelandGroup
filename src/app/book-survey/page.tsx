@@ -8,16 +8,17 @@ import { parseIntakeQuery } from '@/lib/intake/open';
  * the website: the survey is agreed on the call.
  */
 export const metadata: Metadata = {
-  title: 'Book a Free 15-Minute Solar Call',
+  // 60 characters with the " | Solar Ireland" template; the description is 153.
+  title: 'Get Your Full Solar Estimate and a Free Call',
   description:
-    'Book a free 15-minute phone call with Solar Ireland. We go through your electricity bill, what solar would save you and the SEAI grant. No visit, no obligation.',
+    'Tell us your electricity bill and get your full solar estimate by email, then a free 15-minute call about your savings and the SEAI grant. No obligation.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
-    title: 'Book a Free 15-Minute Solar Call',
+    title: 'Get Your Full Solar Estimate and a Free Call',
     description:
-      'A free phone call, not a visit. We go through your bill, your solar savings and the SEAI grant. We ring you today, or first thing tomorrow if it is late.',
+      'Your full solar estimate by email from your electricity bill, then a free 15-minute phone call, not a visit. We ring you today, or first thing tomorrow if it is late.',
     url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
     siteName: 'Solar Ireland',
@@ -25,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Book a Free 15-Minute Solar Call',
-    description: 'A free phone call, not a visit. Your bill, your solar savings and the SEAI grant. No obligation.',
+    title: 'Get Your Full Solar Estimate and a Free Call',
+    description: 'Your full solar estimate by email, then a free 15-minute call about your savings and the SEAI grant. No obligation.',
   },
 };
 
@@ -64,8 +65,8 @@ const bookSchema = {
     {
       '@type': 'WebPage',
       '@id': 'https://solarirelandgroup.ie/book-survey',
-      name: 'Book a Free 15-Minute Solar Call',
-      description: 'Book a free 15-minute phone call about solar for your home or business. No visit, no obligation.',
+      name: 'Get Your Full Solar Estimate and a Free Call',
+      description: 'Your full solar estimate by email from your electricity bill, then a free 15-minute phone call about solar for your home or business. No visit, no obligation.',
       url: 'https://solarirelandgroup.ie/book-survey',
       inLanguage: 'en-IE',
       isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
@@ -76,7 +77,7 @@ const bookSchema = {
       '@id': 'https://solarirelandgroup.ie/book-survey#breadcrumb',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solarirelandgroup.ie' },
-        { '@type': 'ListItem', position: 2, name: 'Free 15-minute call', item: 'https://solarirelandgroup.ie/book-survey' },
+        { '@type': 'ListItem', position: 2, name: 'Your full solar estimate', item: 'https://solarirelandgroup.ie/book-survey' },
       ],
     },
     {

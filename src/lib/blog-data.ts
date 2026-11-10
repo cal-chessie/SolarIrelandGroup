@@ -1322,7 +1322,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We send SEAI the grant completion paperwork and ESB Networks the free NC6 notification. [Book a free 15-minute call](/book-survey) to go through your figures; the survey and your firm, itemised quote follow from there."
+        "text": "Send us a recent electricity bill and we read your day/night usage split to size the system, then a surveyor visits to confirm the roof, wiring and orientation. We send SEAI the grant completion paperwork and ESB Networks the free NC6 notification. [Check my savings](/solar-calculator?src=blog-cork) to put your own bill through the analyser; a free 15-minute call to go through your figures, then the survey and your firm, itemised quote follow from there."
       },
       {
         "type": "heading",
