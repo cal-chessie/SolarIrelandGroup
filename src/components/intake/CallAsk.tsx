@@ -22,7 +22,7 @@ import { firstName, isEmail, isPhone, normalisePhone } from '@/lib/intake/format
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
 import { funnel, generateLead, type LeadRoad } from '@/lib/intake/funnel';
-import { SOLAR_DATA } from '@/lib/solar-data';
+import { ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
 import { Banner, Field, PrimaryButton, TextInput } from './ui';
 
@@ -187,10 +187,10 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
   const by = o.who || 'We';
   if (o.estimate) {
     return {
-      cta: 'Send my full estimate',
+      cta: 'Send my savings',
       promise: 'Then we give you a quick ring today to go through it.',
-      busy: 'Sending your estimate',
-      before: 'before we can send your estimate',
+      busy: 'Sending your savings',
+      before: 'before we can send your savings',
     };
   }
   return {
@@ -209,24 +209,31 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
  * so nothing is emailed now; the call works out the full one. Neither: no
  * bill at all, and the copy promises only the call.
  */
-export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean }): { heading: string; sub: string } {
+export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean }): { heading: string; sub: string } {
+  // Cal, 11 Nov: "dont sell the estimate sell the value within it".
+  const grant = o.business
+    ? ndmgDoubledLive()
+      ? `your grant of up to ${SOLAR_DATA.ndmgDoubled.maxLabel} under the doubled business grant`
+      : 'your SEAI business grant'
+    : `your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}`;
   if (o.estimate) {
+    const what = `Your yearly saving, the right system for your roof, ${grant} and when it pays for itself, worked out from your bill and in your inbox now.`;
     return {
-      heading: 'Where should we send your estimate?',
+      heading: 'Where should we send your savings?',
       sub: o.battery
-        ? "Your full estimate lands in your inbox now. Then we give you a quick ring about when your home uses power, so you know whether a battery is worth adding, and send you a proposal with final numbers. No visit, no obligation."
-        : "Your full estimate lands in your inbox now. Then we give you a quick ring to check what a bill can't tell us, like your roof and when you use power, and send you a proposal with final numbers. No visit, no obligation.",
+        ? `${what} Then a quick call about when your home uses power, so you know whether a battery is worth adding, and a proposal with final numbers. No visit, no obligation.`
+        : `${what} Then a quick call to check what a bill can't tell us, and a proposal with final numbers. No visit, no obligation.`,
     };
   }
   if (o.rough) {
     return {
-      heading: 'Want your full estimate?',
-      sub: "We give you a quick ring today to check what a bill can't tell us, like your roof and when you use power, then send you a proposal with final numbers. No visit, no obligation.",
+      heading: 'Want your savings worked out in full?',
+      sub: `We give you a quick ring today to check what a bill can't tell us, like your roof and when you use power, then send you a proposal with your saving, ${grant} and final numbers. No visit, no obligation.`,
     };
   }
   return {
     heading: 'Where should we ring you?',
-    sub: "We give you a quick ring today to work out your estimate with you and check what a bill can't tell us, like your roof and when you use power. Then we send you a proposal with final numbers. No visit, no obligation.",
+    sub: "We give you a quick ring today to work out your savings with you and check what a bill can't tell us, like your roof and when you use power. Then we send you a proposal with final numbers. No visit, no obligation.",
   };
 }
 
@@ -249,7 +256,7 @@ export function CallAsk({
   online = true,
   actionsRef,
   confirm = false,
-  cta = 'Send my full estimate',
+  cta = 'Send my savings',
 }: {
   idPrefix: string;
   details: CallDetails;

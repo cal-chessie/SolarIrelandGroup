@@ -46,7 +46,7 @@ describe('/book-survey cold', () => {
     expect(await screen.findByText(/electricity bill a month/)).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: '€160' }));
     await screen.findByText(/save you around €640 a year/);
-    expect(screen.getByRole('button', { name: 'Send my full estimate' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Send my savings' })).toBeTruthy();
     const quote = sent.find((s) => s.url.includes('/api/intake/quote'))!.body as { requests: { segment: string; bill: { amountEur: number } }[] };
     expect(quote.requests[0]).toMatchObject({ segment: 'domestic', bill: { amountEur: 160 } });
     const body = await fillAndSend();

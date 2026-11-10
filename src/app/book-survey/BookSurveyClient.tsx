@@ -309,18 +309,18 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           who={who}
           online={online}
           confirm={confirm}
-          cta="Send my full estimate"
-          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : askHeadline({ estimate: !!quote }).heading}
+          cta="Send my savings"
+          heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : askHeadline({ estimate: !!quote, business: segment === 'commercial' }).heading}
           headingLevel="h2"
           headingRef={askHeadRef}
           sub={
             confirm
               ? quote
-                ? 'One tap and your full estimate is on its way. Say when suits best for the call, if you like.'
+                ? 'One tap and your savings are on their way. Say when suits best for the call, if you like.'
                 : `One tap and ${who || 'we'} will ring you today. Say when suits best, if you like.`
               : priced
-                ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. ${askHeadline({ estimate: true }).sub}`
-                : askHeadline({ estimate: !!quote }).sub
+                ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. ${askHeadline({ estimate: true, business: segment === 'commercial' }).sub}`
+                : askHeadline({ estimate: !!quote, business: segment === 'commercial' }).sub
           }
           ctx={{
             segment,

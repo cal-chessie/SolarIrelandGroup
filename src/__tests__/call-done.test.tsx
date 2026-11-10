@@ -46,7 +46,7 @@ describe('no priced bill, no estimate promise (H2)', () => {
     expect(c.cta).not.toMatch(/estimate/i);
     expect(c.promise).toBe('Cal will ring you today and work out your estimate with you.');
     expect(`${c.cta} ${c.promise} ${c.busy}`).not.toMatch(/email|inbox|on its way|send my/i);
-    expect(askCopy({ estimate: true, who: 'Cal' }).cta).toBe('Send my full estimate');
+    expect(askCopy({ estimate: true, who: 'Cal' }).cta).toBe('Send my savings');
   });
   it('the confirmation without one never says the estimate is on its way', () => {
     render(<CallDone details={details} who="Cal" estimate={false} />);

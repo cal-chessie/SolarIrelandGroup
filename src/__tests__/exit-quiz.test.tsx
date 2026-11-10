@@ -42,14 +42,15 @@ async function openQuiz() {
 }
 
 async function toAsk() {
-  fireEvent.click(screen.getByRole('button', { name: 'My home' }));
-  fireEvent.click(screen.getByRole('button', { name: '€160' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Show my saving' }));
-  fireEvent.click(await screen.findByRole('button', { name: 'Get my full estimate' }));
+  fireEvent.click(screen.getByRole('button', { name: /^My home/ }));
+  fireEvent.click(await screen.findByRole('button', { name: /^Solar panels/ }));
+  fireEvent.click(await screen.findByRole('button', { name: '€160' }));
+  fireEvent.click(await screen.findByRole('button', { name: /Show my saving/ }));
+  fireEvent.click(await screen.findByRole('button', { name: /See my full savings/ }));
   await screen.findByLabelText('Your name');
 }
 
-const scrim = () => document.querySelector('.si-exit__scrim') as HTMLElement;
+const scrim = () => document.querySelector('.exit-intent-backdrop') as HTMLElement;
 
 describe('exit quiz analytics (M7)', () => {
   it('bills go out as bands, never the amount', () => {
@@ -59,8 +60,9 @@ describe('exit quiz analytics (M7)', () => {
   });
   it('the quiz funnel carries the band, not the tapped figure', async () => {
     await openQuiz();
-    fireEvent.click(screen.getByRole('button', { name: 'My home' }));
-    fireEvent.click(screen.getByRole('button', { name: '€160' }));
+    fireEvent.click(screen.getByRole('button', { name: /^My home/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /^Solar panels/ }));
+    fireEvent.click(await screen.findByRole('button', { name: '€160' }));
     const bill = (window as W).__siFunnel!.find((e) => e.door === 'exit-quiz' && e.step === 'bill');
     expect(bill?.value).toBe('150_250');
     expect(JSON.stringify((window as W).__siFunnel)).not.toMatch(/"160"|:160\b/);
@@ -100,9 +102,9 @@ describe('exit quiz scrim (M8)', () => {
     await waitFor(() => expect(document.querySelector('[data-exit-quiz]')).toBeNull());
     expect(localStorage.getItem(EXIT_KEYS.dismissed)).toBeNull();
   });
-  it('No thanks and the close button still mean gone', async () => {
+  it('Maybe later and the close button still mean gone', async () => {
     await openQuiz();
-    fireEvent.click(screen.getByRole('button', { name: 'No thanks' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Maybe later' }));
     expect(localStorage.getItem(EXIT_KEYS.dismissed)).toBe('1');
   });
 });

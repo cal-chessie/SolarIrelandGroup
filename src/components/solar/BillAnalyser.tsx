@@ -5,7 +5,7 @@
  *
  * Road 1 of two. Upload a bill, we read it, we show what it says, one thing
  * they did not know, one saving (AISolar's figure, the same quote the manual
- * side shows), then name, mobile, email and "Send my full estimate". Built to
+ * side shows), then name, mobile, email and "Send my savings". Built to
  * INTAKE/design/analyser-cro-spec.md under CALL-FUNNEL-PLAN.md (and Cal's
  * answers there, which win), in the Apple intake's visual language.
  *
@@ -326,7 +326,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qKey]);
 
-  /* Phones: the sticky "Send my full estimate" shows once the saving is seen and the ask is not. */
+  /* Phones: the sticky "Send my savings" shows once the saving is seen and the ask is not. */
   useEffect(() => {
     if (phase !== 'reveal' || typeof IntersectionObserver === 'undefined') {
       setStickyOn(false);
@@ -1153,9 +1153,9 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
         who={who}
         online={online}
-        heading={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery }).heading}
+        heading={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery, business: isBiz }).heading}
         headingLevel="h3"
-        sub={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery }).sub}
+        sub={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery, business: isBiz }).sub}
         ctx={{
           segment: seg,
           door,
@@ -1249,7 +1249,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               setTimeout(() => el?.focus({ preventScroll: true }), 350);
             }}
           >
-            Send my full estimate
+            Send my savings
           </button>
         </div>
       ) : null}

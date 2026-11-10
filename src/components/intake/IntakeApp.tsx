@@ -1136,7 +1136,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             <button type="button" className="si-btn si-btn--secondary" onClick={onSkip} aria-label="Skip the bill and book a free call">
               Skip the bill
             </button>
-            <PrimaryButton label="Show my estimate" arrow={false} offline={!online} offlineLabel="Offline" />
+            <PrimaryButton label="See my savings" arrow={false} offline={!online} offlineLabel="Offline" />
           </div>
           <p className="si-actions__note">No bill to hand? You can still book a free 15-minute call.</p>
         </div>
@@ -1497,7 +1497,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             arrow={false}
             label={
               <span className="si-btn__in">
-                Get my full estimate <ChevronRight size={18} aria-hidden="true" />
+                See my full savings <ChevronRight size={18} aria-hidden="true" />
               </span>
             }
             onClick={() => go('details')}
@@ -1551,10 +1551,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         onDetails={updateCall}
         who={who}
         online={online}
-        heading={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures }).heading}
+        heading={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures, business: isBiz }).heading}
         headingLevel={asH1 ? 'h1' : 'h2'}
         headingRef={asH1 ? h1Ref : undefined}
-        sub={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures }).sub}
+        sub={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures, business: isBiz }).sub}
         ctx={{
           segment: seg || 'domestic',
           door: draft.door,
@@ -1624,7 +1624,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <>
           {heroAndReceipt(liveFig, { live: true })}
           <p className="si-small si-mt-16">
-            From the <span {...prov('you_told_us')}>{eur(billNow)}</span> {draft.per === '2months' ? 'every 2 months' : 'a month'} you typed. Show my estimate, then book a free call.
+            From the <span {...prov('you_told_us')}>{eur(billNow)}</span> {draft.per === '2months' ? 'every 2 months' : 'a month'} you typed. See my savings, then we send you the full breakdown.
           </p>
         </>
       ) : (

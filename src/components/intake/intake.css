@@ -3381,7 +3381,7 @@ h1.si-ask__title {
   }
 }
 @media (max-width: 767.98px) {
-  /* /book-survey: its sticky "Send my full estimate" owns the foot of a phone.
+  /* /book-survey: its sticky "Send my savings" owns the foot of a phone.
      No answer means essential only, so nothing loads unasked. */
   body:has(.si-callpage) .cookie-banner-root {
     display: none !important;
@@ -3408,7 +3408,7 @@ h1.si-ask__title {
 }
 
 /* The intake owns the screen (lib/bottomLayer.ts), and on /book-survey the
-   phone's sticky "Send my full estimate" sits where the cookie button and the
+   phone's sticky "Send my savings" sits where the cookie button and the
    chat bee float: both stepped onto the primary button. They step aside. */
 @media (max-width: 1023.98px) {
   body[data-intake-open] button[aria-label='Open chat'],
