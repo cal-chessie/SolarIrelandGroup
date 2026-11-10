@@ -3262,6 +3262,131 @@ h1.si-ask__title {
   }
 }
 
+/* Fit the screen (10 Nov, Cal on his phone: "it should fit the screen").
+   The whole first card lands in ONE visible phone screen with Safari's and
+   Chrome's bars showing, so the design height is the small visible one
+   (375 x 560, 390 x 664, 430 x 740), not the 844 screen. The section fills
+   the visible height under the fixed navbar (svh, with a vh fallback), and
+   every "#calculator" door stops the card just under that navbar. */
+.si-analyser {
+  --si-nav-h: 73px; /* the Navbar: h-[72px] plus its 1px border */
+  scroll-margin-top: var(--si-nav-h);
+}
+@media (min-width: 640px) {
+  /* Wider screens are tall enough for a breath under the navbar. */
+  .si-analyser {
+    scroll-margin-top: calc(var(--si-nav-h) + 16px);
+  }
+}
+@media (min-width: 1280px) {
+  .si-analyser {
+    --si-nav-h: 81px; /* xl:h-20 plus the border */
+  }
+}
+.si-an-priv__line {
+  min-height: 44px;
+}
+.si-an-door .si-an-seg {
+  min-height: 48px;
+  padding: 2px;
+}
+.si-an-door .si-an-seg label {
+  min-height: 44px;
+}
+@media (max-width: 639px) {
+  .si-an--section[data-phase='door'] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - var(--si-nav-h));
+    min-height: calc(100svh - var(--si-nav-h));
+    padding-block: 8px;
+  }
+  .si-an--section[data-phase='door'] > div {
+    width: 100%;
+  }
+  .si-an-card.si-an-door {
+    padding: 16px 20px 8px;
+  }
+  .si-an-door .si-an-door__title {
+    margin-top: 4px;
+    font-size: clamp(22px, 2.2svh + 10px, 26px);
+    line-height: 1.17;
+  }
+  .si-an-door .si-an-door__sub {
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .si-an-door .si-an-seg {
+    margin-top: 12px;
+  }
+  .si-an-door .si-an-roads {
+    margin-top: 12px;
+    gap: 8px;
+  }
+  .si-an-door .si-an-road {
+    min-height: 60px;
+    gap: 10px;
+    padding: 9px 14px 9px 10px;
+  }
+  .si-an-door .si-an-road__icon {
+    width: 34px;
+    height: 34px;
+  }
+  .si-an-door .si-an-road .si-photo__title {
+    line-height: 20px;
+  }
+  .si-an-door .si-an-road .si-photo__line {
+    font-size: 12.5px;
+    line-height: 17px;
+  }
+  .si-an-door .si-an-priv {
+    margin-top: 2px;
+  }
+}
+/* The trust chips on one line: a quiet sideways scroll on phones and
+   tablets, bleeding to the card edge with a soft fade, never a wrap. */
+@media (max-width: 1023px) {
+  .si-an-door .si-an-trust {
+    margin-top: 10px;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+  }
+  .si-an-door .si-an-trust::-webkit-scrollbar {
+    display: none;
+  }
+  .si-an-door .si-an-trust li {
+    flex: none;
+    white-space: nowrap;
+    min-height: 24px;
+    padding: 0 9px;
+    font-size: 11.5px;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .si-an-door .si-an-trust {
+    margin-inline: -32px;
+    padding-inline: 32px;
+  }
+}
+/* The shortest phones (iPhone SE and mini with the bars up). */
+@media (max-width: 639px) and (max-height: 620px) {
+  .si-an-card.si-an-door {
+    padding-top: 14px;
+  }
+  .si-an-door .si-an-door__sub {
+    font-size: 13.5px;
+    line-height: 19px;
+  }
+}
+
 /* Camera tips. */
 .si-an-tips__list {
   margin-top: 16px;
