@@ -69,9 +69,14 @@ const FALLBACK_CHIPS = { domestic: [80, 120, 160, 220, 300], commercial: [300, 6
 const CHARGER_GRANT = 'up to €300';
 
 /* "A typical 3-bed semi saves about ..." (Cal, 11 Nov): the one engine on the
-   same input the site's 3-bed semi guide uses (4,200 kWh a year), never a
-   typed figure. Rounded to the nearest €10. */
-const TYPICAL_SEMI_SAVING = Math.round(estimate({ annualUsageKwh: 4200, homeId: 'semi' }).totalAnnualBenefitEur / 10) * 10;
+   3-bed semi guide's own worked example (4,200 kWh a year, 4.4 kWp, 35c a
+   unit, 18c export), rounded to the nearest €100 as the guide rounds its
+   combined benefit. One figure everywhere: the engine gives €997, the guide
+   and the quiz both say "about €1,000". */
+const TYPICAL_SEMI_SAVING =
+  Math.round(
+    estimate({ annualUsageKwh: 4200, homeId: 'semi', systemSizeKwp: 4.4, unitRateEur: 0.35, exportRateEur: 0.18 }).totalAnnualBenefitEur / 100,
+  ) * 100;
 
 type Interest = 'solar' | 'ev' | 'both';
 const INTERESTS: { v: Interest; t: string; d: string; icon: LucideIcon; tone: 'yellow' | 'green' }[] = [
