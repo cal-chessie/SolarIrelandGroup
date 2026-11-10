@@ -62,13 +62,11 @@ export default function Hero() {
            */}
       <div className="absolute inset-0" aria-hidden="true">
         <Image
-          src="/installs/solar-ireland-group-family-home-roof.webp"
+          src="/hero-solar.webp"
           alt=""
           fill
           sizes="100vw"
           quality={85}
-          placeholder="blur"
-          blurDataURL="data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAABwAgCdASoQAAwAA4BaJbACdAYul2ZElvFLjRgAAP6Zcenz8UzgcA+r2uBYYECn77esncVFlOgDaHsavp/tYPwCSefGkLM+mBxnDbYCUZQsOUfHLH3k7N2u7yqw4S1bZbzt7LcgrPOffSeFGDbAAA=="
           className="hero-bg hero-kenburns object-cover"
           priority
         />
