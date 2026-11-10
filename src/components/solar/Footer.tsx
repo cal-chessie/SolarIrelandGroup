@@ -108,6 +108,7 @@ const serviceAreas = [
   { province: 'Leinster', counties: 'Dublin, Kildare, Wicklow, Meath, Louth, Wexford' },
   { province: 'Munster', counties: 'Cork, Limerick, Clare, Tipperary, Kerry' },
   { province: 'Connacht', counties: 'Galway, Mayo, Roscommon, Sligo' },
+  { province: 'Ulster', counties: 'Donegal, Cavan, Monaghan, Antrim, Down, Tyrone' },
 ];
 
 const certifications = [
@@ -434,7 +435,7 @@ export default function Footer() {
               Service Areas
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {serviceAreas.map((area) => (
               <div
                 key={area.province}
