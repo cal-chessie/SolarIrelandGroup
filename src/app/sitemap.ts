@@ -11,10 +11,12 @@ const PAGE_DATES: Record<string, string> = {
   // 9 Nov 2026 SEO/AEO pass: new titles/descriptions on home, about, contact,
   // calculator and financing; a rewritten financing answer section; a new post
   // listed on /blog. Blog posts take their lastmod from `updated` below.
+  // 10 Nov 2026: /book-survey new H1, copy and bill question; /services and
+  // /counties/roscommon descriptions rewritten and trimmed.
   "/": "2026-11-09T00:00:00+00:00",
-  "/services": "2026-04-01T00:00:00+00:00",
+  "/services": "2026-11-10T00:00:00+00:00",
   "/counties": "2026-04-01T00:00:00+00:00",
-  "/counties/roscommon": "2026-09-13T00:00:00+00:00",
+  "/counties/roscommon": "2026-11-10T00:00:00+00:00",
   "/blog": "2026-11-09T00:00:00+00:00",
   "/about": "2026-11-09T00:00:00+00:00",
   "/contact": "2026-11-09T00:00:00+00:00",
@@ -22,7 +24,7 @@ const PAGE_DATES: Record<string, string> = {
   "/terms": "2026-04-01T00:00:00+00:00",
   "/cookies": "2026-04-01T00:00:00+00:00",
   "/solar-calculator": "2026-11-09T00:00:00+00:00",
-  "/book-survey": "2026-04-09T00:00:00+00:00",
+  "/book-survey": "2026-11-10T00:00:00+00:00",
   "/financing": "2026-11-09T00:00:00+00:00",
 };
 
