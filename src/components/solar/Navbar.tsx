@@ -14,7 +14,6 @@ import {
   Shield,
   Phone,
   Mail,
-  Sparkles,
   ChevronRight,
   BookOpen,
   Wrench,
@@ -47,18 +46,6 @@ const mobileLinks = [
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',
     borderHover: 'hover:border-amber-400/20',
-  },
-  {
-    label: 'Calculator',
-    href: '/solar-calculator',
-    icon: Sparkles,
-    color: 'amber',
-    description: 'Savings calculator & AI bill analyser',
-    gradient: 'from-amber-400/20 to-yellow-400/10',
-    iconBg: 'bg-amber-400/10',
-    iconColor: 'text-amber-400',
-    borderHover: 'hover:border-amber-400/20',
-    highlight: true,
   },
   {
     label: 'Financing',
@@ -129,17 +116,8 @@ const mobileLinks = [
   },
   // Portal hidden (19 Oct): /portal shows a sample customer for any reference
   // until it becomes the email sign-in (Intake OS slice 4). Restore it then.
-  {
-    label: 'AI Bill Analyser',
-    href: '/#calculator',
-    icon: Zap,
-    color: 'amber',
-    description: 'Upload your bill, see savings',
-    gradient: 'from-amber-400/20 to-yellow-400/10',
-    iconBg: 'bg-amber-400/10',
-    iconColor: 'text-amber-400',
-    borderHover: 'hover:border-amber-400/20',
-  },
+  // Calculator and AI Bill Analyser rows removed (Cal, 11 Nov): they went to
+  // the same place as "Check my savings", which is the one kept.
   {
     label: 'FAQ',
     href: '/#faq',
