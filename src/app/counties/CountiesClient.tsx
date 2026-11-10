@@ -204,6 +204,10 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
   // handing the visitor to a chat window meant the county page could not
   // produce a lead of its own: the analyser reads their bill, builds the
   // estimate and puts the lead into the platform with the county attached.
+  //
+  // The county still rides into the lead, but only on a real click: the href
+  // is the one canonical /solar-calculator, so 32 cards no longer hand crawlers
+  // 32 ?county= variants of the same page (Search Console, 10 Nov 2026).
   const analyserUrl = `/solar-calculator?county=${encodeURIComponent(county.name)}`;
 
   return (
@@ -295,7 +299,12 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
 
       <div className="flex items-center gap-2">
         <a
-          href={analyserUrl}
+          href="/solar-calculator"
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            e.preventDefault();
+            window.location.assign(analyserUrl);
+          }}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors active:scale-[0.98]"
         >
           <Zap className="w-3.5 h-3.5" />
