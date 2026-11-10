@@ -119,7 +119,7 @@ function CalculatorExplainer() {
     {
       num: '01',
       title: 'Upload or Type Your Bill',
-      desc: 'Take a photo of your bill or upload the PDF, and the analyser reads your unit rate, standing charge and day and night split. No bill to hand? Answer 3 quick questions instead.',
+      desc: 'Take a photo of your bill or upload the PDF, and the analyser reads your unit rate, standing charge and day and night split. No bill to hand? Type your bill amount instead.',
     },
     {
       num: '02',
@@ -270,9 +270,8 @@ export default function SolarCalculatorClient() {
       <main>
         <CalculatorHero />
         {/* Cal's Bill Analyser, the same one as the homepage, straight under
-            the headline (12/10 brief): it was below the trust badges. Its
-            "No bill to hand? Answer 3 quick questions" link is the type-it-in
-            road, one tap away. */}
+            the headline (12/10 brief): it was below the trust badges. Its two
+            roads sit side by side: upload the bill, or type the amount. */}
         <BillAnalyser door="calculator" />
         <TrustBadges />
         <CalculatorExplainer />

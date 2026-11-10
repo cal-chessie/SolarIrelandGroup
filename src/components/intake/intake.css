@@ -3005,6 +3005,43 @@ h1.si-ask__title {
 .si-an-desk {
   display: none;
 }
+/* The two roads, equal weight: upload the bill, or type the amount. */
+.si-an-roads {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+}
+.si-an-road {
+  background: var(--si-raise);
+  box-shadow: inset 0 0 0 1px var(--si-line-control);
+  color: var(--si-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.si-an-road:hover {
+  background: var(--si-hover);
+}
+.si-an-road:focus-visible {
+  outline: 2px solid var(--si-focus);
+  outline-offset: 2px;
+}
+.si-an-road__icon {
+  background: var(--si-amber-wash);
+  color: var(--si-amber);
+}
+@media (min-width: 640px) {
+  .si-an-roads {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .si-an-road {
+    align-items: flex-start;
+    min-height: 96px;
+    padding: 16px;
+  }
+  .si-an-road .si-photo__chev {
+    align-self: center;
+  }
+}
 @media (min-width: 1024px) {
   .si-an-phone {
     display: none;
@@ -3015,11 +3052,11 @@ h1.si-ask__title {
   .si-an-door__drop {
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    min-height: 120px;
+    min-height: 64px;
     border-radius: var(--si-r);
     border: 1.5px dashed var(--si-line-control);
     color: var(--si-fg-muted);

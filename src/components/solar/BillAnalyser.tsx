@@ -21,7 +21,7 @@
  */
 import '@/components/intake/intake.css';
 import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent, type ReactNode } from 'react';
-import { Camera, ChevronRight, FileText, Info, RotateCcw, Upload } from 'lucide-react';
+import { Camera, ChevronRight, FileText, Info, Keyboard, RotateCcw, Upload } from 'lucide-react';
 import type { AnalyserFailure, AnalyserRead, AnalyserResponse, CallBillRead, IntakeConfig, Quote, QuoteRequestItem, Segment, SubmitResponse } from '@/lib/intake/contract';
 import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeHref, openIntake } from '@/lib/intake/open';
@@ -530,36 +530,48 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     <div className="si-an-card si-an-door" data-dragging={dragging ? 'true' : undefined} onDragOver={(e) => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={onDrop}>
       <p className="si-an-kicker">{isBiz ? 'Bill Analyser, for a business' : 'Bill Analyser'}</p>
       <h2 className="si-an-door__title">{isBiz ? 'Show us the business bill. We will show you what it says.' : "Show us your bill. We'll show you what it says."}</h2>
-      <p className="si-an-door__sub">Photo, screenshot or the PDF from your supplier&apos;s email. You see your figures straight away, with nothing to sign up for.</p>
-      <div className="si-an-door__drop" aria-hidden="true">
-        <Upload size={22} />
-        <span>Drop your bill here, or choose a file</span>
-      </div>
-      <div className="si-an-door__actions">
-        <button type="button" className="si-btn si-btn--primary si-an-phone" onClick={openCamera} data-an-camera="">
-          <Camera size={18} aria-hidden="true" /> Take a photo of my bill
+      <p className="si-an-door__sub">Upload it, or just type what you pay. You see your figures straight away, with nothing to sign up for.</p>
+      <div className="si-an-roads" role="group" aria-label="Two ways to see your figures">
+        <button type="button" className="si-photo si-an-road" onClick={() => fileRef.current?.click()} data-an-upload="">
+          <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
+            <Upload size={20} />
+          </span>
+          <span className="si-photo__text">
+            <span className="si-photo__title">Upload my bill</span>
+            <span className="si-photo__line">A photo, screenshot or the PDF from your supplier</span>
+          </span>
+          <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
         </button>
-        <button type="button" className="si-btn si-btn--secondary si-an-phone" onClick={() => fileRef.current?.click()} data-an-choose="">
-          Choose a photo or PDF
-        </button>
-        <button type="button" className="si-btn si-btn--primary si-an-desk" onClick={() => fileRef.current?.click()} data-an-upload="">
-          <Upload size={18} aria-hidden="true" /> Upload my bill
-        </button>
-      </div>
-      <p className="si-an-help">Most bills come by email now. The PDF works best.</p>
-      {privacy}
-      <div className="si-an-links">
         <a
-          className="si-btn--quiet"
+          className="si-photo si-an-road"
           href={intakeHref({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' })}
+          data-an-manual-road=""
           onClick={(e) => {
             e.preventDefault();
             track('manual_fallback', { from_reason: 'no_bill', flow_id: fid });
             openIntake({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' });
           }}
         >
-          No bill to hand? Answer 3 quick questions <ChevronRight size={16} aria-hidden="true" />
+          <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
+            <Keyboard size={20} />
+          </span>
+          <span className="si-photo__text">
+            <span className="si-photo__title">I don&apos;t have it, type my bill amount</span>
+            <span className="si-photo__line">Three quick questions, the same estimate</span>
+          </span>
+          <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
         </a>
+      </div>
+      <div className="si-an-door__drop" aria-hidden="true">
+        <Upload size={22} />
+        <span>Or drop your bill here</span>
+      </div>
+      <p className="si-an-help">Most bills come by email now. The PDF works best.</p>
+      {privacy}
+      <div className="si-an-links">
+        <button type="button" className="si-btn--quiet si-an-phone" onClick={openCamera} data-an-camera="">
+          <Camera size={16} aria-hidden="true" /> Take a photo of my bill now
+        </button>
         <button type="button" className="si-btn--quiet" onClick={() => setSegment(isBiz ? 'domestic' : 'commercial')}>
           {isBiz ? 'A home bill? Read it as a home' : 'Business bill? Read it as a business'}
         </button>
