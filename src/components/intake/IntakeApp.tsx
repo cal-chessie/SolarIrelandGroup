@@ -824,7 +824,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   /* ── Pieces ────────────────────────────────────────────────────── */
 
   const prov = (p: ProvTag | 'estimate' | 'settings') => ({ 'data-figure': '', 'data-prov': p });
-  const waLink = WA('Hi Solar Ireland, I have a question about solar.');
+  const waLink = WA('Hi Solar Ireland Group, I have a question about solar.');
 
   const trustLine = (
     <p className="si-foot-line">
@@ -1532,8 +1532,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         headingRef={asH1 ? h1Ref : undefined}
         sub={
           quote?.quoteToken
-            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`
-            : `A free 15-minute call with ${who || 'Solar Ireland'} to work out your estimate with you and answer your questions. No visit, no obligation.`
+            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} to go through it and answer your questions. No visit, no obligation.`
+            : `A free 15-minute call with ${who || 'Solar Ireland Group'} to work out your estimate with you and answer your questions. No visit, no obligation.`
         }
         ctx={{
           segment: seg || 'domestic',
@@ -1676,7 +1676,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
               <ChevronLeft size={22} aria-hidden="true" />
             </button>
           ) : (
-            <a className="si-mark" href="/" aria-label="Solar Ireland home">
+            <a className="si-mark" href="/" aria-label="Solar Ireland Group home">
               <img src="/logo-sm.webp" alt="" width={28} height={32} />
             </a>
           )}
@@ -1693,7 +1693,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           <div className="si-header__half si-header__half--left">
             <a className="si-mark" href="/">
               <img src="/logo-sm.webp" alt="" width={32} height={36} />
-              <span className="si-mark__name">Solar Ireland</span>
+              <span className="si-mark__name">Solar Ireland Group</span>
             </a>
             {depth > 1 && step !== 'done' ? (
               <button type="button" className="si-header-link si-header-back" onClick={back}>

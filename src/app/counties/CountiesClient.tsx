@@ -122,7 +122,7 @@ const provinceSeoSubtitles: Record<Province, string> = {
 const faqs = [
   {
     question: 'Do you install solar panels in every county in Ireland?',
-    answer: 'Yes - Solar Ireland covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
+    answer: 'Yes - Solar Ireland Group covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
   },
   {
     question: 'How much do solar panels cost in my county?',
@@ -146,11 +146,11 @@ const faqs = [
   },
   {
     question: 'Can I get a free solar survey in my area?',
-    answer: 'Absolutely. Solar Ireland offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. The survey costs nothing and commits you to nothing. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
+    answer: 'Absolutely. Solar Ireland Group offers free, no-obligation roof surveys across all 32 counties. A local surveyor will visit your home (or conduct a detailed remote assessment) to evaluate your roof orientation, pitch, shading from nearby trees or buildings, and your current electricity usage. You\'ll receive a personalised proposal with an exact system size, generation estimate, cost breakdown, projected savings, and payback period. The survey costs nothing and commits you to nothing. If your roof will not carry a system worth fitting, we will tell you that instead of quoting you anyway.',
   },
   {
     question: 'Do you serve Northern Ireland?',
-    answer: 'Yes, we do. Solar Ireland covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Derry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
+    answer: 'Yes, we do. Solar Ireland Group covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Derry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
   },
 ];
 
@@ -303,7 +303,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
         </a>
         <a
           href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
-          aria-label={`Call Solar Ireland about ${county.name}`}
+          aria-label={`Call Solar Ireland Group about ${county.name}`}
           className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-xs font-medium hover:bg-white/[0.06] hover:text-white transition-colors active:scale-[0.98]"
         >
           <Phone className="w-3.5 h-3.5" />
@@ -447,7 +447,7 @@ function buildItemListJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Solar Panel Installation Counties in Ireland',
-    description: 'Directory of all 32 counties in Ireland where Solar Ireland provides solar panel installation services',
+    description: 'Directory of all 32 counties in Ireland where Solar Ireland Group provides solar panel installation services',
     numberOfItems: 32,
     itemListElement: items,
   };

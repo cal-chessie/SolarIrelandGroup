@@ -361,7 +361,8 @@ describe('meta descriptions fit (140 to 155)', () => {
       expect(d.length, `${f}: ${d}`).toBeGreaterThanOrEqual(140);
       expect(d.length, `${f}: ${d}`).toBeLessThanOrEqual(155);
     }
-    const t = `${first('app/book-survey/page.tsx', 'title')} | Solar Ireland`;
+    // Absolute since 10 Nov 2026: the " | Solar Ireland Group" suffix ran it past 60.
+    const t = first('app/book-survey/page.tsx', 'absolute');
     expect(t.length).toBeGreaterThanOrEqual(50);
     expect(t.length).toBeLessThanOrEqual(60);
   });

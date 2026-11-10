@@ -6,10 +6,10 @@ import BlogPostClient from './BlogPostClient';
 
 const SITE_URL = 'https://solarirelandgroup.ie';
 
-// Derive a rendered <title> that stays <=60 chars. The "%s | Solar Ireland"
-// root template adds 16 chars, which pushes most article titles well past 60,
+// Derive a rendered <title> that stays <=60 chars. The "%s | Solar Ireland Group"
+// root template adds 22 chars, which pushes most article titles well past 60,
 // so we set an absolute title instead. We first drop any trailing clause after
-// a colon or dash, then re-add the " | Solar Ireland" brand only if it still
+// a colon or dash, then re-add the " | Solar Ireland Group" brand only if it still
 // fits; otherwise we keep the (already truthful) shortened title on its own.
 function metaTitleForArticle(fullTitle: string): string {
   const sepAt = fullTitle.search(/:\s|\s[–—-]\s/);
@@ -17,7 +17,7 @@ function metaTitleForArticle(fullTitle: string): string {
   if (base.length > 60) {
     base = base.slice(0, 60).replace(/\s+\S*$/, '').trim();
   }
-  const branded = `${base} | Solar Ireland`;
+  const branded = `${base} | Solar Ireland Group`;
   return branded.length <= 60 ? branded : base;
 }
 
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogDescription = metaDescription;
 
   return {
-    // Absolute (bypasses the "%s | Solar Ireland" template) to keep <title> <=60.
+    // Absolute (bypasses the "%s | Solar Ireland Group" template) to keep <title> <=60.
     title: { absolute: metaTitle },
     description: metaDescription,
     alternates: {
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: toISODate(article.updated ?? article.date),
       authors: [article.author],
       url: `${SITE_URL}/blog/${slug}`,
-      siteName: 'Solar Ireland',
+      siteName: 'Solar Ireland Group',
       locale: 'en_IE',
       images: [
         {
@@ -109,14 +109,14 @@ function getArticleSchema(slug: string) {
     author: {
       '@type': 'Person',
       name: article.author,
-      jobTitle: 'Founder & Lead Installer, Solar Ireland',
+      jobTitle: 'Founder & Lead Installer, Solar Ireland Group',
       description:
-        'Over 10 years in the Irish solar industry. Founder of Solar Ireland, an SEAI-registered installer covering all 32 counties.',
+        'Over 10 years in the Irish solar industry. Founder of Solar Ireland Group, an SEAI-registered installer covering all 32 counties.',
       url: `${SITE_URL}/about`,
       worksFor: {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'Solar Ireland',
+        name: 'Solar Ireland Group',
         url: SITE_URL,
       },
       // No sameAs until there is a real profile to point at. The handle that
@@ -126,7 +126,7 @@ function getArticleSchema(slug: string) {
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#organization`,
-      name: 'Solar Ireland',
+      name: 'Solar Ireland Group',
       url: SITE_URL,
       foundingDate: '2019',
       description: 'SEAI-registered solar installer covering all 32 counties of Ireland since 2019.',

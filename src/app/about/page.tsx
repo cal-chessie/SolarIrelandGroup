@@ -4,15 +4,15 @@ const aboutSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
   '@id': 'https://solarirelandgroup.ie/about',
-  name: 'About Solar Ireland',
-  description: 'Meet the Solar Ireland team. SEAI-registered solar installers serving all 32 counties.',
+  name: 'About Solar Ireland Group',
+  description: 'Meet the Solar Ireland Group team. SEAI-registered solar installers serving all 32 counties.',
   url: 'https://solarirelandgroup.ie/about',
   inLanguage: 'en-IE',
   isPartOf: { '@id': 'https://solarirelandgroup.ie/#website' },
   mainEntity: {
     '@type': 'Organization',
     '@id': 'https://solarirelandgroup.ie/#organization',
-    name: 'Solar Ireland',
+    name: 'Solar Ireland Group',
     url: 'https://solarirelandgroup.ie',
     foundingDate: '2019',
     numberOfEmployees: {

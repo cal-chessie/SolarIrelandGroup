@@ -6,9 +6,10 @@ import HomeSchema from '@/components/HomeSchema';
 // Home's own title and description. The layout `default` stays as the fallback
 // for any route without a title, so it is not edited. The head term leads, the
 // Bill Analyser (the hero) comes second; the description sells the free
-// estimate and then the call, matching the site's funnel. Absolute, because
-// the "%s | Solar Ireland" template would duplicate the brand.
-const HOME_TITLE = 'Solar Panels Ireland | Free Bill Analysis | Solar Ireland';
+// estimate and then the call, matching the site's funnel. The brand leads (Cal,
+// 10 Nov 2026: Google's site name). Absolute, because
+// the "%s | Solar Ireland Group" template would duplicate the brand.
+const HOME_TITLE = 'Solar Ireland Group | Solar Panels Ireland, Bill Analysis';
 const HOME_DESCRIPTION =
   'SEAI-registered solar installers in all 32 counties. Upload a bill for a free estimate of your savings, the €1,800 SEAI grant and payback, then a call.';
 
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IE',
     url: 'https://solarirelandgroup.ie',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
     images: [
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
         url: '/hero-solar.jpg',
         width: 1344,
         height: 768,
-        alt: 'Solar Ireland - Professional solar panel installation on an Irish home',
+        alt: 'Solar Ireland Group - Professional solar panel installation on an Irish home',
         type: 'image/jpeg',
       },
     ],

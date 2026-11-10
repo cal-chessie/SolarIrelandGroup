@@ -1110,10 +1110,10 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         headingLevel="h3"
         sub={
           !quote?.quoteToken
-            ? `A free 15-minute call with ${who || 'Solar Ireland'} to work out your estimate with you and answer your questions. No visit, no obligation.`
+            ? `A free 15-minute call with ${who || 'Solar Ireland Group'} to work out your estimate with you and answer your questions. No visit, no obligation.`
             : battery
-            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} about when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
-            : `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland'} to go through it and answer your questions. No visit, no obligation.`
+            ? `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} about when your home uses power, so you know whether a battery is worth adding to the panels. No visit, no obligation.`
+            : `Your full estimate by email, then a free 15-minute call with ${who || 'Solar Ireland Group'} to go through it and answer your questions. No visit, no obligation.`
         }
         ctx={{
           segment: seg,

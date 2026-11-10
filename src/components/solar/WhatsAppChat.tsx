@@ -59,7 +59,7 @@ const CONTEXTUAL_GREETINGS: Record<string, string> = {
   '#grant-info': "👋 Looking into the SEAI grant? I can check your eligibility and explain how the process works.",
 };
 
-const DEFAULT_GREETING = "👋 Hi there! I'm the Solar Ireland assistant. I can help with grants, costs, installation, savings, anything solar. What would you like to know?";
+const DEFAULT_GREETING = "👋 Hi there! I'm the Solar Ireland Group assistant. I can help with grants, costs, installation, savings, anything solar. What would you like to know?";
 
 const FOLLOW_UP_MAP = [
   { keywords: ['cost', 'price', 'expensive', 'how much', 'cheap', 'afford'], suggestions: [
@@ -734,12 +734,12 @@ export default function WhatsAppChat() {
           >
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
+                <Image src="/logo-sm.webp" alt="Solar Ireland Group" className="w-10 h-10 object-contain" width={40} height={45} />
               </div>
               <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0f0f0f]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white">Solar Ireland</p>
+              <p className="text-sm font-semibold text-white">Solar Ireland Group</p>
               <p className="text-xs text-gray-400 truncate">
                 {unreadCount > 0
                   ? `${unreadCount} new message${unreadCount > 1 ? 's' : ''}`
@@ -759,12 +759,12 @@ export default function WhatsAppChat() {
                 <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
+                      <Image src="/logo-sm.webp" alt="Solar Ireland Group" className="w-10 h-10 object-contain" width={40} height={45} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-white">Solar Ireland</p>
+                    <p className="font-semibold text-sm text-white">Solar Ireland Group</p>
                     <div className="flex items-center gap-1.5">
                       <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
                       <p className="text-xs text-green-400 whitespace-nowrap">Online now</p>
@@ -786,7 +786,7 @@ export default function WhatsAppChat() {
                     Hey there! 👋
                   </h3>
                   <p className="text-sm text-gray-400 mb-8 max-w-[260px] leading-relaxed">
-                    Welcome to Solar Ireland. Ask me anything about solar panels, grants, savings, or installation.
+                    Welcome to Solar Ireland Group. Ask me anything about solar panels, grants, savings, or installation.
                   </p>
 
                   <div className="flex items-center gap-4 mb-8">
@@ -890,12 +890,12 @@ export default function WhatsAppChat() {
                 <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
+                      <Image src="/logo-sm.webp" alt="Solar Ireland Group" className="w-10 h-10 object-contain" width={40} height={45} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-white">Solar Ireland</p>
+                    <p className="font-semibold text-sm text-white">Solar Ireland Group</p>
                     <div className="flex items-center gap-1.5">
                       <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-green-400 wa-pulse" />
                       <p className="text-xs text-green-400 whitespace-nowrap">

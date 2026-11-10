@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: CALC_URL,
     type: 'website',
     locale: 'en_IE',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     images: [
       {
         url: '/hero-solar.jpg',
@@ -61,7 +61,7 @@ function CalculatorSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'Solar Ireland Savings Calculator',
+    name: 'Solar Ireland Group Savings Calculator',
     description:
       'Free solar panel savings calculator for Irish homes. Calculate your annual savings, payback period, and 25-year return on investment based on your electricity bill.',
     url: CALC_URL,
@@ -74,7 +74,7 @@ function CalculatorSchema() {
     },
     author: {
       '@type': 'Organization',
-      name: 'Solar Ireland',
+      name: 'Solar Ireland Group',
       url: 'https://solarirelandgroup.ie',
     },
     featureList: [

@@ -192,7 +192,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
+        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland Group home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
       },
       {
         "type": "cta",
@@ -475,7 +475,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland is an SEAI-registered installer working across all 32 counties, and the questions we get asked most have nothing to do with panels. They are about process: who fills in what, when the money moves, and how long the whole thing takes. This guide walks the six steps in the order they actually happen."
+        "text": "Solar Ireland Group is an SEAI-registered installer working across all 32 counties, and the questions we get asked most have nothing to do with panels. They are about process: who fills in what, when the money moves, and how long the whole thing takes. This guide walks the six steps in the order they actually happen."
       },
       {
         "type": "heading",
@@ -1211,7 +1211,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland is an SEAI-registered installer working right across Cork, city and county. This guide covers what solar actually costs here, the grant you can claim, the planning rules, and the handful of Cork-specific things a good site survey checks before quoting."
+        "text": "Solar Ireland Group is an SEAI-registered installer working right across Cork, city and county. This guide covers what solar actually costs here, the grant you can claim, the planning rules, and the handful of Cork-specific things a good site survey checks before quoting."
       },
       {
         "type": "heading",
@@ -1399,7 +1399,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland files NC6s as a routine part of every domestic install, so here is exactly what the form is, who does what, and why it is one of the quieter but more important steps in going solar."
+        "text": "Solar Ireland Group files NC6s as a routine part of every domestic install, so here is exactly what the form is, who does what, and why it is one of the quieter but more important steps in going solar."
       },
       {
         "type": "heading",
@@ -2954,6 +2954,7 @@ export const articles: Article[] = [
   {
     "slug": "battery-storage-is-it-worth-the-extra-cost",
     "title": "Battery Storage: Is It Worth the Extra Cost?",
+    "seoTitle": "Is Battery Storage Worth the Extra Cost in Ireland?",
     "image": "/blog/battery-storage-is-it-worth-the-extra-cost.webp",
     "excerpt": "Solar batteries cost €3,200-€4,900 for the usual 5 to 10 kWh sizes - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
@@ -3371,6 +3372,7 @@ export const articles: Article[] = [
   {
     "slug": "longi-vs-jinko-vs-trina-best-solar-panels",
     "title": "LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?",
+    "seoTitle": "LONGi vs Jinko vs Trina: Best Solar Panels for Irish Homes",
     "image": "/blog/longi-vs-jinko-vs-trina-best-solar-panels.webp",
     "excerpt": "We compare the top three tier-1 solar panel brands used in Ireland - efficiency, warranties, real-world performance, and which one delivers the best value for your home.",
     "category": "technology",
@@ -3827,6 +3829,7 @@ export const articles: Article[] = [
   {
     "slug": "seai-grant-stay-e1800-2026-what-it-means",
     "title": "SEAI Grant Stays at €1,800 for 2026 - What It Means for You",
+    "seoTitle": "SEAI Grant Stays at €1,800 for 2026: What It Means for You",
     "image": "/blog/seai-grant-stay-e1800-2026-what-it-means.webp",
     "excerpt": "The government has confirmed the SEAI solar panel grant will remain at €1,800 for 2026. Here is what the announcement means for homeowners, the grant's history, and why now is still the time to apply.",
     "category": "news",
@@ -3941,6 +3944,7 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-and-heat-pumps-perfect-partnership",
     "title": "Solar Panels and Heat Pumps: The Perfect Partnership",
+    "seoTitle": "Solar Panels and Heat Pumps: The Perfect Partnership",
     "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",

@@ -21,9 +21,9 @@ const geistMono = Geist_Mono({
 
 
 const SITE_URL = "https://solarirelandgroup.ie";
-const SITE_NAME = "Solar Ireland";
+const SITE_NAME = "Solar Ireland Group";
 // Home/default meta description, kept <=155 chars for full SERP display while
-// retaining the key entities (Solar Ireland, SEAI, solar panel installers).
+// retaining the key entities (Solar Ireland Group, SEAI, solar panel installers).
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers across all 32 counties of Ireland. Free AI bill analysis and honest quotes. Cut your electricity bill with solar.";
 
@@ -45,8 +45,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
 
   title: {
-    default: "Solar Ireland | SEAI Solar Panel Installers | 32 Counties",
-    template: "%s | Solar Ireland",
+    default: "Solar Ireland Group | SEAI Solar Panel Installers, Ireland",
+    template: "%s | Solar Ireland Group",
   },
 
 
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
   // where it counts: the visible copy, headings, and JSON-LD.
 
 
-  authors: [{ name: "Solar Ireland", url: SITE_URL }],
-  creator: "Solar Ireland",
-  publisher: "Solar Ireland",
+  authors: [{ name: "Solar Ireland Group", url: SITE_URL }],
+  creator: "Solar Ireland Group",
+  publisher: "Solar Ireland Group",
   metadataBase: new URL(SITE_URL),
 
 
@@ -128,7 +128,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     // Kept under ~55 chars so link-share cards do not truncate mid-phrase.
-    title: "Solar Ireland | Save up to €1,400/yr with Solar PV",
+    title: "Solar Ireland Group | Save up to €1,400/yr with Solar PV",
     description:
       "SEAI solar installers. Free AI bill analysis and honest quotes. Save up to €1,400/yr with the €1,800 SEAI grant.",
     images: [
@@ -136,14 +136,14 @@ export const metadata: Metadata = {
         url: "/hero-solar.jpg",
         width: 1344,
         height: 768,
-        alt: "Solar Ireland - Professional solar panel installation on an Irish home",
+        alt: "Solar Ireland Group - Professional solar panel installation on an Irish home",
         type: "image/jpeg",
       },
       {
         url: "/fb-cover.png",
         width: 1640,
         height: 924,
-        alt: "Solar Ireland - SEAI Registered Solar Panel Installers",
+        alt: "Solar Ireland Group - SEAI Registered Solar Panel Installers",
         type: "image/png",
       },
     ],
@@ -152,7 +152,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Solar Ireland | Save up to €1,400/Year with Solar Panels",
+    title: "Solar Ireland Group | Save up to €1,400/Year with Solar Panels",
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/hero-solar.jpg"],
@@ -175,8 +175,8 @@ export const metadata: Metadata = {
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
-    "apple-mobile-web-app-title": "Solar Ireland",
-    "application-name": "Solar Ireland",
+    "apple-mobile-web-app-title": "Solar Ireland Group",
+    "application-name": "Solar Ireland Group",
     "msapplication-TileColor": "#FACC15",
     "msapplication-TileImage": "/logo-icon-96.png",
   },
@@ -195,7 +195,7 @@ const organizationSchema = {
     url: `${SITE_URL}/logo-lg.png`,
     width: 200,
     height: 226,
-    caption: "Solar Ireland Logo",
+    caption: "Solar Ireland Group Logo",
   },
   description:
     "SEAI-registered solar panel installation company serving homes and businesses across all 32 counties of Ireland.",
@@ -333,12 +333,12 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
   name: SITE_NAME,
-  // Domain spells out "...group.ie", so Google leans toward "Solar Ireland
-  // Group" (or the bare domain) for the site name. Declaring that as an
-  // alternateName of the primary "Solar Ireland" tells Google the two are the
-  // same entity and "Solar Ireland" is the name to display.
-  alternateName: "Solar Ireland Group",
-  url: SITE_URL,
+  // Google's site-name system reads this WebSite entity on the home page. A
+  // national trade body also uses "Solar Ireland", so the business is always
+  // "Solar Ireland Group" (Cal, 10 Nov 2026). The alternates cover the run-on
+  // form and the bare domain Google showed before.
+  alternateName: ["SolarIrelandGroup", "solarirelandgroup.ie"],
+  url: `${SITE_URL}/`,
   publisher: {
     "@id": `${SITE_URL}/#organization`,
   },

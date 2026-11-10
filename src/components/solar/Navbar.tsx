@@ -310,8 +310,8 @@ function MobileMenu({
           {/* Mobile header bar */}
           <div className="flex items-center justify-between px-5 h-14 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
-              <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={32} />
-              <span className="font-bold text-white text-sm xl:text-base tracking-wide">Solar Ireland</span>
+              <Image src="/logo-sm.webp" alt="Solar Ireland Group" className="h-7 w-auto" width={28} height={32} />
+              <span className="font-bold text-white text-sm xl:text-base tracking-wide">Solar Ireland Group</span>
             </div>
             <button
               onClick={onClose}
@@ -501,7 +501,7 @@ function MobileMenu({
             </div>
 
             <p className="text-[10px] text-gray-400 text-center mt-4">
-              © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installer
+              © {new Date().getFullYear()} Solar Ireland Group · SEAI Registered Installer
             </p>
           </div>
         </div>
@@ -555,7 +555,7 @@ export default function Navbar() {
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] xl:h-20 flex items-center justify-between gap-4 lg:gap-6 xl:gap-8">
+        <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] xl:h-20 flex items-center justify-between gap-4 xl:gap-8">
           {/* Logo */}
           <button
             onClick={() => {
@@ -569,19 +569,22 @@ export default function Navbar() {
           >
             <Image
               src="/logo-sm.webp"
-              alt="Solar Ireland"
+              alt="Solar Ireland Group"
               className="h-11 w-auto sm:h-12 xl:h-14"
               width={44}
               height={50}
               priority
             />
-            <span className="font-bold text-white hidden sm:inline text-lg lg:text-xl xl:text-2xl tracking-wide">
-              Solar Ireland
+            {/* "Solar Ireland Group" is six letters longer than the old brand: at
+                lg the text stays text-lg and the gaps tighten so the CTA still
+                fits at 1024 (it overflowed by 26px). xl and up are unchanged. */}
+            <span className="font-bold text-white hidden sm:inline text-lg xl:text-2xl tracking-wide">
+              Solar Ireland Group
             </span>
           </button>
 
           {/* Desktop nav - 7 links */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
             {desktopNavLinks.map((link) => {
               const isActive = link.href.startsWith('/') && !link.href.startsWith('/#')
                 ? (pathname === link.href || pathname.startsWith(link.href + '/'))

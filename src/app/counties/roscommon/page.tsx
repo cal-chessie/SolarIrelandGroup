@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: 'Do you install solar panels in County Roscommon?',
     answer:
-      'Yes. Solar Ireland installs solar panels right across County Roscommon: Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. The quickest way to start is our free AI bill analyser, which reads your electricity bill and shows what solar would save your home before anyone visits.',
+      'Yes. Solar Ireland Group installs solar panels right across County Roscommon: Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. The quickest way to start is our free AI bill analyser, which reads your electricity bill and shows what solar would save your home before anyone visits.',
   },
   {
     question: 'How much do solar panels cost in Roscommon?',
@@ -71,7 +71,7 @@ const FAQS = [
 ];
 
 export const metadata: Metadata = {
-  title: 'Solar Panel Installers Roscommon | AI Bill Analyser | Solar Ireland',
+  title: { absolute: 'Solar Panel Installers Roscommon | AI Bill Analyser' },
   description:
     // 152 characters, counted by code (140 to 155 so it is not cut off).
     'Solar panel installers in County Roscommon. Upload your bill and see what solar would save you, with the €1,800 SEAI grant applied. Honest local quotes.',
@@ -98,11 +98,11 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Solar Panel Installers in Roscommon | Solar Ireland',
+    title: 'Solar Panel Installers in Roscommon | Solar Ireland Group',
     description:
       'Upload your bill and our AI shows what solar saves your Roscommon home. Real local installers, guidance on the €1,800 SEAI grant, honest quotes.',
     url: PAGE_URL,
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -110,13 +110,13 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-counties.png',
         width: 1152,
         height: 864,
-        alt: 'Solar Ireland, solar panel installers in County Roscommon',
+        alt: 'Solar Ireland Group, solar panel installers in County Roscommon',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Panel Installers in Roscommon | Solar Ireland',
+    title: 'Solar Panel Installers in Roscommon | Solar Ireland Group',
     description:
       'Upload your bill and our AI shows what solar saves your Roscommon home. SEAI grant guidance, honest local quotes.',
     images: ['https://solarirelandgroup.ie/og-counties.png'],

@@ -263,7 +263,7 @@ function CookiesFAQ() {
       a: 'You can clear cookies through your browser settings at any time. In most browsers, go to Settings > Privacy and Security > Clear Browsing Data, then select "Cookies and other site data". You can also use the cookie settings button (the floating cookie icon at the bottom-right of our website) to update your preferences. Clearing cookies will reset your consent preferences, and you will be asked again on your next visit.',
     },
     {
-      q: 'Does Solar Ireland use cookies for advertising?',
+      q: 'Does Solar Ireland Group use cookies for advertising?',
       a: 'We do not serve targeted advertisements based on your browsing data. We may use Facebook Pixel cookies (_fbp, _fbc) for ad campaign measurement only - to understand how visitors who click on our ads interact with our website. We do not build detailed profiles of your interests or share your data with advertisers for retargeting.',
     },
     {
@@ -331,7 +331,7 @@ function CookiesContentIntro() {
         such as Google Analytics).
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
-        This Cookie Policy explains how Solar Ireland uses cookies on our website{' '}
+        This Cookie Policy explains how Solar Ireland Group uses cookies on our website{' '}
         <span className="text-amber-400 font-medium">solarirelandgroup.ie</span>. It applies to all visitors
         and is intended to comply with the General Data Protection Regulation (GDPR), the ePrivacy
         Directive (as transposed into Irish law by the European Communities (Electronic Communications
@@ -399,7 +399,7 @@ function CookiesContentCategories() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        The following table provides a complete list of all cookies used on the Solar Ireland website,
+        The following table provides a complete list of all cookies used on the Solar Ireland Group website,
         organised by category. This table is updated whenever we add, remove, or modify cookies.
       </p>
 
@@ -844,7 +844,7 @@ export default function CookiePolicyPage() {
               Cookie Policy
             </h1>
             <p className="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
-              How Solar Ireland uses cookies on our website, your consent choices,
+              How Solar Ireland Group uses cookies on our website, your consent choices,
               and how to manage your preferences.
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 text-sm text-gray-600">

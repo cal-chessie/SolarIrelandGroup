@@ -76,7 +76,7 @@ const valueProps = [
 ];
 
 const teamMembers = [
-  { initials: 'CC', name: 'Cal Chesters', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland to cut through the noise and give homeowners a better experience.' },
+  { initials: 'CC', name: 'Cal Chesters', role: 'Founder & Lead Installer', bio: 'Over 10 years in the Irish solar industry. Started Solar Ireland Group to cut through the noise and give homeowners a better experience.' },
   { initials: 'SD', name: 'Sarah Doyle', role: 'Operations Manager', bio: 'Keeps everything running smoothly - from survey scheduling to SEAI completion paperwork and aftercare.' },
   { initials: 'JK', name: 'James Kelly', role: 'Senior Electrician (RECI)', bio: 'RECI-certified with extensive experience in solar PV wiring, battery integration, and grid connections.' },
   { initials: 'EO', name: 'Emma O\'Brien', role: 'Customer Care', bio: 'First point of contact for most customers. Emma makes sure every question is answered and every concern addressed.' },
@@ -202,7 +202,7 @@ export default function AboutClient() {
                 transition={{ duration: 0.6 }}
                 className="mt-5 sm:mt-6 text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed"
               >
-                We&apos;re Solar Ireland - a SEAI-registered team of solar installers
+                We&apos;re Solar Ireland Group - a SEAI-registered team of solar installers
                 here to give a straight number and stand over it,
                 and help Irish homeowners save money with clean energy.
               </motion.p>
@@ -294,7 +294,7 @@ export default function AboutClient() {
                 </h2>
                 <div className="space-y-4 text-sm sm:text-base text-gray-400 leading-relaxed">
                   <p>
-                    Solar Ireland was founded in 2019 by Cal Chesters after years
+                    Solar Ireland Group was founded in 2019 by Cal Chesters after years
                     of working in the Irish solar industry and seeing the same problems
                     repeat: pushy sales tactics, confusing pricing, and homeowners left
                     in the dark about what they were actually getting.
@@ -344,7 +344,7 @@ export default function AboutClient() {
           <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <SectionHeader
               badge="Why Choose Us"
-              title="The Solar Ireland Difference"
+              title="The Solar Ireland Group Difference"
               description="We do things differently. Here's what sets us apart from every other solar installer in Ireland."
             />
 
@@ -384,7 +384,7 @@ export default function AboutClient() {
           <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               badge="Our Team"
-              title="The People Behind Solar Ireland"
+              title="The People Behind Solar Ireland Group"
               description="A small, dedicated team who genuinely care about helping Irish homeowners go solar."
             />
 

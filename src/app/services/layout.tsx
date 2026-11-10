@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Solar PV, Battery & EV Charger Installation',
+  // Absolute: with the " | Solar Ireland Group" suffix it ran to 65 characters.
+  title: { absolute: 'Solar PV, Battery and EV Charger Installation in Ireland' },
   description:
     // 150 characters, counted by code (140 to 155 so it is not cut off).
     'Panels-only solar from €8,200 before the SEAI grant, €6,400 after it. Battery packages from €11,400. All 32 counties, with guidance on the SEAI grant.',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     description:
       'Panels-only solar from €8,200 before the SEAI grant (€6,400 after), battery packages from €11,400, EV charging. We guide you through the grant. Serving all 32 counties.',
     url: 'https://solarirelandgroup.ie/services',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-services.png',
         width: 1344,
         height: 768,
-        alt: 'Solar Ireland - Solar Panel Services',
+        alt: 'Solar Ireland Group - Solar Panel Services',
       },
     ],
   },
@@ -92,7 +93,7 @@ export default function ServicesLayout({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'ItemList',
-            name: 'Solar Ireland Services',
+            name: 'Solar Ireland Group Services',
             description: 'Complete range of solar panel and clean energy services for Irish homes.',
             numberOfItems: 6,
             itemListElement: [

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
     url: 'https://solarirelandgroup.ie/blog',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-blog.png',
         width: 1344,
         height: 768,
-        alt: 'Solar Ireland - Solar Energy Blog',
+        alt: 'Solar Ireland Group - Solar Energy Blog',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Ireland Blog | Solar Tips, Guides & News',
+    title: 'Solar Ireland Group Blog | Solar Tips, Guides & News',
     description:
       'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators.',
     images: ['https://solarirelandgroup.ie/og-blog.png'],

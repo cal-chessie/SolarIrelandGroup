@@ -3,15 +3,15 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   // The site sells the free estimate (bill analysis), not the survey, so the
   // contact title says estimate. No "15-minute call" wording.
-  title: { absolute: 'Contact Solar Ireland | Free Solar Estimate From Your Bill' },
+  title: { absolute: 'Contact Solar Ireland Group | Free Estimate From Your Bill' },
   description:
-    'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+    'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
   openGraph: {
-    title: 'Contact Solar Ireland | Free Solar Estimate From Your Bill',
+    title: 'Contact Solar Ireland Group | Free Solar Estimate From Your Bill',
     description:
-      'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
     url: 'https://solarirelandgroup.ie/contact',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -19,15 +19,15 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-contact.png',
         width: 1344,
         height: 768,
-        alt: 'Solar Ireland - Contact Us',
+        alt: 'Solar Ireland Group - Contact Us',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Solar Ireland | Free Solar Estimate From Your Bill',
+    title: 'Contact Solar Ireland Group | Free Solar Estimate From Your Bill',
     description:
-      'Phone, WhatsApp or email Solar Ireland, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
     images: ['https://solarirelandgroup.ie/og-contact.png'],
   },
   alternates: {

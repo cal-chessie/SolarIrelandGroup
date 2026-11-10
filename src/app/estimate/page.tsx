@@ -9,7 +9,7 @@ import { parseIntakeQuery } from '@/lib/intake/open';
  */
 export const metadata: Metadata = {
   title: 'Your solar estimate and a free call',
-  description: 'See what solar would save you from your electricity bill, then book a free 15-minute call with Solar Ireland.',
+  description: 'See what solar would save you from your electricity bill, then book a free 15-minute call with Solar Ireland Group.',
   alternates: { canonical: 'https://solarirelandgroup.ie/estimate' },
   robots: { index: false, follow: true },
 };

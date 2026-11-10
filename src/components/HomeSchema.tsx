@@ -35,7 +35,7 @@ const premium = installCostEur(PREMIUM_KWP, PREMIUM_BATTERY_KWH);
 const grant = seaiGrant(PANELS_ONLY_KWP);
 // A package with a 5 kWh+ battery draws the €600 battery grant on top: €2,400.
 const batteryPackageGrant = homeGrant(PANELS_ONLY_KWP, BATTERY_KWH);
-const SITE_NAME = "Solar Ireland";
+const SITE_NAME = "Solar Ireland Group";
 const SITE_DESCRIPTION =
   "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
 
@@ -46,7 +46,7 @@ const webPageSchema = {
       "@type": "WebPage",
       "@id": SITE_URL,
       // Matches the home <title> (src/app/page.tsx).
-      name: "Solar Panels Ireland | Free Bill Analysis | Solar Ireland",
+      name: "Solar Ireland Group | Solar Panels Ireland, Bill Analysis",
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       inLanguage: "en-IE",
@@ -161,7 +161,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to Get Solar Panels Installed in Ireland",
   description:
-    "A simple 3-step process to get solar panels installed on your Irish home with Solar Ireland, from free AI bill analysis to full installation.",
+    "A simple 3-step process to get solar panels installed on your Irish home with Solar Ireland Group, from free AI bill analysis to full installation.",
   totalTime: "P14D",
   estimatedCost: {
     "@type": "MonetaryAmount",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin | Solar Ireland",
+  title: "Admin | Solar Ireland Group",
   robots: { index: false, follow: false },
 };
 

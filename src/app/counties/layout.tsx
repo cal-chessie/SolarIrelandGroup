@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description:
       'Find trusted local solar panel installers in every county in Ireland. Compare prices, SEAI grants, and get a free solar survey near you.',
     url: 'https://solarirelandgroup.ie/counties',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-counties.png',
         width: 1152,
         height: 864,
-        alt: 'Solar Ireland - Solar Panel Installers in All 32 Counties',
+        alt: 'Solar Ireland Group - Solar Panel Installers in All 32 Counties',
       },
     ],
   },

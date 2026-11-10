@@ -163,7 +163,7 @@ export const SOLAR_DATA = {
     warrantyLabel: '25+ years',
   },
   provider: {
-    name: 'Solar Ireland',
+    name: 'Solar Ireland Group',
     phone: '+353 87 395 8424',
     phoneDisplay: '+353 87 395 8424',
     email: 'sales@solarirelandgroup.ie',

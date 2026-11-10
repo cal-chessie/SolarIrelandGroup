@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     type: 'website',
     locale: 'en_IE',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     images: [
       {
         url: '/og-financing.jpg',
@@ -79,7 +79,7 @@ function FinancingSchema() {
           },
           creator: {
             '@type': 'Organization',
-            name: 'Solar Ireland',
+            name: 'Solar Ireland Group',
             url: 'https://solarirelandgroup.ie',
           },
         }),

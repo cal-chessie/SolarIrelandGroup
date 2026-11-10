@@ -43,7 +43,7 @@ function PrivacyContent() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
+        Solar Ireland Group (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. We are committed to protecting
         your privacy and ensuring that any personal data we collect is processed lawfully, fairly, and
         transparently in accordance with the General Data Protection Regulation (GDPR) and the Data
@@ -260,7 +260,7 @@ function PrivacyContent() {
           </p>
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
-          Solar Ireland does not sell, rent, trade, or otherwise monetise your personal information.
+          Solar Ireland Group does not sell, rent, trade, or otherwise monetise your personal information.
           All third-party data sharing is strictly limited to what is necessary to deliver our solar
           installation services, comply with legal obligations, and protect your warranty. Every
           subcontractor and partner is bound by written data processing agreements that enforce GDPR
@@ -394,7 +394,7 @@ function PrivacyContent() {
           >
             sales@solarirelandgroup.ie
           </a>{' '}
-          or write to us at Solar Ireland, [Business Address], Ireland. We will acknowledge your request
+          or write to us at Solar Ireland Group, [Business Address], Ireland. We will acknowledge your request
           within 5 working days and respond substantively within 30 days. If your request is complex or
           involves a large volume of data, we may extend this by up to 60 days, in which case we will
           notify you within the initial 30-day period. We may ask for identification to verify your
@@ -559,7 +559,7 @@ function PrivacyContent() {
       </p>
 
       <p className="text-gray-400 leading-relaxed mb-4">
-        Our website and services are exclusively directed at adults aged 18 and over. Solar Ireland
+        Our website and services are exclusively directed at adults aged 18 and over. Solar Ireland Group
         provides residential and commercial solar panel installation services that require entering into
         legally binding contracts, which can only be done by adults. We do not knowingly collect,
         process, or store personal data from individuals under the age of 18.
@@ -1004,7 +1004,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
-              How Solar Ireland collects, uses, and protects your personal data
+              How Solar Ireland Group collects, uses, and protects your personal data
               in compliance with GDPR and Irish data protection law.
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 text-sm text-gray-600">
@@ -1207,7 +1207,7 @@ function PrivacyContentIntro() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
+        Solar Ireland Group (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. We are committed to protecting
         your privacy and ensuring that any personal data we collect is processed lawfully, fairly, and
         transparently in accordance with the General Data Protection Regulation (GDPR) and the Data
@@ -1381,7 +1381,7 @@ function PrivacyContentSection5() {
           <p className="text-sm text-green-400 font-semibold">We never sell your personal data - period.</p>
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
-          Solar Ireland does not sell, rent, trade, or otherwise monetise your personal information.
+          Solar Ireland Group does not sell, rent, trade, or otherwise monetise your personal information.
           All third-party data sharing is strictly limited to what is necessary to deliver our solar
           installation services, comply with legal obligations, and protect your warranty. Every
           subcontractor and partner is bound by written data processing agreements that enforce GDPR

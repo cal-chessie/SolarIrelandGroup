@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Solar Ireland | Solar Panel Installation",
-    short_name: "Solar Ireland",
+    name: "Solar Ireland Group | Solar Panel Installation",
+    short_name: "Solar Ireland Group",
     description:
       "SEAI-registered solar panel installers. Free AI-powered electricity bill analysis. Save up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland).",
     start_url: "/",

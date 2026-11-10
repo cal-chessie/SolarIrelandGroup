@@ -266,7 +266,7 @@ function TermsFAQ() {
     },
     {
       q: 'What happens if my SEAI grant application is declined?',
-      a: 'If your grant application is declined through no fault of Solar Ireland (e.g., you do not meet the eligibility criteria, or you previously received a grant for the same measure), you remain liable for the full contract price. We will assist you in understanding the reason for the decline and exploring alternative options.',
+      a: 'If your grant application is declined through no fault of Solar Ireland Group (e.g., you do not meet the eligibility criteria, or you previously received a grant for the same measure), you remain liable for the full contract price. We will assist you in understanding the reason for the decline and exploring alternative options.',
     },
     {
       q: 'How long does the installation process take?',
@@ -327,11 +327,11 @@ function TermsContentIntro() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
+        Solar Ireland Group (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is a SEAI-registered solar panel
         installation company operating across all 32 counties of Ireland. These Terms and Conditions
         (&quot;Terms&quot;) govern your use of our website{' '}
         <span className="text-amber-400 font-medium">solarirelandgroup.ie</span> and the provision of all
-        solar PV installation, battery storage, maintenance, and related services by Solar Ireland.
+        solar PV installation, battery storage, maintenance, and related services by Solar Ireland Group.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
         By requesting a quote, booking a survey, engaging our services, or continuing to use our website,
@@ -339,7 +339,7 @@ function TermsContentIntro() {
         agree with any part of these Terms, you must not use our services or website.
       </p>
       <p className="text-gray-400 leading-relaxed mb-4">
-        These Terms constitute a legally binding contract between you (&quot;Customer&quot;) and Solar Ireland
+        These Terms constitute a legally binding contract between you (&quot;Customer&quot;) and Solar Ireland Group
         once you sign a proposal or contract for installation services. They are governed by and construed
         in accordance with the laws of Ireland and are subject to the exclusive jurisdiction of the Irish
         courts. Nothing in these Terms affects your statutory rights as a consumer under Irish and European
@@ -362,7 +362,7 @@ function TermsContentServices() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland provides a comprehensive range of solar energy services for residential and
+        Solar Ireland Group provides a comprehensive range of solar energy services for residential and
         commercial properties throughout Ireland. Our services are delivered by qualified professionals
         in compliance with all relevant Irish and EU standards, regulations, and best practices.
       </p>
@@ -382,7 +382,7 @@ function TermsContentServices() {
           },
           {
             title: 'SEAI Grant Application Assistance',
-            desc: 'Guidance with grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. You apply online at mgen.seai.ie before any work starts, naming Solar Ireland as your installer. We check your eligibility, guide you through the application and, after the installation, send SEAI the completion paperwork. You book the post-works BER with a registered BER assessor, and we can help you find one. Grant terms and conditions are set by SEAI and are subject to change.',
+            desc: 'Guidance with grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. You apply online at mgen.seai.ie before any work starts, naming Solar Ireland Group as your installer. We check your eligibility, guide you through the application and, after the installation, send SEAI the completion paperwork. You book the post-works BER with a registered BER assessor, and we can help you find one. Grant terms and conditions are set by SEAI and are subject to change.',
           },
           {
             title: 'Energy Bill Analysis and System Sizing',
@@ -457,7 +457,7 @@ function TermsContentQuotes() {
           </p>
         </div>
         <p className="text-sm text-gray-500 leading-relaxed">
-          Every formal quote from Solar Ireland includes: all solar panels, inverter, mounting hardware,
+          Every formal quote from Solar Ireland Group includes: all solar panels, inverter, mounting hardware,
           wiring, monitoring equipment, scaffolding, labour, ESB NC6 notification, SEAI grant application
           guidance, the SEAI completion paperwork, system commissioning, and handover documentation.
           There are no hidden charges. Any additional work required due to unforeseen circumstances (e.g.,
@@ -477,17 +477,17 @@ function TermsContentSEAI() {
         The Sustainable Energy Authority of Ireland (SEAI) offers grants to support the installation of
         solar PV systems and battery storage in Irish homes. We assist our customers with SEAI grant
         applications as part of our service. You apply to SEAI yourself, online, before any work starts,
-        naming Solar Ireland as your installer. The following terms apply to grant-related matters:
+        naming Solar Ireland Group as your installer. The following terms apply to grant-related matters:
       </p>
 
       <Subsection>Grant Conditions</Subsection>
       <ul className="space-y-2.5 mb-6 ml-1">
         {[
-          'SEAI grants are administered by SEAI and are subject to their own terms and conditions, eligibility criteria, and availability, which may change at any time without notice from Solar Ireland.',
+          'SEAI grants are administered by SEAI and are subject to their own terms and conditions, eligibility criteria, and availability, which may change at any time without notice from Solar Ireland Group.',
           'Grant amounts are not guaranteed until SEAI formally approves your application and issues a grant offer letter. We provide guidance based on current scheme rules but cannot guarantee approval.',
           'Eligibility for SEAI grants depends on factors including when your home was built and occupied, its MPRN, and whether you have previously received a grant for the same measure under the same or a previous scheme.',
-          'Grant payments may be made directly to Solar Ireland on your behalf or to you directly, depending on the scheme rules and your preference. Payment timing is determined by SEAI.',
-          'Solar Ireland is not a party to the grant agreement between you and SEAI. Any disputes regarding grant eligibility, amounts, or payment must be resolved directly with SEAI.',
+          'Grant payments may be made directly to Solar Ireland Group on your behalf or to you directly, depending on the scheme rules and your preference. Payment timing is determined by SEAI.',
+          'Solar Ireland Group is not a party to the grant agreement between you and SEAI. Any disputes regarding grant eligibility, amounts, or payment must be resolved directly with SEAI.',
         ].map((item) => (
           <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400/50 mt-2 shrink-0" />
@@ -722,7 +722,7 @@ function TermsContentWarranty() {
 
       <Subsection>Workmanship Warranty</Subsection>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland provides a 5-year workmanship warranty on all installations. This covers defects
+        Solar Ireland Group provides a 5-year workmanship warranty on all installations. This covers defects
         in the installation of your solar PV system caused by poor workmanship, faulty materials supplied
         by us, or failure to comply with relevant standards (I.S. EN 62446, I.S. 10101, and NSAI standards).
       </p>
@@ -756,7 +756,7 @@ function TermsContentWarranty() {
           'Normal wear and tear, gradual degradation of solar panels and inverters within manufacturer tolerances',
           'Failure to carry out recommended maintenance, including regular panel cleaning',
           'Damage caused by animals, birds, or insects',
-          'Faults arising from modifications or repairs carried out by persons not authorised by Solar Ireland',
+          'Faults arising from modifications or repairs carried out by persons not authorised by Solar Ireland Group',
           'Issues caused by your electricity supplier, ESB Networks, or grid faults',
           'Cosmetic imperfections that do not affect system performance or safety',
         ].map((item) => (
@@ -815,7 +815,7 @@ function TermsContentResponsibilities() {
       <p className="text-gray-400 leading-relaxed mb-4">
         You are responsible for notifying your buildings insurance provider of the solar PV installation
         on your property. Most insurers do not increase premiums for solar panel installations, but you
-        must check your policy terms and inform your insurer as required. Solar Ireland maintains full
+        must check your policy terms and inform your insurer as required. Solar Ireland Group maintains full
           public liability insurance and employer&apos;s liability insurance for the duration of all works
         carried out on your property.
       </p>
@@ -941,7 +941,7 @@ function TermsContentCancellation() {
         >
           sales@solarirelandgroup.ie
         </a>{' '}
-        or by registered post to Solar Ireland, [Business Address], Ireland. The notice must clearly
+        or by registered post to Solar Ireland Group, [Business Address], Ireland. The notice must clearly
         state your intention to cancel and include your name, address, and contract reference number.
       </p>
 
@@ -982,7 +982,7 @@ function TermsContentCancellation() {
         ))}
       </div>
 
-      <Subsection>Cancellation by Solar Ireland</Subsection>
+      <Subsection>Cancellation by Solar Ireland Group</Subsection>
       <p className="text-gray-400 leading-relaxed mb-4">
         We reserve the right to cancel your installation contract in the following circumstances:
       </p>
@@ -1066,7 +1066,7 @@ function TermsContentChanges() {
   return (
     <>
       <p className="text-gray-400 leading-relaxed mb-4">
-        Solar Ireland reserves the right to modify these Terms at any time. Changes may be made to
+        Solar Ireland Group reserves the right to modify these Terms at any time. Changes may be made to
         reflect changes in our business practices, changes in applicable law or regulation, the
         introduction of new services, or for other operational reasons.
       </p>
@@ -1126,7 +1126,7 @@ function TermsContentContact() {
         })}
       </div>
       <p className="text-gray-400 leading-relaxed mb-4">
-        For formal complaints or dispute resolution, please contact us in writing at Solar Ireland,
+        For formal complaints or dispute resolution, please contact us in writing at Solar Ireland Group,
         [Business Address], Ireland. We aim to acknowledge all formal complaints within 2 working days
         and provide a substantive response within 10 working days. If your complaint is complex, we may
         take longer and will keep you informed of progress.
@@ -1164,7 +1164,7 @@ export default function TermsAndConditionsPage() {
             </h1>
             <p className="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
               The terms governing your solar PV installation, SEAI grants,
-              warranties, and services provided by Solar Ireland.
+              warranties, and services provided by Solar Ireland Group.
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 text-sm text-gray-600">
               <div className="flex items-center gap-1.5">

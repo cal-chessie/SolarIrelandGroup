@@ -8,8 +8,8 @@ import { parseIntakeQuery } from '@/lib/intake/open';
  * the website: the survey is agreed on the call.
  */
 export const metadata: Metadata = {
-  // 60 characters with the " | Solar Ireland" template; the description is 153.
-  title: 'Get Your Full Solar Estimate and a Free Call',
+  // Absolute, 54 characters: the " | Solar Ireland Group" suffix ran it to 66. The description is 153.
+  title: { absolute: 'Get Your Full Solar Estimate and a Free 15-Minute Call' },
   description:
     'Tell us your electricity bill and get your full solar estimate by email, then a free 15-minute call about your savings and the SEAI grant. No obligation.',
   alternates: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
       'Your full solar estimate by email from your electricity bill, then a free 15-minute phone call, not a visit. We ring you today, or first thing tomorrow if it is late.',
     url: 'https://solarirelandgroup.ie/book-survey',
     type: 'website',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
   },
   twitter: {

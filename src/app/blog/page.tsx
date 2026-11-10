@@ -39,7 +39,7 @@ const blogSchema = {
     {
       '@type': 'Blog',
       '@id': `${SITE_URL}/blog`,
-      name: 'Solar Ireland Blog',
+      name: 'Solar Ireland Group Blog',
       description:
         'Expert solar panel advice for Irish homeowners. SEAI grant guides, cost breakdowns, savings calculators, and county-specific solar tips.',
       url: `${SITE_URL}/blog`,

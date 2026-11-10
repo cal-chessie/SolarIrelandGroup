@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  // "Since 2019" is true: Cal founded Solar Ireland in 2019 (confirmed 9 Nov 2026).
-  title: { absolute: 'About Solar Ireland: SEAI-Registered Installers Since 2019' },
+  // "Since 2019" is true: Cal founded Solar Ireland Group in 2019 (confirmed 9 Nov 2026).
+  title: { absolute: 'About Solar Ireland Group: SEAI Installers Since 2019' },
   description:
-    "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland team.",
+    "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
   openGraph: {
-    title: 'About Solar Ireland: SEAI-Registered Installers Since 2019',
+    title: 'About Solar Ireland Group: SEAI-Registered Installers Since 2019',
     description:
-      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland team.",
+      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
     url: 'https://solarirelandgroup.ie/about',
-    siteName: 'Solar Ireland',
+    siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
     images: [
@@ -18,15 +18,15 @@ export const metadata: Metadata = {
         url: 'https://solarirelandgroup.ie/og-about.png',
         width: 1344,
         height: 768,
-        alt: 'Solar Ireland - About Us',
+        alt: 'Solar Ireland Group - About Us',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Solar Ireland: SEAI-Registered Installers Since 2019',
+    title: 'About Solar Ireland Group: SEAI-Registered Installers Since 2019',
     description:
-      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland team.",
+      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
     images: ['https://solarirelandgroup.ie/og-about.png'],
   },
   alternates: {
