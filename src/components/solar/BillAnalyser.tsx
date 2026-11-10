@@ -29,6 +29,7 @@ import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
+import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
 import { CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
 import { Spinner } from '@/components/intake/ui';
 import { CARRY_KEY, type AnalyserCarry } from '@/components/intake/carry';
@@ -37,7 +38,8 @@ import type { BillRead } from '@/lib/analyser/read';
 type Phase = 'door' | 'tips' | 'reading' | 'reveal' | 'failed' | 'done';
 type Failure = { reason: AnalyserFailure; partial: Partial<AnalyserRead> | null };
 
-const MAX_BYTES = 5 * 1024 * 1024;
+// Under Vercel's 4.5 MB body limit (M9): checked here, before a byte is sent.
+const MAX_BYTES = MAX_UPLOAD_BYTES;
 const TIPS_KEY = 'si-camera-tips-seen';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -112,7 +114,7 @@ const FAIL_COPY: Record<AnalyserFailure, { title: string; line: string }> = {
   offline: { title: 'Our bill reader is having a rest.', line: 'Three quick questions get you the same estimate.' },
   unreadable: { title: "We couldn't read that one clearly.", line: 'It happens with photos taken at an angle or in low light.' },
   not_bill: { title: "That doesn't look like an electricity bill.", line: "We need the one with your units (kWh) on it. Gas bills won't work." },
-  too_big: { title: 'That file is too big for us.', line: 'A photo, a screenshot or a PDF under 5 MB works.' },
+  too_big: { title: 'That file is too big for us.', line: TOO_BIG_LINE },
   wrong_type: { title: "We can't open that type of file.", line: 'A photo, a screenshot or a PDF works.' },
   timeout: { title: 'This is taking longer than it should.', line: 'Your bill may be very long. Try a photo of just the page with your units.' },
   rate_limited: { title: 'Give us a minute.', line: "You've sent a few bills quickly. Try again shortly, or answer 3 questions now." },
@@ -372,6 +374,8 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     const r = await upload(file, (p) => run === runRef.current && setProgress(p), () => run === runRef.current && setStage('reading'));
     if (run !== runRef.current) return;
     const d = r.data;
+    // 413: the platform refused the size before our route ran (its body is not ours).
+    if (r.status === 413) return fail('too_big');
     if (r.status === 0 || !d) return fail('offline');
     if (!d.ok) return fail(d.reason, d.partial ?? null);
     // The peak line rides beside the contract's fields; an older reader may not send it.

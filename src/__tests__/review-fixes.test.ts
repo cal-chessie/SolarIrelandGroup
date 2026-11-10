@@ -269,3 +269,50 @@ describe('keys out of URLs and analytics (M6)', () => {
     expect(typeof site.POST).toBe('function');
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  M9: upload size and type                                            */
+/* ------------------------------------------------------------------ */
+
+describe('bill uploads (M9)', () => {
+  const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0]);
+  const PDF = new TextEncoder().encode('%PDF-1.7\n');
+  const JPG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0]);
+  const HEIC = new Uint8Array([0, 0, 0, 0x18, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63]);
+  it('sniffs PDF, JPEG, PNG and HEIC, and nothing else', async () => {
+    const { sniffType } = await import('@/lib/intake/upload');
+    expect(sniffType(PDF)).toBe('application/pdf');
+    expect(sniffType(JPG)).toBe('image/jpeg');
+    expect(sniffType(PNG)).toBe('image/png');
+    expect(sniffType(HEIC)).toBe('image/heic');
+    expect(sniffType(new TextEncoder().encode('<html><script>'))).toBeNull();
+  });
+  it('the cap sits under Vercel\'s 4.5 MB body limit', async () => {
+    const { MAX_UPLOAD_BYTES } = await import('@/lib/intake/upload');
+    expect(MAX_UPLOAD_BYTES).toBeLessThan(4.5 * 1024 * 1024);
+    expect(MAX_UPLOAD_BYTES).toBeGreaterThan(4.3 * 1024 * 1024);
+  });
+  const post = async (file: File) => {
+    const form = new FormData();
+    form.append('bill', file);
+    const { POST } = await import('@/app/api/intake/bill/route');
+    return POST(new Request('http://localhost/api/intake/bill', { method: 'POST', body: form, headers: { 'x-forwarded-for': `203.0.113.${Math.floor(Math.random() * 200)}` } }));
+  };
+  it('/api/intake/bill: an empty type is refused unless the bytes say a bill format', async () => {
+    process.env.INTAKE_CONTRACT_MODE = 'stub';
+    const bad = await post(new File([new TextEncoder().encode('<html>')], 'x', { type: '' }));
+    expect(bad.status).toBe(415);
+    expect(await bad.json()).toMatchObject({ ok: false, reason: 'wrong_type' });
+    const good = await post(new File([PNG], 'bill', { type: '' }));
+    expect(good.status).toBe(200);
+  });
+  it('/api/intake/bill: over the cap is a 413 with too_large', async () => {
+    process.env.INTAKE_CONTRACT_MODE = 'stub';
+    const { MAX_UPLOAD_BYTES } = await import('@/lib/intake/upload');
+    const big = new Uint8Array(MAX_UPLOAD_BYTES + 1);
+    big.set(JPG);
+    const res = await post(new File([big], 'bill.jpg', { type: 'image/jpeg' }));
+    expect(res.status).toBe(413);
+    expect(await res.json()).toMatchObject({ reason: 'too_large' });
+  });
+});

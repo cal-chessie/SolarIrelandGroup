@@ -39,6 +39,7 @@ import { setIntakeOpen, useCookieBannerVisible } from '@/lib/bottomLayer';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
 import { CallAsk, CallDone, callDoneCopy, type CallDetails } from './CallAsk';
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
@@ -146,7 +147,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const [sheetOpen, setSheetOpen] = useState(false);
   const [sharpKwh, setSharpKwh] = useState('');
   const [sharpKwhError, setSharpKwhError] = useState<string | null>(null);
-  const [photo, setPhoto] = useState<{ status: 'idle' | 'reading' | 'unreadable' | 'error'; preview: string | null; where: 'bill' | 'time' }>({
+  const [photo, setPhoto] = useState<{ status: 'idle' | 'reading' | 'unreadable' | 'error' | 'too_large'; preview: string | null; where: 'bill' | 'time' }>({
     status: 'idle',
     preview: null,
     where: 'bill',
@@ -740,6 +741,13 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const onPhotoPicked = async (file: File | undefined, where: 'bill' | 'time') => {
     if (!file) return;
+    // Over the upload cap: say so before a byte is sent (M9).
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setPhoto({ status: 'too_large', preview: null, where });
+      track('intake_photo', { result: 'too_large' });
+      funnel('read_fail', { door: 'intake', reason: 'too_large' });
+      return;
+    }
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null;
     setPhoto({ status: 'reading', preview, where });
     track('intake_photo', { result: 'started' });
@@ -748,7 +756,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const r = await readBillPhoto(file);
     if (preview) URL.revokeObjectURL(preview);
     if (!r.ok) {
-      setPhoto({ status: r.reason === 'unreadable' ? 'unreadable' : 'error', preview: null, where });
+      setPhoto({ status: r.reason === 'unreadable' ? 'unreadable' : r.reason === 'too_large' ? 'too_large' : 'error', preview: null, where });
       track('intake_photo', { result: 'failed', ms: Date.now() - started });
       funnel('read_fail', { door: 'intake', reason: r.reason });
       // The row changes in place; nothing ever sits under the bar (ui-spec 4.5).
@@ -967,7 +975,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         </div>
       );
     }
-    const failed = (photo.status === 'unreadable' || photo.status === 'error') && here;
+    const tooBig = photo.status === 'too_large' && here;
+    const failed = (photo.status === 'unreadable' || photo.status === 'error' || photo.status === 'too_large') && here;
     return (
       <div ref={photoRowRef}>
         <button type="button" className="si-photo" data-state={failed ? 'unreadable' : 'idle'} onClick={() => fileRef.current?.click()}>
@@ -976,10 +985,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </span>
           <span className="si-photo__text">
             <span className="si-photo__title">
-              {failed ? "We couldn't read that one clearly" : where === 'bill' ? 'Or add a photo of your bill' : 'Use a photo of your bill'}
+              {tooBig ? 'That file is too big for us' : failed ? "We couldn't read that one clearly" : where === 'bill' ? 'Or add a photo of your bill' : 'Use a photo of your bill'}
             </span>
             <span className="si-photo__line">
-              {failed
+              {tooBig
+                ? TOO_BIG_LINE
+                : failed
                 ? draft.bill != null
                   ? 'Try another photo. Until then we use the amount you gave us.'
                   : 'Try another photo, or type the amount.'

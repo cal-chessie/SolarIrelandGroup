@@ -135,6 +135,8 @@ export async function readBillPhoto(file: File): Promise<BillReadResponse> {
   const form = new FormData();
   form.append('bill', file);
   const r = await call<BillReadResponse>('/api/intake/bill', { method: 'POST', body: form, timeoutMs: 50000 });
+  // 413: too big, whether our route or the platform said it (its body is not ours).
+  if (r.status === 413) return { ok: false, reason: 'too_large' };
   if (r.data && typeof r.data === 'object' && 'ok' in r.data) return r.data;
   return { ok: false, reason: 'unavailable' };
 }

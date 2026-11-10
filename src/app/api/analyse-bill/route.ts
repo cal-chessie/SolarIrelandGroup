@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { AnalyserFailure, AnalyserRead, AnalyserResponse } from '@/lib/intake/contract';
+import { billFileType, MAX_UPLOAD_BYTES } from '@/lib/intake/upload';
 import { intakeMode } from '@/lib/intake/mode';
 import { scenarioOf, sleep } from '@/lib/intake/stub/state';
 import { ANALYSER_PROMPT, anonymousOf, canPrice, isNotABill, toAnalyserRead } from '@/lib/analyser/read';
@@ -46,7 +47,8 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
+// Under Vercel's 4.5 MB body limit, so this route's own answer is what the homeowner sees (M9).
+const MAX_FILE_BYTES = MAX_UPLOAD_BYTES;
 const TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'application/pdf']);
 const READ_TIMEOUT_MS = 45_000;
 
@@ -94,8 +96,9 @@ export async function POST(request: Request) {
   }
   if (!file) return fail('unreadable', 400);
   if (file.size > MAX_FILE_BYTES) return fail('too_big', 413);
-  const mime = (file.type || 'image/jpeg').toLowerCase();
-  if (!TYPES.has(mime)) return fail('wrong_type', 415);
+  // An empty type is taken only when the magic bytes say PDF, JPEG, PNG or HEIC (M9), never assumed JPEG.
+  const mime = await billFileType(file, TYPES);
+  if (!mime) return fail('wrong_type', 415);
 
   if (intakeMode() === 'stub') {
     // The bytes are not read, not kept and not sent anywhere.

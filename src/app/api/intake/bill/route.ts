@@ -4,6 +4,7 @@ import { liveConfig } from '@/lib/intake/live/config';
 import { readBillWithVision, toBillRead } from '@/lib/intake/live/billRead';
 import { scenarioOf, sleep } from '@/lib/intake/stub/state';
 import type { BillReadResponse, IntakeConfig } from '@/lib/intake/contract';
+import { billFileType, MAX_UPLOAD_BYTES } from '@/lib/intake/upload';
 
 /**
  * POST /api/intake/bill  (multipart, field "bill")
@@ -40,9 +41,12 @@ export async function POST(request: Request) {
   } catch {
     file = null;
   }
-  if (!file) return json({ ok: false, reason: 'unreadable' } satisfies BillReadResponse, 400);
-  if (file.size > 5 * 1024 * 1024) return json({ ok: false, reason: 'too_large' } satisfies BillReadResponse, 400);
-  if (file.type && !TYPES.has(file.type)) return json({ ok: false, reason: 'wrong_type' } satisfies BillReadResponse, 400);
+  if (!file || file.size === 0) return json({ ok: false, reason: 'unreadable' } satisfies BillReadResponse, 400);
+  if (file.size > MAX_UPLOAD_BYTES) return json({ ok: false, reason: 'too_large' } satisfies BillReadResponse, 413);
+  // An empty type is taken only when the magic bytes say PDF, JPEG, PNG or HEIC (M9).
+  const type = await billFileType(file, TYPES);
+  if (!type) return json({ ok: false, reason: 'wrong_type' } satisfies BillReadResponse, 415);
+  if (file.type !== type) file = new File([await file.arrayBuffer()], file.name || 'bill', { type });
 
   if (env) {
     const cfg = await liveConfig(env, request);
