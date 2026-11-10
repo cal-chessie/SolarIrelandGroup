@@ -30,6 +30,38 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
 
   /* ═══════════════════════════════════════════════════════════════
+     COUNTY SLUGS AT THE ROOT
+     Google found /limerick and /kildare as 404s (Search Console, 10 Nov
+     2026). Every Irish county slug at the root now 308s to its county page
+     where one exists, otherwise to the /counties directory.
+     ═══════════════════════════════════════════════════════════════ */
+  async redirects() {
+    const countyPages = new Set(["roscommon"]);
+    const counties = [
+      "antrim", "armagh", "carlow", "cavan", "clare", "cork", "derry",
+      "donegal", "down", "dublin", "fermanagh", "galway", "kerry", "kildare",
+      "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo",
+      "meath", "monaghan", "offaly", "roscommon", "sligo", "tipperary",
+      "tyrone", "waterford", "westmeath", "wexford", "wicklow",
+    ];
+    return [
+      ...counties.map((county) => ({
+        source: `/${county}`,
+        destination: countyPages.has(county) ? `/counties/${county}` : "/counties",
+        permanent: true,
+      })),
+      // Search Console also found https://solarirelandgroup.ie/$ as a 404. No
+      // link of ours makes it: React's inline Suspense streaming script (the
+      // $RC helper Next.js puts in every streamed page) contains the string
+      // "/$" (it compares comment markers, `"/$"===d`), and Googlebot reads
+      // quoted "/..." strings in inline scripts as URLs. The script is React's,
+      // so the URL is answered instead: a permanent redirect home.
+      { source: "/$", destination: "/", permanent: true },
+      { source: "/%24", destination: "/", permanent: true },
+    ];
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
      HTTP SECURITY HEADERS — Hardened for 2026
      ═══════════════════════════════════════════════════════════════ */
   async headers() {
