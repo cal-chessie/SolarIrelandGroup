@@ -2118,6 +2118,8 @@ export const articles: Article[] = [
     "iconColor": "text-amber-400",
     "image": "/blog/IMG_2092.JPG",
     "content": [
+      {"type": "heading", "level": 2, "text": "Every SEAI solar grant in one line"},
+      {"type": "bulletList", "items": ["The SEAI solar grant pays a home up to €1,800 for solar panels: €700 per kWp to 2 kWp, then €200 per kWp to 4 kWp ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant)).", "The SEAI battery grant pays a flat €600 for a home battery of 5 kWh or more, so solar and battery together reach €2,400 ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/battery)); more in [the €600 battery grant explained](/blog/seai-battery-grant-600-explained).", "The SEAI Non-Domestic Microgen Grant pays a business up to €325,200 for applications from 6 October 2026 to 6 July 2027, at the lower of the table or 45% of cost ([seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)); see [the commercial solar grant](/commercial-solar-grant).", "Homeowners on the Fuel Allowance can get SEAI's higher grant for qualifying welfare payments: up to €8,400 for solar panels and €600 for a battery, up to €9,000 in all ([SEAI Solar PV Scheme Application Guide](https://www.seai.ie/sites/default/files/2026-10/Solar-PV-Scheme-Application-Guide.pdf))."]},
       {
         "type": "heading",
         "level": 2,
