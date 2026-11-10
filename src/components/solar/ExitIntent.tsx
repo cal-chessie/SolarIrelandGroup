@@ -46,6 +46,8 @@ import {
   Award,
   FileCheck,
   MessageCircle,
+  Percent,
+  LayoutDashboard,
   type LucideIcon,
 } from 'lucide-react';
 import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
@@ -55,6 +57,7 @@ import { eur } from '@/lib/intake/format';
 import { EXIT_KEYS, exitMayOpen, readExitState, type ExitTrigger } from '@/lib/intake/exitGate';
 import { billBand, funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { estimate } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import '@/components/intake/intake.css';
 
@@ -64,6 +67,11 @@ const FALLBACK_CHIPS = { domestic: [80, 120, 160, 220, 300], commercial: [300, 6
 /* The SEAI home charger grant, as the site already states it (services page,
    seai.ie, read 18 Oct 2026). */
 const CHARGER_GRANT = 'up to €300';
+
+/* "A typical 3-bed semi saves about ..." (Cal, 11 Nov): the one engine on the
+   same input the site's 3-bed semi guide uses (4,200 kWh a year), never a
+   typed figure. Rounded to the nearest €10. */
+const TYPICAL_SEMI_SAVING = Math.round(estimate({ annualUsageKwh: 4200, homeId: 'semi' }).totalAnnualBenefitEur / 10) * 10;
 
 type Interest = 'solar' | 'ev' | 'both';
 const INTERESTS: { v: Interest; t: string; d: string; icon: LucideIcon; tone: 'yellow' | 'green' }[] = [
@@ -85,6 +93,8 @@ const TRUST: { icon: LucideIcon; label: string; color: string }[] = [
   { icon: Check, label: '5-year workmanship', color: 'text-sky-400/70' },
   { icon: FileCheck, label: 'We book your BER', color: 'text-violet-400/70' },
 ];
+/* Homes only: business solar is not zero-rated (Cal, 11 Nov). */
+const HOME_VAT = { icon: Percent, label: '0% VAT on solar for homes', color: 'text-sky-400/70' };
 
 function flowId(): string {
   const b = new Uint8Array(8);
@@ -326,6 +336,7 @@ export default function ExitIntent() {
   const hi = Math.max(low ?? 0, high ?? 0);
   const at = ORDER.indexOf(stage);
   const back = at > 0 && stage !== 'done' ? ORDER[at - 1] : null;
+  const trust = segment === 'domestic' && stage !== 'segment' ? [...TRUST, HOME_VAT] : TRUST;
   const questions = stage === 'segment' || stage === 'interest' || stage === 'bill' || stage === 'extras';
 
   const head = (white: ReactNode, yellow: ReactNode) => (
@@ -380,7 +391,15 @@ export default function ExitIntent() {
       <>
         <div className="exit-intent-el exit-intent-el-1 mb-4">
           {head("What are you", "after?")}
-          <p className="text-sm text-gray-400 leading-relaxed">Pick one. A charger on its own is fine.</p>
+          <p className="text-sm text-gray-400 leading-relaxed">
+            Pick one. A charger on its own is fine.
+            {isBiz ? null : (
+              <>
+                {' '}
+                A typical 3-bed semi saves about <span className="text-gray-300 font-medium">{eur(TYPICAL_SEMI_SAVING)} a year</span> with panels.
+              </>
+            )}
+          </p>
         </div>
         <div className="exit-intent-el exit-intent-el-2 space-y-2 mb-4">
           {INTERESTS.map((x) => (
@@ -527,15 +546,26 @@ export default function ExitIntent() {
             </p>
           )}
         </div>
-        <div className="exit-intent-el exit-intent-el-2 flex items-center gap-2 mb-5 flex-wrap">
-          {TRUST.map(({ icon: Icon, label, color }) => (
+        {isBiz ? null : (
+          <div className="exit-intent-el exit-intent-el-2 group flex items-start gap-3.5 p-3.5 mb-4 rounded-xl bg-white/[0.015] border border-white/[0.05]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400/10 to-yellow-500/[0.05] border border-yellow-400/10 flex items-center justify-center shrink-0">
+              <LayoutDashboard className="w-[18px] h-[18px] text-yellow-400" aria-hidden="true" />
+            </div>
+            <div>
+              <h3 className="text-[13px] font-bold text-white mb-0.5">Track your project in real time</h3>
+              <p className="text-xs text-gray-400 leading-relaxed">Your project page shows each step, from survey to switch-on.</p>
+            </div>
+          </div>
+        )}
+        <div className="exit-intent-el exit-intent-el-3 flex items-center gap-2 mb-5 flex-wrap">
+          {trust.map(({ icon: Icon, label, color }) => (
             <div key={label} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
               <Icon className={`w-3 h-3 ${color}`} aria-hidden="true" />
               <span className="text-[10px] text-gray-400 font-medium">{label}</span>
             </div>
           ))}
         </div>
-        <div className="exit-intent-el exit-intent-el-3">
+        <div className="exit-intent-el exit-intent-el-4">
           <button
             type="button"
             className={ctaClass}
@@ -703,7 +733,7 @@ export default function ExitIntent() {
 
           {questions ? (
             <div className="exit-intent-el exit-intent-el-5 flex items-center gap-2 mt-1 mb-1 flex-wrap">
-              {TRUST.map(({ icon: Icon, label, color }) => (
+              {trust.map(({ icon: Icon, label, color }) => (
                 <div key={label} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
                   <Icon className={`w-3 h-3 ${color}`} aria-hidden="true" />
                   <span className="text-[10px] text-gray-400 font-medium">{label}</span>
