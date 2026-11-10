@@ -111,7 +111,8 @@ export default function Hero() {
             >
               Upload your electricity bill and our AI will show you exactly what
               solar will save you. We handle the survey and the install,
-              and guide you through your <strong className="text-white font-semibold">{SOLAR_DATA.grant.label} SEAI grant (ROI)</strong>.
+              and guide you through your <strong className="text-white font-semibold">SEAI grant (ROI) of up to {SOLAR_DATA.batteryGrant.withSolarMaxLabel}</strong>:{' '}
+              {SOLAR_DATA.grant.label} for solar plus {SOLAR_DATA.batteryGrant.label} for a battery of {SOLAR_DATA.batteryGrant.minLabel}.
             </p>
 
             <div
