@@ -46,6 +46,9 @@ interface CountyData {
   tagline: string;
 }
 
+// costMin 8400 on the city cards (Dublin, Cork, Limerick, Waterford, Galway)
+// is Cal's deliberate city rate, confirmed 11 Nov 2026. It is meant to differ
+// from the 4 kWp floor price elsewhere on the site. Do not "fix" it to match.
 const counties: CountyData[] = [
   { name: 'Dublin', provinces: ['Leinster'], domain: 'solardublin.ie', status: 'active', costMin: 8400, costMax: 12800, generationKwh: 3560, population: '1.45M', tagline: 'From Sandymount to Swords - terraces to estates, we know every roof' },
   { name: 'Wicklow', provinces: ['Leinster'], domain: 'solarwicklow.ie', status: 'active', costMin: 8200, costMax: 12400, generationKwh: 3520, population: '155K', tagline: 'The Garden County - stunning scenery and serious solar potential' },
