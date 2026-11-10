@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     canonical: 'https://solarirelandgroup.ie/book-survey',
   },
   openGraph: {
-    title: 'Get Your Full Solar Estimate and a Free Call',
+    title: 'Get Your Full Solar Estimate and a Free 15-Minute Call',
     description:
       'Your full solar estimate by email from your electricity bill, then a free 15-minute phone call, not a visit. We ring you today, or first thing tomorrow if it is late.',
     url: 'https://solarirelandgroup.ie/book-survey',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Get Your Full Solar Estimate and a Free Call',
+    title: 'Get Your Full Solar Estimate and a Free 15-Minute Call',
     description: 'Your full solar estimate by email, then a free 15-minute call about your savings and the SEAI grant. No obligation.',
   },
 };

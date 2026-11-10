@@ -4,11 +4,11 @@ export const metadata: Metadata = {
   // "Since 2019" is true: Cal founded Solar Ireland Group in 2019 (confirmed 9 Nov 2026).
   title: { absolute: 'About Solar Ireland Group: SEAI Installers Since 2019' },
   description:
-    "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
+    "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the people behind it.",
   openGraph: {
-    title: 'About Solar Ireland Group: SEAI-Registered Installers Since 2019',
+    title: 'About Solar Ireland Group: SEAI Installers Since 2019',
     description:
-      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
+      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the people behind it.",
     url: 'https://solarirelandgroup.ie/about',
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Solar Ireland Group: SEAI-Registered Installers Since 2019',
+    title: 'About Solar Ireland Group: SEAI Installers Since 2019',
     description:
-      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the Solar Ireland Group team.",
+      "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the people behind it.",
     images: ['https://solarirelandgroup.ie/og-about.png'],
   },
   alternates: {

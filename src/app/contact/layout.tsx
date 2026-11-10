@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   // contact title says estimate. No "15-minute call" wording.
   title: { absolute: 'Contact Solar Ireland Group | Free Estimate From Your Bill' },
   description:
-    'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+    'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Front desk open 24/7.',
   openGraph: {
-    title: 'Contact Solar Ireland Group | Free Solar Estimate From Your Bill',
+    title: 'Contact Solar Ireland Group | Free Estimate From Your Bill',
     description:
-      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Front desk open 24/7.',
     url: 'https://solarirelandgroup.ie/contact',
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Solar Ireland Group | Free Solar Estimate From Your Bill',
+    title: 'Contact Solar Ireland Group | Free Estimate From Your Bill',
     description:
-      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Our front desk answers 24/7.',
+      'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Front desk open 24/7.',
     images: ['https://solarirelandgroup.ie/og-contact.png'],
   },
   alternates: {
