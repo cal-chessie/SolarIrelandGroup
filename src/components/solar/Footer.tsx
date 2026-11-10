@@ -501,6 +501,13 @@ export default function Footer() {
             >
               Cookie Policy
             </a>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('cookie-consent-open-settings'))}
+              className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors"
+            >
+              Cookie settings
+            </button>
             <BackToTop />
           </div>
         </div>

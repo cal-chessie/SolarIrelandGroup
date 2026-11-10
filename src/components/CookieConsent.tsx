@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useId, type ReactNode } from 'react';
-import { Cookie, X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
+import { X, ChevronRight, Shield, BarChart3, Megaphone, Check } from 'lucide-react';
 import { trackConsentDecision } from '@/lib/analytics';
 import { setCookieBannerVisible } from '@/lib/bottomLayer';
 
@@ -282,28 +282,8 @@ function CategoryRow({
 }
 
 
-function FloatingCookieButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="
-        cookie-settings-fab
-        fixed bottom-24 right-6 z-[45]
-        flex h-11 w-11 items-center justify-center
-        rounded-full
-        bg-white/[0.06] border border-white/[0.08]
-        text-white/70 hover:text-amber-400 hover:bg-white/[0.08] hover:border-white/[0.12]
-        transition-all duration-300 ease-out
-        cursor-pointer
-        group
-      "
-      aria-label="Cookie settings"
-    >
-      <Cookie className="w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110" />
-    </button>
-  );
-}
+// The floating round cookie button is gone (Cal, 11 Nov): on phones it sat
+// over CTAs. "Cookie settings" in the footer reopens the choice.
 
 
 export default function CookieConsent() {
@@ -343,9 +323,14 @@ export default function CookieConsent() {
   }, []);
 
   useEffect(() => {
+    // "Cookie settings" (footer, intake) reopens the choice after one was made.
+    // It used to set the settings flags only, which drew nothing once the
+    // banner was dismissed; the floating cookie button did the reopening.
     const handler = () => {
       setShowSettingsOnly(true);
       setShowSettings(true);
+      setIsDismissed(false);
+      setVisible(true);
     };
     window.addEventListener('cookie-consent-open-settings', handler);
     return () => window.removeEventListener('cookie-consent-open-settings', handler);
@@ -413,63 +398,54 @@ export default function CookieConsent() {
     setShowSettings(false);
   }, []);
 
+  // The intake's own cookie line (IntakeApp, shown while the intake owns the
+  // screen) sends its Accept / Essential only here. Nothing listened before.
+  useEffect(() => {
+    const onAction = (e: Event) => {
+      const what = (e as CustomEvent).detail;
+      if (what === 'accept') handleAcceptAll();
+      else if (what === 'reject') handleRejectAll();
+    };
+    window.addEventListener('sig:cookie-action', onAction);
+    return () => window.removeEventListener('sig:cookie-action', onAction);
+  }, [handleAcceptAll, handleRejectAll]);
+
   if (!isHydrated) return null;
 
   return (
     <>
       {!isDismissed && visible && (
+        /* A slim bar on phones, a small bottom-left card from sm up (Cal, 11 Nov).
+           No backdrop and no modal: the page scrolls and stays tappable behind
+           it. Reject and Accept are the same size and weight, side by side
+           (Irish DPC guidance), nothing pre-ticked. intake.css hides it while
+           the intake or the analyser owns the bottom of a phone screen. */
         <div
-          className={`
-            fixed bottom-0 left-0 right-0 z-[60]
-            transition-all duration-500 ease-out
-            ${isDismissed ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
-          `}
-          role="dialog"
+          className="cookie-banner-root pointer-events-none fixed inset-x-0 bottom-0 z-[60] sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-[22rem]"
+          role="region"
           aria-label="Cookie consent"
-          aria-modal="false"
         >
-          <div className="pointer-events-none h-8 sm:h-12 bg-gradient-to-t from-black/40 to-transparent" />
-
-          <div className="pointer-events-none absolute inset-0 -top-12 bg-black/40" />
-
-          <div className="relative mx-auto max-w-2xl px-3 pb-3 sm:px-4 sm:pb-6">
-            <div
-              className={`
-                cookie-banner-card
-                rounded-2xl border border-white/[0.08]
-                bg-[#111111]/95 p-3.5 sm:p-6
-                shadow-[0_8px_60px_-15px_rgba(0,0,0,0.8)]
-                transition-all duration-500 ease-out
-              `}
-            >
+          <div
+            className="cookie-banner-card pointer-events-auto max-h-[85vh] overflow-y-auto border-t border-white/[0.08] bg-[#111111]/95 backdrop-blur-md px-4 pt-3 shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.7)] sm:rounded-2xl sm:border sm:p-4"
+            style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
+          >
               <div className="flex items-start gap-3">
-                <div className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yellow-500/10 text-yellow-400 mt-0.5">
-                  <Cookie className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-white/90 flex items-center gap-2">
-                    <span className="sm:hidden">Cookies</span>
-                    <span className="hidden sm:inline">We value your privacy</span>
-                    <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-400">
-                      <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-green-400" />
-                      GDPR
-                    </span>
-                  </h3>
-                  {/* The long version is fine on a desktop column; on a phone
-                      it pushed the whole hero off the screen. */}
-                  <p className="hidden sm:block text-sm text-white/70 mt-1 leading-relaxed">
-                    We use cookies to enhance your experience, analyse site traffic, and personalise content.
-                    You can choose which cookies to allow.{' '}
-                    <span className="text-yellow-400/90">Necessary cookies</span> keep the site working.
-                  </p>
-                  <p className="sm:hidden text-[13px] text-white/70 mt-1 leading-snug">
-                    We use cookies to improve the site. You choose which.
-                  </p>
-                </div>
+                <p className="flex-1 min-w-0 text-[13px] sm:text-sm text-white/80 leading-snug">
+                  We use cookies to see which pages help. Your choice.{' '}
+                  {!showSettings && !showSettingsOnly && (
+                    <button
+                      type="button"
+                      onClick={handleOpenSettings}
+                      className="text-amber-400 underline underline-offset-2 hover:text-amber-300"
+                    >
+                      Settings
+                    </button>
+                  )}
+                </p>
                 {showSettingsOnly && (
                   <button
                     onClick={handleCloseSettingsOnly}
-                    className="shrink-0 p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                    className="shrink-0 -m-1.5 p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />
@@ -478,57 +454,20 @@ export default function CookieConsent() {
               </div>
 
               {!showSettings && !showSettingsOnly && (
-                <div
-                  className="
-                    cookie-buttons-compact
-                    mt-3 sm:mt-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3
-                  "
-                >
-                  <button
-                    type="button"
-                    onClick={handleAcceptAll}
-                    className="
-                      cookie-btn-accept
-                      flex-1 flex items-center justify-center gap-2
-                      rounded-xl bg-amber-500 px-3 sm:px-5 py-2.5 sm:py-3
-                      text-sm font-semibold text-black
-                      hover:bg-amber-400 active:scale-[0.98]
-                      transition-all duration-200 ease-out cursor-pointer
-                    "
-                  >
-                    <Check className="w-4 h-4" />
-                    Accept All Cookies
-                  </button>
-
+                <div className="mt-2.5 grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={handleRejectAll}
-                    className="
-                      cookie-btn-reject
-                      flex-1 flex items-center justify-center gap-2
-                      rounded-xl border border-white/10 bg-white/[0.03]
-                      px-3 sm:px-5 py-2.5 sm:py-3 text-sm font-medium text-white/60
-                      hover:bg-white/[0.06] hover:text-white/80 active:scale-[0.98]
-                      transition-all duration-200 ease-out cursor-pointer
-                    "
+                    className="cookie-btn-reject min-h-11 rounded-xl bg-white px-3 text-sm font-semibold text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-200 cursor-pointer"
                   >
-                    Reject All
+                    Reject
                   </button>
-
                   <button
                     type="button"
-                    onClick={handleOpenSettings}
-                    className="
-                      cookie-btn-manage
-                      flex items-center justify-center gap-2
-                      rounded-xl border border-white/[0.06] bg-transparent
-                      px-3 sm:px-5 py-2.5 sm:py-3 text-sm font-medium text-white/70
-                      hover:text-amber-400 hover:border-amber-500/20 active:scale-[0.98]
-                      transition-all duration-200 ease-out cursor-pointer
-                    "
+                    onClick={handleAcceptAll}
+                    className="cookie-btn-accept min-h-11 rounded-xl bg-amber-400 px-3 text-sm font-semibold text-black hover:bg-amber-300 active:scale-[0.98] transition-all duration-200 cursor-pointer"
                   >
-                    <Cookie className="w-4 h-4" />
-                    <span className="text-xs sm:text-sm">Manage</span>
+                    Accept
                   </button>
                 </div>
               )}
@@ -612,21 +551,10 @@ export default function CookieConsent() {
                   </p>
                 </div>
               )}
-            </div>
           </div>
         </div>
       )}
 
-      {isHydrated && isDismissed && !showSettingsOnly && (
-        <FloatingCookieButton
-          onClick={() => {
-            setShowSettingsOnly(true);
-            setVisible(true);
-            setIsDismissed(false);
-            setShowSettings(true);
-          }}
-        />
-      )}
     </>
   );
 }
