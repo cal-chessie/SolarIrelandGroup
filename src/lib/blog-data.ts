@@ -47,6 +47,7 @@ export const articles: Article[] = [
     "excerpt": "Yes - solar lifts your BER, cuts running costs, and appeals to buyers who now read the energy rating first. The honest picture on how much value it adds, and why the bigger return happens while you still live there.",
     "category": "savings",
     "date": "13 Sep 2026",
+    "updated": "10 Nov 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -97,7 +98,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Here is the part people miss when they focus only on resale. A typical Irish system saves **€800-1,400 a year** on electricity and pays for itself in 5-7 years, with the €1,800 SEAI grant and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay."
+        "text": "Here is the part people miss when they focus only on resale. A typical Irish system saves **€800-1,400 a year** on electricity and pays for itself in 5-7 years, with the €1,800 SEAI grant and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "callout",
@@ -210,7 +211,7 @@ export const articles: Article[] = [
     "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -218,7 +219,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 5-7 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill."
+        "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 5-7 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "heading",
@@ -522,7 +523,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. The Solar PV grant is worth up to **€1,800**. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026). A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "callout",
@@ -706,7 +707,7 @@ export const articles: Article[] = [
     "excerpt": "MPRN, day and night rates, standing charges and kWh: how to read an Irish electricity bill in 2026, and what the day/night split tells you about solar.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "16 Oct 2026",
+    "updated": "10 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -948,7 +949,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in."
+        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "heading",
@@ -995,7 +996,7 @@ export const articles: Article[] = [
     "excerpt": "Yes. Solar PV is counted in DEAP, the method behind every Irish BER, so it lifts your rating - and a post-works BER is already part of the grant.",
     "category": "grants",
     "date": "5 Sep 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -1003,7 +1004,7 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "**Yes - solar panels improve your BER rating.** Solar PV is counted in DEAP, the official methodology behind every Irish Building Energy Rating, so generating your own electricity lifts your score. How far it moves depends on your home, and a post-works BER is already a required step of the **€1,800** SEAI grant."
+        "text": "**Yes - solar panels improve your BER rating.** Solar PV is counted in DEAP, the official methodology behind every Irish Building Energy Rating, so generating your own electricity lifts your score. How far it moves depends on your home, and a post-works BER is already a required step of the **€1,800** SEAI grant. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "paragraph",
@@ -1220,7 +1221,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home panel system runs €8,200 to €9,600 before the grant, depending on size. After the SEAI grant (**€1,800**) and with 0% VAT, most homeowners are looking at €6,400 to €7,800 out of pocket, as the table shows. A battery is sized and priced with you on the call, from how your home actually uses power, so it is not in these figures."
+        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home panel system runs €8,200 to €9,600 before the grant, depending on size. After the SEAI grant (**€1,800**) and with 0% VAT, most homeowners are looking at €6,400 to €7,800 out of pocket, as the table shows. A battery is sized and priced with you on the call, from how your home actually uses power, so it is not in these figures. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "table",
@@ -3611,7 +3612,7 @@ export const articles: Article[] = [
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
     "date": "6 Mar 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "11 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-orange-400/10",
@@ -3814,7 +3815,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch."
+        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "divider"
@@ -3834,7 +3835,7 @@ export const articles: Article[] = [
     "excerpt": "The government has confirmed the SEAI solar panel grant will remain at €1,800 for 2026. Here is what the announcement means for homeowners, the grant's history, and why now is still the time to apply.",
     "category": "news",
     "date": "28 Apr 2026",
-    "updated": "8 Sep 2026",
+    "updated": "10 Nov 2026",
     "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-violet-400/10",
@@ -3847,7 +3848,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The Government confirmed the SEAI solar PV grant would remain at €1,800 for 2026, pausing the scheduled €300 annual reduction (seai.ie) for the entirety of 2026. This came as a relief to homeowners planning an installation, because the scheme's annual reduction would otherwise have applied again in 2026."
+        "text": "The Government confirmed the SEAI solar PV grant would remain at €1,800 for 2026, pausing the scheduled €300 annual reduction (seai.ie) for the entirety of 2026. This came as a relief to homeowners planning an installation, because the scheme's annual reduction would otherwise have applied again in 2026. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "paragraph",
@@ -4353,7 +4354,7 @@ export const articles: Article[] = [
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
     "category": "guides",
     "date": "2 Apr 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "9 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4436,7 +4437,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are the ones our savings engine recommends: an array that generates about 85% of your annual usage, rounded to the nearest half kWp and counted in 440W panels, so it covers a significant portion of your usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
+        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are the ones our savings engine recommends: an array that generates about 85% of your annual usage, rounded to the nearest half kWp and counted in 440W panels, so it covers a significant portion of your usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "heading",
@@ -4879,7 +4880,7 @@ export const articles: Article[] = [
     "excerpt": "Yes, private landlords can claim the €1,800 SEAI solar grant. What to know about solar on Irish rental properties - eligibility, BER benefits and getting started.",
     "category": "grants",
     "date": "15 Mar 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -5043,7 +5044,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The numbers can stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI grant, and generates roughly €1,000–€1,400 a year in combined electricity savings and CEG payments. The catch is who receives that: in most tenancies the tenant pays the electricity bill, so the bill saving and the export income are theirs. The landlord's return is the better BER, a property that is easier to let, and readiness for future minimum standards. We do not count a rent premium, because there is no published Irish figure for one."
+        "text": "The numbers can stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI grant, and generates roughly €1,000–€1,400 a year in combined electricity savings and CEG payments. The catch is who receives that: in most tenancies the tenant pays the electricity bill, so the bill saving and the export income are theirs. The landlord's return is the better BER, a property that is easier to let, and readiness for future minimum standards. We do not count a rent premium, because there is no published Irish figure for one. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
       },
       {
         "type": "paragraph",

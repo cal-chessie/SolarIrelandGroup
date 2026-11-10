@@ -133,7 +133,7 @@ const faqs = [
   },
   {
     question: 'Is the SEAI grant available in all 32 counties?',
-    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team knows the grant process for both jurisdictions and guides you through every step.',
+    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team knows the grant process for both jurisdictions and guides you through every step.',
   },
   {
     question: 'How long does a solar panel installation take?',

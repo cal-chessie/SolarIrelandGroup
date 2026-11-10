@@ -29,7 +29,10 @@ const PAGE_DATES: Record<string, string> = {
   "/cookies": "2026-11-10T00:00:00+00:00",
   "/solar-calculator": "2026-11-09T00:00:00+00:00",
   "/book-survey": "2026-11-10T00:00:00+00:00",
-  "/financing": "2026-11-09T00:00:00+00:00",
+  // 10 Nov 2026 battery-grant pass: the financing FAQ names the EUR 600
+  // battery grant (home, services, counties and Roscommon were already dated
+  // 10 Nov and changed again the same day).
+  "/financing": "2026-11-10T00:00:00+00:00",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
