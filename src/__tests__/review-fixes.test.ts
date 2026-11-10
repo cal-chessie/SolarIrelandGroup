@@ -7,6 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LINK_TOKEN, parseLinkToken } from '@/lib/intake/linkToken';
 import { toIngestBody } from '@/lib/intake/live/ingest';
 import type { SubmitRequest } from '@/lib/intake/contract';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const HEX = (c: string) => c.repeat(64);
 const KEY = '9b2f0c1e-3d4a-4b5c-8d6e-7f8091a2b3c4';
@@ -339,5 +341,28 @@ describe('Cork post figures come from estimate.ts (M11)', () => {
     });
     const all = JSON.stringify(post);
     for (const gone of ['12,800', '10,400', '€800 to €1,400', '2,400 with']) expect(all).not.toContain(gone);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  SEO flags: description lengths, counted by code                     */
+/* ------------------------------------------------------------------ */
+
+describe('meta descriptions fit (140 to 155)', () => {
+  // Read from source: importing the pages pulls in their CSS, which the node test env does not load.
+  const first = (file: string, key: string) => {
+    const src = readFileSync(path.resolve(__dirname, '..', file), 'utf8');
+    const m = src.match(new RegExp(`\\b${key}:\\s*(?:\\/\\/[^\\n]*\\n\\s*)?'([^']+)'`));
+    return m ? m[1] : '';
+  };
+  it('/services, /counties/roscommon and /book-survey', () => {
+    for (const f of ['app/services/layout.tsx', 'app/counties/roscommon/page.tsx', 'app/book-survey/page.tsx']) {
+      const d = first(f, 'description');
+      expect(d.length, `${f}: ${d}`).toBeGreaterThanOrEqual(140);
+      expect(d.length, `${f}: ${d}`).toBeLessThanOrEqual(155);
+    }
+    const t = `${first('app/book-survey/page.tsx', 'title')} | Solar Ireland`;
+    expect(t.length).toBeGreaterThanOrEqual(50);
+    expect(t.length).toBeLessThanOrEqual(60);
   });
 });

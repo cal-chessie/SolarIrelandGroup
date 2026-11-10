@@ -3,7 +3,8 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar PV, Battery & EV Charger Installation',
   description:
-    'Panels-only solar from €8,200 before the SEAI grant, so €6,400 after it. Battery packages from €11,400. Across all 32 counties, with guidance on the SEAI grant and free surveys.',
+    // 150 characters, counted by code (140 to 155 so it is not cut off).
+    'Panels-only solar from €8,200 before the SEAI grant, €6,400 after it. Battery packages from €11,400. All 32 counties, with guidance on the SEAI grant.',
   openGraph: {
     title: 'Solar Panel Services Ireland | PV, Battery & EV Charging',
     description:

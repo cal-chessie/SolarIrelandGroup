@@ -73,7 +73,8 @@ const FAQS = [
 export const metadata: Metadata = {
   title: 'Solar Panel Installers Roscommon | AI Bill Analyser | Solar Ireland',
   description:
-    'Solar panel installers in County Roscommon. Upload your electricity bill and our AI shows exactly what solar will save you. We guide you through the €1,800 SEAI grant. Honest local quotes.',
+    // 152 characters, counted by code (140 to 155 so it is not cut off).
+    'Solar panel installers in County Roscommon. Upload your bill and see what solar would save you, with the €1,800 SEAI grant applied. Honest local quotes.',
   keywords: [
     'solar panels Roscommon',
     'solar panel installers Roscommon',
