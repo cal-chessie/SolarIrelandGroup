@@ -25,6 +25,7 @@ import {
   HeartHandshake,
   Home,
 } from 'lucide-react';
+import Link from 'next/link';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
@@ -560,7 +561,10 @@ export default function CountiesClient() {
             </p>
             {ndmgDoubledLive() ? (
               <p className="text-gray-400 text-sm sm:text-base max-w-3xl leading-relaxed mb-6" data-ndmg="">
-                <span className="text-white font-semibold">Business premises?</span> {ndmgDoubledLine()}
+                <span className="text-white font-semibold">Business premises?</span> {ndmgDoubledLine()}{' '}
+                <Link href="/commercial-solar-grant" className="text-amber-400 underline underline-offset-2 hover:text-amber-300">
+                  See the commercial solar grant
+                </Link>
               </p>
             ) : null}
 

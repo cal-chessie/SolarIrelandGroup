@@ -43,6 +43,7 @@ Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 
 - [Are solar panels worth it in Ireland?](${SITE}/blog/are-solar-panels-worth-it-ireland-2026)
 - [How much do solar panels cost in Ireland?](${SITE}/blog/how-much-do-solar-panels-cost-ireland-2026)
 - [The SEAI solar grant: amounts and how to apply](${SITE}/blog/complete-guide-seai-solar-grant-2026)
+- [The commercial solar grant: the doubled SEAI Non-Domestic Microgen Grant](${SITE}/commercial-solar-grant)
 - [How many solar panels do I need?](${SITE}/blog/how-many-solar-panels-do-i-need-ireland)
 - [What is my MPRN and where do I find it?](${SITE}/blog/what-is-my-mprn-number-ireland)
 - [The ESB Networks NC6 form](${SITE}/blog/nc6-form-solar-grid-connection-ireland)

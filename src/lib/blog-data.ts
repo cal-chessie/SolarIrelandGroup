@@ -3251,7 +3251,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "The business grant is doubled until 6 Jul 2027",
-        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. Details on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
+        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. See [the commercial solar grant, with the full kWp table](/commercial-solar-grant), or the scheme on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
       },
       {
         "type": "callout",
@@ -4950,7 +4950,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "The business grant is doubled until 6 Jul 2027",
-        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. Details on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
+        "body": "SEAI's Non-Domestic Microgen Grant is doubled to up to €325,200 for applications from 6 Oct 2026 to 6 Jul 2027, paid at the lower of the SEAI table or 45% of cost. It is for business and other non-domestic premises, not homes. See [the commercial solar grant, with the full kWp table](/commercial-solar-grant), or the scheme on [seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)."
       },
       {
         "type": "heading",

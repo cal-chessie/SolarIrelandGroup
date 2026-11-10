@@ -612,6 +612,11 @@ export default function ServicesPage() {
                   <p className="text-gray-400 leading-relaxed mt-3">
                     Every business roof gets an on-site survey before we quote, and the analyser reads a business bill as a business.
                   </p>
+                  <p className="text-gray-400 leading-relaxed mt-3">
+                    <Link href="/commercial-solar-grant" className="text-amber-400 underline underline-offset-2 hover:text-amber-300">
+                      How the commercial solar grant works, with the full kWp table
+                    </Link>
+                  </p>
                 </div>
                 <div className="flex flex-col gap-3">
                   <IntakeLink

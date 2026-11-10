@@ -582,7 +582,10 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         </button>
         {!isBiz && ndmgDoubledLive() ? (
           <p className="si-an-privacy" data-ndmg-short="">
-            The SEAI business grant is doubled to up to {SOLAR_DATA.ndmgDoubled.maxLabel} until {SOLAR_DATA.ndmgDoubled.toLabel}.
+            The SEAI business grant is doubled to up to {SOLAR_DATA.ndmgDoubled.maxLabel} until {SOLAR_DATA.ndmgDoubled.toLabel}.{' '}
+            <a className="si-inline" href="/commercial-solar-grant">
+              The commercial solar grant
+            </a>
           </p>
         ) : null}
       </div>

@@ -33,6 +33,8 @@ const PAGE_DATES: Record<string, string> = {
   // battery grant (home, services, counties and Roscommon were already dated
   // 10 Nov and changed again the same day).
   "/financing": "2026-11-10T00:00:00+00:00",
+  // 10 Nov 2026: new page, the doubled SEAI business grant.
+  "/commercial-solar-grant": "2026-11-10T00:00:00+00:00",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -60,6 +62,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${SITE_URL}/counties/roscommon`,
       lastModified: PAGE_DATES["/counties/roscommon"],
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${SITE_URL}/commercial-solar-grant`,
+      lastModified: PAGE_DATES["/commercial-solar-grant"],
       changeFrequency: "monthly",
       priority: 0.85,
     },
