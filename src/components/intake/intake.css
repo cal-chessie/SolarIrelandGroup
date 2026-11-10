@@ -3091,6 +3091,177 @@ h1.si-ask__title {
   justify-items: start;
 }
 
+/* The first screen (10 Nov): the promise, a Home | Business switch, two road
+   cards (upload is the yellow primary, typing the outlined secondary), one
+   trust line and one quiet privacy line. Phone first: at 390 x 844 the
+   headline, the switch and both roads sit above the fold. */
+.si-an-door .si-an-door__title {
+  font-size: 26px;
+  line-height: 31px;
+  letter-spacing: -0.02em;
+}
+.si-an-door .si-an-door__sub {
+  font-size: 15px;
+  line-height: 22px;
+  max-inline-size: 52ch;
+  text-wrap: pretty;
+}
+.si-an-seg {
+  margin-top: 16px;
+  min-height: 44px;
+  max-width: 320px;
+}
+.si-an-seg label {
+  min-height: 38px;
+}
+.si-an-ndmg {
+  margin-top: 10px;
+}
+.si-an-door .si-an-roads {
+  margin-top: 16px;
+}
+.si-an-road--primary {
+  background: var(--si-amber);
+  box-shadow: none;
+  color: var(--si-on-amber);
+}
+.si-an-road--primary:hover {
+  background: var(--si-amber-hover);
+}
+.si-an-road--primary:active {
+  filter: brightness(0.94);
+}
+.si-an-road--primary .si-photo__title {
+  font-weight: 600;
+}
+.si-an-road--primary .si-photo__line {
+  color: rgba(10, 10, 10, 0.74);
+}
+.si-an-door .si-photo__line {
+  text-wrap: pretty;
+}
+.si-an-road--primary .si-photo__chev {
+  color: var(--si-on-amber);
+}
+.si-an-road--primary .si-an-road__icon {
+  background: rgba(10, 10, 10, 0.12);
+  color: var(--si-on-amber);
+}
+.si-an-road--primary:focus-visible {
+  outline-color: var(--si-fg);
+}
+.si-an-road--secondary {
+  background: transparent;
+}
+.si-an-road--secondary:hover {
+  background: var(--si-hover);
+}
+.si-an-road--secondary .si-photo__title {
+  font-weight: 600;
+}
+.si-an-trust {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.si-an-trust li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: var(--si-r-pill);
+  background: var(--si-raise);
+  box-shadow: inset 0 0 0 1px var(--si-line);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--si-fg-muted);
+}
+.si-an-priv {
+  margin-top: 10px;
+}
+.si-an-priv__line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  min-height: 32px;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--si-fg-muted);
+  cursor: pointer;
+  list-style: none;
+}
+.si-an-priv__line::-webkit-details-marker {
+  display: none;
+}
+.si-an-priv__line:focus-visible {
+  outline: 2px solid var(--si-focus);
+  outline-offset: 2px;
+  border-radius: var(--si-r-sm);
+}
+.si-an-priv .si-an-privacy {
+  margin-top: 4px;
+}
+@media (min-width: 640px) {
+  .si-an-door .si-an-door__title {
+    font-size: 32px;
+    line-height: 38px;
+  }
+  .si-an-door .si-an-door__sub {
+    font-size: 17px;
+    line-height: 26px;
+  }
+}
+/* Desktop: the promise on the left, the two roads stacked on the right. */
+@media (min-width: 1024px) {
+  .si-an-door {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 56px;
+    align-items: center;
+  }
+  .si-an--section .si-an-card.si-an-door {
+    padding: 48px;
+  }
+  .si-an-door .si-an-door__title {
+    font-size: 44px;
+    line-height: 50px;
+    letter-spacing: -0.025em;
+  }
+  .si-an-door .si-an-door__sub {
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .si-an-seg {
+    margin-top: 28px;
+  }
+  .si-an-door .si-an-roads {
+    margin-top: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .si-an-door .si-an-road {
+    align-items: center;
+    min-height: 96px;
+    padding: 16px 20px 16px 16px;
+  }
+  .si-an-door .si-an-road .si-photo__title {
+    font-size: 17px;
+    line-height: 24px;
+  }
+  .si-an-door .si-an-road .si-photo__line {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .si-an-door .si-an-door__drop {
+    margin-top: 12px;
+    min-height: 52px;
+  }
+}
+
 /* Camera tips. */
 .si-an-tips__list {
   margin-top: 16px;

@@ -27,7 +27,7 @@ import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeHref, openIntake } from '@/lib/intake/open';
 import { trackEvent } from '@/lib/analytics';
 import { funnel } from '@/lib/intake/funnel';
-import { ndmgDoubledLine, ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
+import { ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import { getConfig, getQuotes } from '@/components/intake/api';
 import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
 import { askHeadline, CallAsk, CallDone, callDoneCopy, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
@@ -193,8 +193,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   }, [variant, door]);
 
   /* While the analyser is on screen, the chat bee and its toast step aside on a
-     phone (intake.css): at the door they could sit over "Take a photo of my
-     bill". A page can carry two analysers, so the flag counts them. */
+     phone (intake.css): at the door they could sit over the road cards. A page can carry two analysers, so the flag counts them. */
   useEffect(() => {
     const el = rootRef.current;
     if (!el || typeof IntersectionObserver === 'undefined') return;
@@ -517,77 +516,100 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     </>
   );
 
+  /* The full privacy words, folded behind one quiet line so nothing true is lost. */
   const privacy = (
-    <p className="si-an-privacy">
-      This site doesn&apos;t store your bill. An AI reading service reads it and sends back the figures. We keep those figures with no name or address on them. Your name, Eircode and MPRN only reach us if you book the call.{' '}
-      <a className="si-inline" href="/privacy#how-we-use">
-        How we handle your bill
-      </a>
-    </p>
+    <details className="si-an-priv" data-an-privacy="">
+      <summary className="si-an-priv__line">
+        We never store your bill. <span className="si-inline">How we handle your bill</span>
+      </summary>
+      <p className="si-an-privacy">
+        This site doesn&apos;t store your bill. An AI reading service reads it and sends back the figures. We keep those figures with no name or address on them. Your name, Eircode and MPRN only reach us if you book the call.{' '}
+        <a className="si-inline" href="/privacy#how-we-use">
+          Our privacy notice
+        </a>
+      </p>
+    </details>
   );
+
+  // The grant the sub line promises: the home figure, or the doubled business one while it runs.
+  const ndmgLive = ndmgDoubledLive();
+  const grantWords = isBiz ? (ndmgLive ? `your grant (up to ${SOLAR_DATA.ndmgDoubled.maxLabel} under the doubled business grant)` : 'your grant') : `your grant (up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel})`;
+  const segName = `si-an-seg-${door}`;
+  const pickSegment = (next: Segment) => {
+    if (next === segment) return;
+    setSegment(next);
+    track('segment_pick', { segment: next, flow_id: fid });
+  };
 
   const doorCard = (
     <div className="si-an-card si-an-door" data-dragging={dragging ? 'true' : undefined} onDragOver={(e) => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={onDrop}>
-      <p className="si-an-kicker">{isBiz ? 'Bill Analyser, for a business' : 'Bill Analyser'}</p>
-      <h2 className="si-an-door__title">{isBiz ? 'Show us the business bill. We will show you what it says.' : "Show us your bill. We'll show you what it says."}</h2>
-      <p className="si-an-door__sub">Upload it, or just type what you pay. You see your figures straight away, with nothing to sign up for.</p>
-      {isBiz && ndmgDoubledLive() ? (
-        <p className="si-an-help si-an-ndmg" data-ndmg="">
-          {ndmgDoubledLine()}
+      <div className="si-an-door__pitch">
+        <p className="si-an-kicker">Bill Analyser</p>
+        <h2 className="si-an-door__title">See what solar saves you, from your bill.</h2>
+        <p className="si-an-door__sub" data-an-sub="">
+          Your yearly saving, the right system, {grantWords} and your payback. Under a minute, nothing to sign up for.
         </p>
-      ) : null}
-      <div className="si-an-roads" role="group" aria-label="Two ways to see your figures">
-        <button type="button" className="si-photo si-an-road" onClick={() => fileRef.current?.click()} data-an-upload="">
-          <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
-            <Upload size={20} />
-          </span>
-          <span className="si-photo__text">
-            <span className="si-photo__title">Upload my bill</span>
-            <span className="si-photo__line">A photo, screenshot or the PDF from your supplier</span>
-          </span>
-          <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
-        </button>
-        <a
-          className="si-photo si-an-road"
-          href={intakeHref({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' })}
-          data-an-manual-road=""
-          onClick={(e) => {
-            e.preventDefault();
-            track('manual_fallback', { from_reason: 'no_bill', flow_id: fid });
-            openIntake({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' });
-          }}
-        >
-          <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
-            <Keyboard size={20} />
-          </span>
-          <span className="si-photo__text">
-            <span className="si-photo__title">I don&apos;t have it, type my bill amount</span>
-            <span className="si-photo__line">Three quick questions, the same estimate</span>
-          </span>
-          <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
-        </a>
-      </div>
-      <div className="si-an-door__drop" aria-hidden="true">
-        <Upload size={22} />
-        <span>Or drop your bill here</span>
-      </div>
-      <p className="si-an-help">Most bills come by email now. The PDF works best.</p>
-      {privacy}
-      <div className="si-an-links">
-        <button type="button" className="si-btn--quiet si-an-phone" onClick={openCamera} data-an-camera="">
-          <Camera size={16} aria-hidden="true" /> Take a photo of my bill now
-        </button>
-        <button type="button" className="si-btn--quiet" onClick={() => setSegment(isBiz ? 'domestic' : 'commercial')}>
-          {isBiz ? 'A home bill? Read it as a home' : 'Business bill? Read it as a business'}
-        </button>
-        {!isBiz && ndmgDoubledLive() ? (
-          <p className="si-an-privacy" data-ndmg-short="">
-            The SEAI business grant is doubled to up to {SOLAR_DATA.ndmgDoubled.maxLabel} until {SOLAR_DATA.ndmgDoubled.toLabel}.{' '}
+        <div className="si-switch si-an-seg" role="radiogroup" aria-label="Whose bill is it?" data-an-segment="">
+          <label>
+            <input type="radio" name={segName} value="home" checked={!isBiz} onChange={() => pickSegment('domestic')} />
+            Home
+          </label>
+          <label>
+            <input type="radio" name={segName} value="business" checked={isBiz} onChange={() => pickSegment('commercial')} />
+            Business
+          </label>
+        </div>
+        {isBiz && ndmgLive ? (
+          <p className="si-an-privacy si-an-ndmg" data-ndmg-short="">
+            SEAI&apos;s {SOLAR_DATA.ndmgDoubled.name} is doubled until {SOLAR_DATA.ndmgDoubled.toLabel}, paid at the lower of the SEAI table or {SOLAR_DATA.ndmgDoubled.costShareLabel} of cost.{' '}
             <a className="si-inline" href="/commercial-solar-grant">
               The commercial solar grant
             </a>
           </p>
         ) : null}
+      </div>
+      <div className="si-an-door__act">
+        <div className="si-an-roads" role="group" aria-label="Two ways to see your figures">
+          <button type="button" className="si-photo si-an-road si-an-road--primary" onClick={() => fileRef.current?.click()} data-an-upload="">
+            <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
+              <Upload size={20} />
+            </span>
+            <span className="si-photo__text">
+              <span className="si-photo__title">Upload my bill</span>
+              <span className="si-photo__line">Photo or PDF. The PDF from your supplier&apos;s email works best.</span>
+            </span>
+            <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
+          </button>
+          <a
+            className="si-photo si-an-road si-an-road--secondary"
+            href={intakeHref({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' })}
+            data-an-manual-road=""
+            onClick={(e) => {
+              e.preventDefault();
+              track('manual_fallback', { from_reason: 'no_bill', flow_id: fid });
+              openIntake({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' });
+            }}
+          >
+            <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
+              <Keyboard size={20} />
+            </span>
+            <span className="si-photo__text">
+              <span className="si-photo__title">Type my bill amount</span>
+              <span className="si-photo__line">No bill to hand? Three taps, same estimate.</span>
+            </span>
+            <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
+          </a>
+        </div>
+        <div className="si-an-door__drop" aria-hidden="true">
+          <Upload size={22} />
+          <span>Or drop your bill here</span>
+        </div>
+        <ul className="si-an-trust" aria-label="Why Solar Ireland">
+          <li>SEAI Registered Installers</li>
+          <li>5-year workmanship warranty</li>
+          <li>We book your BER</li>
+        </ul>
+        {privacy}
       </div>
       {inputs}
     </div>
