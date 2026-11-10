@@ -322,6 +322,23 @@ export default function BlogClient() {
                   : 'opacity-100 translate-y-0'
               }`}
             >
+            {/* Every other post's link in the server-rendered HTML (Google-safety check,
+                9 Nov 2026): pagination is client state, so posts past page one, such as
+                /blog/what-is-my-mprn-number-ireland, were in no crawlable HTML. The
+                hidden attribute keeps the page looking exactly as before. */}
+            <nav hidden data-blog-all-links="">
+              <ul>
+                {filteredArticles
+                  .filter((a) => a.slug !== featuredArticle?.slug && !paginatedArticles.some((p) => p.slug === a.slug))
+                  .map((a) => (
+                    <li key={a.slug}>
+                      <Link href={`/blog/${a.slug}`} prefetch={false}>
+                        {a.title}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </nav>
             {paginatedArticles.length > 0 ? (
               <motion.div
                 key={`${activeCategory}-${currentPage}`}
