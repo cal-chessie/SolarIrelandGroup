@@ -9,6 +9,22 @@
  * The enhanced welfare grants (up to €9,000) depend on payments an estimate
  * cannot know, so they are deliberately not modelled.
  */
+/**
+ * SEAI's "Higher Grant for Qualifying Welfare Payments" (Solar PV Scheme
+ * Application Guide V6.0, 12 Oct 2026, page 5, read 10 Nov 2026). For a
+ * homeowner who owns and lives in a home built and occupied before 2025 and
+ * gets a qualifying Department of Social Protection payment, Fuel Allowance
+ * (National Fuel Scheme) among them. Stated in copy only, never computed:
+ * the estimate cannot know someone's payments.
+ */
+export const WELFARE_HIGHER_GRANT = {
+  name: 'Higher Grant for Qualifying Welfare Payments',
+  source: 'https://www.seai.ie/sites/default/files/2026-10/Solar-PV-Scheme-Application-Guide.pdf',
+  solarMaxEur: 8400,
+  batteryEur: 600,
+  totalMaxEur: 9000,
+} as const;
+
 export const GRANT_SCHEDULES = {
   verifiedOn: '2026-10-16',
   /** SEAI Solar Electricity Grant: pro rata per kWp inside each tier, capped. */

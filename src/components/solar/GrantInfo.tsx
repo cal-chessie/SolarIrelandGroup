@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate, usePrefersReducedMotion } from '@/lib/motion';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from '@/lib/motion';
 import {
   CheckCircle2,
   ExternalLink,
@@ -13,7 +13,6 @@ import {
   Zap,
   ArrowRight,
   Clock,
-  Sparkles,
   Shield,
   XCircle,
   PartyPopper,
@@ -22,9 +21,12 @@ import {
   ClipboardCheck,
   BadgeEuro,
 } from 'lucide-react';
-import { SOLAR_DATA } from '@/lib/solar-data';
+import { SOLAR_DATA, WELFARE_HIGHER_GRANT } from '@/lib/solar-data';
 import { DOMESTIC_MIN_KWP } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { intakeHref, openIntake } from '@/lib/intake/open';
+
+const eur0 = (n: number) => `€${n.toLocaleString('en-IE')}`;
 
 function AnimatedGrant({ show }: { show: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -99,14 +101,28 @@ const checkSteps: CheckStep[] = [
     detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid. We book your BER assessment with a registered BER assessor.',
     icon: FileCheck,
   },
+  {
+    // Not a test you can fail: it only decides which grant the result names.
+    // SEAI pays a higher grant on certain welfare payments, Fuel Allowance
+    // among them (WELFARE_HIGHER_GRANT, read in SEAI's own application guide).
+    id: 'fuel',
+    question: 'Do you get the Fuel Allowance?',
+    options: [
+      { label: 'Yes, I get it', value: 'yes' },
+      { label: 'No', value: 'unsure' },
+    ],
+    detail: 'SEAI pays a higher solar grant to homeowners on certain welfare payments, and the Fuel Allowance is one of them.',
+    icon: Euro,
+  },
 ];
+
+/** Steps that can rule someone out. The Fuel Allowance step only changes which grant the result names. */
+const GATE_STEPS = new Set(['owner', 'year', 'previous-grant']);
 
 function EligibilityChecker() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, CheckResult>>({});
   const [isComplete, setIsComplete] = useState(false);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const prefersReducedMotion = usePrefersReducedMotion();
 
   const step = checkSteps[currentStep];
   const StepIcon = step.icon;
@@ -126,11 +142,12 @@ function EligibilityChecker() {
     setCurrentStep(0);
     setAnswers({});
     setIsComplete(false);
-    setIsRevealed(false);
   };
 
-  const hasNo = Object.values(answers).some((v) => v === 'no');
-  const hasUnsure = Object.values(answers).some((v) => v === 'unsure');
+  const gated = Object.entries(answers).filter(([k]) => GATE_STEPS.has(k)).map(([, v]) => v);
+  const hasNo = gated.some((v) => v === 'no');
+  const hasUnsure = gated.some((v) => v === 'unsure');
+  const onFuel = answers.fuel === 'yes';
   const eligible = isComplete && !hasNo;
   const ineligible = isComplete && hasNo;
 
@@ -140,7 +157,7 @@ function EligibilityChecker() {
         <div className="flex items-start justify-between mb-6">
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-white">Am I eligible?</h3>
-            <p className="text-xs text-gray-400 mt-1">Quick 3-step eligibility checker</p>
+            <p className="text-xs text-gray-400 mt-1">Quick {checkSteps.length}-step eligibility checker</p>
           </div>
           {isComplete && (
             <button
@@ -236,21 +253,7 @@ function EligibilityChecker() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
             >
-              {!isRevealed ? (
-                <button
-                  onClick={() => setIsRevealed(true)}
-                  className="w-full flex flex-col items-center justify-center py-8 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.04] transition-all active:scale-[0.99]"
-                >
-                  <motion.div
-                    animate={prefersReducedMotion ? undefined : { rotate: [0, 10, -10, 0] }}
-                    transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <Sparkles className="w-8 h-8 text-amber-400 mb-3" />
-                  </motion.div>
-                  <p className="text-sm font-semibold text-white mb-1">See your result</p>
-                  <p className="text-xs text-gray-400">Tap to reveal</p>
-                </button>
-              ) : eligible && !ineligible ? (
+              {eligible && !ineligible ? (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -267,8 +270,16 @@ function EligibilityChecker() {
                     {hasUnsure ? 'You likely qualify!' : 'You qualify!'}
                   </h4>
                   <p className="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed mb-1">
-                    Based on your answers, you appear eligible for the <AnimatedGrant show={isRevealed} /> SEAI Solar PV grant.
+                    Based on your answers, you appear eligible for the <AnimatedGrant show /> SEAI Solar PV grant.
                   </p>
+                  {onFuel ? (
+                    <p className="text-sm text-gray-300 max-w-sm mx-auto leading-relaxed mt-2" data-fuel-allowance="">
+                      On the Fuel Allowance, SEAI&apos;s higher grant for qualifying welfare payments goes up to {eur0(WELFARE_HIGHER_GRANT.solarMaxEur)} for solar panels and {eur0(WELFARE_HIGHER_GRANT.batteryEur)} for a battery, up to {eur0(WELFARE_HIGHER_GRANT.totalMaxEur)} in all.{' '}
+                      <a href={WELFARE_HIGHER_GRANT.source} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
+                        SEAI&apos;s guide
+                      </a>
+                    </p>
+                  ) : null}
                   {hasUnsure && (
                     <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything during your free survey.</p>
                   )}
@@ -277,25 +288,26 @@ function EligibilityChecker() {
                       WhatsApp under a button that said "Book Free Survey", so
                       the moment was spent on a chat window instead of a booking
                       or an estimate. Both real next steps now, booking first. */}
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3">
-                    <motion.a
+                  <p className="text-sm font-semibold text-white mt-5">Now see what it saves you.</p>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 mt-3">
+                    <a
                       href="#calculator"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
+                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
                     >
-                      <Zap className="w-4 h-4" />
-                      Check my savings
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.a>
-                    <motion.a
-                      href="#calculator"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                      <Zap className="w-4 h-4" aria-hidden="true" />
+                      Upload my bill
+                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                    <a
+                      href={intakeHref({ door: 'grant-checker-manual', segment: 'home', step: 'bill' })}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openIntake({ door: 'grant-checker-manual', segment: 'home', step: 'bill' });
+                      }}
+                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
                     >
-                      See it on my bill
-                    </motion.a>
+                      Type my bill amount
+                    </a>
                   </div>
                 </motion.div>
               ) : (
