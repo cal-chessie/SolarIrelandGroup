@@ -51,7 +51,7 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
-    "image": "/install-2.webp",
+    "image": "/installs/solar-ireland-group-family-home-roof.webp",
     "content": [
       {
         "type": "paragraph",
@@ -126,7 +126,7 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
-    "image": "/install-6.webp",
+    "image": "/installs/two-storey-home-black-solar-panels.webp",
     "content": [
       {
         "type": "paragraph",
@@ -452,7 +452,7 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/install-2.webp"
+    "image": "/installs/solar-ireland-group-family-home-roof.webp"
   },
   {
     "slug": "solar-panel-installation-process-ireland",
@@ -698,7 +698,7 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/install-1.webp"
+    "image": "/installs/new-build-home-solar-scaffold.webp"
   },
   {
     "slug": "how-to-read-electricity-bill-ireland-solar",
@@ -1203,7 +1203,7 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
-    "image": "/install-3.webp",
+    "image": "/installs/solar-panels-slate-roof-home.webp",
     "content": [
       {
         "type": "paragraph",
@@ -1757,7 +1757,7 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/install-5.webp"
+    "image": "/installs/red-brick-semi-solar-panels.webp"
   },
   {
     "slug": "solar-panels-ev-charger-ireland",
@@ -2765,7 +2765,7 @@ export const articles: Article[] = [
     "seoTitle": "East vs South vs West Roofs for Solar: Only North Struggles",
     "seoDescription": "South gives 100%, east or west about 80 to 85%, an east-west split 85 to 90%, and self-use can close the gap. Irish figures and payback by roof.",
     "answer": "South-facing roofs produce the most, but east and west-facing roofs still make about 80 to 85% as much, and an east-west split spreads generation across the day, which often suits how a home uses power. In Ireland only a north-facing roof, at roughly 50 to 55%, is genuinely unsuitable on its own.",
-    "image": "/install-6.webp",
+    "image": "/installs/commercial-flat-roof-solar.webp",
     "excerpt": "Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.",
     "category": "guides",
     "date": "28 Mar 2026",
@@ -3607,7 +3607,7 @@ export const articles: Article[] = [
     "seoTitle": "Solar Panels Dublin 2026: Cost, €1,800 Grant and Payback",
     "seoDescription": "A 4 kWp Dublin home system costs €6,400 after the €1,800 SEAI grant. Roof types from Victorian terraces to new estates, council areas and planning checks.",
     "answer": "Yes, solar works well in Dublin. Prices are national, so a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant, and a typical system saves €800 to €1,400 a year. Most Dublin roofs suit solar; check first if your home is a protected structure or in an Architectural Conservation Area.",
-    "image": "/install-4.webp",
+    "image": "/installs/in-roof-solar-slate.webp",
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
     "date": "6 Mar 2026",
