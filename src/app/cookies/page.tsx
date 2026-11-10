@@ -850,7 +850,7 @@ export default function CookiePolicyPage() {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 text-sm text-gray-600">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                <span>Last updated: April 2026</span>
+                <span>Last updated: November 2026</span>
               </div>
               <span className="text-white/10 hidden sm:inline">|</span>
               <div className="flex items-center gap-1.5">
