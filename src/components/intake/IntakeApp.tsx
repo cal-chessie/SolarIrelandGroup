@@ -1275,7 +1275,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           From the <span {...prov('you_told_us')}>{eur(monthly ?? 0)}</span> a month you told us.
         </>
       )}{' '}
-      {isBiz ? 'Indicative, not a quote.' : 'Close estimate, not a quote.'}
+      {rough ? 'Rough estimate, not a quote.' : isBiz ? 'Indicative, not a quote.' : 'Close estimate, not a quote.'}
     </>
   ) : null;
 
