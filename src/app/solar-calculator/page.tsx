@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     siteName: 'Solar Ireland Group',
     images: [
       {
-        url: '/hero-solar.jpg',
-        width: 1344,
-        height: 768,
+        url: '/installs/solar-ireland-group-family-home-roof.jpg',
+        width: 1152,
+        height: 864,
         alt: 'Solar panel savings calculator - see how much you can save in Ireland',
         type: 'image/jpeg',
       },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: 'Solar Panel Calculator Ireland: Savings From Your Bill',
     description:
       'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
-    images: ['/hero-solar.jpg'],
+    images: ['/installs/solar-ireland-group-family-home-roof.jpg'],
   },
   robots: {
     index: true,

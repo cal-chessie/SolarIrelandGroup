@@ -62,9 +62,9 @@ const webPageSchema = {
       dateModified: "2026-11-09T00:00:00+00:00",
       primaryImageOfPage: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/hero-solar.jpg`,
-        width: 1344,
-        height: 768,
+        url: `${SITE_URL}/installs/solar-ireland-group-family-home-roof.jpg`,
+        width: 1152,
+        height: 864,
       },
       potentialAction: {
         "@type": "ReadAction",

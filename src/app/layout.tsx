@@ -133,9 +133,9 @@ export const metadata: Metadata = {
       "SEAI solar installers. Free AI bill analysis and honest quotes. Save up to €1,400/yr with the €1,800 SEAI grant.",
     images: [
       {
-        url: "/hero-solar.jpg",
-        width: 1344,
-        height: 768,
+        url: "/installs/solar-ireland-group-family-home-roof.jpg",
+        width: 1152,
+        height: 864,
         alt: "Solar Ireland Group - Professional solar panel installation on an Irish home",
         type: "image/jpeg",
       },
@@ -155,7 +155,7 @@ export const metadata: Metadata = {
     title: "Solar Ireland Group | Save up to €1,400/Year with Solar Panels",
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
-    images: ["/hero-solar.jpg"],
+    images: ["/installs/solar-ireland-group-family-home-roof.jpg"],
   },
 
 
@@ -233,7 +233,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": `${SITE_URL}/#business`,
   name: SITE_NAME,
-  image: `${SITE_URL}/hero-solar.jpg`,
+  image: `${SITE_URL}/installs/solar-ireland-group-family-home-roof.jpg`,
   url: SITE_URL,
   telephone: "+353 87 395 8424",
   email: "sales@solarirelandgroup.ie",

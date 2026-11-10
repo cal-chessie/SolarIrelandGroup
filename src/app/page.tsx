@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     description: HOME_DESCRIPTION,
     images: [
       {
-        url: '/hero-solar.jpg',
-        width: 1344,
-        height: 768,
+        url: '/installs/solar-ireland-group-family-home-roof.jpg',
+        width: 1152,
+        height: 864,
         alt: 'Solar Ireland Group - Professional solar panel installation on an Irish home',
         type: 'image/jpeg',
       },
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
-    images: ['/hero-solar.jpg'],
+    images: ['/installs/solar-ireland-group-family-home-roof.jpg'],
   },
 };
 

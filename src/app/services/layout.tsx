@@ -80,9 +80,9 @@ export default function ServicesLayout({
             about: { '@id': 'https://solarirelandgroup.ie/#business' },
             primaryImageOfPage: {
               '@type': 'ImageObject',
-              url: 'https://solarirelandgroup.ie/hero-solar.jpg',
-              width: 1344,
-              height: 768,
+              url: 'https://solarirelandgroup.ie/installs/solar-ireland-group-family-home-roof.jpg',
+              width: 1152,
+              height: 864,
             },
           }),
         }}
