@@ -190,7 +190,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Installation Day",
-      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We send SEAI the completion paperwork for your €1,800 grant (Republic of Ireland), which you applied for online before the work started. You book the post-works BER, and SEAI pays the grant into the account nominated on the Request for Payment form once it is published.",
+      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We send SEAI the completion paperwork for your €1,800 grant (Republic of Ireland), which you applied for online before the work started. We book your post-works BER assessment, and SEAI pays the grant into the account nominated on the Request for Payment form once it is published.",
       position: 3,
     },
   ],

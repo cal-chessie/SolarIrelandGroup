@@ -572,13 +572,13 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A post-works BER is a required step for the SEAI grant. Once your installation is finished, your installer uploads the completion documentation to SEAI, and you arrange a BER assessment of the house. The grant can only be processed after all documents are in and the new BER is published by the assessor. SEAI then pays the grant by electronic transfer into the bank account you nominated on your application, usually within about 4-6 weeks (seai.ie). By default the grant is not deducted from your installer's bill; it lands in your account. A registered contractor can instead offer the price net of the grant, in which case you nominate their account on the SEAI Request for Payment form."
+        "text": "A post-works BER is a required step for the SEAI grant. Once your installation is finished, your installer uploads the completion documentation to SEAI, and a registered assessor carries out a BER assessment of the house (we book it for you). The grant can only be processed after all documents are in and the new BER is published by the assessor. SEAI then pays the grant by electronic transfer into the bank account you nominated on your application, usually within about 4-6 weeks (seai.ie). By default the grant is not deducted from your installer's bill; it lands in your account. A registered contractor can instead offer the price net of the grant, in which case you nominate their account on the SEAI Request for Payment form."
       },
       {
         "type": "callout",
         "variant": "tip",
-        "title": "Book the BER assessor early",
-        "body": "The BER is the step homeowners most often leave late, and it holds the whole payment up. Book an assessor for the week after your installation date and ask them to publish the certificate as soon as it is done. That keeps the roughly 4-6 week payment clock as short as it can be."
+        "title": "Get the BER booked early",
+        "body": "The BER is the step most often left late, and it holds the whole payment up. We book your BER assessment for the week after your installation date and ask the assessor to publish the certificate as soon as it is done. That keeps the roughly 4-6 week payment clock as short as it can be."
       },
       {
         "type": "heading",
@@ -629,7 +629,7 @@ export const articles: Article[] = [
           ],
           [
             "Post-works BER",
-            "Assessor you book",
+            "Assessor we book for you",
             "Book for the week after install"
           ],
           [
@@ -2027,7 +2027,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. The scheme requires a [post-works BER](/blog/do-solar-panels-improve-ber-rating-ireland): once the installation is finished, you book a registered BER assessor, and SEAI pays the grant only after the new BER is published."
+        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. The scheme requires a [post-works BER](/blog/do-solar-panels-improve-ber-rating-ireland): once the installation is finished, we book your BER assessment with a registered assessor, and SEAI pays the grant only after the new BER is published."
       },
       {
         "type": "paragraph",
@@ -2037,7 +2037,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "warning",
         "title": "Important BER Note",
-        "body": "SEAI pays the grant only once your post-works BER is published. Book a registered BER assessor for soon after the installation so the payment is not held up; your installer can help you find one."
+        "body": "SEAI pays the grant only once your post-works BER is published. We book your BER assessment with a registered assessor for soon after the installation so the payment is not held up."
       },
       {
         "type": "heading",
@@ -2056,7 +2056,7 @@ export const articles: Article[] = [
           "Apply online through the SEAI portal (seai.ie). You will need your MPRN number (found on your electricity bill), property details, and your chosen installer's SEAI registration number.",
           "Wait for SEAI's letter of offer, review it and accept it (SEAI gives you 30 days to accept). From approval you have 8 months to complete the installation.",
           "Proceed with the solar panel installation. Your installer must complete the work within 8 months of the grant offer date.",
-          "After installation, your installer sends SEAI the completion paperwork, and you book your post-works BER with a registered BER assessor.",
+          "After installation, your installer sends SEAI the completion paperwork, and we book your post-works BER assessment with a registered BER assessor.",
           "Receive your grant payment into your bank account. SEAI says to allow 4 to 6 weeks once it has all the completion paperwork, including the post-works BER, and longer if your home is selected for an inspection."
         ]
       },
@@ -4798,7 +4798,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply for the SEAI grant online and must have the letter of offer before any work starts; how long that takes varies, so apply as soon as you have chosen your installer. After installation, your installer sends SEAI the completion paperwork and you book the post-works BER; SEAI says to allow 4 to 6 weeks for payment once it has them all (longer if your home is picked for an inspection). Here is a typical timeline:"
+        "text": "You apply for the SEAI grant online and must have the letter of offer before any work starts; how long that takes varies, so apply as soon as you have chosen your installer. After installation, your installer sends SEAI the completion paperwork and we book your post-works BER assessment; SEAI says to allow 4 to 6 weeks for payment once it has them all (longer if your home is picked for an inspection). Here is a typical timeline:"
       },
       {
         "type": "table",
@@ -4829,7 +4829,7 @@ export const articles: Article[] = [
             "~7 weeks"
           ],
           [
-            "Completion paperwork (installer) and post-works BER (you book it)",
+            "Completion paperwork (installer) and post-works BER (we book it)",
             "1–2 weeks",
             "~9 weeks"
           ],

@@ -175,7 +175,7 @@ const whyLocalCards = [
   {
     icon: FileCheck,
     title: 'SEAI Grant Expertise',
-    description: 'You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork and help you find a BER assessor.',
+    description: 'You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork and book your BER assessment.',
     color: 'text-sky-400',
     bg: 'bg-sky-400/10',
     border: 'border-sky-400/15',

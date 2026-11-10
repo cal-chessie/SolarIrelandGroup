@@ -382,7 +382,7 @@ function TermsContentServices() {
           },
           {
             title: 'SEAI Grant Application Assistance',
-            desc: 'Guidance with grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. You apply online at mgen.seai.ie before any work starts, naming Solar Ireland Group as your installer. We check your eligibility, guide you through the application and, after the installation, send SEAI the completion paperwork. You book the post-works BER with a registered BER assessor, and we can help you find one. Grant terms and conditions are set by SEAI and are subject to change.',
+            desc: 'Guidance with grants under the SEAI Solar PV Scheme and the SEAI Battery Storage Scheme. You apply online at mgen.seai.ie before any work starts, naming Solar Ireland Group as your installer. We check your eligibility, guide you through the application and, after the installation, send SEAI the completion paperwork. We book your post-works BER assessment with a registered BER assessor. Grant terms and conditions are set by SEAI and are subject to change.',
           },
           {
             title: 'Energy Bill Analysis and System Sizing',

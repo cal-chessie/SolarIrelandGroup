@@ -96,7 +96,7 @@ const checkSteps: CheckStep[] = [
       { label: 'Yes, already claimed', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid. You book it with a registered BER assessor, and we can help you find one.',
+    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid. We book your BER assessment with a registered BER assessor.',
     icon: FileCheck,
   },
 ];
@@ -335,7 +335,6 @@ function EligibilityChecker() {
 
 // SEAI's own addresses for the steps the homeowner does (read on seai.ie, 20 Oct 2026).
 const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
-const BER_ASSESSOR_SEARCH = 'https://ndber.seai.ie/PASS/Assessors/Search.aspx';
 
 const timelineSteps: {
   icon: typeof ClipboardCheck; title: string; description: string; duration: string; who: string;
@@ -375,11 +374,10 @@ const timelineSteps: {
   {
     icon: BadgeEuro,
     title: 'Grant Paid',
-    description: `After the install, book your post-works BER with a registered BER assessor. We send SEAI the completion paperwork, and once your BER is published SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account you nominated. You can track it on SEAI's grant portal.`,
+    description: `After the install, we book your post-works BER assessment with a registered BER assessor and send SEAI the completion paperwork, and once your BER is published SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account you nominated. You can track it on SEAI's grant portal.`,
     duration: '4-6 weeks',
     who: 'SEAI pays you',
     links: [
-      { label: 'Find a BER assessor', href: BER_ASSESSOR_SEARCH },
       { label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL },
     ],
     color: 'text-violet-400',

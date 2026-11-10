@@ -61,7 +61,7 @@ const FAQS = [
   {
     question: 'Is the €1,800 SEAI grant available in Roscommon?',
     answer:
-      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. Domestic solar also carries 0% VAT. You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork, and you book a post-works BER with a registered BER assessor before the grant is paid.',
+      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. Domestic solar also carries 0% VAT. You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork, and we book your post-works BER assessment with a registered BER assessor before the grant is paid.',
   },
   {
     question: 'Do I need planning permission for solar panels in Roscommon?',
@@ -284,7 +284,7 @@ export default function RoscommonPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               { icon: Sun, title: 'Open, unshaded roofs', body: 'Roscommon bungalows and farmhouses often have large, south-facing roofs with little shading, close to ideal for solar generation.' },
-              { icon: FileCheck, title: 'Grant guidance and the paperwork', body: 'We guide your SEAI grant application, send SEAI the completion paperwork, notify ESB Networks and help you find a BER assessor for your post-works BER.' },
+              { icon: FileCheck, title: 'Grant guidance and the paperwork', body: 'We guide your SEAI grant application, send SEAI the completion paperwork, notify ESB Networks and book your post-works BER assessment.' },
               { icon: Euro, title: 'Clear numbers up front', body: 'The AI bill analyser gives you a real savings figure for your own home before you commit to anything.' },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">

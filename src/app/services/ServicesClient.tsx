@@ -138,7 +138,7 @@ const additionalServices = [
   {
     icon: BarChart3,
     label: 'Post-works BER',
-    desc: 'You book it with a registered BER assessor after the install, and we can help you find one. SEAI pays once it is published.',
+    desc: 'We book your BER assessment with a registered BER assessor after the install. SEAI pays once it is published.',
   },
   {
     icon: Home,
