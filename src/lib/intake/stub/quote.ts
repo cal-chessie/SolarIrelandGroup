@@ -7,20 +7,14 @@
  *   parts are returned), the 25-year view, unit rate per supplier else 35c,
  *   no business price (DECISIONS 2).
  *
- * estimate.ts is not edited: it is called with explicit inputs. This file
- * does no saving or price maths of its own; it only picks the inputs and
- * reshapes the engine's result into the contract.
+ * The figures themselves come from ../roughQuote.ts (estimate.ts with
+ * explicit inputs), which the intake also uses as its offline fallback; this
+ * file only signs them.
  */
 import { createHash, createHmac } from 'node:crypto';
 import {
-  commercialEstimate,
-  commercialUsageFromMonthlyBill,
-  estimate,
   installCostEur,
   seaiGrant,
-  sizeSystemKwp,
-  systemOptions,
-  usageFromMonthlyBill,
 } from '@/lib/estimate';
 import type {
   IntakeConfig,
@@ -31,6 +25,7 @@ import type {
   QuoteResponse,
 } from '@/lib/intake/contract';
 import { STUB_SETTINGS } from './settings';
+import { quoteFigures } from '@/lib/intake/roughQuote';
 
 export { validateQuoteRequest, type QuoteValidation } from '@/lib/intake/validate';
 
@@ -87,18 +82,6 @@ export function stubConfig(): IntakeConfig {
 /*  The quote                                                          */
 /* ------------------------------------------------------------------ */
 
-function monthlyFromBill(bill: QuoteRequestItem['bill']): number | null {
-  if (!bill) return null;
-  return bill.period === 'two_months' ? bill.amountEur / 2 : bill.amountEur;
-}
-
-/** Which of the engine's home caps matches the Settings maximum (8 = the site's default "semi"). */
-function homeIdForMax(maxKwp: number): string {
-  if (maxKwp <= 6) return 'apartment';
-  if (maxKwp <= 8) return 'semi';
-  return 'detached';
-}
-
 function sign(record: unknown, expiresAt: string): string {
   const payload = Buffer.from(JSON.stringify({ v: 1, stub: true, record, expiresAt })).toString('base64url');
   const mac = createHmac('sha256', STUB_SECRET).update(payload).digest('base64url');
@@ -122,138 +105,8 @@ export function readQuoteToken(token: string | null | undefined): QuoteFigures |
 }
 
 export function quoteOne(req: QuoteRequestItem): Quote {
-  const E = S.estimate;
-  const monthly = monthlyFromBill(req.bill);
-  const fromBillPhoto = !!req.billRead;
-  const assumptions: QuoteAssumption[] = [];
-
-  if (req.bill && monthly != null) {
-    assumptions.push({ field: 'bill', value: Math.round(monthly * 100) / 100, provenance: fromBillPhoto ? 'from_your_bill' : 'you_told_us' });
-  }
-
-  if (req.segment === 'domestic') {
-    const usage = req.annualKwh ?? (monthly != null ? usageFromMonthlyBill(monthly) : null);
-    if (usage == null || usage <= 0) return { hasBasis: false, figures: null, assumptions, quoteToken: null, expiresAt: null };
-    // Typed kWh, or worked out from the bill they gave: either way it rests on
-    // what they told us (or what their bill photo said), never on a default.
-    assumptions.push({ field: 'annualKwh', value: usage, provenance: fromBillPhoto ? 'from_your_bill' : 'you_told_us' });
-
-    let unitRate: number = E.unitRateDefaultEur;
-    let rateProv: QuoteAssumption['provenance'] = 'assumed';
-    const supplier = req.supplier ? E.suppliers.find((s) => s.name === req.supplier) : undefined;
-    if (req.billRead?.unitRateEur) {
-      unitRate = req.billRead.unitRateEur;
-      rateProv = 'from_your_bill';
-    } else if (supplier) {
-      unitRate = supplier.unitRateEur;
-      rateProv = 'you_told_us';
-    }
-    assumptions.push({ field: 'unitRate', value: unitRate, provenance: rateProv });
-    assumptions.push({ field: 'exportRate', value: E.exportRateEur, provenance: 'assumed' });
-
-    // DECISIONS 2 (X3): the bill photo's day/night split is used when it gives one.
-    const dayKwh = req.billRead?.dayKwh && req.billRead.nightKwh != null ? req.billRead.dayKwh : undefined;
-    assumptions.push({ field: 'daytimeShare', value: dayKwh ? Math.round((dayKwh / usage) * 100) / 100 : 0.6, provenance: dayKwh ? 'from_your_bill' : 'assumed' });
-
-    // Size with the engine's own rule, then hold it to the Settings band.
-    const engineSize = sizeSystemKwp(usage, homeIdForMax(E.maxKwp));
-    const size = Math.min(Math.max(engineSize, E.minKwp), E.maxKwp);
-    assumptions.push({ field: 'minKwp', value: E.minKwp, provenance: 'assumed' });
-
-    const e = estimate({
-      annualUsageKwh: usage,
-      systemSizeKwp: size,
-      unitRateEur: unitRate,
-      exportRateEur: E.exportRateEur,
-      dayUsageKwh: dayKwh,
-    });
-    const figures: QuoteFigures = {
-      kwp: e.systemSizeKwp,
-      panels: e.panels,
-      annualKwh: e.annualUsageKwh,
-      annualSavingEur: e.totalAnnualBenefitEur,
-      selfUseSavingEur: e.annualSavingFromSelfUseEur,
-      exportIncomeEur: e.annualExportEarningsEur,
-      grossCostEur: e.installCostEur,
-      grantEur: e.grantEur,
-      grantScheme: 'SEAI',
-      netCostEur: e.costAfterGrantEur,
-      vatRate: 0,
-      vatEur: 0,
-      paybackYears: e.paybackYears,
-      horizonYears: E.horizonYears,
-      horizonSavingsEur: e.total25yrSavingsEur,
-      horizonNetEur: e.total25yrSavingsEur - e.costAfterGrantEur,
-      selfUsePct: e.selfConsumptionPct,
-      unitRateEur: unitRate,
-      exportRateEur: E.exportRateEur,
-      annualBillEur: e.annualBillEur,
-      annualBillAfterSolarEur: e.annualBillAfterSolarEur,
-      billReductionPct: e.billReductionPct,
-      monthlySavingsEur: e.monthlySavingsEur,
-      co2PerYearKg: e.co2PerYearKg,
-      treesEquivalent: e.treesEquivalent,
-      monthlyGeneration: e.monthlyGeneration.map((m) => m.generationKwh),
-      options: systemOptions(usage, [4, 5, 6, 7, 8].filter((k) => k >= E.minKwp && k <= E.maxKwp), {
-        unitRateEur: unitRate,
-        exportRateEur: E.exportRateEur,
-      }).map((o) => ({ kwp: o.size, annualSavingEur: o.annualSaving + o.annualExport, grossCostEur: o.cost, paybackYears: o.paybackYears })),
-      indicative: false,
-      priceBasis: 'estimate',
-      sizedAtMinimum: size <= E.minKwp,
-    };
-    return finish(req, figures, assumptions);
-  }
-
-  // Business: indicative, NDMG, and no price (DECISIONS 2).
-  let unitRate: number = S.estimate.commercialUnitRateDefaultEur;
-  let rateProv: QuoteAssumption['provenance'] = 'assumed';
-  if (req.billRead?.unitRateEur) {
-    unitRate = req.billRead.unitRateEur;
-    rateProv = 'from_your_bill';
-  }
-  const usage = req.annualKwh ?? (monthly != null ? commercialUsageFromMonthlyBill(monthly, unitRate) : null);
-  if (usage == null || usage <= 0) return { hasBasis: false, figures: null, assumptions, quoteToken: null, expiresAt: null };
-  assumptions.push({ field: 'annualKwh', value: usage, provenance: fromBillPhoto ? 'from_your_bill' : 'you_told_us' });
-  assumptions.push({ field: 'unitRate', value: unitRate, provenance: rateProv });
-  assumptions.push({ field: 'exportRate', value: E.exportRateEur, provenance: 'assumed' });
-  const dayKwh = req.billRead?.dayKwh && req.billRead.nightKwh != null ? req.billRead.dayKwh : undefined;
-  assumptions.push({ field: 'daytimeShare', value: dayKwh ? Math.round((dayKwh / usage) * 100) / 100 : 0.75, provenance: dayKwh ? 'from_your_bill' : 'assumed' });
-
-  const c = commercialEstimate({ annualUsageKwh: usage, unitRateEur: unitRate, exportRateEur: E.exportRateEur, dayUsageKwh: dayKwh });
-  const showPrice = E.business.showPrice;
-  const figures: QuoteFigures = {
-    kwp: c.systemSizeKwp,
-    panels: c.panels,
-    annualKwh: c.annualUsageKwh,
-    annualSavingEur: c.totalAnnualBenefitEur,
-    selfUseSavingEur: c.annualSavingFromSelfUseEur,
-    exportIncomeEur: c.annualExportEarningsEur,
-    grossCostEur: showPrice ? c.installCostExVatEur : null,
-    grantEur: c.grantEur,
-    grantScheme: 'NDMG',
-    netCostEur: showPrice ? c.costAfterGrantEur : null,
-    vatRate: c.vatRate,
-    vatEur: showPrice ? c.vatEur : null,
-    paybackYears: showPrice ? c.paybackYears : null,
-    horizonYears: E.horizonYears,
-    horizonSavingsEur: E.business.showHorizon ? c.total25yrSavingsEur : null,
-    horizonNetEur: null,
-    selfUsePct: c.selfConsumptionPct,
-    unitRateEur: unitRate,
-    exportRateEur: E.exportRateEur,
-    annualBillEur: c.annualBillEur,
-    annualBillAfterSolarEur: c.annualBillAfterSolarEur,
-    billReductionPct: c.billReductionPct,
-    monthlySavingsEur: c.monthlySavingsEur,
-    co2PerYearKg: c.co2PerYearKg,
-    treesEquivalent: c.treesEquivalent,
-    monthlyGeneration: c.monthlyGeneration.map((m) => m.generationKwh),
-    options: [],
-    indicative: true,
-    priceBasis: showPrice ? 'estimate' : 'proposal',
-    sizedAtMinimum: false,
-  };
+  const { figures, assumptions } = quoteFigures(req);
+  if (!figures) return { hasBasis: false, figures: null, assumptions, quoteToken: null, expiresAt: null };
   return finish(req, figures, assumptions);
 }
 

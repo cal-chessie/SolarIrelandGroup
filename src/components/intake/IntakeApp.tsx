@@ -43,6 +43,7 @@ import { MAX_UPLOAD_BYTES, TOO_BIG_LINE } from '@/lib/intake/upload';
 import { CallAsk, CallDone, callDoneCopy, type CallDetails } from './CallAsk';
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
+import { roughQuote } from '@/lib/intake/roughQuote';
 import {
   clearDeviceDraft,
   doorFromSeg,
@@ -135,6 +136,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteStatus, setQuoteStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  /** The quote service could not answer, so the figures are a rough estimate from the engine here (roughQuote). */
+  const [rough, setRough] = useState(false);
   const [preview, setPreview] = useState<Quote | null>(null);
   const [updatedFlash, setUpdatedFlash] = useState(false);
   const sharpenTick = useRef(0);
@@ -575,6 +578,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const hit = cachedQuote(qItem);
     if (hit) {
       setQuote(hit);
+      setRough(false);
       setQuoteStatus('ready');
       return;
     }
@@ -584,9 +588,21 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       if (!alive) return;
       if (r && r[0]) {
         setQuote(r[0]);
+        setRough(false);
+        setQuoteStatus('ready');
+        return;
+      }
+      // The quote service is down or off. A typed amount still gets a rough
+      // estimate from the same engine, never a dead end.
+      const fallback = roughQuote(qItem);
+      if (fallback.hasBasis) {
+        track('intake_quote_rough', { segment: qItem.segment, flow_id: draftRef.current.flowId });
+        setQuote(fallback);
+        setRough(true);
         setQuoteStatus('ready');
       } else {
         setQuote(null);
+        setRough(false);
         setQuoteStatus('error');
       }
     });
@@ -641,7 +657,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     let alive = true;
     const t = setTimeout(() => {
       getQuotes([item]).then((r) => {
-        if (alive && r && r[0]) setPreview(r[0]);
+        if (!alive) return;
+        if (r && r[0]) setPreview(r[0]);
+        else setPreview(roughQuote(item));
       });
     }, 320);
     return () => {
@@ -1420,7 +1438,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <h1 className="si-est__title" ref={h1Ref} tabIndex={-1}>
         Your estimate
       </h1>
-      <span className="si-tag">{isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
+      <span className="si-tag">{rough ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
       {updatedFlash ? (
         <span className="si-updated">
           <Check size={14} aria-hidden="true" /> Updated
@@ -1444,6 +1462,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <p className="si-prov-line" id="si-prov-line">
         {basisShort}
       </p>
+      {rough ? (
+        <p className="si-hint" data-rough-estimate="">
+          A rough estimate from your bill amount. Your full estimate checks it against your roof and when you use power.
+        </p>
+      ) : null}
       {howLink}
       {wide ? (
         <Collapse open={sheetOpen} id="si-how">
@@ -1598,7 +1621,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     <div className="si-screen-in si-screen si-live">
       <div className="si-est__head">
         <h2 className="si-est__title">Your estimate</h2>
-        <span className="si-tag">{isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
+        <span className="si-tag">{liveFig && !preview?.quoteToken ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
       </div>
       {liveFig && billNow != null ? (
         <>
