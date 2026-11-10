@@ -6,131 +6,79 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { motion, AnimatePresence, useInView, PanInfo } from '@/lib/motion';
 import {
-  MapPin,
   Zap,
   Calendar,
   ArrowLeft,
   ArrowRight,
   X,
   Sun,
-  Euro,
-  TrendingUp,
   ChevronRight,
   Maximize2,
   PanelTop,
-  Home as HomeIcon,
-  Battery,
   Shield,
 } from 'lucide-react';
 
+// Seven real Solar Ireland Group jobs (Cal, 11 Nov 2026). Which photo belongs
+// to which job record is not known yet, so each photo carries only what is
+// visible in it: no county, size, savings or date. The job records are kept in
+// _TRASH/fake-photos-2026-11-11/install-job-records.ts.txt to re-attach once
+// Cal maps them. Never guess a mapping.
 const installs = [
   {
+    id: 1,
+    src: '/installs/solar-ireland-group-family-home-roof.webp',
+    width: 1152,
+    height: 864,
+    alt: 'Two-storey family home with solar panels across the whole roof, patio in front',
+    caption: 'Family home, full roof array',
+  },
+  {
+    id: 2,
+    src: '/installs/commercial-flat-roof-solar.webp',
+    width: 1152,
+    height: 864,
+    alt: 'Rows of solar panels on a commercial flat roof under a blue sky',
+    caption: 'Commercial flat roof',
+  },
+  {
     id: 3,
-    src: '/install-3.webp',
-    alt: 'Solar panel installation on a modern bungalow in County Meath',
-    location: 'Meath, Leinster',
-    roofType: 'Tiled roof',
-    systemSize: '4.8 kWp',
-    panels: '13 × 370W panels',
-    annualGen: '4,560 kWh/yr',
-    annualSaving: '€1,050',
-    payback: '5.8 years',
-    installed: 'Feb 2025',
-    inverter: 'Hybrid inverter',
-    battery: 'No',
-    orientation: 'South',
-    caption: 'Seamless bungalow integration',
-    badge: null,
+    src: '/installs/in-roof-solar-slate.webp',
+    width: 928,
+    height: 1104,
+    alt: 'Black in-roof solar panels set into a slate roof, scaffold alongside',
+    caption: 'In-roof panels on a slate roof',
   },
   {
     id: 4,
-    src: '/install-4.webp',
-    alt: 'Flat roof solar panel system on a Dublin apartment building',
-    location: 'Dublin, Leinster',
-    roofType: 'Flat roof',
-    systemSize: '6.0 kWp',
-    panels: '16 × 375W panels',
-    annualGen: '5,700 kWh/yr',
-    annualSaving: '€1,350',
-    payback: '5.2 years',
-    installed: 'Mar 2025',
-    inverter: 'Microinverters',
-    battery: 'Yes - 7 kWh',
-    orientation: 'South',
-    caption: 'Urban flat roof install',
-    badge: 'Top Saver',
+    src: '/installs/two-storey-home-black-solar-panels.webp',
+    width: 1152,
+    height: 864,
+    alt: 'White two-storey house with black solar panels on the roof',
+    caption: 'Two-storey home, black panels',
   },
   {
     id: 5,
-    src: '/install-5.webp',
-    alt: 'Solar panels on a stone cottage in rural County Donegal',
-    location: 'Donegal, Ulster',
-    roofType: 'Stone roof',
-    systemSize: '3.8 kWp',
-    panels: '10 × 380W panels',
-    annualGen: '3,610 kWh/yr',
-    annualSaving: '€850',
-    payback: '6.5 years',
-    installed: 'Dec 2024',
-    inverter: 'String inverter',
-    battery: 'No',
-    orientation: 'South-East',
-    caption: 'Rural stone cottage',
-    badge: null,
+    src: '/installs/red-brick-semi-solar-panels.webp',
+    width: 976,
+    height: 1056,
+    alt: 'Red-brick semi-detached house with black solar panels, a tree in front',
+    caption: 'Red-brick semi, black panels',
   },
   {
     id: 6,
-    src: '/install-6.webp',
-    alt: 'Solar PV system on a large detached house in County Wicklow',
-    location: 'Wicklow, Leinster',
-    roofType: 'Slate roof',
-    systemSize: '7.2 kWp',
-    panels: '18 × 400W panels',
-    annualGen: '6,840 kWh/yr',
-    annualSaving: '€1,500',
-    payback: '4.8 years',
-    installed: 'Jan 2025',
-    inverter: 'Hybrid inverter',
-    battery: 'Yes - 10 kWh',
-    orientation: 'South',
-    caption: 'Large family home - max output',
-    badge: 'Best ROI',
+    src: '/installs/new-build-home-solar-scaffold.webp',
+    width: 1152,
+    height: 864,
+    alt: 'New-build two-storey house in scaffold with solar panels fitted on the roof',
+    caption: 'New build, panels on before the scaffold comes down',
   },
   {
     id: 7,
-    src: '/install-1.webp',
-    alt: 'Solar panel installation on a modern Irish home with tiled roof',
-    location: 'Galway, Connacht',
-    roofType: 'Tiled roof',
-    systemSize: '5.4 kWp',
-    panels: '14 × 390W panels',
-    annualGen: '5,130 kWh/yr',
-    annualSaving: '€1,200',
-    payback: '5.5 years',
-    installed: 'Jan 2025',
-    inverter: 'Hybrid inverter',
-    battery: 'Yes - 5 kWh',
-    orientation: 'South-facing',
-    caption: 'Tiled roof - seamless integration',
-    badge: 'Most Popular',
-  },
-  {
-    id: 8,
-    src: '/install-2.webp',
-    alt: 'Solar PV system on a two-story Irish house',
-    location: 'Kildare, Leinster',
-    roofType: 'Slate roof',
-    systemSize: '4.2 kWp',
-    panels: '12 × 350W panels',
-    annualGen: '3,990 kWh/yr',
-    annualSaving: '€950',
-    payback: '6 years',
-    installed: 'Nov 2024',
-    inverter: 'String inverter',
-    battery: 'No',
-    orientation: 'South-West',
-    caption: 'Flush-mount - clean finish',
-    badge: null,
+    src: '/installs/solar-panels-slate-roof-home.webp',
+    width: 864,
+    height: 1152,
+    alt: 'Slate-roof home with solar panels, seen over a wall from a building site',
+    caption: 'Slate roof, fitted mid-build',
   },
 ];
 
@@ -195,8 +143,8 @@ function SwipeGallery({
             <Image
               src={installs[activeIndex].src}
               alt={installs[activeIndex].alt}
-              width={800}
-              height={480}
+              width={installs[activeIndex].width}
+              height={installs[activeIndex].height}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 700px"
               className="w-full h-[280px] sm:h-[400px] lg:h-[480px] object-cover"
               draggable={false}
@@ -205,31 +153,8 @@ function SwipeGallery({
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/20" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 
-            {installs[activeIndex].badge && (
-              <div className="absolute top-4 left-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400/90 text-black text-[10px] font-bold uppercase tracking-wider">
-                  <Zap className="w-3 h-3" />
-                  {installs[activeIndex].badge}
-                </span>
-              </div>
-            )}
-
             <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 pb-4">
-              <div className="flex items-end justify-between">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                    <span className="text-sm font-semibold text-white">{installs[activeIndex].location}</span>
-                  </div>
-                  <p className="text-white/50 text-xs uppercase tracking-wider">
-                    {installs[activeIndex].caption}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-white/40">
-                  <Calendar className="w-3 h-3" />
-                  {installs[activeIndex].installed}
-                </div>
-              </div>
+              <p className="text-sm font-semibold text-white">{installs[activeIndex].caption}</p>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -281,24 +206,12 @@ function SwipeGallery({
 function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof installs)[0]; onViewGallery: (i: number) => void; onOpenLightbox: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-40px' });
+  const position = installs.findIndex((inst) => inst.id === install.id) + 1;
 
-  const specs = [
-    // Per-home savings and payback depend on that household's bill, which is
-    // not ours to publish. These four are all evidenced by the install itself.
-    { icon: PanelTop, label: 'System', value: install.systemSize, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-    { icon: Sun, label: 'Annual gen', value: install.annualGen, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { icon: TrendingUp, label: 'Roof', value: install.orientation, color: 'text-green-400', bg: 'bg-green-400/10' },
-    { icon: Euro, label: 'Installed', value: install.installed, color: 'text-violet-400', bg: 'bg-violet-400/10' },
-  ];
-
-  const details = [
-    { label: 'Panels', value: install.panels },
-    { label: 'Roof type', value: install.roofType },
-    { label: 'Orientation', value: install.orientation },
-    { label: 'Inverter', value: install.inverter },
-    ...(install.battery !== 'No' ? [{ label: 'Battery', value: install.battery, icon: Battery }] : []),
-  ];
-
+  // The per-job specs (size, generation, roof, date, panels, inverter,
+  // battery) came off here on 11 Nov 2026: the photos are real but which job
+  // each one shows is not known yet. See the job records note in
+  // _TRASH/fake-photos-2026-11-11/ to re-attach them once Cal maps them.
   return (
     <motion.div
       ref={ref}
@@ -309,8 +222,8 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
     >
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h3 className="text-lg sm:text-xl font-bold text-white">{install.location}</h3>
-          <p className="text-xs text-gray-400 mt-0.5">{install.roofType} · {install.orientation}</p>
+          <h3 className="text-lg sm:text-xl font-bold text-white">{install.caption}</h3>
+          <p className="text-xs text-gray-400 mt-0.5">Photo {position} of {installs.length}</p>
         </div>
         <button
           onClick={onOpenLightbox}
@@ -321,51 +234,28 @@ function SpecCard({ install, onViewGallery, onOpenLightbox }: { install: (typeof
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        {specs.map((spec) => {
-          const SpecIcon = spec.icon;
-          return (
-            <div key={spec.label} className="rounded-xl bg-white/[0.03] border border-white/[0.04] p-3">
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className={`w-6 h-6 rounded-md ${spec.bg} flex items-center justify-center`}>
-                  <SpecIcon className={`w-3 h-3 ${spec.color}`} />
-                </div>
-                <span className="text-[10px] text-gray-400 uppercase tracking-wider">{spec.label}</span>
-              </div>
-              <p className="text-sm font-bold text-white">{spec.value}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="space-y-2.5 mb-6 flex-1">
-        {details.map((detail) => (
-          <div key={detail.label} className="flex items-center justify-between py-1.5 border-b border-white/[0.03] last:border-0">
-            <span className="text-xs text-gray-400">{detail.label}</span>
-            <span className="text-xs font-medium text-gray-300">{detail.value}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] mb-5">
-        <Calendar className="w-3.5 h-3.5 text-gray-400" />
-        <span className="text-xs text-gray-400">Installed <span className="text-gray-300 font-medium">{install.installed}</span></span>
-      </div>
-
       {installs.length > 1 && (
         <div className="grid grid-cols-4 gap-2">
           {installs.map((inst, i) => (
             <button
               key={inst.id}
               onClick={() => onViewGallery(i)}
-              className={`flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all ${
+              aria-label={`Show photo ${i + 1}: ${inst.caption}`}
+              aria-pressed={inst.id === install.id}
+              className={`relative aspect-square overflow-hidden rounded-xl transition-all ${
                 inst.id === install.id
-                  ? 'bg-amber-400/10 border border-amber-400/20 text-amber-400'
-                  : 'bg-white/[0.02] border border-white/[0.04] text-gray-400 hover:text-gray-300 hover:bg-white/[0.04]'
+                  ? 'ring-2 ring-amber-400/80'
+                  : 'opacity-60 hover:opacity-100 ring-1 ring-white/[0.06]'
               }`}
             >
-              <HomeIcon className="w-3 h-3 shrink-0" />
-              <span className="truncate">{i + 1}</span>
+              <Image
+                src={inst.src}
+                alt=""
+                fill
+                sizes="(max-width: 1024px) 22vw, 96px"
+                className="object-cover"
+                draggable={false}
+              />
             </button>
           ))}
         </div>
