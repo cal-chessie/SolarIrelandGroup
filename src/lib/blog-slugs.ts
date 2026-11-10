@@ -33,4 +33,5 @@ export const BLOG_SLUGS: ReadonlySet<string> = new Set([
   'do-solar-panels-add-value-to-your-home-ireland',
   'solar-panel-maintenance-ireland-do-they-need-cleaning',
   'what-is-my-mprn-number-ireland',
+  'seai-battery-grant-600-explained',
 ]);

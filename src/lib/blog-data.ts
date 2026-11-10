@@ -42,6 +42,196 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    "slug": "seai-battery-grant-600-explained",
+    "title": "SEAI Battery Grant: The €600 Explained (2026)",
+    "seoTitle": "SEAI Battery Grant 2026: The €600 Explained, Who Qualifies",
+    "seoDescription": "SEAI pays €600 for a home battery of 5 kWh or more, with or without panels. Who qualifies, how it stacks to €2,400, VAT at 0% or 23%, and when it pays.",
+    "answer": "SEAI pays a flat €600 grant for a home battery of 5 kWh or more, fitted with new solar panels or on its own. With the €1,800 solar grant on the same application, a home can get up to €2,400. A battery fitted with panels carries 0% VAT; fitted on its own it carries 23%.",
+    "excerpt": "SEAI now pays €600 towards a home battery of 5 kWh or more. Who qualifies, how it stacks with the €1,800 solar grant, the VAT difference, and the honest answer on when a battery pays.",
+    "category": "grants",
+    "date": "10 Nov 2026",
+    "readTime": "6 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-emerald-400/10",
+    "iconColor": "text-emerald-400",
+    "image": "/installs/two-storey-home-black-solar-panels.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "SEAI's home solar scheme now includes a battery grant. It is a flat €600 for a battery of 5 kWh or more, and it sits on the same application as the solar grant. This guide covers who qualifies, how the two grants stack, what VAT you pay, and how to tell whether a battery is worth it in your house."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How much is the SEAI battery grant?"
+      },
+      {
+        "type": "paragraph",
+        "text": "€600, flat. A 5 kWh battery and a 15 kWh battery draw the same €600, and a battery under 5 kWh draws nothing. The grant does not scale with size, so it covers a bigger share of a smaller battery ([SEAI battery grant](https://www.seai.ie/grants/home-energy-grants/individual-grants/battery))."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Grant",
+          "Amount",
+          "Rule"
+        ],
+        "rows": [
+          [
+            "Solar PV",
+            "Up to €1,800",
+            "€700 per kWp to 2 kWp, then €200 per kWp to 4 kWp"
+          ],
+          [
+            "Battery",
+            "€600",
+            "A battery of 5 kWh or more, flat"
+          ],
+          [
+            "Both on one application",
+            "Up to €2,400",
+            "The most SEAI pays a home for solar and a battery"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Who qualifies"
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "You own the home, and it has an MPRN, the meter number on your electricity bill",
+          "The home was built and occupied before 2025",
+          "The home has not had SEAI battery funding before",
+          "You wait for the grant offer before the battery is bought or fitted",
+          "A company on SEAI's register for solar PV fits it"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "You can claim the battery grant with new panels, add a battery to panels you already have, or fit a battery on its own with no panels at all. Adding one to an older system can need a hybrid inverter, which we check on the call. If the home has solar PV, SEAI needs a post-works BER before it pays, and we book that BER for you."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How it stacks with the €1,800 solar grant"
+      },
+      {
+        "type": "paragraph",
+        "text": "One application covers both. A 4 kWp system draws the full €1,800 solar grant, and a battery of 5 kWh or more adds €600, so solar and battery together reach €2,400. SEAI pays the grant after the work, into the bank account you nominate, once the completion paperwork and the BER are in ([SEAI](https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant))."
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "On the Fuel Allowance?",
+        "body": "SEAI pays a higher grant to homeowners on certain welfare payments, the Fuel Allowance among them: up to €8,400 for solar panels and €600 for a battery, up to €9,000 in all ([SEAI Solar PV Scheme Application Guide](https://www.seai.ie/sites/default/files/2026-10/Solar-PV-Scheme-Application-Guide.pdf))."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "VAT: 0% with panels, 23% on its own"
+      },
+      {
+        "type": "paragraph",
+        "text": "A battery fitted in the same job as new solar panels carries 0% VAT, the same as the panels. Fit the battery on its own and it carries the standard 23% ([SEAI battery FAQ](https://www.seai.ie/grants/home-energy-grants/individual-grants/battery)). On a battery-only job the VAT can cost more than the grant gives back, so fitting it with the panels is usually the cheaper route."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Battery",
+          "Our price fitted with panels",
+          "After the €600 grant"
+        ],
+        "rows": [
+          [
+            "5 kWh",
+            "€3,200",
+            "€2,600"
+          ],
+          [
+            "10 kWh",
+            "€4,900",
+            "€4,300"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Those are our own prices for a battery added to a panel install, at 0% VAT. SEAI's own cost guide puts a fully installed battery at about €3,500 to €5,500."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "When does a battery pay?"
+      },
+      {
+        "type": "paragraph",
+        "text": "It depends on when your house uses power, and a bill on its own cannot show that. Panels make most of their power in the middle of the day. A battery earns its keep by holding that power for the evening, so it pays best in a house that is empty by day and busy from five o'clock."
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "Evening use: the more you use after the sun goes down, the more a battery saves",
+          "Night rate: on a day/night or smart tariff, a battery can also charge at the cheap night rate and run the house through the dear peak",
+          "An EV: a car charged overnight adds a big night load, which changes how the battery is best used",
+          "A heat pump: it adds evening and winter demand, when the panels make least"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Upload your bill to the [bill analyser](/solar-calculator) and it reads your day and night split. Where your bill shows peak hours or a night rate, it sets out the battery case for your house, with the €600 grant, before we talk about sizing one. The estimate itself stays panels only, so the saving you see never leans on a battery."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Frequently asked questions"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can I get the battery grant without solar panels?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. SEAI allows a battery-only application, and you can add a battery to panels you already have. A battery fitted on its own carries 23% VAT rather than 0%."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does a bigger battery get a bigger grant?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. The grant is a flat €600 for any battery of 5 kWh or more. Under 5 kWh, there is no grant."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "What is the most SEAI pays for solar and a battery?"
+      },
+      {
+        "type": "paragraph",
+        "text": "€2,400 on the standard scheme: €1,800 for the panels and €600 for the battery, on one application. Homeowners on certain welfare payments, including the Fuel Allowance, can get up to €9,000."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Do I apply before the battery is fitted?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. Wait for SEAI's grant offer before anything is bought or fitted. We guide you through the application on SEAI's portal."
+      },
+      {
+        "type": "cta",
+        "text": "See my savings",
+        "href": "/solar-calculator"
+      }
+    ]
+  },
+  {
     "slug": "do-solar-panels-add-value-to-your-home-ireland",
     "title": "Do Solar Panels Add Value to Your Home in Ireland?",
     "excerpt": "Yes - solar lifts your BER, cuts running costs, and appeals to buyers who now read the energy rating first. The honest picture on how much value it adds, and why the bigger return happens while you still live there.",
@@ -1562,7 +1752,7 @@ export const articles: Article[] = [
     "excerpt": "How many panels a typical 3-bed semi needs, what a 10-panel system costs after the €1,800 grant, and a worked savings example from the bill.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -1615,7 +1805,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Domestic solar has 0% VAT, so the prices above are what you pay - there is no VAT to add. A battery of 5 kWh or more carries a €600 SEAI battery grant on top of the solar grant, on the same application, which is the €600 off in the table. It is still an optional extra you weigh on its own merits, covered in our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost)."
+        "text": "Domestic solar has 0% VAT, so the prices above are what you pay - there is no VAT to add. A battery of 5 kWh or more carries a €600 SEAI battery grant on top of the solar grant, on the same application, which is the €600 off in the table. It is still an optional extra you weigh on its own merits, covered in our [battery guide](/blog/battery-storage-is-it-worth-the-extra-cost). Read [the €600 battery grant explained](/blog/seai-battery-grant-600-explained)."
       },
       {
         "type": "heading",
@@ -2182,7 +2372,7 @@ export const articles: Article[] = [
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2196,7 +2386,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar panels in Ireland cost between **€6,400 and €14,900 after the SEAI grants** in 2026. A standard 4kWp system costs €6,400 after the €1,800 grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €14,900 after €2,400 (the €1,800 solar grant plus the €600 battery grant). Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar."
+        "text": "Solar panels in Ireland cost between **€6,400 and €14,900 after the SEAI grants** in 2026. A standard 4kWp system costs €6,400 after the €1,800 grant, a 6kWp system €7,800, and a 10kWp system with a 10 kWh battery €14,900 after €2,400 (the €1,800 solar grant plus the €600 battery grant). Prices have fallen substantially over the past five years as the market has matured, making 2026 the most affordable time to go solar. Read [the €600 battery grant explained](/blog/seai-battery-grant-600-explained)."
       },
       {
         "type": "paragraph",
@@ -2960,7 +3150,7 @@ export const articles: Article[] = [
     "excerpt": "Solar batteries cost €3,200-€4,900 for the usual 5 to 10 kWh sizes - but can they pay for themselves? We break down the maths with real Irish energy prices and usage patterns to help you decide.",
     "category": "savings",
     "date": "22 Mar 2026",
-    "updated": "16 Oct 2026",
+    "updated": "10 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2983,7 +3173,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Battery Market in Ireland",
-        "body": "A growing share of new Irish solar installations now include battery storage. Note: SEAI pays a flat €600 grant for a battery of 5 kWh or more, on top of the solar grant and on the same application. The ROI calculation still matters more than the grant."
+        "body": "A growing share of new Irish solar installations now include battery storage. Note: SEAI pays a flat €600 grant for a battery of 5 kWh or more, on top of the solar grant and on the same application. The ROI calculation still matters more than the grant. Read [the €600 battery grant explained](/blog/seai-battery-grant-600-explained)."
       },
       {
         "type": "heading",
@@ -3956,7 +4146,7 @@ export const articles: Article[] = [
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",
     "date": "20 Apr 2026",
-    "updated": "9 Nov 2026",
+    "updated": "10 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4058,7 +4248,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and you can claim both: the heat pump system grant, which SEAI increased from 6 October 2026 and which depends on your dwelling type and the heating system you replace, plus up to €1,800 for solar PV (and €600 more for a battery of 5 kWh or more). Check the current heat pump amounts on [seai.ie](https://www.seai.ie) before you budget."
+        "text": "One of the most compelling reasons to install both systems together - or even in sequence - is the generous grant support available. The SEAI offers separate grants for heat pumps and solar PV, and you can claim both: the heat pump system grant, which SEAI increased from 6 October 2026 and which depends on your dwelling type and the heating system you replace, plus up to €1,800 for solar PV (and €600 more for a battery of 5 kWh or more). Check the current heat pump amounts on [seai.ie](https://www.seai.ie) before you budget. Read [the €600 battery grant explained](/blog/seai-battery-grant-600-explained)."
       },
       {
         "type": "callout",

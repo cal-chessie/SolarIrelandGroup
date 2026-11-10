@@ -56,6 +56,7 @@ export const CLUSTERS: Record<string, Cluster> = {
   grant: {
     core: [
       'complete-guide-seai-solar-grant-2026',
+      'seai-battery-grant-600-explained',
       'nc6-form-solar-grid-connection-ireland',
       'smart-meter-required-solar-panels-ireland',
       'what-is-my-mprn-number-ireland',
