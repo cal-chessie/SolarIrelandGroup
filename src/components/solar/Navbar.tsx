@@ -76,7 +76,7 @@ const mobileLinks = [
     href: '/book-survey',
     icon: CalendarCheck,
     color: 'green',
-    description: 'Book a free home solar assessment',
+    description: 'Upload your bill, see your saving',
     gradient: 'from-green-400/20 to-emerald-400/10',
     iconBg: 'bg-green-400/10',
     iconColor: 'text-green-400',
