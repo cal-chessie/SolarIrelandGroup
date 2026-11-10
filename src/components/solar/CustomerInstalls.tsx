@@ -334,7 +334,7 @@ export default function CustomerInstalls() {
                 <span className="text-gradient">Money in the bank.</span>
               </h2>
               <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
-                From Meath to Donegal, Dublin to Cork - these are the systems we've fitted, the savings our customers are earning, and the energy independence they're enjoying right now.
+                Real roofs we've fitted. Homes and businesses across Ireland.
               </p>
             </div>
 
