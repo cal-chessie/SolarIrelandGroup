@@ -26,7 +26,7 @@ import { ChevronRight, Phone } from 'lucide-react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
-import { CallAsk, CallDone, EMPTY_CALL, type CallDetails } from '@/components/intake/CallAsk';
+import { CallAsk, CallDone, CallRemembered, EMPTY_CALL, forgetCall, readCallMemory, type CallDetails, type CallMemory } from '@/components/intake/CallAsk';
 import { getConfig, getQuotes, monthlyBillItem } from '@/components/intake/api';
 import type { IntakeConfig, Quote, Segment } from '@/lib/intake/contract';
 import { eur, isEmail, isPhone } from '@/lib/intake/format';
@@ -71,6 +71,8 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   const [config, setConfig] = useState<IntakeConfig | null>(null);
   const [sent, setSent] = useState<{ d: CallDetails; held: boolean; estimate: boolean } | null>(null);
   const [bill, setBill] = useState<Bill>(null);
+  // This device already asked: "ringing you today", never the bill question again.
+  const [memory, setMemory] = useState<CallMemory | null>(null);
   const [quote, setQuote] = useState<Quote | null>(null);
   const [pricing, setPricing] = useState(false);
   const billHeadRef = useRef<HTMLHeadingElement>(null);
@@ -84,6 +86,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
 
   useEffect(() => {
     setFid(flowId());
+    setMemory(readCallMemory());
     setOnline(navigator.onLine);
     const on = () => setOnline(true);
     const off = () => setOnline(false);
@@ -238,6 +241,18 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         <span className="si-callpage__pulse" aria-hidden="true" />
         Finding your details
       </div>
+    );
+  } else if (memory && !token) {
+    card = (
+      <CallRemembered
+        memory={memory}
+        who={who}
+        headingLevel="h2"
+        onAnother={() => {
+          forgetCall();
+          setMemory(null);
+        }}
+      />
     );
   } else if (bill === null) {
     const chips = (config?.bill.chips ?? FALLBACK_CHIPS)[segment];
