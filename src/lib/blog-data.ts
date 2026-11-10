@@ -1423,7 +1423,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Your installer does. Submitting the NC6 is standard installer work and should be included in the job with nothing for you to fill in. It is also a useful quality marker: an installer who handles the NC6, sends SEAI the grant completion paperwork and coordinates the smart meter as a matter of course is one who does this properly. If a quote is silent on who files the NC6, ask."
+        "text": "Your installer does. Submitting the NC6 is [standard installer work](/blog/solar-panel-installation-process-ireland) and should be included in the job with nothing for you to fill in. It is also a useful quality marker: an installer who handles the NC6, sends SEAI the [grant completion paperwork](/blog/complete-guide-seai-solar-grant-2026) and coordinates the smart meter as a matter of course is one who does this properly. If a quote is silent on who files the NC6, ask."
       },
       {
         "type": "heading",
@@ -2027,7 +2027,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. The scheme requires a post-works BER: once the installation is finished, you book a registered BER assessor, and SEAI pays the grant only after the new BER is published."
+        "text": "One of the most common stumbling blocks in the application process is the Building Energy Rating (BER) requirement. The scheme requires a [post-works BER](/blog/do-solar-panels-improve-ber-rating-ireland): once the installation is finished, you book a registered BER assessor, and SEAI pays the grant only after the new BER is published."
       },
       {
         "type": "paragraph",
@@ -2160,7 +2160,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€750–€1,100/year), CEG earnings (€510–€720/year), and the €1,800 SEAI grant can deliver a full return on investment within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
+        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€750–€1,100/year), [Clean Export Guarantee earnings](/blog/clean-export-guarantee-explained) (€510–€720/year), and the €1,800 SEAI grant can deliver a [full return on investment](/blog/are-solar-panels-worth-it-ireland-2026) within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
       },
       {
         "type": "divider"
@@ -2433,7 +2433,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "To give you a realistic picture, let us look at the actual monthly generation figures for a typical 6kWp system installed on a south-facing roof in Ireland:"
+        "text": "To give you a realistic picture, let us look at the actual monthly generation figures for a typical 6kWp system installed on a [south-facing roof](/blog/east-vs-south-vs-west-facing-roofs-solar) in Ireland:"
       },
       {
         "type": "table",
@@ -2548,7 +2548,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The introduction of the Clean Export Guarantee (CEG) and smart meters in Ireland has fundamentally changed the winter equation. Under the CEG you are paid for the electricity you export in summer, which helps offset the electricity you buy back in winter. Here is how it works:"
+        "text": "The introduction of the [Clean Export Guarantee (CEG)](/blog/clean-export-guarantee-explained) and [smart meters](/blog/smart-meter-required-solar-panels-ireland) in Ireland has fundamentally changed the winter equation. Under the CEG you are paid for the electricity you export in summer, which helps offset the electricity you buy back in winter. Here is how it works:"
       },
       {
         "type": "paragraph",
@@ -2823,7 +2823,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.45/kWh versus the €0.18/kWh our estimates use for export), this higher self-consumption rate partially offsets the lower total output."
+        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.45/kWh versus the €0.18/kWh our estimates use for export), this higher self-consumption rate partially offsets the lower total output. Even the darkest months are not a write-off: see [how solar panels perform in an Irish winter](/blog/solar-panels-in-winter-do-they-work)."
       },
       {
         "type": "bulletList",
@@ -2845,7 +2845,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "In Ireland, many households follow a pattern where the house is largely empty during the day (people at work or school), and electricity usage peaks in the evening. A west-facing system generates maximum power exactly when you come home and start cooking, running appliances, and turning on lights. Like east-facing systems, this high self-consumption rate means the financial returns are better than the raw output figures suggest."
+        "text": "In Ireland, many households follow a pattern where the house is largely empty during the day (people at work or school), and electricity usage peaks in the evening (your [electricity bill](/blog/how-to-read-electricity-bill-ireland-solar) shows the day/night split). A west-facing system generates maximum power exactly when you come home and start cooking, running appliances, and turning on lights. Like east-facing systems, this high self-consumption rate means the financial returns are better than the raw output figures suggest."
       },
       {
         "type": "bulletList",
@@ -2939,7 +2939,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The key takeaway is simple: if your roof faces east, south, or west, solar panels are a worthwhile investment in Ireland. The differences between these orientations are relatively modest in the context of a 25-year panel lifespan, and the financial case remains strong across all three."
+        "text": "The key takeaway is simple: if your roof faces east, south, or west, solar panels are a [worthwhile investment in Ireland](/blog/are-solar-panels-worth-it-ireland-2026). The differences between these orientations are relatively modest in the context of a 25-year panel lifespan, and the financial case remains strong across all three."
       },
       {
         "type": "divider"
@@ -3424,7 +3424,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "LONGi panels are particularly well-suited to Ireland because of their excellent low-light performance and temperature coefficient. Ireland's mild climate means panels rarely overheat, and LONGi's low temperature coefficient means they lose less efficiency in warm conditions. They also perform exceptionally well in diffuse light conditions (cloudy days), which accounts for much of Ireland's annual solar resource."
+        "text": "LONGi panels are particularly well-suited to Ireland because of their excellent low-light performance and temperature coefficient. Ireland's mild climate means panels rarely overheat, and LONGi's low temperature coefficient means they lose less efficiency in warm conditions. They also perform exceptionally well in diffuse light conditions (cloudy days), which accounts for much of Ireland's annual solar resource (see [how solar panels perform in winter](/blog/solar-panels-in-winter-do-they-work))."
       },
       {
         "type": "heading",
@@ -3574,7 +3574,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For most Irish homeowners, the choice between these three panels comes down to price and availability rather than performance. All three will serve you well for 25+ years. Here is our simple recommendation:"
+        "text": "For most Irish homeowners, the choice between these three panels comes down to price and availability rather than performance. For the bigger numbers, see [what solar panels cost in Ireland](/blog/how-much-do-solar-panels-cost-ireland-2026) and [how many panels you need](/blog/how-many-solar-panels-do-i-need-ireland). All three will serve you well for 25+ years. Here is our simple recommendation:"
       },
       {
         "type": "bulletList",
@@ -4201,7 +4201,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You do not need a smart meter for your panels to work. The system generates and cuts your bill from the day it is commissioned, meter or no meter. Where a smart meter matters is the Clean Export Guarantee (CEG): it records exactly how many kWh you send to the grid, so your supplier can pay you for each one. Without it, your export is not measured, so you are leaving export income on the table. It is like having a shop but no till."
+        "text": "You do not need a smart meter for your panels to work. The system generates and cuts your bill from the day it is commissioned, meter or no meter. Where a smart meter matters is the [Clean Export Guarantee (CEG)](/blog/clean-export-guarantee-explained): it records exactly how many kWh you send to the grid, so your supplier can pay you for each one. Without it, your export is not measured, so you are leaving export income on the table. It is like having a shop but no till."
       },
       {
         "type": "paragraph",
@@ -4265,7 +4265,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The timing depends on ESB Networks' schedule in your area. It does not hold up your installation: your panels generate and cut your bill from day one, and export payments start once the meter is in and your supplier has registered you. Requesting it when you book your installation is plenty early."
+        "text": "The timing depends on ESB Networks' schedule in your area. It does not hold up your installation: your panels generate and cut your bill from day one, and export payments start once the meter is in, ESB Networks has your [NC6 notification](/blog/nc6-form-solar-grid-connection-ireland) and your supplier has registered you. Requesting it when you book your installation is plenty early."
       },
       {
         "type": "heading",
@@ -4304,7 +4304,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For households with an electric vehicle or a solar battery, a time-of-use tariff can save €300–€500 per year by shifting heavy charging to the cheap night-rate window. Without a smart meter, you cannot access these tariffs."
+        "text": "For households with an [electric vehicle](/blog/solar-panels-ev-charger-ireland) or a solar battery, a time-of-use tariff can save €300–€500 per year by shifting heavy charging to the cheap night-rate window. Without a smart meter, you cannot access these tariffs."
       },
       {
         "type": "heading",

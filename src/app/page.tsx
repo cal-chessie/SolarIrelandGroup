@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import HomeClient from './HomeClient';
 import HomeSchema from '@/components/HomeSchema';
+import PopularGuides from '@/components/solar/PopularGuides';
 
 // Home's own title and description. The layout `default` stays as the fallback
 // for any route without a title, so it is not edited. The head term leads, the
@@ -51,7 +52,7 @@ export default function Home() {
   return (
     <>
       <HomeSchema />
-      <HomeClient />
+      <HomeClient guides={<PopularGuides />} />
     </>
   );
 }

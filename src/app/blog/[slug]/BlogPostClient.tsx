@@ -25,7 +25,8 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
-import { getArticleBySlug, getRelatedArticles, type ContentSection } from '@/lib/blog-data';
+import { getArticleBySlug, type ContentSection } from '@/lib/blog-data';
+import { getRelatedGuides } from '@/lib/related-guides';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -517,7 +518,8 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
 }
 
 function RelatedArticles({ currentSlug }: { currentSlug: string }) {
-  const related = useMemo(() => getRelatedArticles(currentSlug, 3), [currentSlug]);
+  // Three links by topic cluster (src/lib/related-guides.ts), in the server HTML.
+  const related = useMemo(() => getRelatedGuides(currentSlug, 3), [currentSlug]);
 
   if (related.length === 0) return null;
 
@@ -531,21 +533,21 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
     >
       <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-8">
-          Related <span className="text-gradient">Articles</span>
+          Related <span className="text-gradient">Guides</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {related.map((article, idx) => {
             const catConfig = getCategoryConfig(article.category);
             return (
               <motion.div
-                key={article.slug}
+                key={article.href}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
               >
                 <Link
-                  href={`/blog/${article.slug}`}
+                  href={article.href}
                   className="group block glass-card rounded-2xl overflow-hidden h-full"
                 >
                   <div className="relative h-40 bg-gradient-to-br from-white/[0.03] to-white/[0.01] flex items-center justify-center">
@@ -566,14 +568,22 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
                       {article.excerpt}
                     </p>
                     <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
-                      <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
-                        <Calendar className="w-3 h-3" />
-                        {article.date}
-                      </div>
-                      <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
-                        <Clock className="w-3 h-3" />
-                        {article.readTime}
-                      </div>
+                      {article.label ? (
+                        <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
+                          {article.label}
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
+                            <Calendar className="w-3 h-3" />
+                            {article.date}
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
+                            <Clock className="w-3 h-3" />
+                            {article.readTime}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </Link>

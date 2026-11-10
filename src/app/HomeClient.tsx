@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 
 
 import dynamic from 'next/dynamic';
@@ -20,7 +20,8 @@ import Footer from '@/components/solar/Footer';
 const WhatsAppChat = dynamic(() => import('@/components/solar/WhatsAppChat'), { ssr: false });
 const PageIntake = dynamic(() => import('@/components/solar/PageIntake'), { ssr: false });
 
-export default function HomeClient() {
+/** `guides` is the server-rendered "Popular guides" list (src/components/solar/PopularGuides.tsx). */
+export default function HomeClient({ guides }: { guides?: ReactNode }) {
   // Hash recovery. A cold load of /#calculator left the visitor at the top of
   // a 15,000px page: the browser tries to jump before the images below the
   // fold have laid out, the anchor moves, and the jump is lost. A warm load
@@ -54,6 +55,7 @@ export default function HomeClient() {
         <GrantInfo />
         <BillAnalyser />
         <FAQ />
+        {guides}
       </main>
       <Footer />
       <WhatsAppChat />
