@@ -45,8 +45,10 @@ describe('Bill Analyser start state uses the whole phone screen', () => {
   });
 
   it('keeps the headline at 28px or more and the body at 15px or more on the shortest phone', () => {
-    expect(phone).toMatch(/\.si-an-door__title \{\s*font-size:\s*clamp\(28px,/);
-    expect(short).toMatch(/\.si-an-door__title \{[^}]*font-size:\s*28px/);
+    expect(phone).toMatch(/\.si-an-door__title \{\s*font-size:\s*clamp\(28px, [\d.]+vw, \d+px\)/);
+    // Never sized by height: the toolbar collapsing mid-scroll changes the
+    // height and reflowed the headline from two lines to three.
+    expect(short).not.toMatch(/\.si-an-door__title \{[^}]*font-size/);
     expect(short).toMatch(/\.si-an-door__sub \{[^}]*font-size:\s*15px/);
   });
 

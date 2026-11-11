@@ -3283,8 +3283,13 @@ h1.si-ask__title {
     box-shadow: none;
     border-radius: 0;
   }
+  /* Width only, never height. It was clamp(28px, 4.4svh + 6px, 40px), and
+     a short-screen rule dropped it to 28px under 620px tall: both move when
+     the phone's toolbar collapses mid-scroll, so the headline jumped size and
+     reflowed from two lines to three (Cal, 11 Nov). 8.4vw holds exactly two
+     lines from 360 to 430 wide at any height. */
   .si-an-door .si-an-door__title {
-    font-size: clamp(28px, 4.4svh + 6px, 40px);
+    font-size: clamp(28px, 8.4vw, 36px);
   }
   .si-an-door .si-an-door__sub {
     margin-top: clamp(8px, 2svh, 16px);
@@ -3366,7 +3371,6 @@ h1.si-ask__title {
   }
   .si-an-door .si-an-door__title {
     margin-top: 0;
-    font-size: 28px;
   }
   .si-an-door .si-an-door__sub {
     font-size: 15px;
