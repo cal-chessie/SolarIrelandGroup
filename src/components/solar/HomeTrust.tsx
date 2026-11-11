@@ -28,13 +28,13 @@ export default function HomeTrust() {
               Why Solar Ireland
             </span>
             <h2 id="trust-title" className="h-title">
-              Proper credentials. Real warranties.
+              The people who fit your panels.
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
             <p className="h-lead">
-              Registered with SEAI and RECI, and on Irish roofs since 2019. Once you go ahead, you can
-              track your project in real time, from the call to the grant.
+              Registered with SEAI and RECI, and fitting panels on Irish roofs since 2019. We book your BER, and you
+              can follow every step online, from the first call to the grant landing in your account.
             </p>
           </div>
         </div>

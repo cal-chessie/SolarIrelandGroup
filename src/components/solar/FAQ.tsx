@@ -631,7 +631,7 @@ function HomeFAQ() {
                 Questions people ask us.
               </h2>
               <p className="h-lead">
-                Straight answers on cost, the grant and your roof. Anything else, ask us on the call.
+                Cost, the grant and your roof. Anything else, ask us on the call.
               </p>
             </div>
             <div className="h-acc" data-reveal="" style={{ ['--d' as string]: 1 }}>

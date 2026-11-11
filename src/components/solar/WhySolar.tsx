@@ -42,7 +42,7 @@ export default function WhySolar() {
               Is it worth it
             </span>
             <h2 id="value-title" className="h-title">
-              Stop renting your energy.
+              Why panels pay on an Irish roof.
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>

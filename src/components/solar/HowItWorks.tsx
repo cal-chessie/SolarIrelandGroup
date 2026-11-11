@@ -59,7 +59,7 @@ export default function HowItWorks() {
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
-            <p className="h-lead">Four steps, and you always know whose move it is.</p>
+            <p className="h-lead">What happens after you check your savings, and who does each step.</p>
           </div>
         </div>
 
