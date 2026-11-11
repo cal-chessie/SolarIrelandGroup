@@ -34,7 +34,10 @@ export default function WhySolar() {
 
   return (
     <section id="why-solar" className="h-sec" aria-labelledby="value-title">
-      <div className="h-wrap">
+      <div className="h-glow-clip" aria-hidden="true">
+        <div className="h-glow" style={{ width: 640, height: 400, left: '30%', top: '40%' }} />
+      </div>
+      <div className="h-wrap relative">
         <div className="h-head">
           <div data-reveal="">
             <span className="h-kicker">

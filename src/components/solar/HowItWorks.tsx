@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ClipboardCheck, Euro, House, Phone, Sun } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
 /**
@@ -9,9 +9,24 @@ import { SOLAR_DATA } from '@/lib/solar-data';
  * grant works" timeline said the same steps twice; this is the one merged
  * process. The site sells the 15-minute call, so the survey is a step here,
  * never the offer (DECISIONS.md R3). Steps are drawn as one connected line
- * with the logo's sun ring as each marker; the rings draw in on arrival.
+ * with a tinted icon tile on each step; the line fills yellow to green
+ * as the steps arrive (11 Nov colour pass, Cal: not black and white).
  */
 const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
+
+/** Each step's tile: sun (the estimate), phone (the call), clipboard (survey
+ *  and proposal), home with a euro (install, then the grant paid). */
+const ICONS: React.ReactNode[] = [
+  <Sun key="sun" size={22} strokeWidth={1.75} />,
+  <Phone key="phone" size={20} strokeWidth={1.75} />,
+  <ClipboardCheck key="clip" size={21} strokeWidth={1.75} />,
+  <span key="home" className="h-step__home">
+    <House size={22} strokeWidth={1.75} />
+    <span className="h-step__euro">
+      <Euro size={10} strokeWidth={2.5} />
+    </span>
+  </span>,
+];
 
 const steps: { title: string; body: React.ReactNode; who: string }[] = [
   {
@@ -48,7 +63,10 @@ const steps: { title: string; body: React.ReactNode; who: string }[] = [
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="h-sec" aria-labelledby="how-title">
-      <div className="h-wrap">
+      <div className="h-glow-clip" aria-hidden="true">
+        <div className="h-glow" style={{ width: 760, height: 460, left: '-10%', top: '24%' }} />
+      </div>
+      <div className="h-wrap relative">
         <div className="h-head">
           <div data-reveal="">
             <span className="h-kicker">
@@ -65,17 +83,19 @@ export default function HowItWorks() {
         </div>
 
         <ol className="h-steps">
+          {/* The line fills yellow to green as the steps arrive. */}
+          <span className="h-steps__fill" data-reveal="" aria-hidden="true" />
           {steps.map((s, i) => (
             <li key={s.title} className="h-step" data-reveal="" style={{ ['--d' as string]: i }}>
-              <span className="h-step__ring" aria-hidden="true">
-                <svg viewBox="0 0 28 28">
-                  <circle cx="14" cy="14" r="12" />
-                </svg>
+              <span className="h-step__tile" aria-hidden="true">
+                {ICONS[i]}
               </span>
-              <span className="h-step__num">0{i + 1}</span>
-              <h3 className="h-item">{s.title}</h3>
-              <p className="h-body">{s.body}</p>
-              <span className="h-step__who">{s.who}</span>
+              <div className="h-step__card">
+                <span className="h-step__num">0{i + 1}</span>
+                <h3 className="h-item">{s.title}</h3>
+                <p className="h-body">{s.body}</p>
+                <span className="h-step__who">{s.who}</span>
+              </div>
             </li>
           ))}
         </ol>

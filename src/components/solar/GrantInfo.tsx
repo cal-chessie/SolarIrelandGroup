@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import { ArrowRight, Check, ChevronRight, CircleCheck } from 'lucide-react';
 import { SOLAR_DATA, WELFARE_HIGHER_GRANT, ndmgDoubledLive } from '@/lib/solar-data';
 import { intakeHref, openIntake } from '@/lib/intake/open';
 
@@ -126,7 +126,10 @@ function EligibilityChecker() {
           <div className="mt-5 grid gap-2">
             {step.options.map((opt) => (
               <button key={opt.label} type="button" onClick={() => handleAnswer(opt.value)} className="h-opt">
-                {opt.label}
+                <span className="h-opt__label">
+                  {opt.value === 'yes' ? <Check className="h-opt__yes" aria-hidden="true" /> : null}
+                  {opt.label}
+                </span>
                 <ChevronRight className="w-4 h-4" aria-hidden="true" />
               </button>
             ))}
@@ -135,7 +138,10 @@ function EligibilityChecker() {
       ) : !hasNo ? (
         <div className="h-check__step mt-6">
           <div className="h-yes">
-            <p className="h-yes__h">{hasUnsure ? 'You likely qualify' : 'You qualify'}</p>
+            <p className="h-yes__h">
+              <CircleCheck className="h-yes__icon" aria-hidden="true" />
+              {hasUnsure ? 'You likely qualify' : 'You qualify'}
+            </p>
             <p className="h-body mt-2">
               Based on your answers, you look eligible for the SEAI solar grant: up to {SOLAR_DATA.grant.label} for panels,
               and {SOLAR_DATA.batteryGrant.label} more with a battery of {SOLAR_DATA.batteryGrant.minLabel}.
