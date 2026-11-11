@@ -74,7 +74,7 @@ export default function Hero() {
             className="hero-fade-up mt-4 sm:mt-6 text-base sm:text-lg xl:text-xl text-gray-200/90 max-w-xl leading-relaxed"
             style={{ animationDelay: '0.35s' }}
           >
-            Upload your bill and see your yearly saving, the right system and your payback in under a minute.
+            Upload your electricity bill and our AI will show you exactly what solar will save you.
           </p>
 
           <div
