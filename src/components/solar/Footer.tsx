@@ -282,8 +282,16 @@ function TrustBadgesRow() {
   );
 }
 
-export default function Footer() {
+/**
+ * `variant="home"` (homepage restructure, 11 Nov 2026, DECISIONS.md R2/R6):
+ * the homepage has its own closing band, so the pre-footer CTA is skipped;
+ * calculator links stay on the page (#calculator); and the unconfirmed claims
+ * (NSAI Compliant, 1-Day Install) and the "Free Home Surveys" line (call-only
+ * funnel) are left out. Every other page renders exactly as before.
+ */
+export default function Footer({ variant = 'default' }: { variant?: 'default' | 'home' } = {}) {
   const pathname = usePathname();
+  const home = variant === 'home';
   const footerRef = useRef<HTMLElement>(null);
   const isInView = useInView(footerRef, { once: true, margin: '-50px' });
 
@@ -292,8 +300,8 @@ export default function Footer() {
       <div className="amber-line" />
 
       <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="pt-12 sm:pt-16 pb-10 sm:pb-14">
-          <PreFooterCTA />
+        <div className={home ? 'pt-12 sm:pt-16' : 'pt-12 sm:pt-16 pb-10 sm:pb-14'}>
+          {home ? null : <PreFooterCTA />}
         </div>
 
         <div
@@ -342,8 +350,8 @@ export default function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400 mb-4">
               Quick Links
             </h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
+            <ul className={home ? 'grid grid-cols-2 gap-x-4 sm:block sm:space-y-2' : 'space-y-2'}>
+              {quickLinks.map((link) => ({ ...link, href: home && link.href === '/solar-calculator' ? '#calculator' : link.href })).map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href === '/book-survey' ? savingsHref(pathname) : link.href}
@@ -362,7 +370,7 @@ export default function Footer() {
               What We Do
             </h3>
             <ul className="space-y-2.5">
-              {services.map((service) => (
+              {services.filter((sv) => !(home && sv.label === 'Free Home Surveys')).map((service) => (
                 <li
                   key={service.label}
                   className="group cursor-default"
@@ -467,13 +475,13 @@ export default function Footer() {
             </span>
           </div>
           <div className="flex flex-wrap gap-2.5">
-            {certifications.map((cert) => (
+            {certifications.filter((c) => !(home && c.label.startsWith('NSAI'))).map((cert) => (
               <CertBadge key={cert.label} {...cert} />
             ))}
           </div>
         </motion.div>
 
-        <TrustBadgesRow />
+        {home ? null : <TrustBadgesRow />}
 
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-400">

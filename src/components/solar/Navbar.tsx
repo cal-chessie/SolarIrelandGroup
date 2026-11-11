@@ -33,6 +33,8 @@ const SOCIAL_LINKS = [
 
 /** "Check my savings" lands on the Bill Analyser: in place on the homepage, the calculator page anywhere else. */
 const savingsHref = (pathname: string) => (pathname === '/' ? '/#calculator' : '/solar-calculator');
+/** On the homepage the calculator is the analyser on the page (DECISIONS.md R6); everywhere else, unchanged. */
+const onPage = (pathname: string, href: string) => (pathname === '/' && href === '/solar-calculator' ? '/#calculator' : href);
 
 // Mobile nav - all pages + sections
 const mobileLinks = [
@@ -308,7 +310,7 @@ function MobileMenu({
               return (
                 <button
                   key={link.label}
-                  onClick={() => navigateTo(link.href === '/book-survey' ? savingsHref(pathname) : link.href)}
+                  onClick={() => navigateTo(link.href === '/book-survey' ? savingsHref(pathname) : onPage(pathname, link.href))}
                   style={{
                     transitionDelay: isOpen ? `${50 + i * 30}ms` : '0ms',
                   }}
@@ -570,7 +572,7 @@ export default function Navbar() {
               return (
                 <button
                   key={link.label}
-                  onClick={() => navigateTo(link.isBookSurvey ? savingsHref(pathname) : link.href)}
+                  onClick={() => navigateTo(link.isBookSurvey ? savingsHref(pathname) : onPage(pathname, link.href))}
                   className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
                     link.isBookSurvey
                       ? 'text-green-400 font-semibold'
