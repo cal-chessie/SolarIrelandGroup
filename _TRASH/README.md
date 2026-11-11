@@ -70,3 +70,15 @@ indexable. A real homeowner could see a stranger's project (audit 1 Nov, 6f).
 Both routes now render `src/app/portal/PortalNotice.tsx`: noindex, "your project
 page link is in your emails", until the email sign-in exists. Do not restore
 these as they are: they never read the reference and never fetched anything.
+
+## StatsBar.tsx.retired and homepage-restructure-2026-11-11/ (11 Nov 2026)
+
+StatsBar was cut from the homepage in the restructure (INTAKE/design/homepage/
+DECISIONS.md): four averages above the analyser competed with the visitor's own
+figure, and it was already hidden on phones. Nothing else imported it.
+
+`homepage-restructure-2026-11-11/` keeps the pre-restructure versions of the
+homepage-only sections (Hero, HowItWorks, WhySolar, CustomerInstalls,
+GrantInfo) as `.before.tsx.txt`, so any copy or claim Cal wants back (NSAI
+Compliant, 1-Day Install, Premium Panels, "Up to 70%", "25+ year", "Battery
+Options Available") can be restored from the exact original.
