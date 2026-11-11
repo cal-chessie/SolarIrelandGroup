@@ -131,8 +131,12 @@ export default function Hero() {
           {/* The bee and "Daylight over Ireland" back where they were on main
               (Cal: "put the panels resting back where it was too"): stacked
               under the trust row on phones; from 1024 they float upper right
-              over the image, side by side, as on the original desktop. */}
-          <div className="mt-4 sm:mt-8 flex flex-col items-center gap-4 lg:absolute lg:right-0 lg:top-4 lg:mt-0 lg:flex-row lg:gap-6">
+              over the image, side by side, as on the original desktop.
+              Phones: the floating chat bee stays put now (hiding it on
+              scroll made the page stutter), so this stack centres in the
+              lane left of it (the 5.5rem the sticky CTA also leaves) and
+              "Daylight over Ireland" never sits under it. */}
+          <div className="mt-4 sm:mt-8 max-sm:pr-[5.5rem] flex flex-col items-center gap-4 lg:absolute lg:right-0 lg:top-4 lg:mt-0 lg:flex-row lg:gap-6">
             <div className="hero-fade-up" style={{ animationDelay: '0.4s' }}>
               <Image
                 src="/bumblebee-hero.webp"
@@ -142,9 +146,7 @@ export default function Hero() {
                 className="h-bee h-bee--bob w-20 h-20 sm:w-28 sm:h-28 lg:w-40 lg:h-40 xl:w-44 xl:h-44"
               />
             </div>
-            {/* data-chat-clear: on phones the floating chat bee steps aside
-                while this is on screen, so two bees never stack. */}
-            <div data-chat-clear="">
+            <div>
               <DaylightTrack className="hero-fade-up shrink-0" style={{ animationDelay: '0.55s' }} />
             </div>
           </div>

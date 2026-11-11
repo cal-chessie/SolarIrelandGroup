@@ -11,9 +11,9 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
  *
  * Cal: the band's small bee sat right beside the floating chat bee. Now the
  * words and the CTA hold the left, and the right is a faint honeycomb with
- * the bee, big, lifting off it; a few cells glow in turn. The band carries
- * data-chat-clear="always", so the floating chat bee steps aside while it is
- * on screen, phone and desktop: one bee here, never two.
+ * the bee, big, lifting off it; a few cells glow in turn. The floating chat
+ * bee stays on screen here: hiding it as the band scrolled in made the
+ * smooth scroll glitch, which Cal judged far worse (11 Nov).
  */
 
 /* A flat-top hex grid, drawn once at build time. R is the cell radius. */
@@ -63,7 +63,7 @@ function Honeycomb() {
 
 export default function HomeClose() {
   return (
-    <section id="get-started" className="h-sec" aria-labelledby="close-title" data-chat-clear="always">
+    <section id="get-started" className="h-sec" aria-labelledby="close-title">
       <div className="h-glow-clip" aria-hidden="true">
         <div className="h-glow" aria-hidden="true" style={{ width: 640, height: 420, left: '-8%', top: '10%' }} />
       </div>
