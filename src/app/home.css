@@ -426,6 +426,32 @@
     margin-top: 24px;
   }
 }
+/* Desktop (lg+): the original left-aligned composition from dbbf329. Full
+   viewport height, headline at the original lg:6xl / xl:7xl, trust row left. */
+@media (min-width: 1024px) {
+  .h-hero--v2 {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  .h-hero--v2 h1 {
+    font-size: 60px;
+    letter-spacing: -0.035em;
+  }
+  .h-hero--v2 .h-hero__trust {
+    justify-content: flex-start;
+    margin-top: 40px;
+  }
+  /* The phone's quiet text link gives way to the original WhatsApp Us pill
+     (.h-quiet sets display outside the utility layer, so lg:hidden loses). */
+  .h-hero__wa-quiet {
+    display: none;
+  }
+}
+@media (min-width: 1280px) {
+  .h-hero--v2 h1 {
+    font-size: 72px;
+  }
+}
 
 /* ── Trust strip: equal hairline cells ─────────────────────────── */
 .h-cells {
