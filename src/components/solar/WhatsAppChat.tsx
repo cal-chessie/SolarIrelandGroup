@@ -243,6 +243,30 @@ export default function WhatsAppChat() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [prevMsgCount, setPrevMsgCount] = useState(0);
   const [fabHovered, setFabHovered] = useState(false);
+  // On phones, a page can mark an element the floating bee must not sit on
+  // (data-chat-clear: the homepage hero's "Daylight over Ireland" widget,
+  // which the FAB at bottom-6 right-6 covered, stacking two bees). While that
+  // element is on screen the FAB and its toast step aside; they come back as
+  // soon as it scrolls away. Pages without the attribute, and desktop, are
+  // unchanged.
+  const [chatClear, setChatClear] = useState(false);
+  useEffect(() => {
+    const el = document.querySelector('[data-chat-clear]');
+    if (!el || !('IntersectionObserver' in window)) return;
+    const mq = window.matchMedia('(max-width: 639px)');
+    let onScreen = false;
+    const sync = () => setChatClear(onScreen && mq.matches);
+    const io = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+      sync();
+    });
+    io.observe(el);
+    mq.addEventListener('change', sync);
+    return () => {
+      io.disconnect();
+      mq.removeEventListener('change', sync);
+    };
+  }, []);
   const [showPreChat, setShowPreChat] = useState(true);
   const [streamingText, setStreamingText] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -631,12 +655,12 @@ export default function WhatsAppChat() {
         aria-label="Open chat"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); }}
         className={`fixed bottom-40 right-6 z-50 cursor-pointer max-w-[min(20rem,calc(100vw-3rem))] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          notification && !isOpen && !cookieBanner
+          notification && !isOpen && !cookieBanner && !chatClear
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 translate-y-5 scale-95 pointer-events-none'
         }`}
-        aria-hidden={!notification || isOpen || cookieBanner}
-        inert={!notification || isOpen || cookieBanner}
+        aria-hidden={!notification || isOpen || cookieBanner || chatClear}
+        inert={!notification || isOpen || cookieBanner || chatClear}
       >
         <div className="relative overflow-hidden flex items-center gap-3 px-5 py-4 rounded-2xl bg-zinc-800/95 border border-white/[0.08] shadow-2xl shadow-black/40">
           <div className="notif-progress absolute bottom-0 left-0 h-[2px] bg-yellow-400/60 rounded-full" />
@@ -660,7 +684,7 @@ export default function WhatsAppChat() {
       {/* 
           FLOATING ACTION BUTTON (Enhanced 2026)
            */}
-      {!isOpen && !cookieBanner && (
+      {!isOpen && !cookieBanner && !chatClear && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2">
           <div
             className={`whatsapp-fab-tooltip transition-all duration-300 pointer-events-none ${

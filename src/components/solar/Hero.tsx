@@ -110,9 +110,7 @@ export default function Hero() {
 
           {/* The bee and "Daylight over Ireland" back where they were on main
               (Cal: "put the panels resting back where it was too"): stacked
-              under the trust row on phones, side by side from 1024. The right
-              margin on phones keeps the pill clear of the chat FAB (fixed at
-              bottom-6 right-6), as the original did. */}
+              under the trust row on phones, side by side from 1024. */}
           <div className="mt-4 sm:mt-8 flex flex-col items-center gap-4 lg:flex-row lg:gap-6">
             <div className="hero-fade-up" style={{ animationDelay: '0.4s' }}>
               <Image
@@ -123,7 +121,11 @@ export default function Hero() {
                 className="h-bee h-bee--bob w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32"
               />
             </div>
-            <DaylightTrack className="hero-fade-up shrink-0 mr-12 sm:mr-0" style={{ animationDelay: '0.55s' }} />
+            {/* data-chat-clear: on phones the floating chat bee steps aside
+                while this is on screen, so two bees never stack. */}
+            <div data-chat-clear="">
+              <DaylightTrack className="hero-fade-up shrink-0" style={{ animationDelay: '0.55s' }} />
+            </div>
           </div>
         </div>
       </div>
