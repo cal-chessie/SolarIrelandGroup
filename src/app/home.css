@@ -1272,11 +1272,22 @@
   align-items: center;
   gap: 8px 24px;
 }
-/* The honeycomb with the bee lifting off it. Phones: a 240px block under
+/* The band is the last thing before Popular guides and the footer, so it
+   ends tight: the full section padding plus the comb's faded lower edge
+   left a dead black gap under the bee (Cal, 11 Nov), worst on a phone. */
+#get-started.h-sec {
+  padding-bottom: 32px;
+}
+@media (min-width: 1024px) {
+  #get-started.h-sec {
+    padding-bottom: 56px;
+  }
+}
+/* The honeycomb with the bee lifting off it. Phones: a 184px block under
    the copy, the comb behind the bee. From 1024: the right column. */
 .h-close__art {
   position: relative;
-  height: 240px;
+  height: 184px;
   margin-inline: -24px;
 }
 .h-comb {
