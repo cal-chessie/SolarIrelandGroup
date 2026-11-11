@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { ndmgDoubledLine, ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import {
   Search,
   MapPin,
@@ -25,7 +25,6 @@ import {
   HeartHandshake,
   Home,
 } from 'lucide-react';
-import Link from 'next/link';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
@@ -559,14 +558,6 @@ export default function CountiesClient() {
               orientation that works best. We&apos;re not passing through - we live here. And with the
               €1,800 SEAI grant, there&apos;s never been a better time to go solar.
             </p>
-            {ndmgDoubledLive() ? (
-              <p className="text-gray-400 text-sm sm:text-base max-w-3xl leading-relaxed mb-6" data-ndmg="">
-                <span className="text-white font-semibold">Business premises?</span> {ndmgDoubledLine()}{' '}
-                <Link href="/commercial-solar-grant" className="text-amber-400 underline underline-offset-2 hover:text-amber-300">
-                  See the commercial solar grant
-                </Link>
-              </p>
-            ) : null}
 
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
               <div className="flex items-center gap-2">
