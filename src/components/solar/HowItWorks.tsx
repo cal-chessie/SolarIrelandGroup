@@ -21,7 +21,7 @@ const steps: { title: string; body: React.ReactNode; who: string }[] = [
   },
   {
     title: 'A 15-minute call, same day',
-    body: 'We ring you the same day and go through your number with you, your roof and the grant.',
+    body: 'We ring you the same day to go through your number, your roof and your grant.',
     who: 'Us, on the phone',
   },
   {
@@ -59,7 +59,7 @@ export default function HowItWorks() {
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
-            <p className="h-lead">What happens after you check your savings, and who does each step.</p>
+            <p className="h-lead">Four steps, and who does each one.</p>
           </div>
         </div>
 

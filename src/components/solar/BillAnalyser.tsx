@@ -520,7 +520,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const privacy = (
     <details className="si-an-priv" data-an-privacy="">
       <summary className="si-an-priv__line">
-        We never store your bill. <span className="si-inline">How we handle your bill</span>
+        This site doesn&apos;t keep your bill. <span className="si-inline">How we handle your bill</span>
       </summary>
       <p className="si-an-privacy">
         This site doesn&apos;t store your bill. An AI reading service reads it and sends back the figures. We keep those figures with no name or address on them. Your name, Eircode and MPRN only reach us if you book the call.{' '}
@@ -606,7 +606,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
             </span>
             <span className="si-photo__text">
               <span className="si-photo__title">Type my bill amount</span>
-              <span className="si-photo__line">No bill to hand? Three taps, same estimate.</span>
+              <span className="si-photo__line">No bill to hand? Answer three questions instead.</span>
             </span>
             <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
           </a>

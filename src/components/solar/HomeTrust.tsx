@@ -9,7 +9,7 @@
 const FACTS: { big: string; line: string; mono?: boolean }[] = [
   { big: 'SEAI', line: 'Registered installers' },
   { big: 'RECI', line: 'Registered electrical contractor' },
-  { big: '2019', line: 'Fitting panels since', mono: true },
+  { big: '2019', line: 'Founded', mono: true },
   { big: '5 years', line: 'Workmanship warranty' },
   { big: '25 years', line: 'Panel warranty' },
   { big: 'BER', line: 'We book it for you' },
@@ -26,13 +26,14 @@ export default function HomeTrust() {
               Why Solar Ireland
             </span>
             <h2 id="trust-title" className="h-title">
-              The people who fit your panels.
+              Your grant depends on who fits your panels.
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
             <p className="h-lead">
-              Registered with SEAI and RECI, and fitting panels on Irish roofs since 2019. We book your BER, and you
-              can follow every step online, from the first call to the grant landing in your account.
+              SEAI only pays the grant when a registered company does the work. We are SEAI and RECI registered,
+              founded in 2019. We book your BER, send SEAI the paperwork, and you track every step of your project on
+              your phone.
             </p>
           </div>
         </div>

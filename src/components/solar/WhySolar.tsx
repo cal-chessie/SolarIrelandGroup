@@ -39,7 +39,7 @@ export default function WhySolar() {
           <div data-reveal="">
             <span className="h-kicker">
               <span className="h-ring" aria-hidden="true" />
-              Is it worth it
+              Is solar worth it
             </span>
             <h2 id="value-title" className="h-title">
               Why panels pay on an Irish roof.
@@ -47,8 +47,7 @@ export default function WhySolar() {
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
             <p className="h-lead">
-              Panels make your own electricity by day, and your supplier pays you for what you don&apos;t use. Here is
-              the case behind your number.
+              Panels make your own electricity by day, and your supplier pays you for what you don&apos;t use.
             </p>
           </div>
         </div>
@@ -66,19 +65,19 @@ export default function WhySolar() {
                 </div>
               ))}
             </div>
-            <p className="h-body mt-6">Your panels make the same power whatever the supplier charges.</p>
+            <p className="h-body mt-6">Every unit your panels make is one you don&apos;t buy at that price.</p>
           </article>
 
           <article data-reveal="" style={{ ['--d' as string]: 1 }}>
             <h3 className="h-item">Paid for what you don&apos;t use</h3>
             <span className="h-bigfig">
               {SOLAR_DATA.export.estimateLabel.replace('/kWh', '')}
-              <small>per kWh exported</small>
+              <small>per kWh exported, our estimate rate</small>
             </span>
             <p className="h-body mt-4">
-              Under the Clean Export Guarantee your supplier pays you for the power you send to the grid, at an export
-              rate it sets (the CRU sets no minimum). We use {SOLAR_DATA.export.estimateLabel} in our estimates. It
-              arrives as a credit on your bill, through your smart meter.
+              Under the Clean Export Guarantee your supplier pays you for the power you send to the grid. Each supplier
+              sets its own rate, and the CRU sets no minimum. It arrives as a credit on your bill, through your smart
+              meter.
             </p>
           </article>
 
@@ -86,7 +85,7 @@ export default function WhySolar() {
             <h3 className="h-item">It works in Irish weather</h3>
             <span className="h-bigfig">
               ~{annual4kWp.toLocaleString('en-IE')}
-              <small>kWh a year from 4 kWp</small>
+              <small>kWh a year from 4 kWp in Dublin</small>
             </span>
             <div
               className="h-months"
@@ -107,7 +106,7 @@ export default function WhySolar() {
               <span>Dec</span>
             </div>
             <p className="h-body mt-4">
-              Panels work on light, not heat. Even in December a 4 kWp roof makes about {dec4kWp} kWh. Dublin data, SEAI.
+              Panels run on daylight. A 4 kWp roof still makes about {dec4kWp} kWh in December. Dublin data, SEAI.
             </p>
           </article>
         </div>

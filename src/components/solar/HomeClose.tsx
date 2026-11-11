@@ -27,7 +27,7 @@ export default function HomeClose() {
               Find out what your roof is worth.
             </h2>
             <p className="h-lead">
-              From Malin Head to Mizen Head, it starts with a photo of your bill. You see your number first, and we ring
+              It starts with a photo of your bill. You see your saving, your grant and your payback first, and we ring
               you the same day.
             </p>
           </div>

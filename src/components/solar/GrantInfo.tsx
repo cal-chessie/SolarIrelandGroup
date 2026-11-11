@@ -206,8 +206,7 @@ export default function GrantInfo() {
                 Up to {SOLAR_DATA.batteryGrant.withSolarMaxLabel} back on your home.
               </h2>
               <p className="h-lead">
-                SEAI pays it after the work, for homes built and occupied before 2025. Solar panels for homes also carry
-                0% VAT. We walk you through the application.
+                SEAI pays it after the work, for homes built and occupied before 2025. Panels on a home carry 0% VAT. We walk you through the application.
               </p>
             </div>
 

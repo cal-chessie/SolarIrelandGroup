@@ -561,12 +561,33 @@ const HOME_FAQ_IDS = [1, 2, 3, 4, 7, 8, 11, 12];
 const SAVINGS_LINK = '<a href="#calculator">Check my savings</a>';
 
 function homeAnswer(f: FAQItem): string {
+  // Per-question homepage copy (copy-spec.md, 11 Nov 2026): plain, sourced,
+  // no invented counts. Other pages keep the shared answers above.
+  const base = installCostEur(DOMESTIC_MIN_KWP);
+  const net = base - SOLAR_DATA.grant.amount;
   if (f.id === 1) {
-    const base = installCostEur(DOMESTIC_MIN_KWP);
-    return `A standard ${DOMESTIC_MIN_KWP} kWp system, the size most Irish homes get, costs ${fmtEur(base)} installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is ${fmtEur(base - SOLAR_DATA.grant.amount)} out of pocket. Larger systems price better per kWp. The exact cost depends on the system size, the roof, and whether you want a battery, and every quote is itemised so you can see where your money goes. ${SAVINGS_LINK} for your own figure.`;
+    return `A ${DOMESTIC_MIN_KWP} kWp system, our starting size for homes, costs ${fmtEur(base)} installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is ${fmtEur(net)} out of pocket. Larger systems price better per kWp. Your cost depends on system size, your roof and whether you add a battery, and every quote is itemised. ${SAVINGS_LINK} for your own figure.`;
+  }
+  if (f.id === 2) {
+    return `A 3-bed semi with a ${SOLAR_DATA.system.avgSizeKwp} kWp system saves ${SOLAR_DATA.savings.rangeLabel} a year on our estimates, depending on how much power you use by day. Over 25 years that comes to ${SOLAR_DATA.savings.range25yrLabel}. Your own bill gives a closer figure. ${SAVINGS_LINK}.`;
+  }
+  if (f.id === 3) {
+    return `A ${DOMESTIC_MIN_KWP} kWp system costs ${fmtEur(base)} installed, ${fmtEur(net)} after the grant. At about ${fmtEur(SOLAR_DATA.savings.avgAnnual)} a year saved, a typical home's figure, it pays for itself in about ${SOLAR_DATA.savings.paybackYears} years. The panels carry a 25-year warranty, so most of their working life comes after payback. ${SAVINGS_LINK} for your own payback.`;
   }
   if (f.id === 4) {
     return `The SEAI pays a Solar PV grant of up to ${SOLAR_DATA.grant.label} towards panels on your home. A battery of ${SOLAR_DATA.batteryGrant.minLabel} adds ${SOLAR_DATA.batteryGrant.label} on the same application, so solar and battery together can reach ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}. It is for the Republic of Ireland only. You must own the home (private landlords can apply too), it must have been built and occupied before 2025 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER: the BER is done after the work, before the grant is paid, and we book it for you. SEAI pays the grant into the account nominated on the Request for Payment form, normally about 4 to 6 weeks after the post-works BER is published. We confirm your eligibility on the call and walk you through the application. <a href="#grant-info">Check if you qualify</a>`;
+  }
+  if (f.id === 7) {
+    return 'For most homes, no. Since October 2022 (S.I. 493 of 2022), rooftop panels on a house are exempted development with no area limit, if they sit within 15cm of a pitched roof (50cm on a flat roof) and at least 50cm from the roof edge. Protected structures, Architectural Conservation Areas and panels on walls are the exceptions. We check this on the survey.';
+  }
+  if (f.id === 8) {
+    return 'Panels go on tiled, slate and metal roofs. A south-facing roof at 30 to 40 degrees is best, and east and west roofs make less but still work. On the survey we check direction, pitch, shading and structure, then tell you what your roof can carry.';
+  }
+  if (f.id === 11) {
+    return `Yes. A battery stores daytime power for the evening. A 5 kWh battery adds about ${fmtEur(installCostEur(0, 5) - installCostEur(0))} to a system, and a battery of ${SOLAR_DATA.batteryGrant.minLabel} carries a ${SOLAR_DATA.batteryGrant.label} SEAI grant on top of the solar grant. It pays back slower than panels, so we size it on the survey against your real day and night use. It suits you most if you are out by day or charge an EV.`;
+  }
+  if (f.id === 12) {
+    return `Your panels send what you don't use to the grid. Under the Clean Export Guarantee your supplier pays you for it, at a rate each supplier sets (the CRU sets no minimum). Our estimates use ${SOLAR_DATA.export.estimateLabel}. For a ${DOMESTIC_MIN_KWP} kWp system with no battery that comes to about ${SOLAR_DATA.export.annualRange} a year. It arrives as a credit on your bill, through your smart meter. <a href="#why-solar">See the export rate we use</a>`;
   }
   return f.answer
     .replace(/ class="[^"]*"/g, '')
