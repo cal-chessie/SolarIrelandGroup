@@ -412,6 +412,21 @@
   }
 }
 
+/* Hero v2 (Cal: "the hero is not right and their no bee"): the original
+   centered composition, vertically centred, the trust row centred too. */
+.h-hero--v2 {
+  align-items: center;
+}
+.h-hero--v2 .h-hero__trust {
+  justify-content: center;
+  margin-top: 16px;
+}
+@media (min-width: 640px) {
+  .h-hero--v2 .h-hero__trust {
+    margin-top: 24px;
+  }
+}
+
 /* ── Trust strip: equal hairline cells ─────────────────────────── */
 .h-cells {
   margin-top: 48px;
