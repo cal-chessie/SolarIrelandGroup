@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Navbar from '@/components/solar/Navbar';
 import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
@@ -180,27 +180,30 @@ function FinancingHero() {
       <div className="absolute inset-0 bg-gradient-to-b from-green-400/[0.03] to-transparent pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent" />
 
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+      {/* Desktop (lg+): copy left, the four facts as a 2x2 block right, in the
+          site's wide container (Cal: "financing seems cramped to mobile"). */}
+      <div className="max-w-4xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto text-center lg:text-left relative z-10 lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16 lg:items-center">
+        <div>
         <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-green-400/10 text-green-400 border border-green-400/20 mb-6">
           <CreditCard className="w-3.5 h-3.5" />
           Solar Financing
         </span>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
           Solar Panel{' '}
           <span className="text-gradient">Payment Plans</span>{' '}
           <br />
           for Irish Homes
         </h1>
 
-        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
           See exactly what your monthly repayments would be. Compare upfront vs finance,
           factor in the €1,800 SEAI grant, and find out if solar pays for itself from day one.
         </p>
 
         {/* The page was 13.6 screens tall with nothing to act on above the
             fold and no link to the booking form anywhere on it. */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 mb-10 lg:mb-0">
           <a
             href="/solar-calculator"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98] shadow-lg shadow-amber-400/15"
@@ -214,8 +217,9 @@ function FinancingHero() {
             Check my savings
           </a>
         </div>
+        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-4 lg:gap-5 max-w-3xl mx-auto lg:max-w-none">
           {[
             { icon: CreditCard, label: 'Banks & Credit Unions', sub: 'Green and home improvement loans' },
             { icon: Percent, label: 'Your Lender Sets the APR', sub: 'Compare the rate you are quoted' },
@@ -226,11 +230,11 @@ function FinancingHero() {
             return (
               <div
                 key={item.label}
-                className="flex flex-col items-center text-center p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-green-400/20 transition-colors"
+                className="flex flex-col items-center text-center lg:items-start lg:text-left p-4 lg:p-6 rounded-xl lg:rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:border-green-400/20 transition-colors"
               >
-                <Icon className="w-5 h-5 text-green-400 mb-2" />
-                <p className="text-sm font-semibold text-white">{item.label}</p>
-                <p className="text-[11px] text-gray-500 mt-0.5">{item.sub}</p>
+                <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-green-400 mb-2 lg:mb-3" />
+                <p className="text-sm lg:text-lg font-semibold text-white">{item.label}</p>
+                <p className="text-[11px] lg:text-sm text-gray-500 mt-0.5 lg:mt-1">{item.sub}</p>
               </div>
             );
           })}
@@ -247,16 +251,18 @@ function FinancingHero() {
  */
 function FinancingShortAnswer() {
   return (
-    <section className="px-4 pb-12 bg-[#0a0a0a]">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+    <section className="px-4 pb-12 lg:pt-8 lg:pb-20 bg-[#0a0a0a]">
+      <div className="max-w-3xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto lg:grid lg:grid-cols-2 lg:gap-16">
+        <div>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 lg:mb-6 lg:leading-tight">
           Can you get a loan for <span className="text-gradient">solar panels in Ireland?</span>
         </h2>
-        <p className="text-base sm:text-lg text-gray-200 leading-relaxed border-l-2 border-green-400/60 pl-4 mb-6">
+        <p className="text-base sm:text-lg xl:text-xl text-gray-200 leading-relaxed border-l-2 border-green-400/60 pl-4 mb-6 lg:mb-0 lg:max-w-[70ch]">
           {FINANCING_ANSWER}
         </p>
-        <ul className="space-y-3">
-          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+        </div>
+        <ul className="space-y-3 lg:space-y-5 lg:self-end">
+          <li className="flex items-start gap-2.5 text-sm lg:text-[17px] text-gray-400 leading-relaxed lg:p-5 lg:rounded-2xl lg:bg-white/[0.02] lg:border lg:border-white/[0.05]">
             <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
             <span>
               <span className="text-white font-semibold">What a system costs:</span> a 4 kWp system is{' '}
@@ -264,7 +270,7 @@ function FinancingShortAnswer() {
               <a href="/blog/how-much-do-solar-panels-cost-ireland-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">full solar panel cost guide</a>.
             </span>
           </li>
-          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+          <li className="flex items-start gap-2.5 text-sm lg:text-[17px] text-gray-400 leading-relaxed lg:p-5 lg:rounded-2xl lg:bg-white/[0.02] lg:border lg:border-white/[0.05]">
             <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
             <span>
               <span className="text-white font-semibold">When the grant arrives:</span> after the work and the post-works BER, so plan to fund the full price first. The{' '}
@@ -272,7 +278,7 @@ function FinancingShortAnswer() {
               covers the steps.
             </span>
           </li>
-          <li className="flex items-start gap-2.5 text-sm text-gray-400 leading-relaxed">
+          <li className="flex items-start gap-2.5 text-sm lg:text-[17px] text-gray-400 leading-relaxed lg:p-5 lg:rounded-2xl lg:bg-white/[0.02] lg:border lg:border-white/[0.05]">
             <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
             <span>
               <span className="text-white font-semibold">Whether it pays:</span> compare your repayment with the monthly saving. Start with{' '}
@@ -296,18 +302,18 @@ function TrustBadges() {
 
   return (
     <section className="py-8 px-4 bg-[#0a0a0a] border-y border-white/[0.04]">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-6 sm:gap-10">
           {badges.map((badge) => {
             const Icon = badge.icon;
             return (
               <div key={badge.label} className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-green-400" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-green-400/10 flex items-center justify-center">
+                  <Icon className="w-4 h-4 lg:w-5 lg:h-5 text-green-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{badge.label}</p>
-                  <p className="text-[11px] text-gray-500">{badge.desc}</p>
+                  <p className="text-sm lg:text-base font-semibold text-white">{badge.label}</p>
+                  <p className="text-[11px] lg:text-sm text-gray-500">{badge.desc}</p>
                 </div>
               </div>
             );
@@ -324,6 +330,17 @@ function FinancingCalculator() {
   const [termMonths, setTermMonths] = useState(60);
   const [showResults, setShowResults] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
+  // Desktop (lg+): the answer column sits beside the inputs, so it updates
+  // live instead of waiting for the button. Phones keep the button flow.
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  const resultsShown = showResults || wide;
 
   const system = SYSTEM_PRESETS[systemIndex];
   const term = FINANCE_TERMS.find((t) => t.months === termMonths) ?? FINANCE_TERMS[1];
@@ -344,34 +361,37 @@ function FinancingCalculator() {
   const isCashFlowPositive = result.netMonthlyCost < 0;
 
   return (
-    <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
+    <section className="py-20 lg:py-28 px-4 bg-[#0a0a0a]">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
+        <div className="text-center mb-12 lg:mb-16">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <Calculator className="w-3.5 h-3.5" />
             Payment Calculator
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Calculate Your{' '}
             <span className="text-gradient">Monthly Repayments</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             Pick your system size, choose your deposit and loan term, and see exactly
             what you&apos;d pay each month - with the SEAI grant already deducted.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+        {/* Desktop (lg+): the inputs on the left, the answer on the right, side
+            by side, so the repayment sits next to the choices that drive it. */}
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <div className="lg:border-r lg:border-white/[0.04]">
           {/* System Selection */}
           <div className="p-6 sm:p-8 border-b border-white/[0.04]">
-            <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2">
+            <h3 className="text-sm lg:text-base font-semibold text-white mb-1 flex items-center gap-2">
               <Zap className="w-4 h-4 text-amber-400" />
               1. Choose Your System
             </h3>
-            <p className="text-xs text-gray-500 mb-5">
+            <p className="text-xs lg:text-sm text-gray-500 mb-5 lg:leading-relaxed">
               The size of system that fits your home determines the total cost.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
               {SYSTEM_PRESETS.map((s, i) => (
                 <button
                   key={i}
@@ -386,9 +406,9 @@ function FinancingCalculator() {
                   `}
                 >
                   <span className="text-lg mb-1 block">{s.icon}</span>
-                  <p className="text-xs font-semibold text-white leading-tight">{s.label}</p>
+                  <p className="text-xs lg:text-sm font-semibold text-white leading-tight">{s.label}</p>
                   <p className="text-[11px] text-gray-500 mt-0.5">{s.panels} panels · {s.kwp} kWp</p>
-                  <p className="text-sm font-bold text-amber-400 mt-1.5">{fmt(s.costBeforeGrant)}</p>
+                  <p className="text-sm lg:text-base font-bold text-amber-400 mt-1.5">{fmt(s.costBeforeGrant)}</p>
                   {systemIndex === i && (
                     <CheckCircle2 className="absolute top-3 right-3 w-4 h-4 text-green-400" />
                   )}
@@ -421,11 +441,11 @@ function FinancingCalculator() {
 
           {/* Deposit */}
           <div className="p-6 sm:p-8 border-b border-white/[0.04]">
-            <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2">
+            <h3 className="text-sm lg:text-base font-semibold text-white mb-1 flex items-center gap-2">
               <PiggyBank className="w-4 h-4 text-green-400" />
               2. Deposit Amount
             </h3>
-            <p className="text-xs text-gray-500 mb-5">
+            <p className="text-xs lg:text-sm text-gray-500 mb-5 lg:leading-relaxed">
               Choose how much to pay upfront. Whether a deposit is needed is up to your lender.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -456,16 +476,16 @@ function FinancingCalculator() {
 
           {/* Loan Term */}
           <div className="p-6 sm:p-8 border-b border-white/[0.04]">
-            <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2">
+            <h3 className="text-sm lg:text-base font-semibold text-white mb-1 flex items-center gap-2">
               <CalendarDays className="w-4 h-4 text-sky-400" />
               3. Loan Term &amp; Rate
             </h3>
-            <p className="text-xs text-gray-500 mb-5">
+            <p className="text-xs lg:text-sm text-gray-500 mb-5 lg:leading-relaxed">
               Longer terms mean lower monthly payments but more interest overall. The calculator uses an
               example rate of {EXAMPLE_RATE}% so the sums can run: it is not an offer or any lender&apos;s APR.
               Use the rate your bank or credit union actually quotes you.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
               {FINANCE_TERMS.map((t) => (
                 <button
                   key={t.months}
@@ -487,8 +507,8 @@ function FinancingCalculator() {
             </div>
           </div>
 
-          {/* Calculate Button */}
-          <div className="p-6 sm:p-8">
+          {/* Calculate Button (phones; on desktop the results are live) */}
+          <div className="p-6 sm:p-8 lg:hidden">
             <button
               onClick={() => setShowResults(true)}
               className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all"
@@ -498,14 +518,16 @@ function FinancingCalculator() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
+          </div>
 
+          <div className="lg:sticky lg:top-24 lg:self-start">
           {/* Results */}
-          {showResults && (
-            <div className="border-t border-white/[0.04]">
+          {resultsShown && (
+            <div className="border-t border-white/[0.04] lg:border-t-0">
               {/* Primary Result */}
               <div className="p-6 sm:p-8 bg-gradient-to-b from-green-400/[0.04] to-transparent text-center">
                 <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">Your Estimated Monthly Repayment</p>
-                <p className="text-5xl sm:text-6xl font-bold text-white mb-2">
+                <p className="text-5xl sm:text-6xl xl:text-7xl font-bold text-white mb-2">
                   {fmtDec(result.monthlyPayment)}
                 </p>
                 <p className="text-sm text-gray-400">
@@ -553,7 +575,7 @@ function FinancingCalculator() {
                   <BarChart3 className="w-4 h-4 text-amber-400" />
                   Full Cost Breakdown
                 </h4>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                   {[
                     { label: 'System Cost', value: fmt(result.systemCost), sub: 'Before grant', color: 'text-gray-400' },
                     { label: 'After SEAI Grant', value: fmt(result.netCost), sub: `-${SOLAR_DATA.grant.label} applied`, color: 'text-green-400' },
@@ -674,6 +696,7 @@ function FinancingCalculator() {
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
     </section>
@@ -736,18 +759,18 @@ function FinancingOptions() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-20 lg:py-28 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <Lightbulb className="w-3.5 h-3.5" />
             Your Options
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Three Ways to{' '}
             <span className="text-gradient">Pay for Solar</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             Every option has merits - the right one depends on your savings, mortgage situation,
             and whether you want to be cash-flow positive from day one.
           </p>
@@ -759,7 +782,7 @@ function FinancingOptions() {
             return (
               <div
                 key={opt.title}
-                className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-colors"
+                className="relative p-6 lg:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-colors"
               >
                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${opt.tagColor} mb-4`}>
                   {opt.tag}
@@ -768,13 +791,13 @@ function FinancingOptions() {
                   <div className={`w-10 h-10 rounded-xl ${opt.iconBg} flex items-center justify-center`}>
                     <Icon className={`w-5 h-5 ${opt.iconColor}`} />
                   </div>
-                  <h3 className="text-lg font-bold text-white">{opt.title}</h3>
+                  <h3 className="text-lg xl:text-xl font-bold text-white">{opt.title}</h3>
                 </div>
                 <ul className="space-y-3">
                   {opt.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-green-400/60 shrink-0 mt-0.5" />
-                      <span className="text-sm text-gray-400 leading-relaxed">{item}</span>
+                      <span className="text-sm lg:text-base text-gray-400 leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -812,18 +835,18 @@ function HowFinancingWorks() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-20 lg:py-28 px-4 bg-[#0a0a0a]">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <Clock className="w-3.5 h-3.5" />
             How It Works
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             From Quote to{' '}
             <span className="text-gradient">Saving in Days</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             The financing process is simpler than you might think. Here&apos;s the step-by-step journey from
             initial inquiry to lower electricity bills.
           </p>
@@ -833,13 +856,13 @@ function HowFinancingWorks() {
           {steps.map((step) => (
             <div
               key={step.num}
-              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-green-400/20 transition-colors"
+              className="relative p-6 lg:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-green-400/20 transition-colors"
             >
               <span className="text-4xl font-bold text-white/[0.04] absolute top-4 right-6">
                 {step.num}
               </span>
-              <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{step.desc}</p>
+              <h3 className="text-lg xl:text-xl font-bold text-white mb-2 lg:mb-3">{step.title}</h3>
+              <p className="text-sm lg:text-base text-gray-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -856,22 +879,23 @@ function FinancingFAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14">
+    <section id="faq" className="py-20 lg:py-28 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
+      <div className="max-w-3xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
+        <div className="text-center lg:text-left mb-14 lg:mb-0 lg:sticky lg:top-24 lg:self-start">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-violet-400/[0.06] border border-violet-400/[0.1] mb-5">
             <HelpCircle className="w-3 h-3 text-violet-400" />
             Financing FAQ
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Financing{' '}
             <span className="text-gradient">Questions Answered</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             Common questions about paying for solar panels in Ireland. Can&apos;t find your answer? Ask us directly.
           </p>
         </div>
 
+        <div>
         <div className="space-y-2">
           {faqs.map((faq, i) => (
             <div
@@ -884,10 +908,10 @@ function FinancingFAQ() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left group"
+                className="w-full flex items-center justify-between gap-3 px-5 py-4 lg:px-6 lg:py-5 text-left group"
                 aria-expanded={openIndex === i}
               >
-                <span className="text-sm sm:text-[15px] font-medium text-gray-300 group-hover:text-white transition-colors leading-snug">
+                <span className="text-sm sm:text-[15px] lg:text-[17px] font-medium text-gray-300 group-hover:text-white transition-colors leading-snug">
                   {faq.q}
                 </span>
                 <ChevronDown
@@ -897,16 +921,16 @@ function FinancingFAQ() {
                 />
               </button>
               {openIndex === i && (
-                <div className="px-5 pb-4">
-                  <p className="text-sm text-gray-400 leading-relaxed pl-0">{faq.a}</p>
+                <div className="px-5 pb-4 lg:px-6 lg:pb-5">
+                  <p className="text-sm lg:text-base text-gray-400 leading-relaxed pl-0">{faq.a}</p>
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 text-center lg:text-left">
+          <p className="text-sm lg:text-base text-gray-500">
             Still have questions?{' '}
             <a
               href={buildWhatsAppUrl({ source: 'financing-faq' })}
@@ -918,6 +942,7 @@ function FinancingFAQ() {
             </a>
           </p>
         </div>
+        </div>
       </div>
     </section>
   );
@@ -926,13 +951,13 @@ function FinancingFAQ() {
 function FinalCTA() {
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-3xl mx-auto text-center">
-        <div className="rounded-2xl border border-green-400/20 bg-gradient-to-b from-green-400/[0.06] to-transparent p-10 sm:p-14">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+      <div className="max-w-3xl lg:max-w-5xl mx-auto text-center">
+        <div className="rounded-2xl border border-green-400/20 bg-gradient-to-b from-green-400/[0.06] to-transparent p-10 sm:p-14 lg:p-20">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Ready to See Your{' '}
             <span className="text-gradient">Payment Options?</span>
           </h2>
-          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl mb-8 max-w-xl lg:max-w-2xl mx-auto">
             Get a free, itemised quote with financing breakdown. We&apos;ll show you exactly
             what you&apos;d pay upfront, monthly, and over 25 years. Every figure itemised, nothing added later.
           </p>
