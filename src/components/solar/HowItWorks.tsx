@@ -15,32 +15,33 @@ const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
 
 const steps: { title: string; body: React.ReactNode; who: string }[] = [
   {
-    title: 'Check your savings',
-    body: 'Upload your bill above. You see your yearly saving, the right system and your payback before anyone rings you.',
-    who: 'You, in about a minute',
+    title: 'Instant AI estimate',
+    body: 'Upload your bill, or type the amount. We read your unit rate, standing charge and day/night split. You see your yearly saving, the right system size, your grant and your payback in about a minute.',
+    who: 'You, online',
   },
   {
-    title: 'A 15-minute call, same day',
-    body: 'We ring you the same day to go through your number, your roof and your grant.',
+    title: 'Check your savings and book a call',
+    body: "You get your full estimate by email, and we ring you the same day to talk it through. If it's late, we ring first thing tomorrow. Your name, mobile and email are all we ask for.",
     who: 'Us, on the phone',
   },
   {
-    title: 'Survey, then install',
+    title: '15-minute survey and final proposal',
     body: (
       <>
-        After the call we survey your roof (free, on site or remote). You apply for your SEAI grant on{' '}
+        On the call we cover what a bill can&apos;t show: your roof, your meter and when you use power. Then we send
+        your final proposal with the fixed price, the system and the grant. Before work starts, you apply on{' '}
         <a href={SEAI_GRANT_PORTAL} target="_blank" rel="noopener noreferrer">
-          SEAI&apos;s portal
+          SEAI&apos;s grant portal
         </a>{' '}
-        before work starts, and we walk you through it. Our RECI-registered team installs and we notify ESB Networks.
+        and we walk you through it.
       </>
     ),
     who: 'Us, with you',
   },
   {
-    title: 'SEAI pays you',
-    body: `We book your BER and send SEAI the paperwork. Once your BER is published, SEAI pays your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}, normally 4 to 6 weeks later.`,
-    who: 'Track it in real time',
+    title: 'Install, then SEAI grant payment',
+    body: `Our RECI-registered team installs, and we notify ESB Networks and book your BER. Once it's published, SEAI pays your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}, normally 4 to 6 weeks later. You can track every step in real time.`,
+    who: 'Our team, then SEAI',
   },
 ];
 
@@ -59,7 +60,7 @@ export default function HowItWorks() {
             </h2>
           </div>
           <div data-reveal="" style={{ ['--d' as string]: 1 }}>
-            <p className="h-lead">Four steps, and who does each one.</p>
+            <p className="h-lead">Four steps from your bill to SEAI paying your grant, and who does each one.</p>
           </div>
         </div>
 

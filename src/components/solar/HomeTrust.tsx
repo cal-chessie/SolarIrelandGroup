@@ -8,7 +8,7 @@
  */
 const FACTS: { big: string; line: string; mono?: boolean }[] = [
   { big: 'SEAI', line: 'Registered installers' },
-  { big: 'RECI', line: 'Registered electrical contractor' },
+  { big: 'RECI', line: 'Registered Electricians' },
   { big: '2019', line: 'Founded', mono: true },
   { big: '5 years', line: 'Workmanship warranty' },
   { big: '25 years', line: 'Panel warranty' },
