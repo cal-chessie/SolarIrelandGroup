@@ -3091,35 +3091,91 @@ h1.si-ask__title {
   justify-items: start;
 }
 
-/* The first screen (10 Nov): the promise, a Home | Business switch, two road
-   cards (upload is the yellow primary, typing the outlined secondary), one
-   trust line and one quiet privacy line. Phone first: at 390 x 844 the
-   headline, the switch and both roads sit above the fold. */
+/* The first screen (11 Nov, Apple pass). Cal on his phone: "you are not
+   using the screen properly and it all looks cramped". The start state is
+   no longer a card squeezed into the viewport: on a phone it IS the screen,
+   full bleed under the fixed navbar, three zones spread down the visible
+   height (the message on top, the Home | Business control in the middle,
+   both roads in the thumb zone). From 768 it is a two-column composition
+   filling the section: the message left, the control and roads right.
+   Spacing sits on an 8px grid and scales with the screen height (svh), so a
+   tall phone breathes and a short one tightens without cramping. */
+.si-analyser {
+  --si-nav-h: 73px; /* the Navbar: h-[72px] plus its 1px border */
+  scroll-margin-top: var(--si-nav-h);
+}
+@media (min-width: 1280px) {
+  .si-analyser {
+    --si-nav-h: 81px; /* xl:h-20 plus the border */
+  }
+}
+
+/* The message. */
+.si-an-door .si-an-kicker {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
 .si-an-door .si-an-door__title {
-  font-size: 26px;
-  line-height: 31px;
-  letter-spacing: -0.02em;
+  margin-top: 8px;
+  font-size: 40px;
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 .si-an-door .si-an-door__sub {
-  font-size: 15px;
-  line-height: 22px;
-  max-inline-size: 52ch;
+  margin-top: 16px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--si-fg-muted);
+  max-inline-size: 46ch;
   text-wrap: pretty;
 }
-.si-an-seg {
-  margin-top: 16px;
-  min-height: 44px;
-  max-width: 320px;
+
+/* Home | Business: an iOS segmented control with a sliding thumb. */
+.si-an-door .si-an-seg {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 48px;
+  padding: 2px;
+  background: var(--si-raise);
+  box-shadow: inset 0 0 0 1px var(--si-line);
 }
-.si-an-seg label {
-  min-height: 38px;
+.si-an-seg__thumb {
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  border-radius: var(--si-r-pill);
+  background: var(--si-thumb);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), inset 0 0 0 1px var(--si-line);
+  transition: transform var(--si-dur-3) var(--si-ease-out);
+}
+.si-an-seg[data-at='1'] .si-an-seg__thumb {
+  transform: translateX(100%);
+}
+.si-an-door .si-an-seg label {
+  min-height: 44px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.si-an-door .si-an-seg label:has(input:checked) {
+  background: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-an-seg__thumb {
+    transition: none;
+  }
 }
 .si-an-ndmg {
-  margin-top: 10px;
+  margin-top: 12px;
 }
-.si-an-door .si-an-roads {
-  margin-top: 16px;
-}
+
+/* The two roads. Upload is the one yellow thing on the screen. */
 .si-an-road--primary {
   background: var(--si-amber);
   box-shadow: none;
@@ -3131,14 +3187,8 @@ h1.si-ask__title {
 .si-an-road--primary:active {
   filter: brightness(0.94);
 }
-.si-an-road--primary .si-photo__title {
-  font-weight: 600;
-}
 .si-an-road--primary .si-photo__line {
   color: rgba(10, 10, 10, 0.74);
-}
-.si-an-door .si-photo__line {
-  text-wrap: pretty;
 }
 .si-an-road--primary .si-photo__chev {
   color: var(--si-on-amber);
@@ -3151,44 +3201,56 @@ h1.si-ask__title {
   outline-color: var(--si-fg);
 }
 .si-an-road--secondary {
-  background: transparent;
+  background: var(--si-raise);
 }
 .si-an-road--secondary:hover {
   background: var(--si-hover);
 }
-.si-an-road--secondary .si-photo__title {
+.si-an-door .si-an-road .si-photo__title {
   font-weight: 600;
 }
-.si-an-trust {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.si-an-door .si-photo__line {
+  text-wrap: pretty;
 }
-.si-an-trust li {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 0 10px;
-  border-radius: var(--si-r-pill);
-  background: var(--si-raise);
-  box-shadow: inset 0 0 0 1px var(--si-line);
-  font-size: 12px;
+.si-an-road__note {
+  display: none;
+}
+
+/* Trust, then privacy: one quiet strip of three equal cells split by
+   hairlines (no chips, no wrapping separators), then one privacy line. */
+.si-an-door .si-an-trust {
+  margin-top: 24px;
+  display: flex;
+  font-size: 13px;
   line-height: 16px;
   font-weight: 500;
   color: var(--si-fg-muted);
+  text-align: center;
+}
+.si-an-door .si-an-trust li {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 8px;
+  text-wrap: balance;
+}
+.si-an-door .si-an-trust li + li {
+  box-shadow: inset 1px 0 0 var(--si-line-control);
 }
 .si-an-priv {
-  margin-top: 10px;
+  margin-top: 4px;
+  text-align: center;
 }
 .si-an-priv__line {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 4px 6px;
-  min-height: 32px;
+  min-height: 44px;
   font-size: 13px;
-  line-height: 19px;
+  line-height: 18px;
   color: var(--si-fg-muted);
   cursor: pointer;
   list-style: none;
@@ -3203,49 +3265,181 @@ h1.si-ask__title {
 }
 .si-an-priv .si-an-privacy {
   margin-top: 4px;
+  text-align: left;
 }
-@media (min-width: 640px) {
+
+/* ── Phone (under 768): the start state is the screen. ── */
+@media (max-width: 767px) {
+  .si-an--section[data-phase='door'] {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--si-nav-h));
+    min-height: calc(100svh - var(--si-nav-h));
+  }
+  .si-an--section[data-phase='door'] > div,
+  .si-an--section[data-phase='door'] > div > div,
+  .si-an--section[data-phase='door'] .si-an-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  /* No card chrome: full bleed, 24px gutters (the 16px container plus 8). */
+  .si-an-card.si-an-door {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(12px, 3svh, 40px);
+    padding: clamp(12px, 3svh, 40px) 8px clamp(4px, 1svh, 16px);
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
   .si-an-door .si-an-door__title {
-    font-size: 32px;
-    line-height: 38px;
+    font-size: clamp(28px, 4.4svh + 6px, 40px);
   }
   .si-an-door .si-an-door__sub {
-    font-size: 17px;
-    line-height: 26px;
+    margin-top: clamp(8px, 2svh, 16px);
+    line-height: 1.45;
   }
-}
-/* Desktop: the promise on the left, the two roads stacked on the right. */
-@media (min-width: 1024px) {
-  .si-an-door {
+  /* Three cells sized to their words: the middle one is the longest. */
+  .si-an-door .si-an-trust {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: 56px;
-    align-items: center;
+    grid-template-columns: 1fr 1.3fr 0.9fr;
+    font-size: 12px;
+    line-height: 16px;
   }
-  .si-an--section .si-an-card.si-an-door {
-    padding: 48px;
+  .si-an-door .si-an-trust li {
+    padding-inline: 4px;
+  }
+  .si-an-door .si-an-priv {
+    margin-top: clamp(4px, 1svh, 8px);
+  }
+  .si-an-priv__line {
+    margin-bottom: -8px;
+  }
+  .si-an-door .si-an-roads {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  /* Each road is one big, one-line button. */
+  .si-an-door .si-an-road {
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: clamp(52px, 8svh, 60px);
+    padding: 0 20px;
+    border-radius: var(--si-r);
+  }
+  .si-an-door .si-an-road .si-photo__text {
+    flex: none;
+  }
+  .si-an-door .si-an-road .si-photo__title {
+    font-size: 17px;
+    line-height: 22px;
+  }
+  .si-an-door .si-an-road .si-photo__line,
+  .si-an-door .si-an-road .si-photo__chev {
+    display: none;
+  }
+  .si-an-door .si-an-road__icon {
+    width: auto;
+    height: auto;
+    background: none;
+  }
+  .si-an-road--primary .si-an-road__icon {
+    background: none;
+  }
+  .si-an-road__note {
+    display: block;
+    margin: 8px 0 clamp(12px, 2svh, 16px);
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--si-fg-muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+  .si-an-door .si-an-trust {
+    margin-top: clamp(12px, 2.4svh, 24px);
+  }
+  /* The doubled business grant: on a phone the sub already names it and
+     its figure; the full rule and the grant page link show from 768. */
+  .si-an-door .si-an-ndmg {
+    display: none;
+  }
+}
+/* Short phones (iPhone SE and mini with the browser bars up). */
+@media (max-width: 767px) and (max-height: 620px) {
+  /* The eyebrow is the one line a short screen can spare. */
+  .si-an-door .si-an-kicker {
+    display: none;
   }
   .si-an-door .si-an-door__title {
-    font-size: 44px;
-    line-height: 50px;
-    letter-spacing: -0.025em;
+    margin-top: 0;
+    font-size: 28px;
   }
   .si-an-door .si-an-door__sub {
-    margin-top: 14px;
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 15px;
+    line-height: 1.45;
   }
-  .si-an-seg {
-    margin-top: 28px;
+  .si-an-door .si-an-road {
+    min-height: 48px;
+  }
+  .si-an-road__note {
+    margin-bottom: 8px;
+  }
+}
+
+/* ── Tablet and desktop (768 up): two columns filling the section. ── */
+@media (min-width: 768px) {
+  .si-analyser {
+    scroll-margin-top: calc(var(--si-nav-h) + 16px);
+  }
+  .si-an--section[data-phase='door'] {
+    padding-block: 16px;
+  }
+  .si-an-card.si-an-door {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-areas: 'pitch mid' 'pitch act';
+    grid-template-rows: auto auto;
+    align-content: center;
+    column-gap: clamp(40px, 6vw, 96px);
+    row-gap: 24px;
+    min-height: min(64svh, 640px);
+    padding: clamp(40px, 5vw, 72px);
+  }
+  .si-an-door__pitch {
+    grid-area: pitch;
+    align-self: center;
+  }
+  .si-an-door__mid {
+    grid-area: mid;
+    align-self: end;
+  }
+  .si-an-door__act {
+    grid-area: act;
+    align-self: start;
+  }
+  .si-an-door .si-an-door__title {
+    font-size: clamp(36px, 3.4vw + 8px, 60px);
+    letter-spacing: -0.04em;
+  }
+  .si-an-door .si-an-door__sub {
+    margin-top: 24px;
+    font-size: clamp(17px, 0.4vw + 14px, 20px);
   }
   .si-an-door .si-an-roads {
     margin-top: 0;
     grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
+    gap: 16px;
   }
   .si-an-door .si-an-road {
     align-items: center;
-    min-height: 96px;
+    min-height: 88px;
     padding: 16px 20px 16px 16px;
   }
   .si-an-door .si-an-road .si-photo__title {
@@ -3253,137 +3447,62 @@ h1.si-ask__title {
     line-height: 24px;
   }
   .si-an-door .si-an-road .si-photo__line {
+    margin-top: 2px;
     font-size: 14px;
     line-height: 20px;
   }
   .si-an-door .si-an-door__drop {
-    margin-top: 12px;
-    min-height: 52px;
-  }
-}
-
-/* Fit the screen (10 Nov, Cal on his phone: "it should fit the screen").
-   The whole first card lands in ONE visible phone screen with Safari's and
-   Chrome's bars showing, so the design height is the small visible one
-   (375 x 560, 390 x 664, 430 x 740), not the 844 screen. The section fills
-   the visible height under the fixed navbar (svh, with a vh fallback), and
-   every "#calculator" door stops the card just under that navbar. */
-.si-analyser {
-  --si-nav-h: 73px; /* the Navbar: h-[72px] plus its 1px border */
-  scroll-margin-top: var(--si-nav-h);
-}
-@media (min-width: 640px) {
-  /* Wider screens are tall enough for a breath under the navbar. */
-  .si-analyser {
-    scroll-margin-top: calc(var(--si-nav-h) + 16px);
-  }
-}
-@media (min-width: 1280px) {
-  .si-analyser {
-    --si-nav-h: 81px; /* xl:h-20 plus the border */
-  }
-}
-.si-an-priv__line {
-  min-height: 44px;
-}
-.si-an-door .si-an-seg {
-  min-height: 48px;
-  padding: 2px;
-}
-.si-an-door .si-an-seg label {
-  min-height: 44px;
-}
-@media (max-width: 639px) {
-  .si-an--section[data-phase='door'] {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: calc(100vh - var(--si-nav-h));
-    min-height: calc(100svh - var(--si-nav-h));
-    padding-block: 8px;
-  }
-  .si-an--section[data-phase='door'] > div {
-    width: 100%;
-  }
-  .si-an-card.si-an-door {
-    padding: 16px 20px 8px;
-  }
-  .si-an-door .si-an-door__title {
-    margin-top: 4px;
-    font-size: clamp(22px, 2.2svh + 10px, 26px);
-    line-height: 1.17;
-  }
-  .si-an-door .si-an-door__sub {
-    margin-top: 6px;
-    font-size: 14px;
-    line-height: 20px;
-  }
-  .si-an-door .si-an-seg {
-    margin-top: 12px;
-  }
-  .si-an-door .si-an-roads {
-    margin-top: 12px;
-    gap: 8px;
-  }
-  .si-an-door .si-an-road {
-    min-height: 60px;
-    gap: 10px;
-    padding: 9px 14px 9px 10px;
-  }
-  .si-an-door .si-an-road__icon {
-    width: 34px;
-    height: 34px;
-  }
-  .si-an-door .si-an-road .si-photo__title {
-    line-height: 20px;
-  }
-  .si-an-door .si-an-road .si-photo__line {
-    font-size: 12.5px;
-    line-height: 17px;
-  }
-  .si-an-door .si-an-priv {
-    margin-top: 2px;
-  }
-}
-/* The trust chips on one line: a quiet sideways scroll on phones and
-   tablets, bleeding to the card edge with a soft fade, never a wrap. */
-@media (max-width: 1023px) {
-  .si-an-door .si-an-trust {
-    margin-top: 10px;
-    margin-inline: -20px;
-    padding-inline: 20px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
-  }
-  .si-an-door .si-an-trust::-webkit-scrollbar {
-    display: none;
+    margin-top: 16px;
+    min-height: 56px;
   }
   .si-an-door .si-an-trust li {
-    flex: none;
-    white-space: nowrap;
-    min-height: 24px;
-    padding: 0 9px;
-    font-size: 11.5px;
+    flex: 0 1 auto;
+    justify-content: flex-start;
+    padding-inline: 16px;
+    text-align: left;
+  }
+  .si-an-door .si-an-trust li:first-child {
+    padding-left: 0;
+  }
+  .si-an-priv {
+    text-align: left;
+  }
+  .si-an-priv__line {
+    justify-content: flex-start;
   }
 }
-@media (min-width: 640px) and (max-width: 1023px) {
+/* Tablet: the right column is too narrow for three cells, so the trust
+   points wrap as a list, each with its own quiet dot. */
+@media (min-width: 768px) and (max-width: 1023px) {
   .si-an-door .si-an-trust {
-    margin-inline: -32px;
-    padding-inline: 32px;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+  .si-an-door .si-an-trust li,
+  .si-an-door .si-an-trust li:first-child {
+    padding: 0;
+    white-space: nowrap;
+  }
+  .si-an-door .si-an-trust li + li {
+    box-shadow: none;
+  }
+  .si-an-door .si-an-trust li::before {
+    content: '';
+    flex: none;
+    width: 4px;
+    height: 4px;
+    margin-right: 8px;
+    border-radius: var(--si-r-pill);
+    background: var(--si-fg-muted);
   }
 }
-/* The shortest phones (iPhone SE and mini with the bars up). */
-@media (max-width: 639px) and (max-height: 620px) {
+@media (min-width: 1024px) {
   .si-an-card.si-an-door {
-    padding-top: 14px;
+    row-gap: 32px;
+    min-height: min(80svh, 760px);
   }
-  .si-an-door .si-an-door__sub {
-    font-size: 13.5px;
-    line-height: 19px;
+  .si-an-door .si-an-road {
+    min-height: 96px;
   }
 }
 

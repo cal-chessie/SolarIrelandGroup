@@ -541,6 +541,10 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     track('segment_pick', { segment: next, flow_id: fid });
   };
 
+  /* The first screen (11 Nov, Apple pass). Three zones: the message, the
+     Home | Business control, then the two roads in the thumb zone. On a
+     phone the zones spread down the whole visible screen; from 768 the
+     message sits left and the control plus both roads sit right. */
   const doorCard = (
     <div className="si-an-card si-an-door" data-dragging={dragging ? 'true' : undefined} onDragOver={(e) => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={onDrop}>
       <div className="si-an-door__pitch">
@@ -549,7 +553,10 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         <p className="si-an-door__sub" data-an-sub="">
           Your yearly saving, the right system, {grantWords} and your payback. Under a minute, nothing to sign up for.
         </p>
-        <div className="si-switch si-an-seg" role="radiogroup" aria-label="Whose bill is it?" data-an-segment="">
+      </div>
+      <div className="si-an-door__mid">
+        <div className="si-switch si-an-seg" role="radiogroup" aria-label="Whose bill is it?" data-an-segment="" data-at={isBiz ? '1' : '0'}>
+          <span className="si-an-seg__thumb" aria-hidden="true" />
           <label>
             <input type="radio" name={segName} value="home" checked={!isBiz} onChange={() => pickSegment('domestic')} />
             Home
@@ -570,16 +577,20 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       </div>
       <div className="si-an-door__act">
         <div className="si-an-roads" role="group" aria-label="Two ways to see your figures">
-          <button type="button" className="si-photo si-an-road si-an-road--primary" onClick={() => fileRef.current?.click()} data-an-upload="">
+          <button type="button" className="si-photo si-an-road si-an-road--primary" onClick={() => fileRef.current?.click()} data-an-upload="" aria-describedby={`si-an-${door}-up-line`}>
             <span className="si-photo__icon si-an-road__icon" aria-hidden="true">
               <Upload size={20} />
             </span>
             <span className="si-photo__text">
               <span className="si-photo__title">Upload my bill</span>
-              <span className="si-photo__line">Photo or PDF. The PDF from your supplier&apos;s email works best.</span>
+              <span className="si-photo__line" aria-hidden="true">Photo or PDF. The PDF from your supplier&apos;s email works best.</span>
             </span>
             <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
           </button>
+          {/* Phones: the upload line sits under the button, so the button stays one clean line. */}
+          <p className="si-an-road__note" id={`si-an-${door}-up-line`}>
+            Photo or PDF. The PDF from your supplier&apos;s email works best.
+          </p>
           <a
             className="si-photo si-an-road si-an-road--secondary"
             href={intakeHref({ door: `${door}-manual`, segment: isBiz ? 'business' : 'home', step: 'bill' })}
