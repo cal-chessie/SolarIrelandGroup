@@ -320,7 +320,12 @@ function CategoryTabs({
   );
 }
 
-export default function FAQ() {
+export default function FAQ({ variant = 'default' }: { variant?: 'default' | 'home' } = {}) {
+  if (variant === 'home') return <HomeFAQ />;
+  return <DefaultFAQ />;
+}
+
+function DefaultFAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -539,6 +544,125 @@ export default function FAQ() {
 
       </div>
     </section>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   The homepage variant (restructure, 11 Nov 2026, DECISIONS.md R5).
+   Other pages (/solar-calculator, /financing) keep DefaultFAQ above,
+   unchanged. The homepage gets a two-column, hairline accordion with no
+   search box, no tag chips and no violet, and a question set without
+   survey selling (R3). Its FAQPage schema is built from exactly the
+   questions it shows, so the schema keeps tracking the visible FAQ.
+   ═══════════════════════════════════════════════════════════════ */
+const HOME_FAQ_IDS = [1, 2, 3, 4, 7, 8, 11, 12];
+
+const SAVINGS_LINK = '<a href="#calculator">Check my savings</a>';
+
+function homeAnswer(f: FAQItem): string {
+  if (f.id === 1) {
+    const base = installCostEur(DOMESTIC_MIN_KWP);
+    return `A standard ${DOMESTIC_MIN_KWP} kWp system, the size most Irish homes get, costs ${fmtEur(base)} installed. After the full ${SOLAR_DATA.grant.label} SEAI grant that is ${fmtEur(base - SOLAR_DATA.grant.amount)} out of pocket. Larger systems price better per kWp. The exact cost depends on the system size, the roof, and whether you want a battery, and every quote is itemised so you can see where your money goes. ${SAVINGS_LINK} for your own figure.`;
+  }
+  if (f.id === 4) {
+    return `The SEAI pays a Solar PV grant of up to ${SOLAR_DATA.grant.label} towards panels on your home. A battery of ${SOLAR_DATA.batteryGrant.minLabel} adds ${SOLAR_DATA.batteryGrant.label} on the same application, so solar and battery together can reach ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}. It is for the Republic of Ireland only. You must own the home (private landlords can apply too), it must have been built and occupied before 2025 with its own MPRN, and the property must not have had solar funding before. There is no minimum BER: the BER is done after the work, before the grant is paid, and we book it for you. SEAI pays the grant into the account nominated on the Request for Payment form, normally about 4 to 6 weeks after the post-works BER is published. We confirm your eligibility on the call and walk you through the application. <a href="#grant-info">Check if you qualify</a>`;
+  }
+  return f.answer
+    .replace(/ class="[^"]*"/g, '')
+    .replace(/During the free survey/g, 'On the survey')
+    .replace(/during the free survey/g, 'on the survey')
+    .replace(/After your free survey/g, 'After the survey')
+    .replace(/the free survey/gi, 'the survey')
+    .replace(/<a href="#calculator">[^<]*<\/a>/g, SAVINGS_LINK);
+}
+
+const homeFaqs = faqs.filter((f) => HOME_FAQ_IDS.includes(f.id)).map((f) => ({ ...f, answer: homeAnswer(f) }));
+
+function HomeFAQ() {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        id="schema-faq"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            '@id': 'https://solarirelandgroup.ie/#faq',
+            mainEntity: homeFaqs.map((f) => ({
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: { '@type': 'Answer', text: f.answer.replace(/<[^>]+>/g, '').trim() },
+            })),
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        id="schema-speakable"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            '@id': 'https://solarirelandgroup.ie/#speakable',
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['.speakable-question', '.speakable-answer'],
+              xpath: [
+                "//section[@id='faq']//button[contains(@class,'speakable-question')]",
+                "//section[@id='faq']//p[contains(@class,'speakable-answer')]",
+              ],
+            },
+            url: 'https://solarirelandgroup.ie/#faq',
+          }),
+        }}
+      />
+      <section id="faq" className="h-sec" aria-labelledby="faq-title">
+        <div className="h-wrap">
+          <div className="h-faq">
+            <div className="h-faq__aside" data-reveal="">
+              <span className="h-kicker">
+                <span className="h-ring" aria-hidden="true" />
+                FAQ
+              </span>
+              <h2 id="faq-title" className="h-title">
+                Questions people ask us.
+              </h2>
+              <p className="h-lead">
+                Straight answers on cost, the grant and your roof. Anything else, ask us on the call.
+              </p>
+            </div>
+            <div className="h-acc" data-reveal="" style={{ ['--d' as string]: 1 }}>
+              {homeFaqs.map((f) => {
+                const isOpen = open === f.id;
+                return (
+                  <div key={f.id}>
+                    <h3>
+                      <button
+                        type="button"
+                        className="speakable-question"
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-a-${f.id}`}
+                        onClick={() => setOpen(isOpen ? null : f.id)}
+                      >
+                        <span>{f.question}</span>
+                        <span className="h-acc__pm" aria-hidden="true" />
+                      </button>
+                    </h3>
+                    <div className="h-acc__a" data-open={isOpen ? 'true' : 'false'} id={`faq-a-${f.id}`}>
+                      <div>
+                        <p className="speakable-answer" dangerouslySetInnerHTML={{ __html: f.answer }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
