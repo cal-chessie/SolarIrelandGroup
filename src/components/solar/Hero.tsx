@@ -108,21 +108,22 @@ export default function Hero() {
             <span>Since 2019</span>
           </p>
 
-          {/* The bee, back where it was, with "Daylight over Ireland" beside it
-              from 1024 (on phones the daylight widget sits in the trust
-              section so the bee keeps the hero short). */}
-          <div className="hero-fade-up mt-4 sm:mt-8 flex items-center justify-center gap-6" style={{ animationDelay: '0.8s' }}>
-            <Image
-              src="/bumblebee-hero.webp"
-              alt="Solar Ireland's bumblebee"
-              width={160}
-              height={160}
-              priority={false}
-              className="h-bee h-bee--bob w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32"
-            />
-            <div className="hidden lg:block">
-              <DaylightTrack />
+          {/* The bee and "Daylight over Ireland" back where they were on main
+              (Cal: "put the panels resting back where it was too"): stacked
+              under the trust row on phones, side by side from 1024. The right
+              margin on phones keeps the pill clear of the chat FAB (fixed at
+              bottom-6 right-6), as the original did. */}
+          <div className="mt-4 sm:mt-8 flex flex-col items-center gap-4 lg:flex-row lg:gap-6">
+            <div className="hero-fade-up" style={{ animationDelay: '0.4s' }}>
+              <Image
+                src="/bumblebee-hero.webp"
+                alt="Solar Ireland's bumblebee"
+                width={160}
+                height={160}
+                className="h-bee h-bee--bob w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32"
+              />
             </div>
+            <DaylightTrack className="hero-fade-up shrink-0 mr-12 sm:mr-0" style={{ animationDelay: '0.55s' }} />
           </div>
         </div>
       </div>

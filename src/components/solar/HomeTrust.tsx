@@ -1,7 +1,5 @@
 'use client';
 
-import DaylightTrack from './DaylightTrack';
-
 /**
  * The one consolidated trust block (homepage, 11 Nov 2026). Before, five
  * different trust rows said overlapping and partly unconfirmed things; this
@@ -48,11 +46,6 @@ export default function HomeTrust() {
           ))}
         </ul>
 
-        {/* "Daylight over Ireland": where the sun is right now. On desktop it
-            sits in the hero; on phones it lives here, under the facts. */}
-        <div className="mt-10 flex lg:hidden" data-reveal="">
-          <DaylightTrack />
-        </div>
       </div>
     </section>
   );
