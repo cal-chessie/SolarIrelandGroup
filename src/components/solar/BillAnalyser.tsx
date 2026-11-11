@@ -611,10 +611,6 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
             <ChevronRight className="si-photo__chev" size={16} aria-hidden="true" />
           </a>
         </div>
-        <div className="si-an-door__drop" aria-hidden="true">
-          <Upload size={22} />
-          <span>Or drop your bill here</span>
-        </div>
         <ul className="si-an-trust" aria-label="Why Solar Ireland">
           <li>SEAI Registered Installers</li>
           <li>5-year workmanship warranty</li>

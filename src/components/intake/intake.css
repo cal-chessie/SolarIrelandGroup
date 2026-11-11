@@ -2994,9 +2994,6 @@ h1.si-ask__title {
   line-height: 24px;
   color: var(--si-fg-muted);
 }
-.si-an-door__drop {
-  display: none;
-}
 .si-an-door__actions {
   margin-top: 20px;
   display: grid;
@@ -3029,6 +3026,16 @@ h1.si-ask__title {
   background: var(--si-amber-wash);
   color: var(--si-amber);
 }
+/* Drag a bill over the card: the Upload road lights up as the target. The
+   drop itself is handled on the whole card, so a drop on the Upload road
+   (or anywhere on the card) reads the file. No separate drop zone. */
+.si-an-road--primary {
+  transition: background-color var(--si-dur-1) var(--si-ease), box-shadow var(--si-dur-1) var(--si-ease);
+}
+.si-an-door[data-dragging='true'] .si-an-road--primary {
+  background: var(--si-amber-hover);
+  box-shadow: 0 0 0 3px rgba(255, 185, 0, 0.35), 0 0 28px rgba(255, 185, 0, 0.35);
+}
 @media (min-width: 640px) {
   .si-an-roads {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -3048,26 +3055,6 @@ h1.si-ask__title {
   }
   .si-an-desk {
     display: inline-flex;
-  }
-  .si-an-door__drop {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 64px;
-    border-radius: var(--si-r);
-    border: 1.5px dashed var(--si-line-control);
-    color: var(--si-fg-muted);
-    font-size: 15px;
-    line-height: 22px;
-    transition: border-color var(--si-dur-1) var(--si-ease), background-color var(--si-dur-1) var(--si-ease);
-  }
-  .si-an-door[data-dragging='true'] .si-an-door__drop {
-    border-color: var(--si-amber);
-    background: var(--si-amber-wash);
-    color: var(--si-fg);
   }
   .si-an-door__title {
     font-size: 28px;
@@ -3450,10 +3437,6 @@ h1.si-ask__title {
     margin-top: 2px;
     font-size: 14px;
     line-height: 20px;
-  }
-  .si-an-door .si-an-door__drop {
-    margin-top: 16px;
-    min-height: 56px;
   }
   .si-an-door .si-an-trust li {
     flex: 0 1 auto;
@@ -4190,10 +4173,6 @@ h1.si-ask__title {
   .si-an-door .si-an-road .si-photo__line {
     font-size: 15px;
     line-height: 22px;
-  }
-  .si-an-door .si-an-door__drop {
-    min-height: 60px;
-    font-size: 16px;
   }
   .si-an-door .si-an-trust {
     font-size: 15px;
