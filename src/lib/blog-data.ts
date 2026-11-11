@@ -233,6 +233,7 @@ export const articles: Article[] = [
   },
   {
     "slug": "do-solar-panels-add-value-to-your-home-ireland",
+    "seoDescription": "Solar lifts your BER and cuts running costs, which buyers now check first. How much value panels add to an Irish home, and when the return comes.",
     "title": "Do Solar Panels Add Value to Your Home in Ireland?",
     "excerpt": "Yes - solar lifts your BER, cuts running costs, and appeals to buyers who now read the energy rating first. The honest picture on how much value it adds, and why the bigger return happens while you still live there.",
     "category": "savings",
@@ -3146,6 +3147,7 @@ export const articles: Article[] = [
   },
   {
     "slug": "battery-storage-is-it-worth-the-extra-cost",
+    "seoDescription": "Home batteries cost €3,200 to €4,900 for 5 to 10 kWh, less the €600 SEAI grant. When a battery pays for itself in Ireland, with real tariffs and usage.",
     "title": "Battery Storage: Is It Worth the Extra Cost?",
     "seoTitle": "Is Battery Storage Worth the Extra Cost in Ireland?",
     "image": "/blog/battery-storage-is-it-worth-the-extra-cost.webp",
@@ -4027,6 +4029,7 @@ export const articles: Article[] = [
   },
   {
     "slug": "seai-grant-stay-e1800-2026-what-it-means",
+    "seoDescription": "The SEAI solar grant stays at €1,800 for 2026, plus a new €600 battery grant. What it means for your home, who qualifies and how to apply before work.",
     "title": "SEAI Grant Stays at €1,800 for 2026 - What It Means for You",
     "seoTitle": "SEAI Grant Stays at €1,800 for 2026: What It Means for You",
     "image": "/blog/seai-grant-stay-e1800-2026-what-it-means.webp",

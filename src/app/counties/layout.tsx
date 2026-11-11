@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar Installation in All 32 Counties',
   description:
-    'Solar panel installers across all 32 counties, Dublin to Donegal. Compare prices, SEAI grants and generation estimates, and get a free estimate from your bill.',
+    'Solar panel installers across all 32 counties, Dublin to Donegal. Compare prices, SEAI grants and generation, and get a free estimate from your bill.',
   alternates: {
     canonical: 'https://solarirelandgroup.ie/counties',
     languages: {
