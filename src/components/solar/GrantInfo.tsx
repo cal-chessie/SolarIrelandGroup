@@ -1,57 +1,20 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from '@/lib/motion';
-import {
-  CheckCircle2,
-  ExternalLink,
-  Info,
-  Euro,
-  Home,
-  FileCheck,
-  Calendar,
-  Zap,
-  ArrowRight,
-  Clock,
-  Shield,
-  XCircle,
-  PartyPopper,
-  ChevronDown,
-  Wrench,
-  ClipboardCheck,
-  BadgeEuro,
-} from 'lucide-react';
-import { SOLAR_DATA, WELFARE_HIGHER_GRANT } from '@/lib/solar-data';
-import { DOMESTIC_MIN_KWP } from '@/lib/estimate';
-import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { useState } from 'react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
+import { SOLAR_DATA, WELFARE_HIGHER_GRANT, ndmgDoubledLive } from '@/lib/solar-data';
 import { intakeHref, openIntake } from '@/lib/intake/open';
 
+/**
+ * Grants (homepage only, #grant-info). Restructure, 11 Nov 2026.
+ *
+ * Before, the H2 said "Up to €1,800" while the analyser said "up to €2,400",
+ * and the grant appeared in four places. Now one definition list carries
+ * every grant figure, each read from SOLAR_DATA / WELFARE_HIGHER_GRANT, and
+ * the eligibility checker ends in "Check my savings" (DECISIONS.md R6). The
+ * "how the grant works" timeline moved into the merged process section.
+ */
 const eur0 = (n: number) => `€${n.toLocaleString('en-IE')}`;
-
-function AnimatedGrant({ show }: { show: boolean }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-20px' });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
-  const hasAnimated = useRef(false);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (show && inView && !hasAnimated.current) {
-      hasAnimated.current = true;
-      setVisible(true);
-      animate(count, SOLAR_DATA.grant.amount, { duration: 1.8, ease: 'easeOut' });
-    }
-  }, [show, inView, count]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {/* Server-render the real grant figure so crawlers and no-JS readers see
-          "€1,800", never "€0". The count-up takes over once it scrolls in. */}
-      €{visible ? <motion.span>{rounded}</motion.span> : SOLAR_DATA.grant.label.replace('€', '')}
-    </span>
-  );
-}
 
 type CheckResult = 'yes' | 'no' | 'unsure' | null;
 
@@ -60,7 +23,6 @@ interface CheckStep {
   question: string;
   options: { label: string; value: CheckResult }[];
   detail: string;
-  icon: React.ComponentType<{ className?: string }>;
 }
 
 const checkSteps: CheckStep[] = [
@@ -73,7 +35,6 @@ const checkSteps: CheckStep[] = [
       { label: 'Not sure', value: 'unsure' },
     ],
     detail: 'The SEAI grant is for homeowners, including private landlords. A tenant cannot apply, but their landlord can.',
-    icon: Home,
   },
   {
     id: 'year',
@@ -83,14 +44,11 @@ const checkSteps: CheckStep[] = [
       { label: '2025 or later', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'Homes built before 2025 qualify. Newer builds typically have higher BER ratings or already meet energy standards.',
-    icon: Calendar,
+    detail: 'Homes built and occupied before 2025 qualify.',
   },
   {
-    // This used to ask for a BER of C3 or lower and mark anything better as
-    // ineligible. There is no minimum BER in the scheme, so that answer was
-    // turning away homeowners who qualify. Previous solar funding at the same
-    // MPRN is a real disqualifier, so it takes the slot.
+    // There is no minimum BER in the scheme; previous solar funding at the
+    // same MPRN is the real disqualifier.
     id: 'previous-grant',
     question: 'Has this property had a solar grant before?',
     options: [
@@ -98,21 +56,17 @@ const checkSteps: CheckStep[] = [
       { label: 'Yes, already claimed', value: 'no' },
       { label: 'Not sure', value: 'unsure' },
     ],
-    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER to worry about: the BER assessment happens after the work is finished, before the grant is paid. We book your BER assessment with a registered BER assessor.',
-    icon: FileCheck,
+    detail: 'The grant is one per property, tied to the MPRN on your bill. There is no minimum BER: the BER is done after the work, and we book it for you.',
   },
   {
     // Not a test you can fail: it only decides which grant the result names.
-    // SEAI pays a higher grant on certain welfare payments, Fuel Allowance
-    // among them (WELFARE_HIGHER_GRANT, read in SEAI's own application guide).
     id: 'fuel',
     question: 'Do you get the Fuel Allowance?',
     options: [
       { label: 'Yes, I get it', value: 'yes' },
       { label: 'No', value: 'unsure' },
     ],
-    detail: 'SEAI pays a higher solar grant to homeowners on certain welfare payments, and the Fuel Allowance is one of them.',
-    icon: Euro,
+    detail: 'SEAI pays a higher solar grant on certain welfare payments, and the Fuel Allowance is one of them.',
   },
 ];
 
@@ -125,17 +79,11 @@ function EligibilityChecker() {
   const [isComplete, setIsComplete] = useState(false);
 
   const step = checkSteps[currentStep];
-  const StepIcon = step.icon;
 
   const handleAnswer = (value: CheckResult) => {
-    const newAnswers = { ...answers, [step.id]: value };
-    setAnswers(newAnswers);
-
-    if (currentStep < checkSteps.length - 1) {
-      setTimeout(() => setCurrentStep(currentStep + 1), 250);
-    } else {
-      setIsComplete(true);
-    }
+    setAnswers({ ...answers, [step.id]: value });
+    if (currentStep < checkSteps.length - 1) setCurrentStep(currentStep + 1);
+    else setIsComplete(true);
   };
 
   const reset = () => {
@@ -148,453 +96,177 @@ function EligibilityChecker() {
   const hasNo = gated.some((v) => v === 'no');
   const hasUnsure = gated.some((v) => v === 'unsure');
   const onFuel = answers.fuel === 'yes';
-  const eligible = isComplete && !hasNo;
-  const ineligible = isComplete && hasNo;
 
   return (
-    <div className="glass-card rounded-2xl sm:rounded-3xl overflow-hidden">
-      <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h3 className="text-lg sm:text-xl font-bold text-white">Am I eligible?</h3>
-            <p className="text-xs text-gray-400 mt-1">Quick {checkSteps.length}-step eligibility checker</p>
-          </div>
-          {isComplete && (
-            <button
-              onClick={reset}
-              className="text-[11px] text-gray-400 hover:text-gray-300 transition-colors"
-            >
-              Start again
-            </button>
-          )}
-        </div>
-
-        {!isComplete && (
-          <div className="flex items-center gap-2 mb-6">
-            {checkSteps.map((s, i) => (
-              <div key={s.id} className="flex-1 flex items-center gap-2">
-                <div
-                  className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                    i < currentStep
-                      ? 'bg-green-400'
-                      : i === currentStep
-                        ? 'bg-amber-400'
-                        : 'bg-white/[0.06]'
-                  }`}
-                />
-                {i === currentStep && (
-                  <motion.span
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-[10px] text-amber-400 font-bold shrink-0"
-                  >
-                    Step {i + 1}/{checkSteps.length}
-                  </motion.span>
-                )}
-              </div>
-            ))}
-          </div>
+    <div className="h-check" aria-live="polite">
+      <div className="flex items-baseline justify-between gap-4">
+        <h3 className="h-item">Am I eligible?</h3>
+        {isComplete ? (
+          <button type="button" onClick={reset} className="h-quiet !min-h-0 !text-[13px]">
+            Start again
+          </button>
+        ) : (
+          <span className="h-fine h-fig">
+            {currentStep + 1} of {checkSteps.length}
+          </span>
         )}
       </div>
+      {!isComplete && (
+        <div className="h-check__bar" aria-hidden="true">
+          {checkSteps.map((s, i) => (
+            <span key={s.id} data-on={i < currentStep ? 'done' : i === currentStep ? 'now' : undefined} />
+          ))}
+        </div>
+      )}
 
-      <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-        <AnimatePresence mode="wait">
-          {!isComplete ? (
-            <motion.div
-              key={step.id}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex items-start gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
-                  <StepIcon className="w-5 h-5 text-amber-400" />
-                </div>
-                <div>
-                  <p className="text-sm sm:text-[15px] font-semibold text-white">{step.question}</p>
-                  <p className="text-xs text-gray-400 mt-1">{step.detail}</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                {step.options.map((opt) => (
-                  <button
-                    key={opt.label}
-                    onClick={() => handleAnswer(opt.value)}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] text-sm text-gray-300 hover:text-white hover:bg-white/[0.05] hover:border-white/[0.12] transition-all active:scale-[0.98] text-left"
-                  >
-                    <span className="text-gray-400">→</span>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-
-              {currentStep > 0 && (
-                <div className="mt-5 pt-4 border-t border-white/[0.04] space-y-2">
-                  {checkSteps.slice(0, currentStep).map((prev) => {
-                    const PrevIcon = prev.icon;
-                    const prevAnswer = answers[prev.id];
-                    return (
-                      <div key={prev.id} className="flex items-center gap-2.5 text-xs">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                        <span className="text-gray-400">{prev.question}</span>
-                        <span className="text-gray-400 font-medium ml-auto">{prev.options.find(o => o.value === prevAnswer)?.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              {eligible && !ineligible ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center py-6"
-                >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.1 }}
-                  >
-                    <PartyPopper className="w-10 h-10 text-green-400 mx-auto mb-3" />
-                  </motion.div>
-                  <h4 className="text-xl font-bold text-green-400 mb-2">
-                    {hasUnsure ? 'You likely qualify!' : 'You qualify!'}
-                  </h4>
-                  <p className="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed mb-1">
-                    Based on your answers, you appear eligible for the <AnimatedGrant show /> SEAI Solar PV grant.
-                  </p>
-                  {onFuel ? (
-                    <p className="text-sm text-gray-300 max-w-sm mx-auto leading-relaxed mt-2" data-fuel-allowance="">
-                      On the Fuel Allowance, SEAI&apos;s higher grant for qualifying welfare payments goes up to {eur0(WELFARE_HIGHER_GRANT.solarMaxEur)} for solar panels and {eur0(WELFARE_HIGHER_GRANT.batteryEur)} for a battery, up to {eur0(WELFARE_HIGHER_GRANT.totalMaxEur)} in all.{' '}
-                      <a href={WELFARE_HIGHER_GRANT.source} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
-                        SEAI&apos;s guide
-                      </a>
-                    </p>
-                  ) : null}
-                  {hasUnsure && (
-                    <p className="text-xs text-gray-400 mb-4">We&apos;ll confirm everything during your free survey.</p>
-                  )}
-                  {/* Someone who has just been told they qualify is the highest
-                      intent visitor on this page. This used to hand them to
-                      WhatsApp under a button that said "Book Free Survey", so
-                      the moment was spent on a chat window instead of a booking
-                      or an estimate. Both real next steps now, booking first. */}
-                  <p className="text-sm font-semibold text-white mt-5">Now see what it saves you.</p>
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 mt-3">
-                    <a
-                      href="#calculator"
-                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-bold text-sm shadow-lg shadow-amber-400/15"
-                    >
-                      <Zap className="w-4 h-4" aria-hidden="true" />
-                      Upload my bill
-                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                    </a>
-                    <a
-                      href={intakeHref({ door: 'grant-checker-manual', segment: 'home', step: 'bill' })}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        openIntake({ door: 'grant-checker-manual', segment: 'home', step: 'bill' });
-                      }}
-                      className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                    >
-                      Type my bill amount
-                    </a>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center py-6"
-                >
-                  <XCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
-                  <h4 className="text-xl font-bold text-red-400 mb-2">Not eligible</h4>
-                  <p className="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed mb-1">
-                    Based on your answers, you don&apos;t appear to qualify for the SEAI grant right now.
-                  </p>
-                  <p className="text-xs text-gray-400 mb-4">
-                    However, solar panels can still save you money without the grant. Get in touch and we&apos;ll give you honest advice.
-                  </p>
-                  <motion.a
-                    href={buildWhatsAppUrl({ source: 'grant-checker', eligible: false })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                  >
-                    Still interested? Chat with us
-                    <ArrowRight className="w-4 h-4 text-gray-400" />
-                  </motion.a>
-                </motion.div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
-
-// SEAI's own addresses for the steps the homeowner does (read on seai.ie, 20 Oct 2026).
-const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
-
-const timelineSteps: {
-  icon: typeof ClipboardCheck; title: string; description: string; duration: string; who: string;
-  color: string; bg: string; border: string; links?: { label: string; href: string }[];
-}[] = [
-  {
-    icon: ClipboardCheck,
-    title: 'Free Survey',
-    description: 'A 15-minute phone call, then we visit your home for about 45 minutes, assess your roof, and confirm your eligibility.',
-    duration: '15 min + ~45 min',
-    who: 'We handle this',
-    color: 'text-sky-400',
-    bg: 'bg-sky-400/10',
-    border: 'border-sky-400/20',
-  },
-  {
-    icon: FileCheck,
-    title: 'Grant Application',
-    description: 'Before any work starts, you apply on SEAI\'s online portal and choose Solar Ireland as your installer. We walk you through it. Once your grant offer is in, there are 8 months to complete the works.',
-    duration: 'Before work starts',
-    who: 'You apply, we guide you',
-    links: [{ label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL }],
-    color: 'text-amber-400',
-    bg: 'bg-amber-400/10',
-    border: 'border-amber-400/20',
-  },
-  {
-    icon: Wrench,
-    title: 'Installation Day',
-    description: 'Our RECI-registered team installs your system. Scaffolding, mounting, wiring - done in a day.',
-    duration: '1 day',
-    who: 'We handle this',
-    color: 'text-green-400',
-    bg: 'bg-green-400/10',
-    border: 'border-green-400/20',
-  },
-  {
-    icon: BadgeEuro,
-    title: 'Grant Paid',
-    description: `After the install, we book your post-works BER assessment with a registered BER assessor and send SEAI the completion paperwork, and once your BER is published SEAI pays the ${SOLAR_DATA.grant.label} grant into the bank account you nominated. You can track it on SEAI's grant portal.`,
-    duration: '4-6 weeks',
-    who: 'SEAI pays you',
-    links: [
-      { label: 'SEAI grant portal', href: SEAI_GRANT_PORTAL },
-    ],
-    color: 'text-violet-400',
-    bg: 'bg-violet-400/10',
-    border: 'border-violet-400/20',
-  },
-];
-
-function GrantTimeline() {
-  return (
-    <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-      <h3 className="text-lg sm:text-xl font-bold text-white mb-2">How the grant works</h3>
-      <p className="text-xs text-gray-400 mb-6">From survey to savings, and who does each step</p>
-
-      <div className="space-y-0">
-        {timelineSteps.map((step, i) => {
-          const StepIcon = step.icon;
-          const isLast = i === timelineSteps.length - 1;
-
-          return (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, x: -15 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-20px' }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex gap-4"
-            >
-              <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-xl ${step.bg} flex items-center justify-center shrink-0`}>
-                  <StepIcon className={`w-5 h-5 ${step.color}`} />
-                </div>
-                {!isLast && (
-                  <div className="w-px flex-1 bg-white/[0.06] my-2" />
-                )}
-              </div>
-
-              <div className={`pb-6 ${isLast ? 'pb-0' : ''}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <h4 className="text-sm font-semibold text-white">{step.title}</h4>
-                  <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md ${step.bg} text-[10px] font-medium ${step.color}`}>
-                    <Clock className="w-2.5 h-2.5" />
-                    {step.duration}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-400 mt-1 leading-relaxed">{step.description}</p>
-                {step.links && (
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1.5">
-                    {step.links.map((l) => (
-                      <a key={l.href + l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                        className="text-xs font-medium text-amber-400 hover:text-amber-300 underline underline-offset-2">
-                        {l.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-                <div className={`inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md bg-white/[0.02] text-[10px] text-gray-400`}>
-                  <Shield className={`w-3 h-3 ${step.color} opacity-50`} />
-                  {step.who}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function GrantHero({ isInView }: { isInView: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const selfInView = useInView(ref, { once: true, margin: '-40px' });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
-  const show = isInView && selfInView;
-  const hasAnimated = useRef(false);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (show && !hasAnimated.current) {
-      hasAnimated.current = true;
-      setVisible(true);
-      animate(count, SOLAR_DATA.grant.amount, { duration: 2, ease: 'easeOut' });
-    }
-  }, [show, count]);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-10 sm:mb-14"
-    >
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/[0.06] border border-amber-400/[0.1] mb-6">
-        <Euro className="w-3 h-3 text-amber-400" />
-        <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-[0.15em]">
-          SEAI Grant - Republic of Ireland
-        </span>
-      </div>
-
-      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
-        Up to{' '}
-        <span className="text-gradient tabular-nums">€{visible ? <motion.span>{rounded}</motion.span> : SOLAR_DATA.grant.label.replace('€', '')}</span>
-        {' '}grant for solar PV.
-      </h2>
-      <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        The Irish government pays you to go solar - available in the Republic of Ireland. <a href="#faq" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">Got questions? Check our FAQ</a>
-      </p>
-    </motion.div>
-  );
-}
-
-function KeyFactsRow() {
-  const facts = [
-    { label: 'SEAI Grant (ROI)', value: SOLAR_DATA.grant.label, icon: Euro, color: 'text-violet-400', bg: 'bg-violet-400/10' },
-    // Said 2 kWp, which is neither an SEAI rule nor something we sell. Our
-    // domestic floor is 4 kWp, and it is also the exact size the grant reaches
-    // its full amount, so it is the honest number in both directions.
-    { label: 'Min. system', value: `${DOMESTIC_MIN_KWP} kWp`, icon: Zap, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { label: 'Eligible homes', value: 'Pre-2025', icon: Home, color: 'text-green-400', bg: 'bg-green-400/10' },
-    { label: 'BER', value: 'After the work', icon: FileCheck, color: 'text-violet-400', bg: 'bg-violet-400/10' },
-  ];
-
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      {facts.map((fact) => {
-        const FactIcon = fact.icon;
-        return (
-          <div key={fact.label} className="glass-card rounded-xl p-4 sm:p-5 hover:bg-white/[0.04] transition-colors">
-            <div className={`w-8 h-8 rounded-lg ${fact.bg} flex items-center justify-center mb-3`}>
-              <FactIcon className={`w-4 h-4 ${fact.color}`} />
-            </div>
-            <p className="text-lg sm:text-xl font-bold text-white">{fact.value}</p>
-            <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-0.5">{fact.label}</p>
+      {!isComplete ? (
+        <div key={step.id} className="h-check__step mt-6">
+          <p className="h-item">{step.question}</p>
+          <p className="h-body mt-1">{step.detail}</p>
+          <div className="mt-5 grid gap-2">
+            {step.options.map((opt) => (
+              <button key={opt.label} type="button" onClick={() => handleAnswer(opt.value)} className="h-opt">
+                {opt.label}
+                <ChevronRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+            ))}
           </div>
-        );
-      })}
+        </div>
+      ) : !hasNo ? (
+        <div className="h-check__step mt-6">
+          <div className="h-yes">
+            <p className="h-yes__h">{hasUnsure ? 'You likely qualify' : 'You qualify'}</p>
+            <p className="h-body mt-2">
+              Based on your answers, you look eligible for the SEAI solar grant: up to {SOLAR_DATA.grant.label} for panels,
+              and {SOLAR_DATA.batteryGrant.label} more with a battery of {SOLAR_DATA.batteryGrant.minLabel}.
+            </p>
+            {onFuel ? (
+              <p className="h-body mt-2" data-fuel-allowance="">
+                On the Fuel Allowance, SEAI&apos;s higher grant goes up to {eur0(WELFARE_HIGHER_GRANT.solarMaxEur)} for panels and{' '}
+                {eur0(WELFARE_HIGHER_GRANT.batteryEur)} for a battery, up to {eur0(WELFARE_HIGHER_GRANT.totalMaxEur)} in all.{' '}
+                <a href={WELFARE_HIGHER_GRANT.source} target="_blank" rel="noopener noreferrer">
+                  SEAI&apos;s guide
+                </a>
+              </p>
+            ) : null}
+            {hasUnsure && <p className="h-fine mt-2">We confirm the rest with you on the call.</p>}
+          </div>
+          <p className="h-item mt-6">Now see what it saves you.</p>
+          <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+            <a href="#calculator" className="h-btn">
+              Check my savings
+              <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
+            </a>
+            <a
+              href={intakeHref({ door: 'grant-checker-manual', segment: 'home', step: 'bill' })}
+              onClick={(e) => {
+                e.preventDefault();
+                openIntake({ door: 'grant-checker-manual', segment: 'home', step: 'bill' });
+              }}
+              className="h-quiet justify-center"
+            >
+              Type my bill amount
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="h-check__step mt-6">
+          <p className="h-no__h">Not eligible for the grant right now</p>
+          <p className="h-body mt-2">
+            Based on your answers, you don&apos;t appear to qualify for the SEAI grant. Solar panels can still save you money
+            without it, and your bill shows how much.
+          </p>
+          <a href="#calculator" className="h-text-cta mt-4">
+            Check my savings
+            <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
+          </a>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function GrantInfo() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-60px' });
-
+  const ndmg = SOLAR_DATA.ndmgDoubled;
+  const showNdmg = ndmgDoubledLive();
   return (
-    <section id="grant-info" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
-      <div className="absolute top-1/3 left-0 w-[600px] h-[400px] bg-amber-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
+    <section id="grant-info" className="h-sec" aria-labelledby="grant-title">
+      <div className="h-glow-clip" aria-hidden="true">
+        <div className="h-glow" aria-hidden="true" style={{ width: 720, height: 520, right: '-12%', top: '18%' }} />
+      </div>
+      <div className="h-wrap relative">
+        <div className="h-split">
+          <div>
+            <div data-reveal="">
+              <span className="h-kicker">
+                <span className="h-ring" aria-hidden="true" />
+                SEAI grants
+              </span>
+              <h2 id="grant-title" className="h-title">
+                Up to {SOLAR_DATA.batteryGrant.withSolarMaxLabel} back on your home.
+              </h2>
+              <p className="h-lead">
+                SEAI pays it after the work, for homes built and occupied before 2025. Solar panels for homes also carry
+                0% VAT. We walk you through the application.
+              </p>
+            </div>
 
-      <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto relative z-10" ref={sectionRef}>
-        <GrantHero isInView={isInView} />
+            <dl className="h-dl mt-12" data-reveal="" style={{ ['--d' as string]: 1 }}>
+              <div>
+                <dt>
+                  Your home
+                  <small>
+                    {SOLAR_DATA.grant.label} for solar panels, plus {SOLAR_DATA.batteryGrant.label} with a battery of{' '}
+                    {SOLAR_DATA.batteryGrant.minLabel}
+                  </small>
+                </dt>
+                <dd>
+                  <small>up to</small>
+                  {SOLAR_DATA.batteryGrant.withSolarMaxLabel}
+                </dd>
+              </div>
+              {showNdmg ? (
+                <div>
+                  <dt>
+                    Your business
+                    <small>
+                      {ndmg.name}, doubled until {ndmg.toLabel}
+                    </small>
+                  </dt>
+                  <dd>
+                    <small>up to</small>
+                    {ndmg.maxLabel}
+                  </dd>
+                </div>
+              ) : null}
+              <div>
+                <dt>
+                  On the Fuel Allowance
+                  <small>SEAI&apos;s higher grant for qualifying welfare payments</small>
+                </dt>
+                <dd>
+                  <small>up to</small>
+                  {eur0(WELFARE_HIGHER_GRANT.totalMaxEur)}
+                </dd>
+              </div>
+            </dl>
+            <p className="h-fine mt-4" data-reveal="">
+              Set by SEAI and may change. Current details on{' '}
+              <a
+                href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                seai.ie
+              </a>
+              .
+            </p>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-8 sm:mb-10"
-        >
-          <KeyFactsRow />
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-          >
+          <div data-reveal="" style={{ ['--d' as string]: 2 }}>
             <EligibilityChecker />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-          >
-            <GrantTimeline />
-          </motion.div>
+          </div>
         </div>
-
-        <motion.div
-          className="mt-10 sm:mt-12 flex items-start gap-3 glass-card rounded-xl p-4 sm:p-5"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-        >
-          <Info className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
-          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-            Grant values and eligibility criteria are set by the SEAI and may change. We confirm the latest details during your free survey and walk you through your application. Visit{' '}
-            <a
-              href="https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors font-medium"
-            >
-              seai.ie
-              <ExternalLink className="w-3 h-3" />
-            </a>{' '}
-            for current information.
-          </p>
-        </motion.div>
       </div>
     </section>
   );
