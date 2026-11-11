@@ -507,7 +507,7 @@ function CallForm({
           <a className="si-btn--quiet" href={PHONE_HREF}>
             <Phone size={14} aria-hidden="true" /> Ring us on {PHONE}
           </a>
-          <a className="si-btn--quiet" href={WA("Hi Solar Ireland, I tried to send my details on your website and it didn't go through.")} target="_blank" rel="noopener noreferrer">
+          <a className="si-btn--quiet" href={WA("Hi Solar Ireland Group, I tried to book a free 15-minute call on your website and it didn't go through.")} target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14} aria-hidden="true" /> WhatsApp us
           </a>
         </span>
@@ -719,7 +719,7 @@ function CallForm({
 
 /** vCard for "Add to contacts", built on tap only. */
 function saveContact() {
-  const card = ['BEGIN:VCARD', 'VERSION:3.0', 'N:;Solar Ireland Group;;;', 'FN:Solar Ireland', 'ORG:Solar Ireland Group', `TEL;TYPE=CELL:${PHONE.replace(/\s+/g, '')}`, `URL:https://${SOLAR_DATA.provider.website}`, 'END:VCARD'].join('\r\n');
+  const card = ['BEGIN:VCARD', 'VERSION:3.0', 'N:;Solar Ireland Group;;;', 'FN:Solar Ireland Group', 'ORG:Solar Ireland Group', `TEL;TYPE=CELL:${PHONE.replace(/\s+/g, '')}`, `URL:https://${SOLAR_DATA.provider.website}`, 'END:VCARD'].join('\r\n');
   const url = URL.createObjectURL(new Blob([card], { type: 'text/vcard' }));
   const a = document.createElement('a');
   a.href = url;

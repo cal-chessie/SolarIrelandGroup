@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: 'Do you install solar panels in County Roscommon?',
     answer:
-      'Yes. Solar Ireland installs solar panels right across County Roscommon: Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. The quickest way to start is our free AI bill analyser, which reads your electricity bill and shows what solar would save your home before anyone visits.',
+      'Yes. Solar Ireland Group installs solar panels right across County Roscommon: Roscommon Town, Boyle, Castlerea, Ballaghaderreen, Strokestown, Elphin, Monksland and the surrounding rural areas. The quickest way to start is our free AI bill analyser, which reads your electricity bill and shows what solar would save your home before anyone visits.',
   },
   {
     question: 'How much do solar panels cost in Roscommon?',

@@ -115,7 +115,7 @@ export default function Hero() {
             <div className="hero-fade-up" style={{ animationDelay: '0.4s' }}>
               <Image
                 src="/bumblebee-hero.webp"
-                alt="Solar Ireland's bumblebee"
+                alt="The Solar Ireland Group bumblebee"
                 width={160}
                 height={160}
                 className="h-bee h-bee--bob w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32"

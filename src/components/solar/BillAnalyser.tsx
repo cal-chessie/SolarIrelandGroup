@@ -615,7 +615,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
           <Upload size={22} />
           <span>Or drop your bill here</span>
         </div>
-        <ul className="si-an-trust" aria-label="Why Solar Ireland">
+        <ul className="si-an-trust" aria-label="Why Solar Ireland Group">
           <li>SEAI Registered Installers</li>
           <li>5-year workmanship warranty</li>
           <li>We book your BER</li>

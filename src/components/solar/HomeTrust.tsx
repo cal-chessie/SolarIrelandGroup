@@ -23,7 +23,7 @@ export default function HomeTrust() {
           <div data-reveal="">
             <span className="h-kicker">
               <span className="h-ring" aria-hidden="true" />
-              Why Solar Ireland
+              Why Solar Ireland Group
             </span>
             <h2 id="trust-title" className="h-title">
               Your grant depends on who fits your panels.

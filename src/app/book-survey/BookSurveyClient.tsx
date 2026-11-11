@@ -199,7 +199,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   };
 
   const confirm = link.state === 'ready' && link.full;
-  const name = who || 'Solar Ireland';
+  const name = who || 'Solar Ireland Group';
 
   const segmentPick = (
     <div className="si-callpage__seg" role="group" aria-label="Who the call is for">

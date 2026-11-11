@@ -126,7 +126,7 @@ const provinceSeoSubtitles: Record<Province, string> = {
 const faqs = [
   {
     question: 'Do you install solar panels in every county in Ireland?',
-    answer: 'Yes - Solar Ireland covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
+    answer: 'Yes - Solar Ireland Group covers all 32 counties across the Republic of Ireland and Northern Ireland. We have active installation teams in many counties right now, with more areas being added every month. Even if your county shows "Coming Soon", you can still get in touch for a free consultation and we\'ll connect you with the nearest available team. From Dublin to Donegal, Cork to Cavan, we\'re making solar accessible for every Irish homeowner.',
   },
   {
     question: 'How much do solar panels cost in my county?',
@@ -154,7 +154,7 @@ const faqs = [
   },
   {
     question: 'Do you serve Northern Ireland?',
-    answer: 'Yes, we do. Solar Ireland covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Derry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
+    answer: 'Yes, we do. Solar Ireland Group covers all six counties of Northern Ireland: Antrim, Armagh, Down, Fermanagh, Derry, and Tyrone. While the SEAI grant doesn\'t apply north of the border, there are alternative support schemes through the Northern Ireland Housing Executive and energy suppliers. Our installation teams are familiar with the different regulations, grid connection processes, and certification requirements in Northern Ireland, so you\'ll get the same professional, hassle-free service as our customers in the Republic.',
   },
 ];
 
@@ -316,7 +316,7 @@ function CountyCard({ county, index }: { county: CountyData; index: number }) {
         </a>
         <a
           href={`tel:${SOLAR_DATA.provider.phone.replace(/\s/g, '')}`}
-          aria-label={`Call Solar Ireland about ${county.name}`}
+          aria-label={`Call Solar Ireland Group about ${county.name}`}
           className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-400 text-xs font-medium hover:bg-white/[0.06] hover:text-white transition-colors active:scale-[0.98]"
         >
           <Phone className="w-3.5 h-3.5" />

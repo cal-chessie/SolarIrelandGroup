@@ -289,8 +289,8 @@ function MobileMenu({
           {/* Mobile header bar */}
           <div className="flex items-center justify-between px-5 h-14 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
-              <Image src="/logo-sm.webp" alt="Solar Ireland" className="h-7 w-auto" width={28} height={32} />
-              <span className="font-bold text-white text-sm xl:text-base tracking-wide">Solar Ireland</span>
+              <Image src="/logo-sm.webp" alt="Solar Ireland Group" className="h-7 w-auto" width={28} height={32} />
+              <span className="font-bold text-white text-sm xl:text-base tracking-wide">Solar Ireland Group</span>
             </div>
             <button
               onClick={onClose}
@@ -480,7 +480,7 @@ function MobileMenu({
             </div>
 
             <p className="text-[10px] text-gray-400 text-center mt-4">
-              © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installers
+              © {new Date().getFullYear()} Solar Ireland Group · SEAI Registered Installers
             </p>
           </div>
         </div>
@@ -548,18 +548,18 @@ export default function Navbar() {
           >
             <Image
               src="/logo-sm.webp"
-              alt="Solar Ireland"
+              alt="Solar Ireland Group"
               className="h-11 w-auto sm:h-12 xl:h-14"
               width={44}
               height={50}
               priority
             />
-            {/* The visible brand is "Solar Ireland" again (Cal, 10 Nov 2026); the
-                Google-facing site name stays "Solar Ireland Group". At lg the
-                text stays text-lg and the gaps stay tight so the CTA fits at
-                1024. xl and up are unchanged. */}
+            {/* The visible brand is "Solar Ireland Group" again (Cal, 11 Nov 2026:
+                "i actually like solar ireland group"). It is six letters longer
+                than "Solar Ireland": at lg the text stays text-lg and the gaps
+                stay tight so the CTA still fits at 1024. */}
             <span className="font-bold text-white hidden sm:inline text-lg xl:text-2xl tracking-wide">
-              Solar Ireland
+              Solar Ireland Group
             </span>
           </button>
 
