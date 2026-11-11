@@ -3914,10 +3914,25 @@ h1.si-ask__title {
     line-height: 50px;
   }
 }
+@media (min-width: 1024px) {
+  .si-callpage__h1 {
+    font-size: 56px;
+    line-height: 62px;
+  }
+}
 @media (min-width: 1440px) {
   .si-callpage__h1 {
-    font-size: 52px;
-    line-height: 58px;
+    font-size: 64px;
+    line-height: 70px;
+  }
+  /* Desktop scale (Cal: "sizing is shockingly bad on desktop"): the intro
+     reads at 20px, the call list at 18px, like /services. */
+  .si-callpage__sub {
+    font-size: 20px;
+    line-height: 32px;
+  }
+  .si-callpage__more-lane .si-done-call__list {
+    font-size: 18px;
   }
 }
 .si-callpage__sub {
@@ -4155,5 +4170,45 @@ h1.si-ask__title {
   .si-exit__scrim,
   .si-exit__card {
     animation: none;
+  }
+}
+
+/* ── Desktop scale for the Bill Analyser (1280 up) ────────────────
+   Cal, 11 Nov 2026: "sizing is shockingly bad on desktop". The door's
+   roads, trust strip and privacy line were phone sizes (13 to 17px) on a
+   1440 screen; the results rows were 14px labels. Phones and tablets are
+   untouched. */
+@media (min-width: 1280px) {
+  .si-an-door .si-an-road {
+    min-height: 96px;
+    padding: 20px 24px 20px 20px;
+  }
+  .si-an-door .si-an-road .si-photo__title {
+    font-size: 19px;
+    line-height: 26px;
+  }
+  .si-an-door .si-an-road .si-photo__line {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .si-an-door .si-an-door__drop {
+    min-height: 60px;
+    font-size: 16px;
+  }
+  .si-an-door .si-an-trust {
+    font-size: 15px;
+    line-height: 20px;
+  }
+  .si-an-priv__line {
+    font-size: 14px;
+  }
+  .si-an-door .si-an-seg label {
+    font-size: 17px;
+  }
+  .si-an-row dt {
+    font-size: 16px;
+  }
+  .si-an-row__value {
+    font-size: 19px;
   }
 }

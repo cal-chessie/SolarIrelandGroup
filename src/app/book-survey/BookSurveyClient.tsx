@@ -352,7 +352,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
       <Navbar />
       <main className="si-analyser si-an--section si-callpage">
         <div className="px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto si-callpage__lanes">
+          <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto lg:px-8 si-callpage__lanes">
             <section className="si-callpage__intro" aria-labelledby="si-bs-h1">
               <p className="si-an-kicker">Free estimate and call</p>
               <h1 id="si-bs-h1" className="si-callpage__h1">
