@@ -365,7 +365,7 @@ function ContactForm() {
             </button>
 
             <p className="text-[11px] text-gray-600 text-center">
-              By submitting this form you agree to be contacted by Solar Ireland Group regarding
+              By submitting this form you agree to be contacted by Solar Ireland regarding
               your enquiry. We never share your data.
             </p>
           </motion.form>

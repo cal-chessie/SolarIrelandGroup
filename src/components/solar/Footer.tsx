@@ -313,13 +313,13 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
             <div className="flex items-center gap-2.5 mb-4">
               <Image
                 src="/logo-sm.webp"
-                alt="Solar Ireland Group"
+                alt="Solar Ireland"
                 className="h-9 w-auto"
                 width={36}
                 height={41}
               />
               <span className="font-bold text-lg text-white tracking-tight">
-                Solar Ireland Group
+                Solar Ireland
               </span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm mb-6">
@@ -485,7 +485,7 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
 
         <div className="border-t border-white/[0.04] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-gray-400">
-            <span>&copy; {new Date().getFullYear()} Solar Ireland Group. All rights reserved.</span>
+            <span>&copy; {new Date().getFullYear()} Solar Ireland. All rights reserved.</span>
             {/* Company and tax registration numbers go here when Cal supplies
                 them. No "TBC" placeholder in the meantime (audit 34b). */}
           </div>

@@ -480,7 +480,7 @@ function MobileMenu({
             </div>
 
             <p className="text-[10px] text-gray-400 text-center mt-4">
-              © {new Date().getFullYear()} Solar Ireland Group · SEAI Registered Installers
+              © {new Date().getFullYear()} Solar Ireland · SEAI Registered Installers
             </p>
           </div>
         </div>
@@ -554,10 +554,11 @@ export default function Navbar() {
               height={50}
               priority
             />
-            {/* The visible brand is "Solar Ireland Group" again (Cal, 11 Nov 2026:
-                "i actually like solar ireland group"). It is six letters longer
-                than "Solar Ireland": at lg the text stays text-lg and the gaps
-                stay tight so the CTA still fits at 1024. */}
+            {/* The header logo text is "Solar Ireland Group" (Cal, 11 Nov 2026:
+                "i actually like solar ireland group", then "just the header").
+                The rest of the site's visible brand stays "Solar Ireland". It
+                is six letters longer: at lg the text stays text-lg and the
+                gaps stay tight so the CTA still fits at 1024. */}
             <span className="font-bold text-white hidden sm:inline text-lg xl:text-2xl tracking-wide">
               Solar Ireland Group
             </span>

@@ -383,7 +383,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland Group home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
+        "text": "Low upkeep is one reason the sums work. For the full verdict on cost, savings and payback, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026), or see the [Solar Ireland home page](/) for how we install across all 32 counties. The quickest way to your own number is the [free solar savings calculator](/solar-calculator), which reads your electricity bill."
       },
       {
         "type": "cta",
@@ -666,7 +666,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland Group is an SEAI-registered installer working across all 32 counties, and the questions we get asked most have nothing to do with panels. They are about process: who fills in what, when the money moves, and how long the whole thing takes. This guide walks the six steps in the order they actually happen."
+        "text": "Solar Ireland is an SEAI-registered installer working across all 32 counties, and the questions we get asked most have nothing to do with panels. They are about process: who fills in what, when the money moves, and how long the whole thing takes. This guide walks the six steps in the order they actually happen."
       },
       {
         "type": "heading",
@@ -1402,7 +1402,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland Group is an SEAI-registered installer working right across Cork, city and county. This guide covers what solar actually costs here, the grant you can claim, the planning rules, and the handful of Cork-specific things a good site survey checks before quoting."
+        "text": "Solar Ireland is an SEAI-registered installer working right across Cork, city and county. This guide covers what solar actually costs here, the grant you can claim, the planning rules, and the handful of Cork-specific things a good site survey checks before quoting."
       },
       {
         "type": "heading",
@@ -1590,7 +1590,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Solar Ireland Group files NC6s as a routine part of every domestic install, so here is exactly what the form is, who does what, and why it is one of the quieter but more important steps in going solar."
+        "text": "Solar Ireland files NC6s as a routine part of every domestic install, so here is exactly what the form is, who does what, and why it is one of the quieter but more important steps in going solar."
       },
       {
         "type": "heading",

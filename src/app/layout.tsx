@@ -333,11 +333,13 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
   name: SITE_NAME,
-  // Google's site-name system reads this WebSite entity on the home page. A
-  // national trade body also uses "Solar Ireland", so the business is always
-  // "Solar Ireland Group" (Cal, 10 Nov 2026). The alternates cover the run-on
-  // form and the bare domain Google showed before.
-  alternateName: ["SolarIrelandGroup", "solarirelandgroup.ie"],
+  // Google's site-name system reads this WebSite entity on the home page.
+  // Cal's goal is "Solar Ireland Group" above the link, so the name, the
+  // Organization, og:site_name and the title template all say it. The visible
+  // brand on the pages is "Solar Ireland" (Cal, 10 Nov 2026: "keep my name
+  // 'Solar Ireland'"), so that is an alternate too, with the run-on form and
+  // the bare domain Google showed before.
+  alternateName: ["Solar Ireland", "SolarIrelandGroup", "solarirelandgroup.ie"],
   url: `${SITE_URL}/`,
   publisher: {
     "@id": `${SITE_URL}/#organization`,

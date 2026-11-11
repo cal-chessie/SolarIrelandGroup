@@ -777,7 +777,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               <div className="flex items-center gap-1.5 text-xs">
                 <Sun className="w-3.5 h-3.5 text-amber-400/80" />
                 <span>
-                  <Link href="/" className="hover:text-amber-400 transition-colors">Solar Ireland Group</Link>
+                  <Link href="/" className="hover:text-amber-400 transition-colors">Solar Ireland</Link>
                   , SEAI-registered installer since 2019
                 </span>
               </div>
@@ -831,18 +831,18 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Written by</p>
                 <p className="text-white font-semibold">{article.author}</p>
                 <p className="text-xs text-amber-400/90 mt-0.5">
-                  {article.author === 'Cal Chesters' ? 'Founder & Lead Installer, Solar Ireland Group' : 'Solar Ireland Group'}
+                  {article.author === 'Cal Chesters' ? 'Founder & Lead Installer, Solar Ireland' : 'Solar Ireland'}
                 </p>
                 <p className="text-sm text-gray-400 mt-2 leading-relaxed">
                   {article.author === 'Cal Chesters'
-                    ? 'Over 10 years in the Irish solar industry. Cal started Solar Ireland Group to cut through the noise and give homeowners a straight answer on what solar is worth.'
+                    ? 'Over 10 years in the Irish solar industry. Cal started Solar Ireland to cut through the noise and give homeowners a straight answer on what solar is worth.'
                     : 'Writes about solar PV, the SEAI grant and getting a straight answer on solar for Irish homes.'}
                 </p>
                 <Link
                   href="/about"
                   className="inline-flex items-center gap-1.5 text-sm text-amber-400 hover:text-amber-300 mt-3 transition-colors group"
                 >
-                  More about Solar Ireland Group
+                  More about Solar Ireland
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>

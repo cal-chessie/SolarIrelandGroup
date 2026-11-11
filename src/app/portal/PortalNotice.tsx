@@ -25,7 +25,7 @@ export const portalMetadata: Metadata = {
 export default function PortalNotice() {
   const { phone, phoneDisplay, email } = SOLAR_DATA.provider;
   const whatsappUrl = buildWhatsAppUrl({
-    customMessage: "Hi Solar Ireland Group, I can't find the link to my project page. Could you send it again?",
+    customMessage: "Hi Solar Ireland, I can't find the link to my project page. Could you send it again?",
   });
 
   return (
@@ -40,7 +40,7 @@ export default function PortalNotice() {
             Your project page link is in your emails
           </h1>
           <p className="text-base text-gray-400 leading-relaxed mb-4">
-            Every Solar Ireland Group customer has a private link to their own project page. It is in the
+            Every Solar Ireland customer has a private link to their own project page. It is in the
             emails we send you. Open the latest one from us and use the link there.
           </p>
           <p className="text-base text-gray-400 leading-relaxed mb-10">

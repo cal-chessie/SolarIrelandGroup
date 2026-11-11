@@ -644,7 +644,7 @@ export default function ExitIntent() {
     );
   }
 
-  const whatsappUrl = buildWhatsAppUrl({ source: 'exit-intent', customMessage: 'Hi Solar Ireland Group, I have a question about solar.' });
+  const whatsappUrl = buildWhatsAppUrl({ source: 'exit-intent', customMessage: 'Hi Solar Ireland, I have a question about solar.' });
 
   // Not inside .si-analyser: intake.css resets buttons outside any cascade
   // layer, which beats every Tailwind utility the old popup's look is made of.
@@ -667,7 +667,7 @@ export default function ExitIntent() {
         <div className="flex items-center justify-between gap-3 px-5 pt-4 pb-1 sm:px-8 sm:pt-5 shrink-0">
           <div className="exit-intent-el exit-intent-el-0 flex items-center gap-3 min-w-0">
             <Image src="/logo-sm.webp" alt="" width={120} height={135} className="h-9 sm:h-10 w-auto opacity-90" />
-            <span className="font-bold text-white text-base tracking-wide opacity-90 truncate">Solar Ireland Group</span>
+            <span className="font-bold text-white text-base tracking-wide opacity-90 truncate">Solar Ireland</span>
           </div>
           <button
             type="button"
