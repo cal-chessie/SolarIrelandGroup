@@ -124,7 +124,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
 };
 
-const card = 'rounded-2xl border border-white/10 bg-white/[0.03] p-6';
+const card = 'rounded-2xl border border-white/10 bg-white/[0.03] p-6 xl:p-8';
 
 export default function CommercialSolarGrantPage() {
   const breadcrumbSchema = {
@@ -183,7 +183,7 @@ export default function CommercialSolarGrantPage() {
       <Navbar />
 
       <main className="bg-[#0a0a0a] text-white">
-        <nav aria-label="Breadcrumb" className="mx-auto max-w-6xl px-4 pt-24 pb-2 text-sm text-white/50">
+        <nav aria-label="Breadcrumb" className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 pt-24 pb-2 text-sm text-white/50">
           <ol className="flex flex-wrap items-center gap-2">
             <li><Link href="/" className="hover:text-white">Home</Link></li>
             <li aria-hidden="true">/</li>
@@ -193,15 +193,15 @@ export default function CommercialSolarGrantPage() {
           </ol>
         </nav>
 
-        <section className="mx-auto max-w-6xl px-4 pb-10 pt-6 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center">
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 pb-10 pt-6 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/5 px-3 py-1 text-xs font-medium text-yellow-400">
               <Building2 className="h-3.5 w-3.5" aria-hidden="true" /> Doubled until {N.toLabel}
             </div>
-            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
               Commercial solar grant <span className="text-yellow-400">Ireland</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70" data-answer="">
+            <p className="mt-5 max-w-2xl text-lg xl:text-xl leading-relaxed text-white/70" data-answer="">
               {ANSWER}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -229,7 +229,7 @@ export default function CommercialSolarGrantPage() {
           </figure>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-8">
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-8">
           <div className="grid gap-4 sm:grid-cols-3">
             {[
               { icon: Euro, value: N.maxLabel, label: 'The most SEAI pays, for the first 1,000 kWp' },
@@ -238,21 +238,21 @@ export default function CommercialSolarGrantPage() {
             ].map((s) => (
               <div key={s.label} className={card}>
                 <s.icon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                <div className="mt-3 text-2xl font-bold">{s.value}</div>
-                <div className="mt-1 text-sm text-white/50">{s.label}</div>
+                <div className="mt-3 text-2xl xl:text-4xl font-bold">{s.value}</div>
+                <div className="mt-1 text-sm lg:text-base text-white/50">{s.label}</div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" id="table" aria-labelledby="table-h">
-          <h2 id="table-h" className="text-2xl font-bold">The grant by system size</h2>
-          <p className="mt-3 max-w-3xl text-white/60">
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" id="table" aria-labelledby="table-h">
+          <h2 id="table-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">The grant by system size</h2>
+          <p className="mt-3 max-w-3xl lg:text-lg text-white/60">
             SEAI sets the grant by whole kWp and adds each band on top of the one before. This is the doubled table for applications from {N.fromLabel} to {N.toLabel}.
           </p>
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             <div className="overflow-x-auto rounded-2xl border border-white/10">
-              <table className="w-full text-left text-sm">
+              <table className="w-full text-left text-sm lg:text-base">
                 <caption className="sr-only">SEAI Non-Domestic Microgen Grant table, doubled window</caption>
                 <thead className="bg-white/[0.04] text-white/70">
                   <tr><th scope="col" className="px-4 py-3 font-semibold">System size</th><th scope="col" className="px-4 py-3 font-semibold">Grant</th></tr>
@@ -265,7 +265,7 @@ export default function CommercialSolarGrantPage() {
               </table>
             </div>
             <div className="overflow-x-auto rounded-2xl border border-white/10">
-              <table className="w-full text-left text-sm">
+              <table className="w-full text-left text-sm lg:text-base">
                 <caption className="sr-only">Worked examples from the same table</caption>
                 <thead className="bg-white/[0.04] text-white/70">
                   <tr><th scope="col" className="px-4 py-3 font-semibold">A system of</th><th scope="col" className="px-4 py-3 font-semibold">Table value</th></tr>
@@ -284,8 +284,8 @@ export default function CommercialSolarGrantPage() {
           </p>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="who-h">
-          <h2 id="who-h" className="text-2xl font-bold">Who can get it</h2>
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" aria-labelledby="who-h">
+          <h2 id="who-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">Who can get it</h2>
           <ul className="mt-6 grid gap-3 md:grid-cols-2">
             {[
               'Businesses, farms, public bodies and non-profits',
@@ -295,39 +295,39 @@ export default function CommercialSolarGrantPage() {
               'A new system: nothing that another grant scheme has already funded',
               'No BER needed, before or after the works',
             ].map((t) => (
-              <li key={t} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/80">
+              <li key={t} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 lg:px-5 lg:py-4 text-sm lg:text-base text-white/80">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" /> {t}
               </li>
             ))}
           </ul>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="how-h">
-          <h2 id="how-h" className="text-2xl font-bold">How it works, start to finish</h2>
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" aria-labelledby="how-h">
+          <h2 id="how-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">How it works, start to finish</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((c) => (
               <div key={c.title} className={card}>
                 <c.icon className="h-6 w-6 text-yellow-400" aria-hidden="true" />
-                <h3 className="mt-4 text-lg font-semibold">{c.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/60">{c.body}</p>
+                <h3 className="mt-4 text-lg xl:text-xl font-semibold">{c.title}</h3>
+                <p className="mt-2 text-sm lg:text-base xl:text-[17px] leading-relaxed text-white/60">{c.body}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="tax-h">
-          <h2 id="tax-h" className="text-2xl font-bold">VAT and tax relief</h2>
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" aria-labelledby="tax-h">
+          <h2 id="tax-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">VAT and tax relief</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div className={card}>
               <h3 className="text-lg font-semibold">VAT at {VAT_PCT}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/60">
+              <p className="mt-2 text-sm lg:text-base xl:text-[17px] leading-relaxed text-white/60">
                 Revenue applies the reduced rate to the supply and installation of solar panels on a business premises, subject to the two-thirds rule: if the goods come to more than two thirds of the contract, the standard rate applies to the whole job. The 0% rate is for private homes.{' '}
                 <a href={SOURCES.vat} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">Revenue: solar panels</a>
               </p>
             </div>
             <div className={card}>
               <h3 className="text-lg font-semibold">Accelerated Capital Allowance</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/60">
+              <p className="mt-2 text-sm lg:text-base xl:text-[17px] leading-relaxed text-white/60">
                 The ACA lets a business write off the full cost of qualifying energy-efficient equipment in the first year, and Revenue has extended it to 31 December 2030. It covers qualifying equipment only, listed on SEAI&apos;s Triple E register, so check the register with your accountant before you count on it for any part of a solar system.{' '}
                 <a href={SOURCES.aca} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">Revenue eBrief 028/26</a>
                 {' · '}
@@ -337,14 +337,14 @@ export default function CommercialSolarGrantPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="trust-h">
-          <h2 id="trust-h" className="text-2xl font-bold">Who fits it</h2>
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" aria-labelledby="trust-h">
+          <h2 id="trust-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">Who fits it</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {trust.map((c) => (
               <div key={c.title} className={card}>
                 <c.icon className="h-6 w-6 text-yellow-400" aria-hidden="true" />
                 <h3 className="mt-4 text-base font-semibold">{c.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/60">{c.body}</p>
+                <p className="mt-2 text-sm lg:text-base xl:text-[17px] leading-relaxed text-white/60">{c.body}</p>
               </div>
             ))}
           </div>
@@ -361,16 +361,16 @@ export default function CommercialSolarGrantPage() {
           </p>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="faq-h">
-          <h2 id="faq-h" className="text-2xl font-bold">Commercial solar grant, common questions</h2>
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-10 lg:py-16" aria-labelledby="faq-h">
+          <h2 id="faq-h" className="text-2xl lg:text-4xl xl:text-5xl font-bold lg:leading-tight">Commercial solar grant, common questions</h2>
           <div className="mt-6 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
             {FAQS.map((f) => (
               <details key={f.question} className="group p-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold marker:content-['']">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base lg:text-lg font-semibold marker:content-['']">
                   <span>{f.question}</span>
                   <ChevronDown className="h-5 w-5 shrink-0 text-yellow-400 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-white/60">{f.answer}</p>
+                <p className="mt-3 text-sm lg:text-base xl:text-[17px] leading-relaxed text-white/60">{f.answer}</p>
               </details>
             ))}
           </div>
@@ -383,10 +383,10 @@ export default function CommercialSolarGrantPage() {
           </p>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-14">
+        <section className="mx-auto max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] px-4 lg:px-8 py-14">
           <div className="rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 text-center sm:p-12">
-            <h2 className="text-2xl font-bold sm:text-3xl">See what solar saves your business</h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/70">
+            <h2 className="text-2xl font-bold sm:text-3xl lg:text-4xl xl:text-5xl">See what solar saves your business</h2>
+            <p className="mx-auto mt-3 max-w-xl lg:max-w-2xl lg:text-lg text-white/70">
               Your yearly saving, the right system for your roof and your grant of up to {N.maxLabel} under the doubled business grant, worked out from your bill and sent to your inbox. Then a quick call and an on-site survey. No obligation.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
