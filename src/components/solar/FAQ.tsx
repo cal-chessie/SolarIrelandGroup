@@ -181,7 +181,7 @@ function FAQItemCard({
           <div className={`shrink-0 w-7 h-7 rounded-lg ${catConfig.bg} flex items-center justify-center mt-0.5 sm:mt-0`}>
             <catConfig.icon className={`w-3.5 h-3.5 ${catConfig.color}`} />
           </div>
-          <span className={`speakable-question font-medium pr-2 text-sm sm:text-[15px] leading-snug transition-colors ${
+          <span className={`speakable-question font-medium pr-2 text-sm sm:text-[15px] lg:text-[17px] leading-snug transition-colors ${
             isOpen ? 'text-white' : 'text-gray-300 group-hover:text-white'
           }`}>
             {faq.question}
@@ -209,7 +209,7 @@ function FAQItemCard({
             <div className="overflow-hidden">
               <div className="px-5 sm:px-6 pb-4">
                 <div className="pl-10">
-                  <p className="speakable-answer text-gray-400 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                  <p className="speakable-answer text-gray-400 text-sm lg:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
 
                   {related.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-white/[0.05]">
@@ -420,9 +420,11 @@ function DefaultFAQ() {
     <section id="faq" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative noise-bg overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-violet-500/[0.015] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-3xl mx-auto relative z-10" ref={sectionRef}>
+      {/* Desktop (lg+): the heading block left and sticky, search, tabs and
+          questions right, in the site's wide container. */}
+      <div className="max-w-3xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto relative z-10 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16" ref={sectionRef}>
         <motion.div
-          className="text-center mb-10 sm:mb-14"
+          className="text-center mb-10 sm:mb-14 lg:text-left lg:mb-0 lg:sticky lg:top-24 lg:self-start"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -434,16 +436,17 @@ function DefaultFAQ() {
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-xl mx-auto leading-[1.1]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight text-white max-w-xl mx-auto lg:mx-0 leading-[1.1]">
             Common{' '}
             <br />
             <span className="text-gradient">questions.</span>
           </h2>
-          <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+          <p className="mt-4 text-gray-400 text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed">
             Got a question about solar? Search or browse by category. Can&apos;t find what you&apos;re looking for? Ask us directly.
           </p>
         </motion.div>
 
+        <div>
         <motion.div
           className="mb-4"
           initial={{ opacity: 0, y: 15 }}
@@ -541,6 +544,7 @@ function DefaultFAQ() {
             </a>
           </p>
         </motion.div>
+        </div>
 
       </div>
     </section>

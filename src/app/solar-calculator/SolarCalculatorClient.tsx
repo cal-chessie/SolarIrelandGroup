@@ -38,27 +38,30 @@ function CalculatorHero() {
       <div className="absolute inset-0 bg-gradient-to-b from-amber-400/[0.03] to-transparent pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
 
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+      {/* Desktop (lg+): copy left in the wide container, the grant card right. */}
+      <div className="max-w-4xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto text-center lg:text-left relative z-10 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16 lg:items-center">
+        <div>
         <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-6">
           <Zap className="w-3.5 h-3.5" />
           Free Solar Calculator
         </span>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
           Solar Panel{' '}
           <span className="text-gradient">Savings Calculator</span>{' '}
           <br />
           for Irish Homes
         </h1>
 
-        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 mb-10 lg:mb-0 leading-relaxed">
           See what solar would save you, read from your own electricity bill. Upload it or type
           in the amount, and see your saving straight away, with nothing to sign up for.
         </p>
 
         {/* Only the grant stays: the payback, 25-year and CO2 cards were
             figures the analyser above does not produce (Cal, 9 Nov). */}
-        <div className="flex justify-center max-w-3xl mx-auto">
+        </div>
+        <div className="flex justify-center max-w-3xl mx-auto lg:mx-0">
           {[
             { icon: Euro, label: `${SOLAR_DATA.grant.label} SEAI Grant (ROI)`, sub: 'Automatically included' },
           ].map((item) => {
@@ -66,11 +69,11 @@ function CalculatorHero() {
             return (
               <div
                 key={item.label}
-                className="flex flex-col items-center text-center p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-amber-400/20 transition-colors"
+                className="flex flex-col items-center text-center p-4 lg:p-8 lg:min-w-[18rem] rounded-xl lg:rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:border-amber-400/20 transition-colors"
               >
-                <Icon className="w-5 h-5 text-amber-400 mb-2" />
-                <p className="text-sm font-semibold text-white">{item.label}</p>
-                <p className="text-[11px] text-gray-500 mt-0.5">{item.sub}</p>
+                <Icon className="w-5 h-5 lg:w-7 lg:h-7 text-amber-400 mb-2 lg:mb-3" />
+                <p className="text-sm lg:text-xl font-semibold text-white">{item.label}</p>
+                <p className="text-[11px] lg:text-sm text-gray-500 mt-0.5 lg:mt-1">{item.sub}</p>
               </div>
             );
           })}
@@ -91,18 +94,18 @@ function TrustBadges() {
 
   return (
     <section className="py-8 px-4 bg-[#0a0a0a] border-y border-white/[0.04]">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-6 sm:gap-10">
           {badges.map((badge) => {
             const Icon = badge.icon;
             return (
               <div key={badge.label} className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-amber-400" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
+                  <Icon className="w-4 h-4 lg:w-5 lg:h-5 text-amber-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{badge.label}</p>
-                  <p className="text-[11px] text-gray-500">{badge.desc}</p>
+                  <p className="text-sm lg:text-base font-semibold text-white">{badge.label}</p>
+                  <p className="text-[11px] lg:text-sm text-gray-500">{badge.desc}</p>
                 </div>
               </div>
             );
@@ -140,32 +143,32 @@ function CalculatorExplainer() {
 
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
             <HelpCircle className="w-3.5 h-3.5" />
             How It Works
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Our Calculator Uses{' '}
             <span className="text-gradient">Real Irish Data</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             No fluff, no guesswork. Every figure is backed by SEAI grant rates, PVGIS solar generation data, and current electricity prices from Irish providers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {steps.map((step) => (
             <div
               key={step.num}
-              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-amber-400/20 transition-colors"
+              className="relative p-6 lg:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-amber-400/20 transition-colors"
             >
               <span className="text-4xl font-bold text-white/[0.04] absolute top-4 right-6">
                 {step.num}
               </span>
-              <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{step.desc}</p>
+              <h3 className="text-lg xl:text-xl font-bold text-white mb-2 lg:mb-3 lg:pr-10">{step.title}</h3>
+              <p className="text-sm lg:text-base text-gray-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -191,12 +194,12 @@ function DataTransparency() {
 
   return (
     <section className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl lg:max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Our <span className="text-gradient">Data Sources</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl max-w-2xl mx-auto">
             Full transparency on every number. No inflated figures - we use conservative, real-world Irish data so your estimate is honest and realistic.
           </p>
         </div>
@@ -214,9 +217,9 @@ function DataTransparency() {
               <tbody>
                 {factors.map((f, i) => (
                   <tr key={f.label} className={i < factors.length - 1 ? 'border-b border-white/[0.04]' : ''}>
-                    <td className="px-6 py-4 text-sm text-gray-300 font-medium">{f.label}</td>
-                    <td className="px-6 py-4 text-sm text-amber-400 font-bold">{f.value}</td>
-                    <td className="px-6 py-4 text-xs text-gray-500 hidden sm:table-cell">{f.source}</td>
+                    <td className="px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-300 font-medium">{f.label}</td>
+                    <td className="px-6 py-4 lg:py-5 text-sm lg:text-base text-amber-400 font-bold">{f.value}</td>
+                    <td className="px-6 py-4 lg:py-5 text-xs lg:text-sm text-gray-500 hidden sm:table-cell">{f.source}</td>
                   </tr>
                 ))}
               </tbody>
@@ -224,7 +227,7 @@ function DataTransparency() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-600 mt-6 leading-relaxed max-w-xl mx-auto">
+        <p className="text-center text-xs lg:text-sm text-gray-600 mt-6 leading-relaxed max-w-xl lg:max-w-3xl mx-auto">
           Actual savings depend on roof orientation, pitch, shading, and your consumption patterns.
           These figures represent a well-optimized installation. Your full estimate is priced on your own bill, and Cal goes through it with you on the call.
         </p>
@@ -237,12 +240,12 @@ function DataTransparency() {
 function FinalCTA() {
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
-      <div className="max-w-3xl mx-auto text-center">
+      <div className="max-w-3xl lg:max-w-5xl mx-auto text-center">
         <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-b from-amber-400/[0.06] to-transparent p-10 sm:p-14">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold mb-4 lg:mb-5 lg:leading-tight">
             Ready to See Your <span className="text-gradient">Exact Savings?</span>
           </h2>
-          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+          <p className="text-gray-400 text-lg xl:text-xl mb-8 max-w-xl lg:max-w-2xl mx-auto">
             Read your bill above and your full estimate comes by email, priced on your own usage. Then a free 15-minute call to go through it. No visit, no obligation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
