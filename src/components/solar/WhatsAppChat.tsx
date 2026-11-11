@@ -284,7 +284,6 @@ export default function WhatsAppChat() {
   const [prechatLeadStatus, setPrechatLeadStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [prechatFallback, setPrechatFallback] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const wasGreeted = useRef(false);
@@ -376,8 +375,12 @@ export default function WhatsAppChat() {
     setPrevMsgCount(messages.length);
   }, [messages.length, soundEnabled, prevMsgCount]);
 
+  // Scroll the message list only. scrollIntoView also scrolls every scrollable
+  // ancestor, the page and the visual viewport included, so on a phone each
+  // new reply nudged the whole sheet about under the thumb.
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
-    messagesEndRef.current?.scrollIntoView({ behavior });
+    const el = messagesContainerRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior });
   }, []);
 
   useEffect(() => {
@@ -409,11 +412,14 @@ export default function WhatsAppChat() {
     if (meta && original !== null && !/maximum-scale/.test(original)) {
       meta.setAttribute('content', `${original}, maximum-scale=1`);
     }
+    // A bottom sheet: the visible screen less a strip at the top (the status
+    // bar's safe area, at least 12px) where the dimmed page shows through.
+    const gap = 'max(12px, env(safe-area-inset-top, 0px))';
     const place = () => {
-      el.style.top = `${vv.offsetTop}px`;
+      el.style.top = `calc(${vv.offsetTop}px + ${gap})`;
       el.style.left = `${vv.offsetLeft}px`;
       el.style.width = `${vv.width}px`;
-      el.style.height = `${vv.height}px`;
+      el.style.height = `calc(${vv.height}px - ${gap})`;
       el.style.bottom = 'auto';
       el.style.right = 'auto';
     };
@@ -474,6 +480,35 @@ export default function WhatsAppChat() {
       window.scrollTo(0, scrollY);
     };
   }, [isOpen, isMinimized]);
+
+  // Drag the sheet down by its handle or header to close it, as on iOS.
+  // The sheet follows the finger with a transform only; let go past 110px
+  // (or with a quick flick) and it closes, otherwise it springs back.
+  const dragRef = useRef<{ y: number; t: number; dy: number } | null>(null);
+  const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('[data-sheet-drag]') || target.closest('button, a, input, textarea')) return;
+    if (!window.matchMedia('(max-width: 639px)').matches || isMinimized) return;
+    dragRef.current = { y: e.clientY, t: performance.now(), dy: 0 };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.currentTarget.style.transition = 'none';
+  };
+  const onSheetPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d) return;
+    d.dy = Math.max(0, e.clientY - d.y);
+    e.currentTarget.style.transform = `translate3d(0, ${d.dy}px, 0)`;
+  };
+  const onSheetPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d) return;
+    dragRef.current = null;
+    const el = e.currentTarget;
+    el.style.transition = '';
+    el.style.transform = '';
+    const flick = d.dy / Math.max(1, performance.now() - d.t) > 0.6;
+    if (d.dy > 110 || (flick && d.dy > 40)) handleClose();
+  };
 
   const sendMessage = async (text?: string) => {
     const content = (text || input).trim();
@@ -734,22 +769,28 @@ export default function WhatsAppChat() {
       {/* 
           CHAT PANEL
            */}
+      {/* Phone only: the page dims behind the sheet; a tap on it closes. */}
+      <div
+        className="wa-backdrop"
+        data-open={isOpen && !isMinimized ? 'true' : 'false'}
+        onClick={handleClose}
+        aria-hidden="true"
+      />
       <div
         ref={panelRef}
-        // Only fade and lift animate. With transition-all the sheet also
-        // animated its top/left/width/height, so on a phone it trailed 400ms
-        // behind the keyboard and every pan, visibly swimming about.
-        className={`fixed z-50 flex flex-col overflow-hidden overscroll-contain shadow-2xl shadow-black/50 border border-white/[0.08] transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          isOpen
-            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-            : 'opacity-0 scale-[0.92] translate-y-6 pointer-events-none'
-        } ${
-          isMinimized
-            // Minimized is a small bar, never the full-screen sheet: the sheet
-            // geometry with only the header rendered reads as a dead black page.
-            ? 'bottom-4 left-4 right-4 h-auto rounded-2xl sm:left-auto sm:bottom-6 sm:right-6 sm:w-[340px]'
-            : 'bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[calc(100vw-3rem)] sm:h-[600px] sm:max-h-[calc(100vh-6rem)] sm:rounded-2xl'
-        } bg-[#0f0f0f]`}
+        // Geometry and motion live in .wa-sheet (the style block below): a
+        // bottom sheet on phones, a 400px floating panel from 640. Only
+        // transform and opacity animate, so the sheet never trails the
+        // keyboard or a pan.
+        className="wa-sheet"
+        data-open={isOpen ? 'true' : 'false'}
+        data-min={isMinimized ? 'true' : 'false'}
+        onPointerDown={onSheetPointerDown}
+        onPointerMove={onSheetPointerMove}
+        onPointerUp={onSheetPointerUp}
+        onPointerCancel={onSheetPointerUp}
+        role="dialog"
+        aria-label="Chat with Solar Ireland"
         aria-hidden={!isOpen}
         // Closed, the panel still held its whole form in the tab order.
         inert={!isOpen}
@@ -786,11 +827,12 @@ export default function WhatsAppChat() {
         ) : (
           <>
             {showPreChat ? (
-              <div className="flex flex-col h-full">
-                <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+              <div className="flex flex-col h-full min-h-0">
+                <div data-sheet-drag="" className="wa-sheet__head shrink-0 touch-none flex items-center gap-3 px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+                  <span className="wa-grabber" aria-hidden="true" />
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
+                    <div className="w-10 h-10 rounded-full bg-yellow-400/10 flex items-center justify-center overflow-hidden">
+                      <Image src="/bumblebee-md.webp" alt="" className="w-8 h-8 object-contain" width={32} height={32} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
@@ -918,10 +960,11 @@ export default function WhatsAppChat() {
               </div>
             ) : (
               <>
-                <div className="shrink-0 touch-none flex items-center gap-3 px-4 sm:px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+                <div data-sheet-drag="" className="wa-sheet__head shrink-0 touch-none flex items-center gap-3 px-5 py-3.5 border-b border-white/[0.06] bg-[#0a0a0a]">
+                  <span className="wa-grabber" aria-hidden="true" />
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                      <Image src="/logo-sm.webp" alt="Solar Ireland" className="w-10 h-10 object-contain" width={40} height={45} />
+                    <div className="w-10 h-10 rounded-full bg-yellow-400/10 flex items-center justify-center overflow-hidden">
+                      <Image src="/bumblebee-md.webp" alt="" className="w-8 h-8 object-contain" width={32} height={32} />
                     </div>
                     <span className="wa-online-dot absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0a0a]" />
                   </div>
@@ -955,10 +998,14 @@ export default function WhatsAppChat() {
                   </div>
                 </div>
 
+                {/* The list and its scroll-to-latest button share a box, so
+                    the button sits at the foot of the messages and never on
+                    the composer, keyboard up or down. */}
+                <div className="relative flex-1 min-h-0 flex flex-col">
                 <div
                   ref={messagesContainerRef}
                   onScroll={handleScroll}
-                  className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-5 py-4 space-y-3 min-h-0"
+                  className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain px-5 py-4 space-y-3"
                   style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.08) transparent' }}
                 >
                   {chatRestored && (
@@ -992,16 +1039,15 @@ export default function WhatsAppChat() {
                           <Image src="/bumblebee-sm.webp" alt="" className="w-5 h-5" width={20} height={20} />
                         </div>
                       )}
-                      {/* 82% of a 375px screen, minus the avatar and the row
-                          padding, left a very narrow column and made every
-                          answer taller than it needed to be. Wider on phones,
-                          unchanged on desktop where 82% reads better. */}
-                      <div className={`min-w-0 max-w-[88%] sm:max-w-[82%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                      {/* Bubbles cap at 85% of the row: wide enough that an
+                          answer is not a tall thin column, narrow enough that
+                          the eye never travels edge to edge. */}
+                      <div className={`min-w-0 max-w-[85%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                         <div
-                          className={`px-3.5 sm:px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere] transition-all duration-200 ${
+                          className={`px-4 py-2.5 text-[15px] leading-[1.55] whitespace-pre-wrap [overflow-wrap:anywhere] max-w-full transition-colors duration-200 ${
                             msg.role === 'user'
                               ? 'bg-yellow-400 text-black rounded-2xl rounded-br-md'
-                              : 'bg-white/[0.07] text-gray-300 rounded-2xl rounded-bl-md hover:bg-white/[0.09]'
+                              : 'bg-white/[0.08] text-gray-100 rounded-2xl rounded-bl-md'
                           }`}
                         >
                           {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
@@ -1032,7 +1078,7 @@ export default function WhatsAppChat() {
                   ))}
 
                   {followUps.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pl-9 wa-fade-in">
+                    <div className="flex flex-wrap gap-2 pl-9 wa-fade-in">
                       {followUps.map((suggestion, i) => (
                         <button
                           key={suggestion}
@@ -1040,7 +1086,7 @@ export default function WhatsAppChat() {
                             setShowSuggestions(false);
                             sendMessage(suggestion);
                           }}
-                          className="follow-up-pill px-3.5 py-2.5 rounded-full text-[13px] text-yellow-300/80 bg-yellow-400/[0.06] border border-yellow-400/20 hover:bg-yellow-400/10 hover:border-yellow-400/35 hover:text-yellow-200 transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
+                          className="follow-up-pill max-w-full text-left px-3.5 py-2.5 rounded-full text-[14px] leading-snug text-yellow-200 bg-yellow-400/[0.06] border border-yellow-400/20 hover:bg-yellow-400/10 hover:border-yellow-400/35 hover:text-yellow-200 transition-all duration-300 hover:scale-[1.03] active:scale-95 cursor-pointer"
                           style={{ animationDelay: `${i * 100}ms` }}
                         >
                           {suggestion}
@@ -1054,8 +1100,8 @@ export default function WhatsAppChat() {
                       <div className="w-7 h-7 rounded-full bg-white/[0.04] flex items-center justify-center mr-2 mt-1 shrink-0 overflow-hidden">
                         <Image src="/bumblebee-sm.webp" alt="" className="w-5 h-5" width={20} height={20} />
                       </div>
-                      <div className="max-w-[82%]">
-                        <div className="px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap break-words bg-white/[0.07] text-gray-300 rounded-2xl rounded-bl-md">
+                      <div className="min-w-0 max-w-[85%]">
+                        <div className="px-4 py-2.5 text-[15px] leading-[1.55] whitespace-pre-wrap [overflow-wrap:anywhere] max-w-full bg-white/[0.08] text-gray-100 rounded-2xl rounded-bl-md">
                           {renderMarkdown(streamingText)}
                           <span className="inline-block w-1.5 h-4 bg-yellow-400 ml-0.5 animate-pulse rounded-sm" />
                         </div>
@@ -1078,24 +1124,24 @@ export default function WhatsAppChat() {
                     </div>
                   )}
 
-                  <div ref={messagesEndRef} />
                 </div>
 
                 {showScrollBtn && (
                   <button
                     onClick={() => scrollToBottom()}
                     aria-label="Scroll to latest message"
-                    className="absolute bottom-24 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-zinc-700/80 border border-white/[0.1] flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 shadow-lg z-10 hover:scale-110"
+                    className="absolute bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-zinc-700/80 border border-white/[0.1] flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 shadow-lg z-10 hover:scale-110"
                   >
                     <ArrowDown className="w-4 h-4" />
                   </button>
                 )}
+                </div>
 
                 {messages.length <= 2 && !isLoading && !isStreaming && (
                   // One row of four equal tiles, the same tile as the welcome
                   // screen's icons. As wrapping pills they broke onto two
                   // ragged rows and ate the bottom of a phone screen.
-                  <div className="wa-fade-in px-4 sm:px-5 pb-2 grid grid-cols-4 gap-2">
+                  <div className="wa-fade-in px-5 pb-2 grid grid-cols-4 gap-2">
                     {QUICK_ACTIONS.map((action) => {
                       const ActionIcon = action.icon;
                       return (
@@ -1112,7 +1158,7 @@ export default function WhatsAppChat() {
                   </div>
                 )}
 
-                <div className="px-4 sm:px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/[0.06] bg-[#0a0a0a]">
+                <div className="shrink-0 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/[0.06] bg-[#0a0a0a]">
                   <div className="flex items-center gap-2 mb-2">
                     <a href={buildWhatsAppUrl({ source: 'chat-widget' })}
                       target="_blank" rel="noopener noreferrer"
@@ -1143,14 +1189,14 @@ export default function WhatsAppChat() {
                       aria-label="Message"
                       disabled={isLoading}
                       rows={1}
-                      className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-base text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/10 disabled:opacity-50 resize-none transition-all duration-200"
+                      className="flex-1 min-w-0 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-base text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/10 disabled:opacity-50 resize-none transition-all duration-200"
                       style={{ maxHeight: 120 }}
                     />
                     <button
                       onClick={() => sendMessage()}
                       aria-label="Send message"
                       disabled={!input.trim() || isLoading}
-                      className="shrink-0 w-10 h-10 rounded-xl bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black flex items-center justify-center transition-all duration-200 disabled:shadow-none shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 hover:scale-105 active:scale-95 cursor-pointer"
+                      className="shrink-0 w-11 h-11 rounded-xl bg-yellow-400 hover:bg-yellow-300 disabled:bg-gray-700 disabled:text-gray-500 text-black flex items-center justify-center transition-all duration-200 disabled:shadow-none shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 hover:scale-105 active:scale-95 cursor-pointer"
                     >
                       <Send className="w-4 h-4" />
                     </button>
@@ -1168,6 +1214,119 @@ export default function WhatsAppChat() {
           INJECTED STYLES (enhanced wave + FAB bounce)
            */}
       <style jsx global>{`
+        /* The chat sheet. Phone (under 640): a bottom sheet, full width,
+           rounded top, a drag handle, the page dimmed behind it; the
+           visualViewport effect pins it above the keyboard. From 640: a
+           400px floating panel, bottom right. Only transform and opacity
+           move; reduced motion gets a short fade with no travel. */
+        .wa-sheet {
+          position: fixed;
+          z-index: 50;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          overscroll-behavior: contain;
+          background: #0f0f0f;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+          transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease, visibility 0s linear 0s;
+        }
+        .wa-sheet[data-open='false'] {
+          visibility: hidden;
+          pointer-events: none;
+          transition: transform 360ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease, visibility 0s linear 360ms;
+        }
+        .wa-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 50;
+          background: rgba(0, 0, 0, 0.55);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 300ms ease;
+        }
+        .wa-backdrop[data-open='true'] {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .wa-sheet__head {
+          position: relative;
+        }
+        .wa-grabber {
+          display: none;
+        }
+        @media (max-width: 639px) {
+          .wa-sheet {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: max(12px, env(safe-area-inset-top, 0px));
+            border-bottom: 0;
+            border-radius: 20px 20px 0 0;
+          }
+          .wa-sheet[data-open='false'] {
+            transform: translate3d(0, 100%, 0);
+          }
+          .wa-sheet__head {
+            padding-top: 22px;
+          }
+          .wa-grabber {
+            display: block;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: 36px;
+            height: 5px;
+            margin-left: -18px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.28);
+          }
+          .wa-sheet[data-min='true'] {
+            top: auto;
+            left: 16px;
+            right: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+          }
+        }
+        @media (min-width: 640px) {
+          .wa-sheet {
+            right: 24px;
+            bottom: 24px;
+            width: 400px;
+            max-width: calc(100vw - 48px);
+            height: 600px;
+            max-height: calc(100vh - 96px);
+            border-radius: 16px;
+            transform-origin: bottom right;
+          }
+          .wa-sheet[data-open='false'] {
+            opacity: 0;
+            transform: translate3d(0, 24px, 0) scale(0.92);
+          }
+          .wa-sheet[data-min='true'] {
+            width: 340px;
+            height: auto;
+          }
+          .wa-backdrop {
+            display: none;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .wa-sheet,
+          .wa-sheet[data-open='false'] {
+            transform: none;
+            transition: opacity 160ms linear, visibility 0s linear 160ms;
+          }
+          .wa-sheet[data-open='true'] {
+            transition: opacity 160ms linear, visibility 0s linear 0s;
+          }
+          .wa-sheet[data-open='false'] {
+            opacity: 0;
+          }
+        }
+
         @keyframes wa-typing-wave {
           0%, 60%, 100% {
             transform: scale(0.6);
