@@ -23,6 +23,9 @@ export interface RelatedGuide {
   date?: string;
   readTime?: string;
   label?: string;
+  /** The target post's cover, the same image its /blog index card uses. Site
+   *  pages (/financing, a county page) have no cover and show the icon. */
+  image?: string;
 }
 
 /** Site pages that belong in a cluster. Copy is the page's own meta description. */
@@ -123,6 +126,7 @@ function toGuide(entry: string): RelatedGuide | null {
     iconColor: a.iconColor,
     date: a.date,
     readTime: a.readTime,
+    image: a.image,
   };
 }
 

@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, List } from 'lucide-react';
 import {
   ChevronRight,
@@ -548,17 +549,36 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
               >
                 <Link
                   href={article.href}
-                  className="group block glass-card rounded-2xl overflow-hidden h-full"
+                  className="group block glass-card rounded-2xl overflow-hidden h-full transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
-                  <div className="relative h-40 bg-gradient-to-br from-white/[0.03] to-white/[0.01] flex items-center justify-center">
-                    <div className={`w-12 h-12 rounded-2xl ${article.iconBg} flex items-center justify-center`}>
-                      <Sun className={`w-6 h-6 ${article.iconColor}`} />
-                    </div>
-                    <div className="absolute top-3 left-3">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-black/60 text-gray-300 border border-white/[0.08]`}>
-                        {article.category}
-                      </span>
-                    </div>
+                  {/* The target post's own cover (the /blog index card image),
+                      in a fixed 16:9 frame so nothing shifts as it loads; it
+                      zooms slightly inside the frame on hover. Site pages with
+                      no cover keep the icon. */}
+                  <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-white/[0.03] to-white/[0.01] flex items-center justify-center">
+                    {article.image ? (
+                      <Image
+                        src={article.image}
+                        alt={`Cover image for the guide: ${article.title}`}
+                        fill
+                        loading="lazy"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                      />
+                    ) : (
+                      <div className={`w-12 h-12 rounded-2xl ${article.iconBg} flex items-center justify-center`}>
+                        <Sun className={`w-6 h-6 ${article.iconColor}`} />
+                      </div>
+                    )}
+                    {/* The covers print their own category in that corner, so
+                        the badge only sits on the icon fallback. */}
+                    {article.image ? null : (
+                      <div className="absolute top-3 left-3">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-black/60 text-gray-300 border border-white/[0.08]`}>
+                          {article.category}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="p-5">
                     <h3 className="text-sm font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
