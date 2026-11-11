@@ -1150,3 +1150,69 @@
     transition: none;
   }
 }
+
+/* ── Desktop type scale (1280 up) ─────────────────────────────────
+   Cal, 11 Nov 2026: "sizing is shockingly bad on desktop". The section
+   titles were already 57 to 60px, but the reading text under them stayed at
+   phone sizes (13 to 15px). From 1280 the body steps up to 17px, item
+   titles to 19px, fine print and captions to 14 to 15px, the figures to
+   their desktop size. Phones and tablets are unchanged. */
+@media (min-width: 1280px) {
+  .h-kicker {
+    font-size: 16px;
+  }
+  .h-item {
+    font-size: 19px;
+  }
+  .h-body {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .h-fine {
+    font-size: 14px;
+  }
+  .h-hero__trust {
+    font-size: 14px;
+  }
+  .h-cell__big {
+    font-size: 34px;
+  }
+  .h-cell__line {
+    font-size: 15px;
+  }
+  .h-step__num,
+  .h-step__who {
+    font-size: 14px;
+  }
+  .h-dl dt {
+    font-size: 19px;
+  }
+  .h-dl dt small,
+  .h-dl dd small {
+    font-size: 14px;
+  }
+  .h-dl dd {
+    font-size: 36px;
+  }
+  .h-opt {
+    font-size: 17px;
+  }
+  .h-bigfig {
+    font-size: 52px;
+  }
+  .h-bigfig small {
+    font-size: 16px;
+  }
+  .h-bars > div {
+    font-size: 14px;
+  }
+  .h-shot figcaption {
+    font-size: 14px;
+  }
+  .h-acc button {
+    font-size: 19px;
+  }
+  .h-acc__a p {
+    font-size: 17px;
+  }
+}
