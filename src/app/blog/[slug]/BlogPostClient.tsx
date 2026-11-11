@@ -169,7 +169,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 whileInView="visible"
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
-                className="text-gray-300 leading-[1.8] text-[15px] sm:text-base"
+                className="text-gray-300 leading-[1.8] text-[15px] sm:text-base lg:text-lg"
               >
                 {renderInline(section.text)}
               </motion.p>
@@ -187,7 +187,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                   whileInView="visible"
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
-                  className="text-xl sm:text-2xl font-bold text-white mt-10 mb-4"
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-10 lg:mt-14 mb-4 lg:mb-5 lg:leading-tight"
                 >
                   <span className="text-gradient">{section.text}</span>
                 </motion.h2>
@@ -202,7 +202,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 whileInView="visible"
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
-                className="text-lg sm:text-xl font-semibold text-gray-200 mt-8 mb-3"
+                className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-200 mt-8 mb-3"
               >
                 {section.text}
               </motion.h3>
@@ -225,8 +225,8 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 <div className="flex items-start gap-3">
                   <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${style.iconColor}`} />
                   <div>
-                    <p className={`text-sm font-bold mb-1 ${style.iconColor}`}>{section.title}</p>
-                    <p className="text-sm text-gray-300 leading-relaxed">{renderInline(section.body)}</p>
+                    <p className={`text-sm lg:text-base font-bold mb-1 ${style.iconColor}`}>{section.title}</p>
+                    <p className="text-sm lg:text-base text-gray-300 leading-relaxed">{renderInline(section.body)}</p>
                   </div>
                 </div>
               </motion.div>
@@ -286,7 +286,7 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
                 transition={{ duration: 0.5, ease: SPRING_EASE as unknown as number[] }}
                 className="overflow-x-auto rounded-xl border border-white/[0.06]"
               >
-                <table className="w-full text-sm">
+                <table className="w-full text-sm lg:text-base">
                   <thead>
                     <tr className="bg-white/[0.04]">
                       {section.headers.map((h, i) => (
@@ -505,8 +505,8 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
   return (
     <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
       <div className="rounded-2xl border border-amber-400/15 bg-gradient-to-br from-amber-400/[0.07] to-transparent p-7 sm:p-9">
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2.5">{c.h}</h2>
-        <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-6 max-w-xl">{c.p}</p>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2.5">{c.h}</h2>
+        <p className="text-sm sm:text-base lg:text-lg text-gray-400 leading-relaxed mb-6 max-w-xl">{c.p}</p>
         <div className="flex flex-col sm:flex-row gap-3">
           <a href={c.primary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]">
             {c.primary.label}
@@ -533,7 +533,7 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
       className="py-12 sm:py-16 border-t border-white/[0.04]"
     >
       <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-8">
+        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white mb-8 lg:mb-10">
           Related <span className="text-gradient">Guides</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -580,11 +580,11 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
                       </div>
                     )}
                   </div>
-                  <div className="p-5">
-                    <h3 className="text-sm font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
+                  <div className="p-5 lg:p-6">
+                    <h3 className="text-sm lg:text-lg font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
                       {article.title}
                     </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed mb-3 line-clamp-2">
+                    <p className="text-xs lg:text-[15px] text-gray-500 leading-relaxed mb-3 line-clamp-2">
                       {article.excerpt}
                     </p>
                     <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
@@ -730,7 +730,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               initial="hidden"
               animate="visible"
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.15] mb-5 max-w-4xl"
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.15] mb-5 max-w-4xl xl:max-w-5xl"
             >
               {article.title}
             </motion.h1>
@@ -742,8 +742,8 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               transition={{ duration: 0.6, delay: 0.15 }}
               className={
                 article.answer
-                  ? 'text-base sm:text-lg text-gray-200 leading-relaxed max-w-3xl mb-6 border-l-2 border-amber-400/60 pl-4'
-                  : 'text-base sm:text-lg text-gray-400 leading-relaxed max-w-3xl mb-6'
+                  ? 'text-base sm:text-lg xl:text-xl text-gray-200 leading-relaxed max-w-3xl mb-6 border-l-2 border-amber-400/60 pl-4'
+                  : 'text-base sm:text-lg xl:text-xl text-gray-400 leading-relaxed max-w-3xl mb-6'
               }
             >
               {/* The direct answer to the searched question, when the article
