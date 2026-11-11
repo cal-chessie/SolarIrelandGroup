@@ -243,24 +243,31 @@ export default function WhatsAppChat() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [prevMsgCount, setPrevMsgCount] = useState(0);
   const [fabHovered, setFabHovered] = useState(false);
-  // On phones, a page can mark an element the floating bee must not sit on
-  // (data-chat-clear: the homepage hero's "Daylight over Ireland" widget,
-  // which the FAB at bottom-6 right-6 covered, stacking two bees). While that
-  // element is on screen the FAB and its toast step aside; they come back as
-  // soon as it scrolls away. Pages without the attribute, and desktop, are
-  // unchanged.
+  // A page can mark elements the floating bee must not sit beside
+  // (data-chat-clear). data-chat-clear="" (the homepage hero's "Daylight over
+  // Ireland" widget, which the FAB at bottom-6 right-6 covered) clears on
+  // phones only; data-chat-clear="always" (the homepage close band, which
+  // carries its own big bee) clears at every width. While a marked element is
+  // on screen the FAB and its toast step aside; they come back as soon as it
+  // scrolls away. Pages without the attribute are unchanged.
   const [chatClear, setChatClear] = useState(false);
   useEffect(() => {
-    const el = document.querySelector('[data-chat-clear]');
-    if (!el || !('IntersectionObserver' in window)) return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-chat-clear]'));
+    if (!els.length || !('IntersectionObserver' in window)) return;
     const mq = window.matchMedia('(max-width: 639px)');
-    let onScreen = false;
-    const sync = () => setChatClear(onScreen && mq.matches);
-    const io = new IntersectionObserver(([e]) => {
-      onScreen = e.isIntersecting;
+    const onScreen = new Set<Element>();
+    const sync = () =>
+      setChatClear(
+        [...onScreen].some((el) => (el as HTMLElement).dataset.chatClear === 'always' || mq.matches),
+      );
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) onScreen.add(e.target);
+        else onScreen.delete(e.target);
+      }
       sync();
     });
-    io.observe(el);
+    for (const el of els) io.observe(el);
     mq.addEventListener('change', sync);
     return () => {
       io.disconnect();

@@ -1252,20 +1252,100 @@
 .h-close {
   position: relative;
   display: grid;
-  gap: 32px;
-  align-items: end;
+  gap: 8px;
+  align-items: center;
 }
 @media (min-width: 1024px) {
   .h-close {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    column-gap: clamp(40px, 6vw, 96px);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    column-gap: clamp(40px, 5vw, 80px);
   }
 }
+.h-close__copy {
+  position: relative;
+  z-index: 1;
+}
 .h-close__acts {
+  margin-top: 28px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 24px;
+}
+/* The honeycomb with the bee lifting off it. Phones: a 240px block under
+   the copy, the comb behind the bee. From 1024: the right column. */
+.h-close__art {
+  position: relative;
+  height: 240px;
+  margin-inline: -24px;
+}
+.h-comb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: radial-gradient(ellipse 46% 50% at 54% 54%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 46% 50% at 54% 54%, #000 40%, transparent 100%);
+}
+.h-comb__cell {
+  fill: var(--h-amber);
+  fill-opacity: 0;
+  stroke: var(--h-amber);
+  stroke-opacity: 0.16;
+  stroke-width: 1;
+}
+.h-comb__cell--glow {
+  stroke-opacity: 0.34;
+  fill-opacity: 0.05;
+  animation: h-comb-glow 5.6s ease-in-out infinite;
+  animation-delay: calc(var(--g, 0) * 0.8s);
+}
+@keyframes h-comb-glow {
+  0%,
+  100% {
+    fill-opacity: 0.04;
+  }
+  18% {
+    fill-opacity: 0.22;
+  }
+  40% {
+    fill-opacity: 0.04;
+  }
+}
+.h-close__bee {
+  position: absolute;
+  right: 18%;
+  top: 6%;
+  width: 128px;
+  height: 128px;
+  filter: drop-shadow(0 18px 28px rgba(255, 185, 0, 0.18));
+  animation: h-lift 4.8s ease-in-out infinite;
+}
+@keyframes h-lift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-6px, -10px) rotate(2deg);
+  }
+}
+@media (min-width: 640px) {
+  .h-close__art {
+    margin-inline: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .h-close__art {
+    height: 400px;
+    margin-block: -40px;
+  }
+  .h-close__bee {
+    right: 22%;
+    top: 12%;
+    width: 200px;
+    height: 200px;
+  }
 }
 
 /* ── Reveal (see the contract at the top) ─────────────────────── */
@@ -1344,7 +1424,9 @@
     transform: none;
   }
   .h-bee--bob,
-  .h-check__step {
+  .h-check__step,
+  .h-close__bee,
+  .h-comb__cell--glow {
     animation: none;
   }
   .h-shot button,
