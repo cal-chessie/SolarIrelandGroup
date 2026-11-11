@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { ArrowRight, ClipboardCheck, Euro, House, Phone, Sun } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
@@ -36,15 +35,15 @@ const steps: { title: string; body: React.ReactNode; who: string }[] = [
   },
   {
     title: 'Check your savings and book a call',
-    body: "You get your full estimate by email, and we ring you the same day to talk it through. If it's late, we ring first thing tomorrow. Your name, mobile and email are all we ask for.",
+    body: "You get your full estimate by email, and we ring you the same day to talk it through. If it's late, we ring first thing tomorrow. We only ask for your name, mobile and email.",
     who: 'Us, on the phone',
   },
   {
     title: '15-minute survey and final proposal',
     body: (
       <>
-        On the call we cover what a bill can&apos;t show: your roof, your meter and when you use power. Then we send
-        your final proposal with the fixed price, the system and the grant. Before work starts, you apply on{' '}
+        On the call we check what a bill can&apos;t show: your roof, your meter and when you use power. Then you get
+        a fixed-price proposal with the system and your grant. Before work starts you apply on{' '}
         <a href={SEAI_GRANT_PORTAL} target="_blank" rel="noopener noreferrer">
           SEAI&apos;s grant portal
         </a>{' '}
@@ -105,14 +104,6 @@ export default function HowItWorks() {
             Check my savings
             <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
           </a>
-          {/* The bee, peeking in at the end of the line. */}
-          <Image
-            src="/bumblebee-flip.webp"
-            alt=""
-            width={96}
-            height={96}
-            className="h-bee h-bee--bob w-14 h-14"
-          />
         </div>
       </div>
     </section>
