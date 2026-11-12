@@ -895,8 +895,8 @@ export const articles: Article[] = [
   {
     "slug": "how-to-read-electricity-bill-ireland-solar",
     "title": "How to Read Your Electricity Bill in Ireland (2026)",
-    "seoTitle": "Your MPRN Number and Electricity Bill Explained (Ireland)",
-    "seoDescription": "Where to find your 11-digit MPRN, your day and night unit rates and your standing charge on an Irish electricity bill, and what they mean for solar.",
+    "seoTitle": "Irish Electricity Bill: Unit Rate, Standing Charge, Night Rate",
+    "seoDescription": "Your day and night unit rates, the standing charge and when night rate starts, line by line on an Irish electricity bill, and what each means for solar.",
     "excerpt": "MPRN, day and night rates, standing charges and kWh: how to read an Irish electricity bill in 2026, and what the day/night split tells you about solar.",
     "category": "savings",
     "date": "5 Sep 2026",
