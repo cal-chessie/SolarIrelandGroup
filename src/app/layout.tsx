@@ -17,6 +17,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  // Not needed for first paint; stop it competing with the hero image.
+  preload: false,
 });
 
 
@@ -363,10 +365,10 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        <link rel="preload" as="image" href="/logo-sm.webp" type="image/webp" />
+        {/* Perf (12 Nov 2026): the Google Fonts preconnects and the raw
+            /logo-sm.webp preload were dropped. next/font self-hosts Geist, and
+            the navbar logo is a next/image with its own preload, so both only
+            opened sockets and fetched a second logo copy ahead of the hero. */}
 
 
 
@@ -418,7 +420,9 @@ export default async function RootLayout({
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
               nonce={nonce}
-              strategy="afterInteractive"
+              // gtag.js loads after window load; the inline ga-init below still
+              // defines gtag() early, so dataLayer queues every call until then.
+              strategy="lazyOnload"
             />
             <Script id="ga-init" nonce={nonce} strategy="afterInteractive">
               {`

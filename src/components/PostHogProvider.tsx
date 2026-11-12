@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import posthog from 'posthog-js';
+import type { PostHog } from 'posthog-js';
 import { scrubPostHogEvent } from '@/lib/privacyUrl';
 
 /**
@@ -26,12 +26,27 @@ export default function PostHogProvider() {
     const phHost = POSTHOG_HOST;
 
     let initialized = false;
+    // posthog-js (about 190 KB) loads on demand, only once analytics consent
+    // exists, so it no longer sits in the first-load bundle of every page.
+    let posthog: PostHog | null = null;
+    let pending: Promise<PostHog> | null = null;
+    function loadPostHog(): Promise<PostHog> {
+      if (!pending) {
+        pending = import('posthog-js').then((m) => {
+          posthog = m.default;
+          (window as unknown as { posthog?: PostHog }).posthog = m.default;
+          return m.default;
+        });
+      }
+      return pending;
+    }
 
-    function initPostHog(): void {
+    async function initPostHog(): Promise<void> {
       if (initialized) return;
       initialized = true;
+      const ph0 = await loadPostHog();
 
-      posthog.init(phKey, {
+      ph0.init(phKey, {
         api_host: phHost,
         // Disable session recording by default (enable via PostHog dashboard)
         disable_session_recording: false,
@@ -71,11 +86,10 @@ export default function PostHogProvider() {
     function handleConsentUpdate(e: Event): void {
       const consent = (e as CustomEvent).detail;
       if (consent?.categories?.analytics) {
-        initPostHog();
         // Re-enable capturing if it was opted out
-        posthog.opt_in_capturing();
+        void initPostHog().then(() => posthog?.opt_in_capturing());
       } else {
-        posthog.opt_out_capturing();
+        posthog?.opt_out_capturing();
       }
     }
 
@@ -85,7 +99,7 @@ export default function PostHogProvider() {
       if (raw) {
         const data = JSON.parse(raw);
         if (data?.categories?.analytics) {
-          initPostHog();
+          void initPostHog();
         }
       }
     } catch {

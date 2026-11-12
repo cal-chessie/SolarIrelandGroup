@@ -18,7 +18,6 @@
  *
  * Never personal data: no name, mobile, email, Eircode or bill figures.
  */
-import posthog from 'posthog-js';
 
 export const FUNNEL_STEPS = [
   'analyser_viewed',
@@ -71,7 +70,8 @@ export function funnel(step: FunnelStep, props: Props = {}): void {
     w.__siFunnel = [...(w.__siFunnel ?? []), payload].slice(-RECENT_MAX);
     if (!consented()) return;
     if (typeof w.gtag === 'function') w.gtag('event', 'funnel_step', payload);
-    const ph = posthog as unknown as { __loaded?: boolean; capture?: (e: string, p: Props) => void };
+    // PostHogProvider loads posthog-js lazily and exposes it on window.posthog.
+    const ph = (window as unknown as { posthog?: unknown }).posthog as { __loaded?: boolean; capture?: (e: string, p: Props) => void };
     if (ph && ph.__loaded && typeof ph.capture === 'function') ph.capture('funnel_step', payload);
   } catch {
     /* measurement never breaks the funnel */
