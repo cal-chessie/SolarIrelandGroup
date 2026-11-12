@@ -3,6 +3,15 @@ import { unstable_noStore as noStore } from 'next/cache';
 import HomeClient from './HomeClient';
 import HomeSchema from '@/components/HomeSchema';
 import PopularGuides from '@/components/solar/PopularGuides';
+import Hero from '@/components/solar/Hero';
+import BillAnalyser from '@/components/solar/BillAnalyser';
+import HomeTrust from '@/components/solar/HomeTrust';
+import HowItWorks from '@/components/solar/HowItWorks';
+import GrantInfo from '@/components/solar/GrantInfo';
+import WhySolar from '@/components/solar/WhySolar';
+import CustomerInstalls from '@/components/solar/CustomerInstalls';
+import FAQ from '@/components/solar/FAQ';
+import HomeClose from '@/components/solar/HomeClose';
 
 // Home's own title and description. The layout `default` stays as the fallback
 // for any route without a title, so it is not edited. The head term leads, the
@@ -52,7 +61,19 @@ export default function Home() {
   return (
     <>
       <HomeSchema />
-      <HomeClient guides={<PopularGuides />} />
+      {/* Section order: see the HomeClient doc comment. */}
+      <HomeClient>
+        <Hero />
+        <BillAnalyser />
+        <HomeTrust />
+        <HowItWorks />
+        <GrantInfo />
+        <WhySolar />
+        <CustomerInstalls />
+        <FAQ variant="home" />
+        <HomeClose />
+        <PopularGuides />
+      </HomeClient>
     </>
   );
 }

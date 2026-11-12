@@ -1,5 +1,3 @@
-'use client';
-
 import type { LucideIcon } from 'lucide-react';
 import { CalendarDays, FileText, ShieldCheck, Sun, Wrench, Zap } from 'lucide-react';
 

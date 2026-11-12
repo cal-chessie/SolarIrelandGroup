@@ -53,7 +53,10 @@ export default function Hero() {
           sizes="100vw"
           quality={85}
           className="hero-bg hero-kenburns object-cover"
-          priority
+          // LCP element on every breakpoint. Next 16 `preload` emits the head
+          // preload; fetchPriority lifts it above the JS chunks.
+          preload
+          fetchPriority="high"
         />
         <div className="hero-bg absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#0a0a0a]" />
       </div>

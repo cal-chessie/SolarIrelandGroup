@@ -4,16 +4,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
-import Hero from '@/components/solar/Hero';
 import ScrollProgress from '@/components/solar/ScrollProgress';
-import HomeTrust from '@/components/solar/HomeTrust';
-import HowItWorks from '@/components/solar/HowItWorks';
-import WhySolar from '@/components/solar/WhySolar';
-import CustomerInstalls from '@/components/solar/CustomerInstalls';
-import GrantInfo from '@/components/solar/GrantInfo';
-import BillAnalyser from '@/components/solar/BillAnalyser';
-import FAQ from '@/components/solar/FAQ';
-import HomeClose from '@/components/solar/HomeClose';
 import Footer from '@/components/solar/Footer';
 import './home.css';
 
@@ -31,9 +22,13 @@ const PageIntake = dynamic(() => import('@/components/solar/PageIntake'), { ssr:
  *
  * StatsBar is cut (its averages competed with the visitor's own figure).
  *
- * `guides` is the server-rendered "Popular guides" list (src/components/solar/PopularGuides.tsx).
+ * Perf (12 Nov 2026): this is now only the client shell (hash recovery,
+ * scroll reveals, nav, footer, floating widgets). The sections themselves are
+ * passed in as `children` from src/app/page.tsx, a server component, so the
+ * static ones (HomeTrust, HowItWorks, WhySolar, HomeClose, Popular guides)
+ * ship no JS; the interactive ones stay client islands.
  */
-export default function HomeClient({ guides }: { guides?: ReactNode }) {
+export default function HomeClient({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   // Hash recovery. A cold load of /#calculator could land at the top: the
@@ -88,18 +83,7 @@ export default function HomeClient({ guides }: { guides?: ReactNode }) {
     <div ref={rootRef} className="si-home min-h-screen bg-[#0a0a0a]">
       <ScrollProgress />
       <Navbar />
-      <main>
-        <Hero />
-        <BillAnalyser />
-        <HomeTrust />
-        <HowItWorks />
-        <GrantInfo />
-        <WhySolar />
-        <CustomerInstalls />
-        <FAQ variant="home" />
-        <HomeClose />
-        {guides}
-      </main>
+      <main>{children}</main>
       <Footer variant="home" />
       <WhatsAppChat />
       <PageIntake sticky={{ label: 'Check my savings', scrollTo: 'calculator' }} exit={true} />

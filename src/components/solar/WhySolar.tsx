@@ -1,5 +1,3 @@
-'use client';
-
 import { ArrowRight } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
