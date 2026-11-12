@@ -895,6 +895,8 @@ export const articles: Article[] = [
   {
     "slug": "how-to-read-electricity-bill-ireland-solar",
     "title": "How to Read Your Electricity Bill in Ireland (2026)",
+    "seoTitle": "Your MPRN Number and Electricity Bill Explained (Ireland)",
+    "seoDescription": "Where to find your 11-digit MPRN, your day and night unit rates and your standing charge on an Irish electricity bill, and what they mean for solar.",
     "excerpt": "MPRN, day and night rates, standing charges and kWh: how to read an Irish electricity bill in 2026, and what the day/night split tells you about solar.",
     "category": "savings",
     "date": "5 Sep 2026",
@@ -4146,7 +4148,8 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-and-heat-pumps-perfect-partnership",
     "title": "Solar Panels and Heat Pumps: The Perfect Partnership",
-    "seoTitle": "Solar Panels and Heat Pumps: The Perfect Partnership",
+    "seoTitle": "Solar Heating for Irish Homes: Panels, Hot Water, Heat Pumps",
+    "seoDescription": "How solar panels heat an Irish home: hot water through an immersion diverter, and running a heat pump on your own solar power, and what it saves.",
     "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",
