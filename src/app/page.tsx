@@ -10,9 +10,9 @@ import PopularGuides from '@/components/solar/PopularGuides';
 // estimate and then the call, matching the site's funnel. The brand leads (Cal,
 // 10 Nov 2026: Google's site name). Absolute, because
 // the "%s | Solar Ireland Group" template would duplicate the brand.
-const HOME_TITLE = 'Solar Ireland Group | Solar Panels Ireland, Bill Analysis';
+const HOME_TITLE = 'Solar Ireland Group | Know Your Solar Savings in 60 Seconds';
 const HOME_DESCRIPTION =
-  'SEAI-registered solar installers in all 32 counties. Upload a bill for a free estimate of your savings, the €1,800 SEAI grant and payback, then a call.';
+  'Upload your electricity bill and see what solar saves your home, the SEAI grant you qualify for and your payback, sent straight to your inbox.';
 
 export const metadata: Metadata = {
   title: { absolute: HOME_TITLE },

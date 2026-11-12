@@ -130,7 +130,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     // Kept under ~55 chars so link-share cards do not truncate mid-phrase.
-    title: "Solar Ireland Group | Save up to €1,400/yr with Solar PV",
+    title: "Solar Ireland Group | Know Your Solar Savings in 60 Seconds",
     description:
       "SEAI solar installers. Free AI bill analysis and honest quotes. Save up to €1,400/yr with the €1,800 SEAI grant.",
     images: [
@@ -154,7 +154,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Solar Ireland Group | Save up to €1,400/Year with Solar Panels",
+    title: "Solar Ireland Group | Know Your Solar Savings in 60 Seconds",
     description:
       "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
     images: ["/installs/solar-ireland-group-family-home-roof.jpg"],
@@ -339,9 +339,9 @@ const websiteSchema = {
   // Cal's goal is "Solar Ireland Group" above the link, so the name, the
   // Organization, og:site_name and the title template all say it. The visible
   // brand on the pages is "Solar Ireland" (Cal, 10 Nov 2026: "keep my name
-  // 'Solar Ireland'"), so that is an alternate too, with the run-on form and
-  // the bare domain Google showed before.
-  alternateName: ["Solar Ireland", "SolarIrelandGroup", "solarirelandgroup.ie"],
+  // 'Solar Ireland'"), so that is an alternate too, with
+  // the run-on form. The bare domain is left out so Google cannot pick it.
+  alternateName: ["Solar Ireland", "SolarIrelandGroup"],
   url: `${SITE_URL}/`,
   publisher: {
     "@id": `${SITE_URL}/#organization`,

@@ -46,7 +46,7 @@ const webPageSchema = {
       "@type": "WebPage",
       "@id": SITE_URL,
       // Matches the home <title> (src/app/page.tsx).
-      name: "Solar Ireland Group | Solar Panels Ireland, Bill Analysis",
+      name: "Solar Ireland Group | Know Your Solar Savings in 60 Seconds",
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       inLanguage: "en-IE",
