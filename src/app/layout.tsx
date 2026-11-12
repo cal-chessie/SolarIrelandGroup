@@ -132,7 +132,7 @@ export const metadata: Metadata = {
     // Kept under ~55 chars so link-share cards do not truncate mid-phrase.
     title: "Solar Ireland Group | Know Your Solar Savings in 60 Seconds",
     description:
-      "SEAI solar installers. Free AI bill analysis and honest quotes. Save up to €1,400/yr with the €1,800 SEAI grant.",
+      "Upload your electricity bill and see what solar saves your home, the SEAI grant you qualify for and your payback, sent straight to your inbox.",
     images: [
       {
         url: "/installs/solar-ireland-group-family-home-roof.jpg",
@@ -156,7 +156,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Solar Ireland Group | Know Your Solar Savings in 60 Seconds",
     description:
-      "Free AI-powered electricity bill analysis. SEAI-registered installers. €1,800 grant available. Serving all of Ireland.",
+      "Upload your electricity bill and see what solar saves your home, the SEAI grant you qualify for and your payback, sent straight to your inbox.",
     images: ["/installs/solar-ireland-group-family-home-roof.jpg"],
   },
 
