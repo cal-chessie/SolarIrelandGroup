@@ -2,10 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
-import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
-import FAQ from '@/components/solar/FAQ';
+import Footer from '@/components/solar/Footer';
+import { FAQIsland } from '@/components/solar/homeIslands';
 import {
   Zap,
   Euro,
@@ -279,7 +279,7 @@ export default function SolarCalculatorClient() {
         <TrustBadges />
         <CalculatorExplainer />
         <DataTransparency />
-        <FAQ />
+        <FAQIsland />
         <FinalCTA />
       </main>
 

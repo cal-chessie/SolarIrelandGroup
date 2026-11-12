@@ -4,13 +4,15 @@ import HomeClient from './HomeClient';
 import HomeSchema from '@/components/HomeSchema';
 import PopularGuides from '@/components/solar/PopularGuides';
 import Hero from '@/components/solar/Hero';
-import BillAnalyser from '@/components/solar/BillAnalyser';
 import HomeTrust from '@/components/solar/HomeTrust';
 import HowItWorks from '@/components/solar/HowItWorks';
-import GrantInfo from '@/components/solar/GrantInfo';
 import WhySolar from '@/components/solar/WhySolar';
-import CustomerInstalls from '@/components/solar/CustomerInstalls';
-import FAQ from '@/components/solar/FAQ';
+import {
+  BillAnalyserIsland,
+  CustomerInstallsIsland,
+  FAQIsland,
+  GrantInfoIsland,
+} from '@/components/solar/homeIslands';
 import HomeClose from '@/components/solar/HomeClose';
 
 // Home's own title and description. The layout `default` stays as the fallback
@@ -64,13 +66,13 @@ export default function Home() {
       {/* Section order: see the HomeClient doc comment. */}
       <HomeClient>
         <Hero />
-        <BillAnalyser />
+        <BillAnalyserIsland />
         <HomeTrust />
         <HowItWorks />
-        <GrantInfo />
+        <GrantInfoIsland />
         <WhySolar />
-        <CustomerInstalls />
-        <FAQ variant="home" />
+        <CustomerInstallsIsland />
+        <FAQIsland variant="home" />
         <HomeClose />
         <PopularGuides />
       </HomeClient>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
@@ -30,6 +30,22 @@ const PageIntake = dynamic(() => import('@/components/solar/PageIntake'), { ssr:
  */
 export default function HomeClient({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // The floating widgets (chat bubble, sticky CTA, exit intent) mount once
+  // the browser is idle, so their JS stays off the first-paint path.
+  const [widgets, setWidgets] = useState(false);
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(() => setWidgets(true), { timeout: 2000 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(() => setWidgets(true), 600);
+    return () => clearTimeout(t);
+  }, []);
 
   // Hash recovery. A cold load of /#calculator could land at the top: the
   // browser jumps before the images below the fold have laid out, the anchor
@@ -85,8 +101,10 @@ export default function HomeClient({ children }: { children: ReactNode }) {
       <Navbar />
       <main>{children}</main>
       <Footer variant="home" />
-      <WhatsAppChat />
-      <PageIntake sticky={{ label: 'Check my savings', scrollTo: 'calculator' }} exit={true} />
+      {widgets && <WhatsAppChat />}
+      {widgets && (
+        <PageIntake sticky={{ label: 'Check my savings', scrollTo: 'calculator' }} exit={true} />
+      )}
     </div>
   );
 }

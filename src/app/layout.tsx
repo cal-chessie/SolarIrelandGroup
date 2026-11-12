@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { headers } from "next/headers";
 import "./globals.css";
-import CookieConsent from "@/components/CookieConsent";
-import PostHogProvider from "@/components/PostHogProvider";
+import DeferredConsent from "@/components/DeferredConsent";
 import LeadSourceTracker from "@/components/LeadSourceTracker";
 
 const geistSans = Geist({
@@ -411,8 +410,7 @@ export default async function RootLayout({
         <div id="main-content" tabIndex={-1} className="outline-none focus:outline-none">
           {children}
         </div>
-        <CookieConsent />
-        <PostHogProvider />
+        <DeferredConsent />
         <LeadSourceTracker />
 
         {process.env.NEXT_PUBLIC_GA_ID && (
