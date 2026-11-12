@@ -1,4 +1,6 @@
-@import "tailwindcss";
+/* Scan src/ only. Unscoped, Tailwind v4 also scanned docs/, _TRASH/ and
+   scripts/ and shipped ~200 KB of render-blocking CSS for classes no page uses. */
+@import "tailwindcss" source("../");
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));

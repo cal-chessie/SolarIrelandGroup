@@ -1,5 +1,59 @@
 import type { NextConfig } from "next";
 
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT-SECURITY-POLICY (static, 12 Nov 2026)
+   Was a per-request nonce minted in middleware. Reading that nonce in the
+   root layout made every page dynamic: no CDN cache, ~2 s real-user TTFB.
+   A static policy lets pages prerender. Next's own inline bootstrap scripts
+   differ per page and build, so they cannot be hashed; script-src therefore
+   allows 'unsafe-inline' with an explicit host allowlist (Next's documented
+   no-nonce setup). JSON-LD is data (type="application/ld+json"), never run.
+   Violations still post to /api/csp-report.
+   ═══════════════════════════════════════════════════════════════ */
+const CSP_REPORT_PATH = "/api/csp-report";
+function buildCsp(): string {
+  // PostHog's host is deployment-specific (env-driven, inlined at build).
+  const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim();
+  const ph = posthogHost && /^https:\/\/[^ '";]+$/.test(posthogHost) ? [posthogHost] : [];
+  // posthog-js lazy-loads its recorder/extensions from *-assets.i.posthog.com.
+  const phAssets = ph.length ? ["https://*.posthog.com"] : [];
+  const gtm = "https://www.googletagmanager.com";
+  return [
+    "default-src 'self'",
+    "base-uri 'none'",
+    "object-src 'none'",
+    `script-src 'self' 'unsafe-inline' ${gtm} ${phAssets.join(" ")}`.trim(),
+    "style-src 'self' 'unsafe-inline'",
+    // blob: is the on-page preview of a bill photo the visitor has just picked.
+    `img-src 'self' data: blob: ${gtm} https://www.google-analytics.com https://*.google-analytics.com`,
+    "font-src 'self'",
+    [
+      "connect-src 'self'",
+      "https://www.google-analytics.com",
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+      gtm,
+      ...ph,
+      ...phAssets,
+    ].join(" "),
+    // PostHog session replay spins up workers from blob: URLs.
+    "worker-src 'self' blob:",
+    "frame-src 'self'",
+    "frame-ancestors 'self'",
+    "form-action 'self'",
+    "manifest-src 'self'",
+    "media-src 'self'",
+    "report-to csp-endpoint",
+    `report-uri ${CSP_REPORT_PATH}`,
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+// Development keeps report-only: Fast Refresh needs 'unsafe-eval'.
+const CSP_HEADER =
+  process.env.NODE_ENV === "development"
+    ? "Content-Security-Policy-Report-Only"
+    : "Content-Security-Policy";
+
 const nextConfig: NextConfig = {
   // Prevent Turbopack from tree-shaking lucide-react into hundreds of
   // individual icon files that corrupt during HMR updates.
@@ -69,14 +123,15 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
+          { key: CSP_HEADER, value: buildCsp() },
+          { key: "Reporting-Endpoints", value: `csp-endpoint="${CSP_REPORT_PATH}"` },
           {
             key: "X-Content-Type-Options",
             value: "nosniff",
           },
           {
-            // Full Content-Security-Policy is issued per-request in
-            // src/middleware.ts (it needs a fresh nonce). This is the
-            // legacy clickjacking fallback for pre-CSP browsers.
+            // Legacy clickjacking fallback for pre-CSP browsers
+            // (frame-ancestors in the CSP above is the real control).
             key: "X-Frame-Options",
             value: "SAMEORIGIN",
           },
@@ -123,24 +178,10 @@ const nextConfig: NextConfig = {
         source: "/portal/:path*",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
-      {
-        // HTML pages — never cache so updates always show immediately
-        source: "/((?!api|_next|favicon|robots|sitemap|manifest).*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store, must-revalidate, proxy-revalidate",
-          },
-          {
-            key: "Pragma",
-            value: "no-cache",
-          },
-          {
-            key: "Expires",
-            value: "0",
-          },
-        ],
-      },
+      // HTML pages: no Cache-Control override (12 Nov 2026). The old
+      // no-store here defeated the CDN. Next/Vercel now send their defaults:
+      // prerendered pages are edge-cached and purged on every deploy, while
+      // browsers revalidate (max-age=0), so updates still show at once.
       {
         // Next.js Image optimizer: cache but always revalidate, so unchanged
         // images serve from cache (304) while any replacement shows at once.

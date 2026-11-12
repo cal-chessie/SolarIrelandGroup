@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
-import { unstable_noStore as noStore } from 'next/cache';
 import SolarCalculatorClient from './SolarCalculatorClient';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
 
 const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 
@@ -99,7 +95,6 @@ function CalculatorSchema() {
 }
 
 export default function SolarCalculatorPage() {
-  noStore();
   // The visible FAQ (and its FAQPage schema) is rendered by <FAQ/> inside
   // <SolarCalculatorClient/>; a second schema-only FAQPage here would be an
   // invisible duplicate that contradicts Google's "must match visible content".

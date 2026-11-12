@@ -1,98 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════
-   MIDDLEWARE - Canonical redirects + per-request CSP nonce
+   MIDDLEWARE - Canonical redirects + blog 404
    ═══════════════════════════════════════════════════════════════
-   Runs on the Edge before every document request.
-
-   Content-Security-Policy is issued HERE, not in next.config, because a
-   strict CSP needs a fresh per-request nonce. Executable scripts are gated
-   by 'nonce-<n>' + 'strict-dynamic': the framework bootstrap and the GA
-   loader carry the nonce (Next.js applies it automatically), and any script
-   they inject is trusted by propagation - so we never have to allowlist
-   googletagmanager/posthog by origin for script-src (origin allowlists are
-   JSONP-bypassable). JSON-LD blocks are type="application/ld+json" data and
-   are never executed, so script-src does not touch them.
-
-   ENFORCED in production since 2 Nov 2026 (audit 35): 42 pages (every route,
-   every blog post, a 404) loaded at 390 and 1440 under the enforced policy
-   with zero securitypolicyviolation events, and the app hydrates and responds.
-   Production loads no GA and no PostHog today (no GA id in the live HTML, no
-   PostHog key in the live bundles). If either is switched on, re-run that
-   check first: GA4 and PostHog can call hosts not listed in connect-src.
-   Violations are still posted to /api/csp-report. To roll back, set
-   ENFORCE_IN_PRODUCTION to false (report-only).
-
-   Other security headers (HSTS, nosniff, Referrer-Policy, Permissions-Policy,
-   COOP/CORP, X-Frame-Options) stay in next.config.ts.
+   The Content-Security-Policy used to be minted here with a per-request
+   nonce. That forced the root layout to read headers(), which made every
+   page dynamic (no CDN cache, ~2 s real-user TTFB). Since 12 Nov 2026 the
+   CSP is static and lives in next.config.ts with the other security headers.
    ═══════════════════════════════════════════════════════════════ */
 
 import { NextResponse } from "next/server";
 import { BLOG_SLUGS } from "@/lib/blog-slugs";
 import type { NextRequest } from "next/server";
-
-// ── ROLLOUT SWITCH ──────────────────────────────────────────────
-// false = Content-Security-Policy-Report-Only in production (violations are
-//         reported to /api/csp-report and logged, nothing is blocked). This is
-//         the monitoring phase: browsers do not blank the nonce, so there is no
-//         hydration re-render either.
-// true  = enforce in production.
-// Development is always report-only (Fast Refresh needs 'unsafe-eval').
-const ENFORCE_IN_PRODUCTION = true;
-
-/** Path that collects CSP violation reports during the rollout. */
-const CSP_REPORT_PATH = "/api/csp-report";
-
-/** Build the CSP string for one request, embedding the per-request nonce. */
-function buildCsp(nonce: string, enforce: boolean): string {
-  // PostHog's ingestion host is deployment-specific (env-driven), so add it
-  // to connect-src only when configured. strict-dynamic already covers the
-  // PostHog SCRIPT load; this is for its fetch/beacon traffic.
-  const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim();
-  const connectSrc = [
-    "'self'",
-    "https://www.google-analytics.com",
-    "https://*.google-analytics.com",
-    "https://*.analytics.google.com",
-    "https://www.googletagmanager.com",
-  ];
-  if (posthogHost && /^https:\/\/[^ '";]+$/.test(posthogHost)) {
-    connectSrc.push(posthogHost);
-  }
-
-  const directives = [
-    "default-src 'self'",
-    "base-uri 'none'",
-    "object-src 'none'",
-    // Executable-script gate. The trailing `https:` and `'unsafe-inline'`
-    // are IGNORED by any browser that understands nonces/strict-dynamic;
-    // they exist only so pre-CSP3 browsers still load the page.
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https: 'unsafe-inline'`,
-    // Tailwind + next/font inject inline <style>, and React writes inline
-    // style attributes. Inline-style injection is low risk, so allow it.
-    "style-src 'self' 'unsafe-inline'",
-    // blob: is the on-page preview of a bill photo the visitor has just picked
-    // (URL.createObjectURL in the analyser and the intake). Without it the
-    // enforced policy blanks that preview.
-    "img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com",
-    "font-src 'self'",
-    `connect-src ${connectSrc.join(" ")}`,
-    // PostHog session replay spins up workers from blob: URLs.
-    "worker-src 'self' blob:",
-    "frame-src 'self'",
-    "frame-ancestors 'self'",
-    "form-action 'self'",
-    "manifest-src 'self'",
-    "media-src 'self'",
-    // Reporting: report-to is the modern channel (group defined by the
-    // Reporting-Endpoints response header); report-uri is the legacy fallback
-    // that Safari and older Chrome still honour.
-    "report-to csp-endpoint",
-    `report-uri ${CSP_REPORT_PATH}`,
-  ];
-  // upgrade-insecure-requests is ignored (and warns) in a report-only policy,
-  // so only add it when the policy is actually enforced.
-  if (enforce) directives.push("upgrade-insecure-requests");
-  return directives.join("; ");
-}
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
@@ -111,12 +28,6 @@ export function middleware(request: NextRequest) {
   }
 
   /* ─── 3. Unknown /blog/<slug> is a real 404, not a soft one ─── */
-  // This has to happen in middleware. The root layout awaits headers() to read
-  // the CSP nonce, which makes every route dynamically rendered, so nothing is
-  // statically generated and `dynamicParams = false` never gets a routing-layer
-  // check to apply. notFound() in the page or in generateMetadata renders the
-  // 404 page but cannot change the status: the response has already begun
-  // streaming with a 200. Middleware runs before any of that.
   const blogMatch = url.pathname.match(/^\/blog\/([^/]+)$/);
   if (blogMatch && !BLOG_SLUGS.has(blogMatch[1])) {
     return new NextResponse(null, {
@@ -125,40 +36,10 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  /* ─── 4. Per-request CSP nonce ─── */
-  // Enforce only in production and only once the rollout switch is flipped.
-  // Development stays report-only because Fast Refresh needs 'unsafe-eval',
-  // which a strict policy does not grant.
-  const enforce =
-    ENFORCE_IN_PRODUCTION && process.env.NODE_ENV !== "development";
-  const nonce = btoa(crypto.randomUUID());
-  const csp = buildCsp(nonce, enforce);
-
-  // Next.js reads the nonce from the CSP on the REQUEST headers and applies
-  // it to its own <script> tags and to next/script (e.g. the GA loader).
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set("Content-Security-Policy", csp);
-
-  const response = NextResponse.next({ request: { headers: requestHeaders } });
-
-  // Defines the "csp-endpoint" group that the CSP's `report-to` points at.
-  response.headers.set(
-    "Reporting-Endpoints",
-    `csp-endpoint="${CSP_REPORT_PATH}"`
-  );
-  response.headers.set(
-    enforce ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
-    csp
-  );
-  return response;
+  return NextResponse.next();
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MATCHER - run on document requests; skip static assets and
-   router prefetches (a prefetch must not mint a nonce the real
-   document render will not share).
-   ═══════════════════════════════════════════════════════════════ */
+/* Run on document requests only; skip static assets and router prefetches. */
 export const config = {
   matcher: [
     {

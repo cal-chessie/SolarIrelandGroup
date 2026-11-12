@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { headers } from "next/headers";
 import "./globals.css";
 import DeferredConsent from "@/components/DeferredConsent";
 import LeadSourceTracker from "@/components/LeadSourceTracker";
@@ -354,15 +353,13 @@ const websiteSchema = {
 };
 
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Reading a request header opts the whole tree into dynamic rendering, so
-  // Next.js stamps the per-request CSP nonce (set in middleware) onto every
-  // script it emits - inline RSC bootstrap, framework chunks, and next/script.
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  // No per-request reads here (12 Nov 2026): the CSP is static (next.config.ts),
+  // so every page can be prerendered and served from the CDN.
   return (
     <html lang="en-IE" className="dark" suppressHydrationWarning dir="ltr">
       <head>
@@ -422,12 +419,11 @@ export default async function RootLayout({
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              nonce={nonce}
               // gtag.js loads after window load; the inline ga-init below still
               // defines gtag() early, so dataLayer queues every call until then.
               strategy="lazyOnload"
             />
-            <Script id="ga-init" nonce={nonce} strategy="afterInteractive">
+            <Script id="ga-init" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}

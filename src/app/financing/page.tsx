@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
-import { unstable_noStore as noStore } from 'next/cache';
 import FinancingClient from './FinancingClient';
 import { FINANCING_FAQS } from './financing-faq';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
 
 const PAGE_URL = 'https://solarirelandgroup.ie/financing';
 
@@ -110,7 +106,6 @@ function FinancingFAQSchema() {
 }
 
 export default function FinancingPage() {
-  noStore();
   return (
     <>
       <FinancingSchema />

@@ -47,9 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // notFound() has to be called HERE, not in the component.
   // generateMetadata runs before the response opens. The component runs after
-  // the root layout has already begun streaming (it awaits headers() for the
-  // CSP nonce), and by then the 200 is committed and cannot be changed, which
-  // is why an unknown slug used to render the 404 page with an HTTP 200.
+  // the root layout has already begun streaming, and by then the 200 is
+  // committed and cannot be changed, which is why an unknown slug used to
+  // render the 404 page with an HTTP 200 while the site rendered dynamically.
   if (!article) notFound();
 
   // A hand-written seoTitle wins outright: it is never cut at ": " or " - ",
@@ -218,9 +218,9 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
 
   // The guard has to be here, in the component, as the first thing it does.
-  // dynamicParams = false does nothing on this site because the root layout
-  // reads headers() for the CSP nonce, which makes every route dynamic, so
-  // nothing is ever statically generated and there is no routing-layer check.
+  // Since 12 Nov 2026 the posts are prerendered and dynamicParams = false
+  // settles unknown slugs at the routing layer; this guard and the middleware
+  // 404 stay as belt and braces.
   if (!getArticleBySlug(slug)) notFound();
 
   const articleSchema = getArticleSchema(slug);
