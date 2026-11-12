@@ -207,6 +207,8 @@ const organizationSchema = {
     "https://www.instagram.com/solarireland",
     "https://www.tiktok.com/@solarireland",
     "https://www.threads.com/@solarireland",
+    // Google Business Profile (verified, service-area business).
+    "https://maps.google.com/?cid=13510276123838672648",
   ],
   foundingDate: "2019",
   numberOfEmployees: {
@@ -239,6 +241,9 @@ const localBusinessSchema = {
   telephone: "+353 87 395 8424",
   email: "sales@solarirelandgroup.ie",
   logo: `${SITE_URL}/logo-lg.png`,
+  // The verified Google Business Profile. Ties this entity to the GBP listing.
+  hasMap: "https://maps.google.com/?cid=13510276123838672648",
+  sameAs: ["https://maps.google.com/?cid=13510276123838672648"],
   description:
     "SEAI-registered solar panel installation company serving homes across Ireland. Free AI-powered electricity bill analysis, honest quotes, and quality installations with a €1,800 SEAI grant available.",
   priceRange: "€€",
