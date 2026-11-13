@@ -233,61 +233,12 @@
     to { transform: translateY(0); }
   }
 
-  /* CTA shimmer sweep */
-  .hero-cta-shimmer {
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-cta-shimmer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.25) 40%,
-      rgba(255, 255, 255, 0.35) 50%,
-      rgba(255, 255, 255, 0.25) 60%,
-      transparent 100%
-    );
-    animation: cta-shimmer 3s ease-in-out 1.5s infinite;
-    pointer-events: none;
-  }
-
-  /* Animated gradient orbs */
-  .hero-orb {
-    will-change: transform, opacity;
-    animation: orb-drift 12s ease-in-out infinite;
-    /* isolate the decorative orb so its animation can't register as page CLS */
-    contain: layout style;
-  }
-  .hero-orb-1 {
-    animation-delay: 0s;
-  }
-  .hero-orb-2 {
-    animation-delay: -4s;
-    animation-duration: 15s;
-  }
-  .hero-orb-3 {
-    animation-delay: -8s;
-    animation-duration: 18s;
-  }
-
   /* Scroll indicator bounce */
   .scroll-bounce {
     animation: scroll-bob 2s ease-in-out infinite;
   }
 
 /* WHATSAPP WIDGET ANIMATIONS */
-
-  /* FAB pulsing ring */
-  .whatsapp-fab-ring {
-    animation: fab-ring-pulse 2.5s ease-out infinite;
-    pointer-events: none;
-  }
 
   /* FAB tooltip */
   .whatsapp-fab-tooltip {
@@ -311,11 +262,6 @@
   /* Message entrance */
   .wa-msg-enter {
     animation: wa-msg-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* Typing indicator dots */
-  .wa-typing-dot {
-    animation: wa-typing 1.4s ease-in-out infinite;
   }
 
   /* Generic fade-in */
@@ -371,30 +317,6 @@
   }
 }
 
-  /* CTA shimmer sweep */
-@keyframes cta-shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-
-  /* Ambient orb drift */
-@keyframes orb-drift {
-  0%, 100% {
-    opacity: 0;
-    transform: translate(0, 0) scale(1);
-  }
-  20% {
-    opacity: 1;
-  }
-  50% {
-    transform: translate(30px, -20px) scale(1.05);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-}
-
 /* Scroll indicator bob */
 @keyframes scroll-bob {
   0%, 100% { transform: translateY(0); }
@@ -402,18 +324,6 @@
 }
 
 /* WHATSAPP KEYFRAMES */
-
-  /* FAB pulsing ring */
-@keyframes fab-ring-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
 
 /* Notification progress bar shrink */
 @keyframes notif-shrink {
@@ -436,18 +346,6 @@
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
-  }
-}
-
-/* Typing dots bounce */
-@keyframes wa-typing {
-  0%, 60%, 100% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  30% {
-    transform: translateY(-4px);
-    opacity: 1;
   }
 }
 
@@ -486,27 +384,6 @@
   }
 }
 
-/* Compact buttons stagger entrance */
-.cookie-buttons-compact > button:nth-child(1) {
-  animation: cookie-btn-stagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-}
-.cookie-buttons-compact > button:nth-child(2) {
-  animation: cookie-btn-stagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
-}
-.cookie-buttons-compact > button:nth-child(3) {
-  animation: cookie-btn-stagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
-}
-@keyframes cookie-btn-stagger {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Settings panel fade in */
 .cookie-settings-panel {
   animation: cookie-settings-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -519,166 +396,6 @@
   100% {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-  /* Floating cookie settings button */
-.cookie-settings-fab {
-  opacity: 0;
-  animation:
-    cookie-fab-appear 0.5s ease-out 0.5s forwards,
-    cookie-fab-gentle 4s ease-in-out 2s infinite;
-}
-@keyframes cookie-fab-appear {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@keyframes cookie-fab-gentle {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.06);
-  }
-}
-
-  /* QUICK SAVINGS CALCULATOR KEYFRAMES */
-
-  /* Home type button selection */
-.quick-calc-check-pop {
-  animation: quick-check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-@keyframes quick-check-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-  /* Calculate button */
-.quick-calc-calc-btn {
-  position: relative;
-  overflow: hidden;
-}
-.quick-calc-calc-btn::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.2) 60%,
-    transparent 100%
-  );
-  animation: cta-shimmer 3s ease-in-out 1s infinite;
-  pointer-events: none;
-}
-
-  /* Reset button */
-.quick-calc-reset-btn {
-  animation: quick-reset-in 0.3s ease-out both;
-}
-@keyframes quick-reset-in {
-  0% {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Results panel reveal */
-.quick-calc-results {
-  animation: quick-results-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes quick-results-reveal {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Stat cards stagger */
-.quick-calc-stat-card:nth-child(1) {
-  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-.quick-calc-stat-card:nth-child(2) {
-  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-}
-.quick-calc-stat-card:nth-child(3) {
-  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-}
-.quick-calc-stat-card:nth-child(4) {
-  animation: quick-stat-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-}
-@keyframes quick-stat-in {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-  /* WhatsApp CTA */
-.quick-calc-cta-whatsapp {
-  position: relative;
-  overflow: hidden;
-}
-.quick-calc-cta-whatsapp::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 40%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.15) 60%,
-    transparent 100%
-  );
-  animation: cta-shimmer 4s ease-in-out 2s infinite;
-  pointer-events: none;
-}
-
-  /* Bar fill animation */
-.quick-calc-bar-fill {
-  animation: quick-bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes quick-bar-grow {
-  0% {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  100% {
-    transform: scaleX(1);
-    transform-origin: left;
   }
 }
 
@@ -714,24 +431,6 @@
   animation: exit-accent-shimmer 2.5s ease-in-out 0.5s infinite;
 }
 @keyframes exit-accent-shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-
-  /* CTA button shimmer */
-.exit-intent-cta-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 40%,
-    rgba(255, 255, 255, 0.25) 50%,
-    rgba(255, 255, 255, 0.15) 60%,
-    transparent 100%
-  );
-  animation: exit-cta-sweep 2.8s ease-in-out 1.2s infinite;
-  pointer-events: none;
-}
-@keyframes exit-cta-sweep {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
 }
@@ -772,21 +471,6 @@
 .exit-intent-el-6 {
   opacity: 0;
   animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both;
-}
-/* el-7: Secondary actions */
-.exit-intent-el-7 {
-  opacity: 0;
-  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.74s both;
-}
-/* el-8: Trust line */
-.exit-intent-el-8 {
-  opacity: 0;
-  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.82s both;
-}
-/* el-9: Trust line (after urgency element) */
-.exit-intent-el-9 {
-  opacity: 0;
-  animation: exit-el-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.90s both;
 }
 
 @keyframes exit-el-rise {
@@ -890,20 +574,6 @@
   animation: sticky-cta-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
-/* Animations the motion shim can't express (object-style animates) */
-@keyframes meter-fill { from { width: 0; } }
-.meter-fill { animation: meter-fill 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-@keyframes scan-sweep { 0% { top: 8%; } 100% { top: 90%; } }
-.scan-sweep { animation: scan-sweep 1.5s ease-in-out infinite alternate; }
-
-@keyframes spin-slow { to { transform: rotate(360deg); } }
-.spin-slow { animation: spin-slow 2s linear infinite; }
-
-@keyframes chart-bar-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-.chart-bar { transform-box: fill-box; transform-origin: bottom; animation: chart-bar-grow 0.6s ease-out both; }
-
 /* The sun on the daylight arc: a slow breath, never a blink. */
 @keyframes daylight-pulse {
   0%, 100% { opacity: 0.35; transform: scale(1); }
@@ -915,36 +585,6 @@
   /* SVG transform/opacity paints on the main thread: three breaths, then rest (INP). */
   animation: daylight-pulse 4s ease-in-out 3;
 }
-
-/* Sun catching glass. A single diagonal glint crosses a real install photo as
-   you move onto it: the thing panels actually do, rather than a generic hover
-   state. Slow and low-opacity, so it reads as light, not as a UI effect. */
-.panel-glint { position: relative; overflow: hidden; isolation: isolate; }
-.panel-glint::after {
-  content: '';
-  position: absolute;
-  inset: -20%;
-  transform: translateX(-130%) rotate(18deg);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.10) 45%,
-    rgba(255, 246, 214, 0.22) 50%,
-    rgba(255, 255, 255, 0.10) 55%,
-    transparent
-  );
-  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-  z-index: 2;
-}
-.panel-glint:hover::after,
-.panel-glint:focus-within::after { transform: translateX(130%) rotate(18deg); }
-
-@keyframes upload-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-.upload-float { animation: upload-float 3s ease-in-out infinite; }
-
-@keyframes upload-pulse { 0%, 100% { transform: scale(1.1); } 50% { transform: scale(1.16); } }
-.upload-pulse { animation: upload-pulse 0.6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -974,17 +614,9 @@
   .hero-kenburns,
   .hero-sheen,
   .sticky-cta-enter,
-  .meter-fill,
-  .scan-sweep,
-  .spin-slow,
-  .chart-bar,
-  .upload-float,
-  .upload-pulse,
   .daylight-pulse,
   .bumblebee-float,
-  .hero-orb,
   .scroll-bounce,
-  .whatsapp-fab-ring,
   .wa-pulse,
   .wa-fade-in,
   .wa-unread-badge {
@@ -992,10 +624,6 @@
   }
 
   .whatsapp-fab {
-    opacity: 1;
-  }
-
-  .cookie-settings-fab {
     opacity: 1;
   }
 }
@@ -1061,126 +689,7 @@
   overflow: hidden;
 }
 
-/* Fade switch (for AnimatePresence mode="wait") */
-.motion-fade-switch-enter {
-  animation: motion-fade-in 0.3s ease both;
-}
-
   /*  */
-
-/* The range input itself */
-.solar-range-input {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 44px;              /* generous touch target */
-  background: transparent;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  outline: none;
-}
-
-/* Track styling */
-
-  /* Webkit (Chrome, Safari, Edge) */
-.solar-range-input::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 8px;
-  border-radius: 9999px;
-  border: none;
-  background: linear-gradient(
-    to right,
-    #f59e0b 0%,
-    #facc15 var(--range-pct, 24%),
-    rgba(255, 255, 255, 0.06) var(--range-pct, 24%)
-  );
-}
-
-  /* Firefox */
-.solar-range-input::-moz-range-track {
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 9999px;
-  border: none;
-}
-
-/* Firefox progress fill */
-.solar-range-input::-moz-range-progress {
-  background: linear-gradient(to right, #f59e0b, #facc15);
-  border-radius: 9999px;
-  height: 8px;
-}
-
-  /* Thumb styling */
-
-/* Webkit (Chrome, Safari, Edge) */
-.solar-range-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 28px;
-  height: 28px;
-  background: #facc15;
-  border: 3px solid #0a0a0a;
-  border-radius: 9999px;
-  cursor: pointer;
-  margin-top: -10px;         /* center vertically on 8px track: (28-8)/2 = 10 */
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.4), 0 0 0 2px rgba(250, 204, 21, 0.1);
-  transition: box-shadow 0.15s, transform 0.15s;
-}
-
-.solar-range-input::-webkit-slider-thumb:hover {
-  box-shadow: 0 4px 16px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15);
-  transform: scale(1.08);
-}
-
-.solar-range-input:active::-webkit-slider-thumb {
-  box-shadow: 0 4px 24px rgba(250, 204, 21, 0.6), 0 0 0 6px rgba(250, 204, 21, 0.15);
-  transform: scale(1.15);
-}
-
-/* Firefox */
-.solar-range-input::-moz-range-thumb {
-  width: 28px;
-  height: 28px;
-  background: #facc15;
-  border: 3px solid #0a0a0a;
-  border-radius: 9999px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.4), 0 0 0 2px rgba(250, 204, 21, 0.1);
-  transition: box-shadow 0.15s, transform 0.15s;
-}
-
-.solar-range-input::-moz-range-thumb:hover {
-  box-shadow: 0 4px 16px rgba(250, 204, 21, 0.5), 0 0 0 4px rgba(250, 204, 21, 0.15);
-  transform: scale(1.08);
-}
-
-.solar-range-input:active::-moz-range-thumb {
-  box-shadow: 0 4px 24px rgba(250, 204, 21, 0.6), 0 0 0 6px rgba(250, 204, 21, 0.15);
-  transform: scale(1.15);
-}
-
-  /* Focus ring - high-visibility for keyboard users */
-.solar-range-input:focus-visible {
-  outline: 2.5px solid rgba(250, 204, 21, 0.8);
-  outline-offset: 4px;
-  border-radius: 4px;
-  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.2), 0 0 0 8px rgba(250, 204, 21, 0.08);
-}
-
-.solar-range-input:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.4), 0 2px 8px rgba(250, 204, 21, 0.4);
-}
-
-.solar-range-input:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.4), 0 2px 8px rgba(250, 204, 21, 0.4);
-}
-
-.solar-range-input:focus:not(:focus-visible) {
-  outline: none;
-}
 
   /* BLOG */
 
@@ -1199,7 +708,6 @@
     transform: scale(1);
   }
 }
-
 
 /* ─────────────────────────────────────────────────────────────
    PRINT

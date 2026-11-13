@@ -1,0 +1,14 @@
+13 Nov 2026, mobile LCP pass.
+
+button.tsx: the shadcn Button, imported by nothing in src/. Tailwind v4 scans
+src/, so its variant classes (shadow-xs, aria-invalid:ring-destructive/20,
+has-[>svg]:px-3, focus-visible:ring-[3px] ...) were generated and inlined into
+every page's HTML for no element. Moved here so they stop being generated.
+
+Dead rules removed from src/app/globals.css in the same commit (no element
+anywhere in src/ carries these classes): .solar-range-input, .quick-calc-*,
+.hero-cta-shimmer, .hero-orb-*, .whatsapp-fab-ring, .wa-typing-dot,
+.cookie-buttons-compact, .cookie-settings-fab, .exit-intent-cta-shimmer,
+.exit-intent-el-7/8/9, .motion-fade-switch-enter, .meter-fill, .scan-sweep,
+.spin-slow, .chart-bar, .panel-glint, .upload-float, .upload-pulse and their
+keyframes. The previous globals.css is in git history (main afa11b5).

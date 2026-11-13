@@ -1,9 +1,15 @@
-import Image from 'next/image';
+import Image, { getImageProps } from 'next/image';
+import { preload } from 'react-dom';
 import { ArrowRight, ChevronDown, MessageCircle, Sun } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import DaylightTrack from './DaylightTrack';
 import HeroCta from './HeroCta';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+
+const HERO_PHONE = '(max-width: 639.98px)';
+const heroBase = { src: '/hero-solar.webp', alt: '', fill: true, sizes: '100vw' } as const;
+const { props: heroPhone } = getImageProps({ ...heroBase, quality: 50 });
+const { props: heroWide } = getImageProps({ ...heroBase, quality: 65, fetchPriority: 'high', loading: 'eager' });
 
 /**
  * The homepage hero (11 Nov 2026, second pass).
@@ -33,21 +39,20 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
  * click (HeroCta) and the live daylight pill (DaylightTrack) hydrate.
  */
 export default function Hero() {
+  preload(heroPhone.src, { as: 'image', imageSrcSet: heroPhone.srcSet, imageSizes: heroPhone.sizes, fetchPriority: 'high', media: HERO_PHONE });
+  preload(heroWide.src, { as: 'image', imageSrcSet: heroWide.srcSet, imageSizes: heroWide.sizes, fetchPriority: 'high', media: '(min-width: 640px)' });
   return (
     <section className="hero-section h-hero h-hero--v2" aria-labelledby="hero-title">
       <div className="absolute inset-0" aria-hidden="true">
-        <Image
-          src="/hero-solar.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          quality={65}
-          className="hero-bg hero-kenburns object-cover"
-          // LCP element on every breakpoint. Next 16 `preload` emits the head
-          // preload; fetchPriority lifts it above the JS chunks.
-          preload
-          fetchPriority="high"
-        />
+        {/* LCP element on every breakpoint. Perf (13 Nov 2026): phones (under
+            640) get the same image at quality 50, about 45% fewer bytes;
+            under the dark scrim the difference does not show. Tablet and
+            desktop keep quality 65. Each source has its own head preload
+            (media-scoped, fetchpriority high), so a device fetches one. */}
+        <picture>
+          <source media={HERO_PHONE} srcSet={heroPhone.srcSet} sizes={heroPhone.sizes} />
+          <img {...heroWide} alt="" className="hero-bg hero-kenburns object-cover" />
+        </picture>
         <div className="hero-bg absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#0a0a0a]" />
       </div>
 

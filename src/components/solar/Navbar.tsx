@@ -148,7 +148,12 @@ export default function Navbar() {
               className="h-11 w-auto sm:h-12 xl:h-14"
               width={44}
               height={50}
-              priority
+              // Eager at low priority, not `priority` (13 Nov 2026). Its head
+              // preload sat ahead of the hero image's (the LCP); React also
+              // auto-preloads any eager <img> unless fetchPriority is "low".
+              // The <img> is at the top of the HTML, so it still loads at once.
+              loading="eager"
+              fetchPriority="low"
             />
             {/* The header logo text is "Solar Ireland Group" (Cal, 11 Nov 2026:
                 "i actually like solar ireland group", then "just the header").

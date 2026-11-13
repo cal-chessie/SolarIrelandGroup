@@ -59,7 +59,10 @@ import { billBand, funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { estimate } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import '@/components/intake/intake.css';
+// intake.css loads when the quiz opens (tryOpen below), not when this mounts
+// at idle: on the home page that idle load shipped the whole intake app's CSS
+// during the first load, 86% of it unused (PageSpeed, 13 Nov 2026).
+const loadIntakeCss = () => import('@/components/intake/intakeStyles').catch(() => undefined);
 
 const PHONE = SOLAR_DATA.provider.phone;
 const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
@@ -224,7 +227,7 @@ export default function ExitIntent() {
     setLs(EXIT_KEYS.shownAt, String(Date.now()));
     setSs(EXIT_KEYS.legacySeen, '1');
     setFid(flowId());
-    setOpen(true);
+    void loadIntakeCss().then(() => setOpen(true));
     funnel('quiz_shown', { door: 'exit-quiz', trigger: t.kind });
     getConfig().then((c) => c && setConfig(c));
   }, []);

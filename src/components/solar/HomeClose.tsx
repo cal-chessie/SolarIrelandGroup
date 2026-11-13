@@ -41,20 +41,27 @@ const GLOW = [...CELLS]
   .slice(0, 7)
   .map((c) => c.key);
 
+/* Perf (13 Nov 2026): the plain cells are one <path>, a subpath per cell with
+   the same points the old per-cell <polygon>s had, so it draws identically.
+   192 polygons were about 23 KB of HTML and 29 KB more in the RSC payload.
+   Only the glowing cells stay separate elements, for their own animation. */
+const GLOW_CELLS = GLOW.map((key) => CELLS.find((c) => c.key === key)).filter((c) => c !== undefined);
+const PLAIN_D = CELLS.filter((c) => !GLOW.includes(c.key))
+  .map((c) => `M${c.points.replace(/\.0(?=[ ,]|$)/g, '')}Z`)
+  .join('');
+
 function Honeycomb() {
   return (
     <svg className="h-comb" viewBox={`0 0 ${W_BOX} ${H_BOX}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-      {CELLS.map((c) => {
-        const g = GLOW.indexOf(c.key);
-        return (
-          <polygon
-            key={c.key}
-            points={c.points}
-            className={g >= 0 ? 'h-comb__cell h-comb__cell--glow' : 'h-comb__cell'}
-            style={g >= 0 ? { ['--g' as string]: g } : undefined}
-          />
-        );
-      })}
+      <path d={PLAIN_D} className="h-comb__cell" />
+      {GLOW_CELLS.map((c, g) => (
+        <polygon
+          key={c.key}
+          points={c.points}
+          className="h-comb__cell h-comb__cell--glow"
+          style={{ ['--g' as string]: g }}
+        />
+      ))}
     </svg>
   );
 }

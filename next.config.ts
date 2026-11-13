@@ -78,9 +78,10 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
-    // Next 16 only serves listed qualities. 65 is the hero (PageSpeed mobile:
-    // a lighter LCP image), 75 is the default for everything else.
-    qualities: [65, 75],
+    // Next 16 only serves listed qualities. The hero is 50 on phones and 65
+    // from 640 up (PageSpeed mobile: a lighter LCP image), 75 is the default
+    // for everything else.
+    qualities: [50, 65, 75],
   },
 
   /* ═══════════════════════════════════════════════════════════════
