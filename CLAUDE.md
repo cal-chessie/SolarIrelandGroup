@@ -25,6 +25,7 @@
 - Dead files go to `_TRASH` with a note. Never `rm`.
 - No push without an explicit yes, then prove it with `git ls-remote`. Merging to `main` is the go-live and is Cal's call.
 - Verify with tools, never memory. If you cannot run the check, say so.
+- County pages: the county gate test must pass; see the HARD RULES at the top of docs/county-page-playbook.md.
 
 ## Commands
 

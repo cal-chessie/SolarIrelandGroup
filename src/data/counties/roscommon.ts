@@ -27,8 +27,35 @@ export const ROSCOMMON: CountyData = {
     'Monksland', 'Roosky', 'Frenchpark', 'Ballinlough', 'Knockcroghery', 'Athleague',
   ],
   townsIntro: 'We install across the whole county, from Boyle in the north to Monksland on the edge of Athlone.',
-  housingNote:
-    'Roscommon has many bungalows and farmhouses with wide, unshaded roofs, and a lot of homes where someone is in during the day. Those homes use more of their own power, and power used at home is worth about twice what export earns.',
-  farmNote:
-    'A dairy or a drying shed runs in daylight, so a farm uses most of what its panels make. Farms can choose between TAMS, run by the Department of Agriculture, and the SEAI business grant. TAMS pays a higher rate but ranks and selects applications; the SEAI grant does not.',
+  // Official, dated facts only, each from the 13 Nov 2026 research
+  // (docs/research/county-page-research-2026-11.md, section 3.2), our own words.
+  // The old housingNote (unsourced, and a money claim typed into a data file)
+  // and farmNote (true in every county) are gone; the farm text is national
+  // and lives in the template.
+  localFacts: [
+    {
+      text: 'In Census 2022, new-build homes in Roscommon were among the least likely in Ireland to use solar energy: 9%, against 11% in Leitrim and 13% in Kerry.',
+      source: 'CSO, Census of Population 2022 Profile 2, Housing in Ireland: occupied dwellings',
+      sourceUrl: 'https://www.cso.ie/en/releasesandpublications/ep/p-cpp2/censusofpopulation2022profile2-housinginireland/occupieddwellings/',
+      date: '2022-04',
+    },
+    {
+      text: 'Roscommon County Council adopted its Climate Action Plan 2024 to 2029 in January 2024, with a Decarbonising Zone in Roscommon Town.',
+      source: 'Roscommon County Council, Climate Action Plan 2024 to 2029 and Decarbonising Zone',
+      sourceUrl: 'https://www.roscommoncoco.ie/en/services/climate-action/roscommon-climate-action-plan/decarbonisation-zone-roscommon-town.html',
+      date: '2024-01',
+    },
+    {
+      text: 'Castlerea Town Team, a Sustainable Energy Community, published an Energy Master Plan for Castlerea in October 2022 with the support of Roscommon County Council.',
+      source: 'SEAI Sustainable Energy Communities, Castlerea Energy Master Plan',
+      sourceUrl: 'https://www.seai.ie/community-energy/sustainable-energy-communities/sec-map/uploads/reg_14_0_EMP157%20-%20Castlerea%20EMP%20Report%20V3.pdf',
+      date: '2022-10',
+    },
+  ],
+  // None yet. Only real installs, photos, sponsorships or press with written permission.
+  proofItems: [],
+  // None yet. The eight old FAQs were national text with the name dropped in;
+  // they now live once in src/data/national-faqs.ts. Add Roscommon questions
+  // only from Search Console, People Also Ask or the county development plan.
+  localFaqs: [],
 };

@@ -1,3 +1,17 @@
+> ## HARD RULES: READ BEFORE TOUCHING ANY COUNTY PAGE
+>
+> Cal has said it twice: county pages are real local content, never name-swapped. The Roscommon draft still failed the swap test (about 90% of its text stayed true with "Leitrim" put in, and all 8 FAQs were national text with the county name dropped in), and it was graded B+ and shown as nearly ready. Cal's words: "never allow this to happen again". These rules are enforced by code, not by good intentions.
+>
+> 1. **NO NAME-SWAP CONTENT.** Every county-specific section must stop being true if another county's name is put in. Text that is true for every county is shared national content: write it once, label it national, and never dress it up with the county name.
+> 2. **THE SWAP TEST IS A GATE, NOT A GUIDELINE.** It runs as a test (`src/data/counties/county-gate.test.ts`, rules in `src/data/counties/gate.ts`). A failing county cannot be indexable: the build throws if it is. No agent may report a county page as ready, graded or near-done while it fails.
+> 3. **LOCAL CLAIMS NEED AN OFFICIAL, DATED SOURCE** (CSO, SEAI, PVGIS, county council, SEC, ESB Networks) or they are left out. No invented local colour, no unsourced housing or farm notes, no money figures typed into data files.
+> 4. **PROOF IS NEVER TEMPLATED.** Proof items (real installs with written permission, our own local photos, real sponsorships, local press) are never templated, never reused across counties, never faked. Fewer than 2 means the page stays noindex.
+> 5. **COUNTY FAQS COME FROM REAL LOCAL SEARCH DATA** (Search Console, People Also Ask, the county development plan), not national questions with the name swapped. National FAQs live in one shared national block: `src/data/national-faqs.ts`, shown under "National questions".
+> 6. **ONLY PROVEN LEAD-GENERATION PRACTICE IS SHARED** across counties: CTA placement, the sticky call and savings bar, the estimator, click-to-call, and the trust strip with the real rating as plain text. Nothing else bleeds from one county to another.
+> 7. **REVIEWERS RUN THE GATE AND QUOTE IT.** Before calling any county page ready, a reviewer (human or agent) runs `bun run test` (or `bun test src/data/counties`) and quotes the `COUNTY GATE <slug>` lines from its output. No quote, no "ready".
+>
+> The gate's minimums for `indexable: true`: 3 `localFacts` (each with `source`, https `sourceUrl`, `date`), 2 `proofItems` (each with written permission evidence), 2 `localFaqs` (each with a `searchSource`), every county string passing the swap test, nothing duplicated across counties, and no euro or money figure in the data file.
+
 # County page playbook
 
 County pages are **service pages of the main site**, not standalone sites. One template, one route, one data file per county:
@@ -27,8 +41,12 @@ Every field must be true, local and sourced. If you cannot source a field, leave
 | `pvgis.*` | Yield for the county town: annual kWh/kWp and the 12 monthly values, with the exact API URL and fetch date | PVGIS PVcalc v5.3, `peakpower=1&loss=14&angle=35&aspect=0`, same settings for every county so they compare |
 | `pvgis.dublinKwhPerKwp` | The Dublin reference, same settings | the same API at 53.3498, -6.2603 |
 | `towns` | Real towns and districts actually served | Cal or the licensed installer |
-| `townsIntro`, `housingNote`, `farmNote` | One to three plain sentences each, specific to the county | local knowledge; no invented facts |
-| `extraFaqs` | County-only questions people really search | Search Console queries, People Also Ask |
+| `townsIntro` | One sentence naming real places in the county | the installer; no invented facts |
+| `localFacts` | `{ text, source, sourceUrl, date }`, 3 or more for indexable. Our own words, one official dated fact each, rendered as "the local picture" | CSO, SEAI, PVGIS, county council, SEC, ESB Networks |
+| `proofItems` | `{ kind, text, town, date, permission: { grantedBy, evidence, date }, url? }`, 2 or more for indexable. Hidden when empty | our own job records, signed permission |
+| `localFaqs` | `{ q, a, searchSource }`, 2 or more for indexable | Search Console queries, People Also Ask, the county development plan |
+
+National questions are not a data field. They live once in `src/data/national-faqs.ts` and never carry a county name. The old `housingNote`, `farmNote` and `extraFaqs` fields are gone: the first was unsourced, the second was true in every county.
 
 All money figures (install cost, grant, payback, savings) come from `src/lib/estimate.ts` with the county yield passed as `generationPerKwp`. **Never type a price or saving into a data file.** Grants come from `src/lib/solar-data.ts`.
 
@@ -37,7 +55,7 @@ All money figures (install cost, grant, payback, savings) come from `src/lib/est
 Google's spam policy treats near-identical pages that only swap a place name as doorway pages. The template supplies structure and the shared facts (SEAI, ESB Networks, NC6). What makes each page earn its place is local substance, and every county needs real items from this list before `indexable` goes true:
 
 - **Required:** its own PVGIS yield, cited with the fetch date (the template shows it in the hero, the estimator, the chart and the yield table).
-- **Required:** real towns served, and county-specific housing and farm notes.
+- **Required:** real towns served, and the gate minimums in the HARD RULES at the top of this file.
 - **Strongly wanted, only with proof:** real completed installs in the county (with the homeowner's written permission for any photo or detail), local photographs taken by us, local sponsorships such as a GAA club (only if the sponsorship is real and current), local grid or planning quirks.
 - **Never:** invented installs, stock photos presented as local jobs, reviews, ratings, install counts or testimonials without permissioned proof.
 

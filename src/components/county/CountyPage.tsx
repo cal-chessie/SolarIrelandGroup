@@ -6,6 +6,7 @@ import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import { estimate, usageFromMonthlyBill, fmtEur } from '@/lib/estimate';
 import { SOLAR_DATA, GRANT_SCHEDULES, ndmgDoubledLine, ndmgDoubledLive } from '@/lib/solar-data';
 import type { CountyData } from '@/data/counties/types';
+import { NATIONAL_FAQS } from '@/data/national-faqs';
 import CountyEstimator from './CountyEstimator';
 import CountyActions from './CountyActions';
 
@@ -24,43 +25,11 @@ const BATTERY = SOLAR_DATA.batteryGrant;
 const VS_DUBLIN = Math.round((1 - C.pvgis.kwhPerKwp / C.pvgis.dublinKwhPerKwp) * 100);
 const NDMG_LIVE = ndmgDoubledLive();
 
-const FAQS: { q: string; a: string }[] = [
-  {
-    q: `Are solar panels worth it in ${C.name}?`,
-    a: `For most homes, yes. A south-facing roof in ${C.pvgis.place} makes about ${C.pvgis.kwhPerKwp} kWh per kWp a year (PVGIS, EU Joint Research Centre). On a €160 monthly bill our estimate puts a ${REF.systemSizeKwp} kWp system at about ${fmtEur(REF.totalAnnualBenefitEur)} a year in savings and export income, paying back in about ${REF.paybackYears} years after the ${GRANT} SEAI grant. Homes that use power during the day do best.`,
-  },
-  {
-    q: `How much do solar panels cost in ${C.name}?`,
-    a: `A 4 kWp system is ${fmtEur(FOUR.installCostEur)} installed, or ${fmtEur(FOUR.costAfterGrantEur)} after the ${GRANT} SEAI grant. Domestic solar carries 0% VAT. Larger systems cost more in total but less per kWp. The Bill Analyser sizes the system to your own usage.`,
-  },
-  {
-    q: `How much electricity do solar panels make in ${C.name}?`,
-    a: `About ${C.pvgis.kwhPerKwp} kWh per kWp a year on a south-facing roof at 35 degrees, so a 4 kWp system makes about ${(4 * C.pvgis.kwhPerKwp).toLocaleString()} kWh. That is about ${VS_DUBLIN}% less than the same roof in Dublin. May is the best month and December the weakest.`,
-  },
-  {
-    q: `Do solar panels work in ${C.name} in winter?`,
-    a: `They work, but they make far less. PVGIS puts December at about ${Math.round(C.pvgis.monthlyKwhPerKwp[11] * 4)} kWh for a 4 kWp system against about ${Math.round(C.pvgis.monthlyKwhPerKwp[4] * 4)} kWh in May. Most of the year's saving comes from March to September.`,
-  },
-  {
-    q: `Is the SEAI solar grant available in ${C.name}?`,
-    a: `Yes. The SEAI Solar Electricity Grant pays up to ${GRANT} for homes built and occupied before 2025, and a battery of ${BATTERY.minLabel} adds ${BATTERY.label} on the same application, up to ${BATTERY.withSolarMaxLabel} in total. You apply on seai.ie and get approval before any work starts.`,
-  },
-  {
-    q: 'Do I need to tell ESB Networks before I install solar?',
-    a: 'Yes, and the installer does it. A home system up to 6 kW on a single-phase supply (11 kW on three-phase) is notified to ESB Networks on the NC6 form. Bigger systems need an NC7 application and ESB Networks approval before connection.',
-  },
-  {
-    q: `Do I need planning permission for solar panels in ${C.name}?`,
-    a: 'For almost every house, no. Rooftop solar on a house has been exempt from planning permission since October 2022, with no limit on panel area, subject to standard conditions. Homes in a solar safeguarding zone near an airport or a protected structure follow different rules.',
-  },
-  {
-    q: `Can a ${C.name} farm or business get a solar grant?`,
-    a: NDMG_LIVE
-      ? `Yes. ${ndmgDoubledLine()} Farms can also look at TAMS, run by the Department of Agriculture. Our guide compares the two.`
-      : 'Yes. Businesses can apply for the SEAI Non-Domestic Microgen Grant, and farms can look at TAMS from the Department of Agriculture. Our guide compares the two.',
-  },
-  ...(C.extraFaqs ?? []),
-];
+// County questions first (real local search data only), then the national
+// questions, written once in src/data/national-faqs.ts and never given the
+// county name. Both are visible on the page, so both go in FAQPage.
+const LOCAL_FAQS = C.localFaqs;
+const FAQS: { q: string; a: string }[] = [...LOCAL_FAQS.map(({ q, a }) => ({ q, a })), ...NATIONAL_FAQS];
 
 const TITLE = `Solar Panels ${C.name} | Installers, Costs and SEAI Grant`;
 const DESCRIPTION = `Solar panels in ${C.name}: ${C.pvgis.kwhPerKwp} kWh per kWp a year, the ${GRANT} SEAI grant and a live estimate for your home. Analyse your bill free.`;
@@ -140,7 +109,7 @@ const schema = {
   ],
 };
 
-return { PAGE_URL, REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, FAQS, metadata, schema };
+return { PAGE_URL, REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, LOCAL_FAQS, metadata, schema };
 }
 
 export function countyMetadata(C: CountyData): Metadata {
@@ -153,7 +122,7 @@ const body = 'text-[15px] leading-relaxed text-white/75';
 const link = 'font-medium text-yellow-300 underline decoration-yellow-300/40 underline-offset-4 hover:decoration-yellow-300';
 
 export default function CountyPage({ county: C }: { county: CountyData }) {
-  const { REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, FAQS, schema } = build(C);
+  const { REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, LOCAL_FAQS, schema } = build(C);
   const peakMonth = Math.round(C.pvgis.monthlyKwhPerKwp[4] * 4);
   return (
     <>
@@ -231,7 +200,8 @@ export default function CountyPage({ county: C }: { county: CountyData }) {
                 {Math.round((C.pvgis.dublinKwhPerKwp - C.pvgis.kwhPerKwp) * 4)} kWh a year, a few months on the payback.
               </p>
               <p className="mt-4">
-                The roof and the house matter more. {C.housingNote}
+                The roof and the house matter more than the county: which way the roof faces, shade, and how much power the
+                home uses in daylight.
               </p>
             </div>
             <div className={card}>
@@ -303,7 +273,9 @@ export default function CountyPage({ county: C }: { county: CountyData }) {
             <div className={card}>
               <h3 className="text-lg font-semibold">Farms</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/70">
-                {C.farmNote} Our guide sets the two side by side.
+                A dairy or a drying shed runs in daylight, so a farm uses most of what its panels make. Farms can choose
+                between TAMS, run by the Department of Agriculture, and the SEAI business grant. TAMS pays a higher rate but
+                ranks and selects applications; the SEAI grant does not. Our guide sets the two side by side.
               </p>
               <Link className={`mt-3 inline-block text-sm ${link}`} href="/blog/farm-solar-2027-doubled-seai-grant-or-tams">
                 Farm solar in 2027: SEAI grant or TAMS
@@ -323,6 +295,39 @@ export default function CountyPage({ county: C }: { county: CountyData }) {
           </div>
         </section>
 
+        {/* Local picture: official, dated facts only. Hidden when empty, never filled. */}
+        {C.localFacts.length > 0 && (
+          <section aria-labelledby="local-h" className="mx-auto max-w-6xl px-4 py-12">
+            <h2 id="local-h" className={h2}>Solar in {C.name}: the local picture</h2>
+            <ul className="mt-6 grid gap-4 md:grid-cols-3">
+              {C.localFacts.map((f) => (
+                <li key={f.text} className={card}>
+                  <p className="text-sm leading-relaxed text-white/80">{f.text}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-white/60">
+                    Source: <a className={link} href={f.sourceUrl} rel="noopener">{f.source}</a>, {f.date}.
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Proof: real, permissioned items only. Hidden when empty, never filled. */}
+        {C.proofItems.length > 0 && (
+          <section aria-labelledby="proof-h" className="mx-auto max-w-6xl px-4 py-12">
+            <h2 id="proof-h" className={h2}>Our work in {C.name}</h2>
+            <ul className="mt-6 grid gap-4 md:grid-cols-2">
+              {C.proofItems.map((p) => (
+                <li key={p.text} className={card}>
+                  <p className="text-sm font-medium text-yellow-300">{p.town}, {p.date}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/80">{p.text}</p>
+                  {p.url && <a className={`mt-3 inline-block text-sm ${link}`} href={p.url} rel="noopener">Read more</a>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* Towns */}
         <section aria-labelledby="towns-h" className="mx-auto max-w-6xl px-4 py-12">
           <h2 id="towns-h" className={h2}>Towns we serve in {C.name}</h2>
@@ -336,11 +341,28 @@ export default function CountyPage({ county: C }: { county: CountyData }) {
           </ul>
         </section>
 
-        {/* FAQ */}
+        {/* FAQ: county questions (real local search data), then national questions written once. */}
         <section aria-labelledby="faq-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="faq-h" className={h2}>Solar in {C.name}: your questions answered</h2>
+          {LOCAL_FAQS.length > 0 && (
+            <>
+              <h2 id="faq-h" className={h2}>Questions from {C.name}</h2>
+              <div className="mt-6 mb-12 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
+                {LOCAL_FAQS.map((f) => (
+                  <details key={f.q} className="group p-6">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold">
+                      <h3 className="text-base font-semibold">{f.q}</h3>
+                      <span aria-hidden="true" className="text-yellow-300 transition-transform duration-200 group-open:rotate-45">+</span>
+                    </summary>
+                    <p className="mt-3 text-sm leading-relaxed text-white/75">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </>
+          )}
+          <h2 id={LOCAL_FAQS.length > 0 ? 'faq-national-h' : 'faq-h'} className={h2}>National questions</h2>
+          <p className={`mt-3 max-w-2xl ${body}`}>These answers are the same in every county in Ireland.</p>
           <div className="mt-6 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
-            {FAQS.map((f) => (
+            {NATIONAL_FAQS.map((f) => (
               <details key={f.q} className="group p-6">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold">
                   <h3 className="text-base font-semibold">{f.q}</h3>
