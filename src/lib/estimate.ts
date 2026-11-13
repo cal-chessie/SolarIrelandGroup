@@ -277,13 +277,20 @@ export function estimate(input: {
   exportRateEur?: number;
   /** Real daytime usage from a bill's day/night split, when we have it. */
   dayUsageKwh?: number;
+  /**
+   * Local yield (kWh per kWp per year) when the caller knows the place, e.g. a
+   * county page using PVGIS for its county town. Omitted, the national figure
+   * applies, so every existing caller is unchanged.
+   */
+  generationPerKwp?: number;
 }): EstimateResult {
   const unitRate = input.unitRateEur && input.unitRateEur > 0 ? input.unitRateEur : ENERGY.unitRateEur;
   const exportRate = input.exportRateEur && input.exportRateEur > 0 ? input.exportRateEur : ENERGY.exportRateEur;
   const annualUsageKwh = Math.max(Math.round(input.annualUsageKwh), 0);
 
   const systemSizeKwp = input.systemSizeKwp ?? sizeSystemKwp(annualUsageKwh, input.homeId);
-  const annualGenerationKwh = Math.round(systemSizeKwp * ENERGY.generationPerKwp);
+  const yieldPerKwp = input.generationPerKwp && input.generationPerKwp > 0 ? input.generationPerKwp : ENERGY.generationPerKwp;
+  const annualGenerationKwh = Math.round(systemSizeKwp * yieldPerKwp);
   const panels = Math.round((systemSizeKwp * 1000) / PRICING.panelWatts);
 
   const ratio = selfConsumptionRatio(annualGenerationKwh, annualUsageKwh);
