@@ -1308,7 +1308,8 @@
 .h-comb__cell--glow {
   stroke-opacity: 0.34;
   fill-opacity: 0.05;
-  animation: h-comb-glow 5.6s ease-in-out infinite;
+  /* SVG fill-opacity paints on the main thread every frame: finite (INP). */
+  animation: h-comb-glow 5.6s ease-in-out 3;
   animation-delay: calc(var(--g, 0) * 0.8s);
 }
 @keyframes h-comb-glow {

@@ -875,7 +875,10 @@
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: hero-sheen 7s linear infinite;
+  /* INP (13 Nov 2026): background-position cannot run on the compositor, so
+     an infinite sheen repainted the headline on the main thread every frame
+     and taps queued behind those paints. Two passes, then it rests. */
+  animation: hero-sheen 7s linear 2;
 }
 
 /* Sticky mobile CTA bar */
@@ -909,7 +912,8 @@
 .daylight-pulse {
   transform-box: fill-box;
   transform-origin: center;
-  animation: daylight-pulse 4s ease-in-out infinite;
+  /* SVG transform/opacity paints on the main thread: three breaths, then rest (INP). */
+  animation: daylight-pulse 4s ease-in-out 3;
 }
 
 /* Sun catching glass. A single diagonal glint crosses a real install photo as
