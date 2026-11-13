@@ -1,17 +1,10 @@
-'use client';
-
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { motion, useInView } from '@/lib/motion';
-import { useRef } from 'react';
 import {
   MessageCircle,
   Mail,
   MapPin,
   Phone,
   ArrowRight,
-  ChevronUp,
   Sun,
   ShieldCheck,
   Shield,
@@ -72,6 +65,7 @@ function ThreadsIcon({ className }: { className?: string }) {
 
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { BackToTop, CookieSettingsButton, FooterGrid, Reveal, SavingsLink } from './FooterClient';
 
 const FOOTER_SOCIAL = [
   { icon: FacebookIcon, href: 'https://www.facebook.com/SolarIrelandGroup', label: 'Follow us on Facebook', hoverColor: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/25 hover:text-[#1877F2]' },
@@ -80,9 +74,6 @@ const FOOTER_SOCIAL = [
   { icon: ThreadsIcon, href: 'https://www.threads.com/@solarireland', label: 'Follow us on Threads', hoverColor: 'hover:bg-white/10 hover:border-white/25 hover:text-white' },
 ];
 
-
-/** "Check my savings" lands on the Bill Analyser: in place on the homepage, the calculator page anywhere else. */
-const savingsHref = (pathname: string | null) => (pathname === '/' ? '#calculator' : '/solar-calculator');
 
 const quickLinks = [
   { label: 'Services', href: '/services' },
@@ -129,12 +120,11 @@ const trustBadges = [
 
 function PreFooterCTA() {
   return (
-    <motion.div
+    <Reveal
+      anim="fade-up"
+      duration={0.7}
+      margin="-60px"
       className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-400/15 via-amber-500/[0.08] to-amber-400/[0.04] border border-amber-400/10 p-8 sm:p-12"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7 }}
     >
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-400/[0.06] rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-amber-400/[0.04] rounded-full blur-[60px] pointer-events-none" />
@@ -152,16 +142,16 @@ function PreFooterCTA() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-          <motion.a
+          <a
             href="/solar-calculator"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
+            data-motion-hover-scale="1.04"
+            data-motion-tap-scale="0.97"
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-amber-400 text-black font-bold text-sm whitespace-nowrap shadow-lg shadow-amber-400/20"
           >
             <Zap className="w-4 h-4" />
             Solar Calculator
             <ArrowRight className="w-4 h-4" />
-          </motion.a>
+          </a>
           <a
             href={buildWhatsAppUrl({ source: 'footer' })}
             target="_blank"
@@ -173,19 +163,19 @@ function PreFooterCTA() {
           </a>
         </div>
       </div>
-    </motion.div>
+    </Reveal>
   );
 }
 
 function CertBadge({ icon: Icon, label, color }: (typeof certifications)[0]) {
   return (
-    <motion.div
-      whileHover={{ y: -2 }}
+    <div
+      data-motion-hover-y="-2"
       className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.04] cursor-default"
     >
       <Icon className={`w-3.5 h-3.5 ${color} shrink-0`} />
       <span className="text-[10px] sm:text-xs text-gray-400 font-medium">{label}</span>
-    </motion.div>
+    </div>
   );
 }
 
@@ -205,11 +195,12 @@ function ContactCard({
   const isExternal = href.startsWith('http');
 
   return (
-    <motion.a
+    <a
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      whileHover={{ y: -2, scale: 1.01 }}
+      data-motion-hover-scale="1.01"
+      data-motion-hover-y="-2"
       className="group flex items-center gap-3.5 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all cursor-pointer"
     >
       <div className={`w-9 h-9 rounded-lg ${color} flex items-center justify-center shrink-0`}>
@@ -222,46 +213,21 @@ function ContactCard({
         </p>
       </div>
       <ExternalLink className="w-3.5 h-3.5 text-gray-500 group-hover:text-gray-400 transition-colors shrink-0" />
-    </motion.a>
-  );
-}
-
-function BackToTop() {
-  return (
-    <motion.button
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      whileHover={{ scale: 1.1, y: -2 }}
-      whileTap={{ scale: 0.9 }}
-      className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/[0.08] transition-all"
-      aria-label="Back to top"
-    >
-      <ChevronUp className="w-4 h-4" />
-    </motion.button>
+    </a>
   );
 }
 
 function TrustBadgesRow() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-40px' });
-
   return (
-    <motion.div
-      ref={ref}
-      className="pb-10 sm:pb-12"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6 }}
-    >
+    <Reveal anim="fade-up" margin="-40px" className="pb-10 sm:pb-12">
       <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-5 sm:p-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
           {trustBadges.map((badge, i) => (
-            <motion.div
+            <Reveal
               key={badge.label}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              anim="fade-up"
+              duration={0.5}
+              delay={i * 0.1}
               className="flex items-center justify-center gap-3 cursor-default"
             >
               <div
@@ -274,11 +240,11 @@ function TrustBadgesRow() {
                   {badge.label}
                 </p>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>
-    </motion.div>
+    </Reveal>
   );
 }
 
@@ -288,15 +254,17 @@ function TrustBadgesRow() {
  * calculator links stay on the page (#calculator); and the unconfirmed claims
  * (NSAI Compliant, 1-Day Install) and the "Free Home Surveys" line (call-only
  * funnel) are left out. Every other page renders exactly as before.
+ *
+ * Perf (13 Nov 2026): no hooks and no 'use client'. A server page renders this
+ * as plain HTML; the reveals, the back-to-top and cookie-settings buttons and
+ * the pathname-aware savings link are the small client leaves in
+ * FooterClient.tsx. Imported from a client component it bundles as before.
  */
 export default function Footer({ variant = 'default' }: { variant?: 'default' | 'home' } = {}) {
-  const pathname = usePathname();
   const home = variant === 'home';
-  const footerRef = useRef<HTMLElement>(null);
-  const isInView = useInView(footerRef, { once: true, margin: '-50px' });
 
   return (
-    <footer ref={footerRef} role="contentinfo" className="border-t border-white/[0.05] relative">
+    <footer role="contentinfo" className="border-t border-white/[0.05] relative">
       <div className="amber-line" />
 
       <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -304,11 +272,7 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
           {home ? null : <PreFooterCTA />}
         </div>
 
-        <div
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 pb-12 sm:pb-16 transition-all duration-700 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
+        <FooterGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 pb-12 sm:pb-16 transition-all duration-700">
           <div className="lg:col-span-4">
             <div className="flex items-center gap-2.5 mb-4">
               <Image
@@ -330,18 +294,19 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
 
             <div className="flex items-center gap-2.5">
               {FOOTER_SOCIAL.map((social) => (
-                <motion.a
+                <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -3, scale: 1.1 }}
-                  whileTap={{ scale: 0.92 }}
+                  data-motion-hover-scale="1.1"
+                  data-motion-hover-y="-3"
+                  data-motion-tap-scale="0.92"
                   className={`w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-500 ${social.hoverColor} transition-all duration-200`}
                   aria-label={social.label}
                 >
                   <social.icon className="w-[18px] h-[18px]" />
-                </motion.a>
+                </a>
               ))}
             </div>
           </div>
@@ -353,13 +318,20 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
             <ul className={home ? 'grid grid-cols-2 gap-x-4 sm:block sm:space-y-2' : 'space-y-2'}>
               {quickLinks.map((link) => ({ ...link, href: home && link.href === '/solar-calculator' ? '#calculator' : link.href })).map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href === '/book-survey' ? savingsHref(pathname) : link.href}
-                    className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
-                  >
-                    <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
-                    {link.label}
-                  </a>
+                  {link.href === '/book-survey' ? (
+                    <SavingsLink className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2">
+                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
+                      {link.label}
+                    </SavingsLink>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-yellow-400 transition-colors py-2"
+                    >
+                      <span className="w-0 group-hover:w-2 h-px bg-amber-400/50 transition-all duration-200" />
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -428,15 +400,9 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
               </p>
             </div>
           </div>
-        </div>
+        </FooterGrid>
 
-        <motion.div
-          className="pb-10 sm:pb-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal anim="fade-in" className="pb-10 sm:pb-12">
           <div className="flex items-center gap-2 mb-5">
             <MapPin className="w-4 h-4 text-amber-400/50" />
             <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
@@ -459,15 +425,9 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
               </div>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          className="pb-10 sm:pb-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal anim="fade-in" className="pb-10 sm:pb-12">
           <div className="flex items-center gap-2 mb-5">
             <ShieldCheck className="w-4 h-4 text-amber-400/50" />
             <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
@@ -479,7 +439,7 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
               <CertBadge key={cert.label} {...cert} />
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
         {home ? null : <TrustBadgesRow />}
 
@@ -509,13 +469,7 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
             >
               Cookie Policy
             </a>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new CustomEvent('cookie-consent-open-settings'))}
-              className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors"
-            >
-              Cookie settings
-            </button>
+            <CookieSettingsButton className="text-xs text-gray-400 hover:text-gray-200 py-2 px-1 transition-colors" />
             <BackToTop />
           </div>
         </div>

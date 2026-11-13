@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import DeferredConsent from "@/components/DeferredConsent";
 import LeadSourceTracker from "@/components/LeadSourceTracker";
@@ -415,10 +414,18 @@ export default function RootLayout({
         <DeferredConsent />
         <LeadSourceTracker />
 
+        {/* Perf (13 Nov 2026): a plain inline script, not next/script. The
+            next/script runtime was in the layout chunk on every page only to
+            inject this one snippet after hydration. Inline, it runs as the
+            body parses: the consent defaults and the dataLayer queue exist
+            before any React code can fire an event, and gtag.js itself still
+            waits for the load event (below). CSP already allows inline
+            scripts (next.config.ts). */}
         {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script id="ga-init" strategy="afterInteractive">
-              {`
+          <script
+            id="ga-init"
+            dangerouslySetInnerHTML={{
+              __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 // A magic link (?lt=) is a homeowner's key: GA4 gets the URL without it (M6).
@@ -494,9 +501,9 @@ export default function RootLayout({
                   if (document.readyState === 'complete') arm();
                   else window.addEventListener('load', arm, { once: true });
                 })();
-              `}
-            </Script>
-          </>
+              `,
+            }}
+          />
         )}
       </body>
     </html>

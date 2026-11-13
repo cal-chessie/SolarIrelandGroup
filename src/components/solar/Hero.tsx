@@ -1,9 +1,8 @@
-'use client';
-
 import Image from 'next/image';
 import { ArrowRight, ChevronDown, MessageCircle, Sun } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import DaylightTrack from './DaylightTrack';
+import HeroCta from './HeroCta';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 /**
@@ -28,21 +27,12 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
  * trust row, and the large bee with "Daylight over Ireland" floating upper
  * right over the image. Every change below is an lg: class or an lg media
  * rule in home.css, so the phone hero is untouched.
+ *
+ * Perf (13 Nov 2026): a server component. Its markup, icons and the
+ * WhatsApp links ship as HTML with no client JS; only the "Check my savings"
+ * click (HeroCta) and the live daylight pill (DaylightTrack) hydrate.
  */
 export default function Hero() {
-  const toAnalyser = () => {
-    const el = document.getElementById('calculator');
-    if (!el) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    // Land the keyboard and screen reader on the analyser's heading too.
-    const h = el.querySelector<HTMLElement>('h2');
-    if (h) {
-      if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
-      setTimeout(() => h.focus({ preventScroll: true }), reduce ? 0 : 450);
-    }
-  };
-
   return (
     <section className="hero-section h-hero h-hero--v2" aria-labelledby="hero-title">
       <div className="absolute inset-0" aria-hidden="true">
@@ -94,17 +84,10 @@ export default function Hero() {
             className="hero-fade-up mt-6 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1 sm:gap-6 lg:justify-start lg:gap-3 w-full sm:w-auto"
             style={{ animationDelay: '0.5s' }}
           >
-            <a
-              href="#calculator"
-              onClick={(e) => {
-                e.preventDefault();
-                toAnalyser();
-              }}
-              className="h-btn"
-            >
+            <HeroCta className="h-btn">
               Check my savings
               <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
-            </a>
+            </HeroCta>
             <a
               href={buildWhatsAppUrl({ source: 'hero' })}
               target="_blank"

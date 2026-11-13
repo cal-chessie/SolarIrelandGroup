@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Sun, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -8,6 +7,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Plain <a>, not next/link (perf, 13 Nov 2026): this root not-found boundary's
+// chunks load on EVERY page, and next/link was a 9 KB chunk there only for
+// this page's five links. A 404 visitor leaving it takes a full page load.
 export default function NotFound() {
   return (
     <html lang="en-IE" className="dark">
@@ -34,42 +36,42 @@ export default function NotFound() {
             Try searching from our homepage or browse our solar guides.
           </p>
 
-          <Link
+          <a
             href="/"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-400/15"
           >
             Back to Home
             <ArrowRight className="w-4 h-4" />
-          </Link>
+          </a>
 
           <div className="mt-12 flex flex-wrap items-center justify-center gap-4 text-sm">
-            <Link
+            <a
               href="/blog"
               className="text-gray-500 hover:text-amber-400 transition-colors"
             >
               Blog
-            </Link>
+            </a>
             <span className="text-gray-800">·</span>
-            <Link
+            <a
               href="/services"
               className="text-gray-500 hover:text-amber-400 transition-colors"
             >
               Services
-            </Link>
+            </a>
             <span className="text-gray-800">·</span>
-            <Link
+            <a
               href="/contact"
               className="text-gray-500 hover:text-amber-400 transition-colors"
             >
               Contact
-            </Link>
+            </a>
             <span className="text-gray-800">·</span>
-            <Link
+            <a
               href="/counties"
               className="text-gray-500 hover:text-amber-400 transition-colors"
             >
               Counties
-            </Link>
+            </a>
           </div>
         </div>
       </body>

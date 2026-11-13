@@ -13,6 +13,7 @@ import {
   GrantInfoIsland,
 } from '@/components/solar/homeIslands';
 import HomeClose from '@/components/solar/HomeClose';
+import Footer from '@/components/solar/Footer';
 
 // Home's own title and description. The layout `default` stays as the fallback
 // for any route without a title, so it is not edited. The head term leads, the
@@ -59,7 +60,7 @@ export default function Home() {
     <>
       <HomeSchema />
       {/* Section order: see the HomeClient doc comment. */}
-      <HomeClient>
+      <HomeClient footer={<Footer variant="home" />}>
         <Hero />
         <BillAnalyserIsland />
         <HomeTrust />

@@ -5,7 +5,6 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/solar/Navbar';
 import ScrollProgress from '@/components/solar/ScrollProgress';
-import Footer from '@/components/solar/Footer';
 import './home.css';
 
 // Client-only widgets - no SSR needed, no hydration risk
@@ -27,8 +26,11 @@ const PageIntake = dynamic(() => import('@/components/solar/PageIntake'), { ssr:
  * passed in as `children` from src/app/page.tsx, a server component, so the
  * static ones (HomeTrust, HowItWorks, WhySolar, HomeClose, Popular guides)
  * ship no JS; the interactive ones stay client islands.
+ *
+ * Perf (13 Nov 2026): the footer is passed in the same way (`footer`), so
+ * it renders on the server too and only its small leaves hydrate.
  */
-export default function HomeClient({ children }: { children: ReactNode }) {
+export default function HomeClient({ children, footer }: { children: ReactNode; footer: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   // The floating widgets (chat bubble, sticky CTA, exit intent) mount once
@@ -100,7 +102,7 @@ export default function HomeClient({ children }: { children: ReactNode }) {
       <ScrollProgress />
       <Navbar />
       <main>{children}</main>
-      <Footer variant="home" />
+      {footer}
       {widgets && <WhatsAppChat />}
       {widgets && (
         <PageIntake sticky={{ label: 'Check my savings', scrollTo: 'calculator' }} exit={true} />
