@@ -5410,6 +5410,755 @@ export const articles: Article[] = [
         "href": "/solar-calculator?src=blog-mprn"
       }
     ]
+  },
+  {
+    "slug": "high-winter-bills-is-solar-worth-it-ireland",
+    "title": "High Bills This Winter? How Solar Works Across the Whole Year",
+    "seoTitle": "High Winter Bills? Irish Solar Makes Nearly 5x More in June",
+    "seoDescription": "A 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. How summer output and export credit carry winter bills, plus the €1,800 grant.",
+    "answer": "No, solar will not clear a December bill in December. A 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. The saving is counted over the year: summer power you use at home, plus export credit under the Clean Export Guarantee, carries the winter months.",
+    "excerpt": "Winter bills are when people think about solar, and December is when panels make least. How the summer pays for the winter, month by month, and why the panels going on Irish roofs now are bigger than they were.",
+    "category": "savings",
+    "date": "13 Nov 2026",
+    "readTime": "6 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-emerald-400/10",
+    "iconColor": "text-emerald-400",
+    "image": "/blog/high-winter-bills-is-solar-worth-it-ireland.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "No, solar will not clear a December bill in December. A 4 kWp Irish system makes about 110 kWh in December and about 517 kWh in June. The saving is counted over the year: the summer power you use at home, plus the export credit you earn under the Clean Export Guarantee, carries the winter months."
+      },
+      {
+        "type": "paragraph",
+        "text": "Last checked: 12 November 2026."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What a typical Irish system makes, month by month"
+      },
+      {
+        "type": "paragraph",
+        "text": "Our estimates use 950 kWh a year for every kWp on a good roof. PVGIS, the European Commission's solar model, puts a south-facing roof at 30 degrees in Dublin at about 972 kWh per kWp after standard losses, and the national average at about 884. So 950 describes a good roof without assuming every roof is one. A 4 kWp system, the size the full €1,800 SEAI grant is built around, comes out at about 3,800 kWh a year, spread across the months like this."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Month",
+          "Approx. generation, 4 kWp"
+        ],
+        "rows": [
+          [
+            "January",
+            "125 kWh"
+          ],
+          [
+            "February",
+            "182 kWh"
+          ],
+          [
+            "March",
+            "315 kWh"
+          ],
+          [
+            "April",
+            "422 kWh"
+          ],
+          [
+            "May",
+            "505 kWh"
+          ],
+          [
+            "June",
+            "517 kWh"
+          ],
+          [
+            "July",
+            "494 kWh"
+          ],
+          [
+            "August",
+            "426 kWh"
+          ],
+          [
+            "September",
+            "334 kWh"
+          ],
+          [
+            "October",
+            "228 kWh"
+          ],
+          [
+            "November",
+            "141 kWh"
+          ],
+          [
+            "December",
+            "110 kWh"
+          ]
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "stat",
+        "title": "The honest gap",
+        "body": "June makes nearly five times what December makes. May to August together make about 1,940 kWh; November to February make about 560. Panels keep working all winter, but a December day gives them seven or eight hours of weak light."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Why winter makes less: mostly, it is the short days"
+      },
+      {
+        "type": "numberedList",
+        "items": [
+          "Short days. In Dublin the sun is up for about 17 hours on the longest day in June and about 7.5 hours on the shortest day in December.",
+          "A low sun. At midday in late June the sun stands about 60 degrees above the horizon in Dublin. In late December it reaches about 13 degrees, so the same light is spread thinner and passes through far more air.",
+          "Cloud and long shadows. Winter skies are greyer, and with the sun that low, a chimney, a tree or the house next door shades the roof for longer each day."
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "Cold is not the problem",
+        "body": "Panels work better cold. LONGi's datasheet for its 440 W Hi-MO 6 panel gives a loss of 0.29% of output for every degree it heats up, so a bright, frosty morning is good solar weather. The short, low, grey days are what cost the winter months."
+      },
+      {
+        "type": "paragraph",
+        "text": "Cold, cloud and frost get their own post: [do solar panels work in winter](/blog/solar-panels-in-winter-do-they-work)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How the summer pays for the winter"
+      },
+      {
+        "type": "numberedList",
+        "items": [
+          "Power you use yourself. Every unit the panels make while the kettle, washing machine or immersion is running is a unit you do not buy. Our estimates value it at 35c, the bottom of the current Irish market band, so we never overstate it.",
+          "Power you export. What the house cannot use goes to the grid and is credited under the Clean Export Guarantee. Each supplier sets its own rate and the CRU sets no minimum above zero (CRU decision CRU202454), so our estimates use 18c a unit, not a promise of what your supplier pays. You need a smart meter to be paid for exports."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "In summer a typical home makes more than it can use in daylight, so a big share goes out as export credit. In winter almost everything the panels make is used in the house, but there is far less of it. Over twelve months, April to September carries most of the annual saving. Your winter bill stays a winter bill; the roof covers it across the year."
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "What solar never removes",
+        "body": "The standing charge stays on every bill, solar or not. Without a battery, an Irish home typically uses 30% to 50% of its own solar output and exports the rest. SEAI pays a flat €600 towards a battery of 5 kWh or more, but our estimates stay panels only so the number you see never leans on one."
+      },
+      {
+        "type": "paragraph",
+        "text": "Export credit lands on your normal electricity bills, so it shows up on your supplier's billing cycle. That is why every figure we give is a yearly one. How export payments and the meter fit together is in our [smart meter guide for solar](/blog/smart-meter-required-solar-panels-ireland)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Panels are getting bigger, and that helps a small roof"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "",
+          "LONGi Hi-MO 4m (2021)",
+          "LONGi Hi-MO 6 Explorer (today)"
+        ],
+        "rows": [
+          [
+            "Power",
+            "350 to 380 W",
+            "440 W"
+          ],
+          [
+            "Efficiency",
+            "19.2% to 20.9%",
+            "23.0%"
+          ],
+          [
+            "Cell size",
+            "166 mm",
+            "182 mm"
+          ],
+          [
+            "Panels for 4 kWp",
+            "Eleven at 370 W",
+            "Nine at 440 W"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "The 2021 figures are from pv magazine's report of the Hi-MO 4m launch; the current ones are from LONGi's LR5-54HTH-440M datasheet. Some of the jump is a better cell. A lot of it is size: bigger wafers and a bigger panel. The ITRPV, the roadmap the panel makers publish each year, records the move to larger wafer formats, with commercial panels reaching 730 W on the largest. Cell efficiency still climbs, in fractions of a percent a year."
+      },
+      {
+        "type": "paragraph",
+        "text": "For a homeowner that means a roof too small for a sensible system a few years ago can often carry one today. LONGi's datasheet for the 440 W panel gives a 15-year product warranty and a 25-year power warranty of about 89% of rated output in year 25."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "title": "Waiting for a better panel gains little",
+        "body": "New panels move in small steps now. Waiting a year costs a year of the saving, and SEAI sets the grant each year."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The SEAI grant is still €1,800"
+      },
+      {
+        "type": "paragraph",
+        "text": "The SEAI Solar Electricity Grant pays up to €1,800, reached in full at 4 kWp. The home needs an MPRN and must have been built and occupied before 2025, and SEAI's grant offer comes before any work starts. As part of the job we send ESB Networks the NC6 notification and SEAI the completion paperwork, and we book the post-works BER. The full walkthrough is in our [SEAI solar grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Questions people ask"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Do solar panels work in an Irish winter?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes, they run on daylight, not heat. A 4 kWp system makes about 110 kWh in December against about 517 kWh in June, because the days are short and the sun is low."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Will solar lower my winter electricity bill?"
+      },
+      {
+        "type": "paragraph",
+        "text": "A little, because almost everything made in winter is used in the house. The bigger effect is over the year: summer self-use and export credit carry most of the annual saving. The standing charge stays either way."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does cold weather reduce solar output?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. Panels lose output as they heat up, about 0.29% per degree on LONGi's 440 W panel, so a cold, bright day suits them. Short days, low sun and cloud are what reduce winter output."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Do I need a smart meter to be paid for exports?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. Exports are credited under the Clean Export Guarantee at a rate your supplier sets, and you need a smart meter to be paid for them."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "See your own numbers"
+      },
+      {
+        "type": "paragraph",
+        "text": "The figures above describe a typical home. Your own saving depends most on when you use power, and your bill shows that. The [bill analyser](/solar-calculator) reads your day and night split and gives a close, conservative estimate for your house. Then book a 15-minute call to talk it through, with a site survey before anything is priced."
+      },
+      {
+        "type": "cta",
+        "text": "Upload my bill and see my numbers",
+        "href": "/solar-calculator"
+      }
+    ]
+  },
+  {
+    "slug": "seai-business-solar-grant-doubled-2027",
+    "title": "SEAI Doubled the Business Solar Grant. Most Firms Will Apply Too Late.",
+    "seoTitle": "SEAI Business Solar Grant Doubled to 45%: 6 July 2027",
+    "seoDescription": "SEAI's doubled business solar grant pays an effective 45%, up to €325,200, on applications until 6 July 2027. The timeline that decides who gets it.",
+    "answer": "Yes. For new applications from 6 October 2026 to 6 July 2027, SEAI's Non-Domestic Microgen Grant pays an effective 45% towards business solar, up to €325,200, roughly double the old rate. Existing applications are not increased. SEAI's letter of offer must arrive before any work or purchase starts.",
+    "excerpt": "SEAI has doubled its business solar grant to an effective 45%, and it closes to new applications on 6 July 2027. The timeline worked backwards, and what the grant pays on a 20 kWp and a 50 kWp system.",
+    "category": "grants",
+    "date": "12 Nov 2026",
+    "readTime": "5 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-yellow-400/10",
+    "iconColor": "text-yellow-400",
+    "image": "/installs/commercial-flat-roof-solar.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Yes, it doubled. For new applications from 6 October 2026 to 6 July 2027, SEAI's Non-Domestic Microgen Grant pays an effective 45% of the cost of a business solar PV system, up to €325,200, according to [SEAI](https://www.seai.ie/grants/business-grants/commercial-solar-pv). Before this it worked out at roughly half that. SEAI's letter of offer must arrive before any work starts."
+      },
+      {
+        "type": "paragraph",
+        "text": "Last checked: 12 November 2026."
+      },
+      {
+        "type": "paragraph",
+        "text": "SEAI lists the increase as an action of the National Energy Affordability Taskforce, and nothing on seai.ie says the window will be extended. Plan on 6 July 2027 being the last day."
+      },
+      {
+        "type": "callout",
+        "variant": "stat",
+        "title": "The doubled grant in one line",
+        "body": "45% of your invoiced cost, or the SEAI table value, whichever is lower. Up to €325,200. Systems up to 1,000 kWp. New applications from 6 October 2026 to 6 July 2027."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What changed, and what did not"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "",
+          "From 6 October 2026 (SEAI)"
+        ],
+        "rows": [
+          [
+            "Rate",
+            "An effective 45%, roughly double the old rate"
+          ],
+          [
+            "Ceiling",
+            "Up to €325,200, on a 1,000 kWp system"
+          ],
+          [
+            "Who can apply",
+            "Businesses, farms, public bodies, schools, community centres and non-profits, as before"
+          ],
+          [
+            "Existing applications",
+            "Not increased. The new rate is for new applications only"
+          ],
+          [
+            "The rules",
+            "Letter of offer before any work or purchase; the job done by a registered SEAI Non-Domestic Microgen company"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "The full kWp table, eligibility, VAT and tax relief are on our [commercial solar grant guide](/commercial-solar-grant). This post is about the clock."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The deadline is for the application, not the install"
+      },
+      {
+        "type": "paragraph",
+        "text": "6 July 2027 is the last day to apply. An application needs a system designed for your roof and meter, sized from your real usage, and a quote to match. That takes a bill, a site survey and a design. Each step has a queue, and the queue lengthens as the deadline nears."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Work backwards from 6 July 2027"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Step",
+          "What happens",
+          "Time it takes"
+        ],
+        "rows": [
+          [
+            "1. Your bill",
+            "We read your business bill, your MPRN and when you use power.",
+            "Days"
+          ],
+          [
+            "2. Site survey",
+            "Every business gets an on-site survey: roof, meter, board, cable runs.",
+            "Book weeks ahead in spring"
+          ],
+          [
+            "3. Design and quote",
+            "The system size and the price the application is built on.",
+            "One to two weeks"
+          ],
+          [
+            "4. Apply to SEAI",
+            "The application goes in by 6 July 2027.",
+            "Deadline day at the latest"
+          ],
+          [
+            "5. Letter of offer",
+            "SEAI issues the offer. Nothing is bought or started before it.",
+            "Wait for it"
+          ],
+          [
+            "6. ESB Networks",
+            "Your installer applies to ESB Networks before installing: NC6 or NC7 depending on size.",
+            "At least 4 weeks, 20 working days"
+          ],
+          [
+            "7. Install",
+            "A Safe Electric registered electrician wires and certifies it.",
+            "Days to weeks, by size"
+          ],
+          [
+            "8. Paperwork and payment",
+            "You pay the invoice, the Declaration of Works goes in, SEAI pays.",
+            "4 to 6 weeks after all documents (SEAI)"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "SEAI's offer is valid for 8 months once issued, so the install is not the squeeze. Steps 1 to 4 are. A business that starts in June is fitting a bill review, a site survey, a design and a quote into a few weeks, alongside every other business that left it late."
+      },
+      {
+        "type": "paragraph",
+        "text": "Waiting has a second cost. Apply in January and you can be generating through spring and summer 2027. Apply in July and the 8-month offer runs into the dark months, so your first summer of output is 2028."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "title": "The rule that catches people",
+        "body": "Do not buy panels, sign an order that starts work, or let anyone on the roof before SEAI's letter of offer arrives. SEAI does not pay for work started before the offer."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What 45% pays on two system sizes"
+      },
+      {
+        "type": "paragraph",
+        "text": "Both values come from SEAI's kWp table for the doubled window. SEAI pays the lower of the table value and 45% of your invoice, so your grant can be less."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "System",
+          "SEAI table value (doubled window)",
+          "Invoice needed to receive it in full"
+        ],
+        "rows": [
+          [
+            "20 kWp",
+            "€13,200",
+            "€29,334 or more"
+          ],
+          [
+            "50 kWp",
+            "€25,200",
+            "€56,000 or more"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Illustrative data, not a quote. Your system size comes from your bill and the site survey. Every band up to 1,000 kWp is in the [full SEAI grant table](/commercial-solar-grant#table)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Farms: the same grant, the same clock"
+      },
+      {
+        "type": "paragraph",
+        "text": "Agriculture is in, on the same 45% and the same 6 July 2027 deadline: one grant per MPRN, for your own use on the farm. Spring is not a quiet time on a farm to book a site survey, so start in winter. How it compares with TAMS is in [farm solar in 2027: the doubled SEAI grant or TAMS](/blog/farm-solar-2027-doubled-seai-grant-or-tams)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The small print"
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "Tax clearance is needed if your SEAI grants pass €10,000 in a calendar year.",
+          "The offer is valid for 8 months. Finish the works and send the Declaration of Works inside it.",
+          "Batteries are not eligible costs under this grant. The claim covers the solar PV system.",
+          "Payment lands 4 to 6 weeks after SEAI has every document."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Questions businesses ask"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "What is the SEAI business solar grant in 2027?"
+      },
+      {
+        "type": "paragraph",
+        "text": "It is the Non-Domestic Microgen Grant. For new applications from 6 October 2026 to 6 July 2027 it pays the lower of SEAI's kWp table or 45% of the invoice, up to €325,200, on systems up to 1,000 kWp."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does the doubled rate apply to my existing application?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. SEAI says existing applications are not increased. The 45% rate is for new applications only."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can I start work before SEAI approves the grant?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. Work or purchases started before SEAI's letter of offer are not eligible. Once the offer arrives you have 8 months to finish and send the Declaration of Works."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Does the grant cover a battery?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. Batteries are not eligible costs under this grant. The claim covers the solar PV system."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "How long does SEAI take to pay?"
+      },
+      {
+        "type": "paragraph",
+        "text": "SEAI pays 4 to 6 weeks after it has every document. Grants above €10,000 in a calendar year need tax clearance."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Start with your bill"
+      },
+      {
+        "type": "paragraph",
+        "text": "Upload a business bill to the [bill analyser](/solar-calculator) and see your figures first. Then a 15-minute call, then the site survey, then the design the application is built on. The earlier that starts, the more room there is before 6 July 2027. How we install for businesses is on our [commercial solar services](/services#business) page."
+      },
+      {
+        "type": "cta",
+        "text": "Analyse your business bill",
+        "href": "/solar-calculator"
+      },
+      {
+        "type": "cta",
+        "text": "Read the commercial solar grant guide",
+        "href": "/commercial-solar-grant"
+      },
+      {
+        "type": "paragraph",
+        "text": "Source: [SEAI, Non-Domestic Microgen Grant](https://www.seai.ie/grants/business-grants/commercial-solar-pv), read 12 November 2026."
+      }
+    ]
+  },
+  {
+    "slug": "farm-solar-2027-doubled-seai-grant-or-tams",
+    "title": "Farm Solar in 2027: The Doubled SEAI Grant or TAMS?",
+    "seoTitle": "Farm Solar 2027: Doubled SEAI Grant (45%) or TAMS (60%)?",
+    "seoDescription": "TAMS pays 60% on farm solar, but in Tranche 10 about 1 in 10 solar applications was picked. SEAI's doubled grant pays up to 45% until 6 July 2027.",
+    "answer": "TAMS pays 60% on farm solar, but it ranks and selects: in Tranche 10 about one in ten solar applications was picked, per the Department of Agriculture. SEAI's doubled Non-Domestic Microgen Grant pays the lower of its kWp table or 45% of the invoice, up to €325,200, and describes no draw. It closes on 6 July 2027.",
+    "excerpt": "TAMS pays the higher rate on farm solar, but in Tranche 10 only about one in ten solar applications was selected. The doubled SEAI grant pays less and describes no draw, but it closes on 6 July 2027. The two side by side.",
+    "category": "grants",
+    "date": "13 Nov 2026",
+    "readTime": "6 min read",
+    "author": "Cal Chesters",
+    "iconBg": "bg-emerald-400/10",
+    "iconColor": "text-emerald-400",
+    "image": "/installs/two-storey-home-black-solar-panels.webp",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "TAMS pays 60% on farm solar, but it ranks and selects: in Tranche 10 about one in ten solar applications was picked, according to the Department of Agriculture. SEAI's doubled Non-Domestic Microgen Grant pays the lower of its kWp table or 45% of the invoice, up to €325,200, and describes no draw. It closes to new applications on 6 July 2027."
+      },
+      {
+        "type": "paragraph",
+        "text": "Last checked: 12 November 2026."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "",
+          "TAMS solar (SCIS)",
+          "SEAI doubled grant (NDMG)"
+        ],
+        "rows": [
+          [
+            "Rate",
+            "60%",
+            "Lower of the SEAI table or 45% of the invoice"
+          ],
+          [
+            "Who",
+            "Farmers, through a TAMS 3 application",
+            "Businesses, farms, public bodies and non-profits, once per MPRN"
+          ],
+          [
+            "Cap",
+            "€90,000 investment ceiling",
+            "Up to €325,200, systems up to 1,000 kWp"
+          ],
+          [
+            "Selection",
+            "Ranked and selected: 10% of solar applications picked in Tranche 10",
+            "No ranking or draw described on seai.ie"
+          ],
+          [
+            "The catch",
+            "On-farm energy use only, from 7 March 2026",
+            "New applications close 6 July 2027; letter of offer before any work"
+          ],
+          [
+            "Source",
+            "gov.ie, Department of Agriculture, 3 March 2026",
+            "seai.ie, Non-Domestic Microgen Grant"
+          ]
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "title": "Both on one system?",
+        "body": "We are not saying you can or cannot use TAMS and the SEAI grant on the same system. Confirm with your adviser and with SEAI before you apply for either."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "TAMS pays more, but solar became a draw"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Solar Capital Investment Scheme under TAMS 3 pays 60%, on an investment ceiling of €90,000 separate from the other TAMS schemes. Demand was high enough that the Minister for Agriculture, Martin Heydon, limited it. He said over 20% of the TAMS budget had gone on the solar measure alone, and from the tranche that opened on 7 March 2026 solar grant aid is limited to on-farm energy use ([gov.ie, Department of Agriculture, 3 March 2026](https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/press-releases/minister-heydon-confirms-application-of-ranking-and-selection-to-tams-3-tranche-10/))."
+      },
+      {
+        "type": "paragraph",
+        "text": "Tranche 10 closed on 5 December 2025 with 7,906 applications across TAMS and was run on ranking and selection. For solar, the Department put the selection rate at 10%. The Department has not said later tranches will run the same way, so check the current rules before counting on either outcome. The next TAMS tranche closes on 4 December 2026."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The doubled SEAI grant: lower rate, no draw described"
+      },
+      {
+        "type": "paragraph",
+        "text": "SEAI's Non-Domestic Microgen Grant covers the agricultural sector. For new applications from 6 October 2026 to 6 July 2027 it runs at an effective 45%: SEAI pays the lower of its kWp table or 45% of your invoice, up to €325,200, on systems up to 1,000 kWp ([SEAI](https://www.seai.ie/grants/business-grants/commercial-solar-pv)). SEAI's page describes no ranking or selection. After 6 July 2027 the doubled rate is gone for new applications."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What the doubled grant pays on a farm shed"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "System",
+          "SEAI table value",
+          "Invoice needed to receive it in full"
+        ],
+        "rows": [
+          [
+            "20 kWp",
+            "€13,200",
+            "€29,334 or more"
+          ],
+          [
+            "50 kWp",
+            "€25,200",
+            "€56,000 or more"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "On a lower invoice SEAI pays 45% of the invoice instead. Illustrative grant figures only, not a quote or a saving. The full table, VAT and tax relief are in our [commercial solar grant guide](/commercial-solar-grant), and the rate change itself is covered in [SEAI doubled the business solar grant](/blog/seai-business-solar-grant-doubled-2027)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Where farm power goes, and why daytime use matters"
+      },
+      {
+        "type": "paragraph",
+        "text": "On most farms the big loads are milking, milk cooling, water heating, lighting and ventilation. Panels make power in daylight, and every unit the farm uses while the sun is up is a unit you do not buy. Exports earn only what your supplier pays under the Clean Export Guarantee. Both grants now point the same way: size the system for what the farm uses. Your bill shows the day and night split, and the [farm bill analyser](/solar-calculator) works from your own figures."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Which roof"
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "Condition: an old sheet roof near the end of its life is dealt with before panels go on, not after.",
+          "Structure: the frame has to carry the panels and the wind loading. This is checked on site at the site survey.",
+          "Older sheeting: if a roof may contain asbestos, say so early. It changes the plan.",
+          "Distance to the meter: a shed far from the yard meter means a longer cable run."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The timeline to 6 July 2027"
+      },
+      {
+        "type": "numberedList",
+        "items": [
+          "Bill and on-site survey to size the system and check the roof.",
+          "Apply to SEAI. Nothing is bought or started until the letter of offer arrives; then you have 8 months to finish.",
+          "Your installer applies to ESB Networks before installing. Allow at least 4 weeks.",
+          "Install, with the electrical work done by a Safe Electric registered electrician.",
+          "Claim: SEAI pays usually 4 to 6 weeks after all documents are in. Grants over €10,000 in a year need tax clearance."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Questions farmers ask"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "How much does TAMS pay for solar panels?"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Solar Capital Investment Scheme under TAMS 3 pays 60%, on an investment ceiling of €90,000. From 7 March 2026 the aid is limited to on-farm energy use, per the Department of Agriculture."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Will my TAMS solar application be selected?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Nobody can say in advance. In Tranche 10 the Department selected 10% of solar applications. It has not said later tranches will run the same way; the next closes on 4 December 2026."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can a farm get the doubled SEAI grant?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. SEAI's Non-Domestic Microgen Grant covers the agricultural sector, once per MPRN. New applications made by 6 July 2027 get the effective 45% rate, up to €325,200."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Can I start work before the SEAI offer arrives?"
+      },
+      {
+        "type": "paragraph",
+        "text": "No. Nothing is bought or started until SEAI's letter of offer arrives. After that you have 8 months to finish the job."
+      },
+      {
+        "type": "paragraph",
+        "text": "How we handle farm and business installs is on [our business solar services](/services#business) page, and every grant band is in the [SEAI commercial solar grant table](/commercial-solar-grant). Start with your bill, then a 15-minute call, then the site survey."
+      },
+      {
+        "type": "cta",
+        "text": "See what solar does for your farm",
+        "href": "/solar-calculator"
+      }
+    ]
   }
 ];
 

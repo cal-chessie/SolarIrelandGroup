@@ -175,9 +175,6 @@
   .hero-section {
     isolation: isolate;
   }
-  .hero-section .hero-bg {
-    content-visibility: auto;
-  }
 
   /* Honeycomb pattern overlay */
   .honeycomb-bg {

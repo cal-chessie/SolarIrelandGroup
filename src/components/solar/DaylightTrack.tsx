@@ -118,7 +118,22 @@ export default function DaylightTrack({
     return () => clearInterval(timer);
   }, []);
 
-  if (!state) return null;
+  // Before the client knows the sun's position, hold the pill's exact box so
+  // the vertically centred hero does not jump when it appears (mobile CLS).
+  if (!state) {
+    return (
+      <div
+        aria-hidden="true"
+        className="invisible inline-flex items-center gap-3.5 rounded-full border border-transparent pl-4 pr-5 py-2.5"
+      >
+        <span className="block shrink-0 w-[104px] sm:w-[148px] h-[34px]" />
+        <span className="text-left leading-tight whitespace-nowrap">
+          <span className="block text-[13px] font-semibold">Daylight over Ireland</span>
+          <span className="block text-[12px]">00.0 hours today</span>
+        </span>
+      </div>
+    );
+  }
 
   // A shallow arc, drawn once and measured, so the dot sits exactly on it.
   const W = 148;

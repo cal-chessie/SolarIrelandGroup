@@ -51,7 +51,7 @@ export default function Hero() {
           alt=""
           fill
           sizes="100vw"
-          quality={85}
+          quality={75}
           className="hero-bg hero-kenburns object-cover"
           // LCP element on every breakpoint. Next 16 `preload` emits the head
           // preload; fetchPriority lifts it above the JS chunks.

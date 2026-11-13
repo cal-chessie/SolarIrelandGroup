@@ -51,6 +51,9 @@ Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 
 - [Clean Export Guarantee explained](${SITE}/blog/clean-export-guarantee-explained)
 - [Do solar panels work in winter?](${SITE}/blog/solar-panels-in-winter-do-they-work)
 - [Planning permission for solar panels](${SITE}/blog/planning-permission-solar-panels-ireland)
+- [High winter bills: how solar works across the whole year](${SITE}/blog/high-winter-bills-is-solar-worth-it-ireland)
+- [SEAI doubled the business solar grant to 45%](${SITE}/blog/seai-business-solar-grant-doubled-2027)
+- [Farm solar in 2027: the doubled SEAI grant or TAMS](${SITE}/blog/farm-solar-2027-doubled-seai-grant-or-tams)
 
 ## Pricing, in short
 - ${DOMESTIC_MIN_KWP} kWp panels only: ${EUR(panelsOnly)}, or ${EUR(panelsOnly - grant)} after the SEAI grant
