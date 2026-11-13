@@ -1191,7 +1191,12 @@ export default function WhatsAppChat() {
            rounded top, a drag handle, the page dimmed behind it; the
            visualViewport effect pins it above the keyboard. From 640: a
            400px floating panel, bottom right. Only transform and opacity
-           move; reduced motion gets a short fade with no travel. */
+           move; reduced motion gets a short fade with no travel.
+           The open (Cal, 13 Nov: "pops open far too fast"): it used to slide
+           the whole screen height (800px) on a spring curve, so most of the
+           travel landed in the first 130ms and read as a pop. It now rises
+           32px and fades in over 320ms on a plain ease-out, and leaves in
+           240ms. Finite transitions on transform and opacity only (INP). */
         .wa-sheet {
           position: fixed;
           z-index: 50;
@@ -1202,12 +1207,13 @@ export default function WhatsAppChat() {
           background: #0f0f0f;
           border: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-          transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease, visibility 0s linear 0s;
+          transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 260ms cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear 0s;
         }
         .wa-sheet[data-open='false'] {
           visibility: hidden;
           pointer-events: none;
-          transition: transform 360ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease, visibility 0s linear 360ms;
+          opacity: 0;
+          transition: transform 240ms cubic-bezier(0.4, 0, 1, 1), opacity 200ms cubic-bezier(0.4, 0, 1, 1), visibility 0s linear 240ms;
         }
         .wa-backdrop {
           position: fixed;
@@ -1216,7 +1222,7 @@ export default function WhatsAppChat() {
           background: rgba(0, 0, 0, 0.55);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 300ms ease;
+          transition: opacity 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         .wa-backdrop[data-open='true'] {
           opacity: 1;
@@ -1238,7 +1244,7 @@ export default function WhatsAppChat() {
             border-radius: 20px 20px 0 0;
           }
           .wa-sheet[data-open='false'] {
-            transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 32px, 0);
           }
           .wa-sheet__head {
             padding-top: 22px;
@@ -1276,7 +1282,7 @@ export default function WhatsAppChat() {
           }
           .wa-sheet[data-open='false'] {
             opacity: 0;
-            transform: translate3d(0, 24px, 0) scale(0.92);
+            transform: translate3d(0, 16px, 0) scale(0.96);
           }
           .wa-sheet[data-min='true'] {
             width: 340px;
@@ -1290,10 +1296,13 @@ export default function WhatsAppChat() {
           .wa-sheet,
           .wa-sheet[data-open='false'] {
             transform: none;
-            transition: opacity 160ms linear, visibility 0s linear 160ms;
+            transition: opacity 200ms linear, visibility 0s linear 200ms;
           }
           .wa-sheet[data-open='true'] {
-            transition: opacity 160ms linear, visibility 0s linear 0s;
+            transition: opacity 200ms linear, visibility 0s linear 0s;
+          }
+          .wa-backdrop {
+            transition: opacity 200ms linear;
           }
           .wa-sheet[data-open='false'] {
             opacity: 0;

@@ -426,7 +426,9 @@ button.si-photo:hover {
    both roads in the thumb zone). From 768 it is a two-column composition
    filling the section: the message left, the control and roads right.
    Spacing sits on an 8px grid and scales with the screen height (svh), so a
-   tall phone breathes and a short one tightens without cramping. */
+   tall phone breathes and a short one tightens without cramping.
+   13 Nov: the phone half of this was reversed (too much empty space around
+   the control); see the phone block below. Full bleed stays. */
 .si-analyser {
   --si-nav-h: 73px; /* the Navbar: h-[72px] plus its 1px border */
   scroll-margin-top: var(--si-nav-h);
@@ -592,33 +594,48 @@ button.si-photo:hover {
   text-align: left;
 }
 
-/* ── Phone (under 768): the start state is the screen. ── */
+/* ── Phone (under 768): one tight stack that fits one screen. ──
+   13 Nov (Cal, on his iPhone): the door used to fill the whole visible
+   height with its three zones spread apart (justify-content: space-between
+   on a 100svh section), which left about 100px of empty black above and
+   below Home | Business. Scrolled so the control sat mid-screen, the line
+   it changes (the grant figure) was off the top, so a tap looked dead.
+   Now the stack is sized to its content, and the control sits under the
+   headline with that line directly beneath it: title, Home | Business, the
+   grant line, then both roads. The pitch and middle wrappers dissolve
+   (display: contents) so their children can be ordered; DOM and reading
+   order are unchanged and nothing focusable moves. */
 @media (max-width: 767px) {
   .si-an--section[data-phase='door'] {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - var(--si-nav-h));
-    min-height: calc(100svh - var(--si-nav-h));
-  }
-  .si-an--section[data-phase='door'] > div,
-  .si-an--section[data-phase='door'] > div > div,
-  .si-an--section[data-phase='door'] .si-an-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    padding-block: 8px;
   }
   /* No card chrome: full bleed, 24px gutters (the 16px container plus 8). */
   .si-an-card.si-an-door {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: clamp(12px, 3svh, 40px);
-    padding: clamp(12px, 3svh, 40px) 8px clamp(4px, 1svh, 16px);
+    gap: 0;
+    padding: 24px 8px 16px;
     background: transparent;
     box-shadow: none;
     border-radius: 0;
+  }
+  .si-an-door .si-an-door__pitch,
+  .si-an-door .si-an-door__mid {
+    display: contents;
+  }
+  .si-an-door .si-an-kicker {
+    order: 1;
+  }
+  .si-an-door .si-an-door__title {
+    order: 2;
+  }
+  .si-an-door .si-an-seg {
+    order: 3;
+    margin-top: 24px;
+  }
+  .si-an-door .si-an-door__act {
+    order: 6;
+    margin-top: 24px;
   }
   /* Width only, never height. It was clamp(28px, 4.4svh + 6px, 40px), and
      a short-screen rule dropped it to 28px under 620px tall: both move when
@@ -628,8 +645,10 @@ button.si-photo:hover {
   .si-an-door .si-an-door__title {
     font-size: clamp(28px, 8.4vw, 36px);
   }
+  /* The line Home | Business rewrites, right under the control. */
   .si-an-door .si-an-door__sub {
-    margin-top: clamp(8px, 2svh, 16px);
+    order: 5;
+    margin-top: 12px;
     line-height: 1.45;
   }
   /* Three cells sized to their words: the middle one is the longest. */
@@ -643,7 +662,7 @@ button.si-photo:hover {
     padding-inline: 4px;
   }
   .si-an-door .si-an-priv {
-    margin-top: clamp(4px, 1svh, 8px);
+    margin-top: 8px;
   }
   .si-an-priv__line {
     margin-bottom: -8px;
@@ -659,7 +678,7 @@ button.si-photo:hover {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    min-height: clamp(52px, 8svh, 60px);
+    min-height: 56px;
     padding: 0 20px;
     border-radius: var(--si-r);
   }
@@ -684,7 +703,7 @@ button.si-photo:hover {
   }
   .si-an-road__note {
     display: block;
-    margin: 8px 0 clamp(12px, 2svh, 16px);
+    margin: 8px 0 12px;
     font-size: 12.5px;
     line-height: 18px;
     color: var(--si-fg-muted);
@@ -692,7 +711,7 @@ button.si-photo:hover {
     text-wrap: balance;
   }
   .si-an-door .si-an-trust {
-    margin-top: clamp(12px, 2.4svh, 24px);
+    margin-top: 16px;
   }
 }
 /* Short phones (iPhone SE and mini with the browser bars up). */

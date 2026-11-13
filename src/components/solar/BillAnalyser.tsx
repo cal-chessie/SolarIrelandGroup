@@ -137,6 +137,10 @@ const loadFullCss = () =>
     fullCss = null;
   }));
 
+const reachByPointer = (e: { pointerType: string }) => {
+  if (e.pointerType !== 'touch') void loadFullCss();
+};
+
 /** How many analysers are on screen right now (see the in-view effect below). */
 let analysersInView = 0;
 
@@ -1273,8 +1277,12 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       data-segment={seg}
       data-reason={phase === 'failed' ? failure?.reason : undefined}
       data-wide={wide ? 'true' : 'false'}
-      onPointerEnter={loadFullCss}
-      onPointerDown={loadFullCss}
+      // A finger landing here is usually a scroll, not a reach: loading the
+      // 64 KB sheet then restyled the whole page mid-scroll on a phone. Touch
+      // waits for a tap (click) or focus; a mouse still warms it on hover.
+      onPointerEnter={reachByPointer}
+      onPointerDown={reachByPointer}
+      onClickCapture={loadFullCss}
       onFocus={loadFullCss}
       onKeyDown={loadFullCss}
       onDragEnter={loadFullCss}

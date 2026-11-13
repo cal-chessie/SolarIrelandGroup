@@ -10,6 +10,11 @@ import { describe, expect, it } from 'vitest';
 // Business): 375x560 549/559 of 560, 390x664 653/664, 430x740 728/740,
 // 768x1024 643/686, 1440x900 693/718. These tests guard the CSS contract
 // that makes it true so a later sweep cannot quietly undo it.
+// 13 Nov, Cal on his iPhone, reversing the phone spread: about 100px of empty
+// black above and below Home | Business, and with the control centred the
+// grant line it rewrites sat off the top, so a tap looked dead. On a phone the
+// door is now one content-sized stack: headline, Home | Business, the grant
+// line directly under it, then both roads.
 const css = readFileSync(join(process.cwd(), 'src/components/intake/intake.css'), 'utf8');
 const tsx = readFileSync(join(process.cwd(), 'src/components/solar/BillAnalyser.tsx'), 'utf8');
 const block = (open: string) => {
@@ -23,24 +28,38 @@ const block = (open: string) => {
   return '';
 };
 const phone = block('@media (max-width: 767px) {\n  .si-an--section');
+const rule = (sel: string) => {
+  const m = phone.match(new RegExp(`${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`));
+  return m ? m[1] : '';
+};
 const short = block('@media (max-width: 767px) and (max-height: 620px)');
 
-describe('Bill Analyser start state uses the whole phone screen', () => {
+describe('Bill Analyser start state fits one phone screen', () => {
   it('lands every #calculator door under the fixed navbar', () => {
     expect(css).toMatch(/--si-nav-h:\s*73px/);
     expect(css).toMatch(/--si-nav-h:\s*81px/);
     expect(css).toMatch(/scroll-margin-top:\s*var\(--si-nav-h\)/);
   });
 
-  it('fills the small visible viewport under the navbar, with a vh fallback', () => {
-    expect(phone).toMatch(/min-height:\s*calc\(100vh - var\(--si-nav-h\)\);\s*min-height:\s*calc\(100svh - var\(--si-nav-h\)\)/);
+  it('sizes the phone door to its content, never to the screen height', () => {
+    expect(phone).not.toMatch(/min-height:\s*calc\(100s?vh/);
+    expect(phone).not.toMatch(/justify-content:\s*space-between/);
+    expect(phone.replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/svh/);
   });
 
-  it('drops the card chrome on phones and spreads three zones down the height', () => {
+  it('puts the grant line directly under Home | Business on a phone', () => {
     expect(phone).toMatch(/background:\s*transparent/);
     expect(phone).toMatch(/box-shadow:\s*none/);
-    expect(phone).toMatch(/justify-content:\s*space-between/);
-    expect(phone).toMatch(/gap:\s*clamp\([^)]*svh/);
+    expect(phone).toMatch(/\.si-an-door__pitch,\s*\.si-an-door \.si-an-door__mid \{\s*display:\s*contents/);
+    const order = (sel: string) => Number(rule(sel).match(/order:\s*(\d+)/)?.[1]);
+    const title = order('.si-an-door .si-an-door__title');
+    const seg = order('.si-an-door .si-an-seg');
+    const sub = order('.si-an-door .si-an-door__sub');
+    const act = order('.si-an-door .si-an-door__act');
+    expect(title).toBeLessThan(seg);
+    expect(seg).toBeLessThan(sub);
+    expect(sub).toBeLessThan(act);
+    // DOM order unchanged: reading order stays message, control, roads.
     expect(tsx).toMatch(/si-an-door__pitch[\s\S]*si-an-door__mid[\s\S]*si-an-door__act/);
   });
 
@@ -55,7 +74,7 @@ describe('Bill Analyser start state uses the whole phone screen', () => {
   it('keeps every start-state tap target at 44px or more', () => {
     expect(css).toMatch(/\.si-an-door \.si-an-seg label \{\s*min-height:\s*44px/);
     expect(css).toMatch(/\.si-an-priv__line \{[^}]*min-height:\s*44px/);
-    expect(phone).toMatch(/\.si-an-road \{[^}]*min-height:\s*clamp\(52px,/);
+    expect(phone).toMatch(/\.si-an-road \{[^}]*min-height:\s*56px/);
     expect(short).toMatch(/\.si-an-road \{\s*min-height:\s*48px/);
     expect(short).not.toMatch(/label \{\s*min-height:\s*(\d|[1-3]\d|4[0-3])px/);
   });
