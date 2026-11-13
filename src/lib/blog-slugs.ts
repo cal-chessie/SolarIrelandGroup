@@ -8,6 +8,9 @@
  */
 export const BLOG_SLUGS: ReadonlySet<string> = new Set([
   'are-solar-panels-worth-it-ireland-2026',
+  'farm-solar-2027-doubled-seai-grant-or-tams',
+  'high-winter-bills-is-solar-worth-it-ireland',
+  'seai-business-solar-grant-doubled-2027',
   'battery-storage-is-it-worth-the-extra-cost',
   'best-time-of-year-to-get-solar-panels-ireland',
   'clean-export-guarantee-explained',
