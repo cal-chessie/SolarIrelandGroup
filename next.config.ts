@@ -59,6 +59,10 @@ const nextConfig: NextConfig = {
   // individual icon files that corrupt during HMR updates.
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    // Inline the CSS into the HTML (production only). PageSpeed mobile flagged
+    // three render-blocking CSS chunks (~640 ms) that held the hero image's
+    // paint (LCP render delay). Inlined, first paint needs only the HTML.
+    inlineCss: true,
   },
 
   reactStrictMode: true,
@@ -74,6 +78,9 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    // Next 16 only serves listed qualities. 65 is the hero (PageSpeed mobile:
+    // a lighter LCP image), 75 is the default for everything else.
+    qualities: [65, 75],
   },
 
   /* ═══════════════════════════════════════════════════════════════

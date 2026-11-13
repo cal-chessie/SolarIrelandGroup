@@ -417,12 +417,6 @@ export default function RootLayout({
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              // gtag.js loads after window load; the inline ga-init below still
-              // defines gtag() early, so dataLayer queues every call until then.
-              strategy="lazyOnload"
-            />
             <Script id="ga-init" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
@@ -475,6 +469,31 @@ export default function RootLayout({
                     gtag('consent', 'update', { analytics_storage: 'denied' });
                   }
                 });
+
+                // gtag.js itself loads late (PageSpeed: its forced reflow cost
+                // ~110 ms on mobile). It waits for the load event, then the first
+                // idle slot or first interaction, whichever comes first. Every
+                // gtag() call above and every conversion event fired before then
+                // queues in dataLayer and is sent when the library arrives.
+                (function(){
+                  var done = false;
+                  var evs = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+                  function inject(){
+                    if (done) return; done = true;
+                    evs.forEach(function(t){ window.removeEventListener(t, inject, true); });
+                    var s = document.createElement('script');
+                    s.async = true;
+                    s.src = 'https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}';
+                    document.head.appendChild(s);
+                  }
+                  function arm(){
+                    evs.forEach(function(t){ window.addEventListener(t, inject, { capture: true, passive: true, once: true }); });
+                    if ('requestIdleCallback' in window) requestIdleCallback(inject, { timeout: 4000 });
+                    else setTimeout(inject, 2500);
+                  }
+                  if (document.readyState === 'complete') arm();
+                  else window.addEventListener('load', arm, { once: true });
+                })();
               `}
             </Script>
           </>
