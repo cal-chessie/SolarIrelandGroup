@@ -151,7 +151,7 @@ Not wrong, but worth knowing they exist. `paybackYears` is canonically **6**, ye
 - `/solar-calculator` carried an invisible schema-only `FAQPage` alongside its visible FAQ. Schema that does not match visible content is a Google policy violation.
 - No `AggregateRating` or `Review` schema exists anywhere now. Keep it that way until there is permissioned proof.
 
-**`og:image`** pointed at `solarireland.org`, a different domain, and per-page OG images now live in `public/` (`og-about`, `og-blog`, `og-contact`, `og-counties`, `og-financing`, `og-services`). There is no generic fallback.
+**`og:image`** pointed at `solarireland.org`, a different domain, and per-page OG images now live in `public/` (`og-blog`, `og-counties`, `og-financing`, `og-services`). There is no generic fallback. Since 13 Nov 2026 every blog post's og:image and Article schema image is the post's own cover (`image` in `blog-data.ts`, alt in `imageAlt`), with `og-blog.png` only for a post with no cover; the top search posts, `/about` and `/contact` carry real install photos (old cards in `_TRASH/blog-covers-replaced-2026-11-13/`).
 
 ---
 

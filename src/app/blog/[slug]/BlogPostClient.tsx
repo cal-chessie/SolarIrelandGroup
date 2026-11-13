@@ -559,7 +559,7 @@ function RelatedArticles({ currentSlug }: { currentSlug: string }) {
                     {article.image ? (
                       <Image
                         src={article.image}
-                        alt={`Cover image for the guide: ${article.title}`}
+                        alt={article.imageAlt ?? `Cover image for the guide: ${article.title}`}
                         fill
                         loading="lazy"
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

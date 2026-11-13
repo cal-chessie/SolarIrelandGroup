@@ -1,0 +1,12 @@
+13 Nov 2026: replaced by real Solar Ireland Group install photos on the
+top search posts (GSC top pages). Each post's `image` in src/lib/blog-data.ts
+now points at a 1200x630 WebP cut from Cal's own job photos, and the post's
+og:image and Article schema image follow it (src/app/blog/[slug]/page.tsx).
+
+- longi-vs-jinko..., how-many..., planning..., how-much..cost...,
+  do-solar-panels-improve-ber...: the generated editorial graphics.
+- IMG_2092.JPG: the SEAI grant guide's cover, a generated graphic using the
+  SEAI logo (not ours to use as a cover).
+- og-about.png, og-contact.png: generated share cards for /about and
+  /contact (silhouettes; "Free Survey, WhatsApp & Phone"). Both pages now
+  share a real install photo.

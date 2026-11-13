@@ -26,6 +26,8 @@ export interface RelatedGuide {
   /** The target post's cover, the same image its /blog index card uses. Site
    *  pages (/financing, a county page) have no cover and show the icon. */
   image?: string;
+  /** Alt text for `image` when the post sets one (a real install photo). */
+  imageAlt?: string;
 }
 
 /** Site pages that belong in a cluster. Copy is the page's own meta description. */
@@ -127,6 +129,7 @@ function toGuide(entry: string): RelatedGuide | null {
     date: a.date,
     readTime: a.readTime,
     image: a.image,
+    imageAlt: a.imageAlt,
   };
 }
 

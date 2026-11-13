@@ -252,7 +252,7 @@ export default function BlogClient() {
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative h-64 sm:h-80 lg:h-auto bg-gradient-to-br from-amber-400/[0.08] via-amber-500/[0.04] to-transparent overflow-hidden">
                       {featuredArticle.image ? (
-                        <Image src={featuredArticle.image} alt={featuredArticle.title} fill className="object-cover" />
+                        <Image src={featuredArticle.image} alt={featuredArticle.imageAlt ?? featuredArticle.title} fill className="object-cover" />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
@@ -359,7 +359,7 @@ export default function BlogClient() {
                     >
                       <div className="relative h-48 bg-gradient-to-br from-white/[0.03] to-white/[0.01] overflow-hidden">
                         {article.image ? (
-                          <Image src={article.image} alt={article.title} fill className="object-cover" />
+                          <Image src={article.image} alt={article.imageAlt ?? article.title} fill className="object-cover" />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
                             {(() => {

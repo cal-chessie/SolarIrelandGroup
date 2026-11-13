@@ -37,6 +37,10 @@ export interface Article {
   iconBg: string;
   iconColor: string;
   image?: string;
+  /** Alt text for `image`, describing what the photo shows. Set it for real
+   *  install photos; name a county only when the photo's source records it.
+   *  Without it the cover's alt falls back to the article title. */
+  imageAlt?: string;
   content: ContentSection[];
 }
 
@@ -890,7 +894,8 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/installs/new-build-home-solar-scaffold.webp"
+    "image": "/installs/new-build-home-solar-scaffold.webp",
+    "imageAlt": "New-build home in scaffold with solar panels already on the roof, fitted by Solar Ireland Group"
   },
   {
     "slug": "how-to-read-electricity-bill-ireland-solar",
@@ -1178,7 +1183,8 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/blog/how-to-read-electricity-bill-ireland-solar.webp"
+    "image": "/blog/how-to-read-electricity-bill-ireland-solar.webp",
+    "imageAlt": "Solar panels on the roof of a red-brick home in Co. Dublin, fitted by Solar Ireland Group"
   },
   {
     "slug": "do-solar-panels-improve-ber-rating-ireland",
@@ -1381,7 +1387,8 @@ export const articles: Article[] = [
         "href": "/solar-calculator"
       }
     ],
-    "image": "/blog/do-solar-panels-improve-ber-rating-ireland.webp"
+    "image": "/blog/new-build-home-solar-panels-scaffold.webp",
+    "imageAlt": "New-build home in scaffold with solar panels already on the roof, fitted by Solar Ireland Group"
   },
   {
     "slug": "solar-panels-cork-complete-guide",
@@ -2119,7 +2126,8 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
     "iconColor": "text-amber-400",
-    "image": "/blog/IMG_2092.JPG",
+    "image": "/blog/family-home-solar-panels-full-roof.webp",
+    "imageAlt": "Two-storey family home with solar panels across the roof, fitted by Solar Ireland Group",
     "content": [
       {"type": "heading", "level": 2, "text": "Every SEAI solar grant in one line"},
       {"type": "bulletList", "items": ["The SEAI solar grant pays a home up to €1,800 for solar panels: €700 per kWp to 2 kWp, then €200 per kWp to 4 kWp ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant)).", "The SEAI battery grant pays a flat €600 for a home battery of 5 kWh or more, so solar and battery together reach €2,400 ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/battery)); more in [the €600 battery grant explained](/blog/seai-battery-grant-600-explained).", "The SEAI Non-Domestic Microgen Grant pays a business up to €325,200 for applications from 6 October 2026 to 6 July 2027, at the lower of the table or 45% of cost ([seai.ie](https://www.seai.ie/grants/business-grants/commercial-solar-pv)); see [the commercial solar grant](/commercial-solar-grant).", "Homeowners on the Fuel Allowance can get SEAI's higher grant for qualifying welfare payments: up to €8,400 for solar panels and €600 for a battery, up to €9,000 in all ([SEAI Solar PV Scheme Application Guide](https://www.seai.ie/sites/default/files/2026-10/Solar-PV-Scheme-Application-Guide.pdf))."]},
@@ -2382,7 +2390,8 @@ export const articles: Article[] = [
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
-    "image": "/blog/how-much-do-solar-panels-cost-ireland-2026.webp",
+    "image": "/blog/kildare-home-solar-panels.webp",
+    "imageAlt": "Solar panels on a two-storey home in Co. Kildare, fitted by Solar Ireland Group",
     "content": [
       {
         "type": "heading",
@@ -2602,6 +2611,7 @@ export const articles: Article[] = [
     "iconBg": "bg-sky-400/10",
     "iconColor": "text-sky-400",
     "image": "/blog/solar-panels-in-winter-do-they-work.webp",
+    "imageAlt": "Frost on the drive of a home and garage in Co. Leitrim with solar panels on the roof, fitted by Solar Ireland Group",
     "content": [
       {
         "type": "heading",
@@ -2962,6 +2972,7 @@ export const articles: Article[] = [
     "seoDescription": "South gives 100%, east or west about 80 to 85%, an east-west split 85 to 90%, and self-use can close the gap. Irish figures and payback by roof.",
     "answer": "South-facing roofs produce the most, but east and west-facing roofs still make about 80 to 85% as much, and an east-west split spreads generation across the day, which often suits how a home uses power. In Ireland only a north-facing roof, at roughly 50 to 55%, is genuinely unsuitable on its own.",
     "image": "/installs/commercial-flat-roof-solar.webp",
+    "imageAlt": "Rows of solar panels on a commercial flat roof, fitted by Solar Ireland Group",
     "excerpt": "Does your roof face the right way for solar? We compare east, south and west-facing installations with real Irish data to show which orientation delivers the best returns.",
     "category": "guides",
     "date": "28 Mar 2026",
@@ -3395,7 +3406,8 @@ export const articles: Article[] = [
     "seoTitle": "Planning Permission for Solar Panels in Ireland: Usually Not",
     "seoDescription": "Most Irish homes don't need it. Since October 2022 rooftop solar on a house has no area limit. Exceptions: protected structures, ACAs and wall panels.",
     "answer": "Usually not. Since October 2022, rooftop solar panels on an Irish house are exempted development with no rooftop area limit, under S.I. No. 493 of 2022. You may need planning permission if the house is a protected structure or sits in an Architectural Conservation Area, or for wall-mounted panels or a ground array over 25 square metres.",
-    "image": "/blog/planning-permission-solar-panels-ireland.webp",
+    "image": "/blog/red-brick-house-solar-panels-front-roof.webp",
+    "imageAlt": "Black solar panels on the front roof of a red-brick period house, fitted by Solar Ireland Group",
     "excerpt": "Good news - most domestic solar installations in Ireland don't need planning permission. Here are the exceptions, limits, and guidelines you should be aware of before installing.",
     "category": "guides",
     "date": "18 Mar 2026",
@@ -3576,7 +3588,8 @@ export const articles: Article[] = [
     "slug": "longi-vs-jinko-vs-trina-best-solar-panels",
     "title": "LONGi vs Jinko vs Trina: Which Solar Panels Are Best for Irish Homes?",
     "seoTitle": "LONGi vs Jinko vs Trina: Best Solar Panels for Irish Homes",
-    "image": "/blog/longi-vs-jinko-vs-trina-best-solar-panels.webp",
+    "image": "/blog/in-roof-solar-panels-slate-roof.webp",
+    "imageAlt": "Black solar panels set into a slate roof, fitted by Solar Ireland Group",
     "excerpt": "We compare the top three tier-1 solar panel brands used in Ireland - efficiency, warranties, real-world performance, and which one delivers the best value for your home.",
     "category": "technology",
     "date": "12 Mar 2026",
@@ -4151,6 +4164,7 @@ export const articles: Article[] = [
     "seoTitle": "Solar Heating for Irish Homes: Panels, Hot Water, Heat Pumps",
     "seoDescription": "How solar panels heat an Irish home: hot water through an immersion diverter, and running a heat pump on your own solar power, and what it saves.",
     "image": "/blog/solar-panels-and-heat-pumps-perfect-partnership.webp",
+    "imageAlt": "Solar panels on a two-storey home in Co. Kildare, fitted by Solar Ireland Group",
     "excerpt": "Why combining solar PV with a heat pump is the most cost-effective heating solution for Irish homes, and how the SEAI heat pump and solar grants combine.",
     "category": "guides",
     "date": "20 Apr 2026",
@@ -4554,7 +4568,8 @@ export const articles: Article[] = [
     "seoTitle": "How Many Solar Panels Do I Need? Most Irish Homes: About 10",
     "seoDescription": "Start with the kWh on your bill, not the roof. Most Irish homes need 4 to 4.5 kWp, about 10 panels. Sizing by household, roof space and orientation.",
     "answer": "Most Irish homes need about 10 panels, a 4 to 4.5 kWp system, sized to generate about 85% of a typical 4,000 to 5,000 kWh a year. Larger families need 10 to 14 panels, and homes with an EV and a heat pump 15 to 20. Your bill's annual kWh decides the number, not the roof.",
-    "image": "/blog/how-many-solar-panels-do-i-need-ireland.webp",
+    "image": "/blog/two-storey-home-row-of-solar-panels.webp",
+    "imageAlt": "A row of black solar panels on a white two-storey house, fitted by Solar Ireland Group",
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
     "category": "guides",
     "date": "2 Apr 2026",

@@ -14,12 +14,15 @@ export const metadata: Metadata = {
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
+    // A real Solar Ireland Group install photo (13 Nov 2026), not the old
+    // generated card. Same file as a blog cover, 1200x630.
     images: [
       {
-        url: 'https://solarirelandgroup.ie/og-contact.png',
-        width: 1344,
-        height: 768,
-        alt: 'Solar Ireland Group - Contact Us',
+        url: 'https://solarirelandgroup.ie/blog/how-to-read-electricity-bill-ireland-solar.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Solar panels on the roof of a red-brick home in Co. Dublin, fitted by Solar Ireland Group',
+        type: 'image/webp',
       },
     ],
   },
@@ -28,7 +31,7 @@ export const metadata: Metadata = {
     title: 'Contact Solar Ireland Group | Free Estimate From Your Bill',
     description:
       'Phone, WhatsApp or email Solar Ireland Group, or upload a bill for a free estimate. SEAI-registered installers in all 32 counties. Front desk open 24/7.',
-    images: ['https://solarirelandgroup.ie/og-contact.png'],
+    images: ['https://solarirelandgroup.ie/blog/how-to-read-electricity-bill-ireland-solar.webp'],
   },
   alternates: {
     canonical: 'https://solarirelandgroup.ie/contact',

@@ -60,6 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const metaDescription = article.seoDescription ?? article.excerpt;
   const ogTitle = metaTitle;
   const ogDescription = metaDescription;
+  const cover = coverImage(article);
 
   return {
     // Absolute (bypasses the "%s | Solar Ireland Group" template) to keep <title> <=60.
@@ -78,28 +79,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `${SITE_URL}/blog/${slug}`,
       siteName: 'Solar Ireland Group',
       locale: 'en_IE',
-      images: [
-        {
-          url: `${SITE_URL}/og-blog.png`,
-          width: 1344,
-          height: 768,
-          alt: article.title,
-          type: 'image/png',
-        },
-      ],
+      images: [cover],
     },
     twitter: {
       card: 'summary_large_image',
       title: ogTitle,
       description: ogDescription,
-      images: [`${SITE_URL}/og-blog.png`],
+      images: [{ url: cover.url, alt: cover.alt }],
     },
   };
+}
+
+/**
+ * The share and search image for a post (13 Nov 2026): the post's own cover,
+ * the same file its /blog card shows, so Google and social cards carry the
+ * real install photo or the post's own graphic. og-blog.png (the generic
+ * "Solar Energy Blog" card) is only the fallback for a post with no cover.
+ * Covers in public/blog are 1200x630; others are sent without dimensions.
+ */
+function coverImage(article: NonNullable<ReturnType<typeof getArticleBySlug>>) {
+  if (!article.image) {
+    return { url: `${SITE_URL}/og-blog.png`, width: 1344, height: 768, alt: article.title, type: 'image/png' };
+  }
+  const url = `${SITE_URL}${article.image}`;
+  const alt = article.imageAlt ?? article.title;
+  const ext = article.image.split('.').pop()?.toLowerCase();
+  const type = ext === 'webp' ? 'image/webp' : ext === 'png' ? 'image/png' : 'image/jpeg';
+  return article.image.startsWith('/blog/') && ext === 'webp'
+    ? { url, width: 1200, height: 630, alt, type }
+    : { url, width: undefined, height: undefined, alt, type };
 }
 
 function getArticleSchema(slug: string) {
   const article = getArticleBySlug(slug);
   if (!article) notFound();
+  const cover = coverImage(article);
 
   return {
     '@context': 'https://schema.org',
@@ -143,7 +157,7 @@ function getArticleSchema(slug: string) {
       '@type': 'WebPage',
       '@id': `${SITE_URL}/blog/${slug}`,
     },
-    image: `${SITE_URL}/og-blog.png`,
+    image: { '@type': 'ImageObject', url: cover.url, width: cover.width, height: cover.height, caption: cover.alt },
     wordCount: article.content.reduce((acc, s) => {
       if (s.type === 'paragraph') return acc + s.text.length;
       if (s.type === 'heading') return acc + s.text.length;

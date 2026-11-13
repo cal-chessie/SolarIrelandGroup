@@ -13,12 +13,15 @@ export const metadata: Metadata = {
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
+    // A real Solar Ireland Group install photo (13 Nov 2026), not the old
+    // generated card. Same file as a blog cover, 1200x630.
     images: [
       {
-        url: 'https://solarirelandgroup.ie/og-about.png',
-        width: 1344,
-        height: 768,
-        alt: 'Solar Ireland Group - About Us',
+        url: 'https://solarirelandgroup.ie/blog/kildare-home-solar-panels.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Solar panels on a two-storey home in Co. Kildare, fitted by Solar Ireland Group',
+        type: 'image/webp',
       },
     ],
   },
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
     title: 'About Solar Ireland Group: SEAI Installers Since 2019',
     description:
       "SEAI-registered, all 32 counties, itemised quotes, a 25-year panel warranty and a straight answer if your roof won't suit. Meet the people behind it.",
-    images: ['https://solarirelandgroup.ie/og-about.png'],
+    images: ['https://solarirelandgroup.ie/blog/kildare-home-solar-panels.webp'],
   },
   alternates: {
     canonical: 'https://solarirelandgroup.ie/about',
