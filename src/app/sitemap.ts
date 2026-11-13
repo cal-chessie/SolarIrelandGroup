@@ -2,7 +2,7 @@
 import type { MetadataRoute } from "next";
 import { getAllArticleSlugs, getArticleBySlug } from "@/lib/blog-data";
 import { toISODate } from "@/lib/blog-dates";
-import { COUNTY_INDEXABLE } from "@/lib/counties/roscommon";
+import { COUNTIES } from "@/data/counties";
 
 const SITE_URL = "https://solarirelandgroup.ie";
 
@@ -60,16 +60,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    // The county authority page is noindex on preview; it rejoins the sitemap
-    // when COUNTY_INDEXABLE flips at go-live (src/lib/counties/roscommon.ts).
-    ...(COUNTY_INDEXABLE
-      ? [{
-          url: `${SITE_URL}/counties/roscommon`,
-          lastModified: PAGE_DATES["/counties/roscommon"],
-          changeFrequency: "monthly" as const,
-          priority: 0.85,
-        }]
-      : []),
+    // County service pages join the sitemap only once their data file sets
+    // indexable: true (the go-live flip, docs/county-page-playbook.md).
+    ...COUNTIES.filter((c) => c.indexable).map((c) => ({
+      url: `${SITE_URL}/counties/${c.slug}`,
+      lastModified: `${c.updated}T00:00:00+00:00`,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
     {
       url: `${SITE_URL}/commercial-solar-grant`,
       lastModified: PAGE_DATES["/commercial-solar-grant"],

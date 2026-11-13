@@ -276,16 +276,14 @@ export function trackConsentDecision(
  * them. One event name per action, the county as a property:
  *   county_analyser_start  a Bill Analyser door opened on a county page
  *   county_call_click      the 15-minute call door opened on a county page
- *   phone_click            the existing phone event, with source county-<slug>
+ *   county_phone_click     the phone link on a county page. LeadSourceTracker
+ *                          already fires the generic phone_click on every tel:
+ *                          link, so this is a separate name to avoid a double count.
  */
 export function trackCountyConversion(
   action: 'analyser_start' | 'call_click' | 'phone_click',
   county: string,
   placement: string,
 ): void {
-  if (action === 'phone_click') {
-    trackEvent({ event: 'phone_click', properties: { source: `county-${county}`, county, placement, page: window.location.pathname } });
-    return;
-  }
   trackEvent({ event: `county_${action}`, properties: { county, placement, page: window.location.pathname } });
 }

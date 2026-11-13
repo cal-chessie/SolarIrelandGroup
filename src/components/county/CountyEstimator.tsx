@@ -13,11 +13,13 @@ import { trackCountyConversion, trackCalculatorUsage } from '@/lib/analytics';
 export default function CountyEstimator({
   county,
   countyName,
+  place,
   kwhPerKwp,
   monthlyKwhPerKwp,
 }: {
   county: string;
   countyName: string;
+  place: string;
   kwhPerKwp: number;
   monthlyKwhPerKwp: readonly number[];
 }) {
@@ -90,8 +92,8 @@ export default function CountyEstimator({
 
         <p className="mt-6 text-xs leading-relaxed text-white/60">
           Panels only, no battery. Uses {kwhPerKwp} kWh per kWp a year, the PVGIS figure for a south-facing roof in{' '}
-          {countyName === 'Roscommon' ? 'Roscommon Town' : countyName}. Your bill gives the real day and night split, which is
-          what the Bill Analyser reads.
+          {place}. Your bill shows your real day and
+          night split, and the Bill Analyser reads it.
         </p>
       </div>
 
@@ -141,7 +143,7 @@ export default function CountyEstimator({
             onOpen={() => trackCountyConversion('analyser_start', county, 'estimator')}
             className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
           >
-            Check it against my real bill
+            Check my savings with my bill
           </IntakeLink>
         </div>
       </div>

@@ -18,14 +18,14 @@ export default function CountyActions({ county, placement, phone = false }: { co
         onOpen={() => trackCountyConversion('analyser_start', county, placement)}
         className={primary}
       >
-        Analyse my bill
+        Check my savings
       </IntakeLink>
       <IntakeLink
         opts={{ door: 'county', step: 'time', county, src: `county-${county}` }}
         onOpen={() => trackCountyConversion('call_click', county, placement)}
         className={quiet}
       >
-        Book the 15-minute call
+        Book a free 15-minute call
       </IntakeLink>
       {phone ? (
         <a

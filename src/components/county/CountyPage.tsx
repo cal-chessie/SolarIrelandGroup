@@ -5,15 +5,18 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import { estimate, usageFromMonthlyBill, fmtEur } from '@/lib/estimate';
 import { SOLAR_DATA, GRANT_SCHEDULES, ndmgDoubledLine, ndmgDoubledLive } from '@/lib/solar-data';
-import { ROSCOMMON as C, COUNTY_INDEXABLE } from '@/lib/counties/roscommon';
+import type { CountyData } from '@/data/counties/types';
 import CountyEstimator from './CountyEstimator';
 import CountyActions from './CountyActions';
 
 const SITE = 'https://solarirelandgroup.ie';
+
+/** Every figure on a county page, from the one engine with the county's own yield. */
+function build(C: CountyData) {
 const PAGE_URL = `${SITE}/counties/${C.slug}`;
 
 // The reference home every figure in the copy reads from: a 3-bed semi on a
-// €160 monthly bill, through the one engine, with Roscommon's own yield.
+// €160 monthly bill, through the one engine, with the county's own yield.
 const REF = estimate({ annualUsageKwh: usageFromMonthlyBill(160), homeId: 'semi', generationPerKwp: C.pvgis.kwhPerKwp });
 const FOUR = estimate({ annualUsageKwh: usageFromMonthlyBill(160), systemSizeKwp: 4, generationPerKwp: C.pvgis.kwhPerKwp });
 const GRANT = SOLAR_DATA.grant.label;
@@ -23,23 +26,23 @@ const NDMG_LIVE = ndmgDoubledLive();
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: 'Are solar panels worth it in Roscommon?',
-    a: `For most homes, yes. A south-facing roof in Roscommon Town makes about ${C.pvgis.kwhPerKwp} kWh per kWp a year (PVGIS, EU Joint Research Centre). On a €160 monthly bill our estimate puts a ${REF.systemSizeKwp} kWp system at about ${fmtEur(REF.totalAnnualBenefitEur)} a year in savings and export income, paying back in about ${REF.paybackYears} years after the ${GRANT} SEAI grant. Homes that use power during the day do best.`,
+    q: `Are solar panels worth it in ${C.name}?`,
+    a: `For most homes, yes. A south-facing roof in ${C.pvgis.place} makes about ${C.pvgis.kwhPerKwp} kWh per kWp a year (PVGIS, EU Joint Research Centre). On a €160 monthly bill our estimate puts a ${REF.systemSizeKwp} kWp system at about ${fmtEur(REF.totalAnnualBenefitEur)} a year in savings and export income, paying back in about ${REF.paybackYears} years after the ${GRANT} SEAI grant. Homes that use power during the day do best.`,
   },
   {
-    q: 'How much do solar panels cost in Roscommon?',
+    q: `How much do solar panels cost in ${C.name}?`,
     a: `A 4 kWp system is ${fmtEur(FOUR.installCostEur)} installed, or ${fmtEur(FOUR.costAfterGrantEur)} after the ${GRANT} SEAI grant. Domestic solar carries 0% VAT. Larger systems cost more in total but less per kWp. The Bill Analyser sizes the system to your own usage.`,
   },
   {
-    q: 'How much electricity do solar panels make in Roscommon?',
+    q: `How much electricity do solar panels make in ${C.name}?`,
     a: `About ${C.pvgis.kwhPerKwp} kWh per kWp a year on a south-facing roof at 35 degrees, so a 4 kWp system makes about ${(4 * C.pvgis.kwhPerKwp).toLocaleString()} kWh. That is about ${VS_DUBLIN}% less than the same roof in Dublin. May is the best month and December the weakest.`,
   },
   {
-    q: 'Do solar panels work in Roscommon in winter?',
+    q: `Do solar panels work in ${C.name} in winter?`,
     a: `They work, but they make far less. PVGIS puts December at about ${Math.round(C.pvgis.monthlyKwhPerKwp[11] * 4)} kWh for a 4 kWp system against about ${Math.round(C.pvgis.monthlyKwhPerKwp[4] * 4)} kWh in May. Most of the year's saving comes from March to September.`,
   },
   {
-    q: 'Is the SEAI solar grant available in Roscommon?',
+    q: `Is the SEAI solar grant available in ${C.name}?`,
     a: `Yes. The SEAI Solar Electricity Grant pays up to ${GRANT} for homes built and occupied before 2025, and a battery of ${BATTERY.minLabel} adds ${BATTERY.label} on the same application, up to ${BATTERY.withSolarMaxLabel} in total. You apply on seai.ie and get approval before any work starts.`,
   },
   {
@@ -47,21 +50,22 @@ const FAQS: { q: string; a: string }[] = [
     a: 'Yes, and the installer does it. A home system up to 6 kW on a single-phase supply (11 kW on three-phase) is notified to ESB Networks on the NC6 form. Bigger systems need an NC7 application and ESB Networks approval before connection.',
   },
   {
-    q: 'Do I need planning permission for solar panels in Roscommon?',
+    q: `Do I need planning permission for solar panels in ${C.name}?`,
     a: 'For almost every house, no. Rooftop solar on a house has been exempt from planning permission since October 2022, with no limit on panel area, subject to standard conditions. Homes in a solar safeguarding zone near an airport or a protected structure follow different rules.',
   },
   {
-    q: 'Can a Roscommon farm or business get a solar grant?',
+    q: `Can a ${C.name} farm or business get a solar grant?`,
     a: NDMG_LIVE
       ? `Yes. ${ndmgDoubledLine()} Farms can also look at TAMS, run by the Department of Agriculture. Our guide compares the two.`
       : 'Yes. Businesses can apply for the SEAI Non-Domestic Microgen Grant, and farms can look at TAMS from the Department of Agriculture. Our guide compares the two.',
   },
+  ...(C.extraFaqs ?? []),
 ];
 
-const TITLE = 'Solar Panels Roscommon | Installers, Costs and SEAI Grant';
-const DESCRIPTION = `Solar panels in Roscommon: ${C.pvgis.kwhPerKwp} kWh per kWp a year, the ${GRANT} SEAI grant and a live estimate for your home. Analyse your bill free.`;
+const TITLE = `Solar Panels ${C.name} | Installers, Costs and SEAI Grant`;
+const DESCRIPTION = `Solar panels in ${C.name}: ${C.pvgis.kwhPerKwp} kWh per kWp a year, the ${GRANT} SEAI grant and a live estimate for your home. Analyse your bill free.`;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: PAGE_URL },
@@ -72,10 +76,10 @@ export const metadata: Metadata = {
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
     type: 'website',
-    images: [{ url: `${SITE}/og-counties.png`, width: 1152, height: 864, alt: 'Solar panels in County Roscommon' }],
+    images: [{ url: `${SITE}/og-counties.png`, width: 1152, height: 864, alt: `Solar panels in County ${C.name}` }],
   },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: [`${SITE}/og-counties.png`] },
-  robots: COUNTY_INDEXABLE
+  robots: C.indexable
     ? { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } }
     : { index: false, follow: true },
 };
@@ -89,21 +93,36 @@ const schema = {
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
         { '@type': 'ListItem', position: 2, name: 'Counties', item: `${SITE}/counties` },
-        { '@type': 'ListItem', position: 3, name: 'Roscommon', item: PAGE_URL },
+        { '@type': 'ListItem', position: 3, name: C.name, item: PAGE_URL },
       ],
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: TITLE,
+      description: DESCRIPTION,
+      inLanguage: 'en-IE',
+      dateModified: C.updated,
+      isPartOf: { '@id': `${SITE}/#website` },
+      breadcrumb: { '@id': `${PAGE_URL}#breadcrumb` },
+      mainEntity: { '@id': `${PAGE_URL}#service` },
+      about: { '@id': `${PAGE_URL}#service` },
     },
     {
       '@type': 'Service',
       '@id': `${PAGE_URL}#service`,
-      name: 'Solar panel installation in County Roscommon',
+      name: `Solar panel installation in County ${C.name}`,
       serviceType: 'Solar PV installation',
       url: PAGE_URL,
       provider: { '@id': `${SITE}/#business` },
       brand: { '@id': `${SITE}/#organization` },
       areaServed: {
         '@type': 'AdministrativeArea',
-        name: 'County Roscommon',
-        sameAs: 'https://en.wikipedia.org/wiki/County_Roscommon',
+        name: `County ${C.name}`,
+        sameAs: C.wikipedia,
+        geo: { '@type': 'GeoCoordinates', latitude: C.pvgis.lat.toFixed(5), longitude: C.pvgis.lon.toFixed(5) },
+        containsPlace: C.towns.map((t) => ({ '@type': 'Place', name: t })),
         containedInPlace: { '@type': 'Country', name: 'Ireland' },
       },
       offers: {
@@ -121,12 +140,20 @@ const schema = {
   ],
 };
 
+return { PAGE_URL, REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, FAQS, metadata, schema };
+}
+
+export function countyMetadata(C: CountyData): Metadata {
+  return build(C).metadata;
+}
+
 const h2 = 'text-2xl font-bold tracking-tight sm:text-3xl';
 const card = 'rounded-2xl border border-white/10 bg-white/[0.03] p-6';
 const body = 'text-[15px] leading-relaxed text-white/75';
 const link = 'font-medium text-yellow-300 underline decoration-yellow-300/40 underline-offset-4 hover:decoration-yellow-300';
 
-export default function RoscommonPage() {
+export default function CountyPage({ county: C }: { county: CountyData }) {
+  const { REF, FOUR, GRANT, BATTERY, VS_DUBLIN, NDMG_LIVE, FAQS, schema } = build(C);
   const peakMonth = Math.round(C.pvgis.monthlyKwhPerKwp[4] * 4);
   return (
     <>
@@ -140,26 +167,30 @@ export default function RoscommonPage() {
             <li aria-hidden="true">/</li>
             <li><Link href="/counties" className="hover:text-white">Counties</Link></li>
             <li aria-hidden="true">/</li>
-            <li aria-current="page" className="text-white/85">Roscommon</li>
+            <li aria-current="page" className="text-white/85">{C.name}</li>
           </ol>
         </nav>
 
         {/* Hero: the answer first, then the two doors */}
         <section className="mx-auto max-w-6xl px-4 pb-8 pt-6">
-          <p className="text-sm font-medium text-yellow-300">County Roscommon, {C.province}</p>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Solar panels in Roscommon</h1>
+          <p className="text-sm font-medium text-yellow-300">County {C.name}, {C.province}</p>
+          <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{`Solar panels in ${C.name}`}</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
-            A south-facing roof in Roscommon makes about {C.pvgis.kwhPerKwp} kWh of electricity per kWp a year. On a €160
+            A south-facing roof in {C.name} makes about {C.pvgis.kwhPerKwp} kWh of electricity per kWp a year. On a €160
             monthly bill that is about {fmtEur(REF.totalAnnualBenefitEur)} a year back, and a payback of about{' '}
-            {REF.paybackYears} years after the {GRANT} SEAI grant. Upload your bill and we work out your own figure, then a
-            15-minute call settles the rest.
+            {REF.paybackYears} years after the {GRANT} SEAI grant. Upload a bill to see your own figure. A free 15-minute call
+            then turns it into a plan.
+          </p>
+          <p className="mt-3 text-xs text-white/60">
+            Updated <time dateTime={C.updated}>{new Date(C.updated).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}</time>.
+            Figures from PVGIS, seai.ie and esbnetworks.ie.
           </p>
           <div className="mt-8">
             <CountyActions county={C.slug} placement="hero" phone />
           </div>
           <dl className="county-rise mt-10 grid gap-4 sm:grid-cols-3">
             {[
-              [`${C.pvgis.kwhPerKwp} kWh`, 'per kWp a year in Roscommon Town (PVGIS)'],
+              [`${C.pvgis.kwhPerKwp} kWh`, `per kWp a year in ${C.pvgis.place} (PVGIS)`],
               [fmtEur(FOUR.costAfterGrantEur), `a 4 kWp system after the ${GRANT} grant`],
               [`${REF.paybackYears} years`, 'payback on a €160 monthly bill'],
             ].map(([v, k]) => (
@@ -173,15 +204,16 @@ export default function RoscommonPage() {
 
         {/* Live estimate */}
         <section id="estimate" aria-labelledby="estimate-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="estimate-h" className={h2}>Your Roscommon estimate</h2>
+          <h2 id="estimate-h" className={h2}>Your {C.name} estimate</h2>
           <p className={`mt-3 max-w-2xl ${body}`}>
-            Move the slider to your bill. The numbers come from the same engine the Bill Analyser uses, with
-            Roscommon&apos;s own sunshine in place of the national figure.
+            Set the slider to your monthly bill. The Bill Analyser&apos;s engine runs the sums with {C.name}&apos;s
+            own sunshine figure.
           </p>
           <div className="mt-6">
             <CountyEstimator
               county={C.slug}
               countyName={C.name}
+              place={C.pvgis.place}
               kwhPerKwp={C.pvgis.kwhPerKwp}
               monthlyKwhPerKwp={C.pvgis.monthlyKwhPerKwp}
             />
@@ -190,18 +222,16 @@ export default function RoscommonPage() {
 
         {/* Yield vs national */}
         <section aria-labelledby="yield-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="yield-h" className={h2}>How much sun Roscommon gets</h2>
+          <h2 id="yield-h" className={h2}>How much sun does {C.name} get?</h2>
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div className={body}>
               <p>
-                Roscommon gets about {VS_DUBLIN}% less solar energy than Dublin on the same roof: {C.pvgis.kwhPerKwp} kWh
+                {C.name} gets about {VS_DUBLIN}% less solar energy than Dublin on the same roof: {C.pvgis.kwhPerKwp} kWh
                 per kWp a year against {C.pvgis.dublinKwhPerKwp}. On a 4 kWp system that costs about{' '}
                 {Math.round((C.pvgis.dublinKwhPerKwp - C.pvgis.kwhPerKwp) * 4)} kWh a year, a few months on the payback.
               </p>
               <p className="mt-4">
-                What matters more is the roof and the house. Roscommon has many bungalows and farmhouses with wide, unshaded
-                roofs, and a lot of homes where someone is in during the day. Those homes use more of their own power, and
-                power used at home is worth about twice what export earns.
+                The roof and the house matter more. {C.housingNote}
               </p>
             </div>
             <div className={card}>
@@ -209,13 +239,13 @@ export default function RoscommonPage() {
                 <caption className="mb-3 text-left text-sm font-medium text-white/80">Yield, south-facing roof at 35 degrees</caption>
                 <thead className="text-white/60"><tr><th className="pb-2 font-medium">Place</th><th className="pb-2 font-medium">kWh per kWp a year</th></tr></thead>
                 <tbody className="tabular-nums">
-                  <tr className="border-t border-white/10"><td className="py-2">Roscommon Town</td><td>{C.pvgis.kwhPerKwp}</td></tr>
+                  <tr className="border-t border-white/10"><td className="py-2">{C.pvgis.place}</td><td>{C.pvgis.kwhPerKwp}</td></tr>
                   <tr className="border-t border-white/10"><td className="py-2">Dublin</td><td>{C.pvgis.dublinKwhPerKwp}</td></tr>
                   <tr className="border-t border-white/10"><td className="py-2">Best month, May (4 kWp)</td><td>{peakMonth} kWh</td></tr>
                 </tbody>
               </table>
               <p className="mt-4 text-xs leading-relaxed text-white/60">
-                Source: <a className={link} href={C.pvgis.source} rel="noopener">PVGIS, EU Joint Research Centre</a>,
+                Source: <a className={link} href={'https://re.jrc.ec.europa.eu/pvg_tools/en/'} rel="noopener">PVGIS, EU Joint Research Centre</a>,
                 SARAH3 data 2005 to 2023, 14% system loss, fetched {C.pvgis.fetched}.
               </p>
             </div>
@@ -224,7 +254,7 @@ export default function RoscommonPage() {
 
         {/* SEAI grant steps */}
         <section aria-labelledby="grant-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="grant-h" className={h2}>The SEAI grant in Roscommon, step by step</h2>
+          <h2 id="grant-h" className={h2}>How do you get the SEAI grant in {C.name}?</h2>
           <p className={`mt-3 max-w-2xl ${body}`}>
             SEAI pays up to {GRANT} toward solar panels on a home built and occupied before 2025, and {BATTERY.label} more
             for a battery of {BATTERY.minLabel}. The order matters: approval comes before any work.
@@ -251,10 +281,10 @@ export default function RoscommonPage() {
 
         {/* ESB Networks */}
         <section aria-labelledby="esb-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="esb-h" className={h2}>Connecting to the grid: ESB Networks and the NC6</h2>
+          <h2 id="esb-h" className={h2}>How does ESB Networks connect your solar?</h2>
           <div className={`mt-4 max-w-3xl ${body}`}>
             <p>
-              Every Roscommon home is on the ESB Networks grid, whoever supplies your electricity. A system up to 6 kW on a
+              Every {C.name} home is on the ESB Networks grid, whoever supplies your electricity. A system up to 6 kW on a
               single-phase supply, or 11 kW on three-phase, is a microgeneration connection: the installer sends ESB Networks
               the NC6 form and you do not wait for approval. Larger systems, common on farms, need an NC7 application first.
             </p>
@@ -268,14 +298,12 @@ export default function RoscommonPage() {
 
         {/* Farms and business */}
         <section aria-labelledby="farm-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="farm-h" className={h2}>Solar for Roscommon farms and businesses</h2>
+          <h2 id="farm-h" className={h2}>Solar for {C.name} farms and businesses</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div className={card}>
               <h3 className="text-lg font-semibold">Farms</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/70">
-                A dairy or a drying shed runs in daylight, so a farm uses most of what its panels make. Farms can choose between
-                TAMS, run by the Department of Agriculture, and the SEAI business grant. TAMS pays a higher rate but ranks and
-                selects applications; the SEAI grant does not. Our guide sets the two side by side.
+                {C.farmNote} Our guide sets the two side by side.
               </p>
               <Link className={`mt-3 inline-block text-sm ${link}`} href="/blog/farm-solar-2027-doubled-seai-grant-or-tams">
                 Farm solar in 2027: SEAI grant or TAMS
@@ -297,10 +325,9 @@ export default function RoscommonPage() {
 
         {/* Towns */}
         <section aria-labelledby="towns-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="towns-h" className={h2}>Towns we serve in Roscommon</h2>
+          <h2 id="towns-h" className={h2}>Towns we serve in {C.name}</h2>
           <p className={`mt-3 max-w-2xl ${body}`}>
-            We install across the whole county, from Boyle in the north to Monksland on the edge of Athlone. If your townland
-            is not listed, we still cover it.
+            {C.townsIntro} If your townland is not listed, we still cover it.
           </p>
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {C.towns.map((t) => (
@@ -311,7 +338,7 @@ export default function RoscommonPage() {
 
         {/* FAQ */}
         <section aria-labelledby="faq-h" className="mx-auto max-w-6xl px-4 py-12">
-          <h2 id="faq-h" className={h2}>Solar in Roscommon: your questions answered</h2>
+          <h2 id="faq-h" className={h2}>Solar in {C.name}: your questions answered</h2>
           <div className="mt-6 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03]">
             {FAQS.map((f) => (
               <details key={f.q} className="group p-6">
@@ -341,7 +368,7 @@ export default function RoscommonPage() {
         {/* Close */}
         <section className="mx-auto max-w-6xl px-4 py-14">
           <div className="rounded-3xl border border-yellow-400/25 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 sm:p-12">
-            <h2 className={h2}>See what solar saves your Roscommon home</h2>
+            <h2 className={h2}>See what solar saves your {C.name} home</h2>
             <p className="mt-3 max-w-xl text-white/80">
               Upload a recent bill. The analyser reads your day and night split and gives you a close estimate. A 15-minute call
               with us turns it into a plan.

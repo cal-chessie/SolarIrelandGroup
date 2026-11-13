@@ -42,31 +42,10 @@ export default function CountiesLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // The /counties breadcrumb lives in counties/page.tsx: here it leaked onto
+  // every county page as a second, shorter BreadcrumbList.
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              {
-                '@type': 'ListItem',
-                position: 1,
-                name: 'Home',
-                item: 'https://solarirelandgroup.ie',
-              },
-              {
-                '@type': 'ListItem',
-                position: 2,
-                name: 'County Directory',
-                item: 'https://solarirelandgroup.ie/counties',
-              },
-            ],
-          }),
-        }}
-      />
       {children}
     </>
   );

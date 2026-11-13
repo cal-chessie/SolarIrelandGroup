@@ -1,0 +1,6 @@
+'use client';
+
+import { lazyIsland } from '@/components/LazyIsland';
+
+// The estimator sits below the fold: server HTML renders in full, hydration waits for the viewport.
+export const CountyEstimatorIsland = lazyIsland(() => import('./CountyEstimator'));
