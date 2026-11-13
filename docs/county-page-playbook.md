@@ -26,6 +26,8 @@ Adding Dublin or Galway means writing one data file and adding it to `COUNTIES`.
 
 Related: [docs/memory/13-the-county-network.md](memory/13-the-county-network.md) (the licensing model and why county pages must not compete with installer sites).
 
+**Building a new county? Follow section 12, "Build SOP (step by step)", in order.** Section 13 is the SEO + AEO checklist and section 14 is the policy cross-check. The evidence behind them (Google Search Central first, then Whitespark, BrightLocal, Ahrefs, Semrush, Sterling Sky, Aleyda Solis, Lily Ray and Kevin Indig) is in `docs/research/county-page-research-2026-11.md`, sections 7 and 8. By Cal's ruling, no installer or home-services brand's pages are studied or copied.
+
 ---
 
 ## 1. The data each county needs
@@ -171,3 +173,181 @@ All of these, with the output seen, before Cal is asked to merge:
 - **Consent (GDPR and the ePrivacy Regulations, S.I. 336/2011):** analytics fire only after the visitor opts into the analytics category in the cookie banner; `trackEvent` already checks this. No tracking pixel, no fingerprinting, nothing personal in URLs or event properties (the bill amount on an intake link is not personal data; names, emails, phones and MPRNs never go in a URL or an event).
 - **Photos of people or homes:** written permission from the homeowner, kept on file, before any appears.
 - **Claims:** every figure must be reproducible from the engine or a cited official source on the day it is published.
+
+## 12. Build SOP (step by step)
+
+Written 13 Nov 2026 from Google Search Central and the leading SEO and AEO research (Whitespark 2026, BrightLocal 2026, Ahrefs, Semrush, Sterling Sky, Aleyda Solis, Lily Ray, Kevin Indig), checked line by line against Google's policies (research doc sections 7 and 8). Every step names who does it and what it hands to the next step. Skip a step and the page does not ship. Nothing here relaxes the HARD RULES; where a step and the HARD RULES disagree, the HARD RULES win.
+
+### Step 0. Pick the county
+
+- Sequencing from memory doc 13: launch three, measure, then roll out. At 30 county pages re-audit uniqueness across all of them; at 50, stop and justify.
+- Before starting, check that the county can plausibly reach the gate: at least 2 real proof items must be obtainable (installs with permission, our photos, a real sponsorship, local press about us). If not, do not start the page. Three good pages beat thirty-two thin ones.
+- Never start several counties at once from one prompt or one script. Google lists "Using generative AI tools or other similar tools to generate many pages without adding value for users" as scaled content abuse.
+
+### Step 1. Research (one to two hours per county)
+
+Output: a short research note in the PR description listing the questions and sources found.
+
+1. **Local questions.** Search Console queries for the county once the site has impressions; People Also Ask for "solar panels <county>", "solar grant <county>", "planning permission solar <county>" run from an Irish incognito session; the county development plan (protected structures, Architectural Conservation Areas, any solar policy). These become `localFaqs`, each with its `searchSource`.
+2. **Do not study rival pages.** Cal's ruling, 13 Nov 2026: no installer's or home-services brand's pages are studied, copied or used as a model. What a good page contains comes from Google Search Central and the SEO research in the research doc, section 7. The questions people ask (point 1) and the official data (step 2) are the inputs.
+3. **AI answers.** Ask ChatGPT, Perplexity and Google (AI Mode) "is solar worth it in <county>" and "solar grant <county>". Record only the kinds of source they cite (official sites, directories, local press, our own pages), not rival pages. That tells you which off-site mentions matter (step 10.5).
+
+### Step 2. Data gathering (official Irish sources only)
+
+Output: `localFacts` entries, each `{ text, source, sourceUrl, date }`, plus the `pvgis` block. Three facts minimum for the gate; aim for four or five so one can drop out at review.
+
+| Source | What to pull | Where |
+|---|---|---|
+| CSO | Census 2022 Profile 2: share of the county's homes with solar, share of new builds with solar (Table 2.7), dwelling type, heating fuel and oil share (Tables 2.1, 2.6) | cso.ie Census 2022 Profile 2; PxStat for the table |
+| SEAI | County grant counts and average system size (only from SEAI or a Dáil answer, never a third-party blog); BER spread for the county; named Sustainable Energy Communities and their Energy Master Plans | seai.ie (BER Research Tool, SEC map), oireachtas.ie debates |
+| PVGIS | Annual and monthly kWh/kWp for the county town, `peakpower=1&loss=14&angle=35&aspect=0`, store the exact API URL and fetch date | re.jrc.ec.europa.eu PVcalc v5.3 |
+| County council | Climate Action Plan (adoption date, targets, Decarbonising Zone), development plan planning notes, implementation reports | the council's own site |
+| SECs | What the county's Sustainable Energy Communities actually did (master plan date, projects) | SEAI SEC map and the SEC's own published plan |
+| ESB Networks | NC6 / NC7 rules; any county-level figure only if ESB Networks publishes it | esbnetworks.ie |
+
+Rules for every fact:
+
+- Open the source and read the figure yourself. A search snippet or a third-party summary is not a source.
+- `date` is the source's publication or data date, not today. `sourceUrl` is https and points at the page or PDF that holds the figure.
+- Write the fact in our own words, one figure, one "what it means for a homeowner" sentence. Never paste or lightly reword the source's text (Google's spam policy lists "Republishing content from other sites without adding any original content or value, or even citing the original source" as scraping).
+- No euro figures in the data file. Money comes from `src/lib/estimate.ts` and `src/lib/solar-data.ts`; the gate fails the build otherwise.
+- If a figure cannot be sourced, leave it out. Do not soften it into an unsourced impression ("lots of farmhouses").
+
+### Step 3. Proof collection, with permission
+
+Output: `proofItems`, each `{ kind, text, town, date, permission: { grantedBy, evidence, date }, url? }`. Two minimum for the gate.
+
+- **Installs.** The licensed installer or Cal asks the homeowner in writing (email is fine) what may be shown: town, system size, battery, month, a result, a photo of the roof or house. The reply is the evidence; `permission.evidence` names where it is filed (for example "email 14 Nov 2026, filed in AISolar job <id>"). Never a street address or a face without that permission.
+- **Photos.** Our own, taken on that job. Never stock, never another county's job.
+- **Sponsorships.** Real and current, stated with the year. If the club links to us, the link on their site should carry `rel="sponsored"`; we never pay for a followed link (Google link spam policy).
+- **Local press.** Coverage of us. Our own two-sentence summary and a link; never copy the article.
+- **Reviews.** Never gated, never paid for, never written for the customer. Show the real Google rating as plain text linking to the real profile; no `aggregateRating` or `Review` markup.
+- Fewer than two items: the page stays `indexable: false`. Do not move on to "ready" talk.
+
+### Step 4. Writing
+
+Output: the finished data file.
+
+1. Read [docs/voice-profile.md](voice-profile.md) first.
+2. Write `townsIntro`, each fact's `text`, each proof `text` and each local FAQ answer. Every string must carry a local anchor besides the county name: a figure, a town served, a dated plan. The gate checks this.
+3. Answer first. Each local FAQ answer opens with the direct answer in one sentence, then the figure and its source, in under 80 words. AI answers lift self-contained passages; Google says to write this way for people anyway.
+4. National text (grant rules, NC6, planning exemptions) is never rewritten per county. It lives in `src/data/national-faqs.ts` and the template.
+5. `towns`: only towns the installer really serves, about a dozen at most, shown in the labelled "Towns we serve" section. Never a footer block of place names, never town pages (Google's spam policy lists "Blocks of text that list cities and regions that a web page is trying to rank for" as keyword stuffing).
+6. Run the stop-slop pass (section 9). Score 40/50 or higher and record the score in the commit message. No em dashes, no exclamation marks.
+7. If AI helped draft, a human checks every line against its source before commit. AI never invents a local fact, a town detail or a proof item.
+
+### Step 5. Schema
+
+Output: nothing new in most cases; the template emits the graph from the data file (section 4).
+
+- Check the rendered JSON-LD: `BreadcrumbList`, `WebPage` (`dateModified` = `updated`), `Service` with `areaServed` the county as `AdministrativeArea`, `provider` `#business`, `brand` `#organization`, `FAQPage` from the questions visible on the page.
+- Never a new `LocalBusiness` per county, never a county address, never `aggregateRating`, `Review` or `HowTo`.
+- Every marked-up fact must be visible on the page ("Your structured data must be a true representation of the page content").
+
+### Step 6. Gate test (must pass and be quoted)
+
+```bash
+bun test src/data/counties
+```
+
+- Quote the `COUNTY GATE <slug>: READY (indexable=...)` line and the "unique county text" line in the PR and in any report. "NOT READY" means the page is not ready, whatever else looks good.
+- Then set `indexable: true` locally and run `bun run build`. `assertCountyGate` throws if an indexable county fails, so a green build is the second proof.
+- Fix failures in the data, never in `gate.ts`. Loosening the gate needs Cal's explicit yes in writing.
+
+### Step 7. Review (a second person or a separate agent, never the writer)
+
+The reviewer:
+
+1. Runs the gate themselves and quotes it (HARD RULE 7).
+2. Opens every `sourceUrl` and confirms the figure and date match the text.
+3. Opens every proof item's permission evidence and confirms it covers what is shown.
+4. Reads the page with another county's name in mind (the human swap test) and flags any line that would still be true.
+5. Walks the policy cross-check (section 14) row by row and the SEO + AEO checklist (section 13).
+6. Checks the truth rules: no SMS, WhatsApp automation, roof or satellite detection or AI phone answering claims; no "SEAI Registered Partner"; no rival named; no office hours.
+
+### Step 8. Preview
+
+- Push the branch (with Cal's yes); the Vercel preview is behind deployment protection and the page renders `noindex` while `indexable` is false in the deployed data.
+- Run the section 10 verification loop on the preview: build and lint, SSR curl, JSON-LD validation, meta lengths, clean console, computed contrast, LCP, no theatre, field-notes traps, secrets scan.
+- Check mobile (375 px), tablet (768 px) and desktop widths with screenshots. The sticky call and savings bar, the estimator and the two doors must work at each.
+
+### Step 9. Cal's sign-off
+
+Send Cal, in one message: the preview URL, the quoted gate lines, the reviewer's notes, the stop-slop score and the screenshots at three widths. Only Cal's written yes moves the page on. Merging to `main` is the go-live and is Cal's call.
+
+### Step 10. Go-live checklist
+
+Run section 7 in full, then:
+
+1. `indexable: true` and `updated` set to today in the same commit that Cal approved.
+2. `/counties` links the page; `llms.txt` lists it; sitemap shows it with the right `lastmod`.
+3. After merge: inspect the URL in Search Console and request indexing; run `node scripts/indexnow-ping.mjs` (Bing, which feeds Copilot and ChatGPT search).
+4. Day 1: PageSpeed Insights on the live URL. Week 1: confirm it is indexed. Month 1: re-run the step 1 AI-answer checks and log whether our page or business is cited.
+5. Off-site, for AI answers (where the studies say local AI answers come from): keep the one real Google Business Profile accurate, Bing Places and Apple Business Connect for the real business, and pitch the county's data story to local press. No fake mentions, no paid followed links.
+6. Refresh: when a source publishes new data (Census, SEAI yearly figures, a council implementation report), update the fact, its `date` and `updated`. Change `updated` only when content changed.
+
+## 13. SEO + AEO checklist
+
+Tick every line before step 9. Each line points at the policy row in section 14 that makes it safe.
+
+**Page and content**
+- [ ] One H1 "Solar panels in <County>"; title 50 to 60 characters with the county and "solar panels"; description 140 to 155 characters, not a name swap of another county's.
+- [ ] First paragraph answers "is solar worth it here" with the county's yield and the engine's saving, under 60 words, server-rendered.
+- [ ] H2s phrased as the questions people ask; each section answers in its first sentence.
+- [ ] 3+ official, dated local facts in our own words, each with a visible source link (P2, P3).
+- [ ] 2+ permissioned proof items; the real Google rating as plain text linking to the profile (P8, P9).
+- [ ] 2+ local FAQs from real search data; national questions only in the national block (P1).
+- [ ] Towns served: real, about a dozen at most, in the labelled section only (P6).
+- [ ] Visible "Updated" date that matches `updated`, changed only on a real content change (P5).
+- [ ] Every figure engine-computed or sourced and captioned; the estimate called a close estimate.
+- [ ] No author or reviewer name unless a real, consenting person with a real credential signed it off (P17).
+
+**Linking**
+- [ ] Links up to `/counties`, `/`, the SEAI grant guide, the NC6 guide, the farm and business grant pages, two or three cost guides.
+- [ ] `/counties` links down to the page. No town pages, no cross-links between near-identical county pages beyond the hub.
+- [ ] Outbound links to the official sources (seai.ie, esbnetworks.ie, cso.ie, the council, PVGIS). No rival named.
+
+**Schema**
+- [ ] One `@graph`: BreadcrumbList, WebPage, Service (`areaServed` AdministrativeArea, `provider` `#business`), FAQPage from visible questions (P11, P12).
+- [ ] No county LocalBusiness, address, `aggregateRating`, `Review` or `HowTo` (P10, P13, P14).
+- [ ] JSON-LD validates; every marked-up value is visible on the page.
+
+**Crawl and AI access**
+- [ ] Page content is in the server HTML (curl shows the H1, yield, saving, facts and FAQ answers).
+- [ ] robots.ts still allows Googlebot, Bingbot, OAI-SearchBot, ChatGPT-User, PerplexityBot, ClaudeBot, Applebot (P19).
+- [ ] Listed in `llms.txt` (harmless; Google says it does not use it, other assistants may) (P20).
+
+**Gate and truth**
+- [ ] `COUNTY GATE <slug>: READY` quoted from a run made today.
+- [ ] Stop-slop 40/50+, recorded in the commit message.
+- [ ] Truth pass: no em dashes, no exclamation marks, no banned claims, no office hours.
+
+## 14. Policy cross-check
+
+Every practice this playbook uses or rejects, against the Google policy text it touches. Quotes are from Google's own pages, read 13 Nov 2026 (Search Central pages carry no visible date in the text we fetched; the FAQ change dates are from Search Central's own change log). Full table, with the SEO authority behind each practice: research doc section 8.
+
+| # | Practice | Policy it touches | Policy text (quoted) | Verdict |
+|---|---|---|---|---|
+| P1 | One page per county on one template, in the `/counties` hub | [Spam policies: doorway abuse](https://developers.google.com/search/docs/essentials/spam-policies) | "Having multiple domain names or pages targeted at specific regions or cities that funnel users to one page"; "Creating substantially similar pages that are closer to search results than a clearly defined, browseable hierarchy" | Safe with conditions: the gate passes (local facts, proof, local FAQs, swap test), the page is useful on its own, it sits in a browseable hub |
+| P2 | Official, dated local facts written in our own words with a source link | [Spam policies: scraping](https://developers.google.com/search/docs/essentials/spam-policies) | "Republishing content from other sites without adding any original content or value, or even citing the original source" | Safe with conditions: one figure, our words, our "so what", source linked and dated |
+| P3 | AI help with drafting | [Spam policies: scaled content abuse](https://developers.google.com/search/docs/essentials/spam-policies); [Creating helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) | "Using generative AI tools or other similar tools to generate many pages without adding value for users"; "Are you using extensive automation to produce content on many topics?" | Safe with conditions: a human writes from sourced facts and checks every line; one county at a time |
+| P4 | Generating many county pages at once from a template or a prompt | Same as P3 | "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users" | Unsafe. Rejected |
+| P5 | Changing `updated` / "Updated" date | [Creating helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) | "Are you changing the date of pages to make them seem fresh when the content has not substantially changed?" | Safe only when a fact, figure or proof item changed |
+| P6 | Listing towns served | [Spam policies: keyword stuffing](https://developers.google.com/search/docs/essentials/spam-policies) | "Blocks of text that list cities and regions that a web page is trying to rank for" | Safe with conditions: real towns only, about a dozen, in the labelled section; no footer place blocks, no town pages |
+| P7 | Town-level pages or extra county domains | Doorway abuse; [expired domain abuse](https://developers.google.com/search/docs/essentials/spam-policies) | "Having multiple websites with slight variations to the URL and home page to maximize their reach"; "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings" | Unsafe. Rejected (town pages belong to the licensed installer's own site) |
+| P8 | Real installs, photos, sponsorships, press, with written permission | [Review snippet guidelines](https://developers.google.com/search/docs/appearance/structured-data/review-snippet) | "Don't include fake or undisclosed incentivized reviews on your page or in your structured data markup" | Safe with conditions: genuine, permissioned, never incentivised without disclosure |
+| P9 | Real Google rating shown as plain text linking to the profile | Review snippet guidelines | "Don't aggregate reviews or ratings from other websites" (applies to markup) | Safe as text with no markup |
+| P10 | `aggregateRating` or `Review` markup on county pages | Review snippet guidelines | "If the entity that's being reviewed controls the reviews about itself, their pages that use LocalBusiness or any other type of Organization structured data are ineligible for star review feature" | Unsafe. Rejected (it buys no stars; Lily Ray lists AggregateRating misuse among sites that lost visibility in early 2026) |
+| P11 | `FAQPage` markup from the questions visible on the page | [Structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies); FAQ change log | "Don't mark up content that is not visible to readers of the page"; FAQ rich results: "This feature will no longer appear in Google Search starting May 7, 2026" | Safe with conditions: visible questions only; expect no SERP feature, kept for other answer engines |
+| P12 | `Service` + `areaServed` referencing the one real LocalBusiness | Structured data policies | "Your structured data must be a true representation of the page content" | Safe |
+| P13 | A new `LocalBusiness` per county with a county address | [LocalBusiness structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business); GBP guidelines | `address`: "The physical location of the business"; "If your business rents a physical mailing address but doesn't operate out of that location, that location isn't eligible for a Business Profile" | Unsafe. Rejected |
+| P14 | `HowTo` markup for the grant or NC6 steps | Search Central (HowTo rich results retired Sept 2023) | No rich result is shown for HowTo | Do not use: no benefit, extra surface for mismatch errors |
+| P15 | A Google Business Profile per county, or a virtual office | [GBP guidelines](https://support.google.com/business/answer/3038177) | "There should only be one profile per business"; "P.O. boxes or mailboxes located at remote locations aren't acceptable"; "If you're a service-area business, you should hide your business address from customers" | Unsafe. Rejected. One real GBP, service area set, address hidden if no visitors |
+| P16 | Sponsorship of a local club that links to us | [Spam policies: link spam](https://developers.google.com/search/docs/essentials/spam-policies) | "Exchanging money for links, or posts that contain links"; acceptable "as long as they are qualified with a rel=\"nofollow\" or rel=\"sponsored\" attribute" | Safe with conditions: real and current; ask the club to mark the link `rel="sponsored"`; never buy followed links |
+| P17 | Named author or reviewer | Creating helpful content | "Something that helps people intuitively understand the E-E-A-T of content is when it's clear who created it" | Safe with conditions: a real, consenting person with a real credential, or no name at all |
+| P18 | Partner installer content on our domain | [Spam policies: site reputation](https://developers.google.com/search/docs/essentials/spam-policies) | "third-party content is published on a host site mainly because of that host's already-established ranking signals" | Safe with conditions: our words about the partner, signed off; never their promo content to borrow our rank |
+| P19 | Answer-first sections, question H2s, inline sources, server-rendered | [AI features and your website](https://developers.google.com/search/docs/appearance/ai-features) | "There are no additional requirements to appear in AI Overviews or AI Mode, nor other special optimizations necessary"; "a page must be indexed and eligible to be shown in Google Search with a snippet" | Safe: it is writing for people; Google treats it as normal SEO |
+| P20 | AI-only content, chunked pages, `llms.txt` as a ranking lever | [Google AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) | "There's no requirement to break your content into tiny pieces"; no need to "create new machine readable files, AI text files, markup, or Markdown" because "Google Search itself doesn't use them" | `llms.txt` safe and harmless (other assistants); separate AI-only content or chunked pages rejected |
+| P21 | Allowing OAI-SearchBot and PerplexityBot | [OpenAI bots](https://developers.openai.com/api/docs/bots); [Perplexity bots](https://docs.perplexity.ai/guides/bots) | "OAI-SearchBot is used to surface websites in search results in ChatGPT's search features"; PerplexityBot is "designed to surface and link websites in search results on Perplexity" | Safe and required for those answer engines |
+| P22 | Review gating or incentivised reviews | Review snippet guidelines; GBP policies | "Reviews written in exchange for a benefit" (listed as not allowed without clear disclosure) | Unsafe. Rejected |
+| P23 | Tactics aimed only at AI answers (planted mentions, self-ranking "best" lists, prompt bait) | [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies) (clarified 15 May 2026) | Spam includes "attempting to manipulate generative AI responses in Google Search" | Unsafe. Rejected |
