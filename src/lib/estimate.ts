@@ -144,9 +144,14 @@ export const HOME_TYPES = [
   { id: 'detached', label: 'Detached', minKwp: DOMESTIC_MIN_KWP, maxKwp: 9.7 },
 ] as const;
 
-/** Share of a month's annual generation, Irish seasonal shape. */
+/**
+ * Share of a month's annual generation, Irish seasonal shape. Sums to exactly
+ * 1.000 so the twelve months add up to the annual figure. (Until 13 Nov 2026
+ * the shares summed to 0.98, so the monthly chart ran about 2% short of the
+ * annual total; the annual figure, savings and payback were never affected.)
+ */
 export const MONTHLY_GENERATION_SHARE = [
-  0.032, 0.047, 0.081, 0.109, 0.131, 0.134, 0.127, 0.110, 0.086, 0.059, 0.036, 0.028,
+  0.033, 0.048, 0.083, 0.111, 0.133, 0.136, 0.130, 0.112, 0.088, 0.060, 0.037, 0.029,
 ] as const;
 
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
