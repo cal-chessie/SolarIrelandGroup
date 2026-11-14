@@ -126,31 +126,54 @@ function genId() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+/** The words a link shows: never the raw address. A wa.me link reads
+ *  "WhatsApp us", a mailto the address, anything else its bare domain. */
+function linkLabel(href: string): string {
+  if (/^https?:\/\/(wa\.me|api\.whatsapp\.com)\//i.test(href)) return 'WhatsApp us';
+  if (/^mailto:/i.test(href)) return href.slice(7);
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return href;
+  }
+}
+
+const LINK_CLASS = 'text-yellow-400 underline underline-offset-2 hover:text-yellow-300 transition-colors';
+
+/** Bold, markdown links and bare URLs. Older replies (and some model output)
+ *  carried a raw wa.me address with its whole percent-encoded message (Cal,
+ *  14 Nov: "a raw, ugly URL"); a bare URL now renders as a tidy link, and a
+ *  markdown link whose label is itself a URL gets the tidy label too. */
 function renderMarkdown(text: string) {
   const parts: React.ReactNode[] = [];
-  const remaining = text;
   let key = 0;
-  const regex = /(\*\*(.+?)\*\*)|\[([^\]]+)\]\(([^)]+)\)/g;
+  const regex = /(\*\*(.+?)\*\*)|\[([^\]]+)\]\(([^)\s]+)\)|(https?:\/\/[^\s<>()]+[^\s<>().,;:!?'"])/g;
   let lastIndex = 0;
   let match;
-  while ((match = regex.exec(remaining)) !== null) {
+  while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(<span key={key++}>{remaining.slice(lastIndex, match.index)}</span>);
+      parts.push(<span key={key++}>{text.slice(lastIndex, match.index)}</span>);
     }
     if (match[2]) {
       parts.push(<strong key={key++} className="font-semibold text-white">{match[2]}</strong>);
     } else if (match[3] && match[4]) {
+      const label = /^https?:\/\//i.test(match[3].trim()) ? linkLabel(match[4]) : match[3];
       parts.push(
-        <a key={key++} href={match[4]} target="_blank" rel="noopener noreferrer"
-          className="text-yellow-400 underline underline-offset-2 hover:text-yellow-300 transition-colors">
-          {match[3]}
+        <a key={key++} href={match[4]} target="_blank" rel="noopener noreferrer" className={LINK_CLASS}>
+          {label}
+        </a>
+      );
+    } else if (match[5]) {
+      parts.push(
+        <a key={key++} href={match[5]} target="_blank" rel="noopener noreferrer" className={LINK_CLASS}>
+          {linkLabel(match[5])}
         </a>
       );
     }
     lastIndex = regex.lastIndex;
   }
-  if (lastIndex < remaining.length) {
-    parts.push(<span key={key++}>{remaining.slice(lastIndex)}</span>);
+  if (lastIndex < text.length) {
+    parts.push(<span key={key++}>{text.slice(lastIndex)}</span>);
   }
   return parts.length > 0 ? parts : text;
 }
@@ -618,6 +641,7 @@ export default function WhatsAppChat() {
   const handleQuickAction = (action: QuickAction) => sendMessage(action.message);
 
   const handleOpen = () => {
+    setFabHovered(false);
     setIsOpen(true);
     setIsMinimized(false);
     setUnreadCount(0);
@@ -718,8 +742,11 @@ export default function WhatsAppChat() {
               which lifts it off a photographic hero without caging it. */}
           <button
             onClick={handleOpen}
-            onMouseEnter={() => setFabHovered(true)}
-            onMouseLeave={() => setFabHovered(false)}
+            // Mouse only. On a phone a tap fires mouseenter and never a
+            // mouseleave, so the "Chat with us" tip stuck on over the page
+            // after the chat closed (Cal's 14 Nov recording, 31.5s).
+            onPointerEnter={(e) => { if (e.pointerType === 'mouse') setFabHovered(true); }}
+            onPointerLeave={() => setFabHovered(false)}
             className="whatsapp-fab relative flex items-center justify-center group transition-transform duration-300 hover:scale-[1.08] active:scale-95"
             aria-label="Open chat"
           >
@@ -1196,7 +1223,15 @@ export default function WhatsAppChat() {
            the whole screen height (800px) on a spring curve, so most of the
            travel landed in the first 130ms and read as a pop. It now rises
            32px and fades in over 320ms on a plain ease-out, and leaves in
-           240ms. Finite transitions on transform and opacity only (INP). */
+           240ms. Finite transitions on transform and opacity only (INP).
+           14 Nov (Cal's recording, "opens too fast" again): measured in
+           WebKit, that ease-out had the sheet 77% opaque within 100ms, so a
+           full-screen sheet still read as a pop. It now rises 48px over
+           440ms and fades over 360ms on a gentle ease-out (half opaque at
+           about 120ms). And with iOS Reduce Motion on, the global
+           reduced-motion rule (globals.css) cut every transition to 0.01ms,
+           so the sheet appeared in one frame; the reduced-motion branch
+           below keeps a 280ms fade with no travel (a fade is not motion). */
         .wa-sheet {
           position: fixed;
           z-index: 50;
@@ -1207,7 +1242,7 @@ export default function WhatsAppChat() {
           background: #0f0f0f;
           border: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-          transition: transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 260ms cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear 0s;
+          transition: transform 440ms cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 360ms cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0s;
         }
         .wa-sheet[data-open='false'] {
           visibility: hidden;
@@ -1222,7 +1257,7 @@ export default function WhatsAppChat() {
           background: rgba(0, 0, 0, 0.55);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+          transition: opacity 360ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .wa-backdrop[data-open='true'] {
           opacity: 1;
@@ -1244,7 +1279,7 @@ export default function WhatsAppChat() {
             border-radius: 20px 20px 0 0;
           }
           .wa-sheet[data-open='false'] {
-            transform: translate3d(0, 32px, 0);
+            transform: translate3d(0, 48px, 0);
           }
           .wa-sheet__head {
             padding-top: 22px;
@@ -1293,16 +1328,21 @@ export default function WhatsAppChat() {
           }
         }
         @media (prefers-reduced-motion: reduce) {
+          /* !important: the global reduced-motion rule forces every
+             transition-duration to 0.01ms with !important. */
           .wa-sheet,
           .wa-sheet[data-open='false'] {
             transform: none;
-            transition: opacity 200ms linear, visibility 0s linear 200ms;
+            transition: opacity 280ms ease-out, visibility 0s linear 280ms;
+            transition-duration: 280ms, 0s !important;
           }
           .wa-sheet[data-open='true'] {
-            transition: opacity 200ms linear, visibility 0s linear 0s;
+            transition: opacity 280ms ease-out, visibility 0s linear 0s;
+            transition-duration: 280ms, 0s !important;
           }
           .wa-backdrop {
-            transition: opacity 200ms linear;
+            transition: opacity 280ms ease-out;
+            transition-duration: 280ms !important;
           }
           .wa-sheet[data-open='false'] {
             opacity: 0;

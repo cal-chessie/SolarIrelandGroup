@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { providerDetail, reportChatFailure } from '@/lib/chatFailure';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -128,7 +129,7 @@ const SYSTEM_PROMPT = `You are the AI assistant for Solar Ireland, an SEAI-regis
 9. Never promise specific savings - always say "typically" or "depends on your usage."
 10. If someone is ready to take the next step, suggest a free site survey. Provide the WhatsApp link: ${WA_URL}
 
-**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human - politely say you'll connect them and suggest WhatsApp (${WA_URL}) or email ${SOLAR_DATA.provider.email}.
+**Escalation:** If someone asks about a specific quote for their home, a complaint, or anything that needs a human - politely say you'll connect them and suggest WhatsApp, written exactly as the markdown link [WhatsApp us](${WA_URL}) (never paste the bare address), or email ${SOLAR_DATA.provider.email}.
 
 **Contact:**
 - WhatsApp: ${SOLAR_DATA.provider.phoneDisplay}
@@ -186,6 +187,7 @@ export async function POST(request: Request) {
     // humans on WhatsApp rather than pretending to think.
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
+      reportChatFailure({ status: 401, detail: 'OPENROUTER_API_KEY is not set in this deployment.' });
       return NextResponse.json(
         { message: `Our chat assistant is offline just now. Message us on [WhatsApp](${WA_URL}) and a member of our team will answer.` },
         { status: 503 }
@@ -224,7 +226,13 @@ export async function POST(request: Request) {
         signal: abort.signal,
       });
       if (!aiRes.ok) {
-        throw new Error(`Chat API responded ${aiRes.status}`);
+        // Name the cause in the logs and tell the owner (chatFailure.ts).
+        const body = await aiRes.text().catch(() => '');
+        reportChatFailure({ status: aiRes.status, detail: providerDetail(body) });
+        return NextResponse.json(
+          { message: `I'm having trouble connecting right now. Please try again or [WhatsApp us](${WA_URL}).` },
+          { status: 502 }
+        );
       }
       completion = await aiRes.json();
     } finally {
@@ -260,8 +268,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: messageContent });
   } catch (error) {
     console.error('Chat API error:', error);
+    // A timeout or network failure reaching the provider is an outage too.
+    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TypeError')) {
+      reportChatFailure({ status: 0, detail: error.message.slice(0, 300) });
+    }
     return NextResponse.json(
-      { message: `I'm having trouble connecting right now. Please try again or reach us on [WhatsApp](${WA_URL}).` },
+      { message: `I'm having trouble connecting right now. Please try again or [WhatsApp us](${WA_URL}).` },
       { status: 500 }
     );
   }

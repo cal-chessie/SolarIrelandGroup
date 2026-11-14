@@ -287,13 +287,27 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: 88vh;
-  min-height: 88svh;
+  /* Never a viewport HEIGHT unit on a touch screen (Cal, 14 Nov, iPhone
+     recording). In-app browsers (the Google app, Chrome on iOS) resize the
+     web view itself as their address and tab bars slide away, so svh, dvh,
+     vh and innerHeight ALL change mid-scroll there; svh is only stable in
+     Safari. The hero was 88svh: every bar toggle grew or shrank it by about
+     90px, the centred headline jumped, and everything below it (the Bill
+     Analyser, the grants block) moved by the full amount, because iOS has no
+     scroll anchoring to hide it. Width never changes while scrolling, so the
+     phone and tablet heights are derived from width alone. */
+  min-height: clamp(560px, 160vw, 720px);
   overflow: hidden;
   contain: layout;
 }
-@media (min-width: 1024px) {
-  /* The top 64px of the analyser shows above the fold. */
+@media (min-width: 768px) {
+  .h-hero {
+    min-height: clamp(640px, 105vw, 920px);
+  }
+}
+/* A desktop with a mouse has no collapsing toolbar, so it keeps the
+   fold-filling hero: the top 64px of the analyser shows above the fold. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   .h-hero {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
@@ -362,11 +376,13 @@
 }
 /* Desktop (lg+): the original left-aligned composition from dbbf329. Full
    viewport height, headline at the original lg:6xl / xl:7xl, trust row left. */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   .h-hero--v2 {
     min-height: 100vh;
     min-height: 100svh;
   }
+}
+@media (min-width: 1024px) {
   .h-hero--v2 h1 {
     font-size: 60px;
     letter-spacing: -0.035em;

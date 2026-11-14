@@ -32,7 +32,10 @@ const rule = (sel: string) => {
   const m = phone.match(new RegExp(`${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`));
   return m ? m[1] : '';
 };
-const short = block('@media (max-width: 767px) and (max-height: 620px)');
+// 14 Nov: no height-keyed media query may touch the in-flow door. An
+// in-app browser's bars change the height mid-scroll, and a short-phone block
+// here shrank the door 57px each time, dragging every section below it.
+const heightKeyed = css.match(/@media[^{]*\((max|min)-height:[^{]*\{[\s\S]*?\n\}/g) ?? [];
 
 describe('Bill Analyser start state fits one phone screen', () => {
   it('lands every #calculator door under the fixed navbar', () => {
@@ -67,16 +70,14 @@ describe('Bill Analyser start state fits one phone screen', () => {
     expect(phone).toMatch(/\.si-an-door__title \{\s*font-size:\s*clamp\(28px, [\d.]+vw, \d+px\)/);
     // Never sized by height: the toolbar collapsing mid-scroll changes the
     // height and reflowed the headline from two lines to three.
-    expect(short).not.toMatch(/\.si-an-door__title \{[^}]*font-size/);
-    expect(short).toMatch(/\.si-an-door__sub \{[^}]*font-size:\s*15px/);
+    for (const b of heightKeyed) expect(b).not.toMatch(/\.si-an-door/);
   });
 
   it('keeps every start-state tap target at 44px or more', () => {
     expect(css).toMatch(/\.si-an-door \.si-an-seg label \{\s*min-height:\s*44px/);
     expect(css).toMatch(/\.si-an-priv__line \{[^}]*min-height:\s*44px/);
     expect(phone).toMatch(/\.si-an-road \{[^}]*min-height:\s*56px/);
-    expect(short).toMatch(/\.si-an-road \{\s*min-height:\s*48px/);
-    expect(short).not.toMatch(/label \{\s*min-height:\s*(\d|[1-3]\d|4[0-3])px/);
+    for (const b of heightKeyed) expect(b).not.toMatch(/\.si-an-(road|seg)/);
   });
 
   it('slides the segment thumb and respects reduced motion', () => {

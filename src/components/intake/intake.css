@@ -3385,26 +3385,12 @@ h1.si-ask__title {
     display: none;
   }
 }
-/* Short phones (iPhone SE and mini with the browser bars up). */
-@media (max-width: 767px) and (max-height: 620px) {
-  /* The eyebrow is the one line a short screen can spare. */
-  .si-an-door .si-an-kicker {
-    display: none;
-  }
-  .si-an-door .si-an-door__title {
-    margin-top: 0;
-  }
-  .si-an-door .si-an-door__sub {
-    font-size: 15px;
-    line-height: 1.45;
-  }
-  .si-an-door .si-an-road {
-    min-height: 48px;
-  }
-  .si-an-road__note {
-    margin-bottom: 8px;
-  }
-}
+/* No height-keyed rules on in-flow content. A "short phones" block here
+   (max-height: 620px) hid the eyebrow and shrank the roads, so on a small
+   phone the door lost 57px every time the browser bars came back and grew
+   it again when they slid away, dragging every section below it (14 Nov,
+   Cal's in-app browser recording). The door is content-sized since 13 Nov,
+   so it no longer has to fit one screen. */
 
 /* ── Tablet and desktop (768 up): two columns filling the section. ── */
 @media (min-width: 768px) {
@@ -3422,7 +3408,9 @@ h1.si-ask__title {
     align-content: center;
     column-gap: clamp(40px, 6vw, 96px);
     row-gap: 24px;
-    min-height: min(64svh, 640px);
+    /* A fixed height on touch screens: svh moves with an in-app browser's
+       toolbar (see .h-hero in home.css). A mouse desktop keeps the svh cap. */
+    min-height: 600px;
     padding: clamp(40px, 5vw, 72px);
   }
   .si-an-door__pitch {
@@ -3508,10 +3496,19 @@ h1.si-ask__title {
 @media (min-width: 1024px) {
   .si-an-card.si-an-door {
     row-gap: 32px;
-    min-height: min(80svh, 760px);
   }
   .si-an-door .si-an-road {
     min-height: 96px;
+  }
+}
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .si-an-card.si-an-door {
+    min-height: min(64svh, 640px);
+  }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .si-an-card.si-an-door {
+    min-height: min(80svh, 760px);
   }
 }
 
