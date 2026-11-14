@@ -351,3 +351,354 @@ Every practice this playbook uses or rejects, against the Google policy text it 
 | P21 | Allowing OAI-SearchBot and PerplexityBot | [OpenAI bots](https://developers.openai.com/api/docs/bots); [Perplexity bots](https://docs.perplexity.ai/guides/bots) | "OAI-SearchBot is used to surface websites in search results in ChatGPT's search features"; PerplexityBot is "designed to surface and link websites in search results on Perplexity" | Safe and required for those answer engines |
 | P22 | Review gating or incentivised reviews | Review snippet guidelines; GBP policies | "Reviews written in exchange for a benefit" (listed as not allowed without clear disclosure) | Unsafe. Rejected |
 | P23 | Tactics aimed only at AI answers (planted mentions, self-ranking "best" lists, prompt bait) | [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies) (clarified 15 May 2026) | Spam includes "attempting to manipulate generative AI responses in Google Search" | Unsafe. Rejected |
+
+---
+
+## Appendix: research and evidence (merged 14 Nov 2026)
+
+This is the full research behind the HARD RULES, the Build SOP and the policy cross-check. It lives here so no session can miss it. Sources are SEO and marketing authorities and Google Search Central only; never study rival installers.
+
+### County service pages: what wins, what is safe, and the Roscommon fix list
+
+Research date: 13 Nov 2026. Scope: Solar Ireland Group county service pages (template `src/components/county/CountyPage.tsx`, data `src/data/counties/<slug>.ts`, branch `county-pages-preview`, playbook `docs/county-page-playbook.md`). Research only; no code changed.
+
+Skills applied: seo-local, ai-seo, seo-geo, seo-page, seo-content, cro, copywriting.
+
+Evidence rule used in this report: Google's own policy text is quoted as policy. Industry studies (Whitespark, BrightLocal, Invoca, Unbounce, Sterling Sky) are cited as what they are: expert surveys, consumer surveys or vendor data, not Google statements. Anything I could not verify against a primary source is marked **(verify)**.
+
+---
+
+### 0. The short answer for Cal
+
+The draft is a good **template** and a weak **page**. Every number is honest and sourced, the schema is clean, and the two doors are right. But it fails its own swap test: put "Leitrim" in place of "Roscommon" and almost every line still reads true, because the only Roscommon-specific words are the PVGIS figures, twelve town names and three short notes. That is exactly what Google's doorway policy describes, and it is also why it reads flat to Cal: there is nothing about Roscommon a Roscommon person would recognise.
+
+The fix is not "local news" in the newspaper sense. It is a small set of **county data slots** filled from official Irish sources (CSO, SEAI, the county council's own climate plan, Sustainable Energy Communities), plus **real proof** (installs, photos, sponsorships) only when it exists. Those slots are what make a page earn its place, keep it fresh honestly, and give people something worth reading.
+
+---
+
+### 1. What top-ranking local service pages do in 2025 to 2026
+
+### 1.1 What the ranking studies say
+
+**Whitespark Local Search Ranking Factors 2026** (expert survey, 47 experts, 187 factors, published Nov 2025; [whitespark.ca/local-search-ranking-factors](https://whitespark.ca/local-search-ranking-factors/)):
+
+| Rank | Top local **organic** factors | Top **AI search** visibility factors |
+|---|---|---|
+| 1 | Dedicated page for each service | Presence on expert-curated "best of" lists |
+| 2 | Geographic keyword relevance of content | Dedicated page for each service |
+| 3 | Quality/authority of inbound links | Prominence on key industry-relevant domains |
+| 4 | Keywords in GBP landing page title | Quality/authority of unstructured citations (newspaper articles, blogs, gov sites, associations) |
+| 6 / 7 | Internal linking across the site | Quantity of unstructured citations (newspaper articles, blog posts) |
+| 10 | Keywords in anchor text of inbound links | Scannable content structure (headings, bullets, images) |
+
+Top **conversion** factors in the same report: high Google rating (4 to 5), positive sentiment in review text, proximity, mobile-friendly site, quantity of native Google reviews with text, open at time of search, recency of reviews, dedicated page for each service. "Photo and video quality (not stock)" ranks 11th.
+
+What this means for us: a dedicated county page is the right shape. What moves it is (a) genuinely local content, (b) mentions of the business in local papers, council or community sites, and (c) reviews. The last two live off the page, so the page must give local press and community groups a reason to link and mention.
+
+**Google's own local ranking statement** ([support.google.com/business/answer/7091](https://support.google.com/business/answer/7091)): "Local results are mainly based on relevance, distance, and popularity." Prominence is based on "how many websites link to your business and how many reviews you have." "There's no way to request or pay for a better local ranking on Google." For a service-area business with no premises in Roscommon, the map pack is mostly out of reach (distance); the county page competes in the **organic** results and in **AI answers**. That is where content quality decides.
+
+**BrightLocal Local Consumer Review Survey 2026** (1,002 US adults, Feb 2026; [brightlocal.com/research/local-consumer-review-survey](https://www.brightlocal.com/research/local-consumer-review-survey/), summarised by [PinMeTo](https://www.pinmeto.com/news/brightlocal-local-consumer-review-survey-2026/)): AI use for local recommendations rose from 6% to 45%; 74% only care about reviews from the last three months; 47% will not use a business with fewer than 20 reviews **(verify the last two against the full report)**. US sample; direction holds for Ireland, exact figures may not.
+
+**Sterling Sky on service area pages** ([sterlingsky.ca](https://www.sterlingsky.ca/how-to-create-unique-and-helpful-service-area-pages-for-local-businesses/)): recommends first-party data (typical job prices), case studies, service-specific reviews, staff with credentials, original job photos, local landmarks and events, and real community ties such as sponsorships. Warns that thin, repetitive area pages risk a penalty and that AI-generated hyper-local content performed poorly in their testing. Their client case studies (LawnSavers, A1 Garage Door) attribute lead growth to richer local landing page content.
+
+### 1.2 The pattern, element by element
+
+| Element | What winning pages do | Evidence |
+|---|---|---|
+| Proof | Real local jobs: photo, town, system size, result, with permission | Sterling Sky; Whitespark conversion factors (photos not stock, review text) |
+| Local content | Facts only true of that place, sourced and dated | Whitespark #2 organic factor (geographic relevance); Google doorway policy (section 2) |
+| Maps | Service-area businesses show an area, not a fake pin. Embedded Google Maps are not a ranking factor | seo-local skill notes; Google GBP rules on service areas |
+| Reviews | Recent, many, with text, on Google; shown on the page as a link out, not as self-serving star markup | Whitespark conversion top 10; Google review snippet policy (section 2) |
+| FAQs | Real questions with the answer visible; FAQ rich results are gone, so FAQs serve people and AI answers | Google retired FAQ rich results in May 2026 per [multiple reports](https://ppc.land/google-kills-faq-rich-results-what-seos-saw-coming-since-2019/) **(verify on Search Central)** |
+| CTAs | Primary action above the fold, repeated after proof and at the end; phone tap on mobile | Section 5 |
+| Speed | Mobile-friendly, fast first paint | Whitespark conversion #4; Core Web Vitals |
+| Schema | Accurate Service + areaServed + breadcrumb; no invented ratings | Google structured data policies |
+| AI answers | Answer-first paragraphs, figures with sources, visible updated date, server-rendered | Google AI features guide via ai-seo skill: "still SEO"; seo-geo: 44% of AI citations from the first 30% of a page (SE Ranking) |
+
+---
+
+### 2. Safe versus risky under Google's policies
+
+Primary source: [Google spam policies](https://developers.google.com/search/docs/essentials/spam-policies) and [Creating helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content).
+
+### 2.1 The policy text that matters
+
+- **Doorway abuse:** "Doorway abuse is when sites or pages are created to rank for specific, similar search queries." Listed example: "Having multiple domain names or pages targeted at specific regions or cities that funnel users to one page." Also: "Creating substantially similar pages that are closer to search results than a clearly defined, browseable hierarchy."
+- **Scaled content abuse:** "many pages are generated for the primary purpose of manipulating search rankings", including "Using generative AI tools or other similar tools to generate many pages without adding value for users."
+- **Site reputation abuse:** "third-party content is published on a host site mainly because of that host's already-established ranking signals."
+- **Helpful content warning signs** (Google: answering yes is "a warning sign"): "Are you producing lots of content on many different topics in hopes that some of it might perform well?"; "Are you using extensive automation to produce content on many topics?"; "Are you changing the date of pages to make them seem fresh when the content has not substantially changed?"; "Are you writing to a particular word count?"
+- **Who / How / Why:** "Is it self-evident to your visitors who authored your content?", "avoid using deceptive authorship information", and "'Why' is perhaps the most important question."
+- **Reviews markup** ([review snippet docs](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)): if a business controls the reviews about itself, its LocalBusiness or Organization pages "are ineligible for star review feature", even via a third-party widget. "Don't aggregate reviews or ratings from other websites." Marked-up reviews must be visible on the page.
+
+### 2.2 Safe / risky table
+
+| Item | Safe | Risky or banned | Why |
+|---|---|---|---|
+| County pages on one template | Yes, if each has real local substance and sits in a browseable hub (`/counties`) | 26 or 32 pages that differ by name and yield only | Doorway: "pages targeted at specific regions or cities" |
+| Templated text | Shared sections (SEAI, NC6, planning) framed for the county, answering real questions | `${C.name}` dropped into otherwise identical paragraphs and FAQs | Doorway + scaled content; fails swap test |
+| AI-written local copy | AI to draft from a sourced fact, human checks and edits | Generating "local colour" paragraphs per county | Scaled content abuse; Sterling Sky found AI hyper-local content weak |
+| Local news / events | Dated, sourced items about energy in the county (council plan, SEC, grant data), written by us, linking to the source | Rewriting local press stories, generic county news, event listings with no energy link, auto-feeds | Off-topic churn is a "search engine first" sign; copying is copyright risk; thin |
+| Freshness | Update `updated` only when a data slot changes | Bumping the date with no real change | Quoted Google warning sign |
+| GAA / community sponsorship | A real, current, paid or in-kind sponsorship, stated plainly with year | "Proud supporters of" with no real deal; buying a club link as a "sponsorship" with a followed link | Truth rule; Google link spam policy treats links given in exchange for money or goods as link schemes unless qualified (`rel="sponsored"` on the club's side) |
+| Hosting a partner's content | Our own words about a partner installer, signed off | Letting a third party publish its own promo content on our domain to borrow our rank | Site reputation abuse |
+| Embedded Google Map | Optional. For a service-area business, a static, self-hosted map of the towns served is better | A Maps iframe pin implying a Roscommon office | Not a ranking factor; implies a false address; loads Google cookies before consent under Irish ePrivacy rules (S.I. 336/2011) **(DPC cookie guidance applies; verify specific embed treatment)** |
+| Photos | Our own photos of real Roscommon jobs, with written homeowner consent | Stock images or other counties' jobs captioned as local | Deceptive; playbook already bans it |
+| Review markup | None on county pages. Link to the real Google profile and show the real current rating as text | `aggregateRating` or `Review` on Service/LocalBusiness | Self-serving reviews ineligible; risk of manual action |
+| FAQPage schema | Keep, built from visible questions only | FAQ markup for hidden or promotional Q&A | Structured data guidelines |
+| Author / reviewer | A real, named, consenting person with a real credential | Invented "solar expert" byline | "avoid using deceptive authorship information" |
+
+---
+
+### 3. Local news, community awareness and engaging reading, done safely
+
+### 3.1 The principle
+
+Do not run a news feed. Build a **"Solar in Roscommon: the local picture"** section from a fixed set of **data slots**. Each slot is a short paragraph (2 to 4 sentences) with one figure, its official source, and a date. A slot that cannot be filled with a real, sourced fact is **left out**, not padded. Refresh slots when the source publishes, not on a calendar. This gives:
+
+- local substance that passes the swap test,
+- honest freshness (the date moves because a number moved),
+- reading that a local person finds interesting ("only 9% of new Roscommon homes built since 2016 use solar"),
+- passages AI answers can quote, with sources.
+
+### 3.2 Slots and the Irish official sources for each
+
+| Slot | What it says | Source (official) | Refresh |
+|---|---|---|---|
+| Sun and yield | Annual and monthly yield vs Dublin (already built) | PVGIS v5.3, re.jrc.ec.europa.eu | Yearly |
+| Weather context (optional) | Sunshine hours at the nearest Met Éireann station | met.ie historical data (station list; pick the nearest station that records sunshine) **(verify which station)** | Yearly |
+| Solar uptake in the county | Share of homes with solar panels, and share of new builds | CSO Census 2022 Profile 2, Table 2.7 "Occupied dwellings by type of renewable energy source, year built and administrative county" and Map 2.1 ([cso.ie](https://www.cso.ie/en/releasesandpublications/ep/p-cpp2/censusofpopulation2022profile2-housinginireland/occupieddwellings/)). Roscommon fact, verified: "In Roscommon (9%), Leitrim (11%) and Kerry (13%), new builds were much less likely to use solar energy." | At Census 2027 release |
+| Housing stock | Dwelling type mix, heating fuel (oil share), age of homes | CSO Census 2022 Profile 2 tables 2.1 and 2.6 by county; CSO PxStat | At Census release |
+| Grants in the county | Number of SEAI solar grants in the county last year, and average system size | SEAI scheme data; county breakdowns appear in Dáil answers (oireachtas.ie debates) and SEAI releases. Third-party analysis of SEAI 2025 data puts Roscommon's average installed system at 6.78 kWp, third largest in Ireland ([energyefficiency.ie](https://energyefficiency.ie/?p=22543)) **(verify against SEAI or a Dáil answer before use)** | Yearly (Jan to Feb, when SEAI publishes the prior year) |
+| Home energy ratings | Share of the county's homes rated D or worse | SEAI BER Research Tool (county filter) **(verify current URL)** | Twice yearly |
+| Council climate plan | What the county council has committed to | Roscommon County Council Climate Action Plan 2024 to 2029, adopted January 2024; Decarbonising Zone in Roscommon Town; implementation reports incl. "Implementation Report 2025" ([roscommoncoco.ie climate action](https://www.roscommoncoco.ie/en/services/climate-action/roscommon-climate-action-plan/decarbonisation-zone-roscommon-town.html)) | When a new implementation report appears |
+| Community energy | Named Sustainable Energy Communities in the county and what they do | SEAI SEC map, filter by county ([seai.ie sec-map](https://seai.ie/community-energy/sustainable-energy-communities/sec-map)). Verified Roscommon example: Castlerea Town Team SEC, Energy Master Plan Oct 2022, supported by Roscommon County Council ([SEAI PDF](https://www.seai.ie/community-energy/sustainable-energy-communities/sec-map/uploads/reg_14_0_EMP157%20-%20Castlerea%20EMP%20Report%20V3.pdf)); council newsletter cites new Energy Master Plans incl. Ballaghaderreen **(verify current list)** | Twice yearly |
+| Local grants beyond SEAI | Business and farm routes | Local Enterprise Office (LEO Roscommon) energy efficiency supports; Department of Agriculture TAMS 3 solar; Roscommon LEADER Partnership **(verify current scheme names and rates)** | On scheme change |
+| Planning quirks | Protected structures, Architectural Conservation Areas, airport safeguarding where relevant | County Development Plan (roscommoncoco.ie); planning exemptions S.I. 493/2022 | On plan change |
+| Grid notes | NC6 vs NC7 thresholds; any local grid constraint only if ESB Networks publishes it | esbnetworks.ie. ESB does not publish county NC6 counts that I could find; a Dáil question or a request to ESB Networks is the route | On change |
+| Local press | Coverage **of us** or of the official data above | Roscommon Herald, Roscommon People, Shannonside FM. Link and summarise in our own words; never copy | When it happens |
+| Installs | Town, system size, battery, month, one-line result, photo | Our own job records, written homeowner consent | As jobs complete |
+| Sponsorships | Club or group, what we fund, since when | Our own signed agreement | As it happens |
+
+### 3.3 Writing rules for these slots
+
+- One fact per slot, figure first, source inline, date visible ("CSO Census 2022").
+- Explain what it means for a homeowner in one sentence (the "so what"), never more.
+- No adjectives about the county ("beautiful Roscommon"). No tourism copy. No GAA chat that is not a real sponsorship.
+- No rewritten press stories. Our own two sentences and a link.
+- Each slot is a typed, optional field in the data file with `value`, `source`, `sourceUrl`, `asOf`. The template renders only filled slots.
+
+---
+
+### 4. The clean split
+
+### 4a. Universal template (best practice, identical structure on every county)
+
+1. Breadcrumb, one H1 "Solar panels in <County>", answer-first hero (under 60 words) with yield, saving, payback, and the two doors plus phone.
+2. Live estimator, server-rendered at the reference bill.
+3. Yield chart and table vs Dublin, PVGIS cited with fetch date.
+4. SEAI grant steps and ESB Networks NC6 steps (shared national facts, framed around the county).
+5. Farms and businesses (TAMS, SEAI non-domestic).
+6. **Local picture section** that renders only the filled county slots from 3.2.
+7. **Proof section** that renders only real installs; hidden when empty.
+8. Towns served (list, no town pages).
+9. FAQ: a **small** shared core (grant, NC6, planning) plus county FAQs.
+10. "How we worked out these figures" box: engine, PVGIS settings, bill used, who checked it (when a real person signs it).
+11. Closing invitation with the same two doors.
+12. Trust strip near CTAs: real Google rating and count as text linking to the real profile (no markup), SEAI/RECI or Safe Electric registration only if true and current.
+13. Sticky mobile action bar (call, check my savings), consent-gated tracking, visible Updated date, schema graph (BreadcrumbList, WebPage, Service, FAQPage), internal links up to `/counties`, home and guides.
+
+Proven lead-gen practices that are fine to repeat on every county: the two-door CTA pattern, the estimator, the phone tap, the trust strip, the methodology box, the FAQ format.
+
+### 4b. County-unique slots (must differ on every county)
+
+- PVGIS yield and monthly profile (have).
+- Towns served, confirmed by the installer (have).
+- Housing note and farm note, **rewritten from CSO figures**, not impressions.
+- At least three filled "local picture" slots from 3.2 (uptake, housing stock, council plan or SEC are available for every county from official sources).
+- Two or more county FAQs from real queries (Search Console, People Also Ask), e.g. a planning question tied to that county's development plan.
+- Proof items: installs, photos, sponsorships, press, when real.
+- Meta description wording beyond the name swap.
+
+Gate before `indexable: true`: unique visible words over half the page (playbook rule), at least three local-picture slots, at least two county FAQs, and at least one proof item. A county that cannot meet it stays noindex.
+
+### 4c. Never template
+
+- Reviews, ratings, testimonials, install counts.
+- Photos of jobs or people.
+- Sponsorships, community ties, press mentions.
+- "Local team", "local office", any address, any map pin.
+- County statistics typed by hand without a source and date.
+- Adjectives about the county or its people.
+- Author or reviewer names.
+- FAQ answers that only change the county name (keep these to the shared core and make sure county FAQs outnumber the name-swap ones over time).
+
+---
+
+### 5. Lead-generation patterns with evidence
+
+| Pattern | Evidence | Apply |
+|---|---|---|
+| Phone tap on mobile, visible in hero and in a sticky bar | Invoca home services benchmarks: phone leads convert at about 46% (2025) vs typical web form/click rates of 2 to 5% cross-industry ([Invoca](https://www.invoca.com/blog/lead-conversion-rate-benchmarks)); vendor data, and not a like-for-like comparison. Older BrightLocal survey: 60% prefer to call a small business (2019, US) | Keep `phone` in hero (have). Add a sticky bottom bar on mobile: "Call" and "Check my savings" |
+| Interactive estimator | seo-geo: interactive tools raise selection by AI; CRO: a tool turns intent into a personal number. Unbounce home improvement median conversion 2.6%, top performers 19.5% ([Unbounce](https://unbounce.com/industry/home-improvement/)) | Have. Put the "Check my savings with my bill" door right under the estimator result (have) |
+| Primary CTA above the fold, repeated after proof and at the end | CRO skill; standard practice | Have hero, estimator, close. Add one after the local picture or proof section |
+| Trust next to the CTA | Whitespark conversion #1, #2, #5, #7 are review signals | Show real Google rating + count as linked text beside the hero doors. No markup |
+| Low-friction first step | Fewer fields convert better (CRO form guidance); bill upload does the work of a form | Keep the Bill Analyser as door one; never put a long form on the county page |
+| Booking a call slot | Reduces the "will someone pester me" fear; the call door already opens the intake at the time step | Keep; say "15 minutes, no visit, no obligation" only if true |
+| Local proof near the decision | Sterling Sky; Whitespark "photos not stock" | Proof cards beside the closing CTA once installs exist |
+| Speed | Whitespark conversion #4 mobile-friendly; playbook gate 90+ mobile performance | Have (93) |
+| AI-answer readiness | 45% use AI for local recommendations (BrightLocal 2026); Invoca reports ChatGPT-referred calls convert at about 41% (vendor) | Answer-first paragraphs, sourced figures, local slots that are quotable |
+
+What not to do: popups on arrival, countdown or "only 3 slots left" urgency, fake chat, "X people in Roscommon got a quote today".
+
+---
+
+### 6. Prioritised fix list for the Roscommon draft
+
+Current state (read from `county-pages-preview`): `roscommon.ts` has PVGIS data, 12 towns, `townsIntro`, `housingNote`, `farmNote`, no `extraFaqs`. Template has 8 FAQs, all built by dropping `${C.name}` into shared text. No proof, no local picture, no reviews, no photos.
+
+**P0 (blocks indexable: true)**
+
+1. **Fails the swap test.** Roughly 90% of visible words survive a name swap. Add the county-slot model (section 3.2) to `types.ts` and the template, and fill at least three Roscommon slots: CSO new-build solar 9% (verified), CSO housing stock and oil heating share (pull Table 2.6), Roscommon County Council Climate Action Plan 2024 to 2029 and the Roscommon Town Decarbonising Zone (verified), Castlerea SEC Energy Master Plan (verified).
+2. **Unsourced housing claim.** `housingNote` says Roscommon "has many bungalows and farmhouses" and "a lot of homes where someone is in during the day". Plausible, but no source. Replace with CSO dwelling-type and household figures, or cut.
+3. **The "worth about twice what export earns" line** in `housingNote` is a money claim typed into a data file, which the playbook forbids. Compute it from the engine (import rate vs CEG) or move it to the template where it is derived.
+4. **FAQs are all name-swapped.** Cut the shared core to the questions that really are national (grant, NC6, planning) and phrase them without the county name. Add two or three Roscommon FAQs from Search Console or People Also Ask once the page has impressions; until then, from the council development plan (protected structures, Architectural Conservation Areas) and the farm angle.
+5. **No proof yet.** Per the playbook, Roscommon needs two "strongly wanted" items before indexing. Ask the licensed installer for permissioned Roscommon installs (town, size, battery, month, photo) and confirm whether any sponsorship is real.
+
+**P1 (before launch)**
+
+6. **Trust strip beside the hero doors:** real Google rating and review count as text linking to the real profile. No `aggregateRating` markup.
+7. **Sticky mobile action bar** (Call, Check my savings) with the existing consent-gated events and a new `placement` value.
+8. **"How we worked out these figures" box** under the estimator: engine, PVGIS settings, reference bill, date. Add a named reviewer only when a real person signs off.
+9. **Freshness discipline:** `updated` changes only when a slot or figure changes. Add `asOf` per slot so the page can say what changed.
+10. **Towns section:** add one sourced line per area only if real (e.g. where the SEC or Decarbonising Zone is). Keep the no-town-pages rule.
+
+**P2 (after launch)**
+
+11. Local press and links: send the "only 9% of new Roscommon homes use solar" data point, with our yield figures, to Roscommon Herald, Roscommon People and Shannonside as a data story. This is how the page earns unstructured citations, Whitespark's #4 and #7 AI visibility factors.
+12. Off-site: Bing Places and Apple Business Connect for the real business (already in playbook), and real community ties (SEC talks, a sponsored club) that produce honest mentions.
+13. Re-check the SEAI 6.78 kWp county average and the yearly county grant count against SEAI or a Dáil answer, then add as a slot.
+14. Static, self-hosted county map of towns served (SVG), no Google Maps iframe.
+15. Minor a11y: the hero stats use `<dd>` before `<dt>` inside `<dl>`; swap the order or use a list.
+
+---
+
+### Sources
+
+- Google spam policies: https://developers.google.com/search/docs/essentials/spam-policies
+- Google, Creating helpful content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- Google review snippet structured data: https://developers.google.com/search/docs/appearance/structured-data/review-snippet
+- Google Business Profile, local ranking: https://support.google.com/business/answer/7091
+- FAQ rich results retirement (secondary): https://ppc.land/google-kills-faq-rich-results-what-seos-saw-coming-since-2019/ ; https://www.techwyse.com/news/ai-search/google-faq-rich-results-deprecated-2026
+- Whitespark 2026 Local Search Ranking Factors: https://whitespark.ca/local-search-ranking-factors/
+- BrightLocal Local Consumer Review Survey 2026: https://www.brightlocal.com/research/local-consumer-review-survey/ ; summary https://www.pinmeto.com/news/brightlocal-local-consumer-review-survey-2026/
+- Sterling Sky, service area pages: https://www.sterlingsky.ca/how-to-create-unique-and-helpful-service-area-pages-for-local-businesses/
+- Invoca lead conversion benchmarks: https://www.invoca.com/blog/lead-conversion-rate-benchmarks
+- Unbounce home improvement benchmarks: https://unbounce.com/industry/home-improvement/
+- CSO Census 2022 Profile 2, occupied dwellings: https://www.cso.ie/en/releasesandpublications/ep/p-cpp2/censusofpopulation2022profile2-housinginireland/occupieddwellings/
+- Roscommon County Council climate action and Decarbonising Zone: https://www.roscommoncoco.ie/en/services/climate-action/roscommon-climate-action-plan/decarbonisation-zone-roscommon-town.html ; implementation reports https://www.roscommoncoco.ie/coco/en/services/climate-action/implementation-reports/
+- SEAI SEC map: https://seai.ie/community-energy/sustainable-energy-communities/sec-map
+- Castlerea SEC Energy Master Plan: https://www.seai.ie/community-energy/sustainable-energy-communities/sec-map/uploads/reg_14_0_EMP157%20-%20Castlerea%20EMP%20Report%20V3.pdf
+- SEAI 2025 solar data analysis (third party, verify): https://energyefficiency.ie/?p=22543 ; SEAI year-end statement https://www.seai.ie/news-and-events/news/end-of-year-statement
+
+Limits: WebSearch here is US-indexed, so I could not pull a live Irish SERP for "solar panels Roscommon"; do that check in an incognito Irish session or via Search Console once the page has impressions. No competitor is named, by rule.
+
+---
+
+
+### 7. What the SEO and AEO authorities say about local service pages (added 13 Nov 2026)
+
+Scope ruling from Cal, 13 Nov 2026: this research uses **only** search authorities (Google Search Central first, then Whitespark, BrightLocal, Moz, Ahrefs, Semrush, Search Engine Land and Search Engine Journal, Sterling Sky, Aleyda Solis, Lily Ray, Kevin Indig). No installer, trades or home-services brand's pages are studied or cited. Every source was opened on 13 Nov 2026; the date given is the source's own publication date. Skills applied: seo-local, ai-seo, seo-geo, seo-schema, seo-page, seo-content.
+
+Evidence grading, as in section 0: Google is policy; surveys are expert opinion; studies are correlation from one tool's data, not Google statements.
+
+### 7.1 Google Search Central (the primary authority)
+
+| Point | Quote | Source | Date |
+|---|---|---|---|
+| AI answers use the same rules as Search | "There are no additional requirements to appear in AI Overviews or AI Mode, nor other special optimizations necessary"; the page must be "indexed and eligible to be shown in Google Search with a snippet"; "no special schema.org structured data that you need to add" | [AI features and your website](https://developers.google.com/search/docs/appearance/ai-features) | read 13 Nov 2026 |
+| AEO and GEO are SEO | Optimising for generative AI search "is still SEO"; "There's no requirement to break your content into tiny pieces"; no need to "create new machine readable files, AI text files, markup, or Markdown" because "Google Search itself doesn't use them"; Business Profiles "can help your products and services to be visible in both AI responses and other Google Search results" | [AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) | read 13 Nov 2026 |
+| Spam rules now cover AI answers | Spam includes "attempting to manipulate generative AI responses in Google Search"; Google: "the Google Search spam policies also apply to generative AI responses in Google Search" | [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies); reported by [Search Engine Roundtable](https://www.seroundtable.com/google-spam-policies-apply-ai-responses-41331.html) | 15 May 2026 |
+| Doorways | "Having multiple domain names or pages targeted at specific regions or cities that funnel users to one page"; "Creating substantially similar pages that are closer to search results than a clearly defined, browseable hierarchy" | Spam policies | read 13 Nov 2026 |
+| City lists | Keyword stuffing includes "Blocks of text that list cities and regions that a web page is trying to rank for" | Spam policies | read 13 Nov 2026 |
+| FAQ rich results gone | "This feature will no longer appear in Google Search starting May 7, 2026"; documentation removed 15 June 2026 | Search Central change log | 8 May 2026 |
+| Fake and incentivised reviews | "Don't include fake or undisclosed incentivized reviews on your page or in your structured data markup" | [Review snippet](https://developers.google.com/search/docs/appearance/structured-data/review-snippet) | read 13 Nov 2026 |
+| One Business Profile, no virtual offices | "There should only be one profile per business"; "P.O. boxes or mailboxes located at remote locations aren't acceptable"; "If you're a service-area business, you should hide your business address from customers" | [GBP guidelines](https://support.google.com/business/answer/3038177) | read 13 Nov 2026 |
+
+The full policy table is section 8.
+
+### 7.2 Local ranking and AI-visibility research
+
+| Finding | Source | Date |
+|---|---|---|
+| Top local organic factors: dedicated page for each service; geographic keyword relevance of content; quality of inbound links; internal linking. Top AI visibility factors: presence on expert "best of" lists; dedicated page for each service; prominence on industry domains; quality of unstructured citations (newspapers, gov sites, associations); geographic relevance of content; scannable structure | [Whitespark Local Search Ranking Factors 2026](https://whitespark.ca/local-search-ranking-factors/) (47 experts, survey) | 6 Nov 2025 |
+| A service area page should carry: area finder, booking button, a local value proposition, "How it works" covering process and licensing, a map of the service radius, reviews from that city, an image gallery of local work, community involvement, local media coverage; "Never offer any kind of incentives in exchange for reviews" | [Whitespark, Guide to the perfect service area landing page](https://whitespark.ca/guides/guide-to-the-perfect-service-area-landing-page/) (Miriam Ellis) | 18 Dec 2025 |
+| Across AI Overviews, AI Mode and ChatGPT for local prompts: Google Business Profile 28.5% of citations; business websites 42% of citations and 93% of unique cited domains; ChatGPT leans more on Yelp and Bing; service-area businesses mentioned less than storefronts (29.4% vs 33.6%); repeat runs overlap only 20 to 33% | [BrightLocal, Local AI Visibility Study](https://www.brightlocal.com/research/local-ai-visibility-study/) (about 200,000 prompts, about 1,300 locations, US/UK/AU) | 16 Sep 2026 |
+| Per platform: GBP about 67% of AI Overview and about 53% of AI Mode local citations; Yelp about 61% of ChatGPT local citations | [BrightLocal, AI directory sources](https://www.brightlocal.com/resources/ai-directory-sources/) (60,970 checks) | 26 Aug 2026 |
+| 45% of consumers used AI tools for local recommendations (up from 6%); 74% look for reviews from the last three months; 47% will not use a business with fewer than 20 reviews | [BrightLocal Local Consumer Review Survey 2026](https://www.brightlocal.com/research/local-consumer-review-survey/) (1,002 US adults) | 11 Feb 2026 |
+| Only 37.9% of AI Overview citations rank in the top 10 for the query (down from about 76% in July 2025); Ahrefs puts the change down to query fan-out | [Ahrefs, AI Overview citations and the top 10](https://ahrefs.com/blog/ai-overview-citations-top-10/) (863K SERPs, about 4M cited URLs) | 2 Mar 2026 |
+| AI Overviews mostly fire on informational queries (80% desktop); 35% are questions starting "how", "what", "is"; transactional under 3% | [Semrush AI Overviews study](https://www.semrush.com/blog/ai-overviews-study/) (200,000 keywords, US) | 22 Jul 2025 |
+| Location pages: no "Mass-produced local pages that prioritize quantity over quality"; no pages for areas with no tangible presence; no name-swapped content; no generic place history; original photos; for no-storefront businesses show the service area, not a pin | [Ahrefs, Location pages](https://ahrefs.com/blog/location-pages) (Despina Gavoyannis) | 22 Dec 2023 |
+| Service area page content: job photos, case studies, first-party data, service-specific reviews, staff bios with credentials, community ties such as sponsorships. Their test of ChatGPT writing hyper-local content "failed pretty epically" | [Sterling Sky, unique and helpful service area pages](https://www.sterlingsky.ca/how-to-create-unique-and-helpful-service-area-pages-for-local-businesses/) (Elizabeth Rule) | 9 Jan 2024 |
+| Choose locations "based on real customer demand"; do not create pages for areas you do not serve; small towns often outperform big ones | [Sterling Sky, picking locations for service area pages](https://www.sterlingsky.ca/pick-locations-for-service-area-pages/) (Colan Nielsen) | 24 Jun 2024 |
+| Similar service area pages can rank, but in a 2026 update Sterling Sky warns "you need to be super careful when doing this at scale, as Google can penalize scaled content" | [Sterling Sky, service area pages and duplicate content](https://www.sterlingsky.ca/service-area-pages-duplicate-content/) (Colan Nielsen; 2026 note in comments) | 20 Jan 2023, updated 2026 |
+| AI search checklist: self-contained passages; direct answers first; citation-worthy (accurate, current, sourced, with author and organisation); topic depth for query fan-out; images and tables in clean HTML; authority through bylines, original research and reputable mentions; local signals; allow GPTBot and PerplexityBot, server-side render, no nosnippet | [Aleyda Solis, AI Search Content Optimization Checklist](https://www.aleydasolis.com/en/ai-search/ai-search-optimization-checklist) (her page blocked our fetcher; points taken from the [PPC Land report](https://ppc.land/seo-expert-releases-ai-search-content-optimization-checklist/)) | 16 Jun 2025 |
+| Sites that lost visibility (and AI Overview presence) in early 2026 shared: self-promotional "best" content at scale, year-based refreshes with no real change, likely AI-generated content, "Highly similar, templated pages at scale", and "misuse of AggregateRating schema on ineligible pages". "what works today may quietly become a liability tomorrow" | [Lily Ray, Is Google finally cracking down on self-promotional listicles?](https://lilyraynyc.substack.com/p/is-google-finally-cracking-down-on) | 3 Feb 2026 |
+| Self-promotional pages get cited in AI Overviews without the brand being recommended: in 100 B2B queries, 69% of the time Google cited a brand's own list but did not recommend the brand | [Lily Ray, Why calling yourself the best could be helping your competitors](https://lilyraynyc.substack.com/p/why-calling-yourself-the-best-could); covered by [Search Engine Land](https://searchengineland.com/google-ai-overviews-cite-self-serving-listicles-recommend-competitors-480573) | 2026 |
+| AI Overview users skim: 86% skimmed, median scroll depth 30%; when a recognised authority or .gov result was present it was chosen first 58% of the time; 38% of sessions showed reassurance-seeking (opening a second source to check) | [Kevin Indig, UX study of Google's AI Overviews](https://www.searchenginejournal.com/ux-study-of-googles-ai-overviews/546580/) (Search Engine Journal, 69 to 70 users) | 13 May 2025 |
+| OpenAI: "OAI-SearchBot is used to surface websites in search results in ChatGPT's search features" (recommended to allow); GPTBot is the training crawler. Perplexity: PerplexityBot is "designed to surface and link websites in search results on Perplexity" | [OpenAI bots](https://developers.openai.com/api/docs/bots); [Perplexity bots](https://docs.perplexity.ai/guides/bots) | read 13 Nov 2026 |
+
+Not reachable: moz.com blocked our fetcher, so Miriam Ellis's Moz guide "Overcoming Your Fear of Local Landing Pages" is not quoted here; her December 2025 Whitespark guide above covers the same ground. Search Engine Land's local AI guide and Lily Ray's Search Engine Land interview returned 403.
+
+### 7.3 What the authorities agree on, and what it means for a county page
+
+1. **A dedicated page per service and area is the right shape, but only with real local substance.** Whitespark ranks it first for organic and second for AI visibility; Ahrefs, Sterling Sky and Google's doorway text all draw the same line at name-swapped or no-presence pages. Our gate enforces that line.
+2. **Local substance means first-hand proof and sourced local data,** not landmarks or place history. Sterling Sky and Whitespark list job photos, case studies, reviews from that area, community ties and local press; Ahrefs warns against generic place history. Our `localFacts` (energy facts from CSO, SEAI, PVGIS, the council, SECs) and `proofItems` are the safe form of both.
+3. **Answer first, cite sources, stay current.** Aleyda Solis's checklist, Kevin Indig's finding that users skim the top third and cross-check authorities, and Google's own advice point the same way: a direct answer near the top, a figure with its official source, a visible date. Google adds that this is normal SEO, not a special AI format, and that chunking pages for AI is not needed.
+4. **Off-page signals decide much of AI visibility.** BrightLocal finds the business website is the biggest single citation source but GBP leads on Google's AI surfaces and Yelp/Bing on ChatGPT; Whitespark's top AI factors are lists, industry domains and press mentions. So the county page must be the best-sourced answer, and the one real GBP, Bing Places and real local press do the rest.
+5. **Scale and automation are now the main risk.** Google's May 2026 clarification puts AI answers under the spam policies; Lily Ray's 2026 analysis ties visibility losses to templated pages at scale, fake freshness and AggregateRating misuse; Sterling Sky's own 2026 note warns about scaled service area pages. One county at a time, gated, is the defensible pace.
+6. **As a service-area business we start behind.** BrightLocal finds storefronts are mentioned more in local AI answers. We cannot fix that with a fake address (GBP guidelines forbid it), so we compete on content quality, reviews on the one real profile, and mentions.
+
+Correction to section 1.2: the FAQ rich result retirement is now confirmed on Google's own change log (above), so its **(verify)** mark can go. BrightLocal's 74% and 47% figures in section 1.1 are now verified against the full report.
+
+---
+
+### 8. Policy cross-check: each practice against Google's text (added 13 Nov 2026)
+
+Primary sources, all read 13 Nov 2026: [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies), [Creating helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content), [Structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies), [LocalBusiness structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business), [Review snippet](https://developers.google.com/search/docs/appearance/structured-data/review-snippet), [AI features and your website](https://developers.google.com/search/docs/appearance/ai-features), [AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177). The fetched Google pages show no "last updated" text, so the read date is given; FAQ dates come from the Search Central change log. The "Recommended by" column names the section 7.2 authority that backs the practice.
+
+| # | Practice | Recommended by | Policy text (quoted) | Verdict |
+|---|---|---|---|---|
+| P1 | One page per county, template plus local data, in the `/counties` hub | Whitespark 2026 (#1 organic factor), Ahrefs, Sterling Sky | Doorway: "Having multiple domain names or pages targeted at specific regions or cities that funnel users to one page"; "Creating substantially similar pages that are closer to search results than a clearly defined, browseable hierarchy" | Safe with conditions: gate passes, hub exists |
+| P2 | Official, dated local facts in our own words, source linked | Aleyda Solis (citation worthiness), Sterling Sky (first-party data) | Scraping: "Republishing content from other sites without adding any original content or value, or even citing the original source" | Safe with conditions |
+| P3 | AI help with drafting, human-checked from sourced facts | (Sterling Sky warns AI hyper-local copy failed) | "Using generative AI tools or other similar tools to generate many pages without adding value for users"; "Is the use of automation, including AI-generation, self-evident to visitors through disclosures or in other ways?" | Safe with conditions |
+| P4 | Generating many county pages at once | (Lily Ray 2026, Sterling Sky 2026 warn against it) | "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users" | Unsafe. Rejected |
+| P5 | Changing the "Updated" date | Aleyda Solis (current), seo-geo freshness data | "Are you changing the date of pages to make them seem fresh when the content has not substantially changed?" | Safe only on a real content change |
+| P6 | Listing towns served | Whitespark (service area finder) | "Blocks of text that list cities and regions that a web page is trying to rank for" | Safe with conditions: real towns, about a dozen, labelled section |
+| P7 | Town pages or extra county domains | (Sterling Sky, Ahrefs: only real presence) | "Having multiple websites with slight variations to the URL and home page"; expired domain abuse: "purchased and repurposed primarily to manipulate search rankings" | Unsafe. Rejected |
+| P8 | Permissioned real proof (installs, photos, sponsorships, press) | Sterling Sky, Whitespark guide | "Don't include fake or undisclosed incentivized reviews on your page or in your structured data markup" | Safe with conditions |
+| P9 | Real Google rating as plain text linking to the profile | Whitespark (reviews in top conversion factors) | "Don't aggregate reviews or ratings from other websites" (markup) | Safe as text, no markup |
+| P10 | `aggregateRating` / `Review` markup on county pages | (Lily Ray lists AggregateRating misuse among 2026 losers) | "If the entity that's being reviewed controls the reviews about itself, their pages that use LocalBusiness or any other type of Organization structured data are ineligible for star review feature" | Unsafe. Rejected |
+| P11 | FAQPage from visible questions | Aleyda Solis (Q&A phrasing, structured data) | "Don't mark up content that is not visible to readers of the page"; FAQ rich results "no longer appear in Google Search starting May 7, 2026" | Safe with conditions; no SERP feature |
+| P12 | Service + areaServed pointing at the one real business | seo-schema skill | "Your structured data must be a true representation of the page content" | Safe |
+| P13 | A LocalBusiness or address per county | (Ahrefs: SABs show an area, not a pin) | LocalBusiness `address`: "The physical location of the business"; GBP: "If your business rents a physical mailing address but doesn't operate out of that location, that location isn't eligible" | Unsafe. Rejected |
+| P14 | HowTo markup | (none) | HowTo rich results retired Sept 2023 | No value; not used |
+| P15 | GBP per county or virtual office | (none) | "There should only be one profile per business"; "P.O. boxes or mailboxes located at remote locations aren't acceptable" | Unsafe. Rejected |
+| P16 | Local sponsorship that links back | Sterling Sky, Whitespark (community involvement) | Link spam: "Exchanging money for links, or posts that contain links"; acceptable when "qualified with a rel=\"nofollow\" or rel=\"sponsored\"" | Safe with conditions |
+| P17 | Named author or reviewer | Aleyda Solis, Sterling Sky (staff credentials) | "Something that helps people intuitively understand the E-E-A-T of content is when it's clear who created it" | Safe with conditions: real, consenting, credentialed |
+| P18 | Partner installer content on our domain | (none) | Site reputation: "third-party content is published on a host site mainly because of that host's already-established ranking signals" | Safe with conditions: our words |
+| P19 | Answer-first, question H2s, inline sources, server-rendered | Aleyda Solis, Kevin Indig (users skim the top), Semrush (question queries) | "There are no additional requirements to appear in AI Overviews or AI Mode, nor other special optimizations necessary" | Safe (normal SEO) |
+| P20 | AI-only content, chunked pages, llms.txt as a Google lever | (myth per Google) | "There's no requirement to break your content into tiny pieces"; AI text files: "Google Search itself doesn't use them" | llms.txt harmless; AI-only or chunked content rejected |
+| P21 | Allow OAI-SearchBot, PerplexityBot | Aleyda Solis | OpenAI: "we recommend allowing OAI-SearchBot in your site's robots.txt file" | Safe and required |
+| P22 | Review gating or incentives | (Whitespark: "Never offer any kind of incentives") | "Reviews written in exchange for a benefit" without clear disclosure | Unsafe. Rejected |
+| P23 | Tactics aimed only at AI answers (planted mentions, self-ranking "best" lists, prompt bait) | (Lily Ray 2026) | Spam includes "attempting to manipulate generative AI responses in Google Search" | Unsafe. Rejected |
+
+### 8.1 What survived and what was rejected
+
+**Top five practices that survived the cross-check:**
+1. One gated county page per county inside the `/counties` hub, built from local data, never a name swap (P1).
+2. Official, dated local facts in our own words with the source linked, from CSO, SEAI, PVGIS, the council and SECs (P2).
+3. Real, permissioned local proof, with the real Google rating as plain text linking to the profile and no star markup (P8, P9).
+4. Honest schema: Service with `areaServed` pointing at the one real business, FAQPage only from visible questions (P11, P12).
+5. Answer-first, server-rendered, sourced writing with a visible updated date that moves only when content changes, and the answer-engine crawlers allowed (P5, P19, P21).
+
+**Rejected as unsafe:** self-serving `aggregateRating`/`Review` markup; a LocalBusiness, address or GBP per county; town pages, extra county domains and long place-name blocks; bulk or AI-only generation of county pages; bumping dates without changes; paid followed links; review gating or undisclosed incentives; tactics aimed only at manipulating AI answers. HowTo and FAQ markup "for rich results" rejected as doing nothing in Google now.
