@@ -3,10 +3,9 @@
  * demand: `import('@/components/intake/intakeStyles')`. The chunk resolves
  * once the stylesheet has loaded.
  *
- * BillAnalyser rests on analyser-door.css (generated from intake.css by
- * scripts/gen-analyser-door-css.mjs) and loads this the moment the visitor
- * reaches for the analyser, so the home page's first load no longer carries
- * the whole intake app's CSS.
+ * Used by the exit quiz (ExitIntent) on pages without the Bill Analyser.
+ * BillAnalyser no longer loads it late: on its pages intake.css is route CSS
+ * from the first paint (14 Nov 2026, see BillAnalyser.tsx).
  */
 import './intake.css';
 

@@ -82,3 +82,17 @@ homepage-only sections (Hero, HowItWorks, WhySolar, CustomerInstalls,
 GrantInfo) as `.before.tsx.txt`, so any copy or claim Cal wants back (NSAI
 Compliant, 1-Day Install, Premium Panels, "Up to 70%", "25+ year", "Battery
 Options Available") can be restored from the exact original.
+
+## analyser-door-split-2026-11-14/ (14 Nov 2026)
+
+aea6200 split the Bill Analyser's CSS: the door rested on analyser-door.css (a
+generated, verbatim subset of intake.css) and the full intake.css was fetched
+on the first tap, focus or hover and appended after every other stylesheet.
+Cal on his iPhone: "fits on the screen like the fix suggests, then jumps back
+to the old way again". A sheet that lands after first paint re-orders the
+cascade against home.css and globals.css (measured at 768 wide: the privacy
+line under the door went 95 to 114px the moment it landed). intake.css is
+route CSS again from the first paint (homeIslands.tsx, BillAnalyser.tsx), so
+the subset, its generator and its order-invariant test are parked here.
+Nothing imports them. Cost: home HTML 110 to 127 KB gzip, on / and
+/solar-calculator.

@@ -19,9 +19,9 @@
  *   - CSS keyframes only (src/lib/motion.tsx ignores object animates), off
  *     under reduced motion.
  */
-// The resting state's rules only; the full intake.css loads on first reach
-// (loadFullCss below). See scripts/gen-analyser-door-css.mjs.
-import '@/components/intake/analyser-door.css';
+// The whole intake sheet, as route CSS (homeIslands imports it too, so it is
+// inlined in the HTML): see the note above `analysersInView`.
+import '@/components/intake/intake.css';
 import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import { Camera, ChevronRight, FileText, Info, Keyboard, RotateCcw, Upload } from 'lucide-react';
 import type { AnalyserFailure, AnalyserRead, AnalyserResponse, CallBillRead, IntakeConfig, Quote, QuoteRequestItem, Segment, SubmitResponse } from '@/lib/intake/contract';
@@ -122,24 +122,18 @@ const FAIL_COPY: Record<AnalyserFailure, { title: string; line: string }> = {
   rate_limited: { title: 'Give us a minute.', line: "You've sent a few bills quickly. Try again shortly, or answer 3 questions now." },
 };
 
-/**
- * Perf (13 Nov 2026): the door renders from analyser-door.css. Everything
- * past it (tips, reading, failed, reveal, the ask) needs the full intake.css,
- * loaded here: on the visitor's first pointer, key, focus or drag inside the
- * analyser, and awaited before any phase change, so no screen ever renders
- * without its styles. Once loaded it renders exactly as before (the door
- * rules are verbatim copies that intake.css overrides in place).
+/*
+ * 14 Nov 2026 (Cal on his iPhone: "fits on the screen, then jumps back to the
+ * old way"): the door used to rest on analyser-door.css, a copied subset of
+ * intake.css, and the full 64 KB sheet was fetched on the first tap, focus or
+ * hover and appended after every other stylesheet. A second sheet arriving
+ * mid-visit re-orders the cascade: its rules now beat home.css and
+ * globals.css where they used to lose (measured: the privacy line under the
+ * door grows 95 to 114px at 768 wide the moment it lands). intake.css is now
+ * route CSS from the first paint, so nothing lands later and a tap can never
+ * restyle the door. Cost: about 17 KB more gzipped HTML on / (110 to 127 KB) and
+ * /solar-calculator.
  */
-let fullCss: Promise<unknown> | null = null;
-// A failed chunk load never blocks the flow (it retries on the next reach).
-const loadFullCss = () =>
-  (fullCss ??= import('@/components/intake/intakeStyles').catch(() => {
-    fullCss = null;
-  }));
-
-const reachByPointer = (e: { pointerType: string }) => {
-  if (e.pointerType !== 'touch') void loadFullCss();
-};
 
 /** How many analysers are on screen right now (see the in-view effect below). */
 let analysersInView = 0;
@@ -393,7 +387,6 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
 
   const onFile = async (raw: File | undefined, method: 'camera' | 'file' | 'drop') => {
     if (!raw) return;
-    await loadFullCss();
     const run = (runRef.current += 1);
     track('upload_start', { method, segment, flow_id: fid });
     funnel('upload_started', { door, method, segment, flow_id: fid });
@@ -451,7 +444,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       seen = true;
     }
     if (!seen) {
-      void loadFullCss().then(() => setPhase('tips'));
+      setPhase('tips');
       return;
     }
     cameraRef.current?.click();
@@ -1277,15 +1270,6 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
       data-segment={seg}
       data-reason={phase === 'failed' ? failure?.reason : undefined}
       data-wide={wide ? 'true' : 'false'}
-      // A finger landing here is usually a scroll, not a reach: loading the
-      // 64 KB sheet then restyled the whole page mid-scroll on a phone. Touch
-      // waits for a tap (click) or focus; a mouse still warms it on hover.
-      onPointerEnter={reachByPointer}
-      onPointerDown={reachByPointer}
-      onClickCapture={loadFullCss}
-      onFocus={loadFullCss}
-      onKeyDown={loadFullCss}
-      onDragEnter={loadFullCss}
     >
       {/* Equal gutters at every width: the site's own section container
           (WhySolar), so neither lane sits flush to a screen edge. */}
