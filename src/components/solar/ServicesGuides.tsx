@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getArticleBySlug } from '@/lib/blog-data';
 import './services-guides.css';
@@ -96,36 +97,36 @@ export default function ServicesGuides() {
               The questions people ask us most.
             </h2>
           </div>
-          <a href="/blog" className="sg-all">
+          <Link href="/blog" className="sg-all">
             All guides
             <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />
-          </a>
+          </Link>
         </div>
 
         <div className="sg-grid">
-          <a href={`/blog/${lead.slug}`} className="sg-lead">
+          <Link href={`/blog/${lead.slug}`} className="sg-lead">
             <span className="sg-lead__frame">
-              <Image src={lead.photo} alt="" fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" />
+              <Image src={lead.photo} alt="" fill sizes="(min-width: 1536px) 560px, (min-width: 1024px) 40vw, 100vw" className="object-cover" />
             </span>
             <span className="sg-meta">{lead.a.readTime}</span>
-            <span className="sg-lead__q">{lead.q}</span>
+            <h3 className="sg-lead__q">{lead.q}</h3>
             <span className="sg-gist">{lead.gist}</span>
             <span className="sg-lead__title">{lead.a.title}</span>
-          </a>
+          </Link>
 
           <ul className="sg-list">
             {rest.map((g) => (
               <li key={g.slug}>
-                <a href={`/blog/${g.slug}`} className="sg-item">
+                <Link href={`/blog/${g.slug}`} className="sg-item">
                   <span className="sg-item__thumb">
-                    <Image src={g.photo} alt="" fill sizes="112px" className="object-cover" />
+                    <Image src={g.photo} alt="" fill sizes="88px" className="object-cover" />
                   </span>
                   <span className="sg-item__body">
-                    <span className="sg-item__q">{g.q}</span>
+                    <h3 className="sg-item__q">{g.q}</h3>
                     <span className="sg-gist">{g.gist}</span>
                     <span className="sg-meta">{g.a.readTime}</span>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

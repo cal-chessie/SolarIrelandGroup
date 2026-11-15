@@ -15,7 +15,6 @@
   --sg-r: 14px;
   --sg-r-lg: 20px;
   --sg-font: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --sg-mono: var(--font-geist-mono), ui-monospace, monospace;
   --sg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   position: relative;
@@ -186,6 +185,7 @@
   transition: transform 600ms var(--sg-ease-out);
 }
 .sg-lead__q {
+  margin: 0;
   font-size: 24px;
   line-height: 1.15;
   font-weight: 700;
@@ -216,7 +216,11 @@
   color: var(--sg-amber);
 }
 .sg-meta {
-  font-family: var(--sg-mono);
+  /* Geist Sans with tabular figures, not Geist Mono: /services uses no
+     mono anywhere else, and the mono face was a 24 KB font fetched early
+     that pushed the page's LCP back (Lighthouse, 15 Nov 2026). */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
   font-size: 12px;
   line-height: 16px;
   color: var(--sg-muted);
@@ -257,6 +261,7 @@
   min-width: 0;
 }
 .sg-item__q {
+  margin: 0;
   font-size: 17px;
   line-height: 23px;
   font-weight: 600;
