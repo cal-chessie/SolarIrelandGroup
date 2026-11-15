@@ -5985,7 +5985,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "From April to September the panels make about 2,700 kWh, roughly 70% of the year's output. You use what you can while it's being made: the washing machine, the dishwasher, the immersion on a timer. The rest goes out to the grid, and your supplier pays you for it under the Clean Export Guarantee. You need a smart meter for that, and each supplier sets its own rate, so compare them."
+        "text": "From April to September the panels make about 2,700 kWh, roughly 70% of the year's output. You use what you can while it's being made: the washing machine, the dishwasher, the immersion on a timer. The rest goes out to the grid, and your supplier pays you for it under the Clean Export Guarantee. You need a [smart meter](/blog/smart-meter-required-solar-panels-ireland) for that, and each supplier sets its own rate, so compare them."
       },
       {
         "type": "paragraph",
@@ -6009,7 +6009,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Ireland's sunniest counties make noticeably more than the dullest. Using the European Commission's PVGIS model, the same panels make about 1,090 kWh a year per kWp in Wexford and about 830 in Derry. That's around 30% more power in the south-east than the north-west, from identical panels."
+        "text": "Ireland's sunniest counties make noticeably more than the dullest. Using the European Commission's PVGIS model, the same panels make about 1,080 kWh a year per kWp in Wexford and about 850 in Letterkenny, Co. Donegal. That's over a quarter more power in the south-east than the north-west, from identical panels."
       },
       {
         "type": "heading",
@@ -6052,7 +6052,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "SEAI pays up to €2,400: €1,800 for the panels and €600 for a battery of 5 kWh or more, as of October 2026. The grant offer has to come through before any work starts. We handle the paperwork, including your home's Building Energy Rating (BER)."
+        "text": "SEAI pays up to €2,400: €1,800 for the panels and €600 for a battery of 5 kWh or more, as of October 2026. The grant offer has to come through before any work starts. Our [SEAI solar grant guide](/blog/complete-guide-seai-solar-grant-2026) walks through it. We handle the paperwork, including your home's Building Energy Rating (BER)."
       },
       {
         "type": "heading",
@@ -6061,12 +6061,12 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The survey, the grant offer and the ESB Networks notification take a few weeks. Book in winter and your panels are on the roof for March, when output jumps by about 70% on February and the best six months begin."
+        "text": "The survey, the grant offer and the ESB Networks notification take a few weeks. Book in winter and your panels are on the roof for March, when output jumps by about 70% on February and the best six months begin. More in [the best time of year to get solar panels](/blog/best-time-of-year-to-get-solar-panels-ireland)."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Questions people ask"
+        "text": "Frequently asked questions"
       },
       {
         "type": "heading",
@@ -6111,7 +6111,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Your bill shows how much you use and when, and that decides what solar is worth to you. Upload your latest bill and you'll get your own figures sent to you by email."
+        "text": "Your bill shows how much you use and when, and that decides what solar is worth to you. Upload your latest bill and you'll get your own figures sent to you by email. Want to read more first? See [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) or [do solar panels work in winter](/blog/solar-panels-in-winter-do-they-work)."
       },
       {
         "type": "cta",

@@ -47,4 +47,5 @@ After every rebuild in a preview, stop and restart the server. Stale builds have
 | What is open right now | [`docs/memory/09-open-items.md`](docs/memory/09-open-items.md) |
 | Canonical numbers | [`src/lib/solar-data.ts`](src/lib/solar-data.ts), [`src/lib/estimate.ts`](src/lib/estimate.ts) |
 | Vocabulary and truth canon | [`docs/site-canon.md`](docs/site-canon.md) |
+| Writing or changing any post or page copy | [`docs/content-standard.md`](docs/content-standard.md) (read first) |
 | Why a decision was made | the git commit messages, which are long on purpose |
