@@ -1,68 +1,91 @@
-import { ArrowRight, ClipboardCheck, Euro, House, Phone, Sun } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
 
 /**
- * What happens next (homepage, 11 Nov 2026). HowItWorks and the old "How the
- * grant works" timeline said the same steps twice; this is the one merged
- * process. The site sells the 15-minute call, so the survey is a step here,
- * never the offer (DECISIONS.md R3). Steps are drawn as one connected line
- * with a tinted icon tile on each step; the line fills yellow to green
- * as the steps arrive (11 Nov colour pass, Cal: not black and white).
+ * What happens next (homepage, #how-it-works). Redesign 15 Nov 2026 (branch
+ * home-sections-world-class): four equal cards on a line became one route
+ * map. Columns are the real moments (only durations the site can stand
+ * behind: about a minute, the same-day 15-minute call, 4 to 6 weeks after the
+ * BER); rows are who acts (you, us, SEAI). On a phone it reads top to bottom
+ * as one rail. The facts are the previous copy, checked against the FAQ and
+ * the services page: you apply on SEAI's portal before work starts and SEAI
+ * decides; we notify ESB Networks (NC6), book the BER and send SEAI the
+ * paperwork; SEAI pays normally 4 to 6 weeks after the BER is published.
  */
 const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
 
-/** Each step's tile: sun (the estimate), phone (the call), clipboard (survey
- *  and proposal), home with a euro (install, then the grant paid). */
-const ICONS: React.ReactNode[] = [
-  <Sun key="sun" size={22} strokeWidth={1.75} />,
-  <Phone key="phone" size={20} strokeWidth={1.75} />,
-  <ClipboardCheck key="clip" size={21} strokeWidth={1.75} />,
-  <span key="home" className="h-step__home">
-    <House size={22} strokeWidth={1.75} />
-    <span className="h-step__euro">
-      <Euro size={10} strokeWidth={2.5} />
-    </span>
-  </span>,
+type Who = 'you' | 'us' | 'seai';
+const WHO_LABEL: Record<Who, string> = { you: 'You', us: 'Solar Ireland', seai: 'SEAI' };
+
+const STAGES: { when: string; span: string; acts: { who: Who; text: React.ReactNode }[] }[] = [
+  {
+    when: 'Today',
+    span: 'About a minute',
+    acts: [
+      {
+        who: 'you',
+        text: 'Upload your bill or type the amount. You see your yearly saving, the right system size, your grant and your payback.',
+      },
+      { who: 'us', text: 'We read your unit rate, standing charge and day/night split.' },
+    ],
+  },
+  {
+    when: 'Same day',
+    span: 'Or next morning, if late',
+    acts: [
+      { who: 'you', text: 'Leave your name, mobile and email. That is all we ask.' },
+      {
+        who: 'us',
+        text: "We email your full estimate, then a 15\u2011minute call to check what a bill can't show: your roof, your meter, when you use power. Then you get a fixed-price proposal.",
+      },
+    ],
+  },
+  {
+    when: 'Before work starts',
+    span: 'The grant application',
+    acts: [
+      {
+        who: 'you',
+        text: (
+          <>
+            Apply on{' '}
+            <a href={SEAI_GRANT_PORTAL} target="_blank" rel="noopener noreferrer">
+              SEAI&apos;s grant portal
+            </a>
+            , naming us. We walk you through it.
+          </>
+        ),
+      },
+      { who: 'seai', text: 'Decides on your grant.' },
+    ],
+  },
+  {
+    when: 'Install day',
+    span: 'On your roof',
+    acts: [
+      {
+        who: 'us',
+        text: 'Our RECI-registered team fits the system. We notify ESB Networks with the NC6 form, book your BER and send SEAI the paperwork.',
+      },
+    ],
+  },
+  {
+    when: '4 to 6 weeks',
+    span: 'After your BER is published',
+    acts: [
+      {
+        who: 'seai',
+        text: `Pays the grant into your account: up to ${SOLAR_DATA.grant.label} for panels, ${SOLAR_DATA.batteryGrant.withSolarMaxLabel} with a battery of ${SOLAR_DATA.batteryGrant.minLabel}.`,
+      },
+    ],
+  },
 ];
 
-const steps: { title: string; body: React.ReactNode; who: string }[] = [
-  {
-    title: 'Instant AI estimate',
-    body: 'Upload your bill, or type the amount. We read your unit rate, standing charge and day/night split. You see your yearly saving, the right system size, your grant and your payback in about a minute.',
-    who: 'You, online',
-  },
-  {
-    title: 'Check your savings and book a call',
-    body: "You get your full estimate by email, and we ring you the same day to talk it through. If it's late, we ring first thing tomorrow. We only ask for your name, mobile and email.",
-    who: 'Us, on the phone',
-  },
-  {
-    title: '15-minute survey and final proposal',
-    body: (
-      <>
-        On the call we check what a bill can&apos;t show: your roof, your meter and when you use power. Then you get
-        a fixed-price proposal with the system and your grant. Before work starts you apply on{' '}
-        <a href={SEAI_GRANT_PORTAL} target="_blank" rel="noopener noreferrer">
-          SEAI&apos;s grant portal
-        </a>{' '}
-        and we walk you through it.
-      </>
-    ),
-    who: 'Us, with you',
-  },
-  {
-    title: 'Install, then SEAI grant payment',
-    body: `Our RECI-registered team installs, and we notify ESB Networks and book your BER. Once it's published, SEAI pays your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}, normally 4 to 6 weeks later. You can track every step in real time.`,
-    who: 'Our team, then SEAI',
-  },
-];
+const LANES: Who[] = ['you', 'us', 'seai'];
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="h-sec" aria-labelledby="how-title">
-      <div className="h-glow-clip" aria-hidden="true">
-        <div className="h-glow" style={{ width: 760, height: 460, left: '-10%', top: '24%' }} />
-      </div>
+    <section id="how-it-works" className="h-sec h-sec--how" aria-labelledby="how-title">
       <div className="h-wrap relative">
         <div className="h-head">
           <div data-reveal="">
@@ -74,30 +97,40 @@ export default function HowItWorks() {
               From your bill to panels on the roof.
             </h2>
           </div>
-          <div data-reveal="" style={{ ['--d' as string]: 1 }}>
-            <p className="h-lead">Four steps from your bill to SEAI paying your grant, and who does each one.</p>
+          <div data-reveal="">
+            <p className="h-lead">
+              Five moments from your bill to SEAI paying your grant, and who does what at each one. You can follow
+              every step of your project on your phone.
+            </p>
           </div>
         </div>
 
-        <ol className="h-steps">
-          {/* The line fills yellow to green as the steps arrive. */}
-          <span className="h-steps__fill" data-reveal="" aria-hidden="true" />
-          {steps.map((s, i) => (
-            <li key={s.title} className="h-step" data-reveal="" style={{ ['--d' as string]: i }}>
-              <span className="h-step__tile" aria-hidden="true">
-                {ICONS[i]}
-              </span>
-              <div className="h-step__card">
-                <span className="h-step__num">0{i + 1}</span>
-                <h3 className="h-item">{s.title}</h3>
-                <p className="h-body">{s.body}</p>
-                <span className="h-step__who">{s.who}</span>
-              </div>
-            </li>
+        <div className="h-route" data-reveal="">
+          {/* Lane bands, desktop only: the row headers of the map. */}
+          {LANES.map((w, i) => (
+            <div key={w} className="h-route__lane" style={{ gridRow: i + 2 }} aria-hidden="true">
+              <span>{WHO_LABEL[w]}</span>
+            </div>
           ))}
-        </ol>
+          <ol className="h-route__stages">
+            {STAGES.map((s, i) => (
+              <li key={s.when} className="h-stage" data-last={i === STAGES.length - 1 ? '' : undefined}>
+                <h3 className="h-stage__when">
+                  <span className="h-stage__t">{s.when}</span>
+                  <span className="h-stage__span">{s.span}</span>
+                </h3>
+                {s.acts.map((a) => (
+                  <div key={a.who} className="h-act" data-who={a.who}>
+                    <span className="h-act__who">{WHO_LABEL[a.who]}</span>
+                    <p className="h-act__text">{a.text}</p>
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ol>
+        </div>
 
-        <div className="h-steps__foot" data-reveal="">
+        <div className="h-route__foot" data-reveal="">
           <a href="#calculator" className="h-text-cta">
             Check my savings
             <ArrowRight className="w-[18px] h-[18px]" aria-hidden="true" />

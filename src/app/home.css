@@ -403,313 +403,6 @@
   }
 }
 
-/* ── Trust strip: equal hairline cells ─────────────────────────── */
-.h-cells {
-  margin-top: 48px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--h-line);
-}
-.h-cells > li {
-  padding: 24px 16px 24px 0;
-  border-bottom: 1px solid var(--h-line);
-}
-.h-cells > li:nth-child(2n) {
-  padding-left: 16px;
-  box-shadow: inset 1px 0 0 var(--h-line);
-}
-@media (min-width: 1024px) {
-  .h-cells {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-  .h-cells > li,
-  .h-cells > li:nth-child(2n) {
-    padding: 32px 20px;
-    box-shadow: inset 1px 0 0 var(--h-line);
-  }
-  .h-cells > li:first-child {
-    padding-left: 0;
-    box-shadow: none;
-  }
-}
-/* Colour pass (11 Nov 2026, Cal: "minimally pop better"): a fine yellow
-   hairline on top of each cell, a small amber icon, the label in a soft
-   yellow gradient, and a glow with a small lift on hover. */
-.h-cells > li {
-  position: relative;
-}
-.h-cells > li::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 40px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--h-amber), rgba(255, 185, 0, 0));
-}
-.h-cells > li:nth-child(2n)::before {
-  left: 16px;
-}
-@media (min-width: 1024px) {
-  .h-cells > li::before,
-  .h-cells > li:nth-child(2n)::before {
-    left: 20px;
-  }
-  .h-cells > li:first-child::before {
-    left: 0;
-  }
-}
-.h-cell {
-  position: relative;
-  transition: transform 260ms var(--h-ease-out);
-}
-.h-cell::after {
-  /* the hover glow, a low amber pool behind the label */
-  content: '';
-  position: absolute;
-  inset: -12px -8px;
-  z-index: -1;
-  border-radius: var(--h-r);
-  background: radial-gradient(closest-side, rgba(255, 185, 0, 0.1), rgba(255, 185, 0, 0));
-  opacity: 0;
-  transition: opacity 260ms ease;
-  pointer-events: none;
-}
-@media (hover: hover) {
-  .h-cells > li:hover .h-cell {
-    transform: translateY(-3px);
-  }
-  .h-cells > li:hover .h-cell::after {
-    opacity: 1;
-  }
-  .h-cells > li:hover .h-cell__icon {
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 185, 0, 0.4),
-      0 0 18px -2px rgba(255, 185, 0, 0.4);
-  }
-}
-.h-cells {
-  isolation: isolate;
-}
-.h-cell__icon {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  margin-bottom: 14px;
-  border-radius: 10px;
-  color: var(--h-amber);
-  background: var(--h-amber-wash);
-  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.22);
-  transition: box-shadow 260ms ease;
-}
-.h-cell__big {
-  display: block;
-  font-size: 28px;
-  line-height: 32px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--h-amber);
-  background: linear-gradient(180deg, var(--h-amber-hover), var(--h-amber));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.h-cell__line {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--h-muted);
-}
-
-/* ── Process: a connected line with icon tiles ─────────────────────
-   Colour pass (11 Nov 2026, Cal: "i dont want the whole page to be black
-   and white"). Each step leads with an amber icon tile on the line; the
-   line is a hairline track that fills yellow to green (the nav button's
-   green) as the steps arrive. From 1024 the copy sits on a quiet card that
-   lifts a little on hover. Brand tokens only. */
-.h-steps {
-  --tile: 44px;
-  position: relative;
-  margin-top: 48px;
-  display: grid;
-  gap: 40px;
-}
-.h-steps::before,
-.h-steps__fill {
-  /* phone: vertical, through the tile centres */
-  content: '';
-  position: absolute;
-  left: calc(var(--tile) / 2);
-  top: calc(var(--tile) / 2);
-  bottom: 24px;
-  width: 1px;
-}
-.h-steps::before {
-  background: var(--h-line);
-}
-.h-steps__fill {
-  display: block;
-  width: 2px;
-  margin-left: -0.5px;
-  border-radius: 1px;
-  background: linear-gradient(var(--h-amber), var(--h-green));
-  opacity: 0.7;
-  transform-origin: top center;
-}
-.h-step {
-  position: relative;
-  padding-left: calc(var(--tile) + 20px);
-}
-.h-step__tile {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: var(--tile);
-  height: var(--tile);
-  border-radius: 14px;
-  color: var(--h-amber);
-  /* opaque base so the line stops at the tile, then the amber wash */
-  background: linear-gradient(var(--h-amber-wash), var(--h-amber-wash)), var(--h-canvas);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 185, 0, 0.28),
-    0 0 24px -4px rgba(255, 185, 0, 0.28);
-  transition: box-shadow 240ms ease, transform 240ms var(--h-ease-out);
-}
-/* The last step ends on green: the grant paid. */
-.h-step:last-child .h-step__tile {
-  color: var(--h-green);
-  background: linear-gradient(var(--h-green-wash), var(--h-green-wash)), var(--h-canvas);
-  box-shadow:
-    inset 0 0 0 1px rgba(5, 223, 114, 0.28),
-    0 0 24px -4px rgba(5, 223, 114, 0.26);
-}
-.h-step__home {
-  position: relative;
-  display: block;
-  line-height: 0;
-}
-.h-step__euro {
-  position: absolute;
-  right: -7px;
-  bottom: -5px;
-  display: grid;
-  place-items: center;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: var(--h-green);
-  color: var(--h-on-amber);
-}
-.h-step__card {
-  position: relative;
-}
-.h-step__num {
-  font-family: var(--h-mono);
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--h-amber);
-}
-.h-step .h-item {
-  margin-top: 4px;
-}
-.h-step .h-body {
-  margin-top: 8px;
-}
-.h-step__who {
-  margin-top: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  line-height: 18px;
-  color: rgba(255, 255, 255, 0.6);
-}
-.h-step__who::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--h-amber);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.6);
-}
-.h-step:last-child .h-step__who::before {
-  background: var(--h-green);
-  box-shadow: 0 0 8px rgba(5, 223, 114, 0.6);
-}
-@media (min-width: 1024px) {
-  .h-steps {
-    --tile: 52px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0;
-    column-gap: 20px;
-    margin-top: 64px;
-  }
-  .h-steps::before,
-  .h-steps__fill {
-    left: calc(var(--tile) / 2);
-    right: calc((100% - 60px) / 4 - var(--tile) / 2);
-    top: calc(var(--tile) / 2);
-    bottom: auto;
-    width: auto;
-    height: 1px;
-  }
-  .h-steps__fill {
-    height: 2px;
-    margin: -0.5px 0 0;
-    background: linear-gradient(90deg, var(--h-amber), var(--h-amber) 30%, var(--h-green));
-    transform-origin: left center;
-  }
-  .h-step {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0;
-  }
-  .h-step__tile {
-    position: relative;
-    margin-left: 0;
-  }
-  .h-step__card {
-    flex: 1;
-    margin-top: 24px;
-    padding: 24px 24px 28px;
-    border-radius: var(--h-r-lg);
-    background: linear-gradient(180deg, rgba(255, 185, 0, 0.045), rgba(255, 185, 0, 0) 55%), var(--h-lane);
-    box-shadow: inset 0 0 0 1px var(--h-line);
-    transition: transform 280ms var(--h-ease-out), box-shadow 280ms ease;
-  }
-  .h-step:last-child .h-step__card {
-    background: linear-gradient(180deg, rgba(5, 223, 114, 0.045), rgba(5, 223, 114, 0) 55%), var(--h-lane);
-  }
-}
-@media (min-width: 1024px) and (hover: hover) {
-  .h-step:hover .h-step__card {
-    transform: translateY(-3px);
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 185, 0, 0.22),
-      0 18px 40px -24px rgba(255, 185, 0, 0.35);
-  }
-  .h-step:last-child:hover .h-step__card {
-    box-shadow:
-      inset 0 0 0 1px rgba(5, 223, 114, 0.22),
-      0 18px 40px -24px rgba(5, 223, 114, 0.3);
-  }
-  .h-step:hover .h-step__tile {
-    transform: translateY(-2px);
-  }
-}
-.h-steps__foot {
-  margin-top: 48px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
 /* The bee, peeking in at the end of the line. */
 .h-bee {
   display: block;
@@ -899,106 +592,6 @@
   line-height: 26px;
   font-weight: 700;
   color: var(--h-fg);
-}
-
-/* ── Value ─────────────────────────────────────────────────────── */
-.h-three {
-  margin-top: 48px;
-  display: grid;
-  border-top: 1px solid var(--h-line);
-}
-.h-three > article {
-  padding-block: 32px;
-  border-bottom: 1px solid var(--h-line);
-}
-@media (min-width: 1024px) {
-  .h-three {
-    margin-top: 64px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .h-three > article {
-    padding: 40px 32px;
-    border-bottom: 0;
-    box-shadow: inset 1px 0 0 var(--h-line);
-  }
-  .h-three > article:first-child {
-    padding-left: 0;
-    box-shadow: none;
-  }
-  .h-three > article:last-child {
-    padding-right: 0;
-  }
-}
-.h-bigfig {
-  display: block;
-  margin-top: 16px;
-  font-size: 44px;
-  line-height: 48px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: var(--h-fg);
-}
-.h-bigfig small {
-  margin-left: 4px;
-  font-family: var(--h-font);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0;
-  color: var(--h-muted);
-}
-.h-bars {
-  margin-top: 24px;
-  display: grid;
-  gap: 8px;
-}
-.h-bars > div {
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 48px;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--h-mono);
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--h-muted);
-}
-.h-bars > div > i {
-  display: block;
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(255, 185, 0, 0.35);
-  transform-origin: left center;
-}
-.h-bars > div[data-now] > i {
-  background: var(--h-amber);
-}
-.h-bars > div[data-now] {
-  color: var(--h-fg);
-}
-.h-months {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  align-items: end;
-  gap: 4px;
-  height: 96px;
-}
-.h-months > i {
-  display: block;
-  border-radius: 3px 3px 0 0;
-  background: rgba(255, 185, 0, 0.35);
-  transform-origin: bottom center;
-}
-.h-months > i[data-peak] {
-  background: var(--h-amber);
-}
-.h-months-axis {
-  margin-top: 8px;
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--h-mono);
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--h-muted);
 }
 
 /* ── Gallery: edge-to-edge snap strip on phone, aligned grid on desktop ── */
@@ -1310,16 +903,825 @@
   }
 }
 
-/* ── Reveal (see the contract at the top) ─────────────────────── */
+/* ── Section rhythm (15 Nov 2026, fault C) ─────────────────────────
+   The full 128px top and bottom on every section stacked into 256px empty
+   bands, worst under the analyser card and under the trust row. The
+   redesigned sections set their own, tighter padding; grants, the gallery,
+   the FAQ and the close band keep --h-pad exactly as before. */
+.h-sec--trust {
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+.h-sec--how,
+.h-sec--why {
+  padding-block: 72px;
+}
+.h-sec--guides {
+  padding-block: 64px 32px;
+}
+/* Grants and the FAQ sit between redesigned sections: the same rhythm, so
+   no 256px empty band opens between any two of them. The gallery keeps
+   its own padding untouched. */
+#grant-info.h-sec,
+#faq.h-sec {
+  padding-block: 72px;
+}
+@media (min-width: 768px) {
+  .h-sec--trust {
+    padding-top: 56px;
+    padding-bottom: 80px;
+  }
+  .h-sec--how,
+  .h-sec--why {
+    padding-block: 96px;
+  }
+  .h-sec--guides {
+    padding-block: 80px 48px;
+  }
+  #grant-info.h-sec,
+  #faq.h-sec {
+    padding-block: 96px;
+  }
+}
+
+/* ── Trust: a photo lane and a credential ledger ───────────────────
+   Each row: when it matters in your project, the credential, and what it
+   means for your grant or your safety. No icon tiles. */
+.h-trust {
+  margin-top: 40px;
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .h-trust {
+    margin-top: 56px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(40px, 5vw, 80px);
+    align-items: stretch;
+  }
+}
+.h-trust__photo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.h-trust__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .h-trust__frame {
+    aspect-ratio: 16 / 9;
+  }
+}
+.h-trust__frame {
+  border-radius: var(--h-r-lg);
+  overflow: hidden;
+  background: var(--h-raise);
+}
+/* Desktop: the photo keeps its own portrait shape (976 x 1056) beside the
+   ledger, so it is never cropped to a sliver of sky. */
+@media (min-width: 1024px) {
+  .h-trust__photo {
+    align-self: start;
+  }
+  .h-trust__frame {
+    aspect-ratio: 976 / 1056;
+  }
+}
+.h-trust__photo figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--h-muted);
+}
+.h-ledger {
+  border-top: 1px solid var(--h-line);
+}
+.h-ledger__row {
+  display: grid;
+  gap: 4px;
+  padding-block: 18px;
+  border-bottom: 1px solid var(--h-line);
+}
+.h-ledger__when {
+  font-family: var(--h-mono);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--h-amber);
+}
+.h-ledger__name {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--h-fg);
+}
+.h-ledger__means {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--h-muted);
+  text-wrap: pretty;
+}
+/* From 768: when and the credential stacked on the left, what it means on
+   the right, so the explanation gets a readable measure. */
+@media (min-width: 768px) {
+  .h-ledger__row {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 32px;
+    row-gap: 4px;
+    padding-block: 22px;
+  }
+  .h-ledger__when {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .h-ledger__name {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .h-ledger__means {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+}
+@media (min-width: 1280px) {
+  .h-ledger__name {
+    font-size: 19px;
+    line-height: 26px;
+  }
+  .h-ledger__means {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .h-ledger__when {
+    font-size: 14px;
+  }
+}
+
+/* ── How it works: the route map ───────────────────────────────────
+   Phone and tablet: one rail, top to bottom, each moment with who acts.
+   Desktop: columns are the moments, rows are who acts (you, us, SEAI),
+   drawn as lanes across the full width. */
+.h-route {
+  position: relative;
+  margin-top: 40px;
+}
+.h-route__lane {
+  display: none;
+}
+.h-route__stages {
+  position: relative;
+}
+.h-stage {
+  position: relative;
+  padding: 0 0 32px 32px;
+}
+.h-stage::before {
+  /* the rail */
+  content: '';
+  position: absolute;
+  left: 5.5px;
+  top: 16px;
+  bottom: 0;
+  width: 1px;
+  background: var(--h-line-control);
+}
+.h-stage[data-last]::before {
+  display: none;
+}
+.h-stage::after {
+  /* the sun ring marking the moment */
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--h-canvas);
+  box-shadow: inset 0 0 0 2px var(--h-amber);
+}
+.h-stage[data-last]::after {
+  background: var(--h-amber);
+}
+.h-stage__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+.h-stage__t {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--h-fg);
+}
+.h-stage__span {
+  font-family: var(--h-mono);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--h-amber);
+}
+.h-act {
+  margin-top: 14px;
+}
+.h-act__who {
+  display: block;
+  font-family: var(--h-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--h-muted);
+}
+.h-act__text {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 22px;
+  color: #d4d4d8;
+  text-wrap: pretty;
+  max-inline-size: 62ch;
+}
+.h-act__text a {
+  color: var(--h-fg);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 3px;
+}
+.h-act__text a:hover {
+  text-decoration-color: var(--h-amber);
+}
+.h-route__foot {
+  margin-top: 16px;
+}
+@media (min-width: 1024px) {
+  .h-route {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 8.5rem repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto auto auto auto;
+  }
+  /* The lanes run the full width of the screen, past the text column, so
+     on a wide monitor the map is anchored edge to edge (anchor, don't
+     float). The section clips the overflow sideways. */
+  .h-sec--how {
+    overflow-x: clip;
+  }
+  .h-route__lane {
+    position: relative;
+    display: block;
+    grid-column: 1 / -1;
+    padding-top: 22px;
+  }
+  .h-route__lane::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0 -100vmax;
+    border-top: 1px solid var(--h-line);
+  }
+  .h-route__lane:nth-of-type(2)::before {
+    background: rgba(255, 255, 255, 0.025);
+  }
+  .h-route__lane:nth-of-type(3)::before {
+    border-bottom: 1px solid var(--h-line);
+  }
+  .h-route {
+    isolation: isolate;
+  }
+  .h-route__lane span {
+    font-family: var(--h-mono);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--h-muted);
+  }
+  .h-route__stages {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+  }
+  .h-stage {
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+    padding: 0;
+  }
+  .h-stage::before {
+    /* the rail runs across the top, through every ring */
+    left: 6px;
+    right: 0;
+    top: 5.5px;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+  .h-stage[data-last]::before {
+    display: none;
+  }
+  .h-stage__when {
+    grid-row: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 24px 26px 0;
+  }
+  .h-stage__t {
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .h-act {
+    margin: 0;
+    padding: 20px 24px 24px 0;
+  }
+  .h-act[data-who='you'] {
+    grid-row: 2;
+  }
+  .h-act[data-who='us'] {
+    grid-row: 3;
+  }
+  .h-act[data-who='seai'] {
+    grid-row: 4;
+  }
+  /* The lane says who; the label stays for screen readers. */
+  .h-act__who {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .h-act__text {
+    margin-top: 0;
+  }
+  .h-route__foot {
+    margin-top: 40px;
+  }
+}
+@media (min-width: 1280px) {
+  .h-route {
+    grid-template-columns: 10rem repeat(5, minmax(0, 1fr));
+  }
+  .h-act__text {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .h-stage__span,
+  .h-route__lane span {
+    font-size: 14px;
+  }
+}
+
+/* ── Why panels pay: two chapters, each a wide chart with its reading ── */
+.h-sec--why {
+  overflow-x: clip;
+}
+.h-chapter {
+  position: relative;
+  margin-top: 48px;
+  padding-top: 32px;
+  display: grid;
+  gap: 32px;
+}
+/* The chapter rule runs edge to edge of the screen. */
+.h-chapter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100vmax;
+  right: -100vmax;
+  height: 1px;
+  background: var(--h-line);
+}
+@media (min-width: 1024px) {
+  .h-chapter {
+    margin-top: 64px;
+    padding-top: 48px;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: end;
+  }
+  .h-chapter--flip {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  }
+  .h-chapter--flip .h-chapter__read {
+    order: 2;
+  }
+}
+.h-chapter__k {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--h-fg);
+}
+.h-chapter__fig {
+  margin-top: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.h-chapter__fig > span {
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  color: var(--h-amber);
+}
+.h-chapter__fig small {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--h-muted);
+}
+.h-chapter__src {
+  margin-top: 16px;
+}
+@media (min-width: 1280px) {
+  .h-chapter__k {
+    font-size: 19px;
+  }
+  .h-chapter__fig > span {
+    font-size: 72px;
+  }
+  .h-chapter__fig small {
+    font-size: 16px;
+  }
+}
+.h-chart {
+  margin: 0;
+  min-width: 0;
+}
+.h-chart__plot {
+  position: relative;
+  height: 220px;
+  display: grid;
+  align-items: end;
+  gap: 8px;
+  border-bottom: 1px solid var(--h-line-control);
+}
+.h-chart--price .h-chart__plot {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.h-chart--gen .h-chart__plot {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+}
+@media (min-width: 768px) {
+  .h-chart__plot {
+    height: 280px;
+    gap: 14px;
+  }
+  .h-chart--gen .h-chart__plot {
+    gap: 10px;
+  }
+}
+@media (min-width: 1280px) {
+  .h-chart__plot {
+    height: 320px;
+  }
+}
+.h-col {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.h-col > i,
+.h-col__stack {
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.h-col > i {
+  background: rgba(255, 185, 0, 0.32);
+}
+.h-col[data-now] > i {
+  background: var(--h-amber);
+}
+.h-col__stack i {
+  display: block;
+  flex-basis: 0;
+  min-height: 0;
+}
+.h-col__within {
+  background: rgba(255, 185, 0, 0.32);
+}
+.h-col__over {
+  background: var(--h-amber);
+}
+.h-col__v {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+  padding-inline: 3px;
+  background: var(--h-canvas);
+  margin-bottom: 6px;
+  font-family: var(--h-mono);
+  font-size: 11px;
+  line-height: 14px;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--h-muted);
+}
+.h-col[data-now] .h-col__v,
+.h-col[data-key] .h-col__v {
+  color: var(--h-fg);
+  font-weight: 600;
+}
+.h-col--gen:not([data-key]) .h-col__v {
+  visibility: hidden;
+}
+@media (min-width: 390px) {
+  .h-col__v {
+    font-size: 12px;
+  }
+}
+@media (min-width: 768px) {
+  .h-col--gen:not([data-key]) .h-col__v {
+    visibility: visible;
+  }
+}
+@media (min-width: 1280px) {
+  .h-col__v {
+    font-size: 13px;
+  }
+}
+.h-chart__ref {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 0;
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+.h-chart__axis {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+  font-family: var(--h-mono);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--h-muted);
+}
+.h-chart__axis--7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.h-chart__axis--12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+}
+.h-ax-long {
+  display: none;
+}
+@media (min-width: 768px) {
+  .h-chart__axis {
+    gap: 14px;
+  }
+  .h-chart__axis--12 {
+    gap: 10px;
+  }
+  .h-ax-long {
+    display: inline;
+  }
+  .h-ax-short {
+    display: none;
+  }
+}
+.h-legend {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--h-muted);
+}
+.h-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.h-legend i {
+  flex: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.h-legend__within {
+  background: rgba(255, 185, 0, 0.32);
+}
+.h-legend__over {
+  background: var(--h-amber);
+}
+.h-legend i.h-legend__line {
+  width: 20px;
+  height: 0;
+  border-radius: 0;
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.55);
+}
+@media (min-width: 1280px) {
+  .h-legend {
+    font-size: 14px;
+  }
+}
+.h-why__foot {
+  margin-top: 40px;
+}
+
+/* ── Popular guides: a reading surface ─────────────────────────── */
+.h-title--sm {
+  font-size: 28px;
+}
+@media (min-width: 768px) {
+  .h-title--sm {
+    font-size: clamp(30px, 2.2vw + 10px, 44px);
+  }
+}
+.h-guides__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+.h-guides {
+  margin-top: 32px;
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .h-guides {
+    margin-top: 40px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+  }
+}
+.h-guide-lead,
+.h-guide {
+  border-radius: var(--h-r);
+  -webkit-tap-highlight-color: transparent;
+}
+.h-guide-lead:focus-visible,
+.h-guide:focus-visible,
+.h-guides__all:focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 4px;
+}
+.h-guide-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.h-guide-lead__frame,
+.h-guide__thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--h-raise);
+}
+.h-guide-lead__frame {
+  aspect-ratio: 16 / 10;
+  margin-bottom: 12px;
+  border-radius: var(--h-r-lg);
+}
+.h-guide-lead__frame img,
+.h-guide__thumb img {
+  transition: transform 600ms var(--h-ease-out);
+}
+.h-guide-lead__q {
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--h-fg);
+  text-wrap: balance;
+}
+@media (min-width: 1280px) {
+  .h-guide-lead__q {
+    font-size: 30px;
+  }
+}
+.h-guide__gist {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--h-muted);
+  text-wrap: pretty;
+}
+.h-guide-lead .h-guide__gist {
+  font-size: 16px;
+  line-height: 24px;
+}
+.h-guide__title {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--h-amber);
+}
+.h-guide__meta {
+  font-family: var(--h-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--h-muted);
+}
+.h-guide-list {
+  display: grid;
+  border-top: 1px solid var(--h-line);
+}
+@media (min-width: 768px) {
+  .h-guide-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .h-guide-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.h-guide-list > li {
+  border-bottom: 1px solid var(--h-line);
+}
+.h-guide {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding-block: 18px;
+}
+.h-guide__thumb {
+  aspect-ratio: 1;
+  border-radius: 12px;
+}
+.h-guide__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.h-guide__q {
+  font-size: 17px;
+  line-height: 23px;
+  font-weight: 600;
+  color: var(--h-fg);
+  transition: color 160ms ease;
+}
+.h-guide .h-guide__gist {
+  font-size: 14px;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (hover: hover) {
+  .h-guide:hover .h-guide__q,
+  .h-guide-lead:hover .h-guide-lead__q {
+    color: var(--h-amber-hover);
+  }
+  .h-guide:hover img,
+  .h-guide-lead:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* ── Reveal (fault A, 15 Nov 2026) ────────────────────────────────
+   Before: every block below the fold sat at opacity 0 until an observer saw
+   it cross 92% of the screen, then faded over 640ms plus a stagger. Scrolling
+   at reading speed, the reader met about 700px of black canvas before "Why
+   panels pay". Now nothing is ever hidden: content is fully visible at rest
+   and the reveal is a short transform-only settle (no opacity, no layout, so
+   no CLS and nothing for INP to wait on). */
 .si-home--reveal [data-reveal]:not(.is-in) {
+  transform: translateY(12px);
+}
+.si-home--reveal [data-reveal] {
+  transition: transform 560ms var(--h-ease-out);
+}
+/* The installs gallery keeps its original reveal exactly (Cal, 15 Nov:
+   leave the gallery as it is). */
+.si-home--reveal #our-work [data-reveal]:not(.is-in) {
   opacity: 0;
   transform: translateY(10px);
 }
-.si-home--reveal [data-reveal] {
+.si-home--reveal #our-work [data-reveal] {
   transition: opacity 640ms var(--h-ease-out), transform 640ms var(--h-ease-out);
   transition-delay: calc(var(--d, 0) * 70ms);
 }
-/* The gallery reveals as one strip, photos staggered. */
 .si-home--reveal .h-strip[data-reveal]:not(.is-in) {
   opacity: 1;
   transform: none;
@@ -1332,54 +1734,15 @@
   transition: opacity 640ms var(--h-ease-out), transform 640ms var(--h-ease-out);
   transition-delay: calc(var(--d, 0) * 70ms);
 }
-/* The step line fills yellow to green as the steps arrive (phone: down,
-   desktop: across). Tiles settle in with their step. */
-.si-home--reveal .h-steps__fill[data-reveal]:not(.is-in) {
-  opacity: 0.7;
-  transform: scaleY(0);
-}
-.si-home--reveal .h-steps__fill[data-reveal] {
-  transition: transform 1600ms var(--h-ease-out) 200ms;
-}
-@media (min-width: 1024px) {
-  .si-home--reveal .h-steps__fill[data-reveal]:not(.is-in) {
-    transform: scaleX(0);
-  }
-}
-.si-home--reveal .h-step:not(.is-in) .h-step__tile {
-  transform: scale(0.85);
-}
-.si-home--reveal .h-step .h-step__tile {
-  transition: transform 640ms var(--h-ease-out), box-shadow 240ms ease;
-  transition-delay: calc(var(--d, 0) * 120ms + 120ms), 0ms;
-}
-/* Bars grow when their chart arrives. */
-.si-home--reveal [data-reveal]:not(.is-in) .h-bars i {
-  transform: scaleX(0);
-}
-.si-home--reveal [data-reveal]:not(.is-in) .h-months i {
-  transform: scaleY(0);
-}
-.si-home--reveal .h-bars i,
-.si-home--reveal .h-months i {
-  transition: transform 900ms var(--h-ease-out);
-  transition-delay: calc(var(--i, 0) * 45ms + 200ms);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .si-home--reveal [data-reveal],
-  .si-home--reveal [data-reveal]:not(.is-in) {
+  .si-home--reveal [data-reveal]:not(.is-in),
+  .si-home--reveal #our-work [data-reveal],
+  .si-home--reveal #our-work [data-reveal]:not(.is-in) {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  .si-home--reveal .h-steps__fill[data-reveal],
-  .si-home--reveal .h-steps__fill[data-reveal]:not(.is-in),
-  .si-home--reveal .h-step:not(.is-in) .h-step__tile,
-  .si-home--reveal [data-reveal]:not(.is-in) .h-bars i,
-  .si-home--reveal [data-reveal]:not(.is-in) .h-months i {
-    stroke-dashoffset: 0;
-    transform: none;
   }
   .si-home--reveal .h-strip:not(.is-in) .h-shot {
     opacity: 1;
@@ -1394,16 +1757,9 @@
   .h-shot button,
   .h-shot img,
   .h-acc__a,
-  .h-step__card,
-  .h-step__tile,
-  .h-cell,
-  .h-cell::after {
+  .h-guide img,
+  .h-guide-lead img {
     transition: none;
-  }
-  .h-step:hover .h-step__card,
-  .h-step:hover .h-step__tile,
-  .h-cells > li:hover .h-cell {
-    transform: none;
   }
 }
 
@@ -1430,16 +1786,6 @@
   .h-hero__trust {
     font-size: 14px;
   }
-  .h-cell__big {
-    font-size: 34px;
-  }
-  .h-cell__line {
-    font-size: 15px;
-  }
-  .h-step__num,
-  .h-step__who {
-    font-size: 14px;
-  }
   .h-dl dt {
     font-size: 19px;
   }
@@ -1452,15 +1798,6 @@
   }
   .h-opt {
     font-size: 17px;
-  }
-  .h-bigfig {
-    font-size: 52px;
-  }
-  .h-bigfig small {
-    font-size: 16px;
-  }
-  .h-bars > div {
-    font-size: 14px;
   }
   .h-shot figcaption {
     font-size: 14px;

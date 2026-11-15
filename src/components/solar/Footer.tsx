@@ -5,12 +5,10 @@ import {
   MapPin,
   Phone,
   ArrowRight,
-  Sun,
   ShieldCheck,
   Shield,
   Zap,
   CheckCircle2,
-  Star,
   Clock,
   ExternalLink,
 } from 'lucide-react';
@@ -102,12 +100,18 @@ const serviceAreas = [
   { province: 'Ulster', counties: 'Donegal, Cavan, Monaghan, Antrim, Down, Tyrone' },
 ];
 
+/* Credentials (15 Nov 2026, home-sections-world-class): one tidy row in one
+   colour, the same list the home page's trust ledger explains. Cal confirmed
+   SEAI, RECI, Safe Electric, Microgeneration and both warranties are true.
+   NSAI stays off the home page (unconfirmed, DECISIONS.md R2). */
 const certifications = [
-  { icon: ShieldCheck, label: 'SEAI Registered Installers', color: 'text-green-400' },
-  { icon: CheckCircle2, label: 'RECI Certified Electrician', color: 'text-amber-400' },
-  { icon: Zap, label: 'Safe Electric Approved', color: 'text-sky-400' },
-  { icon: Star, label: 'NSAI Compliant (ET101)', color: 'text-violet-400' },
-  { icon: Sun, label: 'Microgeneration Certified', color: 'text-orange-400' },
+  'SEAI registered installers',
+  'RECI registered',
+  'Safe Electric Approved',
+  'NSAI Compliant (ET101)',
+  'Microgeneration certified',
+  '25-year panel warranty',
+  '5-year workmanship warranty',
 ];
 
 const trustBadges = [
@@ -164,18 +168,6 @@ function PreFooterCTA() {
         </div>
       </div>
     </Reveal>
-  );
-}
-
-function CertBadge({ icon: Icon, label, color }: (typeof certifications)[0]) {
-  return (
-    <div
-      data-motion-hover-y="-2"
-      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.04] cursor-default"
-    >
-      <Icon className={`w-3.5 h-3.5 ${color} shrink-0`} />
-      <span className="text-[10px] sm:text-xs text-gray-400 font-medium">{label}</span>
-    </div>
   );
 }
 
@@ -272,8 +264,8 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
           {home ? null : <PreFooterCTA />}
         </div>
 
-        <FooterGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 pb-12 sm:pb-16 transition-all duration-700">
-          <div className="lg:col-span-4">
+        <FooterGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 pb-12 sm:pb-16 transition-transform duration-700 motion-reduce:transition-none">
+          <div className="lg:col-span-3">
             <div className="flex items-center gap-2.5 mb-4">
               <Image
                 src="/logo-sm.webp"
@@ -311,11 +303,11 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
             </div>
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400 mb-4">
               Quick Links
             </h3>
-            <ul className={home ? 'grid grid-cols-2 gap-x-4 sm:block sm:space-y-2' : 'space-y-2'}>
+            <ul className="grid grid-cols-2 gap-x-4 whitespace-nowrap">
               {quickLinks.map((link) => ({ ...link, href: home && link.href === '/solar-calculator' ? '#calculator' : link.href })).map((link) => (
                 <li key={link.href}>
                   {link.href === '/book-survey' ? (
@@ -375,14 +367,14 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
                 label="Email"
                 value={SOLAR_DATA.provider.email}
                 href={`mailto:${SOLAR_DATA.provider.email}`}
-                color="bg-amber-400/10 text-amber-400"
+                color="bg-white/[0.05] text-gray-300"
               />
               <ContactCard
                 icon={Phone}
                 label="Phone"
                 value={SOLAR_DATA.provider.phoneDisplay}
                 href={`tel:${SOLAR_DATA.provider.phone}`}
-                color="bg-sky-400/10 text-sky-400"
+                color="bg-white/[0.05] text-gray-300"
               />
             </div>
 
@@ -402,44 +394,38 @@ export default function Footer({ variant = 'default' }: { variant?: 'default' | 
           </div>
         </FooterGrid>
 
-        <Reveal anim="fade-in" className="pb-10 sm:pb-12">
-          <div className="flex items-center gap-2 mb-5">
-            <MapPin className="w-4 h-4 text-amber-400/50" />
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
-              Service Areas
-            </span>
+        <section aria-labelledby="footer-areas" className="si-foot-areas">
+          <div className="si-foot-areas__head">
+            <h3 id="footer-areas" className="si-foot-label">
+              <MapPin className="w-4 h-4" aria-hidden="true" />
+              Service areas
+            </h3>
+            <a href="/counties" className="si-foot-areas__all">
+              All 32 counties
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <dl className="si-foot-areas__grid">
             {serviceAreas.map((area) => (
-              <div
-                key={area.province}
-                className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]"
-              >
-                <div className="w-2 h-2 rounded-full bg-amber-400/50 mt-1.5 shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-white">{area.province}</p>
-                  <p className="text-[11px] text-gray-400 mt-0.5 leading-relaxed">
-                    {area.counties}
-                  </p>
-                </div>
+              <div key={area.province}>
+                <dt>{area.province}</dt>
+                <dd>{area.counties}</dd>
               </div>
             ))}
-          </div>
-        </Reveal>
+          </dl>
+        </section>
 
-        <Reveal anim="fade-in" className="pb-10 sm:pb-12">
-          <div className="flex items-center gap-2 mb-5">
-            <ShieldCheck className="w-4 h-4 text-amber-400/50" />
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
-              Certifications &amp; Compliance
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2.5">
-            {certifications.filter((c) => !(home && c.label.startsWith('NSAI'))).map((cert) => (
-              <CertBadge key={cert.label} {...cert} />
+        <section aria-labelledby="footer-creds" className="si-foot-creds">
+          <h3 id="footer-creds" className="si-foot-label">
+            <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+            Registrations and warranties
+          </h3>
+          <ul>
+            {certifications.filter((c) => !(home && c.startsWith('NSAI'))).map((c) => (
+              <li key={c}>{c}</li>
             ))}
-          </div>
-        </Reveal>
+          </ul>
+        </section>
 
         {home ? null : <TrustBadgesRow />}
 

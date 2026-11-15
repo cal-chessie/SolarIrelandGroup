@@ -13,7 +13,10 @@ import { useInView } from '@/lib/useInView';
  * for the same element, so nothing looks or behaves differently.
  */
 
-/** The main link grid: rises in once the footer is 50px into the viewport. */
+/** The main link grid: settles up once the footer is 50px into the viewport.
+ *  Visible at rest (15 Nov 2026): it used to sit at opacity 0, in the server
+ *  HTML too, until the observer fired, so a fast scroll (or no JS) met a
+ *  blank footer. Now only a transform moves; the links are always there. */
 export function FooterGrid({ className, children }: { className: string; children: ReactNode }) {
   const gridRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLElement | null>(null);
@@ -27,7 +30,7 @@ export function FooterGrid({ className, children }: { className: string; childre
   return (
     <div
       ref={gridRef}
-      className={`${className} ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+      className={`${className} ${isInView ? 'translate-y-0' : 'translate-y-6'}`}
     >
       {children}
     </div>

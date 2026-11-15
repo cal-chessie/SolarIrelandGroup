@@ -356,7 +356,7 @@ export default function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProp
           >
             <button
               onClick={() => navigateTo(savingsHref(pathname))}
-              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15"
+              className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-amber-400 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-amber-400/15"
             >
               <CalendarCheck className="w-4 h-4" />
               Check my savings

@@ -177,7 +177,7 @@ export default function Navbar() {
                   onClick={() => navigateTo(link.isBookSurvey ? savingsHref(pathname) : onPage(pathname, link.href))}
                   className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
                     link.isBookSurvey
-                      ? 'text-green-400 font-semibold'
+                      ? 'text-amber-400 font-semibold'
                       : link.href === '/portal'
                       ? 'text-sky-400 font-semibold'
                       : isActive
@@ -190,7 +190,7 @@ export default function Navbar() {
                     <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400 transition-all duration-300" />
                   )}
                   {link.isBookSurvey && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-green-400/60 transition-all duration-300" />
+                    <span className="absolute -bottom-1 left-0 right-0 h-px bg-amber-400/60 transition-all duration-300" />
                   )}
                   {link.href === '/portal' && (
                     <span className="absolute -bottom-1 left-0 right-0 h-px bg-sky-400/60 transition-all duration-300" />
@@ -203,10 +203,12 @@ export default function Navbar() {
           {/* Desktop CTA buttons */}
           <div className="hidden lg:flex items-center gap-3">
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
-                clipped the survey CTA. The secondary CTA waits for xl. */}
+                clipped the survey CTA. The secondary CTA waits for xl.
+                Brand amber (15 Nov 2026): the same colour as every page CTA
+                (hero, analyser, sticky bar); it was green. */}
             <button
               onClick={() => navigateTo(savingsHref(pathname))}
-              className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
+              className="bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-amber-400/10 hover:shadow-amber-400/20 whitespace-nowrap"
             >
               Check my savings
             </button>
