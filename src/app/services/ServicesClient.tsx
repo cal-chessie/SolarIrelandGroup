@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import {
@@ -407,7 +407,7 @@ function ServiceCard({
   );
 }
 
-export default function ServicesPage() {
+export default function ServicesPage({ guides }: { guides?: ReactNode }) {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
       <ScrollProgress />
@@ -807,6 +807,10 @@ export default function ServicesPage() {
             </div>
           </motion.div>
         </section>
+
+        {/* Popular guides: the last section, above the footer. Rendered on
+            the server in page.tsx so blog-data.ts stays off the client. */}
+        {guides}
       </main>
 
       <Footer />

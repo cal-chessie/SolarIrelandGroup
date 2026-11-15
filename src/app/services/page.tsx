@@ -1,4 +1,5 @@
 import ServicesClient from './ServicesClient';
+import ServicesGuides from '@/components/solar/ServicesGuides';
 
 const servicesSchema = {
   '@context': 'https://schema.org',
@@ -83,7 +84,7 @@ export default function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
       />
-      <ServicesClient />
+      <ServicesClient guides={<ServicesGuides />} />
     </>
   );
 }

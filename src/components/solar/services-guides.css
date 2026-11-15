@@ -1,0 +1,290 @@
+/* ═══════════════════════════════════════════════════════════════
+   Popular guides on /services (15 Nov 2026). The look of the redesigned
+   homepage section from home-sections-world-class (2bf1856), copied value
+   for value but standalone: own sg- classes and own tokens, so nothing in
+   home.css reaches it and nothing here reaches the homepage.
+   ═══════════════════════════════════════════════════════════════ */
+
+.sg-guides {
+  --sg-line: rgba(255, 255, 255, 0.08);
+  --sg-raise: #161616;
+  --sg-fg: #ffffff;
+  --sg-muted: #a1a1aa;
+  --sg-amber: #ffb900;
+  --sg-amber-hover: #ffd230;
+  --sg-r: 14px;
+  --sg-r-lg: 20px;
+  --sg-font: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sg-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --sg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  padding-block: 64px 32px;
+  scroll-margin-top: 73px;
+  background: #0a0a0a;
+  font-family: var(--sg-font);
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 768px) {
+  .sg-guides {
+    padding-block: 80px 48px;
+  }
+}
+
+/* The separator: a hairline at the container width that ends in a small
+   ring, the logo's sun ring. */
+.sg-guides::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: max(24px, calc((100% - 74rem) / 2 + 32px));
+  right: calc(max(24px, calc((100% - 74rem) / 2 + 32px)) + 10px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--sg-line) 12%, var(--sg-line));
+}
+.sg-guides::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: max(24px, calc((100% - 74rem) / 2 + 32px));
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 185, 0, 0.55);
+}
+
+.sg-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+@media (min-width: 640px) {
+  .sg-wrap {
+    padding-inline: 32px;
+  }
+}
+@media (min-width: 1536px) {
+  .sg-wrap {
+    max-width: 78rem;
+  }
+  .sg-guides::before {
+    left: max(32px, calc((100% - 78rem) / 2 + 32px));
+    right: calc(max(32px, calc((100% - 78rem) / 2 + 32px)) + 10px);
+  }
+  .sg-guides::after {
+    right: max(32px, calc((100% - 78rem) / 2 + 32px));
+  }
+}
+
+/* ── Head ──────────────────────────────────────────────────────── */
+.sg-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+.sg-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--sg-amber);
+}
+.sg-ring {
+  flex: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--sg-amber);
+}
+.sg-title {
+  margin-top: 8px;
+  font-size: 28px;
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--sg-fg);
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .sg-title {
+    font-size: clamp(30px, 2.2vw + 10px, 44px);
+    letter-spacing: -0.04em;
+  }
+}
+@media (min-width: 1280px) {
+  .sg-kicker {
+    font-size: 16px;
+  }
+}
+.sg-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--sg-amber);
+}
+.sg-all svg {
+  transition: transform 200ms var(--sg-ease-out);
+}
+.sg-all:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Grid: lead guide left, six rows right ─────────────────────── */
+.sg-grid {
+  margin-top: 32px;
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .sg-grid {
+    margin-top: 40px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+  }
+}
+.sg-lead,
+.sg-item {
+  border-radius: var(--sg-r);
+  -webkit-tap-highlight-color: transparent;
+}
+.sg-lead:focus-visible,
+.sg-item:focus-visible,
+.sg-all:focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 4px;
+}
+.sg-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sg-lead__frame,
+.sg-item__thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--sg-raise);
+}
+.sg-lead__frame {
+  aspect-ratio: 16 / 10;
+  margin-bottom: 12px;
+  border-radius: var(--sg-r-lg);
+}
+.sg-lead__frame img,
+.sg-item__thumb img {
+  transition: transform 600ms var(--sg-ease-out);
+}
+.sg-lead__q {
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--sg-fg);
+  text-wrap: balance;
+}
+@media (min-width: 1280px) {
+  .sg-lead__q {
+    font-size: 30px;
+  }
+}
+.sg-gist {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--sg-muted);
+  text-wrap: pretty;
+}
+.sg-lead .sg-gist {
+  font-size: 16px;
+  line-height: 24px;
+}
+.sg-lead__title {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--sg-amber);
+}
+.sg-meta {
+  font-family: var(--sg-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--sg-muted);
+}
+.sg-list {
+  display: grid;
+  border-top: 1px solid var(--sg-line);
+}
+@media (min-width: 768px) {
+  .sg-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .sg-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.sg-list > li {
+  border-bottom: 1px solid var(--sg-line);
+}
+.sg-item {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding-block: 18px;
+}
+.sg-item__thumb {
+  aspect-ratio: 1;
+  border-radius: 12px;
+}
+.sg-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.sg-item__q {
+  font-size: 17px;
+  line-height: 23px;
+  font-weight: 600;
+  color: var(--sg-fg);
+  transition: color 160ms ease;
+}
+.sg-item .sg-gist {
+  font-size: 14px;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (hover: hover) {
+  .sg-item:hover .sg-item__q,
+  .sg-lead:hover .sg-lead__q {
+    color: var(--sg-amber-hover);
+  }
+  .sg-item:hover img,
+  .sg-lead:hover img {
+    transform: scale(1.04);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-item img,
+  .sg-lead img,
+  .sg-all svg {
+    transition: none;
+  }
+}
