@@ -17,7 +17,9 @@ const PAGE_DATES: Record<string, string> = {
   // contact, privacy, terms, cookies (new titles; the business named "Solar
   // Ireland Group" in the copy) and /counties (copy, card links). Pages that
   // only changed in nav, footer or og:site_name keep their dates.
-  "/": "2026-11-10T00:00:00+00:00",
+  // 15 Nov 2026 Search Console pass: home Popular guides gains the worth-it
+  // guide; /solar-calculator gains its cost-calculator section and title.
+  "/": "2026-11-15T00:00:00+00:00",
   "/services": "2026-11-10T00:00:00+00:00",
   "/counties": "2026-11-10T00:00:00+00:00",
   "/counties/roscommon": "2026-11-10T00:00:00+00:00",
@@ -27,7 +29,7 @@ const PAGE_DATES: Record<string, string> = {
   "/privacy": "2026-11-10T00:00:00+00:00",
   "/terms": "2026-11-10T00:00:00+00:00",
   "/cookies": "2026-11-10T00:00:00+00:00",
-  "/solar-calculator": "2026-11-09T00:00:00+00:00",
+  "/solar-calculator": "2026-11-15T00:00:00+00:00",
   "/book-survey": "2026-11-10T00:00:00+00:00",
   // 10 Nov 2026 battery-grant pass: the financing FAQ names the EUR 600
   // battery grant (home, services, counties and Roscommon were already dated

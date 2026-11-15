@@ -242,7 +242,7 @@ export const articles: Article[] = [
     "excerpt": "Yes - solar lifts your BER, cuts running costs, and appeals to buyers who now read the energy rating first. The honest picture on how much value it adds, and why the bigger return happens while you still live there.",
     "category": "savings",
     "date": "13 Sep 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -294,6 +294,10 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "Here is the part people miss when they focus only on resale. A typical Irish system saves **€800-1,400 a year** on electricity and pays for itself in 5-7 years, with the €1,800 SEAI grant and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+      },
+      {
+        "type": "paragraph",
+        "text": "This page is about resale value. If your real question is whether the system pays for itself, our guide to [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) works through the cost, the yearly saving and the payback for a typical home."
       },
       {
         "type": "callout",
@@ -406,7 +410,7 @@ export const articles: Article[] = [
     "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and the 1,800 euro SEAI grant still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -415,6 +419,64 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "Yes. For most Irish homes, solar panels are worth it in 2026. A typical system saves **€800-1,400 a year** on electricity, pays for itself in 5-7 years, and the €1,800 SEAI grant plus 0% VAT are both still in place. The honest exceptions are a heavily shaded roof or a very small electricity bill. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Are solar panels worth it in Ireland? The numbers for a typical home"
+      },
+      {
+        "type": "paragraph",
+        "text": "Here is what our savings engine, the same one behind the [bill analyser](/solar-calculator), works out for a home using the CRU average of 4,200 kWh a year with a 4 kWp system and no battery. It is a conservative estimate: it assumes the bottom of the 2026 unit-rate band, 35c a kWh, and an export rate of 18c."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Typical Irish home, 4 kWp, no battery",
+          "Figure"
+        ],
+        "rows": [
+          [
+            "Installed price",
+            "€8,200"
+          ],
+          [
+            "SEAI grant",
+            "€1,800"
+          ],
+          [
+            "Cost after grant",
+            "€6,400"
+          ],
+          [
+            "Electricity the panels make",
+            "About 3,800 kWh a year"
+          ],
+          [
+            "Saving on the bill from power you use",
+            "About €490 a year"
+          ],
+          [
+            "Export income under the Clean Export Guarantee",
+            "About €430 a year"
+          ],
+          [
+            "Total yearly benefit",
+            "About €920"
+          ],
+          [
+            "Payback",
+            "About 7 years"
+          ],
+          [
+            "25-year benefit",
+            "About €26,800"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "A home that uses more of its power in daylight, works from home or runs an EV or heat pump moves up toward the €1,400 end of the range and a shorter payback. A home that is empty all day sits at the lower end. Your own bill decides which, because it shows when you use your power."
       },
       {
         "type": "heading",
@@ -901,11 +963,11 @@ export const articles: Article[] = [
     "slug": "how-to-read-electricity-bill-ireland-solar",
     "title": "How to Read Your Electricity Bill in Ireland (2026)",
     "seoTitle": "Irish Electricity Bill: Unit Rate, Standing Charge, Night Rate",
-    "seoDescription": "Your day and night unit rates, the standing charge and when night rate starts, line by line on an Irish electricity bill, and what each means for solar.",
+    "seoDescription": "What electricity costs per kWh in Ireland in 2026, the standing charge, day and night rates and where your MPRN is, and what each means for solar.",
     "excerpt": "MPRN, day and night rates, standing charges and kWh: how to read an Irish electricity bill in 2026, and what the day/night split tells you about solar.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "10 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -989,6 +1051,10 @@ export const articles: Article[] = [
         "text": "You will find it on the front page of any electricity bill, usually near your account number, and it begins with the number 10. If you cannot find a bill, ESB Networks can trace the MPRN from your address."
       },
       {
+        "type": "paragraph",
+        "text": "On most bills the MPRN sits on the first page in a box with your account number, labelled MPRN or Meter Point Reference Number. If you need to find yours today, the step-by-step guide to your [MPRN number in Ireland](/blog/what-is-my-mprn-number-ireland) shows where each part of the bill keeps it."
+      },
+      {
         "type": "callout",
         "variant": "tip",
         "title": "Have your MPRN ready before you apply",
@@ -1054,6 +1120,54 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "Annualising matters because usage is seasonal. A November bill will always look worse than a May one, so never judge your consumption - or size a solar system - from a single billing period. Twelve months of bills, or a year of smart meter data, gives the true picture."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Electricity unit rates and standing charges in Ireland"
+      },
+      {
+        "type": "paragraph",
+        "text": "In 2026 a standard 24-hour domestic unit rate in Ireland sits around **35c to 38c per kWh including VAT**, and a standing charge on an urban 24-hour tariff runs to about **€250 a year**. Each supplier sets its own prices; the [CRU](https://www.cru.ie) regulates the market but does not set retail rates, so your own bill is the only figure that counts. Our savings estimates use 35c, the bottom of the band, so they never overstate what solar saves you."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Charge",
+          "Typical 2026 level",
+          "Does solar reduce it?"
+        ],
+        "rows": [
+          [
+            "Day or 24-hour unit rate",
+            "About 35c to 38c per kWh incl. VAT",
+            "Yes, for every unit you use from the panels"
+          ],
+          [
+            "Night unit rate",
+            "Lower than the day rate; set by your supplier",
+            "Rarely; panels do not generate at night"
+          ],
+          [
+            "Standing charge",
+            "About €250 a year (urban, 24-hour)",
+            "No"
+          ],
+          [
+            "PSO levy",
+            "Set each year by the CRU",
+            "No"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "How to work out your own cost per kWh"
+      },
+      {
+        "type": "paragraph",
+        "text": "Take the usage charges on your bill (the unit lines, before the standing charge and the PSO levy), divide by the kWh used, and add VAT if the bill shows it separately. That is your real cost per kWh, and it is the number each unit of solar you use at home saves you. Or [upload the bill to the analyser](/solar-calculator) and it reads the rates for you."
       },
       {
         "type": "heading",
@@ -1582,13 +1696,13 @@ export const articles: Article[] = [
   {
     "slug": "nc6-form-solar-grid-connection-ireland",
     "title": "The NC6 Form Explained: Connecting Solar to the Grid",
-    "seoTitle": "ESB NC6 Form: What It Is, Who Files It, Why It's Free",
-    "seoDescription": "The NC6 is ESB Networks' free microgeneration notification for home solar. Your installer files it, and it helps unlock Clean Export Guarantee payments.",
-    "answer": "The NC6 is ESB Networks' free microgeneration notification: the form that tells the grid operator a small solar system is connected at your home. Your installer submits it after the install, registered to your MPRN, and it costs you nothing. It is part of what lets your supplier pay you under the Clean Export Guarantee.",
+    "seoTitle": "ESB NC6 Form: How to Fill It In, Step by Step (2026)",
+    "seoDescription": "The NC6 is ESB Networks' free microgeneration form for home solar. Where to get it, how to fill it in step by step, who submits it, and NC6 vs NC7.",
+    "answer": "The NC6 is ESB Networks' free microgeneration notification: the form that tells the grid operator a small solar system is connected at your home. Your installer submits it before the system is switched on, registered to your MPRN, and it costs you nothing. It is part of what lets your supplier pay you under the Clean Export Guarantee.",
     "excerpt": "What the ESB Networks NC6 microgeneration form is, who submits it, why it is free, and how it unlocks your Clean Export Guarantee payments.",
     "category": "guides",
     "date": "5 Sep 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -1609,7 +1723,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The NC6 is the standard notification form used to tell ESB Networks that a small generator - your solar PV system - has been connected at your property. Under the Microgeneration Support Scheme, domestic systems up to a set size can connect on a notify-first basis: you tell ESB Networks the system is in, rather than applying for permission in advance. It is registered against your MPRN, the 11-digit meter point number on your electricity bill."
+        "text": "The NC6 is the standard notification form used to tell ESB Networks that a small generator - your solar PV system - has been connected at your property. Under the Microgeneration Support Scheme, domestic systems up to a set size can connect on an 'inform and fit' basis: your installer tells ESB Networks about the system before it is connected, rather than applying for a connection offer and waiting for it ([esbnetworks.ie](https://www.esbnetworks.ie/services/get-connected/renewable-connection/micro-generation)). It is registered against your MPRN, the 11-digit meter point number on your electricity bill."
       },
       {
         "type": "callout",
@@ -1625,6 +1739,65 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "Your installer does. Submitting the NC6 is [standard installer work](/blog/solar-panel-installation-process-ireland) and should be included in the job with nothing for you to fill in. It is also a useful quality marker: an installer who handles the NC6, sends SEAI the [grant completion paperwork](/blog/complete-guide-seai-solar-grant-2026) and coordinates the smart meter as a matter of course is one who does this properly. If a quote is silent on who files the NC6, ask."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Who applies for the NC6, and when?"
+      },
+      {
+        "type": "paragraph",
+        "text": "You can submit the NC6 yourself, but ESB Networks recommends your installer or electrician completes it, because it asks technical questions about the inverter and its protection settings ([esbnetworks.ie](https://www.esbnetworks.ie/customer-support/customer-support-queries/generator-connections/connect-a-micro-generator)). It goes in before the system is connected: ESB Networks does not allow a microgenerator to be connected until it has received the notification. Applications cannot be backdated, and export counts from the date ESB Networks processes yours."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Where to get the NC6 form"
+      },
+      {
+        "type": "paragraph",
+        "text": "The NC6 Notification Form is published by ESB Networks on its [micro-generation page](https://www.esbnetworks.ie/services/get-connected/renewable-connection/micro-generation). You can download it there or request a copy on 1800 372 757. ESB Networks takes it two ways:"
+      },
+      {
+        "type": "bulletList",
+        "items": [
+          "**Online**, through the Apply online link on the ESB Networks micro-generation page.",
+          "**By post**, with the inverter's type test certificate, to ESB Networks DAC, NC6 Microgen Notifications, New Connections, Sarsfield Road, Wilton, Cork, T12 E367."
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "title": "Do not email it",
+        "body": "ESB Networks says it no longer processes microgeneration applications sent by email. Use the online route or the post ([esbnetworks.ie](https://www.esbnetworks.ie/services/get-connected/renewable-connection/micro-generation))."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How to fill in the NC6 form, step by step"
+      },
+      {
+        "type": "paragraph",
+        "text": "Your installer does this for you on a Solar Ireland job. If you want to know what goes on the form, or you are checking someone else's work, this is the order it runs in. Always use the current form from esbnetworks.ie, because ESB Networks revises it."
+      },
+      {
+        "type": "numberedList",
+        "items": [
+          "**Check the system qualifies.** The NC6 covers an inverter rated up to 25 A (about 6 kVA) on a single-phase connection, or 16 A per phase (about 11 kVA) on a three-phase connection. Bigger than that and you need the NC7 instead.",
+          "**Fill in your details and the site.** Your name, the property address and Eircode, and the 11-digit [MPRN](/blog/what-is-my-mprn-number-ireland) from your electricity bill.",
+          "**Fill in the inverter.** The manufacturer, model, serial number and its rating in kVA, and whether it is single-phase or three-phase.",
+          "**Attach the type test certificate.** The inverter must comply with IS EN 50549-1 with current Irish settings, and the certificate proving it goes in with the form.",
+          "**Confirm the protection settings.** The installer confirms the inverter is set to ESB Networks' required trip settings. No deviation is allowed without ESB Networks' written permission.",
+          "**Sign the installer declaration.** The installer's name, Safe Electric registration number and contact details, signed and dated.",
+          "**Submit it before connecting**, online or by post, and keep the confirmation.",
+          "**Wait for your Maximum Export Capacity.** ESB Networks issues it within 20 working days of a complete form. Then your supplier can register you for export payments."
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "title": "Check the MPRN twice",
+        "body": "You cannot amend a submitted NC6: ESB Networks asks you to cancel it and send a corrected one, which restarts the clock. The MPRN and the type test certificate are the two details worth checking before it goes."
       },
       {
         "type": "heading",
@@ -1676,12 +1849,51 @@ export const articles: Article[] = [
       },
       {
         "type": "heading",
+        "level": 3,
+        "text": "NC6 vs NC7 at a glance"
+      },
+      {
+        "type": "paragraph",
+        "text": "The NC7 is ESB Networks' application for mini-generation: inverter-connected generators up to 17 kVA single-phase or 50 kVA three-phase ([esbnetworks.ie](https://www.esbnetworks.ie/services/get-connected/renewable-connection/mini-generation)). Unlike the NC6 it carries an application fee, ESB Networks issues a connection offer that you accept before connecting, and the installer sends an installation confirmation certificate once the work is done."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "",
+          "NC6 (micro-generation)",
+          "NC7 (mini-generation)"
+        ],
+        "rows": [
+          [
+            "Size",
+            "Up to 25 A single-phase (about 6 kVA) or 16 A per phase three-phase (about 11 kVA)",
+            "Up to 17 kVA single-phase or 50 kVA three-phase"
+          ],
+          [
+            "Process",
+            "Inform and fit: notify before connecting",
+            "Apply, receive a connection offer, accept it"
+          ],
+          [
+            "Fee",
+            "None",
+            "Application fee applies"
+          ],
+          [
+            "Typical user",
+            "A home or small business",
+            "Larger homes, farms and businesses"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
         "level": 2,
         "text": "How long does ESB Networks take to process an NC6?"
       },
       {
         "type": "paragraph",
-        "text": "Processing an NC6 notification typically takes a few weeks, though timelines vary with demand. The good news is that the NC6 does not hold up your installation - the panels are fitted and generating for your own use straight away. What the NC6 and your smart meter unlock is the export side: getting credited for surplus electricity you send back to the grid."
+        "text": "ESB Networks says it issues your Maximum Export Capacity within 20 working days of a complete, correct NC6, and longer if it has to go back to your installer for details ([esbnetworks.ie](https://www.esbnetworks.ie/customer-support/customer-support-queries/generator-connections/connect-a-micro-generator)). A good installer files it when the job is booked, so the NC6 does not hold up your installation. What the NC6 and your smart meter unlock is the export side: getting credited for surplus electricity you send back to the grid."
       },
       {
         "type": "heading",
@@ -1736,6 +1948,15 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 3,
+        "text": "Can I download the NC6 form and fill it in myself?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Yes. ESB Networks publishes the form on esbnetworks.ie and lets a homeowner submit it, but it recommends the installer completes it because of the technical questions on the inverter and protection settings. On every Solar Ireland install we file it for you."
+      },
+      {
+        "type": "heading",
+        "level": 3,
         "text": "What happens to the NC6 if I move house?"
       },
       {
@@ -1762,7 +1983,7 @@ export const articles: Article[] = [
     "excerpt": "How many panels a typical 3-bed semi needs, what a 10-panel system costs after the €1,800 grant, and a worked savings example from the bill.",
     "category": "savings",
     "date": "5 Sep 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -1950,6 +2171,10 @@ export const articles: Article[] = [
         "text": "Send us a recent bill. Our analysis reads your actual usage and day/night split and returns a system size and saving tailored to your home, rather than the typical figures above."
       },
       {
+        "type": "paragraph",
+        "text": "To price a different size or your own usage, the [solar panel cost calculator](/solar-calculator) reads your bill and shows the system, the cost after the grant and the payback. For the wider verdict beyond a semi, see [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026)."
+      },
+      {
         "type": "divider"
       },
       {
@@ -2115,12 +2340,12 @@ export const articles: Article[] = [
     "slug": "complete-guide-seai-solar-grant-2026",
     "title": "The Complete Guide to the SEAI Solar Grant in 2026",
     "seoTitle": "SEAI Solar Grant 2026: €1,800 + €600 Battery. How to Apply",
-    "seoDescription": "€1,800 for panels, €600 more for a 5 kWh+ battery. Who qualifies, how to apply before work starts, the post-works BER step and when SEAI pays you back.",
+    "seoDescription": "SEAI solar grant 2026: €1,800 for panels and €600 for a battery. A tick-box eligibility checklist, the grant process in order, and how long payment takes.",
     "answer": "The SEAI solar grant in 2026 is up to €1,800 for solar panels, the full amount at 4 kWp or more, plus a flat €600 for a battery of 5 kWh or more, so €2,400 at most. Your home must be built and occupied before 2025. Apply online and get SEAI's letter of offer before any work starts.",
     "excerpt": "Everything you need to know about the €1,800 SEAI solar panel grant - eligibility, how to apply, timelines, and how to maximise your savings with the Clean Export Guarantee.",
     "category": "grants",
     "date": "15 Apr 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "12 min read",
     "featured": true,
     "author": "Cal Chesters",
@@ -2173,6 +2398,62 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "There is no means testing for this grant - it is available regardless of your income level. Whether you own a detached house in Dublin, a semi-detached home in Cork, or a bungalow in rural Donegal, you can apply provided you meet the criteria above."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "SEAI solar grant eligibility checklist"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tick every line and you can apply. Miss one and SEAI will not pay ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/solar-electricity-grant))."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Check",
+          "You qualify if"
+        ],
+        "rows": [
+          [
+            "Age of the home",
+            "It was built and occupied before 2025"
+          ],
+          [
+            "Who applies",
+            "The homeowner, including a private landlord"
+          ],
+          [
+            "Previous grant",
+            "No solar PV grant has been paid at this MPRN before"
+          ],
+          [
+            "MPRN",
+            "You have the 11-digit MPRN from your electricity bill"
+          ],
+          [
+            "Installer",
+            "Your company is on SEAI's register and is named on the application"
+          ],
+          [
+            "Timing",
+            "SEAI's grant offer is in place before any work starts"
+          ],
+          [
+            "After the install",
+            "A post-works BER is published for the home"
+          ],
+          [
+            "Battery (optional)",
+            "The battery is 5 kWh or more, for the extra €600"
+          ]
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "title": "No BER minimum, no means test",
+        "body": "You do not need a particular BER grade to qualify, only a post-works BER after the install, and there is no income test for the standard grant."
       },
       {
         "type": "heading",
@@ -2263,6 +2544,69 @@ export const articles: Article[] = [
           "After installation, your installer sends SEAI the completion paperwork, and we book your post-works BER assessment with a registered BER assessor.",
           "Receive your grant payment into your bank account. SEAI says to allow 4 to 6 weeks once it has all the completion paperwork, including the post-works BER, and longer if your home is selected for an inspection."
         ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Solar PV grant process and timing"
+      },
+      {
+        "type": "paragraph",
+        "text": "How long each stage takes, from your application to the money arriving. The deadlines come from SEAI ([seai.ie](https://www.seai.ie/grants/home-energy-grants/individual-grants/apply-now)); the install days are ours."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Stage",
+          "Who does it",
+          "How long"
+        ],
+        "rows": [
+          [
+            "1. Apply online, naming your registered installer",
+            "You, with our help",
+            "Before any work starts"
+          ],
+          [
+            "2. SEAI issues the grant offer",
+            "SEAI",
+            "Varies; do not start work before it arrives"
+          ],
+          [
+            "3. Accept the offer",
+            "You",
+            "Within 30 days, or you re-apply"
+          ],
+          [
+            "4. NC6 notification to ESB Networks",
+            "Your installer",
+            "Filed when the job is booked"
+          ],
+          [
+            "5. Installation",
+            "Your installer",
+            "Usually 1 to 2 days on the roof"
+          ],
+          [
+            "6. Post-works BER and completion paperwork",
+            "We book the BER; the installer sends SEAI the paperwork",
+            "Soon after the install"
+          ],
+          [
+            "7. Works and paperwork complete",
+            "Everyone",
+            "Within 8 months of the grant offer"
+          ],
+          [
+            "8. Grant paid into your nominated account",
+            "SEAI",
+            "Allow 4 to 6 weeks once SEAI has everything"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "The 8 months is the hard edge. Check the expiry date on your own letter of offer, and book the install well inside it."
       },
       {
         "type": "heading",
@@ -2385,7 +2729,7 @@ export const articles: Article[] = [
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "8 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -2457,6 +2801,10 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "For the average Irish household using about 4,200 kWh a year (the CRU typical figure), our savings engine sizes the system at 4 kWp, about 10 panels. That is also the domestic floor: 4 kWp is exactly where the SEAI grant reaches its full €1,800, and below it the fixed costs barely move while the generation and the grant fall away. A 6kWp system suits bigger households and homes with an EV or a heat pump. Count panels in 440W units: the [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland) has the sizing by household, and the [free solar calculator](/solar-calculator) sizes yours from your bill."
+      },
+      {
+        "type": "paragraph",
+        "text": "The prices above are for typical systems. Our [solar panel cost calculator](/solar-calculator) sizes the system from your own electricity bill and shows its price, the grant, the cost after the grant and the payback in one go."
       },
       {
         "type": "heading",
@@ -2599,8 +2947,8 @@ export const articles: Article[] = [
   {
     "slug": "solar-panels-in-winter-do-they-work",
     "title": "Solar Panels in Winter: Do They Actually Work?",
-    "seoTitle": "Do Solar Panels Work in Winter? Yes, Even in December",
-    "seoDescription": "Yes. Panels run on daylight, not heat. A 6 kWp roof in Ireland still makes 120 to 220 kWh in December. Month-by-month figures for an Irish roof.",
+    "seoTitle": "Do Solar Panels Work in Winter? Irish Output Month by Month",
+    "seoDescription": "What an Irish solar roof makes in December against June, month by month, why cold weather helps the panels, and how summer export carries winter bills.",
     "answer": "Yes. Solar panels run on daylight, not heat, so they keep generating through an Irish winter, just less. A typical 6kWp system still makes about 120 to 220 kWh in December, roughly a fifth of its best summer month, and cold weather actually helps panel efficiency. Summer surplus and export payments carry the year.",
     "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 20-35% of their peak-month output during the darker months.",
     "category": "guides",
@@ -2809,7 +3157,7 @@ export const articles: Article[] = [
     "excerpt": "The Clean Export Guarantee (CEG) allows you to sell surplus solar electricity back to the grid. Here's how it works, what you'll earn, and how supplier export rates are set.",
     "category": "grants",
     "date": "4 Apr 2026",
-    "updated": "9 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "7 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-amber-400/10",
@@ -2857,6 +3205,48 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "The system is entirely automated - you do not need to do anything to export power. Whenever your panels are generating more than your home is consuming, the excess flows out to the grid automatically. Your smart meter tracks this in real time."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What is the CEG payment on my electricity bill?"
+      },
+      {
+        "type": "paragraph",
+        "text": "The CEG payment is the credit your supplier gives you for the solar electricity your home sent to the grid in that billing period. It appears as a credit line, usually near the bottom of the charges, and it reduces what you owe. Suppliers name it differently: export credit, microgeneration export, CEG payment or Clean Export Guarantee. The line shows the kWh exported, the rate per kWh and the amount credited."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Line on a two-month summer bill (illustrative)",
+          "kWh",
+          "Rate",
+          "Amount"
+        ],
+        "rows": [
+          [
+            "Day units used",
+            "700",
+            "€0.35",
+            "€245.00"
+          ],
+          [
+            "Standing charge, 61 days",
+            "",
+            "",
+            "€41.78"
+          ],
+          [
+            "Clean Export Guarantee credit",
+            "640",
+            "€0.18",
+            "€115.20 CR"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "The figures are illustrative. The 640 kWh is about what our savings engine has a 4 kWp home with no battery exporting across May and June, at our 18c estimate rate; your supplier sets its own rate. The first €400 of export income each year is tax-free. If no export line appears after your system is live, check three things: that you have a smart meter, that ESB Networks has processed your [NC6](/blog/nc6-form-solar-grid-connection-ireland), and that your supplier has put you on its export tariff."
       },
       {
         "type": "heading",
@@ -4400,14 +4790,14 @@ export const articles: Article[] = [
   {
     "slug": "smart-meter-required-solar-panels-ireland",
     "title": "Is a Smart Meter Required for Solar Panels in Ireland?",
-    "seoTitle": "Do You Need a Smart Meter for Solar Panels? Not to Generate",
-    "seoDescription": "Your panels work without one. A smart meter records the exact kWh you export so your supplier can pay you under the Clean Export Guarantee. How to get one.",
+    "seoTitle": "Do You Need a Smart Meter for Solar Panels in Ireland?",
+    "seoDescription": "What a smart meter does for a solar home in Ireland, whether smart meters are compulsory, which meter you need to be paid for export, and how to get one.",
     "answer": "No, not to generate. Solar panels work and cut your bill from day one without a smart meter. You need one to be paid for the electricity you export under the Clean Export Guarantee, because it records exactly how many kWh you send to the grid. ESB Networks fits them, and most Irish homes already have one.",
     "image": "/blog/smart-meter-required-solar-panels-ireland.webp",
     "excerpt": "A smart meter is essential if you want to earn money from your excess solar through the Clean Export Guarantee. Here is how to check if you have one and how to get one installed for free.",
     "category": "guides",
     "date": "14 Apr 2026",
-    "updated": "10 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-sky-400/10",
@@ -4485,6 +4875,67 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "The timing depends on ESB Networks' schedule in your area. It does not hold up your installation: your panels generate and cut your bill from day one, and export payments start once the meter is in, ESB Networks has your [NC6 notification](/blog/nc6-form-solar-grid-connection-ireland) and your supplier has registered you. Requesting it when you book your installation is plenty early."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Are smart meters compulsory in Ireland?"
+      },
+      {
+        "type": "paragraph",
+        "text": "ESB Networks is replacing every electricity meter in the country under the National Smart Metering Programme, and the CRU notes that old analogue meters are no longer available to install, so a faulty one is replaced with a smart meter ([cru.ie](https://www.cru.ie/consumer-information/consumer-case-studies/customer-seeking-smart-meter-removal/)). Some households told ESB Networks they did not want one when it called, and ESB Networks records that choice. In one published case the CRU did not uphold a request to remove a fitted meter, because the household had not told ESB Networks beforehand."
+      },
+      {
+        "type": "paragraph",
+        "text": "For a solar home the practical answer is different: you need one to be paid. Under the CRU's eligibility rules, if your home is eligible for a smart meter you need one to be paid for the electricity you export, and you lose deemed export payments if you refuse it ([esbnetworks.ie](https://www.esbnetworks.ie/customer-support/customer-support-queries/generator-connections/connecting-mini-generator/details/mini-generator/i-am-eligible-to-have-a-smart-meter-but-i-do-not-want-a-smart-meter-can-i-still-get-paid-for-my-export)). If you turned one down before, contact ESB Networks or your supplier and ask for it to be fitted."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Which meter does a solar home need?"
+      },
+      {
+        "type": "paragraph",
+        "text": "One meter: the ESB Networks smart meter on your house. It records the electricity you import and the electricity you export separately, every half hour, and your supplier pays your export from those readings. ESB Networks owns and fits it, free."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Meter",
+          "Who supplies it",
+          "What it measures",
+          "Do you need it?"
+        ],
+        "rows": [
+          [
+            "Smart meter",
+            "ESB Networks, free",
+            "Import and export, every half hour",
+            "Yes, to be paid for export"
+          ],
+          [
+            "Old analogue or digital meter",
+            "ESB Networks (being replaced)",
+            "Import only",
+            "No; it cannot record export separately"
+          ],
+          [
+            "Inverter monitoring",
+            "Comes with the inverter",
+            "What the panels generate",
+            "Already included; nothing extra to buy"
+          ],
+          [
+            "Separate generation meter",
+            "Not required",
+            "Generation",
+            "No, not for a domestic system"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "You do not need to buy a separate solar meter. Your inverter's app shows what the panels generate, and the smart meter shows what crosses the grid. ESB Networks aims to fit a smart meter within four months of processing a valid [NC6 notification](/blog/nc6-form-solar-grid-connection-ireland), and export before then is not paid ([esbnetworks.ie](https://www.esbnetworks.ie/customer-support/customer-support-queries/generator-connections/connect-a-micro-generator))."
       },
       {
         "type": "heading",
@@ -5435,6 +5886,7 @@ export const articles: Article[] = [
     "excerpt": "Winter bills are when people think about solar, and December is when panels make least. How the summer pays for the winter, month by month, and why the panels going on Irish roofs now are bigger than they were.",
     "category": "savings",
     "date": "13 Nov 2026",
+    "updated": "15 Nov 2026",
     "readTime": "6 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
@@ -5668,6 +6120,10 @@ export const articles: Article[] = [
       {
         "type": "paragraph",
         "text": "Yes. Exports are credited under the Clean Export Guarantee at a rate your supplier sets, and you need a smart meter to be paid for them."
+      },
+      {
+        "type": "paragraph",
+        "text": "For the full cost, saving and payback picture across the year, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026)."
       },
       {
         "type": "heading",

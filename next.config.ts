@@ -120,6 +120,23 @@ const nextConfig: NextConfig = {
       // so the URL is answered instead: a permanent redirect home.
       { source: "/$", destination: "/", permanent: true },
       { source: "/%24", destination: "/", permanent: true },
+      // Malformed blog slugs with Search Console impressions (15 Nov 2026),
+      // some of them in the AI-features report, so AI answers cite them.
+      // Each was curled and returned 404 on live before it was added here;
+      // each target is a real post (one hop, no chains).
+      ...[
+        ["do-solar-rating-ireland", "do-solar-panels-improve-ber-rating-ireland"],
+        ["do-solar-improve-ber-rating-ireland", "do-solar-panels-improve-ber-rating-ireland"],
+        ["east-vs-south-vs-west", "east-vs-south-vs-west-facing-roofs-solar"],
+        ["east-vs-south-facing-roofs-solar", "east-vs-south-vs-west-facing-roofs-solar"],
+        ["east-vs-south-west-facing-roofs-solar", "east-vs-south-vs-west-facing-roofs-solar"],
+        ["solar-panels-do-they-work", "solar-panels-in-winter-do-they-work"],
+        ["solar-rental-property-landlord-guide", "solar-panels-rental-property-landlord-guide"],
+      ].map(([from, to]) => ({
+        source: `/blog/${from}`,
+        destination: `/blog/${to}`,
+        permanent: true,
+      })),
     ];
   },
 

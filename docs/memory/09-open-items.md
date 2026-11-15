@@ -184,3 +184,9 @@ The site used to state the net-of-grant version as fact in seven places, includi
 - `bun run db:push` is a no-op echo stub.
 - Five dormant edge functions in `supabase/functions/` that nothing calls. Harmless, but see the truth rule in [07](07-content-seo-and-truth.md): their existence is not a WhatsApp capability.
 - The 23 blog article bodies were not re-swept for stale figures in the 7 Sep pass.
+
+---
+
+## SEO watch (15 Nov 2026)
+
+Search Console actions 1 to 9 applied: new sections on the NC6, worth-it, smart meter, SEAI grant, bill and CEG posts, a cost-calculator section on /solar-calculator, four title and six meta rewrites, seven 308 redirects. Old and new values for every one are in [`docs/seo-change-log.md`](../seo-change-log.md). Re-pull CTR and position in two to four weeks and revert any title that loses ground. Action 10 (Dublin guide, /financing as a loans guide) waits for the November core update to settle.

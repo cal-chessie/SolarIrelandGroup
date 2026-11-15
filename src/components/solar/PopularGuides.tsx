@@ -13,6 +13,9 @@ const POPULAR = [
   'east-vs-south-vs-west-facing-roofs-solar',
   'smart-meter-required-solar-panels-ireland',
   'longi-vs-jinko-vs-trina-best-solar-panels',
+  // 15 Nov 2026: Search Console showed Google ranking the add-value post for
+  // "are solar panels worth it ireland"; a home link points it at the real answer.
+  'are-solar-panels-worth-it-ireland-2026',
 ];
 
 export default function PopularGuides() {

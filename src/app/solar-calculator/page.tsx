@@ -5,9 +5,9 @@ import SolarCalculatorClient from './SolarCalculatorClient';
 const CALC_URL = 'https://solarirelandgroup.ie/solar-calculator';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Solar Panel Calculator Ireland: Savings From Your Bill' },
+  title: { absolute: 'Solar Panel Cost Calculator Ireland: Savings From Your Bill' },
   description:
-    'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
+    'Upload an Irish electricity bill and see the system size, its cost after the €1,800 SEAI grant, your yearly savings and the payback. Free to use.',
   alternates: {
     canonical: CALC_URL,
     languages: {
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Solar Panel Calculator Ireland: Savings From Your Bill',
+    title: 'Solar Panel Cost Calculator Ireland: Savings From Your Bill',
     description:
-      'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
+      'Upload an Irish electricity bill and see the system size, its cost after the €1,800 SEAI grant, your yearly savings and the payback. Free to use.',
     url: CALC_URL,
     type: 'website',
     locale: 'en_IE',
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Panel Calculator Ireland: Savings From Your Bill',
+    title: 'Solar Panel Cost Calculator Ireland: Savings From Your Bill',
     description:
-      'Upload an Irish electricity bill and see the system size, yearly savings and payback it points to, with the €1,800 SEAI grant built in. Free to use.',
+      'Upload an Irish electricity bill and see the system size, its cost after the €1,800 SEAI grant, your yearly savings and the payback. Free to use.',
     images: ['/installs/solar-ireland-group-family-home-roof.jpg'],
   },
   robots: {

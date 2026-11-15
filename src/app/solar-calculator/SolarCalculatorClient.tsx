@@ -17,7 +17,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
-import { ENERGY, DOMESTIC_MIN_KWP } from '@/lib/estimate';
+import { ENERGY, DOMESTIC_MIN_KWP, installCostEur, seaiGrant } from '@/lib/estimate';
 
 const BillAnalyser = dynamic(() => import('@/components/solar/BillAnalyser'), {
   loading: () => (
@@ -237,6 +237,84 @@ function DataTransparency() {
 }
 
 
+/**
+ * Indexable copy for "solar panel cost calculator" searches (Search Console,
+ * 15 Nov 2026: the page sat at about 72 for calculator queries while a blog
+ * post caught them). Below the fold, server-rendered, plain text and a table:
+ * nothing here moves the analyser or adds weight to the first screen. Every
+ * price is read from the engine, never typed.
+ */
+function CostCalculatorExplainer() {
+  // Fixed locale so the server and the browser print the same string.
+  const eur = (n: number) => '€' + Math.round(n).toLocaleString('en-IE');
+  const sizes = [4, 5, 6, 8];
+  const rows = sizes.map((kwp) => {
+    const cost = installCostEur(kwp);
+    const grant = seaiGrant(kwp);
+    return { kwp, cost, grant, net: cost - grant };
+  });
+  return (
+    <section aria-labelledby="cost-calculator" className="py-20 px-4 bg-[#0a0a0a] border-t border-white/[0.04]">
+      <div className="max-w-3xl lg:max-w-5xl mx-auto">
+        <h2 id="cost-calculator" className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 lg:leading-tight">
+          A solar panel cost calculator built on <span className="text-gradient">your own bill</span>
+        </h2>
+        <div className="space-y-4 text-gray-400 text-base lg:text-lg leading-relaxed">
+          <p>
+            This solar panel cost calculator starts from your electricity bill, not a national average. It reads
+            how many kWh you use and, where the bill shows it, your day and night split, then sizes a system for your house, prices it, takes off the SEAI grant
+            and works out the yearly saving and the payback.
+          </p>
+          <p>
+            The prices are Solar Ireland&apos;s own installed prices for a panels-only system, with VAT at 0%.
+            The grant is SEAI&apos;s: {SOLAR_DATA.grant.label} at {DOMESTIC_MIN_KWP} kWp or more. A battery is
+            left out on purpose; it is sized and priced at your survey, and a battery of 5 kWh or more earns a
+            further €600 from SEAI.
+          </p>
+        </div>
+        <div className="mt-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <caption className="sr-only">Solar panel cost in Ireland by system size, before and after the SEAI grant</caption>
+              <thead>
+                <tr className="border-b border-white/[0.06]">
+                  <th scope="col" className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">System</th>
+                  <th scope="col" className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Installed</th>
+                  <th scope="col" className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">SEAI grant</th>
+                  <th scope="col" className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">After grant</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={r.kwp} className={i < rows.length - 1 ? 'border-b border-white/[0.04]' : ''}>
+                    <td className="px-6 py-4 text-sm lg:text-base text-gray-300 font-medium">{r.kwp} kWp</td>
+                    <td className="px-6 py-4 text-sm lg:text-base text-gray-300">{eur(r.cost)}</td>
+                    <td className="px-6 py-4 text-sm lg:text-base text-gray-300">{eur(r.grant)}</td>
+                    <td className="px-6 py-4 text-sm lg:text-base text-amber-400 font-bold">{eur(r.net)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p className="mt-6 text-gray-400 text-base lg:text-lg leading-relaxed">
+          The table is the starting point. Your own figure comes from your bill, because two homes with the same
+          roof can need different systems. For the full price breakdown, read{' '}
+          <a href="/blog/how-much-do-solar-panels-cost-ireland-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
+            how much solar panels cost in Ireland
+          </a>
+          , or see whether{' '}
+          <a href="/blog/are-solar-panels-worth-it-ireland-2026" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
+            solar panels are worth it in Ireland
+          </a>{' '}
+          for a typical home.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
 function FinalCTA() {
   return (
     <section className="py-20 px-4 bg-[#0a0a0a]">
@@ -279,6 +357,7 @@ export default function SolarCalculatorClient() {
         <TrustBadges />
         <CalculatorExplainer />
         <DataTransparency />
+        <CostCalculatorExplainer />
         <FAQIsland />
         <FinalCTA />
       </main>
