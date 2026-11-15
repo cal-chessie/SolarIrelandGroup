@@ -6002,7 +6002,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "We keep those numbers careful. They assume 35c a unit for the power you'd otherwise buy, 18c a unit for what you export, a good south-facing roof, and a bit over a third of your solar power used at home. The standing charge stays whatever you do. And most of that saving comes between April and September."
+        "text": "We keep those numbers on the cautious side. They assume 35c a unit for the power you'd otherwise buy, 18c a unit for what you export, a good south-facing roof, and a bit over a third of your solar power used at home. The standing charge stays whatever you do. And most of that saving comes between April and September."
       },
       {
         "type": "heading",
@@ -6040,7 +6040,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "In summer a battery does more. It holds the midday surplus for the evening, so you use more of your own power and send less to the grid. SEAI adds €600 to the grant for a battery of 5 kWh or more, and there's no VAT on a battery fitted at the same time as the panels."
+        "text": "In summer a battery does more. It holds the midday surplus for the evening, so you use more of your own power and send less to the grid. SEAI adds €600 to the grant for a battery of 5 kWh or more."
       },
       {
         "type": "heading",
@@ -6049,7 +6049,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Most Irish homes now have a smart meter. It records what you use and what you send out in half-hour slots,."
+        "text": "Most Irish homes now have a smart meter. It records what you use and what you send out in half-hour slots."
       },
       {
         "type": "paragraph",
