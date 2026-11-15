@@ -354,6 +354,12 @@ Every practice this playbook uses or rejects, against the Google policy text it 
 
 ---
 
+## 15. Copy on county pages follows the content standard
+
+All county page copy follows `docs/content-standard.md` (on main, agreed by Cal on 15 Nov 2026): Cal's voice from his own voice notes, facts from the engine or dated official sources, each point once, the banned list, questions under an H2 named exactly "Frequently asked questions", the change rules by ranking position, and the growth ledger for measurement (one kind of change per page, then 4 weeks). The HARD RULES at the top of this playbook still come first.
+
+---
+
 ## Appendix: research and evidence (merged 14 Nov 2026)
 
 This is the full research behind the HARD RULES, the Build SOP and the policy cross-check. It lives here so no session can miss it. Sources are SEO and marketing authorities and Google Search Central only; never study rival installers.
