@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, type ComponentType } from 'react';
+import { useState, useEffect, useCallback, type ComponentType, type MouseEvent } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { onPage, savingsHref } from './navLinks';
+import { isPlainClick, onPage, savingsHref } from './navLinks';
 import type { MobileMenuProps } from './NavbarMobileMenu';
 
 // Desktop nav - all 7 links with proper styling
@@ -97,19 +97,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navigateTo = (href: string) => {
-    if (href.startsWith('/') && !href.startsWith('/#')) {
-      window.location.href = href;
-    } else if (href.startsWith('/#')) {
-      const hash = href.slice(2);
-      if (window.location.pathname === '/') {
-        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.location.href = href;
-      }
-    } else if (href.startsWith('#')) {
-      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-    }
+  // The links navigate as plain documents (full load, as the old
+  // window.location.href did: GA's page_location is set once per load). On
+  // the homepage a link whose target is a section there scrolls to it instead.
+  const scrollOnHome = (e: MouseEvent<HTMLAnchorElement>, target: string) => {
+    if (pathname !== '/' || !target.startsWith('/#') || !isPlainClick(e)) return;
+    const el = document.getElementById(target.slice(2));
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -132,11 +128,12 @@ export default function Navbar() {
       >
         <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] xl:h-20 flex items-center justify-between gap-4 xl:gap-8">
           {/* Logo */}
-          <button
-            onClick={() => {
-              if (pathname !== '/') {
-                window.location.href = '/';
-              } else {
+          <a
+            href="/"
+            aria-label="Solar Ireland Group home"
+            onClick={(e) => {
+              if (pathname === '/' && isPlainClick(e)) {
+                e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }
             }}
@@ -163,7 +160,7 @@ export default function Navbar() {
             <span className="font-bold text-white hidden sm:inline text-lg xl:text-2xl tracking-wide">
               Solar Ireland Group
             </span>
-          </button>
+          </a>
 
           {/* Desktop nav - 7 links */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-8">
@@ -172,9 +169,14 @@ export default function Navbar() {
               // (Section anchors are the phone menu's, see NavbarMobileMenu.)
               const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
               return (
-                <button
+                // href is always the real page, so every page links it for
+                // crawlers. On the homepage Calculator still scrolls to the
+                // analyser there (onPage, DECISIONS.md R6).
+                <a
                   key={link.label}
-                  onClick={() => navigateTo(link.isBookSurvey ? savingsHref(pathname) : onPage(pathname, link.href))}
+                  href={link.isBookSurvey ? savingsHref(pathname) : link.href}
+                  onClick={(e) => scrollOnHome(e, link.isBookSurvey ? savingsHref(pathname) : onPage(pathname, link.href))}
+                  aria-current={isActive ? 'page' : undefined}
                   className={`text-xs font-medium uppercase tracking-wider transition-colors relative py-1 whitespace-nowrap ${
                     link.isBookSurvey
                       ? 'text-green-400 font-semibold'
@@ -195,7 +197,7 @@ export default function Navbar() {
                   {link.href === '/portal' && (
                     <span className="absolute -bottom-1 left-0 right-0 h-px bg-sky-400/60 transition-all duration-300" />
                   )}
-                </button>
+                </a>
               );
             })}
           </div>
@@ -204,12 +206,13 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {/* The row needs ~1100px but the desktop nav starts at 1024, which
                 clipped the survey CTA. The secondary CTA waits for xl. */}
-            <button
-              onClick={() => navigateTo(savingsHref(pathname))}
+            <a
+              href={savingsHref(pathname)}
+              onClick={(e) => scrollOnHome(e, savingsHref(pathname))}
               className="bg-green-400 hover:bg-green-300 text-black font-bold text-xs px-5 py-2 xl:py-2.5 rounded-full uppercase tracking-wider active:scale-95 transition-all shadow-lg shadow-green-400/10 hover:shadow-green-400/20 whitespace-nowrap"
             >
               Check my savings
-            </button>
+            </a>
           </div>
 
           {/* Hamburger */}

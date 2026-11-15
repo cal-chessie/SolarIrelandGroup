@@ -22,7 +22,7 @@ import {
   CalendarCheck,
   CreditCard,
 } from 'lucide-react';
-import { onPage, savingsHref } from './navLinks';
+import { isPlainClick, onPage, savingsHref } from './navLinks';
 
 /**
  * The phone menu panel (perf, 13 Nov 2026). Split out of Navbar.tsx and
@@ -275,11 +275,20 @@ export default function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProp
             {mobileLinks.map((link, i) => {
               const Icon = link.icon;
               const linkActive = isActive(link.href);
+              const target = link.href === '/book-survey' ? savingsHref(pathname) : onPage(pathname, link.href);
 
+              // Real links (15 Nov 2026). A plain tap closes the panel first,
+              // then navigates or scrolls, exactly as the buttons did.
               return (
-                <button
+                <a
                   key={link.label}
-                  onClick={() => navigateTo(link.href === '/book-survey' ? savingsHref(pathname) : onPage(pathname, link.href))}
+                  href={target}
+                  aria-current={linkActive && !target.includes('#') ? 'page' : undefined}
+                  onClick={(e) => {
+                    if (!isPlainClick(e)) return;
+                    e.preventDefault();
+                    navigateTo(target);
+                  }}
                   style={{
                     transitionDelay: isOpen ? `${50 + i * 30}ms` : '0ms',
                   }}
@@ -340,7 +349,7 @@ export default function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProp
                         : 'text-gray-400 -translate-x-1 group-hover:translate-x-0 group-hover:text-gray-300'
                     }`}
                   />
-                </button>
+                </a>
               );
             })}
           </div>
@@ -354,14 +363,19 @@ export default function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProp
             }`}
             style={{ transitionDelay: isOpen ? '400ms' : '0ms' }}
           >
-            <button
-              onClick={() => navigateTo(savingsHref(pathname))}
+            <a
+              href={savingsHref(pathname)}
+              onClick={(e) => {
+                if (!isPlainClick(e)) return;
+                e.preventDefault();
+                navigateTo(savingsHref(pathname));
+              }}
               className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-sm active:scale-[0.98] transition-transform shadow-lg shadow-green-400/15"
             >
               <CalendarCheck className="w-4 h-4" />
               Check my savings
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
 
             <div className="flex items-center gap-2 mt-3">
               <a
