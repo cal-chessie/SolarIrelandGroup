@@ -5854,8 +5854,8 @@ export const articles: Article[] = [
     "title": "High Bills This Winter? How Solar Works Across the Whole Year",
     "seoTitle": "High Winter Bills? Irish Solar Makes Nearly 5x More in June",
     "seoDescription": "A 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. How summer output and export credit carry winter bills, and the €2,400 grant.",
-    "answer": "Solar makes least when bills are highest: a 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. It pays across the year instead. Summer power you use at home, plus export credit under the Clean Export Guarantee, carries the winter months, and SEAI grants of up to €2,400 cut the cost.",
-    "excerpt": "Winter bills are when people think about solar, and December is when panels make least. How the summer pays for the winter, month by month.",
+    "answer": "Solar makes about 110 kWh in December and 517 kWh in June on a typical 4 kWp Irish system. It takes about €195 off your bills from November to February; most of the year's saving, about €920 in all, comes from April to September through power you use and export payments under the Clean Export Guarantee.",
+    "excerpt": "What a 4 kWp system makes each month, what that's worth on your winter bills, and why most of the saving comes in summer.",
     "category": "savings",
     "date": "13 Nov 2026",
     "updated": "15 Nov 2026",
@@ -5870,160 +5870,167 @@ export const articles: Article[] = [
         "text": "If your bills are climbing this winter, you might be wondering whether solar would help. Here's the honest answer, month by month."
       },
       {
-        "type": "paragraph",
-        "text": "A bit, in winter. Solar's real work happens in summer, and that's what pays for your winter."
-      },
-      {
         "type": "heading",
         "level": 2,
-        "text": "What a typical 4 kWp system makes in Ireland"
+        "text": "What 4 kWp of panels makes, and what it's worth"
       },
       {
         "type": "paragraph",
-        "text": "A 4 kWp system is about nine panels. It's the size most Irish homes start with, and the size SEAI's full panel grant is built around. On a good south-facing roof it makes about 3,800 kWh a year, spread across the months like this."
+        "text": "A 4 kWp system is about nine panels, the size most Irish homes start with. On a good south-facing roof it makes about 3,800 kWh a year. A typical Irish home uses about 4,200 kWh a year, or 350 kWh in an average month."
       },
       {
         "type": "table",
         "headers": [
           "Month",
-          "Approx. generation, 4 kWp"
+          "Panels make",
+          "Against an average month's use (350 kWh)",
+          "Worth, if you used it all at 35c"
         ],
         "rows": [
           [
             "January",
-            "125 kWh"
+            "125 kWh",
+            "about a third",
+            "€44"
           ],
           [
             "February",
-            "182 kWh"
+            "182 kWh",
+            "about half",
+            "€64"
           ],
           [
             "March",
-            "315 kWh"
+            "315 kWh",
+            "nine tenths",
+            "€110"
           ],
           [
             "April",
-            "422 kWh"
+            "422 kWh",
+            "more than you use",
+            "€148"
           ],
           [
             "May",
-            "505 kWh"
+            "505 kWh",
+            "more than you use",
+            "€177"
           ],
           [
             "June",
-            "517 kWh"
+            "517 kWh",
+            "half as much again",
+            "€181"
           ],
           [
             "July",
-            "494 kWh"
+            "494 kWh",
+            "more than you use",
+            "€173"
           ],
           [
             "August",
-            "426 kWh"
+            "426 kWh",
+            "more than you use",
+            "€149"
           ],
           [
             "September",
-            "334 kWh"
+            "334 kWh",
+            "nearly all of it",
+            "€117"
           ],
           [
             "October",
-            "228 kWh"
+            "228 kWh",
+            "about two thirds",
+            "€80"
           ],
           [
             "November",
-            "141 kWh"
+            "141 kWh",
+            "about two fifths",
+            "€49"
           ],
           [
             "December",
-            "110 kWh"
+            "110 kWh",
+            "under a third",
+            "€39"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "June makes nearly five times what December makes. May to August gives you about 1,940 kWh. November to February, about 560."
+        "text": "Two things jump out. December makes €39 worth of power and June makes €181, nearly five times as much. And from April to August the panels make more than an average home uses, so a share of that goes out to the grid instead of into your house."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Why winter is weak"
+        "text": "So what happens to your winter bill?"
       },
       {
         "type": "paragraph",
-        "text": "Short days and a low sun. It's not the cold. Panels actually like the cold, so a bright frosty morning is good solar weather. It's the grey, short days that cost you."
+        "text": "From November to February the panels make about 560 kWh in total. Nearly all of it gets used in the house, because there's never a surplus in winter. At 35c a unit that's about €195 off your winter bills, spread over four months."
       },
       {
         "type": "paragraph",
-        "text": "In December the sun comes up late, goes down around four and barely clears the houses across the road. In June it's up before five in the morning and still out after nine at night."
+        "text": "Solar takes the edge off a winter bill. It doesn't clear it, and the standing charge stays whatever you do."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "What your bills look like across the year"
+        "text": "Where the real money is made"
       },
       {
         "type": "paragraph",
-        "text": "In winter the lights, the immersion and the tumble dryer all work harder, just when the panels make the least. The house uses almost everything they make, but there isn't much of it, so winter bills come down only a little."
+        "text": "From April to September the panels make about 2,700 kWh, roughly 70% of the year's output. You use what you can while it's being made: the washing machine, the dishwasher, the immersion on a timer. The rest goes out to the grid, and your supplier pays you for it under the Clean Export Guarantee. You need a smart meter for that, and each supplier sets its own rate, so compare them."
       },
       {
         "type": "paragraph",
-        "text": "In summer it flips. The panels make more than most homes can use during the day. You use what you can, and the rest goes out to the grid and earns you money."
-      },
-      {
-        "type": "paragraph",
-        "text": "That's why solar only makes sense over a full twelve months. Judged on one December bill it looks weak. Over the whole year it does most of its work in the months you're not worrying about bills."
-      },
-      {
-        "type": "heading",
-        "level": 2,
-        "text": "How summer pays for winter"
-      },
-      {
-        "type": "paragraph",
-        "text": "Every unit your panels make while the kettle or washing machine is on is one you don't buy. Whatever you don't use goes back to the grid, and your supplier pays you for it under the Clean Export Guarantee. You need a smart meter to be paid for it. Over the year, that's what adds up."
-      },
-      {
-        "type": "heading",
-        "level": 2,
-        "text": "What a typical home could save in a year"
-      },
-      {
-        "type": "paragraph",
-        "text": "Every house is different, so take one example from our estimate: a home that uses 4,200 kWh of electricity a year, with a 4 kWp system and no battery."
+        "text": "Across a full year, for that typical home with no battery, our estimate comes to about €920:"
       },
       {
         "type": "bulletList",
         "items": [
-          "The panels make about 3,800 kWh.",
-          "About 1,390 kWh gets used in the house, which saves around €486.",
-          "About 2,410 kWh goes out to the grid, which earns around €434.",
-          "That's around €920 a year in all, roughly half the electricity bill."
+          "About 1,390 kWh used in the house, worth about €486 at 35c.",
+          "About 2,410 kWh exported, worth about €434 at 18c."
         ]
       },
       {
         "type": "paragraph",
-        "text": "We keep those numbers on the cautious side. They assume 35c a unit for the power you'd otherwise buy, 18c a unit for what you export, a good south-facing roof, and a bit over a third of your solar power used at home. The standing charge stays whatever you do. And most of that saving comes between April and September."
+        "text": "A unit you use yourself saves 35c. A unit you export earns about half that. So running the dishwasher at noon instead of at night is worth real money."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "What affects your winter output"
+        "text": "Where you live changes the numbers"
       },
       {
         "type": "paragraph",
-        "text": "The month table is for a good roof. A few things change the picture, and they matter most in winter, when the sun sits low."
+        "text": "Ireland's sunniest counties make noticeably more than the dullest. Using the European Commission's PVGIS model, the same panels make about 1,090 kWh a year per kWp in Wexford and about 830 in Derry. That's around 30% more power in the south-east than the north-west, from identical panels."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What cuts winter output"
       },
       {
         "type": "paragraph",
-        "text": "Which way your roof faces. South is best all year round. East and west roofs still work well, and panels on both sides spread your power across the morning and the evening. In winter, though, the low sun favours a south roof more than at any other time."
+        "text": "**Shade.** In December the sun barely clears the houses across the road. A chimney, tree or neighbour's roof that does nothing in June can shade your panels for hours in winter. A site survey checks this before anything is priced."
       },
       {
         "type": "paragraph",
-        "text": "Shade. A tree, a chimney or the house next door that causes no trouble in June can throw a long shadow across the panels in December. A site survey checks for this before anything is priced, so you know what to expect."
+        "text": "**Roof direction.** South-facing does best in winter, because the low sun sits in the south. East and west roofs are close behind across the year, and splitting panels between them spreads your power from morning to evening, which suits a lot of homes."
       },
       {
         "type": "paragraph",
-        "text": "Snow. It isn't common here, and when it does come it usually slides off the glass within a day or two. Please don't climb up to clear it. A few lost days in winter make very little difference over a year."
+        "text": "**Not the cold.** Panels work better cold. A bright frosty morning is good solar weather."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Snow** rarely lasts on panels here. It slides off the glass within a day or two. Don't climb up to clear it."
       },
       {
         "type": "heading",
@@ -6032,41 +6039,11 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Not much, from the panels alone. In winter the house uses nearly all the solar power as it's made, so there's little left over to store."
+        "text": "Not from the panels alone. In winter there's no surplus to store."
       },
       {
         "type": "paragraph",
-        "text": "Where a battery can help in winter is with a night rate. It can charge on cheaper night-time power and then run the house through the dearer evening hours. Whether that pays off depends on your tariff and how you use power."
-      },
-      {
-        "type": "paragraph",
-        "text": "In summer a battery does more. It holds the midday surplus for the evening, so you use more of your own power and send less to the grid. SEAI adds €600 to the grant for a battery of 5 kWh or more."
-      },
-      {
-        "type": "heading",
-        "level": 2,
-        "text": "Smart meters, night rates and solar"
-      },
-      {
-        "type": "paragraph",
-        "text": "Most Irish homes now have a smart meter. It records what you use and what you send out in half-hour slots."
-      },
-      {
-        "type": "paragraph",
-        "text": "With solar, the meter is how your supplier knows what you've exported, so it can pay you under the Clean Export Guarantee. Each supplier sets its own export rate, so it's worth comparing them."
-      },
-      {
-        "type": "paragraph",
-        "text": "A smart meter also opens up smart tariffs, with cheaper units at night and dearer ones at the evening peak. Solar covers part of your daytime use. A night rate makes the hours the panels can't cover cheaper. With a battery or an electric car, the two together can take more off a winter bill. Your bill shows how your use splits between day and night, and that's the best guide to which tariff suits you."
-      },
-      {
-        "type": "heading",
-        "level": 2,
-        "text": "When's a good time to install?"
-      },
-      {
-        "type": "paragraph",
-        "text": "Winter is a good time to get started. The site survey, the SEAI grant offer and the ESB Networks paperwork all take time, so a system you book in winter is usually up and running in time for spring and the long days that follow. More in our guide to [the best time of year to get solar panels](/blog/best-time-of-year-to-get-solar-panels-ireland)."
+        "text": "Where a battery earns its keep in winter is with a night-rate tariff: it charges on cheap night units and runs the house through the expensive evening peak. In summer it does a second job, holding the midday surplus for the evening so you export less at 18c and use more at 35c. SEAI pays €600 towards a battery of 5 kWh or more."
       },
       {
         "type": "heading",
@@ -6075,7 +6052,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "SEAI pays up to €2,400: €1,800 for the panels, plus €600 if you add a battery of 5 kWh or more. The grant offer has to come through before any work starts, and we do all the paperwork. More in our [SEAI solar grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "SEAI pays up to €2,400: €1,800 for the panels and €600 for a battery of 5 kWh or more, as of October 2026. The grant offer has to come through before any work starts. We handle the paperwork, including your home's Building Energy Rating (BER)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Why book in winter"
+      },
+      {
+        "type": "paragraph",
+        "text": "The survey, the grant offer and the ESB Networks notification take a few weeks. Book in winter and your panels are on the roof for March, when output jumps by about 70% on February and the best six months begin."
       },
       {
         "type": "heading",
@@ -6089,16 +6075,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. They run on daylight, not heat. A 4 kWp system makes about 110 kWh in December and about 517 kWh in June."
+        "text": "Yes. They run on daylight, not heat. A 4 kWp system makes about 110 kWh in December and 517 kWh in June."
       },
       {
         "type": "heading",
         "level": 3,
-        "text": "Will solar lower my winter bill?"
+        "text": "How much will solar take off my winter bills?"
       },
       {
         "type": "paragraph",
-        "text": "A little. Most of the saving comes across the whole year, from summer power you use and power you sell back."
+        "text": "About €195 across November to February for a typical 4 kWp system. Most of the year's saving comes from April to September, and a lot of the time the surplus CEG payments roll over to help with your winter months."
       },
       {
         "type": "heading",
@@ -6107,16 +6093,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. Your supplier needs smart meter readings to pay you under the Clean Export Guarantee."
+        "text": "Yes. Your supplier uses the smart meter readings to pay you under the Clean Export Guarantee."
       },
       {
         "type": "heading",
         "level": 3,
-        "text": "What happens to my solar power at night?"
+        "text": "What happens at night?"
       },
       {
         "type": "paragraph",
-        "text": "The panels stop when it gets dark. At night the house runs on power from the grid, or from a battery if you have one."
+        "text": "The panels stop when it's dark. The house runs on the grid, or on a battery if you choose one."
       },
       {
         "type": "heading",
@@ -6125,7 +6111,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every house is different. Upload your bill and you'll see what solar would save you, in under a minute. Prefer to read more first? See [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) or [do solar panels work in winter](/blog/solar-panels-in-winter-do-they-work)."
+        "text": "Your bill shows how much you use and when, and that decides what solar is worth to you. Upload your latest bill and you'll get your own figures sent to you by email."
       },
       {
         "type": "cta",
@@ -6134,7 +6120,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Sources: PVGIS (European Commission), seai.ie and the CRU."
+        "text": "Sources: PVGIS (European Commission), seai.ie and the CRU. Our estimate assumes 35c a unit for power you'd otherwise buy, 18c a unit for exports and a good south-facing roof."
       }
     ]
   },
