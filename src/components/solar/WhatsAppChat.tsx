@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+// The chat's CSS ships in the route stylesheet, not styled-jsx: see the
+// header of whatsapp-chat.css for the flash it caused.
+import './whatsapp-chat.css';
 import {
   MessageCircle,
   X,
@@ -778,7 +781,7 @@ export default function WhatsAppChat() {
       />
       <div
         ref={panelRef}
-        // Geometry and motion live in .wa-sheet (the style block below): a
+        // Geometry and motion live in .wa-sheet (whatsapp-chat.css): a
         // bottom sheet on phones, a 400px floating panel from 640. Only
         // transform and opacity animate, so the sheet never trails the
         // keyboard or a pan.
@@ -1209,195 +1212,6 @@ export default function WhatsAppChat() {
           </>
         )}
       </div>
-
-      {/* 
-          INJECTED STYLES (enhanced wave + FAB bounce)
-           */}
-      <style jsx global>{`
-        /* The chat sheet. Phone (under 640): a bottom sheet, full width,
-           rounded top, a drag handle, the page dimmed behind it; the
-           visualViewport effect pins it above the keyboard. From 640: a
-           400px floating panel, bottom right. Only transform and opacity
-           move; reduced motion gets a short fade with no travel.
-           The open (Cal, 13 Nov: "pops open far too fast"): it used to slide
-           the whole screen height (800px) on a spring curve, so most of the
-           travel landed in the first 130ms and read as a pop. It now rises
-           32px and fades in over 320ms on a plain ease-out, and leaves in
-           240ms. Finite transitions on transform and opacity only (INP).
-           14 Nov (Cal's recording, "opens too fast" again): measured in
-           WebKit, that ease-out had the sheet 77% opaque within 100ms, so a
-           full-screen sheet still read as a pop. It now rises 48px over
-           440ms and fades over 360ms on a gentle ease-out (half opaque at
-           about 120ms). And with iOS Reduce Motion on, the global
-           reduced-motion rule (globals.css) cut every transition to 0.01ms,
-           so the sheet appeared in one frame; the reduced-motion branch
-           below keeps a 280ms fade with no travel (a fade is not motion). */
-        .wa-sheet {
-          position: fixed;
-          z-index: 50;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          overscroll-behavior: contain;
-          background: #0f0f0f;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-          transition: transform 440ms cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 360ms cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0s;
-        }
-        .wa-sheet[data-open='false'] {
-          visibility: hidden;
-          pointer-events: none;
-          opacity: 0;
-          transition: transform 240ms cubic-bezier(0.4, 0, 1, 1), opacity 200ms cubic-bezier(0.4, 0, 1, 1), visibility 0s linear 240ms;
-        }
-        .wa-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 50;
-          background: rgba(0, 0, 0, 0.55);
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 360ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .wa-backdrop[data-open='true'] {
-          opacity: 1;
-          pointer-events: auto;
-        }
-        .wa-sheet__head {
-          position: relative;
-        }
-        .wa-grabber {
-          display: none;
-        }
-        @media (max-width: 639px) {
-          .wa-sheet {
-            left: 0;
-            right: 0;
-            bottom: 0;
-            top: max(12px, env(safe-area-inset-top, 0px));
-            border-bottom: 0;
-            border-radius: 20px 20px 0 0;
-          }
-          .wa-sheet[data-open='false'] {
-            transform: translate3d(0, 48px, 0);
-          }
-          .wa-sheet__head {
-            padding-top: 22px;
-          }
-          .wa-grabber {
-            display: block;
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            width: 36px;
-            height: 5px;
-            margin-left: -18px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.28);
-          }
-          .wa-sheet[data-min='true'] {
-            top: auto;
-            left: 16px;
-            right: 16px;
-            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-          }
-        }
-        @media (min-width: 640px) {
-          .wa-sheet {
-            right: 24px;
-            bottom: 24px;
-            width: 400px;
-            max-width: calc(100vw - 48px);
-            height: 600px;
-            max-height: calc(100vh - 96px);
-            border-radius: 16px;
-            transform-origin: bottom right;
-          }
-          .wa-sheet[data-open='false'] {
-            opacity: 0;
-            transform: translate3d(0, 16px, 0) scale(0.96);
-          }
-          .wa-sheet[data-min='true'] {
-            width: 340px;
-            height: auto;
-          }
-          .wa-backdrop {
-            display: none;
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          /* !important: the global reduced-motion rule forces every
-             transition-duration to 0.01ms with !important. */
-          .wa-sheet,
-          .wa-sheet[data-open='false'] {
-            transform: none;
-            transition: opacity 280ms ease-out, visibility 0s linear 280ms;
-            transition-duration: 280ms, 0s !important;
-          }
-          .wa-sheet[data-open='true'] {
-            transition: opacity 280ms ease-out, visibility 0s linear 0s;
-            transition-duration: 280ms, 0s !important;
-          }
-          .wa-backdrop {
-            transition: opacity 280ms ease-out;
-            transition-duration: 280ms !important;
-          }
-          .wa-sheet[data-open='false'] {
-            opacity: 0;
-          }
-        }
-
-        @keyframes wa-typing-wave {
-          0%, 60%, 100% {
-            transform: scale(0.6);
-            opacity: 0.4;
-          }
-          30% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-        .wa-typing-wave-dot {
-          animation: wa-typing-wave 1.2s ease-in-out infinite;
-        }
-
-        @keyframes wa-follow-up-enter {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .follow-up-pill {
-          animation: wa-follow-up-enter 0.35s ease-out both;
-        }
-
-        @keyframes fab-bounce {
-          0% { transform: translateY(4px) scale(0.95); }
-          50% { transform: translateY(-2px) scale(1.03); }
-          100% { transform: translateY(0) scale(1); }
-        }
-
-        @keyframes wa-fab-pulse {
-          0% {
-            transform: scale(1);
-            opacity: 0.4;
-          }
-          70% {
-            transform: scale(2.2);
-            opacity: 0;
-          }
-          100% {
-            transform: scale(2.2);
-            opacity: 0;
-          }
-        }
-      `}</style>
     </>
   );
 }
