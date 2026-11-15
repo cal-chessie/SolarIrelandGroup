@@ -174,3 +174,5 @@ Built to `INTAKE/design/APPLE-DECISIONS.md`. What changed for anyone touching do
 - **One CTA colour.** The navbar and mobile-menu "Check my savings" are brand amber (#ffb900), the same as every page CTA. They were green.
 - **Section rhythm.** The redesigned sections, grants and the FAQ use 72/96px padding; the gallery keeps `--h-pad`.
 - **Open:** the HowTo JSON-LD in `HomeSchema.tsx` still says a home-visit survey and a single-day install; the visible steps now describe the 15-minute call. Cal to confirm the install-day claim before the schema is aligned.
+- **NC6 timing.** ESB Networks requires the NC6 before installation. The route map and the trust ledger both put it under "Before work starts"; install day is fitting, then the BER and the SEAI paperwork.
+- **Late-mounted reveals.** `HomeClient` also watches for `[data-reveal]` nodes added after its first pass (an island rendering fresh DOM), via a MutationObserver. Without it the gallery's head and photos could stay at opacity 0 for good after a fast scroll.

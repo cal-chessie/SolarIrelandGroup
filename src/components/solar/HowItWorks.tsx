@@ -9,7 +9,9 @@ import { SOLAR_DATA } from '@/lib/solar-data';
  * BER); rows are who acts (you, us, SEAI). On a phone it reads top to bottom
  * as one rail. The facts are the previous copy, checked against the FAQ and
  * the services page: you apply on SEAI's portal before work starts and SEAI
- * decides; we notify ESB Networks (NC6), book the BER and send SEAI the
+ * decides; before work starts we notify ESB Networks (the NC6 is submitted
+ * before installation, as ESB Networks requires); after fitting we book the
+ * BER and send SEAI the
  * paperwork; SEAI pays normally 4 to 6 weeks after the BER is published.
  */
 const SEAI_GRANT_PORTAL = 'https://mgen.seai.ie/';
@@ -56,6 +58,7 @@ const STAGES: { when: string; span: string; acts: { who: Who; text: React.ReactN
           </>
         ),
       },
+      { who: 'us', text: 'We notify ESB Networks with the NC6 form, as they require before installation.' },
       { who: 'seai', text: 'Decides on your grant.' },
     ],
   },
@@ -65,7 +68,7 @@ const STAGES: { when: string; span: string; acts: { who: Who; text: React.ReactN
     acts: [
       {
         who: 'us',
-        text: 'Our RECI-registered team fits the system. We notify ESB Networks with the NC6 form, book your BER and send SEAI the paperwork.',
+        text: 'Our RECI-registered team fits the system. Then we book your BER and send SEAI the paperwork.',
       },
     ],
   },

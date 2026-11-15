@@ -1722,7 +1722,9 @@
   transition: opacity 640ms var(--h-ease-out), transform 640ms var(--h-ease-out);
   transition-delay: calc(var(--d, 0) * 70ms);
 }
-.si-home--reveal .h-strip[data-reveal]:not(.is-in) {
+.si-home--reveal #our-work .h-strip[data-reveal]:not(.is-in) {
+  /* The #our-work rule above outranks the original strip rule, so this
+     keeps the strip itself visible, exactly as before; its photos fade. */
   opacity: 1;
   transform: none;
 }

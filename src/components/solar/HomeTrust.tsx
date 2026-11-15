@@ -11,13 +11,19 @@ import Image from 'next/image';
  * registered, Safe Electric Approved, Microgeneration Certified, the 25-year
  * panel warranty and the 5-year workmanship warranty. Process facts match the
  * FAQ and the services page: you apply on SEAI's portal before work starts,
- * we notify ESB Networks (NC6), book the BER and send SEAI the paperwork.
+ * we notify ESB Networks (NC6) before installation, and after it we book the
+ * BER and send SEAI the paperwork.
  */
 const LEDGER: { when: string; name: string; means: string }[] = [
   {
     when: 'Before work starts',
     name: 'SEAI registered installer',
     means: 'SEAI only pays the grant when a registered company does the work. You name us on your application.',
+  },
+  {
+    when: 'Before work starts',
+    name: 'Microgeneration certified',
+    means: 'To ESB Networks, home solar is microgeneration. We send them the NC6 form before your system is fitted, as they require.',
   },
   {
     when: 'Install day',
@@ -28,11 +34,6 @@ const LEDGER: { when: string; name: string; means: string }[] = [
     when: 'Install day',
     name: 'Safe Electric Approved',
     means: "Ireland's electrical safety scheme, regulated by the CRU. The contractor who signs off your wiring is one it registers and checks.",
-  },
-  {
-    when: 'After the install',
-    name: 'Microgeneration certified',
-    means: 'To ESB Networks, home solar is microgeneration. We send the NC6 form that tells them your system is connected, and we book your BER.',
   },
   {
     when: 'Years 1 to 5',
