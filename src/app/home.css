@@ -403,124 +403,185 @@
   }
 }
 
-/* ── Trust strip: equal hairline cells ─────────────────────────── */
-.h-cells {
+/* ── Trust: one plate, a real install and the six credentials ──────
+   Premium pass (15 Nov 2026, Cal: "make this one scream premium ... a
+   better layout with a great image"). The photo and the credentials are one
+   object: a raised plate with a hairline ring, the photo bleeding into the
+   panel (down on phones, across from 768). Brand tokens only, no icon
+   tiles, no glow. Heights come from width and content, never a viewport
+   unit, so a phone's toolbar sliding away moves nothing. */
+.ht-plate {
+  position: relative;
   margin-top: 48px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--h-line);
+  border-radius: var(--h-r-lg);
+  overflow: hidden;
+  background: var(--h-lane);
+  box-shadow: 0 48px 96px -56px rgba(0, 0, 0, 0.9);
+  isolation: isolate;
 }
-.h-cells > li {
-  padding: 24px 16px 24px 0;
-  border-bottom: 1px solid var(--h-line);
-}
-.h-cells > li:nth-child(2n) {
-  padding-left: 16px;
-  box-shadow: inset 1px 0 0 var(--h-line);
-}
-@media (min-width: 1024px) {
-  .h-cells {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-  .h-cells > li,
-  .h-cells > li:nth-child(2n) {
-    padding: 32px 20px;
-    box-shadow: inset 1px 0 0 var(--h-line);
-  }
-  .h-cells > li:first-child {
-    padding-left: 0;
-    box-shadow: none;
-  }
-}
-/* Colour pass (11 Nov 2026, Cal: "minimally pop better"): a fine yellow
-   hairline on top of each cell, a small amber icon, the label in a soft
-   yellow gradient, and a glow with a small lift on hover. */
-.h-cells > li {
-  position: relative;
-}
-.h-cells > li::before {
+.ht-plate::after {
+  /* the hairline ring, drawn over the photo edge too */
   content: '';
   position: absolute;
-  top: -1px;
-  left: 0;
-  width: 40px;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--h-line);
+  pointer-events: none;
+}
+.ht-photo {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--h-raise);
+}
+.ht-photo::after {
+  /* the photo settles into the panel below it */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17, 17, 17, 0) 58%, var(--h-lane) 100%);
+  pointer-events: none;
+}
+.ht-photo__img {
+  object-fit: cover;
+  object-position: 50% 42%;
+  transition: transform 1600ms var(--h-ease-out);
+}
+/* The plate stays at full opacity (the reveal contract fades [data-reveal]);
+   only the photo moves, from a slight zoom to rest, when it arrives. */
+.si-home--reveal .ht-plate[data-reveal]:not(.is-in) {
+  opacity: 1;
+  transform: none;
+}
+.si-home--reveal .ht-plate:not(.is-in) .ht-photo__img {
+  transform: scale(1.06);
+}
+.ht-facts {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 4px 20px 12px;
+}
+.ht-facts::before {
+  /* a fine amber line where the panel starts */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 48px;
   height: 1px;
   background: linear-gradient(90deg, var(--h-amber), rgba(255, 185, 0, 0));
 }
-.h-cells > li:nth-child(2n)::before {
-  left: 16px;
+.ht-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 20px 12px 20px 0;
 }
-@media (min-width: 1024px) {
-  .h-cells > li::before,
-  .h-cells > li:nth-child(2n)::before {
-    left: 20px;
-  }
-  .h-cells > li:first-child::before {
-    left: 0;
-  }
+.ht-fact:nth-child(2n) {
+  padding-left: 20px;
+  padding-right: 0;
+  box-shadow: inset 1px 0 0 var(--h-line);
 }
-.h-cell {
-  position: relative;
-  transition: transform 260ms var(--h-ease-out);
+.ht-fact:nth-child(n + 3) {
+  border-top: 1px solid var(--h-line);
 }
-.h-cell::after {
-  /* the hover glow, a low amber pool behind the label */
-  content: '';
-  position: absolute;
-  inset: -12px -8px;
-  z-index: -1;
-  border-radius: var(--h-r);
-  background: radial-gradient(closest-side, rgba(255, 185, 0, 0.1), rgba(255, 185, 0, 0));
-  opacity: 0;
-  transition: opacity 260ms ease;
-  pointer-events: none;
-}
-@media (hover: hover) {
-  .h-cells > li:hover .h-cell {
-    transform: translateY(-3px);
-  }
-  .h-cells > li:hover .h-cell::after {
-    opacity: 1;
-  }
-  .h-cells > li:hover .h-cell__icon {
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 185, 0, 0.4),
-      0 0 18px -2px rgba(255, 185, 0, 0.4);
-  }
-}
-.h-cells {
-  isolation: isolate;
-}
-.h-cell__icon {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  margin-bottom: 14px;
-  border-radius: 10px;
-  color: var(--h-amber);
-  background: var(--h-amber-wash);
-  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.22);
-  transition: box-shadow 260ms ease;
-}
-.h-cell__big {
-  display: block;
-  font-size: 28px;
-  line-height: 32px;
+.ht-fact__big {
+  font-size: 30px;
+  line-height: 34px;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--h-amber);
   background: linear-gradient(180deg, var(--h-amber-hover), var(--h-amber));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
-.h-cell__line {
-  display: block;
-  margin-top: 6px;
+@media (max-width: 359px) {
+  /* "25 years" on one line in a 320px phone's half cell */
+  .ht-fact__big {
+    font-size: 26px;
+    line-height: 30px;
+  }
+}
+.ht-fact__line {
   font-size: 14px;
   line-height: 20px;
-  color: var(--h-muted);
+  color: #d4d4d8;
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .ht-plate {
+    margin-top: 56px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+  .ht-photo {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+  .ht-photo::after {
+    background: linear-gradient(90deg, rgba(17, 17, 17, 0) 60%, var(--h-lane) 100%);
+  }
+  .ht-facts {
+    align-content: center;
+    padding: 32px 36px 32px 28px;
+  }
+  .ht-facts::before {
+    top: 32px;
+    left: 28px;
+  }
+  .ht-fact {
+    padding: 22px 16px 22px 0;
+  }
+  .ht-fact:nth-child(2n) {
+    padding-left: 28px;
+  }
+  .ht-fact__big {
+    font-size: 34px;
+    line-height: 38px;
+  }
+}
+@media (min-width: 1024px) {
+  .ht-plate {
+    margin-top: 64px;
+  }
+}
+@media (min-width: 1280px) {
+  .ht-facts {
+    padding: 48px 64px 48px 40px;
+  }
+  .ht-facts::before {
+    top: 48px;
+    left: 40px;
+  }
+  .ht-fact {
+    gap: 8px;
+    padding: 28px 24px 28px 0;
+  }
+  .ht-fact:nth-child(2n) {
+    padding-left: 40px;
+  }
+  .ht-fact__big {
+    font-size: 48px;
+    line-height: 52px;
+  }
+  .ht-fact__line {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ht-photo__img {
+    transition: none;
+  }
+  .si-home--reveal .ht-plate:not(.is-in) .ht-photo__img {
+    transform: none;
+  }
 }
 
 /* ── Process: a connected line with icon tiles ─────────────────────
@@ -1395,14 +1456,11 @@
   .h-shot img,
   .h-acc__a,
   .h-step__card,
-  .h-step__tile,
-  .h-cell,
-  .h-cell::after {
+  .h-step__tile {
     transition: none;
   }
   .h-step:hover .h-step__card,
-  .h-step:hover .h-step__tile,
-  .h-cells > li:hover .h-cell {
+  .h-step:hover .h-step__tile {
     transform: none;
   }
 }
@@ -1429,12 +1487,6 @@
   }
   .h-hero__trust {
     font-size: 14px;
-  }
-  .h-cell__big {
-    font-size: 34px;
-  }
-  .h-cell__line {
-    font-size: 15px;
   }
   .h-step__num,
   .h-step__who {
