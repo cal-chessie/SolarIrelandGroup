@@ -5855,11 +5855,11 @@ export const articles: Article[] = [
     "seoTitle": "High Winter Bills? Irish Solar Makes Nearly 5x More in June",
     "seoDescription": "A 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. How summer output and export credit carry winter bills, and the €2,400 grant.",
     "answer": "Solar makes least when bills are highest: a 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. It pays across the year instead. Summer power you use at home, plus export credit under the Clean Export Guarantee, carries the winter months, and SEAI grants of up to €2,400 cut the cost.",
-    "excerpt": "Winter bills are when people think about solar, and December is when panels make least. How the summer pays for the winter, month by month, and why the panels going on Irish roofs now are bigger than they were.",
+    "excerpt": "Winter bills are when people think about solar, and December is when panels make least. How the summer pays for the winter, month by month.",
     "category": "savings",
     "date": "13 Nov 2026",
     "updated": "15 Nov 2026",
-    "readTime": "6 min read",
+    "readTime": "5 min read",
     "author": "Cal Chesters",
     "iconBg": "bg-emerald-400/10",
     "iconColor": "text-emerald-400",
@@ -5867,24 +5867,20 @@ export const articles: Article[] = [
     "content": [
       {
         "type": "paragraph",
-        "text": "The December bill lands just as the evenings close in at half four. The lights, the immersion and the tumble dryer all work harder, and it is natural to wonder whether panels on the roof would take the sting out of it."
+        "text": "If your bills are climbing this winter, you might be wondering whether solar would help. Here's the honest answer, month by month."
       },
       {
         "type": "paragraph",
-        "text": "They would help, though most of that help arrives in summer. The sums only make sense over a full year, so that is how we count them."
+        "text": "A bit, in winter. Solar's real work happens in summer, and that's what pays for your winter."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "What a 4 kWp system makes each month"
+        "text": "What a typical 4 kWp system makes in Ireland"
       },
       {
         "type": "paragraph",
-        "text": "We work on 950 kWh a year for every kWp on a good roof. PVGIS, the European Commission's solar model, puts a south-facing roof at 30 degrees in Dublin at about 972 kWh per kWp after standard losses, and the national average at about 884. So 950 describes a good roof without pretending every roof is one."
-      },
-      {
-        "type": "paragraph",
-        "text": "A 4 kWp system is the size SEAI's full €1,800 panels grant is built around. It makes about 3,800 kWh a year, spread across the months like this."
+        "text": "A 4 kWp system is about nine panels. It's the size most Irish homes start with, and the size SEAI's full panel grant is built around. On a good south-facing roof it makes about 3,800 kWh a year, spread across the months like this."
       },
       {
         "type": "table",
@@ -5944,129 +5940,142 @@ export const articles: Article[] = [
         ]
       },
       {
-        "type": "callout",
-        "variant": "stat",
-        "title": "The gap, in numbers",
-        "body": "June makes nearly five times what December makes. May to August together make about 1,940 kWh. November to February make about 560."
+        "type": "paragraph",
+        "text": "June makes nearly five times what December makes. May to August gives you about 1,940 kWh. November to February, about 560."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Why December makes so little"
+        "text": "Why winter is weak"
       },
       {
         "type": "paragraph",
-        "text": "Panels keep working all winter. They get much less light to work with, for three reasons."
+        "text": "Short days and a low sun. It's not the cold. Panels actually like the cold, so a bright frosty morning is good solar weather. It's the grey, short days that cost you."
       },
       {
-        "type": "numberedList",
+        "type": "paragraph",
+        "text": "In December the sun comes up late, goes down around four and barely clears the houses across the road. In June it's up before five in the morning and still out after nine at night."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What your bills look like across the year"
+      },
+      {
+        "type": "paragraph",
+        "text": "In winter the lights, the immersion and the tumble dryer all work harder, just when the panels make the least. The house uses almost everything they make, but there isn't much of it, so winter bills come down only a little."
+      },
+      {
+        "type": "paragraph",
+        "text": "In summer it flips. The panels make more than most homes can use during the day. You use what you can, and the rest goes out to the grid and earns you money."
+      },
+      {
+        "type": "paragraph",
+        "text": "That's why solar only makes sense over a full twelve months. Judged on one December bill it looks weak. Over the whole year it does most of its work in the months you're not worrying about bills."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How summer pays for winter"
+      },
+      {
+        "type": "paragraph",
+        "text": "Every unit your panels make while the kettle or washing machine is on is one you don't buy. Whatever you don't use goes back to the grid, and your supplier pays you for it under the Clean Export Guarantee. You need a smart meter to be paid for it. Over the year, that's what adds up."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What a typical home could save in a year"
+      },
+      {
+        "type": "paragraph",
+        "text": "Every house is different, so take one example from our estimate: a home that uses 4,200 kWh of electricity a year, with a 4 kWp system and no battery."
+      },
+      {
+        "type": "bulletList",
         "items": [
-          "Short days. In Dublin the sun is up for about 17 hours on the longest day in June and about 7.5 hours on the shortest day in December.",
-          "A low sun. At midday in late June the sun stands about 60 degrees above the horizon in Dublin. In late December it reaches about 13 degrees, so the same light spreads thinner and passes through more air.",
-          "Cloud and long shadows. Winter skies are greyer, and with the sun that low, a chimney, a tree or the house next door shades the roof for longer each day."
-        ]
-      },
-      {
-        "type": "callout",
-        "variant": "info",
-        "title": "Cold is not the problem",
-        "body": "Panels like the cold. LONGi's datasheet for its 440 W Hi-MO 6 panel gives a loss of 0.29% of output for every degree the panel heats up, so a bright, frosty morning is good solar weather. Short, low, grey days are what cost the winter months."
-      },
-      {
-        "type": "paragraph",
-        "text": "Cold, cloud and frost get their own post: [do solar panels work in winter](/blog/solar-panels-in-winter-do-they-work)."
-      },
-      {
-        "type": "heading",
-        "level": 2,
-        "text": "How the summer pays for the winter"
-      },
-      {
-        "type": "paragraph",
-        "text": "Solar saves you money in two ways."
-      },
-      {
-        "type": "numberedList",
-        "items": [
-          "Power you use yourself. Every unit the panels make while the kettle, washing machine or immersion runs is a unit you do not buy. We value it at 35c, the bottom of the current Irish market band, so our estimate never overstates it.",
-          "Power you export. What the house cannot use goes to the grid and earns credit under the Clean Export Guarantee. Each supplier sets its own rate and the CRU sets no minimum above zero (CRU decision CRU202454), so we use 18c a unit, not a promise of what your supplier pays. You need a smart meter to be paid for exports."
+          "The panels make about 3,800 kWh.",
+          "About 1,390 kWh gets used in the house, which saves around €486.",
+          "About 2,410 kWh goes out to the grid, which earns around €434.",
+          "That's around €920 a year in all, roughly half the electricity bill."
         ]
       },
       {
         "type": "paragraph",
-        "text": "In summer a typical home makes more than it can use in daylight, so a good share goes out as export credit. In winter the house uses nearly everything the panels make, but there is much less of it. Across twelve months, April to September earns most of the saving."
-      },
-      {
-        "type": "paragraph",
-        "text": "Export credit lands on your normal electricity bills, on your supplier's billing cycle, which is why every figure we give is a yearly one. Our [smart meter guide for solar](/blog/smart-meter-required-solar-panels-ireland) covers how the meter and the payments fit together."
-      },
-      {
-        "type": "callout",
-        "variant": "info",
-        "title": "What solar never removes",
-        "body": "The standing charge stays on every bill, solar or not. Without a battery, an Irish home typically uses 30% to 50% of its own solar output and exports the rest. SEAI pays a flat €600 towards a battery of 5 kWh or more, but our estimates stay panels only, so the number you see never leans on one."
+        "text": "We keep those numbers careful. They assume 35c a unit for the power you'd otherwise buy, 18c a unit for what you export, a good south-facing roof, and a bit over a third of your solar power used at home. The standing charge stays whatever you do. And most of that saving comes between April and September."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "Bigger panels help a small roof"
-      },
-      {
-        "type": "table",
-        "headers": [
-          "",
-          "LONGi Hi-MO 4m (2021)",
-          "LONGi Hi-MO 6 Explorer (today)"
-        ],
-        "rows": [
-          [
-            "Power",
-            "350 to 380 W",
-            "440 W"
-          ],
-          [
-            "Efficiency",
-            "19.2% to 20.9%",
-            "23.0%"
-          ],
-          [
-            "Cell size",
-            "166 mm",
-            "182 mm"
-          ],
-          [
-            "Panels for 4 kWp",
-            "Eleven at 370 W",
-            "Nine at 440 W"
-          ]
-        ]
+        "text": "What affects your winter output"
       },
       {
         "type": "paragraph",
-        "text": "The 2021 figures come from pv magazine's report of the Hi-MO 4m launch, and today's from LONGi's LR5-54HTH-440M datasheet. Part of the jump is a better cell. A lot of it is size: bigger wafers make a bigger panel. The ITRPV, the roadmap the panel makers publish each year, records that move to larger wafers, with commercial panels reaching 730 W on the largest formats. Cell efficiency still climbs, in fractions of a percent a year."
+        "text": "The month table is for a good roof. A few things change the picture, and they matter most in winter, when the sun sits low."
       },
       {
         "type": "paragraph",
-        "text": "So a roof that was too small for a sensible system a few years ago can often carry one today. LONGi's datasheet for the 440 W panel gives a 15-year product warranty and a 25-year power warranty of about 89% of rated output in year 25."
+        "text": "Which way your roof faces. South is best all year round. East and west roofs still work well, and panels on both sides spread your power across the morning and the evening. In winter, though, the low sun favours a south roof more than at any other time."
       },
       {
-        "type": "callout",
-        "variant": "tip",
-        "title": "Waiting for a better panel gains little",
-        "body": "New panels improve in small steps now. A year of waiting costs a year of savings, and SEAI sets the grant each year."
+        "type": "paragraph",
+        "text": "Shade. A tree, a chimney or the house next door that causes no trouble in June can throw a long shadow across the panels in December. A site survey checks for this before anything is priced, so you know what to expect."
+      },
+      {
+        "type": "paragraph",
+        "text": "Snow. It isn't common here, and when it does come it usually slides off the glass within a day or two. Please don't climb up to clear it. A few lost days in winter make very little difference over a year."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "SEAI grants: up to €2,400"
+        "text": "Does a battery help in winter?"
       },
       {
         "type": "paragraph",
-        "text": "SEAI pays up to €2,400 towards home solar: up to €1,800 for the panels, reached in full at 4 kWp, plus a flat €600 if you add a battery of 5 kWh or more. The home needs an MPRN and must have been built and occupied before 2025, and SEAI's grant offer has to arrive before any work starts."
+        "text": "Not much, from the panels alone. In winter the house uses nearly all the solar power as it's made, so there's little left over to store."
       },
       {
         "type": "paragraph",
-        "text": "We handle the paperwork as part of the job: the NC6 notification to ESB Networks, the completion forms for SEAI and the post-works BER. The full walkthrough is in our [SEAI solar grant guide](/blog/complete-guide-seai-solar-grant-2026)."
+        "text": "Where a battery can help in winter is with a night rate. It can charge on cheaper night-time power and then run the house through the dearer evening hours. Whether that pays off depends on your tariff and how you use power."
+      },
+      {
+        "type": "paragraph",
+        "text": "In summer a battery does more. It holds the midday surplus for the evening, so you use more of your own power and send less to the grid. SEAI adds €600 to the grant for a battery of 5 kWh or more, and there's no VAT on a battery fitted at the same time as the panels."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Smart meters, night rates and solar"
+      },
+      {
+        "type": "paragraph",
+        "text": "Most Irish homes now have a smart meter. It records what you use and what you send out in half-hour slots,."
+      },
+      {
+        "type": "paragraph",
+        "text": "With solar, the meter is how your supplier knows what you've exported, so it can pay you under the Clean Export Guarantee. Each supplier sets its own export rate, so it's worth comparing them."
+      },
+      {
+        "type": "paragraph",
+        "text": "A smart meter also opens up smart tariffs, with cheaper units at night and dearer ones at the evening peak. Solar covers part of your daytime use. A night rate makes the hours the panels can't cover cheaper. With a battery or an electric car, the two together can take more off a winter bill. Your bill shows how your use splits between day and night, and that's the best guide to which tariff suits you."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "When's a good time to install?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Winter is a good time to get started. The site survey, the SEAI grant offer and the ESB Networks paperwork all take time, so a system you book in winter is usually up and running in time for spring and the long days that follow. More in our guide to [the best time of year to get solar panels](/blog/best-time-of-year-to-get-solar-panels-ireland)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "The grant"
+      },
+      {
+        "type": "paragraph",
+        "text": "SEAI pays up to €2,400: €1,800 for the panels, plus €600 if you add a battery of 5 kWh or more. The grant offer has to come through before any work starts, and we do all the paperwork. More in our [SEAI solar grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "heading",
@@ -6080,25 +6089,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. They run on daylight, not heat. A 4 kWp system makes about 110 kWh in December against about 517 kWh in June, because the days are short and the sun sits low."
+        "text": "Yes. They run on daylight, not heat. A 4 kWp system makes about 110 kWh in December and about 517 kWh in June."
       },
       {
         "type": "heading",
         "level": 3,
-        "text": "Will solar lower my winter electricity bill?"
+        "text": "Will solar lower my winter bill?"
       },
       {
         "type": "paragraph",
-        "text": "A little. In winter the house uses almost everything the panels make, but they make much less of it. The bigger effect comes across the year, from summer self-use and export credit. The standing charge stays either way."
-      },
-      {
-        "type": "heading",
-        "level": 3,
-        "text": "Does cold weather reduce solar output?"
-      },
-      {
-        "type": "paragraph",
-        "text": "No. Panels lose output as they heat up, about 0.29% per degree on LONGi's 440 W panel, so a cold, bright day suits them. Short days, low sun and cloud are what cut winter output."
+        "text": "A little. Most of the saving comes across the whole year, from summer power you use and power you sell back."
       },
       {
         "type": "heading",
@@ -6107,11 +6107,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. Your supplier credits exports under the Clean Export Guarantee at a rate it sets, and it needs a smart meter reading to pay you."
+        "text": "Yes. Your supplier needs smart meter readings to pay you under the Clean Export Guarantee."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "What happens to my solar power at night?"
       },
       {
         "type": "paragraph",
-        "text": "For the full cost, saving and payback picture, read [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026)."
+        "text": "The panels stop when it gets dark. At night the house runs on power from the grid, or from a battery if you have one."
       },
       {
         "type": "heading",
@@ -6120,16 +6125,16 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Everything above describes a typical home. Your own saving depends most on when you use power, and your bill shows that. The [bill analyser](/solar-calculator) reads your day and night split and gives a close, conservative estimate for your house. Then comes a 15-minute call to talk it through, and a site survey before anything is priced."
+        "text": "Every house is different. Upload your bill and you'll see what solar would save you, in under a minute. Prefer to read more first? See [are solar panels worth it in Ireland](/blog/are-solar-panels-worth-it-ireland-2026) or [do solar panels work in winter](/blog/solar-panels-in-winter-do-they-work)."
       },
       {
         "type": "cta",
-        "text": "Upload my bill and see my numbers",
+        "text": "Check my savings",
         "href": "/solar-calculator"
       },
       {
         "type": "paragraph",
-        "text": "Sources: PVGIS (European Commission), LONGi's LR5-54HTH-440M datasheet, pv magazine, the ITRPV roadmap, CRU decision CRU202454 and seai.ie, checked 12 November 2026."
+        "text": "Sources: PVGIS (European Commission), seai.ie and the CRU."
       }
     ]
   },
