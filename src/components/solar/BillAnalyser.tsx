@@ -1148,7 +1148,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               {figures.netCostEur != null ? (
                 <>
                   {' '}
-                  About <span {...prov('estimate')}>{eur(figures.netCostEur)}</span> after the <span {...prov('estimate')}>{eur(figures.grantEur)}</span> SEAI grant
+                  About <span {...prov('estimate')}>{eur(figures.netCostEur)}</span> after the <span {...prov('estimate')}>{eur(figures.grantEur)}</span> SEAI panels grant
                   {figures.paybackYears != null ? (
                     <>
                       , paying for itself in about <span {...prov('estimate')}>{years(figures.paybackYears)}</span>

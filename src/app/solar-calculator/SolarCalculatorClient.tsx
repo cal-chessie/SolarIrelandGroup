@@ -63,7 +63,7 @@ function CalculatorHero() {
         </div>
         <div className="flex justify-center max-w-3xl mx-auto lg:mx-0">
           {[
-            { icon: Euro, label: `${SOLAR_DATA.grant.label} SEAI Grant (ROI)`, sub: 'Automatically included' },
+            { icon: Euro, label: `${SOLAR_DATA.grant.label} SEAI Panels Grant (ROI)`, sub: 'Automatically included' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -185,7 +185,7 @@ function DataTransparency() {
     { label: 'Max panels', value: '22 panels (9.7 kWp)', source: 'Standard domestic ESB connection limit' },
     { label: 'Unit rate', value: `${Math.round(ENERGY.unitRateEur * 100)}c/kWh incl. VAT`, source: 'The bottom of the 2026 Irish market band, so savings are not overstated' },
     { label: 'Standing charge', value: `€${ENERGY.standingChargeAnnualEur}/year`, source: 'Irish standing charges 2026. Solar never removes this' },
-    { label: 'SEAI grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for homeowners, including private landlords' },
+    { label: 'SEAI panels grant', value: `${SOLAR_DATA.grant.label}`, source: 'Current SEAI Solar PV grant for homeowners, including private landlords' },
     { label: 'Export rate', value: SOLAR_DATA.export.estimateLabel, source: `Our estimate rate. Under the ${SOLAR_DATA.export.scheme} each supplier sets its own rate; the CRU sets no minimum (CRU decision ${SOLAR_DATA.export.cruDecision})` },
     { label: 'CO₂ factor', value: `${ENERGY.co2PerKwh} kg/kWh`, source: 'EirGrid marginal emission factor for Ireland' },
     { label: 'Self-consumption', value: '30-50%', source: 'What an Irish home uses directly with no battery. A battery lifts it to roughly 70-85%' },
@@ -267,7 +267,7 @@ function CostCalculatorExplainer() {
           </p>
           <p>
             The prices are Solar Ireland&apos;s own installed prices for a panels-only system, with VAT at 0%.
-            The grant is SEAI&apos;s: {SOLAR_DATA.grant.label} at {DOMESTIC_MIN_KWP} kWp or more. A battery is
+            The grant is SEAI&apos;s: the panels grant is {SOLAR_DATA.grant.label} at {DOMESTIC_MIN_KWP} kWp or more. A battery is
             left out on purpose; it is sized and priced at your survey, and a battery of 5 kWh or more earns a
             further €600 from SEAI.
           </p>

@@ -472,7 +472,7 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
   const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string } }> = {
     grants: {
       h: 'Find out what you qualify for',
-      p: 'The grant is €1,800 at 4 kWp and we guide you through it. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
+      p: 'SEAI pays up to €2,400: €1,800 for panels at 4 kWp, plus €600 with a battery of 5 kWh or more, and we guide you through it. Put your bill through the analyser and you will see the grant applied to a real system size for your house.',
       primary: { href: '/solar-calculator?src=blog-grants', label: 'Check my grant and savings' },
     },
     savings: {
@@ -621,7 +621,7 @@ function NotFound() {
     <div className="min-h-screen bg-[#0a0a0a]">
       <ScrollProgress />
       <Navbar />
-      <main className="pt-16">
+      <main className="pt-[72px] xl:pt-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -674,7 +674,10 @@ export default function BlogPostClient({ slug }: { slug: string }) {
       <ScrollProgress />
       <Navbar />
 
-      <main className="pt-16">
+      {/* The Navbar is fixed at h-[72px], xl:h-20. The top padding matches it
+          exactly so the breadcrumb strip starts below the header, not under it
+          (pt-16 left it 8 to 16px under the bar, flush against its edge). */}
+      <main className="pt-[72px] xl:pt-20">
         {/* 
             BREADCRUMB
              */}

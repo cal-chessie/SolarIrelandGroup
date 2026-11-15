@@ -4,6 +4,33 @@ Every title, meta description and redirect change made for search, with the old 
 
 ---
 
+## 15 Nov 2026 · Grant headline to up to €2,400, answer-box duplicates, winter post rewrite
+
+No URL or slug changed. Cal's ruling: where the site states the home grant as a headline or total, it says "up to €2,400" (€1,800 for panels, plus €600 with a battery of 5 kWh or more). Where €1,800 is the panels-only figure inside a calculation (€8,200 minus €1,800 = €6,400), it stays and now says "panels grant".
+
+### Titles
+
+None. Cal's ranking-safety rule for this pass: no title, seoTitle, H1, slug or URL changes, so Google picks the edits up on its normal recrawl. The winter post keeps its title and seoTitle. (Cork and Dublin seoTitles were briefly changed to "€2,400 Grant" during the pass and reverted before commit.)
+
+### Meta descriptions
+
+Changed only where the meta stated the grant total wrongly (as €1,800 for the whole grant). Metas where €1,800 is the panels-only figure inside a sum (Cork, Dublin, 3-bed semi, cost post, /solar-calculator, /financing, /counties/roscommon) were left as they were.
+
+| Page | Old | New |
+|---|---|---|
+| Worth-it post | Typical savings of €800 to €1,400 a year, payback in 5 to 7 years, and the €1,800 SEAI grant still in place. When it pays, and the cases where it doesn't. | Savings of €800 to €1,400 a year, payback in 5 to 7 years, and SEAI grants of up to €2,400 still in place. When it pays, and the cases where it doesn't. |
+| Winter post | ...How summer output and export credit carry winter bills, plus the €1,800 grant. | ...How summer output and export credit carry winter bills, and the €2,400 grant. |
+| /counties/roscommon og description | ...Real local installers, guidance on the €1,800 SEAI grant, honest quotes. | ...Real local installers, guidance on SEAI grants of up to €2,400, honest quotes. |
+
+### Answer boxes
+
+- Winter post (published 13 Nov, not yet ranking): old "No, solar will not clear a December bill in December. A 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. The saving is counted over the year: summer power you use at home, plus export credit under the Clean Export Guarantee, carries the winter months." New: "Solar makes least when bills are highest: a 4 kWp Irish system makes about 110 kWh in December and 517 kWh in June. It pays across the year instead. Summer power you use at home, plus export credit under the Clean Export Guarantee, carries the winter months, and SEAI grants of up to €2,400 cut the cost."
+- Worth-it, Cork, 3-bed semi, cost and Dublin answers: meaning unchanged; "€1,800 SEAI grant" in the panels-only sum now reads "€1,800 (SEAI) panels grant", and the worth-it headline grant reads "SEAI grants of up to €2,400".
+
+### Duplicated openings (answer box restated by the first paragraph)
+
+The answer box renders under the H1; on 21 posts, the winter post included, the first body paragraph said the same thing again. Every answer box is unchanged in meaning. The first paragraph now opens with new information, or, where it was a pure restatement, it was removed (the same words still render in the answer box above it, so no information left the page). Stray "Last checked: 12 November 2026." lines were removed; the business post already had a dated source note, and the farm and winter posts gained one at the end. `src/__tests__/blog-openings.test.ts` now fails the build's test gate if an opening restates its answer or a lone "Last checked" line comes back.
+
 ## 15 Nov 2026 · Search Console pass (actions 1 to 9)
 
 Source: `Obsidian Vault/RAW/2026-11-15 Search Console intelligence (solarirelandgroup).md`. Action 10 (Dublin guide and /financing) is held until the November 2026 core update settles. No URL or slug changed. No body content, heading or internal link was removed; sections were added.

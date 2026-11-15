@@ -51,7 +51,7 @@ const mainServices = [
     title: 'Solar PV Installation',
     tagline: 'Residential Solar Panels',
     price: '€8,200-€12,400',
-    grant: 'Before €1,800 SEAI Grant',
+    grant: 'Before SEAI grants of up to €2,400',
     color: 'amber',
     iconBg: 'bg-amber-400/10',
     iconColor: 'text-amber-400',

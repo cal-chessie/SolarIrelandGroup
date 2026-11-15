@@ -51,7 +51,7 @@ const FAQS = [
   {
     question: 'How much do solar panels cost in Roscommon?',
     answer:
-      'A standard 4 kWp system for a 3 to 4 bedroom home is €8,200 installed, or €6,400 after the €1,800 SEAI grant. Larger systems cost more but work out better per kWp. Rather than guess, upload your bill to our AI analyser and it gives you a figure based on your actual usage and roof.',
+      'A standard 4 kWp system for a 3 to 4 bedroom home is €8,200 installed, or €6,400 after the €1,800 SEAI panels grant. Larger systems cost more but work out better per kWp. Rather than guess, upload your bill to our AI analyser and it gives you a figure based on your actual usage and roof.',
   },
   {
     question: 'How much electricity will solar panels generate in Roscommon?',
@@ -59,9 +59,9 @@ const FAQS = [
       'A typical domestic system in Roscommon generates around 3,380 kWh of electricity a year. Roscommon has plenty of open, unshaded roof space on bungalows and farmhouses, which suits solar well. The households that benefit most are the ones using electricity during the day.',
   },
   {
-    question: 'Is the €1,800 SEAI grant available in Roscommon?',
+    question: 'Is the SEAI solar grant available in Roscommon?',
     answer:
-      'Yes. Roscommon is in the Republic of Ireland, so the full SEAI Solar PV grant of up to €1,800 applies to homes built and occupied before 2025. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. Domestic solar also carries 0% VAT. You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork, and we book your post-works BER assessment with a registered BER assessor before the grant is paid.',
+      'Yes. Roscommon is in the Republic of Ireland, so SEAI grants of up to €2,400 apply to homes built and occupied before 2025: up to €1,800 for solar panels, plus a flat €600 for a battery of 5 kWh or more on the same application. Domestic solar also carries 0% VAT. You apply online at mgen.seai.ie before any work starts, naming us as your installer, and we guide you through it. After the install we send SEAI the completion paperwork, and we book your post-works BER assessment with a registered BER assessor before the grant is paid.',
   },
   {
     question: 'Do I need planning permission for solar panels in Roscommon?',
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solar Panel Installers in Roscommon | Solar Ireland Group',
     description:
-      'Upload your bill and our AI shows what solar saves your Roscommon home. Real local installers, guidance on the €1,800 SEAI grant, honest quotes.',
+      'Upload your bill and our AI shows what solar saves your Roscommon home. Real local installers, guidance on SEAI grants of up to €2,400, honest quotes.',
     url: PAGE_URL,
     siteName: 'Solar Ireland Group',
     locale: 'en_IE',
@@ -158,7 +158,7 @@ export default function RoscommonPage() {
       '@type': 'Offer',
       priceCurrency: 'EUR',
       price: String(INSTALLED_4KWP),
-      description: '4 kWp system installed. €6,400 after the €1,800 SEAI grant.',
+      description: '4 kWp system installed. €6,400 after the €1,800 SEAI panels grant.',
       availability: 'https://schema.org/InStock',
     },
   };
@@ -174,7 +174,7 @@ export default function RoscommonPage() {
   };
 
   const stats = [
-    { icon: Euro, value: `€${NET_4KWP.toLocaleString()}`, label: `Typical 4 kWp system after the €${GRANT.toLocaleString()} SEAI grant` },
+    { icon: Euro, value: `€${NET_4KWP.toLocaleString()}`, label: `Typical 4 kWp system after the €${GRANT.toLocaleString()} SEAI panels grant` },
     { icon: Zap, value: `~${GENERATION_KWH.toLocaleString()} kWh`, label: 'Generated per year in Roscommon' },
     { icon: Sparkles, value: 'Free', label: 'Instant AI bill analysis, no obligation' },
   ];
@@ -209,7 +209,7 @@ export default function RoscommonPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
             Upload your electricity bill and our AI shows you exactly what solar would save your Roscommon home, in
-            minutes. Real local installers, guidance on the €1,800 SEAI grant, and an honest quote with no hard sell.
+            minutes. Real local installers, guidance on SEAI grants of up to €2,400, and an honest quote with no hard sell.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -250,7 +250,7 @@ export default function RoscommonPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               { icon: Sparkles, title: '1. Analyse your bill', body: 'Upload a recent electricity bill. Our AI reads your real usage and shows what solar would generate and save on your Roscommon home.' },
-              { icon: FileCheck, title: '2. Quote and grant', body: 'You get an honest, itemised quote. You apply for the €1,800 SEAI grant online, naming us, and we guide you through it. We notify ESB Networks for your connection.' },
+              { icon: FileCheck, title: '2. Quote and grant', body: 'You get an honest, itemised quote. You apply for your SEAI grant of up to €2,400 online, naming us, and we guide you through it. We notify ESB Networks for your connection.' },
               { icon: CheckCircle2, title: '3. One-day install', body: 'A RECI-certified team installs and commissions the system in a single day, and you start saving from switch-on.' },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -318,7 +318,7 @@ export default function RoscommonPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">See what solar saves your Roscommon home</h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
               Upload your electricity bill and our AI does the rest. Real numbers for your home, before and after the €1,800
-              SEAI grant, no obligation.
+              SEAI panels grant, no obligation.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link href="/solar-calculator" className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-black transition hover:bg-yellow-300">

@@ -18,12 +18,12 @@ const NET = GROSS - homeGrant(DOMESTIC_MIN_KWP);
 const eur = (n: number) => `€${n.toLocaleString('en-IE')}`;
 
 export const FINANCING_ANSWER =
-  'Yes. Irish banks and credit unions offer green and home improvement loans that can pay for solar panels; each lender sets its own rate and term. The SEAI grant of €1,800 is paid after the work, so you may need to borrow the full price at first. The SBCI Home Energy Upgrade Loan does not cover solar on its own.';
+  'Yes. Irish banks and credit unions offer green and home improvement loans that can pay for solar panels; each lender sets its own rate and term. SEAI grants of up to €2,400 (€1,800 for panels, plus €600 with a battery) are paid after the work, so you may need to borrow the full price at first. The SBCI Home Energy Upgrade Loan does not cover solar on its own.';
 
 export const FINANCING_FAQS: { q: string; a: string }[] = [
   {
     q: 'Can I get a loan for solar panels in Ireland?',
-    a: `Yes. Irish banks and credit unions offer personal, green and home improvement loans that can be used for solar panels. Each lender sets its own interest rate, term and conditions, so compare the APR each one quotes you rather than any figure you see advertised. A ${DOMESTIC_MIN_KWP} kWp system costs ${eur(GROSS)} installed, or ${eur(NET)} after the €1,800 SEAI grant, which tells you roughly how much you would need to borrow.`,
+    a: `Yes. Irish banks and credit unions offer personal, green and home improvement loans that can be used for solar panels. Each lender sets its own interest rate, term and conditions, so compare the APR each one quotes you rather than any figure you see advertised. A ${DOMESTIC_MIN_KWP} kWp system costs ${eur(GROSS)} installed, or ${eur(NET)} after the €1,800 SEAI panels grant, which tells you roughly how much you would need to borrow.`,
   },
   {
     q: 'Does the Home Energy Upgrade Loan cover solar panels?',
@@ -31,7 +31,7 @@ export const FINANCING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: 'How does the SEAI grant work with a loan?',
-    a: `SEAI pays the €1,800 grant after the work is done: once your completion documents and the post-works BER are in, SEAI says to allow 4 to 6 weeks for payment. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. By default it goes into your own bank account, so the usual pattern is that you pay, or borrow, the full ${eur(GROSS)} for a ${DOMESTIC_MIN_KWP} kWp system and the grant follows, which you can then put against the loan. A registered contractor can instead offer the price net of the grant, in which case you borrow ${eur(NET)}. Ask which applies before you arrange finance.`,
+    a: `SEAI pays the grant after the work is done: once your completion documents and the post-works BER are in, SEAI says to allow 4 to 6 weeks for payment. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. By default it goes into your own bank account, so the usual pattern is that you pay, or borrow, the full ${eur(GROSS)} for a ${DOMESTIC_MIN_KWP} kWp system and the grant follows, which you can then put against the loan. A registered contractor can instead offer the price net of the grant, in which case you borrow ${eur(NET)}. Ask which applies before you arrange finance.`,
   },
   {
     q: 'Is it better to pay upfront or finance solar panels?',

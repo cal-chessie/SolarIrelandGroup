@@ -27,7 +27,7 @@ export function GET() {
 
 > SEAI-registered solar panel installer serving all 32 counties of Ireland since 2019. Start with a free bill analysis: upload an electricity bill and get a free estimate of your system size, savings, SEAI grant and payback, read from your actual day and night usage. Then a call with our team to go through it. We install solar PV, battery storage and EV chargers for homes and guide homeowners through the SEAI grant (the homeowner applies online at mgen.seai.ie before any work starts, naming us as the installer).
 
-Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 2019. How it works: 1) free bill analysis and estimate on the website, 2) a call to go through your numbers, 3) a site survey and an itemised quote, 4) installation, usually in a single day, by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. The SEAI Solar PV grant is ${EUR(grant)} in the Republic of Ireland. We also send ESB Networks the NC6 grid connection notification and SEAI the grant completion paperwork. We book the homeowner's post-works BER assessment with a registered BER assessor.
+Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 2019. How it works: 1) free bill analysis and estimate on the website, 2) a call to go through your numbers, 3) a site survey and an itemised quote, 4) installation, usually in a single day, by a RECI-registered team. Domestic solar carries 0% VAT in Ireland. SEAI grants for a home reach ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} in the Republic of Ireland: up to ${EUR(grant)} for solar PV, plus ${EUR(SOLAR_DATA.batteryGrant.amount)} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}. We also send ESB Networks the NC6 grid connection notification and SEAI the grant completion paperwork. We book the homeowner's post-works BER assessment with a registered BER assessor.
 
 ## Key pages
 - [Solar calculator](${SITE}/solar-calculator): the free bill analysis and estimate: system size, annual savings, payback and 25-year return from your bill
@@ -56,12 +56,12 @@ Solar Ireland Group is a solar installer in the Republic of Ireland, founded in 
 - [Farm solar in 2027: the doubled SEAI grant or TAMS](${SITE}/blog/farm-solar-2027-doubled-seai-grant-or-tams)
 
 ## Pricing, in short
-- ${DOMESTIC_MIN_KWP} kWp panels only: ${EUR(panelsOnly)}, or ${EUR(panelsOnly - grant)} after the SEAI grant
-- ${DOMESTIC_MIN_KWP} kWp is our domestic minimum and the exact size at which the grant reaches its full ${EUR(grant)}
+- ${DOMESTIC_MIN_KWP} kWp panels only: ${EUR(panelsOnly)}, or ${EUR(panelsOnly - grant)} after the ${EUR(grant)} SEAI panels grant
+- ${DOMESTIC_MIN_KWP} kWp is our domestic minimum and the exact size at which the panels grant reaches its full ${EUR(grant)}
 - Larger systems cost less per kWp. Full list at ${SITE}/pricing.md
 
 ## The SEAI grant
-- ${EUR(grant)}, Republic of Ireland only (26 counties)
+- Up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} in all, Republic of Ireland only (26 counties): up to ${EUR(grant)} for solar panels, plus ${EUR(SOLAR_DATA.batteryGrant.amount)} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}
 - Eligibility: homeowners, including private landlords; home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN
 - There is no minimum BER. The BER assessment happens after the work, before the grant is paid
 - Apply online and wait for SEAI's letter of offer before any work starts; the works must then be completed within 8 months

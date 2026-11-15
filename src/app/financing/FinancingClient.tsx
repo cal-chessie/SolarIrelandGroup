@@ -198,7 +198,7 @@ function FinancingHero() {
 
         <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
           See exactly what your monthly repayments would be. Compare upfront vs finance,
-          factor in the €1,800 SEAI grant, and find out if solar pays for itself from day one.
+          factor in SEAI grants of up to €2,400, and find out if solar pays for itself from day one.
         </p>
 
         {/* The page was 13.6 screens tall with nothing to act on above the
@@ -224,7 +224,7 @@ function FinancingHero() {
             { icon: CreditCard, label: 'Banks & Credit Unions', sub: 'Green and home improvement loans' },
             { icon: Percent, label: 'Your Lender Sets the APR', sub: 'Compare the rate you are quoted' },
             { icon: TrendingUp, label: 'Savings vs Repayments', sub: 'See both side by side' },
-            { icon: Shield, label: '€1,800 Grant (ROI)', sub: 'We guide you through it' },
+            { icon: Shield, label: 'Up to €2,400 Grant (ROI)', sub: 'We guide you through it' },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -296,7 +296,7 @@ function TrustBadges() {
   const badges = [
     { icon: Shield, label: 'SEAI Registered', desc: 'Fully certified installer' },
     { icon: CheckCircle2, label: 'Transparent Pricing', desc: 'No hidden fees' },
-    { icon: Euro, label: '€1,800 Grant (ROI)', desc: 'You apply online, we guide you' },
+    { icon: Euro, label: 'Up to €2,400 Grant (ROI)', desc: 'You apply online, we guide you' },
     { icon: BadgeCheck, label: 'Lender-Ready Quotes', desc: 'Itemised for a loan application' },
   ];
 
@@ -427,7 +427,7 @@ function FinancingCalculator() {
                 <div>
                   <p className="text-sm font-semibold text-white">SEAI Grant Worked Into These Figures</p>
                   <p className="text-xs text-gray-500">
-                    {fmt(system.costBeforeGrant)} − {SOLAR_DATA.grant.label} grant ={' '}
+                    {fmt(system.costBeforeGrant)} − {SOLAR_DATA.grant.label} panels grant ={' '}
                     <span className="text-green-400 font-bold">{fmt(result.netCost)} after grant</span>
                   </p>
                 </div>
@@ -603,7 +603,7 @@ function FinancingCalculator() {
                   <HelpCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <p className="text-xs text-gray-300 leading-relaxed">
                     <span className="font-semibold text-white">About the grant timing.</span>{' '}
-                    These figures assume the {SOLAR_DATA.grant.label} grant is applied to your price
+                    These figures assume the {SOLAR_DATA.grant.label} panels grant is applied to your price
                     up front. SEAI pays the grant into whichever bank account is nominated on the
                     Request for Payment form (SEAI says to allow 4 to 6 weeks once it has all the
                     completion documents and the post-works BER), and by default that account is yours. Ask us at quote stage which

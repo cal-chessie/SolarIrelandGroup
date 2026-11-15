@@ -23,7 +23,7 @@ export function buildWhatsAppUrl(context: {
     text = `Hi Solar Ireland! I just used your Bill Analyser. Here are my results:\n\n💰 Monthly bill: €${context.monthlyBill}/mo\n🏠 Home: ${context.homeType}\n⚡ Provider: ${context.provider}\n\n📊 Your recommendation:\n• ${context.recommendedSystem}kWp system\n• €${context.annualSaving.toLocaleString()}/yr annual saving\n• ${context.paybackYears} year payback\n• €${context.total25yrSaving?.toLocaleString()} total 25-year savings\n\nI'd love to get a free survey - when's a good time?`;
   } else if (context.source === 'grant-checker') {
     if (context.eligible) {
-      text = `Hi! I just used your grant eligibility checker and I appear to qualify for the ${SOLAR_DATA.grant.label} SEAI grant. I'd like to book a free survey.`;
+      text = `Hi! I just used your grant eligibility checker and I appear to qualify for the SEAI grant (up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel} with a battery). I'd like to book a free survey.`;
     } else {
       text = `Hi! I checked the grant eligibility tool and I may not qualify for the grant. Can I still get solar panels?`;
     }

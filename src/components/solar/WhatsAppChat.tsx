@@ -45,7 +45,7 @@ interface QuickAction {
 
 const QUICK_ACTIONS: QuickAction[] = [
   { label: 'Solar costs', icon: Euro, message: 'How much does a full solar panel system cost in Ireland including installation?' },
-  { label: 'SEAI grant', icon: Sparkles, message: `What is the ${SOLAR_DATA.grant.label} SEAI grant and how do I get it?` },
+  { label: 'SEAI grant', icon: Sparkles, message: `What are the SEAI grants of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel} and how do I get them?` },
   { label: 'My savings', icon: Zap, message: `How much could I save with a ${SOLAR_DATA.system.avgSizeKwp}kWp system in Ireland?` },
   { label: 'Installation', icon: Clock, message: 'How long does a solar panel installation take from start to finish?' },
 ];
@@ -67,7 +67,7 @@ const FOLLOW_UP_MAP = [
     'Battery storage cost?',
     'What is the payback period?',
   ]},
-  { keywords: ['grant', 'seai', '€1,800', 'eligib'], suggestions: [
+  { keywords: ['grant', 'seai', '€1,800', '€2,400', 'eligib'], suggestions: [
     'Am I eligible for the grant?',
     'How long does the grant take?',
     'How do I apply for the grant?',

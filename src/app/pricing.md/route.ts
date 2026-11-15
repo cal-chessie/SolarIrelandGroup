@@ -40,7 +40,7 @@ Every quote is itemised after a free home survey, so the final price depends on 
 ## Standard Solar PV (${DOMESTIC_MIN_KWP} kWp)
 - For a typical 3-4 bedroom home
 - Price: ${EUR(panelsOnly)}
-- Price after the ${EUR(grant)} SEAI grant: ${EUR(panelsOnly - grant)}
+- Price after the ${EUR(grant)} SEAI panels grant: ${EUR(panelsOnly - grant)}
 
 ## Solar PV + 5 kWh Battery Storage (${DOMESTIC_MIN_KWP} kWp)
 - Higher self-consumption: roughly 70-85% rather than 30-50%
@@ -65,7 +65,8 @@ Larger systems cost less per kWp, because scaffolding, design, commissioning and
 - 25-year panel performance warranty; 5-year workmanship warranty (per our Terms)
 
 ## Grants and incentives
-- SEAI Solar PV grant: ${EUR(grant)}, Republic of Ireland only (26 counties)
+- SEAI grants: up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} for a home, Republic of Ireland only (26 counties)
+- SEAI Solar PV grant: up to ${EUR(grant)} for the panels
 - Eligibility: homeowners, including private landlords; home built and occupied before 2025, its own MPRN, no previous solar funding at that MPRN. There is no minimum BER; a BER assessment is carried out after the work, before the grant is paid
 - SEAI battery grant: ${EUR(batteryGrant(5))} for a battery of ${SOLAR_DATA.batteryGrant.minLabel}, nothing under 5 kWh. With panels, one application covers both, up to ${EUR(SOLAR_DATA.batteryGrant.withSolarMax)} together
 - SEAI EV charger grant: EUR 300

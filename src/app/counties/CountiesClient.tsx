@@ -129,11 +129,11 @@ const faqs = [
   },
   {
     question: 'How much do solar panels cost in my county?',
-    answer: 'Solar panel costs vary slightly by county depending on local demand, travel distances for installation teams, and the typical housing types in your area. A standard 4 kWp system costs €8,200 installed, which is €6,400 after the full €1,800 SEAI grant. Larger systems price better per kWp: a 10 kWp roof is about €12,400 before the grant. Every county page on our site shows specific pricing ranges for that area, so you can get a realistic estimate for your home.',
+    answer: 'Solar panel costs vary slightly by county depending on local demand, travel distances for installation teams, and the typical housing types in your area. A standard 4 kWp system costs €8,200 installed, which is €6,400 after the full €1,800 SEAI panels grant. Larger systems price better per kWp: a 10 kWp roof is about €12,400 before the grant. Every county page on our site shows specific pricing ranges for that area, so you can get a realistic estimate for your home.',
   },
   {
     question: 'Is the SEAI grant available in all 32 counties?',
-    answer: 'The SEAI (Sustainable Energy Authority of Ireland) grant of up to €1,800 is available to homeowners in the Republic of Ireland - all 26 counties qualify. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team knows the grant process for both jurisdictions and guides you through every step.',
+    answer: 'SEAI (the Sustainable Energy Authority of Ireland) pays up to €2,400 to homeowners in the Republic of Ireland, and all 26 counties qualify: up to €1,800 for solar panels, plus a flat €600 for a battery of 5 kWh or more on the same application. The grant applies to homes built and occupied before 2025, with a BER assessment carried out after the work is done. For Northern Ireland (the 6 counties), the equivalent support comes through the Northern Ireland Housing Executive\'s Renewable Heat and Energy schemes. Our team knows the grant process for both jurisdictions and guides you through every step.',
   },
   {
     question: 'How long does a solar panel installation take?',
@@ -145,7 +145,7 @@ const faqs = [
   },
   {
     question: 'Do you cover my county?',
-    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. The free estimate works everywhere we operate, and the €1,800 grant applies in the 26 Republic of Ireland counties.',
+    answer: 'Yes. We install in all 32 counties. Pick your county above for its local generation figure, typical system cost and what the SEAI grant covers there. The free estimate works everywhere we operate, and SEAI grants of up to €2,400 apply in the 26 Republic of Ireland counties.',
   },
   {
     question: 'Can I get a free solar estimate in my area?',
@@ -405,8 +405,8 @@ function BottomStats() {
     {
       icon: Euro,
       label: 'SEAI Grant Available Nationwide',
-      value: '€1,800',
-      desc: 'For qualifying homes',
+      value: '€2,400',
+      desc: 'Up to, for qualifying homes: €1,800 panels + €600 battery',
       color: 'text-green-400',
       bg: 'bg-green-400/10',
     },
@@ -556,7 +556,7 @@ export default function CountiesClient() {
             <p className="text-gray-500 text-sm sm:text-base max-w-3xl leading-relaxed mb-6">
               Our local installers know your area: the roof pitches, the shading patterns, the
               orientation that works best. We&apos;re not passing through - we live here. And with the
-              €1,800 SEAI grant, there&apos;s never been a better time to go solar.
+              SEAI grants of up to €2,400, the sums work on most roofs.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">

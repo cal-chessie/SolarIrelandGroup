@@ -37,7 +37,7 @@ const grant = seaiGrant(PANELS_ONLY_KWP);
 const batteryPackageGrant = homeGrant(PANELS_ONLY_KWP, BATTERY_KWH);
 const SITE_NAME = "Solar Ireland Group";
 const SITE_DESCRIPTION =
-  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year with a €1,800 SEAI grant (Republic of Ireland only).";
+  "SEAI-registered solar panel installers serving all 32 counties across Ireland. Get a free AI-powered electricity bill analysis and honest quote. We install quality solar PV systems to help you reduce your electricity bills by up to €1,400/year, with SEAI grants of up to €2,400 (Republic of Ireland only).";
 
 const webPageSchema = {
   "@context": "https://schema.org",
@@ -98,7 +98,7 @@ const serviceSchema = {
   "@id": `${SITE_URL}/#service`,
   name: "Residential Solar Panel Installation",
   description:
-    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, guidance on the SEAI grant application, professional installation by RECI-certified electricians, the ESB Networks NC6 notification and the SEAI completion paperwork. Save up to €1,400/year with a €1,800 SEAI grant.",
+    "Complete solar PV system installation for Irish homes. Includes free AI-powered electricity bill analysis, free home survey, guidance on the SEAI grant application, professional installation by RECI-certified electricians, the ESB Networks NC6 notification and the SEAI completion paperwork. Save up to €1,400/year, with SEAI grants of up to €2,400.",
   url: SITE_URL,
   provider: {
     "@id": `${SITE_URL}/#business`,
@@ -190,7 +190,7 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Installation Day",
-      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We send SEAI the completion paperwork for your €1,800 grant (Republic of Ireland), which you applied for online before the work started. We book your post-works BER assessment, and SEAI pays the grant into the account nominated on the Request for Payment form once it is published.",
+      text: "Installation is completed in a single day. Scaffolding goes up in the morning, panels are mounted and wired by our certified team, and the system is fully commissioned before we leave. We send SEAI the completion paperwork for your SEAI grant (Republic of Ireland), which you applied for online before the work started. We book your post-works BER assessment, and SEAI pays the grant into the account nominated on the Request for Payment form once it is published.",
       position: 3,
     },
   ],
@@ -201,7 +201,7 @@ const financialProductSchema = {
   "@type": "FinancialProduct",
   name: "SEAI Solar PV Grant",
   description:
-    "The Sustainable Energy Authority of Ireland (SEAI) offers a €1,800 grant towards the cost of installing solar panels on residential properties in the Republic of Ireland (26 counties). The grant is available to homeowners, including private landlords, of homes built and occupied before 2025.",
+    "The Sustainable Energy Authority of Ireland (SEAI) offers up to €2,400 towards home solar in the Republic of Ireland (26 counties): up to €1,800 for solar panels, plus a flat €600 for a battery of 5 kWh or more. The grant is available to homeowners, including private landlords, of homes built and occupied before 2025.",
   url: "https://www.seai.ie/grants/home-energy-grants/solar-pv/",
   provider: {
     "@type": "Organization",

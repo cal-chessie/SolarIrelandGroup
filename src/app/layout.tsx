@@ -243,7 +243,7 @@ const localBusinessSchema = {
   hasMap: "https://maps.google.com/?cid=13510276123838672648",
   sameAs: ["https://maps.google.com/?cid=13510276123838672648"],
   description:
-    "SEAI-registered solar panel installation company serving homes across Ireland. Free AI-powered electricity bill analysis, honest quotes, and quality installations with a €1,800 SEAI grant available.",
+    "SEAI-registered solar panel installation company serving homes across Ireland. Free AI-powered electricity bill analysis, honest quotes, and quality installations, with SEAI grants of up to €2,400: €1,800 for panels, plus €600 with a battery of 5 kWh or more.",
   priceRange: "€€",
   currenciesAccepted: "EUR",
   paymentAccepted: "Cash, Credit Card, Bank Transfer",
