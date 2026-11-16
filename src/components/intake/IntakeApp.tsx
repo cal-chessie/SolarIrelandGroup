@@ -63,7 +63,7 @@ import {
   type Step,
 } from './model';
 import { Collapse, EuroInput, Field, NoteRow, parseEuro, PrimaryButton, Spinner, TextInput } from './ui';
-import { CALLER, CALLER_START } from '@/lib/intake/caller';
+import { CALLER_START } from '@/lib/intake/caller';
 
 export interface IntakeAppProps {
   variant: 'layer' | 'page';
