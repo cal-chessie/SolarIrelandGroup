@@ -1624,7 +1624,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <h2 className="si-lane-title">{emailable ? 'Your estimate, in your inbox' : 'Your figures, worked out in full'}</h2>
       <p className="si-sub">
         {emailable
-          ? `Next we ask where to send it. Then ${CALLER} rings you for a free 15-minute call to go through it.`
+          ? "Your estimate goes to your inbox, and one of our team will ring you to talk it through."
           : `Next we ask where to ring you. ${CALLER_START} works out your full figures with you on a free 15-minute call.`}
       </p>
       {addBill ? <div className="si-mt-24">{addBill}</div> : null}
