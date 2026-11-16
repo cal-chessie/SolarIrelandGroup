@@ -11,8 +11,8 @@
  * valid Eircode, one line says it will be used, with a way to leave it off.
  *
  * Cal's answers (4 Nov): the best time is one tap and never required; the
- * confirmation says "Cal will ring you today. If it's late, first thing
- * tomorrow." Never office hours, never a working day, never "we'll tell you
+ * confirmation says "Thanks, Mary. Our team will ring you shortly." (16 Nov:
+ * never a person's name, see lib/intake/caller.) Never office hours, never a working day, never "we'll tell you
  * straight".
  */
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
@@ -26,6 +26,7 @@ import { funnel, generateLead, type LeadRoad } from '@/lib/intake/funnel';
 import { ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
 import { Banner, Field, PrimaryButton, TextInput } from './ui';
+import { CALLER_START } from '@/lib/intake/caller';
 
 export interface CallDetails {
   name: string;
@@ -130,31 +131,27 @@ const dublinWeekday = (t: number) => new Intl.DateTimeFormat('en-IE', { timeZone
 /** What a returning visitor sees instead of a blank form. */
 export function CallRemembered({
   memory,
-  who,
   onAnother,
   headingLevel = 'h2',
 }: {
   memory: CallMemory;
-  who: string | null;
   onAnother: () => void;
   headingLevel?: 'h1' | 'h2' | 'h3';
 }) {
   const H = headingLevel;
   const today = dublinDay(memory.at) === dublinDay(Date.now());
-  const name = who || 'We';
-  const verb = who ? 'is' : 'are';
   return (
     <div className="si-ask si-ask--remembered" data-call-remembered="">
       <span className="si-done-mark" aria-hidden="true">
         <PhoneIncoming size={24} />
       </span>
       <H className="si-ask__title si-mt-24">
-        {today ? `${name} ${verb} ringing you today${memory.first ? `, ${memory.first}` : ''}.` : `You asked for a free call on ${dublinWeekday(memory.at)}.`}
+        {today ? `${CALLER_START} is ringing you today${memory.first ? `, ${memory.first}` : ''}.` : `You asked for a free call on ${dublinWeekday(memory.at)}.`}
       </H>
       <p className="si-ask__sub">
         {today
           ? `Your free 15-minute call is booked in. If it's late, first thing tomorrow.${memory.bestTime ? ` ${BEST_LINE[memory.bestTime]}` : ''}`
-          : `If ${who || 'we'} ${who ? "hasn't" : "haven't"} reached you yet, ring us on ${PHONE} and we'll take it from there.`}
+          : `If we haven't reached you yet, ring us on ${PHONE} and we'll take it from there.`}
       </p>
       <div className="si-ask__go si-ask__go--row">
         <a className="si-btn si-btn--secondary" href={PHONE_HREF}>
@@ -200,10 +197,9 @@ type Issue = null | { kind: 'failed' } | { kind: 'rate' };
  * The ask's own words, by whether an estimate will really be emailed. With a
  * priced bill: "Send my full estimate" and the same-day call line. Without
  * one (the bill was skipped, or could not be priced): nothing about an email,
- * Cal works the estimate out with them on the call.
+ * a member of our team works the estimate out with them on the call.
  */
-export function askCopy(o: { estimate: boolean; who: string | null }): { cta: string; promise: string; busy: string; before: string } {
-  const by = o.who || 'We';
+export function askCopy(o: { estimate: boolean }): { cta: string; promise: string; busy: string; before: string } {
   if (o.estimate) {
     return {
       cta: 'Send my savings',
@@ -214,9 +210,9 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
   }
   return {
     cta: 'Ring me today',
-    promise: `${by} will ring you today and work out your estimate with you.`,
+    promise: `${CALLER_START} will ring you today and work out your estimate with you.`,
     busy: 'Sending',
-    before: `before ${o.who || 'we'} can ring you`,
+    before: 'before we can ring you',
   };
 }
 
@@ -272,7 +268,6 @@ export function CallAsk({
   details,
   onDetails,
   ctx,
-  who,
   onSent,
   bar,
   heading,
@@ -288,7 +283,6 @@ export function CallAsk({
   details: CallDetails;
   onDetails: (d: Partial<CallDetails>) => void;
   ctx: CallContext;
-  who: string | null;
   onSent: (res: SubmitResponse, d: CallDetails, sent: { estimate: boolean }) => void;
   bar?: (button: ReactNode, extra: ReactNode) => ReactNode;
   heading: ReactNode;
@@ -311,7 +305,6 @@ export function CallAsk({
     return (
       <CallRemembered
         memory={memory}
-        who={who}
         headingLevel={headingLevel}
         onAnother={() => {
           forgetCall();
@@ -322,7 +315,7 @@ export function CallAsk({
   }
   return (
     <CallForm
-      {...{ idPrefix, details, onDetails, ctx, who, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta }}
+      {...{ idPrefix, details, onDetails, ctx, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta }}
     />
   );
 }
@@ -332,7 +325,6 @@ function CallForm({
   details,
   onDetails,
   ctx,
-  who,
   onSent,
   bar,
   heading,
@@ -348,7 +340,6 @@ function CallForm({
   details: CallDetails;
   onDetails: (d: Partial<CallDetails>) => void;
   ctx: CallContext;
-  who: string | null;
   onSent: (res: SubmitResponse, d: CallDetails, sent: { estimate: boolean }) => void;
   bar?: (button: ReactNode, extra: ReactNode) => ReactNode;
   heading: ReactNode;
@@ -375,11 +366,10 @@ function CallForm({
   const viewed = useRef(false);
 
   const id = (k: string) => `${idPrefix}-${k}`;
-  const whoOr = who || 'we';
   // The estimate email is AISolar's answer to a priced bill (the quote token).
   // No token, no estimate: the copy never promises one (H2, 9 Nov review).
   const estimate = !!ctx.quoteToken;
-  const ask = askCopy({ estimate, who });
+  const ask = askCopy({ estimate });
 
   useEffect(() => {
     if (viewed.current) return;
@@ -408,8 +398,8 @@ function CallForm({
   }, [issue]);
 
   const errors: Record<string, string> = {};
-  if (details.name.trim().length < 2) errors.name = `Add your name so ${whoOr === 'we' ? 'we know' : `${whoOr} knows`} who we're calling.`;
-  if (!details.mobile.trim()) errors.mobile = `Add a mobile so ${whoOr} can ring you.`;
+  if (details.name.trim().length < 2) errors.name = "Add your name so we know who we're calling.";
+  if (!details.mobile.trim()) errors.mobile = 'Add a mobile so we can ring you.';
   else if (!isPhone(details.mobile)) errors.mobile = 'That mobile looks short. Irish mobiles start 08 and have 10 digits.';
   if (!details.email.trim()) errors.email = 'Add your email.';
   else if (!isEmail(details.email)) errors.email = "Check your email. It needs an @ and a dot.";
@@ -594,7 +584,7 @@ function CallForm({
       );
     if (k === 'mobile')
       return (
-        <Field id={id('mobile')} label="Mobile" hint={`So ${whoOr} can ring you for the call.`} error={errOf('mobile')}>
+        <Field id={id('mobile')} label="Mobile" hint="So we can ring you for the call." error={errOf('mobile')}>
           <TextInput
             id={id('mobile')}
             name="tel"
@@ -764,41 +754,42 @@ function saveContact() {
  * and the owner has it by email (lib/intake/live/outbox.ts). Nothing has been
  * emailed to the homeowner, so the held state never says "check your inbox".
  */
-export function callDoneCopy(o: { held: boolean; who: string | null; first: string; estimate?: boolean; typed?: boolean }): { title: string; facts: string; announce: string } {
-  const by = o.who || 'We';
+export function callDoneCopy(o: { held: boolean; first: string; estimate?: boolean; typed?: boolean }): { title: string; facts: string; announce: string } {
+  // Cal's words (16 Nov 2026): "Our team will ring you shortly." Never a name.
+  const thanks = `Thanks${o.first ? `, ${o.first}` : ''}.`;
+  const ring = 'Our team will ring you shortly.';
   if (o.held) {
     return {
-      title: `Saved. ${by} will ring you today.`,
-      facts: "If it's late, first thing tomorrow.",
-      announce: `Saved. ${by} will ring you today.`,
+      title: `Saved. ${ring}`,
+      facts: '',
+      announce: `Saved. ${ring}`,
     };
   }
   if (o.estimate === false) {
     // No priced bill went with it: no estimate email is coming, so none is promised.
     return {
-      title: `Thanks${o.first ? `, ${o.first}` : ''}. ${by} will ring you today.`,
-      facts: `${by} will work out your estimate with you on the call. If it's late, first thing tomorrow.`,
-      announce: `Sent. ${by} will ring you today.`,
+      title: `${thanks} ${ring}`,
+      facts: "We'll work out your estimate with you on the call.",
+      announce: `Sent. ${ring}`,
     };
   }
   if (o.typed) {
     // From the amount they typed: their estimate, not a "full" one read off a bill.
     return {
-      title: `Thanks, ${o.first}. Your estimate is on its way.`,
-      facts: `Check your inbox. ${o.who ? `${o.who} rings` : 'We ring'} you today to talk it through. If it's late, first thing tomorrow.`,
+      title: `${thanks} Your estimate is on its way.`,
+      facts: `Check your inbox. ${ring} We'll talk it through.`,
       announce: 'Your estimate is on its way.',
     };
   }
   return {
-    title: `Thanks, ${o.first}. Your full estimate is on its way.`,
-    facts: `Check your inbox. ${o.who ? `${o.who} rings` : 'We ring'} you today to talk it through. If it's late, first thing tomorrow.`,
+    title: `${thanks} Your full estimate is on its way.`,
+    facts: `Check your inbox. ${ring} We'll talk it through.`,
     announce: 'Your full estimate is on its way.',
   };
 }
 
 export function CallDone({
   details,
-  who,
   headingRef,
   headingLevel = 'h2',
   footer,
@@ -807,7 +798,6 @@ export function CallDone({
   typed = false,
 }: {
   details: CallDetails;
-  who: string | null;
   headingRef?: React.Ref<HTMLHeadingElement>;
   headingLevel?: 'h1' | 'h2';
   footer?: ReactNode;
@@ -819,8 +809,8 @@ export function CallDone({
   typed?: boolean;
 }) {
   const H = headingLevel;
-  const fname = firstName(details.name) || 'there';
-  const copy = callDoneCopy({ held, who, first: fname, estimate, typed });
+  const fname = firstName(details.name) || '';
+  const copy = callDoneCopy({ held, first: fname, estimate, typed });
   return (
     <div className="si-done-call" data-call-done={held ? 'held' : estimate ? 'sent' : 'call'}>
       <span className="si-done-mark" aria-hidden="true">
@@ -831,7 +821,7 @@ export function CallDone({
       <H className="si-ask__title si-mt-24" ref={headingRef} tabIndex={-1}>
         {copy.title}
       </H>
-      <p className="si-facts">{copy.facts}</p>
+      {copy.facts ? <p className="si-facts">{copy.facts}</p> : null}
       <p className="si-done-call__line">
         We&apos;ll ring <b className="si-white">{details.mobile.trim()}</b>.{details.bestTime ? ` ${BEST_LINE[details.bestTime]}` : ''}
       </p>

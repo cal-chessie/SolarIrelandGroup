@@ -11,20 +11,26 @@ import { CallDone, callDoneCopy } from '@/components/intake/CallAsk';
 const details = { name: 'Mary Byrne', mobile: '087 123 4567', email: 'mary@example.ie', bestTime: null };
 
 describe('CallDone held (H3)', () => {
-  it('a held submit (fallback) says "Saved. Cal will ring you today." and never "check your inbox"', () => {
-    render(<CallDone details={details} who="Cal" held />);
-    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Saved. Cal will ring you today.');
+  it('a held submit (fallback) says "Saved. Our team will ring you shortly." and never "check your inbox"', () => {
+    render(<CallDone details={details} held />);
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Saved. Our team will ring you shortly.');
     const text = document.body.textContent || '';
     expect(text).not.toMatch(/inbox/i);
     expect(text).not.toMatch(/on its way/i);
     expect(text).toContain('087 123 4567');
   });
   it('an accepted submit keeps the estimate promise', () => {
-    render(<CallDone details={details} who="Cal" />);
+    render(<CallDone details={details} />);
     expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Your full estimate is on its way.');
   });
   it('the screen-reader line matches', () => {
-    expect(callDoneCopy({ held: true, who: null, first: '' }).announce).toBe('Saved. We will ring you today.');
+    expect(callDoneCopy({ held: true, first: '' }).announce).toBe('Saved. Our team will ring you shortly.');
+  });
+});
+
+describe('no first name', () => {
+  it('thanks without a name rather than "there"', () => {
+    expect(callDoneCopy({ held: false, first: '', estimate: false }).title).toBe('Thanks. Our team will ring you shortly.');
   });
 });
 
@@ -42,17 +48,18 @@ describe('the replay cron', () => {
 describe('no priced bill, no estimate promise (H2)', () => {
   it('the ask without a quote token sells the call, not an email', async () => {
     const { askCopy } = await import('@/components/intake/CallAsk');
-    const c = askCopy({ estimate: false, who: 'Cal' });
+    const c = askCopy({ estimate: false });
     expect(c.cta).not.toMatch(/estimate/i);
-    expect(c.promise).toBe('Cal will ring you today and work out your estimate with you.');
+    expect(c.promise).toBe('A member of our team will ring you today and work out your estimate with you.');
     expect(`${c.cta} ${c.promise} ${c.busy}`).not.toMatch(/email|inbox|on its way|send my/i);
-    expect(askCopy({ estimate: true, who: 'Cal' }).cta).toBe('Send my savings');
+    expect(askCopy({ estimate: true }).cta).toBe('Send my savings');
   });
   it('the confirmation without one never says the estimate is on its way', () => {
-    render(<CallDone details={details} who="Cal" estimate={false} />);
+    render(<CallDone details={details} estimate={false} />);
     const text = document.body.textContent || '';
-    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Cal will ring you today.');
-    expect(text).toContain('Cal will work out your estimate with you on the call.');
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Our team will ring you shortly.');
+    expect(text).toContain("We'll work out your estimate with you on the call.");
     expect(text).not.toMatch(/inbox|on its way/i);
+    expect(text).not.toMatch(/\bCal\b/);
   });
 });

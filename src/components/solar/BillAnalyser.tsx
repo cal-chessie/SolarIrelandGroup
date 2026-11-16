@@ -171,7 +171,6 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
   const lastFile = useRef<File | null>(null);
   const viewed = useRef(false);
 
-  const who = config?.survey.homeownerFacingName ?? null;
 
   useEffect(() => {
     setFid(flowId());
@@ -480,7 +479,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
     setHeld(!!res.fallback);
     setSentEstimate(sent.estimate);
     setPhase('done');
-    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate }).announce);
+    setAnnounce(callDoneCopy({ held: !!res.fallback, first: '', estimate: sent.estimate }).announce);
   };
 
   const onDrop = (e: DragEvent) => {
@@ -1162,7 +1161,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
           )}
         </>
       ) : quoteStatus === 'error' ? (
-        <p className="si-an-line si-an-saving__down">We can&apos;t work out your saving this second. {who || 'We'} can go through it with you on the call.</p>
+        <p className="si-an-line si-an-saving__down">We can&apos;t work out your saving this second. We can go through it with you on the call.</p>
       ) : quoteStatus === 'loading' ? (
         <div aria-busy="true">
           <span className="si-skel si-skel--hero" />
@@ -1198,7 +1197,6 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
         idPrefix={`si-an-${door}`}
         details={details}
         onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
-        who={who}
         online={online}
         heading={askHeadline({ estimate: !!quote?.quoteToken, battery: !!battery, business: isBiz }).heading}
         headingLevel="h3"
@@ -1226,7 +1224,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
 
   const doneCard = (
     <div className="si-an-card si-an-done">
-      <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />
+      <CallDone details={details} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />
     </div>
   );
 

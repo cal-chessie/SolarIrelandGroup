@@ -59,6 +59,7 @@ import { billBand, funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { estimate } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { CALLER } from '@/lib/intake/caller';
 // intake.css loads when the quiz opens (tryOpen below), not when this mounts
 // at idle: on the home page that idle load shipped the whole intake app's CSS
 // during the first load, 86% of it unused (PageSpeed, 13 Nov 2026).
@@ -206,7 +207,6 @@ export default function ExitIntent() {
   const headRef = useRef<HTMLHeadingElement>(null);
   const fired = useRef(false);
 
-  const who = config?.survey.homeownerFacingName ?? null;
 
   /* Remember typing anywhere on the site this session: the quiz never interrupts a form. */
   useEffect(() => {
@@ -546,7 +546,7 @@ export default function ExitIntent() {
             </>
           ) : (
             <p className="text-sm text-gray-400 leading-relaxed" role="alert">
-              We couldn&apos;t work that out just now. Leave your details and {who || 'we'} will ring you today and work it out with you, or ring us on{' '}
+              We couldn&apos;t work that out just now. Leave your details and {CALLER} will ring you today and work it out with you, or ring us on{' '}
               <a className="text-yellow-400 underline underline-offset-2" href={PHONE_HREF}>
                 {PHONE}
               </a>
@@ -583,7 +583,7 @@ export default function ExitIntent() {
               setStage('ask');
             }}
           >
-            {priced ? 'See my full savings' : `Ask ${who || 'us'} to ring me`} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            {priced ? 'See my full savings' : 'Ask us to ring me'} <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </>
@@ -595,7 +595,6 @@ export default function ExitIntent() {
           idPrefix="si-exit"
           details={details}
           onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
-          who={who}
           heading={
             quotes?.at.quoteToken && !evOnly ? (
               <>
@@ -642,7 +641,7 @@ export default function ExitIntent() {
   } else {
     body = (
       <div className="si-analyser si-exit__ask">
-        <CallDone details={details} who={who} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />
+        <CallDone details={details} headingRef={headRef} headingLevel="h2" held={held} estimate={sentEstimate} />
       </div>
     );
   }

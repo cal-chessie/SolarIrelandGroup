@@ -163,7 +163,7 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
     ...(call && p.mprn ? [`MPRN (from their bill): ${p.mprn}`] : []),
     `Bill: ${p.monthlyBill != null ? `€${p.monthlyBill} a month` : 'not given'}`,
     '',
-    call ? 'They were told: "Cal will ring you today. If it\'s late, first thing tomorrow." Ring them.' : 'They were told: "Saved, not booked yet. We\'ll confirm by email."',
+    call ? 'They were told: "Saved. Our team will ring you shortly." Ring them.' : 'They were told: "Saved, not booked yet. We\'ll confirm by email."',
     '',
     stored
       ? 'The website holds this lead and sends it again every few minutes until AISolar accepts it, with the same reference, so it can never become two leads. When it lands you get the usual new-lead alert from AISolar.'

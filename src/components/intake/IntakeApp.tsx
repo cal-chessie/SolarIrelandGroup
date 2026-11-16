@@ -63,6 +63,7 @@ import {
   type Step,
 } from './model';
 import { Collapse, EuroInput, Field, NoteRow, parseEuro, PrimaryButton, Spinner, TextInput } from './ui';
+import { CALLER, CALLER_START } from '@/lib/intake/caller';
 
 export interface IntakeAppProps {
   variant: 'layer' | 'page';
@@ -197,7 +198,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const seg = draft.segment;
   const isBiz = seg === 'commercial';
-  const who = config?.survey.homeownerFacingName ?? null;
   const figures = quote?.hasBasis ? quote.figures : null;
   const hasBasis = draft.bill != null || draft.annualKwh != null;
   /** The typed path: a figure they gave us, no bill read. Every word on it must be true for a typed amount. */
@@ -845,7 +845,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate, typed }).announce);
+    setAnnounce(callDoneCopy({ held: !!res.fallback, first: '', estimate: sent.estimate, typed }).announce);
   };
 
   /* ── Pieces ────────────────────────────────────────────────────── */
@@ -1578,12 +1578,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const addBillBusy = photo.where === 'time' && photo.status !== 'idle';
   const addBill = addBillOn ? (
     <div className="si-addbill" data-add-bill="">
-      <p className="si-small">A good estimate from the amount you typed. Have your bill to hand? Add it before we send this and the figures get sharper.</p>
+      <p className="si-small">A good estimate from the amount you typed. Have your bill to hand? Add it before we send this for a more accurate estimate.</p>
       {addBillBusy ? (
         <div className="si-mt-12">{photoRow('time')}</div>
       ) : (
         <button type="button" className="si-btn si-btn--secondary si-mt-12" onClick={addBillForSharper}>
-          <Camera size={18} aria-hidden="true" /> Add my bill for a sharper estimate
+          <Camera size={18} aria-hidden="true" /> Add my bill for a more accurate estimate
         </button>
       )}
     </div>
@@ -1624,8 +1624,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <h2 className="si-lane-title">{emailable ? 'Your estimate, in your inbox' : 'Your figures, worked out in full'}</h2>
       <p className="si-sub">
         {emailable
-          ? `Next we ask where to send it. Then ${who || 'a member of the team'} rings you for a free 15-minute call to go through it.`
-          : `Next we ask where to ring you. ${who || 'A member of the team'} works out your full figures with you on a free 15-minute call.`}
+          ? `Next we ask where to send it. Then ${CALLER} rings you for a free 15-minute call to go through it.`
+          : `Next we ask where to ring you. ${CALLER_START} works out your full figures with you on a free 15-minute call.`}
       </p>
       {addBill ? <div className="si-mt-24">{addBill}</div> : null}
       <div className="si-actions">
@@ -1689,7 +1689,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         idPrefix="si"
         details={det}
         onDetails={updateCall}
-        who={who}
         online={online}
         heading={headline.heading}
         headingLevel={asH1 ? 'h1' : 'h2'}
@@ -1733,7 +1732,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} />
+      <CallDone details={det} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );

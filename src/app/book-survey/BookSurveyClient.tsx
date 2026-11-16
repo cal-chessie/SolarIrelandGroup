@@ -16,7 +16,7 @@
  *  - ?lt= with full details on file: "Is this you?" and one button. A bill on
  *    file is priced silently; no bill on file asks the one question first.
  *  - ?lt= with something missing: the form, prefilled with what is on file.
- *  - A device that already asked: "Cal is ringing you today" (inside CallAsk).
+ *  - A device that already asked: "A member of our team is ringing you today" (inside CallAsk).
  *
  * Every submit goes through /api/intake/submit as intent "call" with the
  * magic link threaded, so a return visit never makes a second lead.
@@ -35,6 +35,7 @@ import { stripSensitiveParams } from '@/lib/privacyUrl';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { parseLinkToken } from '@/lib/intake/linkToken';
 import '@/components/intake/intake.css';
+import { CALLER } from '@/lib/intake/caller';
 
 const PHONE = SOLAR_DATA.provider.phone;
 const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
@@ -82,7 +83,6 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   const [online, setOnline] = useState(true);
   const doneRef = useRef<HTMLHeadingElement>(null);
 
-  const who = config?.survey.homeownerFacingName ?? null;
 
   useEffect(() => {
     setFid(flowId());
@@ -199,7 +199,6 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
   };
 
   const confirm = link.state === 'ready' && link.full;
-  const name = who || 'Solar Ireland';
 
   const segmentPick = (
     <div className="si-callpage__seg" role="group" aria-label="Who the call is for">
@@ -223,7 +222,6 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         details={sent.d}
         held={sent.held}
         estimate={sent.estimate}
-        who={who}
         headingRef={doneRef}
         headingLevel="h2"
         footer={
@@ -246,7 +244,6 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
     card = (
       <CallRemembered
         memory={memory}
-        who={who}
         headingLevel="h2"
         onAnother={() => {
           forgetCall();
@@ -263,7 +260,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           <h2 className="si-ask__title" ref={billHeadRef} tabIndex={-1}>
             Roughly what&apos;s your electricity bill a month?
           </h2>
-          <p className="si-ask__sub">One tap. It turns into your full estimate, sent by email, before {name} rings you.</p>
+          <p className="si-ask__sub">One tap. It turns into your full estimate, sent by email, before we ring you.</p>
           <div className="si-exit__chips" role="group" aria-label="Your monthly electricity bill">
             {chips.map((a, i) => {
               const orMore = i === chips.length - 1;
@@ -276,7 +273,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
             })}
           </div>
           <button type="button" className="si-btn--quiet si-callpage__skip" onClick={() => answerBill('skipped')}>
-            Not sure? Skip this and {who || 'we'} will work it out with you on the call
+            Not sure? Skip this and we will work it out with you on the call
           </button>
         </div>
       </>
@@ -306,7 +303,6 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           idPrefix="si-bs"
           details={details}
           onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
-          who={who}
           online={online}
           confirm={confirm}
           cta="Send my savings"
@@ -317,7 +313,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
             confirm
               ? quote
                 ? 'One tap and your savings are on their way. Say when suits best for the call, if you like.'
-                : `One tap and ${who || 'we'} will ring you today. Say when suits best, if you like.`
+                : `One tap and ${CALLER} will ring you today. Say when suits best, if you like.`
               : priced
                 ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. ${askHeadline({ estimate: true, business: segment === 'commercial' }).sub}`
                 : askHeadline({ estimate: !!quote, business: segment === 'commercial' }).sub
@@ -359,7 +355,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
                 Get your full solar estimate
               </h1>
               <p className="si-callpage__sub">
-                Tell us roughly what your electricity bill is and we email your full estimate. Then {name} rings you for a free 15-minute call, not a visit, to go through it and answer anything about the SEAI grant. No obligation.
+                Tell us roughly what your electricity bill is and we email your full estimate. Then {CALLER} rings you for a free 15-minute call, not a visit, to go through it and answer anything about the SEAI grant. No obligation.
               </p>
             </section>
             <section className="si-callpage__more-lane" aria-label="What happens on the call">

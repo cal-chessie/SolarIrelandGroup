@@ -62,7 +62,7 @@ describe('/book-survey cold', () => {
     expect(screen.getByRole('button', { name: 'Ring me today' })).toBeTruthy();
     const body = await fillAndSend();
     expect(body.quoteToken).toBeNull();
-    const done = await screen.findByRole('heading', { level: 2, name: /ring you today/ });
+    const done = await screen.findByRole('heading', { level: 2, name: /ring you shortly/ });
     expect(done.textContent).not.toMatch(/estimate/);
     expect(document.body.textContent).not.toMatch(/inbox|on its way/i);
   });

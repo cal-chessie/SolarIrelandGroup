@@ -99,7 +99,6 @@ describe('lead attribution', () => {
         details={{ name: 'Test Person', mobile: '087 123 4567', email: 'test@example.com', bestTime: null }}
         onDetails={() => {}}
         ctx={{ segment: 'domestic', door: 'calculator', src: null, pkg: null, countyContext: null, flowId: 'f1', monthlyBill: 150, annualKwh: null, billPeriod: 'month', supplier: null, quoteToken: null, billRead: null, carry: null }}
-        who="Cal"
         onSent={() => {}}
         heading="Ask"
       />,
