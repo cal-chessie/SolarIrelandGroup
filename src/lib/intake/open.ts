@@ -29,6 +29,8 @@ export interface IntakeOpenOptions {
 }
 
 export const INTAKE_PATH = '/estimate';
+/** Long enough for a blog slug (the longest is 46), so a post's lead keeps its whole name. AISolar stores 200. */
+const SRC_MAX = 80;
 export const INTAKE_REQUEST_EVENT = 'sig:intake-request';
 
 const clean = (v: string | null | undefined, max = 60) =>
@@ -68,7 +70,7 @@ export function parseIntakeQuery(q: URLSearchParams | Record<string, string | st
     per: per === '2months' ? '2months' : 'month',
     pkg: clean(get('pkg')),
     county: clean(get('county'), 30),
-    src: clean(get('src'), 40),
+    src: clean(get('src'), SRC_MAX),
   };
 }
 
@@ -129,7 +131,7 @@ export function openIntake(o: IntakeOpenOptions): void {
   const here = new URLSearchParams(window.location.search);
   const full: IntakeOpenOptions = {
     ...o,
-    src: o.src ?? clean(here.get('src'), 40),
+    src: o.src ?? clean(here.get('src'), SRC_MAX),
     pkg: o.pkg ?? clean(here.get('pkg')),
     county: o.county ?? clean(here.get('county'), 30),
   };
@@ -150,7 +152,7 @@ export function openIntake(o: IntakeOpenOptions): void {
 export function intakeOptsForHref(href: string, door: string): IntakeOpenOptions | null {
   const [path, query = ''] = href.split('?');
   const q = new URLSearchParams(query);
-  if (path === '/solar-calculator') return { door, src: clean(q.get('src'), 40) ?? door };
-  if (path === '/book-survey') return { door, step: 'time', src: clean(q.get('src'), 40) ?? door };
+  if (path === '/solar-calculator') return { door, src: clean(q.get('src'), SRC_MAX) ?? door };
+  if (path === '/book-survey') return { door, step: 'time', src: clean(q.get('src'), SRC_MAX) ?? door };
   return null;
 }

@@ -21,6 +21,7 @@ import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } f
 import { firstName, isEmail, isPhone, normalisePhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
+import { leadAttribution } from '@/lib/postOrigin';
 import { funnel, generateLead, type LeadRoad } from '@/lib/intake/funnel';
 import { ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
@@ -428,8 +429,8 @@ function CallForm({
         segment: ctx.segment,
         businessName: null,
         door: ctx.door,
-        page: typeof window !== 'undefined' ? window.location.pathname : '/',
-        src: ctx.src,
+        // The post that sent them, when a blog bill box did (src/lib/postOrigin.ts).
+        ...leadAttribution(ctx.src, typeof window !== 'undefined' ? window.location.pathname : '/'),
         pkg: ctx.pkg,
         countyContext: ctx.countyContext,
         billPeriod: ctx.billPeriod,
