@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef, Fragment, type ReactNode } from 'react';
 import { motion } from '@/lib/motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,6 +26,8 @@ import Footer from '@/components/solar/Footer';
 import WhatsAppChat from '@/components/solar/WhatsAppChat';
 import PageIntake from '@/components/solar/PageIntake';
 import ScrollProgress from '@/components/solar/ScrollProgress';
+import PostBillBox, { postBillBoxIndex, trackPostCta, useSeenOnce } from './PostBillBox';
+import { recordPostOrigin } from '@/lib/postOrigin';
 import { getArticleBySlug, type ContentSection } from '@/lib/blog-data';
 import { getRelatedGuides } from '@/lib/related-guides';
 
@@ -153,12 +155,12 @@ function renderInline(text: string): ReactNode {
   });
 }
 
-function ContentRenderer({ content }: { content: ContentSection[] }) {
+function ContentRenderer({ content, slug }: { content: ContentSection[]; slug: string }) {
   let headingIdx = 0;
+  // The "Your bill, your number" box goes in once, after the first H2 section.
+  const boxAt = postBillBoxIndex(content);
 
-  return (
-    <div className="space-y-6">
-      {content.map((section, idx) => {
+  const renderSection = (section: ContentSection, idx: number): ReactNode => {
         switch (section.type) {
           case 'paragraph':
             return (
@@ -353,7 +355,17 @@ function ContentRenderer({ content }: { content: ContentSection[] }) {
           default:
             return null;
         }
-      })}
+  };
+
+  return (
+    <div className="space-y-6">
+      {content.map((section, idx) => (
+        <Fragment key={idx}>
+          {idx === boxAt ? <PostBillBox slug={slug} /> : null}
+          {renderSection(section, idx)}
+        </Fragment>
+      ))}
+      {boxAt >= content.length ? <PostBillBox slug={slug} /> : null}
     </div>
   );
 }
@@ -468,7 +480,9 @@ function NewsletterSection() {
  * eligibility question, a cost piece ends with "what about MY bill", and a
  * county piece ends with wanting someone local.
  */
-function ArticleCTA({ category, title }: { category: string; title: string }) {
+function ArticleCTA({ category, title, slug }: { category: string; title: string; slug: string }) {
+  const ref = useRef<HTMLElement>(null);
+  useSeenOnce(ref, slug, 'bottom');
   const byCategory: Record<string, { h: string; p: string; primary: { href: string; label: string } }> = {
     grants: {
       h: 'Find out what you qualify for',
@@ -503,12 +517,18 @@ function ArticleCTA({ category, title }: { category: string; title: string }) {
   };
   const c = byCategory[category] ?? byCategory.guides;
   return (
-    <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+    <section ref={ref} className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
       <div className="rounded-2xl border border-amber-400/15 bg-gradient-to-br from-amber-400/[0.07] to-transparent p-7 sm:p-9">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2.5">{c.h}</h2>
         <p className="text-sm sm:text-base lg:text-lg text-gray-400 leading-relaxed mb-6 max-w-xl">{c.p}</p>
         <div className="flex flex-col sm:flex-row gap-3">
-          <a href={c.primary.href} className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]">
+          <a
+            href={c.primary.href}
+            onClick={() => {
+              recordPostOrigin(slug, 'bottom');
+              trackPostCta('click', slug, 'bottom', 'analyser');
+            }}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm whitespace-nowrap transition-all active:scale-[0.98]">
             {c.primary.label}
           </a>
         </div>
@@ -802,7 +822,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             <div className="flex gap-10 lg:gap-16">
               <div className="flex-1 min-w-0 max-w-[72ch]">
                 <MobileTOC items={tocItems} />
-                <ContentRenderer content={article.content} />
+                <ContentRenderer content={article.content} slug={slug} />
               </div>
 
               <aside className="hidden xl:block w-64 shrink-0">
@@ -876,7 +896,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
             RELATED ARTICLES
              */}
         <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
-          <ArticleCTA category={article.category} title={article.title} />
+          <ArticleCTA category={article.category} title={article.title} slug={slug} />
 
           <RelatedArticles currentSlug={slug} />
         </div>

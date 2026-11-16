@@ -1,0 +1,156 @@
+/*
+ * The in-post "Your bill, your number" box. It is the Bill Analyser's two
+ * roads (intake.css .si-an-road / .si-photo) at post size, so a reader sees
+ * the same door they meet on the home page and /solar-calculator.
+ *
+ * Why its own sheet: intake.css is 92 KB and a blog post does not load it.
+ * Pulling it in for one box would add render-blocking CSS to every post. The
+ * tokens below are the analyser's own values; src/__tests__/post-bill-box.test.ts
+ * fails if they drift from intake.css. Sizes are fixed (no vh), so the box
+ * renders at its final height on the server and never shifts the page.
+ */
+.si-postbox {
+  --si-lane: #111111;
+  --si-raise: #161616;
+  --si-hover: #1c1c1c;
+  --si-line: rgba(255, 255, 255, 0.08);
+  --si-line-control: rgba(255, 255, 255, 0.16);
+  --si-fg: #ffffff;
+  --si-fg-muted: #a1a1aa;
+  --si-amber: #ffb900;
+  --si-amber-hover: #ffd230;
+  --si-on-amber: #0a0a0a;
+  --si-amber-wash: rgba(255, 185, 0, 0.1);
+  --si-focus: #facc15;
+  --si-r: 14px;
+  --si-r-lg: 20px;
+  --si-dur-1: 120ms;
+  --si-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  margin-block: 2rem;
+  padding: 20px 16px;
+  border-radius: var(--si-r-lg);
+  background: var(--si-lane);
+  box-shadow: 0 0 0 1px var(--si-line);
+  color: var(--si-fg);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  text-align: left;
+}
+@media (min-width: 640px) {
+  .si-postbox {
+    padding: 24px;
+  }
+}
+.si-postbox__kicker {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--si-amber);
+}
+.si-postbox__title {
+  margin: 6px 0 0;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--si-fg);
+}
+.si-postbox__line {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--si-fg-muted);
+}
+.si-postbox__roads {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+.si-postbox__road {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 64px;
+  padding: 12px 14px 12px 12px;
+  border-radius: var(--si-r);
+  background: var(--si-raise);
+  box-shadow: inset 0 0 0 1px var(--si-line-control);
+  color: var(--si-fg);
+  text-decoration: none;
+  transition: background-color var(--si-dur-1) var(--si-ease);
+}
+.si-postbox__road:hover {
+  background: var(--si-hover);
+}
+.si-postbox__road:focus-visible {
+  outline: 2px solid var(--si-focus);
+  outline-offset: 2px;
+}
+.si-postbox__icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--si-amber-wash);
+  color: var(--si-amber);
+}
+.si-postbox__text {
+  flex: 1;
+  min-width: 0;
+}
+.si-postbox__road-title {
+  display: block;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.si-postbox__road-line {
+  display: block;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--si-fg-muted);
+}
+.si-postbox__chev {
+  flex: none;
+  color: var(--si-fg-muted);
+}
+
+/* Upload is the one yellow thing, as on the analyser. */
+.si-postbox__road--primary {
+  background: var(--si-amber);
+  box-shadow: none;
+  color: var(--si-on-amber);
+}
+.si-postbox__road--primary:hover {
+  background: var(--si-amber-hover);
+}
+.si-postbox__road--primary .si-postbox__road-line {
+  color: rgba(10, 10, 10, 0.74);
+}
+.si-postbox__road--primary .si-postbox__chev {
+  color: var(--si-on-amber);
+}
+.si-postbox__road--primary .si-postbox__icon {
+  background: rgba(10, 10, 10, 0.12);
+  color: var(--si-on-amber);
+}
+.si-postbox__road--primary:focus-visible {
+  outline-color: var(--si-fg);
+}
+
+@media (min-width: 640px) {
+  .si-postbox__roads {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-postbox__road {
+    transition: none;
+  }
+}
