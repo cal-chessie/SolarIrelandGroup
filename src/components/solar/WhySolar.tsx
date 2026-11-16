@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { SOLAR_DATA } from '@/lib/solar-data';
+import { DOMESTIC_MIN_KWP, estimate } from '@/lib/estimate';
 
 /**
  * The value (homepage, #why-solar). Restructure, 11 Nov 2026: cut hard to
@@ -7,6 +8,11 @@ import { SOLAR_DATA } from '@/lib/solar-data';
  * cards carried unsourced claims ("Up to 70%", property value); both are
  * gone (DECISIONS.md R2). What stays is what backs up the visitor's own
  * number: prices (CRU, SEAI), the export payment, year-round output.
+ *
+ * 16 Nov 2026: the output chart had its own Dublin table (3,816 kWh a year,
+ * 96 in December) while the engine and the winter post say 3,800 and 110.
+ * It now reads estimate() at the 4 kWp domestic floor, so the home page, the
+ * calculator and the posts give the same year, December and June.
  */
 
 // Average residential rate per kWh, all-in (CRU, SEAI). Unchanged from the
@@ -21,14 +27,17 @@ const priceData = [
   { year: 2025, price: 0.31 },
 ];
 
-// Average monthly output per kWp installed, Dublin TMY (SEAI). Unchanged.
-const monthlyGen = [29, 48, 76, 103, 125, 131, 123, 113, 88, 60, 34, 24];
+// Monthly output comes from the one savings engine (src/lib/estimate.ts).
+// The size is fixed at the domestic floor, so the usage passed in changes
+// nothing here: generation depends on the size alone.
+const output = estimate({ annualUsageKwh: 4200, systemSizeKwp: DOMESTIC_MIN_KWP });
+const monthlyGen = output.monthlyGeneration.map((m) => m.generationKwh);
 
 export default function WhySolar() {
   const maxPrice = Math.max(...priceData.map((d) => d.price));
   const maxGen = Math.max(...monthlyGen);
-  const annual4kWp = monthlyGen.reduce((a, b) => a + b, 0) * 4;
-  const dec4kWp = monthlyGen[11] * 4;
+  const annual4kWp = output.annualGenerationKwh;
+  const dec4kWp = monthlyGen[11];
 
   return (
     <section id="why-solar" className="h-sec" aria-labelledby="value-title">
@@ -86,12 +95,12 @@ export default function WhySolar() {
             <h3 className="h-item">It works in Irish weather</h3>
             <span className="h-bigfig">
               ~{annual4kWp.toLocaleString('en-IE')}
-              <small>kWh a year from 4 kWp in Dublin</small>
+              <small>kWh a year from a {DOMESTIC_MIN_KWP} kWp system</small>
             </span>
             <div
               className="h-months"
               role="img"
-              aria-label={`Monthly output of a 4 kWp system in Dublin, from ${dec4kWp} kWh in December to ${maxGen * 4} kWh in June`}
+              aria-label={`Monthly output of a ${DOMESTIC_MIN_KWP} kWp system on a good south-facing roof, from ${dec4kWp} kWh in December to ${maxGen} kWh in June`}
             >
               {monthlyGen.map((g, i) => (
                 <i
@@ -107,7 +116,7 @@ export default function WhySolar() {
               <span>Dec</span>
             </div>
             <p className="h-body mt-4">
-              Panels run on daylight. A 4 kWp roof still makes about {dec4kWp} kWh in December. Dublin data, SEAI.
+              Panels run on daylight. A south-facing {DOMESTIC_MIN_KWP} kWp roof still makes about {dec4kWp} kWh in December.
             </p>
           </article>
         </div>

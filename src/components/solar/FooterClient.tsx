@@ -13,7 +13,10 @@ import { useInView } from '@/lib/useInView';
  * for the same element, so nothing looks or behaves differently.
  */
 
-/** The main link grid: rises in once the footer is 50px into the viewport. */
+/** The main link grid: settles up once the footer is 50px into the viewport.
+ *  Visible at rest (16 Nov 2026): it used to sit at opacity 0, in the server
+ *  HTML too, until the observer fired, so a fast scroll (or no JS) met a
+ *  blank footer. Now only a transform moves; the links are always there. */
 export function FooterGrid({ className, children }: { className: string; children: ReactNode }) {
   const gridRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLElement | null>(null);
@@ -27,7 +30,7 @@ export function FooterGrid({ className, children }: { className: string; childre
   return (
     <div
       ref={gridRef}
-      className={`${className} ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+      className={`${className} ${isInView ? 'translate-y-0' : 'translate-y-6'}`}
     >
       {children}
     </div>
@@ -41,10 +44,12 @@ function inViewport(el: HTMLElement, margin: string): boolean {
 }
 
 /**
- * A scroll reveal, exactly as `motion.div` with `initial` + `whileInView`
- * (viewport once) rendered it: visible in the server HTML; after mount,
- * anything already on screen stays put, anything below is hidden and plays
- * `motion-<anim>` when it scrolls in.
+ * A scroll reveal for the footer rows. Visible in the server HTML and at
+ * every moment after it (16 Nov 2026: it used to go to opacity 0 after mount
+ * until the observer fired, which left blank rows on a fast scroll). After
+ * mount, anything already on screen stays put; a `fade-up` row below the
+ * fold sits 12px low and settles when it scrolls in (transform only). A
+ * `fade-in` row has nothing to move, so it is simply there.
  */
 export function Reveal({
   anim,
@@ -65,23 +70,27 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   // 'ssr': server HTML and first client render, untouched. 'static': it was
-  // on screen at mount, so it stays put. 'hidden' until it scrolls in, then
-  // 'play'.
-  const [phase, setPhase] = useState<'ssr' | 'static' | 'hidden' | 'play'>('ssr');
+  // on screen at mount (or there is nothing to move), so it stays put.
+  // 'low' until it scrolls in, then 'play'.
+  const [phase, setPhase] = useState<'ssr' | 'static' | 'low' | 'play'>('ssr');
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (inViewport(el, margin)) {
+    if (
+      anim !== 'fade-up' ||
+      inViewport(el, margin) ||
+      !('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       setPhase('static');
       return;
     }
-    setPhase('hidden');
-    if (!('IntersectionObserver' in window)) return;
+    setPhase('low');
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
-          setPhase((p) => (p === 'hidden' ? 'play' : p));
+          setPhase((p) => (p === 'low' ? 'play' : p));
           io.unobserve(e.target);
         }
       },
@@ -89,20 +98,21 @@ export function Reveal({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [margin]);
+  }, [anim, margin]);
 
-  let cls = className ?? '';
   let st = style;
-  if (phase === 'play') {
-    cls = `${cls} motion-${anim}`.trim();
-    st = { ...style, animationDuration: `${duration}s`, animationDelay: `${delay}s` };
-  } else if (phase === 'hidden') {
-    cls = `${cls} motion-hidden`.trim();
-    st = { ...style, opacity: 0 };
+  if (phase === 'low') {
+    st = { ...style, transform: 'translateY(12px)' };
+  } else if (phase === 'play') {
+    st = {
+      ...style,
+      transform: 'none',
+      transition: `transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+    };
   }
 
   return (
-    <div ref={ref} className={cls} style={st}>
+    <div ref={ref} className={className} style={st}>
       {children}
     </div>
   );

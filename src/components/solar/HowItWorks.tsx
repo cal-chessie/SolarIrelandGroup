@@ -41,18 +41,18 @@ const steps: { title: string; body: React.ReactNode; who: string }[] = [
     body: (
       <>
         On the call we check what a bill can&apos;t show: your roof, your meter and when you use power. Then you get
-        a fixed-price proposal with the system and your grant. Before work starts you apply on{' '}
+        a fixed-price proposal. Before work starts you apply on{' '}
         <a href={SEAI_GRANT_PORTAL} target="_blank" rel="noopener noreferrer">
           SEAI&apos;s grant portal
         </a>{' '}
-        and we walk you through it.
+        and we notify ESB Networks with the NC6 form.
       </>
     ),
     who: 'Us, with you',
   },
   {
     title: 'Install, then SEAI grant payment',
-    body: `Our RECI-registered team installs, and we notify ESB Networks and book your BER. Once it's published, SEAI pays your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}, normally 4 to 6 weeks later. You can track every step in real time.`,
+    body: `Our RECI-registered team installs, then we book your BER and send SEAI the paperwork. Once the BER is published, SEAI pays your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}, normally 4 to 6 weeks later. You can track every step in real time.`,
     who: 'Our team, then SEAI',
   },
 ];

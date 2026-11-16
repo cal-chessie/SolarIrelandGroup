@@ -166,3 +166,14 @@ Built to `INTAKE/design/APPLE-DECISIONS.md`. What changed for anyone touching do
 - Retired to `_TRASH`: `ExitIntent`, `BillAnalyser`, `QuickSavingsCalculator`. `PageIntake` now mounts only the phone sticky bar and takes `sticky={{ scrollTo }}` or `null`.
 - The intake itself: no home-or-business screen (a pill switch on Screen 1, Home pre-set with provenance "assumed"); one hero figure and a receipt of three; "How we worked this out" as a bottom sheet under 1024 and a disclosure from 1024; Screen 2 as two views under 1024 (estimate, then times); a date strip and only real times as pills; the survey always two steps (a 15-minute call, then about 45 minutes at the home); green only for booked. Dark only.
 - The self-test is `INTAKE/build/selftest-intake.mjs` (stub server on :3031, seven widths).
+
+## Home faults pass (16 Nov 2026, branch `home-faults-faq`)
+
+The home redesign on `home-sections-world-class` was rejected. This pass keeps the original design and fixes only the faults.
+
+- **Reveal contract, changed.** `[data-reveal]` on the home page is a transform-only settle (10px). Nothing outside the installs gallery is ever at opacity 0. Before, every block below the fold was hidden until the observer saw it cross 92% of the screen, which left about 700px of black before "Why panels pay". The gallery (`#our-work`) keeps its original fade. The chart bars and the step line still grow in (transform only).
+- **Late-mounted reveals.** `HomeClient` watches for `[data-reveal]` nodes added after its first pass (an island rendering fresh DOM) with a MutationObserver. Without it the gallery could stay at opacity 0 for good after a fast scroll.
+- **Footer.** `FooterGrid` and `Reveal` in `FooterClient.tsx` no longer hide anything, in the server HTML or after mount. They move by transform only. This applies on every page that has the footer.
+- **Why panels pay** reads `estimate()` at the 4 kWp floor: 3,800 kWh a year, 110 in December, 517 in June. The old hard-coded Dublin table (3,816 and 96) is gone.
+- **NC6 timing.** ESB Networks needs the NC6 before installation, so it sits in step 3 (before work starts). Step 4 is the install, the BER and the SEAI paperwork.
+- **FAQ markup.** The business grant and farm posts now use the heading "Frequently asked questions". `getFaqSchema` stops at the post's closing CTA, so a sources line after it never lands in the last answer.

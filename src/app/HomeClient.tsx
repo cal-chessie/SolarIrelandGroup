@@ -70,7 +70,8 @@ export default function HomeClient({ children, footer }: { children: ReactNode; 
 
   // Scroll reveals (home.css "Reveal contract"). Content is visible at rest;
   // anything already on screen is marked in before the root class goes on, so
-  // nothing above the fold flashes, and without JS nothing is hidden.
+  // nothing above the fold flashes, and without JS nothing is hidden. Only a
+  // transform moves (16 Nov 2026); the installs gallery alone still fades.
   useEffect(() => {
     const root = rootRef.current;
     if (!root || !('IntersectionObserver' in window)) return;
@@ -93,8 +94,32 @@ export default function HomeClient({ children, footer }: { children: ReactNode; 
       { rootMargin: '0px 0px -8% 0px' },
     );
     for (const el of els) if (!el.classList.contains('is-in')) io.observe(el);
+    // Islands (the gallery, grants, FAQ) can render fresh nodes after this
+    // effect has run, for example when a fast scroll makes React render an
+    // island on the client. Those nodes were never observed, so they never
+    // got .is-in and the gallery could stay at opacity 0 for good. Watch for
+    // added [data-reveal] nodes and observe them too.
+    const seen = new WeakSet<Element>(els);
+    const mo = new MutationObserver((records) => {
+      for (const rec of records) {
+        for (const n of rec.addedNodes) {
+          if (!(n instanceof HTMLElement)) continue;
+          const found = n.matches('[data-reveal]') ? [n] : [];
+          found.push(...n.querySelectorAll<HTMLElement>('[data-reveal]'));
+          for (const el of found) {
+            if (seen.has(el) || el.classList.contains('is-in')) continue;
+            seen.add(el);
+            io.observe(el);
+          }
+        }
+      }
+    });
+    mo.observe(root, { childList: true, subtree: true });
     root.classList.add('si-home--reveal');
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
   }, []);
 
   return (

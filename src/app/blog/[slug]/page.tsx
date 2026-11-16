@@ -196,6 +196,9 @@ function getFaqSchema(slug: string) {
   const qa: { q: string; a: string[] }[] = [];
   for (const s of article.content.slice(start + 1)) {
     if (s.type === 'heading' && s.level === 2) break;
+    // The questions end at the post's closing call to action. A paragraph
+    // after it (a sources line) is not part of the last answer.
+    if (s.type === 'cta') break;
     if (s.type === 'heading' && s.level === 3) qa.push({ q: s.text, a: [] });
     else if (s.type === 'paragraph' && qa.length > 0) qa[qa.length - 1].a.push(plainText(s.text));
   }

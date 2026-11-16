@@ -10,10 +10,11 @@
    small places; calm motion. Every animation is CSS (the motion shim ignores
    object animates) and stops under prefers-reduced-motion.
 
-   Reveal contract: content is visible at rest. HomeClient adds
+   Reveal contract: content is visible at rest, always. HomeClient adds
    .si-home--reveal only once its IntersectionObserver is running, and marks
-   anything already on screen first, so a JS failure never leaves a section
-   stuck at opacity 0 and nothing above the fold flashes.
+   anything already on screen first. From 16 Nov 2026 the reveal is a
+   transform-only settle: nothing outside the installs gallery is ever at
+   opacity 0, with or without JS, before or after the observer fires.
    ═══════════════════════════════════════════════════════════════ */
 
 .si-home {
@@ -1371,17 +1372,32 @@
   }
 }
 
-/* ── Reveal (see the contract at the top) ─────────────────────── */
+/* ── Reveal (see the contract at the top) ───────────────────────
+   Fault fixed 16 Nov 2026: every block below the fold sat at opacity 0
+   until the observer saw it cross 92% of the screen, then faded over 640ms
+   plus a stagger. A reader scrolling at normal speed met about 700px of
+   black canvas before "Why panels pay". Now the text is always there and
+   only a 10px settle plays (transform only: no layout, no CLS). */
 .si-home--reveal [data-reveal]:not(.is-in) {
-  opacity: 0;
   transform: translateY(10px);
 }
 .si-home--reveal [data-reveal] {
+  transition: transform 640ms var(--h-ease-out);
+  transition-delay: calc(var(--d, 0) * 70ms);
+}
+/* The installs gallery keeps its own reveal exactly as it was (Cal: leave
+   the gallery alone). HomeClient makes sure it cannot stick: see the
+   MutationObserver there. */
+.si-home--reveal #our-work [data-reveal]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.si-home--reveal #our-work [data-reveal] {
   transition: opacity 640ms var(--h-ease-out), transform 640ms var(--h-ease-out);
   transition-delay: calc(var(--d, 0) * 70ms);
 }
 /* The gallery reveals as one strip, photos staggered. */
-.si-home--reveal .h-strip[data-reveal]:not(.is-in) {
+.si-home--reveal #our-work .h-strip[data-reveal]:not(.is-in) {
   opacity: 1;
   transform: none;
 }
@@ -1429,7 +1445,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .si-home--reveal [data-reveal],
-  .si-home--reveal [data-reveal]:not(.is-in) {
+  .si-home--reveal [data-reveal]:not(.is-in),
+  .si-home--reveal #our-work [data-reveal],
+  .si-home--reveal #our-work [data-reveal]:not(.is-in) {
     opacity: 1;
     transform: none;
     transition: none;

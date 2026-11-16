@@ -6324,7 +6324,7 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "Questions businesses ask"
+        "text": "Frequently asked questions"
       },
       {
         "type": "heading",
@@ -6549,7 +6549,7 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "Questions farmers ask"
+        "text": "Frequently asked questions"
       },
       {
         "type": "heading",
