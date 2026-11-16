@@ -117,7 +117,7 @@ async function walk(wide: boolean) {
 
   // Then the call.
   await waitFor(() => expect(stepOf()).toBe('done'));
-  expect(lanesText()).toContain('Your estimate is on its way.');
+  expect(lanesText()).toContain('Your estimate is on its way to your inbox.');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
   expect(submitted).toHaveLength(1);
   expect(submitted[0].billRead).toBeNull();

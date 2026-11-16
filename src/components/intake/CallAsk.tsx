@@ -758,6 +758,8 @@ export function callDoneCopy(o: { held: boolean; first: string; estimate?: boole
   // Cal's words (16 Nov 2026): "Our team will ring you shortly." Never a name.
   const thanks = `Thanks${o.first ? `, ${o.first}` : ''}.`;
   const ring = 'Our team will ring you shortly.';
+  // Cal's words (16 Nov 2026) for after an estimate is sent.
+  const NEXT = "Next, one of our team will ring you to go through your options, then we'll send your final proposal.";
   if (o.held) {
     return {
       title: `Saved. ${ring}`,
@@ -776,15 +778,15 @@ export function callDoneCopy(o: { held: boolean; first: string; estimate?: boole
   if (o.typed) {
     // From the amount they typed: their estimate, not a "full" one read off a bill.
     return {
-      title: `${thanks} Your estimate is on its way.`,
-      facts: `Check your inbox. ${ring} We'll talk it through.`,
-      announce: 'Your estimate is on its way.',
+      title: `${thanks} Your estimate is on its way to your inbox.`,
+      facts: NEXT,
+      announce: `Your estimate is on its way to your inbox. ${NEXT}`,
     };
   }
   return {
-    title: `${thanks} Your full estimate is on its way.`,
-    facts: `Check your inbox. ${ring} We'll talk it through.`,
-    announce: 'Your full estimate is on its way.',
+    title: `${thanks} Your estimate is on its way to your inbox.`,
+    facts: NEXT,
+    announce: `Your estimate is on its way to your inbox. ${NEXT}`,
   };
 }
 

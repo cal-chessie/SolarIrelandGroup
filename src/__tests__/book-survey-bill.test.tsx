@@ -51,7 +51,7 @@ describe('/book-survey cold', () => {
     expect(quote.requests[0]).toMatchObject({ segment: 'domestic', bill: { amountEur: 160 } });
     const body = await fillAndSend();
     expect(body).toMatchObject({ intent: 'call', quoteToken: 'tok.mac', monthlyBill: 160, phone: '087 123 4567' });
-    expect((await screen.findByRole('heading', { level: 2, name: /on its way/ })).textContent).toContain('Your full estimate is on its way');
+    expect((await screen.findByRole('heading', { level: 2, name: /on its way/ })).textContent).toContain('Your estimate is on its way to your inbox');
   });
 
   it('skipping the bill: no estimate promised on the button or the confirmation', async () => {

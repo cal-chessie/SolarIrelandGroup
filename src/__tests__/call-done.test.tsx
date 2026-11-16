@@ -21,7 +21,7 @@ describe('CallDone held (H3)', () => {
   });
   it('an accepted submit keeps the estimate promise', () => {
     render(<CallDone details={details} />);
-    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Your full estimate is on its way.');
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Thanks, Mary. Your estimate is on its way to your inbox.');
   });
   it('the screen-reader line matches', () => {
     expect(callDoneCopy({ held: true, first: '' }).announce).toBe('Saved. Our team will ring you shortly.');
