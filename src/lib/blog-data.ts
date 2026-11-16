@@ -293,7 +293,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Here is the part people miss when they focus only on resale. A typical Irish system saves **€800-1,400 a year** on electricity and pays for itself in 5-7 years, with SEAI grants of up to €2,400 (€1,800 for panels, plus €600 with a battery) and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "Here is the part people miss when they focus only on resale. On our estimate a 4 kWp system saves **about €920 a year** and a 6 kWp system about €1,390, and pays for itself in 5-7 years, with SEAI grants of up to €2,400 (€1,800 for panels, plus €600 with a battery) and 0% VAT in place. If you stay in the home for those years, you have already earned the system back in savings - and any resale premium on top is a bonus, not the whole case. Solar is one of the rare home upgrades that pays you back whether you sell or stay."
       },
       {
         "type": "paragraph",
@@ -405,9 +405,9 @@ export const articles: Article[] = [
     "slug": "are-solar-panels-worth-it-ireland-2026",
     "title": "Are Solar Panels Worth It in Ireland? 2026 Verdict",
     "seoTitle": "Are Solar Panels Worth It in Ireland? For Most Homes, Yes",
-    "seoDescription": "Savings of €800 to €1,400 a year, payback in 5 to 7 years, and SEAI grants of up to €2,400 still in place. When it pays, and the cases where it doesn't.",
-    "answer": "Yes, for most Irish homes. A typical system saves €800 to €1,400 a year and pays for itself in 5 to 7 years, with SEAI grants of up to €2,400 and 0% VAT in place. A 4 kWp system costs €6,400 after the €1,800 panels grant. It is not worth it on a heavily shaded roof or a very small bill.",
-    "excerpt": "For most Irish homes, yes: savings of 800-1,400 euro a year, payback in 5-7 years, and SEAI grants of up to 2,400 euro still in place. The honest 2026 verdict, worked out.",
+    "seoDescription": "Our estimate: about €920 a year from a 4 kWp system, payback in 5 to 7 years, and SEAI grants of up to €2,400 still in place. When it pays, and the cases where it doesn't.",
+    "answer": "Yes, for most Irish homes. On our estimate a 4 kWp system saves about €920 a year and a 6 kWp system about €1,390, and pays for itself in 5 to 7 years, with SEAI grants of up to €2,400 and 0% VAT in place. A 4 kWp system costs €6,400 after the €1,800 panels grant. It is not worth it on a heavily shaded roof or a very small bill.",
+    "excerpt": "For most Irish homes, yes: our estimate is about 920 euro a year from a 4 kWp system, payback in 5-7 years, and SEAI grants of up to 2,400 euro still in place. The honest 2026 verdict, worked out.",
     "category": "savings",
     "date": "5 Sep 2026",
     "updated": "15 Nov 2026",
@@ -476,7 +476,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A home that uses more of its power in daylight, works from home or runs an EV or heat pump moves up toward the €1,400 end of the range and a shorter payback. A home that is empty all day sits at the lower end. Your own bill decides which, because it shows when you use your power."
+        "text": "A home that uses more of its power in daylight, works from home or runs an EV or heat pump moves up toward the 6 kWp figure, about €1,390 on our estimate, and a shorter payback. A home that is empty all day sits at the lower end. Your own bill decides which, because it shows when you use your power."
       },
       {
         "type": "heading",
@@ -485,7 +485,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The question deserves a straight answer, so here it is. If your home uses somewhere near the average of **4,200 kWh a year** (the CRU standard figure), has a roof that gets reasonable light for most of the day, and you plan to stay put for at least five years, solar panels are one of the best-returning purchases you can make in Ireland right now. The combination that makes 2026 work is simple: the €1,800 SEAI panels grant was held at its current level rather than cut as originally planned, VAT on domestic solar is 0%, and every unit of electricity you avoid buying is worth 35-45c to you at current supplier rates."
+        "text": "The question deserves a straight answer, so here it is. If your home uses somewhere near the average of **4,200 kWh a year** (the CRU standard figure), has a roof that gets reasonable light for most of the day, and you plan to stay put for at least five years, solar panels are one of the best-returning purchases you can make in Ireland right now. The combination that makes 2026 work is simple: the €1,800 SEAI panels grant was held at its current level rather than cut as originally planned, VAT on domestic solar is 0%, and every unit of electricity you avoid buying is worth 35-38c to you at current supplier rates."
       },
       {
         "type": "paragraph",
@@ -518,11 +518,11 @@ export const articles: Article[] = [
           ],
           [
             "Typical annual bill saving",
-            "€800-1,400"
+            "About €920 (4 kWp) to €1,390 (6 kWp), our estimate"
           ],
           [
             "Typical export income (4kWp, no battery)",
-            "€400-550 a year"
+            "€410 to €480 a year"
           ],
           [
             "Typical payback",
@@ -560,7 +560,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "A typical Irish home with a well-sized system saves **€800-1,400 a year**, made up of two streams: electricity you no longer buy, and export income for what you sell back. The first stream is worth far more per unit. Every kWh your panels generate that you use at home replaces grid electricity costing 35-45c per kWh at current rates, while a kWh exported earns your supplier's Clean Export Guarantee rate, which each supplier sets itself (our estimates use 18c). That gap is the single most important number in solar economics: **using your own power beats selling it, roughly two to one**."
+        "text": "A typical Irish home with a well-sized system saves **about €920 a year with a 4 kWp system and about €1,390 with 6 kWp, on our estimate**, made up of two streams: electricity you no longer buy, and export income for what you sell back. The first stream is worth far more per unit. Every kWh your panels generate that you use at home replaces grid electricity costing 35-38c per kWh at current rates, while a kWh exported earns your supplier's Clean Export Guarantee rate, which each supplier sets itself (our estimates use 18c). That gap is the single most important number in solar economics: **using your own power beats selling it, roughly two to one**."
       },
       {
         "type": "paragraph",
@@ -602,7 +602,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "tip",
         "title": "The €400 tax exemption is doing quiet work",
-        "body": "Because the first €400 a year of export income is tax-exempt, a typical 4kWp home keeps every cent of its CEG earnings. That effectively makes your export income worth more than the same amount of taxed income - a detail the headline rate comparisons miss."
+        "body": "Because the first €400 a year of export income is tax-exempt, a typical 4kWp home keeps almost all of its CEG earnings. That effectively makes your export income worth more than the same amount of taxed income - a detail the headline rate comparisons miss."
       },
       {
         "type": "heading",
@@ -699,7 +699,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The waiting game has quietly turned against waiting. The grant was scheduled to fall by €300 a year and has been held at €1,800 for 2026 instead, but that pause is a policy decision, not a promise. Meanwhile every year you wait costs you a year of savings - €800-1,400 at typical rates - which is more than any plausible near-term hardware price drop would save you."
+        "text": "The waiting game has quietly turned against waiting. The grant was scheduled to fall by €300 a year and has been held at €1,800 for 2026 instead, but that pause is a policy decision, not a promise. Meanwhile every year you wait costs you a year of savings - about €920 on our estimate for a 4 kWp system - which is more than any plausible near-term hardware price drop would save you."
       },
       {
         "type": "divider"
@@ -776,7 +776,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. SEAI pays up to **€2,400**: up to €1,800 for the panels, plus €600 for a battery of 5 kWh or more. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026). A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "You apply online at seai.ie and wait for SEAI's letter of offer before any work starts. SEAI pays up to **€2,400**: up to €1,800 for the panels, plus €600 for a battery of 5 kWh or more. You need a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. Owner-occupiers and private landlords are both eligible. The offer is valid for 8 months, and you have 30 days to accept it. Eligibility, tiers and paperwork are covered in our [complete SEAI grant guide](/blog/complete-guide-seai-solar-grant-2026)."
       },
       {
         "type": "callout",
@@ -900,7 +900,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Add it up and a smooth job runs about 4-8 weeks from survey to grant money landing. The part that matters most happens on day one of installation: from the moment the system is commissioned, every daytime kWh is cutting your bill, typically €800-1,400 a year for an average home. The rest of the timeline is paperwork moving around you, not you waiting to benefit."
+        "text": "Add it up and a smooth job runs about 4-8 weeks from survey to grant money landing. The part that matters most happens on day one of installation: from the moment the system is commissioned, every daytime kWh is cutting your bill, about €920 a year on our estimate for an average home with a 4 kWp system. The rest of the timeline is paperwork moving around you, not you waiting to benefit."
       },
       {
         "type": "heading",
@@ -1176,7 +1176,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "This is worth understanding before you look at solar, because it sets an honest floor under your bill. Panels reduce the kWh you buy, and the [Clean Export Guarantee](/blog/clean-export-guarantee-explained) pays you for the surplus you export, but no solar system removes the standing charge. Anyone promising a zero bill is not reading the same bills we are. The realistic goal is to cut the usage side hard - typically EUR 800-1,400 a year for a well-sized system - while the fixed side stays."
+        "text": "This is worth understanding before you look at solar, because it sets an honest floor under your bill. Panels reduce the kWh you buy, and the [Clean Export Guarantee](/blog/clean-export-guarantee-explained) pays you for the surplus you export, but no solar system removes the standing charge. Anyone promising a zero bill is not reading the same bills we are. The realistic goal is to cut the usage side hard - about EUR 920 a year on our estimate for a 4 kWp system - while the fixed side stays."
       },
       {
         "type": "heading",
@@ -1257,7 +1257,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800 for panels, plus EUR 600 with a battery of 5 kWh or more, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "Yes. The application requires a valid MPRN, and the home must have been built and occupied before 2025 with no previous solar grant at that MPRN. The grant is worth up to EUR 1,800 for panels, plus EUR 600 with a battery of 5 kWh or more, and SEAI pays it directly to your bank account, usually about 4-6 weeks after the completion paperwork and post-works BER are in."
       },
       {
         "type": "heading",
@@ -1527,7 +1527,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home panel system runs €8,200 to €9,600 before the grant, depending on size. After the SEAI panels grant (**€1,800**) and with 0% VAT, most homeowners are looking at €6,400 to €7,800 out of pocket, as the table shows. A battery is sized and priced with you on the call, from how your home actually uses power, so it is not in these figures. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "Cork prices are in line with the rest of Ireland - solar is a national market, not a regional one. A standard home panel system runs €8,200 to €9,600 before the grant, depending on size. After the SEAI panels grant (**€1,800**) and with 0% VAT, most homeowners are looking at €6,400 to €7,800 out of pocket, as the table shows. A battery is sized and priced with you on the call, from how your home actually uses power, so it is not in these figures."
       },
       {
         "type": "table",
@@ -1966,9 +1966,9 @@ export const articles: Article[] = [
     "slug": "solar-panels-3-bed-semi-ireland-cost",
     "title": "Solar Panels for a 3-Bed Semi in Ireland: 2026 Costs",
     "seoTitle": "Solar Panels for a 3-Bed Semi in Ireland: Cost and Payback",
-    "seoDescription": "A typical 3-bed semi needs about 10 panels (4 to 4.4 kWp). Cost before and after the €1,800 SEAI grant, yearly savings and a worked payback example.",
-    "answer": "A typical 3-bed semi in Ireland needs about 10 panels, a 4 to 4.4 kWp system. It costs €8,200 to €8,480 installed, or €6,400 to €6,680 after the €1,800 SEAI panels grant, with 0% VAT. On 4,200 kWh a year it saves about €1,000 a year and pays back in about 7 years.",
-    "excerpt": "How many panels a typical 3-bed semi needs, what a 10-panel system costs after the €1,800 panels grant, and a worked savings example from the bill.",
+    "seoDescription": "A typical 3-bed semi needs 9 panels (4 kWp). Cost before and after the €1,800 SEAI grant, yearly savings and a worked payback example.",
+    "answer": "A typical 3-bed semi in Ireland needs 9 panels, a 4 kWp system. It costs €8,200 installed, or €6,400 after the €1,800 SEAI panels grant, with 0% VAT. On 4,200 kWh a year our estimate is a saving of about €920 a year and payback in about 7 years.",
+    "excerpt": "How many panels a typical 3-bed semi needs, what a 9-panel system costs after the €1,800 panels grant, and a worked savings example from the bill.",
     "category": "savings",
     "date": "5 Sep 2026",
     "updated": "15 Nov 2026",
@@ -1988,12 +1988,12 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Around 10 panels for a typical household. Modern panels are about 440W each, so 10 panels is roughly 4.4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households often need 11 to 14 panels, and homes with an EV and a heat pump 15 to 20. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "Around 9 panels for a typical household. Modern panels are about 440W each, so 9 panels is roughly 4 kWp - enough to cover a large share of daytime electricity for an average family. Bigger households often need 11 to 14 panels, and homes with an EV and a heat pump 15 to 20. The right number depends on your usage, which is why we read your bill first. See our [full panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "heading",
         "level": 2,
-        "text": "How much does a typical 10-panel system cost after the grant?"
+        "text": "How much does a typical 9-panel system cost after the grant?"
       },
       {
         "type": "table",
@@ -2005,10 +2005,10 @@ export const articles: Article[] = [
         ],
         "rows": [
           [
-            "10 panels (~4.4 kWp)",
-            "€8,480",
+            "9 panels (4 kWp)",
+            "€8,200",
             "- €1,800",
-            "€6,680"
+            "€6,400"
           ],
           [
             "+ 5 kWh battery",
@@ -2067,7 +2067,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Most 3-bed semis save €800 to €1,400 a year, made up of two parts: the electricity you no longer buy because you are using your own solar, and the Clean Export Guarantee income for surplus you send back to the grid. Where you land in that range depends heavily on how much of your electricity you use during daylight."
+        "text": "On our estimate a 3-bed semi with a 4 kWp system saves about €920 a year, made up of two parts: the electricity you no longer buy because you are using your own solar, and the Clean Export Guarantee income for surplus you send back to the grid. Where you land depends heavily on how much of your electricity you use during daylight."
       },
       {
         "type": "heading",
@@ -2076,17 +2076,17 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Take a semi using 4,200 kWh a year (the CRU typical household figure) with no battery. A 4.4 kWp system covers a large chunk of daytime use directly, and exports the surplus. Run through the same savings engine our calculator uses (950 kWh per kWp, 35c a unit, 18c export, our estimate rate):"
+        "text": "Take a semi using 4,200 kWh a year (the CRU typical household figure) with no battery. A 4 kWp system covers a large chunk of daytime use directly, and exports the surplus. Run through the same savings engine our calculator uses (950 kWh per kWp, 35c a unit, 18c export, our estimate rate):"
       },
       {
         "type": "bulletList",
         "items": [
-          "System: ~4.4 kWp, 10 panels, about 4,180 kWh a year",
-          "Cost after grant: €6,680",
-          "Self-use saving: about 1,440 kWh used at home, worth about €505 a year",
-          "Export income: about 2,740 kWh at 18c, worth about €490 a year under the Clean Export Guarantee (the first €400 a year is tax-exempt)",
-          "Combined annual benefit: about €1,000",
-          "Payback: about 6.7 years"
+          "System: 4 kWp, 9 panels, about 3,800 kWh a year",
+          "Cost after grant: €6,400",
+          "Self-use saving: about 1,390 kWh used at home, worth about €486 a year",
+          "Export income: about 2,410 kWh at 18c, worth about €434 a year under the Clean Export Guarantee (the first €400 a year is tax-exempt)",
+          "Combined annual benefit: about €920",
+          "Payback: about 7 years"
         ]
       },
       {
@@ -2107,11 +2107,11 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 2,
-        "text": "Will 10 panels fit on a semi-detached roof?"
+        "text": "Will 9 panels fit on a semi-detached roof?"
       },
       {
         "type": "paragraph",
-        "text": "On most semis, comfortably. Ten 440W panels need roughly 18 to 20 square metres of roof, which a standard semi's main pitch usually provides. If your best roof face is small, panels can be split across two faces (for example a south-east and south-west pitch), which our [roof orientation guide](/blog/east-vs-south-vs-west-facing-roofs-solar) explains. A site survey confirms the exact fit."
+        "text": "On most semis, comfortably. Nine 440W panels need roughly 18 square metres of roof, which a standard semi's main pitch usually provides. If your best roof face is small, panels can be split across two faces (for example a south-east and south-west pitch), which our [roof orientation guide](/blog/east-vs-south-vs-west-facing-roofs-solar) explains. A site survey confirms the exact fit."
       },
       {
         "type": "heading",
@@ -2139,7 +2139,7 @@ export const articles: Article[] = [
       {
         "type": "heading",
         "level": 3,
-        "text": "We're a bigger family - do we need more than 10 panels?"
+        "text": "We're a bigger family - do we need more than 9 panels?"
       },
       {
         "type": "paragraph",
@@ -2200,7 +2200,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "As a rough guide, a 4 kWp system (about 10 panels) generates about 3,800 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. Add the car's usage to a typical home's 4,200 kWh and our savings engine sizes the system at about 6 to 6.5 kWp, or 14 to 15 panels, so more of the car's charging can come from solar across more of the year."
+        "text": "As a rough guide, a 4 kWp system (9 panels) generates about 3,800 kWh a year in Ireland. An average EV uses roughly 2,500 to 3,500 kWh a year to drive 12,000 to 15,000 km. So on paper a typical system generates enough over a year to cover a lot of EV driving - but not evenly, because generation is concentrated in summer. Add the car's usage to a typical home's 4,200 kWh and our savings engine sizes the system at about 6 to 6.5 kWp, or 14 to 15 panels, so more of the car's charging can come from solar across more of the year."
       },
       {
         "type": "callout",
@@ -2242,7 +2242,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 10 panels, an EV household usually lands on 14 to 15, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
+        "text": "An EV is one of the clearest reasons to size up. Where a typical home might fit 9 panels, an EV household usually lands on 14 to 15, because the extra daytime generation goes straight into cheap driving rather than being exported. The exact number comes back to your combined household and driving usage - see our [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland)."
       },
       {
         "type": "table",
@@ -2254,7 +2254,7 @@ export const articles: Article[] = [
         "rows": [
           [
             "No EV",
-            "~4 kWp (10 panels)",
+            "~4 kWp (9 panels)",
             "Covers home daytime use"
           ],
           [
@@ -2683,7 +2683,7 @@ export const articles: Article[] = [
       {
         "type": "numberedList",
         "items": [
-          "Combine the grant with the Clean Export Guarantee - your supplier pays its own export rate for every unit of surplus energy you export (our estimates use €0.18/kWh). Without a battery this alone can add roughly €510–€720 per year on a 6 kWp system.",
+          "Combine the grant with the Clean Export Guarantee - your supplier pays its own export rate for every unit of surplus energy you export (our estimates use €0.18/kWh). Without a battery this alone can add roughly €610–€710 per year on a 6 kWp system, on our estimate.",
           "Shift heavy electricity usage to daylight hours - run washing machines, dishwashers, and charge EVs while your panels are generating.",
           "Consider adding battery storage - while it adds upfront cost, a battery lets you use almost 100% of your generated electricity rather than exporting the excess.",
           "Ensure your system is sized correctly - an oversized system wastes money, while an undersized one leaves savings on the table.",
@@ -2692,7 +2692,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€750–€1,100/year), [Clean Export Guarantee earnings](/blog/clean-export-guarantee-explained) (€510–€720/year), and the €1,800 SEAI panels grant can deliver a [full return on investment](/blog/are-solar-panels-worth-it-ireland-2026) within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
+        "text": "For a typical Irish household with a 6kWp solar PV system, the combination of bill savings (€630–€820/year on our estimate), [Clean Export Guarantee earnings](/blog/clean-export-guarantee-explained) (€610–€710/year), and the €1,800 SEAI panels grant can deliver a [full return on investment](/blog/are-solar-panels-worth-it-ireland-2026) within 5 to 7 years. After that, every kilowatt-hour generated is essentially free electricity for the remaining 20+ year lifespan of your panels."
       },
       {
         "type": "divider"
@@ -2709,7 +2709,7 @@ export const articles: Article[] = [
     "title": "How Much Do Solar Panels Cost in Ireland? (2026 Prices)",
     "seoTitle": "How Much Do Solar Panels Cost in Ireland? €6,400 After Grant",
     "seoDescription": "A 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI grant. Prices for 4 to 10 kWp, batteries, hidden costs and payback explained.",
-    "answer": "A 4 kWp solar system, about 10 panels, costs €8,200 installed in Ireland in 2026, or €6,400 after the €1,800 SEAI panels grant, with 0% VAT. A 6 kWp system is €9,600, or €7,800 net. Adding a 5 kWh battery costs about €3,200 and earns a further €600 grant. Most homes pay back in 6 to 7 years.",
+    "answer": "A 4 kWp solar system, 9 panels, costs €8,200 installed in Ireland in 2026, or €6,400 after the €1,800 SEAI panels grant, with 0% VAT. A 6 kWp system is €9,600, or €7,800 net. Adding a 5 kWh battery costs about €3,200 and earns a further €600 grant. Most homes pay back in 6 to 7 years.",
     "excerpt": "A transparent breakdown of solar panel costs in Ireland for 2026 - from 4kWp to 10kWp systems, including installation, grants, and what affects the final price.",
     "category": "savings",
     "date": "12 Apr 2026",
@@ -2756,35 +2756,35 @@ export const articles: Article[] = [
           "Number of Panels",
           "Gross Cost (Before Grant)",
           "After €1,800 Panels Grant",
-          "Typical Annual Savings"
+          "Annual Savings (our estimate)"
         ],
         "rows": [
           [
             "4kWp",
-            "9–10 panels",
+            "9 panels",
             "€8,200",
             "€6,400",
-            "€800 – €1,100"
+            "about €920"
           ],
           [
             "6kWp",
             "about 14 panels",
             "€9,600",
             "€7,800",
-            "€1,000 – €1,300"
+            "about €1,390"
           ],
           [
             "10kWp",
             "about 23 panels",
             "€12,400",
             "€10,600",
-            "€1,200 – €1,800"
+            "about €2,315"
           ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "For the average Irish household using about 4,200 kWh a year (the CRU typical figure), our savings engine sizes the system at 4 kWp, about 10 panels. That is also the domestic floor: 4 kWp is exactly where the SEAI grant reaches its full €1,800, and below it the fixed costs barely move while the generation and the grant fall away. A 6kWp system suits bigger households and homes with an EV or a heat pump. Count panels in 440W units: the [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland) has the sizing by household, and the [free solar calculator](/solar-calculator) sizes yours from your bill."
+        "text": "For the average Irish household using about 4,200 kWh a year (the CRU typical figure), our savings engine sizes the system at 4 kWp, 9 panels. That is also the domestic floor: 4 kWp is exactly where the SEAI grant reaches its full €1,800, and below it the fixed costs barely move while the generation and the grant fall away. A 6kWp system suits bigger households and homes with an EV or a heat pump. Count panels in 440W units: the [panel-count guide](/blog/how-many-solar-panels-do-i-need-ireland) has the sizing by household, and the [free solar calculator](/solar-calculator) sizes yours from your bill."
       },
       {
         "type": "paragraph",
@@ -2844,7 +2844,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With domestic unit rates of roughly €0.35/kWh including VAT (the standing charge is separate, and solar never removes it), a well-sized system can deliver a payback period of around 6 to 7 years. Here is a detailed ROI calculation for the three most common system sizes:"
+        "text": "The return on investment (ROI) for solar panels in Ireland has improved dramatically. With domestic unit rates of roughly €0.35/kWh including VAT (the standing charge is separate, and solar never removes it), a well-sized system can deliver a payback period of around 5 to 7 years. Here is our estimate for the three most common system sizes, each on a home it suits (4,200, 6,500 and 11,000 kWh a year):"
       },
       {
         "type": "table",
@@ -2863,39 +2863,39 @@ export const articles: Article[] = [
           ],
           [
             "Annual Bill Savings",
-            "€500",
-            "€755",
-            "€1,255"
+            "€486",
+            "€742",
+            "€1,246"
           ],
           [
             "CEG Export Earnings",
-            "€475",
-            "€710",
-            "€1,180"
+            "€434",
+            "€645",
+            "€1,069"
           ],
           [
             "Total Annual Savings",
-            "€975",
-            "€1,465",
-            "€2,435"
+            "€920",
+            "€1,387",
+            "€2,315"
           ],
           [
             "Payback Period",
-            "~6.6 years",
-            "~5.3 years",
-            "~4.3 years"
+            "~7.0 years",
+            "~5.6 years",
+            "~4.6 years"
           ],
           [
             "25-Year Net Profit (flat prices)",
-            "€18,000",
-            "€28,800",
-            "€50,300"
+            "€15,300",
+            "€24,900",
+            "€43,900"
           ],
           [
             "25-Year Net Profit (3% price rises)",
-            "€21,900",
-            "€34,600",
-            "€60,100"
+            "€20,400",
+            "€32,700",
+            "€57,100"
           ]
         ]
       },
@@ -2933,7 +2933,7 @@ export const articles: Article[] = [
     "title": "Solar Panels in Winter: Do They Actually Work?",
     "seoTitle": "Do Solar Panels Work in Winter? Irish Output Month by Month",
     "seoDescription": "What an Irish solar roof makes in December against June, month by month, why cold weather helps the panels, and how summer export carries winter bills.",
-    "answer": "Yes. Solar panels run on daylight, not heat, so they keep generating through an Irish winter, just less. A typical 6kWp system still makes about 120 to 220 kWh in December, roughly a fifth of its best summer month, and cold weather actually helps panel efficiency. Summer surplus and export payments carry the year.",
+    "answer": "Yes. Solar panels run on daylight, not heat, so they keep generating through an Irish winter, just less. A typical 6kWp system still makes about 165 kWh in December, roughly a fifth of its best summer month, and cold weather actually helps panel efficiency. Summer surplus and export payments carry the year.",
     "excerpt": "A common myth in Ireland is that solar panels are useless in winter. The truth might surprise you - panels still generate 20-35% of their peak-month output during the darker months.",
     "category": "guides",
     "date": "8 Apr 2026",
@@ -3058,7 +3058,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "As you can see, winter generation is lower - but it is far from zero. A 6kWp system will still produce 120 to 220 kWh in December, which is enough to cover a significant portion of your baseline electricity needs like lighting, fridge, and electronics."
+        "text": "As you can see, winter generation is lower - but it is far from zero. A 6kWp system will still produce about 165 kWh in December, which is enough to cover a significant portion of your baseline electricity needs like lighting, fridge, and electronics."
       },
       {
         "type": "heading",
@@ -3273,7 +3273,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "CEG earnings depend on the size of your system, your daytime electricity consumption, and the orientation of your panels. A household that uses most of its solar generation during the day will export less (and earn less from CEG) but save more on bills. Conversely, a household that is out during the day will export more and earn more from CEG. The figures below assume no battery: a battery keeps more of your surplus in the house for the evening, so your export, and your CEG income, falls while your bill saving rises."
+        "text": "CEG earnings depend on the size of your system, your daytime electricity consumption, and the orientation of your panels. A household that uses most of its solar generation during the day will export less (and earn less from CEG) but save more on bills. Conversely, a household that is out during the day will export more and earn more from CEG. The figures below are our estimate for a home each size suits (4 kWp on 3,000 to 5,000 kWh a year, 6 kWp on 5,000 to 8,000, 10 kWp on 8,000 to 11,000) and assume no battery: a battery keeps more of your surplus in the house for the evening, so your export, and your CEG income, falls while your bill saving rises."
       },
       {
         "type": "table",
@@ -3290,13 +3290,13 @@ export const articles: Article[] = [
           ],
           [
             "6kWp",
-            "2,850–4,000 kWh",
-            "€513–€720"
+            "3,370–3,910 kWh",
+            "€610–€710"
           ],
           [
             "10kWp",
-            "4,750–6,650 kWh",
-            "€855–€1,197"
+            "5,940–6,620 kWh",
+            "€1,070–€1,190"
           ]
         ]
       },
@@ -3304,7 +3304,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "The Big Picture",
-        "body": "CEG earnings alone (€513–€720 a year for a typical 6kWp system without a battery) are worth more than most people expect, and remember this is income on top of your bill savings (€800–€1,200/year). Together, they significantly accelerate your return on investment. The CEG essentially ensures that no solar energy goes to waste."
+        "body": "CEG earnings alone (€610–€710 a year for a typical 6kWp system without a battery) are worth more than most people expect, and remember this is income on top of your bill savings (€630–€820/year on our estimate). Together, they significantly accelerate your return on investment. The CEG essentially ensures that no solar energy goes to waste."
       },
       {
         "type": "heading",
@@ -3400,7 +3400,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.45/kWh versus the €0.18/kWh our estimates use for export), this higher self-consumption rate partially offsets the lower total output. Even the darkest months are not a write-off: see [how solar panels perform in an Irish winter](/blog/solar-panels-in-winter-do-they-work)."
+        "text": "Think about your morning routine: toast, kettle, shower, lights, phone charging, heating the house. An east-facing system peaks just when you are using the most electricity, meaning more of your solar generation is consumed directly rather than exported to the grid. Since using your own solar electricity is worth more than exporting it (you save €0.35–€0.38/kWh versus the €0.18/kWh our estimates use for export), this higher self-consumption rate partially offsets the lower total output. Even the darkest months are not a write-off: see [how solar panels perform in an Irish winter](/blog/solar-panels-in-winter-do-they-work)."
       },
       {
         "type": "bulletList",
@@ -3622,11 +3622,11 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Without a battery, a 6 kWp system generates about 5,700 kWh a year. An Irish home with no storage uses roughly 30 to 50% of that as it is made, so take a typical 38%: about 2,150 kWh used directly and 3,550 kWh exported. That is €753 off the bill (2,150 kWh at €0.35) plus €639 from the Clean Export Guarantee (3,550 kWh at €0.18, our estimate rate; each supplier sets its own). Total: about €1,392 a year."
+        "text": "Without a battery, a 6 kWp system generates about 5,700 kWh a year. An Irish home with no storage uses roughly 30 to 50% of that as it is made, so take a typical 37%: about 2,120 kWh used directly and 3,580 kWh exported. That is €742 off the bill (2,120 kWh at €0.35) plus €645 from the Clean Export Guarantee (3,580 kWh at €0.18, our estimate rate; each supplier sets its own). Total: about €1,387 a year on our estimate."
       },
       {
         "type": "paragraph",
-        "text": "With a 5 kWh battery, self-consumption typically rises to around 75%. That means using about 4,275 kWh directly and exporting 1,425 kWh: €1,496 off the bill (4,275 kWh at €0.35) plus €257 from the Clean Export Guarantee (1,425 kWh at €0.18). Total: about €1,753 a year. The battery is therefore worth roughly €361 a year more than panels alone, and at about €3,200 fitted, or €2,600 after the €600 SEAI battery grant, that is a payback of around 7 years on the battery portion, still noticeably longer than the panels themselves."
+        "text": "With a 5 kWh battery, self-consumption typically rises to around 75%. That means using about 4,275 kWh directly and exporting 1,425 kWh: €1,496 off the bill (4,275 kWh at €0.35) plus €257 from the Clean Export Guarantee (1,425 kWh at €0.18). Total: about €1,753 a year. The battery is therefore worth roughly €366 a year more than panels alone, and at about €3,200 fitted, or €2,600 after the €600 SEAI battery grant, that is a payback of around 7 years on the battery portion, still noticeably longer than the panels themselves."
       },
       {
         "type": "table",
@@ -3667,7 +3667,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "info",
         "title": "Understanding the Numbers",
-        "body": "A battery saves you money by reducing your grid imports during the evening and night. The value of each stored kWh is €0.35–€0.45 (the price you would otherwise pay for grid electricity), versus the €0.18 our estimates use for exporting it. Storing your own solar is worth about double what exporting it earns."
+        "body": "A battery saves you money by reducing your grid imports during the evening and night. The value of each stored kWh is €0.35–€0.38 (the price you would otherwise pay for grid electricity), versus the €0.18 our estimates use for exporting it. Storing your own solar is worth about double what exporting it earns."
       },
       {
         "type": "heading",
@@ -4188,7 +4188,7 @@ export const articles: Article[] = [
     "title": "Solar Panels in Dublin: The Ultimate 2026 Guide",
     "seoTitle": "Solar Panels Dublin 2026: Cost, €1,800 Grant and Payback",
     "seoDescription": "A 4 kWp Dublin home system costs €6,400 after the €1,800 SEAI grant. Roof types from Victorian terraces to new estates, council areas and planning checks.",
-    "answer": "Yes, solar works well in Dublin. Prices are national, so a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI panels grant, and a typical system saves €800 to €1,400 a year. Most Dublin roofs suit solar; check first if your home is a protected structure or in an Architectural Conservation Area.",
+    "answer": "Yes, solar works well in Dublin. Prices are national, so a 4 kWp system is €8,200 installed, €6,400 after the €1,800 SEAI panels grant, and on our estimate it saves about €920 a year. Most Dublin roofs suit solar; check first if your home is a protected structure or in an Architectural Conservation Area.",
     "image": "/installs/in-roof-solar-slate.webp",
     "excerpt": "Everything Dublin homeowners need to know about going solar - from grant eligibility and installation costs to the best panels for Dublin's weather and typical roof types.",
     "category": "county",
@@ -4216,7 +4216,7 @@ export const articles: Article[] = [
         "type": "callout",
         "variant": "stat",
         "title": "Dublin Solar Stats",
-        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. A 6kWp system on a good south-facing Dublin roof generates about 5,700 kWh a year, and a typical Irish system saves €800 to €1,400 a year."
+        "body": "More than 100,000 Irish homes have been grant-aided for solar since 2018 ([SEAI](https://www.seai.ie)), with Dublin the largest single county market. A 6kWp system on a good south-facing Dublin roof generates about 5,700 kWh a year and, on our estimate, saves about €1,390 a year."
       },
       {
         "type": "heading",
@@ -4237,7 +4237,7 @@ export const articles: Article[] = [
         ],
         "rows": [
           [
-            "4kWp (9–10 panels)",
+            "4kWp (9 panels)",
             "€8,200",
             "€8,200",
             "€6,400"
@@ -4396,7 +4396,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "Dublin is an excellent place to go solar. The combination of high electricity prices, a competitive installer market, diverse and largely suitable roof types, and strong grant uptake means that Dublin homeowners are among the best-placed in Ireland to benefit from solar energy. With a typical payback of about 6 to 7 years and 25+ years of generation ahead, there has never been a better time to make the switch."
       },
       {
         "type": "divider"
@@ -4993,8 +4993,8 @@ export const articles: Article[] = [
     "slug": "how-many-solar-panels-do-i-need-ireland",
     "title": "How Many Solar Panels Do I Need in Ireland?",
     "seoTitle": "How Many Solar Panels Do I Need? Most Irish Homes: About 10",
-    "seoDescription": "Start with the kWh on your bill, not the roof. Most Irish homes need 4 to 4.5 kWp, about 10 panels. Sizing by household, roof space and orientation.",
-    "answer": "Most Irish homes need about 10 panels, a 4 to 4.5 kWp system, sized to generate about 85% of a typical 4,000 to 5,000 kWh a year. Larger families need 10 to 14 panels, and homes with an EV and a heat pump 15 to 20. Your bill's annual kWh decides the number, not the roof.",
+    "seoDescription": "Start with the kWh on your bill, not the roof. Most Irish homes need 4 to 4.5 kWp, 9 to 10 panels. Sizing by household, roof space and orientation.",
+    "answer": "Most Irish homes need 9 to 10 panels, a 4 to 4.5 kWp system, sized to generate about 85% of a typical 4,000 to 5,000 kWh a year. Larger families need 10 to 14 panels, and homes with an EV and a heat pump 15 to 20. Your bill's annual kWh decides the number, not the roof.",
     "image": "/blog/two-storey-home-row-of-solar-panels.webp",
     "imageAlt": "A row of black solar panels on a white two-storey house, fitted by Solar Ireland Group",
     "excerpt": "A complete guide to sizing your solar system - from single-person apartments to large family homes. Includes a household size calculator, roof space guide, and budget-conscious strategies.",
@@ -5048,14 +5048,14 @@ export const articles: Article[] = [
             "1–2 people (low usage)",
             "2,500–3,500 kWh",
             "4 kWp",
-            "9–10 panels",
+            "9 panels",
             "3,800 kWh"
           ],
           [
             "1–2 people (medium usage)",
             "3,500–4,500 kWh",
             "4 kWp",
-            "9–10 panels",
+            "9 panels",
             "3,800 kWh"
           ],
           [
@@ -5083,7 +5083,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are the ones our savings engine recommends: an array that generates about 85% of your annual usage, rounded to the nearest half kWp and counted in 440W panels, so it covers a significant portion of your usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "These recommendations assume a south-facing roof at approximately 35° pitch, which is optimal for Irish conditions, and roughly 950 kWh of generation per kWp per year. If your roof faces east or west, you will need roughly 15–20% more panels to achieve the same annual generation. The table starts at 4 kWp because that is the smallest domestic system worth fitting: below it the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4 kWp is the exact point at which the SEAI grant reaches its full €1,800. Above that, the sizes are the ones our savings engine recommends: an array that generates about 85% of your annual usage, rounded to the nearest half kWp and counted in 440W panels, so it covers a significant portion of your usage while avoiding severe over-generation, which would mean exporting large amounts of electricity at the lower CEG rate rather than using it yourself."
       },
       {
         "type": "heading",
@@ -5098,7 +5098,7 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "Our estimates count in 440W panels, a common size for Irish residential installations in 2026",
-          "A 4kWp system needs 9 to 10 panels (10 × 440W = 4.4kWp)",
+          "A 4kWp system needs 9 panels (9 × 440W = 3.96kWp)",
           "A 6kWp system needs about 14 panels (14 × 440W = 6.16kWp)",
           "Each panel measures approximately 1.7m tall by 1.0m wide, requiring about 1.7m² of roof space",
           "You should allow approximately 10cm gaps between panels for mounting rails and ventilation"
@@ -5124,8 +5124,8 @@ export const articles: Article[] = [
         "rows": [
           [
             "4 kWp (the domestic minimum)",
-            "10 panels",
-            "~19 m²",
+            "9 panels",
+            "~18 m²",
             "5m × 4m clear area"
           ],
           [
@@ -5208,7 +5208,7 @@ export const articles: Article[] = [
         "type": "numberedList",
         "items": [
           "Start with your annual electricity usage (find it on your electricity bill) - this is the most important factor",
-          "4kWp is the smallest system worth fitting and suits 1–2 person homes: below that the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4kWp is exactly where the SEAI grant reaches its full €1,800. Most 1 to 4 person homes land on 4 to 4.5kWp, about 10 panels; larger families need 4.5 to 6kWp, and homes with an EV and a heat pump 6.5 to 9kWp",
+          "4kWp is the smallest system worth fitting and suits 1–2 person homes: below that the fixed costs of scaffolding, mounting, inverter and connection barely change while the generation and the grant both fall away, and 4kWp is exactly where the SEAI grant reaches its full €1,800. Most 1 to 4 person homes land on 4 to 4.5kWp, 9 to 10 panels; larger families need 4.5 to 6kWp, and homes with an EV and a heat pump 6.5 to 9kWp",
           "Each panel requires approximately 1.7m² of roof space plus gaps - measure your available roof area before getting quotes",
           "South-facing roofs are optimal, but east and west-facing roofs are still highly viable (80–85% output)",
           "If budget is tight, start with 4kWp and expand later - just ensure your inverter and mounting rails are sized for future expansion",
@@ -5248,7 +5248,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Irish solar output swings hard with the seasons. A 4kWp south-facing system makes roughly 520 kWh in June but only 95 kWh in December, more than a five-fold difference. Install in spring and you go straight into the strongest months. Install in December and the first few months bring modest output."
+        "text": "Irish solar output swings hard with the seasons. A 4kWp south-facing system makes roughly 517 kWh in June but only 110 kWh in December, nearly a five-fold difference. Install in spring and you go straight into the strongest months. Install in December and the first few months bring modest output."
       },
       {
         "type": "callout",
@@ -5276,27 +5276,27 @@ export const articles: Article[] = [
         "rows": [
           [
             "January",
-            "110 kWh",
-            "2.9%",
-            "3.5"
+            "125 kWh",
+            "3.3%",
+            "4.0"
           ],
           [
             "February",
-            "165 kWh",
-            "4.3%",
-            "5.9"
+            "182 kWh",
+            "4.8%",
+            "6.5"
           ],
           [
             "March",
-            "275 kWh",
-            "7.2%",
-            "8.9"
+            "315 kWh",
+            "8.3%",
+            "10.2"
           ],
           [
             "April",
-            "410 kWh",
-            "10.8%",
-            "13.7"
+            "422 kWh",
+            "11.1%",
+            "14.1"
           ],
           [
             "May",
@@ -5306,45 +5306,45 @@ export const articles: Article[] = [
           ],
           [
             "June",
-            "520 kWh",
-            "13.7%",
-            "17.3"
+            "517 kWh",
+            "13.6%",
+            "17.2"
           ],
           [
             "July",
-            "515 kWh",
-            "13.6%",
-            "16.6"
+            "494 kWh",
+            "13.0%",
+            "15.9"
           ],
           [
             "August",
-            "480 kWh",
-            "12.6%",
-            "15.5"
+            "426 kWh",
+            "11.2%",
+            "13.7"
           ],
           [
             "September",
-            "355 kWh",
-            "9.3%",
-            "11.8"
+            "334 kWh",
+            "8.8%",
+            "11.1"
           ],
           [
             "October",
-            "235 kWh",
-            "6.2%",
-            "7.6"
+            "228 kWh",
+            "6.0%",
+            "7.4"
           ],
           [
             "November",
-            "135 kWh",
-            "3.6%",
-            "4.5"
+            "141 kWh",
+            "3.7%",
+            "4.7"
           ],
           [
             "December",
-            "95 kWh",
-            "2.5%",
-            "3.1"
+            "110 kWh",
+            "2.9%",
+            "3.5"
           ],
           [
             "Annual Total",
@@ -5356,7 +5356,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The data tells a clear story. From April through September, an Irish array produces roughly three quarters of its annual output in just six months. October through March accounts for the remaining quarter. This is the fundamental reason why spring installation is optimal - you capture the entire high-generation season from day one."
+        "text": "The data tells a clear story. From April through September, an Irish array produces roughly 70% of its annual output in just six months. October through March accounts for the remaining 30%. This is the fundamental reason why spring installation is optimal - you capture the entire high-generation season from day one."
       },
       {
         "type": "heading",
@@ -5394,7 +5394,7 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "Installers are at their busiest - lead times can stretch to 6–8 weeks, and you may pay a slight premium",
-          "You miss the March–May generation window - this costs you approximately 1,190 kWh of potential first-year generation",
+          "You miss the March–May generation window - this costs you approximately 1,240 kWh of potential first-year generation",
           "Scaffold work in hot weather can be slower - roof surface temperatures can reach 50°C+ on sunny days",
           "Despite these drawbacks, summer generation is excellent and your system will be fully productive immediately"
         ]
@@ -5406,7 +5406,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Autumn is a pragmatic time to install solar panels. Generation is declining but still meaningful - September alone produces 355 kWh from a 4kWp system, more than December and January combined. Installer availability improves as the summer rush subsides, and you may be able to negotiate slightly better pricing."
+        "text": "Autumn is a pragmatic time to install solar panels. Generation is declining but still meaningful - September alone produces 334 kWh from a 4kWp system, more than December and January combined. Installer availability improves as the summer rush subsides, and you may be able to negotiate slightly better pricing."
       },
       {
         "type": "paragraph",
@@ -5425,7 +5425,7 @@ export const articles: Article[] = [
         "type": "bulletList",
         "items": [
           "Installers are least busy - shortest lead times (1–2 weeks) and potential for discounted pricing",
-          "Panels still generate - even in December, a 4kWp system produces approximately 95 kWh, enough to offset a portion of your higher winter electricity bills",
+          "Panels still generate - even in December, a 4kWp system produces approximately 110 kWh, enough to offset a portion of your higher winter electricity bills",
           "The SEAI grant process continues year-round - there is no seasonal suspension of grant applications",
           "Installation conditions - while weather can delay installation, most installers work year-round and monitor forecasts to schedule work on dry days"
         ]
@@ -5494,7 +5494,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "Every month you delay installing solar panels is a month of free electricity you are not getting. At a typical unit rate of about €0.35/kWh, even a modest winter month of 100 kWh used at home saves you about €35. Over a full year of waiting, a typical system's €800 to €1,400 of savings is permanently lost - not borrowed, but lost forever."
+        "text": "Every month you delay installing solar panels is a month of free electricity you are not getting. At a typical unit rate of about €0.35/kWh, even a modest winter month of 100 kWh used at home saves you about €35. Over a full year of waiting, a 4 kWp system's saving, about €920 on our estimate, is permanently lost - not borrowed, but lost forever."
       },
       {
         "type": "callout",
@@ -5609,7 +5609,7 @@ export const articles: Article[] = [
       {
         "type": "bulletList",
         "items": [
-          "Lower electricity bills - tenants benefit directly from free solar electricity during the day, reducing their energy costs by €600–€1,200 per year depending on system size",
+          "Lower electricity bills - tenants benefit directly from free solar electricity during the day, reducing their energy costs by about €920 to €1,390 a year on our estimate, depending on system size",
           "More attractive property - homes with solar panels are increasingly sought after by environmentally conscious tenants and those looking to reduce living costs",
           "Longer tenancies - tenants who benefit from lower energy bills are more likely to stay longer, reducing void periods and turnover costs for the landlord",
           "Future-proofing - as energy regulations tighten, properties with solar panels will be better positioned to meet minimum energy efficiency standards"
@@ -5692,7 +5692,7 @@ export const articles: Article[] = [
       },
       {
         "type": "paragraph",
-        "text": "The numbers can stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI panels grant, and generates roughly €1,000–€1,400 a year in combined electricity savings and CEG payments. The catch is who receives that: in most tenancies the tenant pays the electricity bill, so the bill saving and the export income are theirs. The landlord's return is the better BER, a property that is easier to let, and readiness for future minimum standards. We do not count a rent premium, because there is no published Irish figure for one. A battery of 5 kWh or more adds a flat €600 SEAI battery grant on the same application, so solar and battery together can reach €2,400."
+        "text": "The numbers can stack up on a rental. A 6kWp system costs €9,600 installed, or €7,800 after the €1,800 SEAI panels grant, and generates roughly €1,320–€1,420 a year in combined electricity savings and CEG payments, on our estimate. The catch is who receives that: in most tenancies the tenant pays the electricity bill, so the bill saving and the export income are theirs. The landlord's return is the better BER, a property that is easier to let, and readiness for future minimum standards. We do not count a rent premium, because there is no published Irish figure for one."
       },
       {
         "type": "paragraph",
