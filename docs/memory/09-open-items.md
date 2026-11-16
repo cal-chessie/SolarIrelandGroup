@@ -59,6 +59,10 @@ I previously wrote this up as "one row in `installers`". That was too small. `te
 
 ---
 
+## The bill reader is offline on production (found 16 Nov 2026)
+
+Every upload to `/api/analyse-bill` on solarirelandgroup.ie answers `{"ok":false,"reason":"offline"}` (503) in under a second, checked three times with a blank test image on 16 Nov. That is the route's answer when `OPENROUTER_API_KEY` is missing or OpenRouter refuses the key, so every "Upload my bill" ends on "Our bill reader is having a rest" and the three questions. `/api/intake/config` still says `readerEnabled: true`, so the intake's own photo rows ("Or add a photo of your bill", "Use a photo of your bill") are offered and reach the same reader. Fix: set or renew `OPENROUTER_API_KEY` on Vercel production, then re-probe. Only then set `NEXT_PUBLIC_TYPED_ADD_BILL=1`, which turns on the "Add my bill for a sharper estimate" offer on the typed path's estimate step (branch `typed-bill-flow`).
+
 ## Verified defects on this site
 
 Each was checked in the source, not just reported. Details and line quotes in [07](07-content-seo-and-truth.md) and [06](06-frontend-and-mobile.md).

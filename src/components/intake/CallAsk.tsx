@@ -60,6 +60,24 @@ export interface CallContext {
   linkToken?: string | null;
   /** Which road the lead came by, for GA4 generate_lead (never sent to the API). */
   road?: LeadRoad;
+  /**
+   * What the figures rest on: a typed amount, a bill that was read, or no
+   * bill. A typed amount tells AISolar so in the existing door field
+   * (leadDoor), never by claiming a bill was read.
+   */
+  basis?: 'typed' | 'read' | 'none';
+}
+
+/**
+ * The door AISolar is told, by the existing `meta.door` field (no contract
+ * change). A typed amount says so in plain words, so the owner's lead email
+ * reads "door analyser-typed", never anything that sounds like a bill read.
+ * Every other road keeps its door exactly as it came in.
+ */
+export function leadDoor(door: string, basis: CallContext['basis']): string {
+  if (basis !== 'typed') return door;
+  if (/-typed$/.test(door)) return door;
+  return /-manual$/.test(door) ? door.replace(/-manual$/, '-typed') : `${door}-typed`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -210,13 +228,20 @@ export function askCopy(o: { estimate: boolean; who: string | null }): { cta: st
  * so nothing is emailed now; the call works out the full one. Neither: no
  * bill at all, and the copy promises only the call.
  */
-export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean }): { heading: string; sub: string } {
+export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean; typed?: boolean }): { heading: string; sub: string } {
   // Cal, 11 Nov: "dont sell the estimate sell the value within it".
   const grant = o.business
     ? ndmgDoubledLive()
       ? `your grant of up to ${SOLAR_DATA.ndmgDoubled.maxLabel} under the doubled business grant`
       : 'your SEAI business grant'
     : `your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}`;
+  if (o.estimate && o.typed) {
+    // A typed amount, no bill read: nothing here may say we read a bill.
+    return {
+      heading: 'Where should we send your savings?',
+      sub: `Your yearly saving, the right system size, ${grant} and when it pays for itself, worked out from the amount you gave us and in your inbox now. Then a quick call to check your roof and when you use power, and a proposal with final numbers. No visit, no obligation.`,
+    };
+  }
   if (o.estimate) {
     const what = `Your yearly saving, the right system for your roof, ${grant} and when it pays for itself, worked out from your bill and in your inbox now.`;
     return {
@@ -428,7 +453,7 @@ function CallForm({
       meta: {
         segment: ctx.segment,
         businessName: null,
-        door: ctx.door,
+        door: leadDoor(ctx.door, ctx.basis),
         // The post that sent them, when a blog bill box did (src/lib/postOrigin.ts).
         ...leadAttribution(ctx.src, typeof window !== 'undefined' ? window.location.pathname : '/'),
         pkg: ctx.pkg,
@@ -739,7 +764,7 @@ function saveContact() {
  * and the owner has it by email (lib/intake/live/outbox.ts). Nothing has been
  * emailed to the homeowner, so the held state never says "check your inbox".
  */
-export function callDoneCopy(o: { held: boolean; who: string | null; first: string; estimate?: boolean }): { title: string; facts: string; announce: string } {
+export function callDoneCopy(o: { held: boolean; who: string | null; first: string; estimate?: boolean; typed?: boolean }): { title: string; facts: string; announce: string } {
   const by = o.who || 'We';
   if (o.held) {
     return {
@@ -754,6 +779,14 @@ export function callDoneCopy(o: { held: boolean; who: string | null; first: stri
       title: `Thanks${o.first ? `, ${o.first}` : ''}. ${by} will ring you today.`,
       facts: `${by} will work out your estimate with you on the call. If it's late, first thing tomorrow.`,
       announce: `Sent. ${by} will ring you today.`,
+    };
+  }
+  if (o.typed) {
+    // From the amount they typed: their estimate, not a "full" one read off a bill.
+    return {
+      title: `Thanks, ${o.first}. Your estimate is on its way.`,
+      facts: `Check your inbox. ${o.who ? `${o.who} rings` : 'We ring'} you today to talk it through. If it's late, first thing tomorrow.`,
+      announce: 'Your estimate is on its way.',
     };
   }
   return {
@@ -771,6 +804,7 @@ export function CallDone({
   footer,
   held = false,
   estimate = true,
+  typed = false,
 }: {
   details: CallDetails;
   who: string | null;
@@ -781,10 +815,12 @@ export function CallDone({
   held?: boolean;
   /** A priced bill went with the request, so AISolar emails the estimate. */
   estimate?: boolean;
+  /** The figures came from a typed amount, not a bill read. */
+  typed?: boolean;
 }) {
   const H = headingLevel;
   const fname = firstName(details.name) || 'there';
-  const copy = callDoneCopy({ held, who, first: fname, estimate });
+  const copy = callDoneCopy({ held, who, first: fname, estimate, typed });
   return (
     <div className="si-done-call" data-call-done={held ? 'held' : estimate ? 'sent' : 'call'}>
       <span className="si-done-mark" aria-hidden="true">

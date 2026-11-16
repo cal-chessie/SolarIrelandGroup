@@ -177,3 +177,14 @@ The home redesign on `home-sections-world-class` was rejected. This pass keeps t
 - **Why panels pay** reads `estimate()` at the 4 kWp floor: 3,800 kWh a year, 110 in December, 517 in June. The old hard-coded Dublin table (3,816 and 96) is gone.
 - **NC6 timing.** ESB Networks needs the NC6 before installation, so it sits in step 3 (before work starts). Step 4 is the install, the BER and the SEAI paperwork.
 - **FAQ markup.** The business grant and farm posts now use the heading "Frequently asked questions". `getFaqSchema` stops at the post's closing CTA, so a sources line after it never lands in the last answer.
+
+## The typed path's steps (16 Nov 2026, branch `typed-bill-flow`)
+
+Cal: a typed amount "skips straight to the call". From 1024 the `time` step drew the estimate and the ask side by side, headed "Your call" with "Your estimate" ticked off unseen (`IntakeApp.tsx`, the old `progressState`/`headerName` and the `step === 'time' || (step === 'details' && wide)` branch).
+
+- Three steps at every width: your bill, your estimate (`time`), your call (`details`), then the confirmation. From 1024 the estimate stays in the left lane on both `time` and `details`; on `time` the right lane holds one button, "Send my estimate". A skipped bill (no figures) keeps the old side-by-side.
+- The left lane carries "What your number is based on", "What the call adds" and "Why the battery is left out". Its figures are the quote's own (kWh, daytime share, the roof yield summed from `monthlyGeneration`) plus the battery grant label from `solar-data.ts`.
+- Typed words: `askHeadline({ typed })`, `callDoneCopy({ typed })` never say a bill was read. AISolar hears it through the existing `meta.door` (`leadDoor`: `analyser-manual` becomes `analyser-typed`); `billRead` stays null.
+- Events: `typed_estimate_shown`, `typed_add_bill_click`, through `trackEvent` (consent-gated).
+- The add-bill offer is behind `NEXT_PUBLIC_TYPED_ADD_BILL=1`, off until the reader works (see 09).
+- Test: `src/__tests__/typed-path-steps.test.tsx`.

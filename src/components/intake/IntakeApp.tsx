@@ -44,7 +44,7 @@ import { askHeadline, CallAsk, CallDone, callDoneCopy, type CallDetails } from '
 import { takeCarry } from './carry';
 import { cachedQuote, getConfig, getQuotes, readBillPhoto } from './api';
 import { roughQuote } from '@/lib/intake/roughQuote';
-import { ndmgDoubledLine, ndmgDoubledLive } from '@/lib/solar-data';
+import { ndmgDoubledLine, ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
 import {
   clearDeviceDraft,
   doorFromSeg,
@@ -200,6 +200,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const who = config?.survey.homeownerFacingName ?? null;
   const figures = quote?.hasBasis ? quote.figures : null;
   const hasBasis = draft.bill != null || draft.annualKwh != null;
+  /** The typed path: a figure they gave us, no bill read. Every word on it must be true for a typed amount. */
+  const typed = hasBasis && !draft.billRead;
+  /** A priced quote rides with the request, so AISolar really emails the estimate (CallAsk's rule). */
+  const emailable = !!quote?.quoteToken;
+  /** From 1024 with no bill at all (skipped): nothing to show on an estimate step, so the ask sits beside "No bill, no problem". */
+  const askOnTime = step === 'time' && wide && !hasBasis;
 
   /* ── URL and history ───────────────────────────────────────────── */
 
@@ -621,6 +627,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     if (step === 'time') {
       setAnnounce(`Estimate ready: about ${eur(figures.annualSavingEur)} a year`);
       track('intake_estimate_shown', { at_minimum: figures.sizedAtMinimum, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
+      if (typed) track('typed_estimate_shown', { method: draft.billMethod ?? 'kwh', rough, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote, quoteStatus]);
@@ -671,7 +678,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     if (variant === 'layer' && root) root.scrollTop = 0;
     else window.scrollTo(0, 0);
     const t = setTimeout(() => h1Ref.current?.focus({ preventScroll: true }), 30);
-    if (step === 'details' || (step === 'time' && wide)) track('intake_ask_shown', { segment: seg, view: wide ? 'lanes' : 'ask', flow_id: draftRef.current.flowId });
+    if (step === 'details' || askOnTime) track('intake_ask_shown', { segment: seg, view: wide ? 'lanes' : 'ask', flow_id: draftRef.current.flowId });
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, hydrated]);
@@ -753,6 +760,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     setTimeout(() => billInputRef.current?.focus(), 80);
   };
 
+  /** Typed path, estimate step: add the bill without losing a thing. The read lands on this same estimate. */
+  const addBillForSharper = () => {
+    track('typed_add_bill_click', { segment: seg, method: draftRef.current.billMethod ?? 'kwh', flow_id: draftRef.current.flowId });
+    fileRef.current?.click();
+  };
+
   const onPhotoPicked = async (file: File | undefined, where: 'bill' | 'time') => {
     if (!file) return;
     // Over the upload cap: say so before a byte is sent (M9).
@@ -832,7 +845,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const st = { ...(window.history.state || {}), si: 1, sid: 'intake', d: depthRef.current, step: 'done' };
     window.history.replaceState(st, '', urlFor('done', next));
     setStep('done');
-    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate }).announce);
+    setAnnounce(callDoneCopy({ held: !!res.fallback, who, first: '', estimate: sent.estimate, typed }).announce);
   };
 
   /* ── Pieces ────────────────────────────────────────────────────── */
@@ -1386,12 +1399,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </button>
   ) : null;
 
+  // The estimate is the screen's heading on its own step (and beside the ask with no bill); beside the form on "Your call", the ask is.
+  const estFirst = step === 'time';
+  const EstH = estFirst ? 'h1' : 'h2';
+  const estRef = estFirst ? h1Ref : undefined;
   const minSys = config?.estimate.minSystem;
   const noBillBlock = (
     <div className="si-est">
-      <h1 className="si-title" ref={h1Ref} tabIndex={-1}>
+      <EstH className="si-title" ref={estRef} tabIndex={-1}>
         No bill, no problem.
-      </h1>
+      </EstH>
       <p className="si-hint">{isBiz ? 'We size it with you on the call.' : 'We work it out with you on the call.'}</p>
       {!isBiz && minSys ? (
         <dl className="si-receipt si-mt-32">
@@ -1436,9 +1453,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const estimateHead = (
     <div className="si-est__head">
-      <h1 className="si-est__title" ref={h1Ref} tabIndex={-1}>
+      <EstH className="si-est__title" ref={estRef} tabIndex={-1}>
         Your estimate
-      </h1>
+      </EstH>
       <span className="si-tag">{rough ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
       {updatedFlash ? (
         <span className="si-updated">
@@ -1485,19 +1502,112 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </div>
   );
 
+  /*
+   * What the number rests on, what the call adds, and why the battery waits
+   * for the call (Cal, 16 Nov 2026). Every figure here is the quote's own or
+   * from solar-data.ts, so it can never disagree with the hero above it.
+   */
+  const dayShare = quote?.assumptions.find((a) => a.field === 'daytimeShare')?.value;
+  const dayPct = typeof dayShare === 'number' && dayShare > 0 && dayShare < 1 ? Math.round(dayShare * 100) : null;
+  // The roof's yield as the quote used it (AISolar's maths has authority); solar-data's figure only when the quote has no months.
+  const genYear = figures?.monthlyGeneration?.reduce((a, b) => a + b, 0) ?? 0;
+  const yieldPerKwp = figures && genYear > 0 && figures.kwp > 0 ? Math.round(genYear / figures.kwp / 10) * 10 : SOLAR_DATA.system.generationPerKwp;
+  const basisPanel =
+    figures ? (
+      <div className="si-basis" data-basis={typed ? 'typed' : 'read'}>
+        <p className="si-group-label si-basis__h">What your number is based on</p>
+        <ul className="si-basis__list">
+          <li>
+            {typed ? (
+              draft.bill != null ? (
+                <>
+                  The <b {...prov('you_told_us')}>{draft.per === '2months' ? `${eur(draft.bill)} every 2 months` : `${eur(draft.bill)} a month`}</b> you gave us, about{' '}
+                  <b {...prov('estimate')}>{num(figures.annualKwh)} kWh</b> a year.
+                </>
+              ) : (
+                <>
+                  The <b {...prov('you_told_us')}>{num(figures.annualKwh)} kWh</b> a year you gave us.
+                </>
+              )
+            ) : (
+              <>
+                Your bill as we read it, about <b {...prov('estimate')}>{num(figures.annualKwh)} kWh</b> a year.
+              </>
+            )}
+          </li>
+          {!draft.billRead?.dayKwh ? (
+            <li>
+              {isBiz ? 'A typical business day' : "A typical Irish home's day"}
+              {dayPct ? (
+                <>
+                  , with about <b {...prov('assumed')}>{dayPct}%</b> of your power used in daylight
+                </>
+              ) : null}
+              .
+            </li>
+          ) : null}
+          <li>
+            A good south-facing roof, making about <b {...prov('assumed')}>{num(yieldPerKwp)} kWh</b> a year for each kWp of panels.
+          </li>
+          <li>Panels only. No battery in the price or the saving.</li>
+        </ul>
+        <p className="si-group-label si-basis__h">What the call adds</p>
+        <p className="si-basis__p">
+          A member of the team goes through your figures with you. If you want to go ahead, a site survey checks your roof, your meter and any shading, then you get a fixed price.
+        </p>
+        {!isBiz ? (
+          <>
+            <p className="si-group-label si-basis__h">Why the battery is left out</p>
+            <p className="si-basis__p">
+              A battery only pays when it&apos;s sized to how and when you use power, and {typed ? 'a bill amount' : 'a bill'} can&apos;t show that. So on the call we ask a few questions first, then talk you
+              through battery options and the <b {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</b> SEAI battery grant.
+            </p>
+          </>
+        ) : null}
+      </div>
+    ) : null;
+
+  /*
+   * Typed path only: a good estimate stands, the bill makes it sharper.
+   * Shown only while the bill reader works (NEXT_PUBLIC_TYPED_ADD_BILL=1):
+   * on 16 Nov 2026 the live reader answered "offline" to every upload, and we
+   * never invite someone into a dead end. Never blocks: the primary stays
+   * "Send my estimate".
+   */
+  const addBillOn = process.env.NEXT_PUBLIC_TYPED_ADD_BILL === '1' && readerOn && typed && emailable && !isBiz && !!figures && !rough;
+  const addBillBusy = photo.where === 'time' && photo.status !== 'idle';
+  const addBill = addBillOn ? (
+    <div className="si-addbill" data-add-bill="">
+      <p className="si-small">A good estimate from the amount you typed. Have your bill to hand? Add it before we send this and the figures get sharper.</p>
+      {addBillBusy ? (
+        <div className="si-mt-12">{photoRow('time')}</div>
+      ) : (
+        <button type="button" className="si-btn si-btn--secondary si-mt-12" onClick={addBillForSharper}>
+          <Camera size={18} aria-hidden="true" /> Add my bill for a sharper estimate
+        </button>
+      )}
+    </div>
+  ) : null;
+
+  const nextLabel = !hasBasis ? 'Book my free call' : emailable ? 'Send my estimate' : 'Next, your free call';
+
   const timeLeft = (
     <div className="si-screen-in si-screen">
       {segTag}
       {estimateMain}
+      {basisPanel}
+      {/* Phones and portrait tablets: the add-bill offer sits with the estimate; from 1024 it sits by the button. */}
+      {step === 'time' && !wide ? addBill : null}
+      {fileInput}
       {/* Phones and portrait tablets: the estimate's one primary moves on to the ask. */}
-      <div className="si-actions si-actions--phone" ref={actionsRef}>
+      <div className="si-actions si-actions--phone" ref={step === 'time' ? actionsRef : undefined}>
         <div className="si-actions__inner">
           <PrimaryButton
             type="button"
             arrow={false}
             label={
               <span className="si-btn__in">
-                See my full savings <ChevronRight size={18} aria-hidden="true" />
+                {nextLabel} <ChevronRight size={18} aria-hidden="true" />
               </span>
             }
             onClick={() => go('details')}
@@ -1505,6 +1615,34 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         </div>
       </div>
       {cookieLine}
+    </div>
+  );
+
+  /* From 1024, the estimate step's right lane: what happens next, and the one button that moves on. */
+  const estimateNext = (
+    <div className="si-screen-in si-screen">
+      <h2 className="si-lane-title">{emailable ? 'Your estimate, in your inbox' : 'Your figures, worked out in full'}</h2>
+      <p className="si-sub">
+        {emailable
+          ? `Next we ask where to send it. Then ${who || 'a member of the team'} rings you for a free 15-minute call to go through it.`
+          : `Next we ask where to ring you. ${who || 'A member of the team'} works out your full figures with you on a free 15-minute call.`}
+      </p>
+      {addBill ? <div className="si-mt-24">{addBill}</div> : null}
+      <div className="si-actions">
+        <div className="si-actions__inner">
+          <PrimaryButton
+            type="button"
+            arrow={false}
+            label={
+              <span className="si-btn__in">
+                {nextLabel} <ChevronRight size={18} aria-hidden="true" />
+              </span>
+            }
+            onClick={() => go('details')}
+          />
+        </div>
+      </div>
+      <footer className="si-lane-foot">{trustLine}</footer>
     </div>
   );
 
@@ -1542,6 +1680,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </span>
     ) : null;
 
+  const headline = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures });
+  /** `asH1`: the ask is the screen's heading (its own step, at every width). */
   const askBlock = (asH1: boolean) => (
     <div className="si-screen-in si-screen">
       {phoneChip}
@@ -1551,10 +1691,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         onDetails={updateCall}
         who={who}
         online={online}
-        heading={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures, business: isBiz }).heading}
+        heading={headline.heading}
         headingLevel={asH1 ? 'h1' : 'h2'}
         headingRef={asH1 ? h1Ref : undefined}
-        sub={askHeadline({ estimate: !!quote?.quoteToken, rough: rough && !!figures, business: isBiz }).sub}
+        sub={headline.sub}
         ctx={{
           segment: seg || 'domestic',
           door: draft.door,
@@ -1570,6 +1710,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           quoteToken: quote?.quoteToken ?? null,
           billRead: callBill,
           carry: carry ? { eircode: carry.eircode, mprn: carry.mprn, address: carry.address } : null,
+          basis: !hasBasis ? 'none' : typed ? 'typed' : 'read',
         }}
         onSent={onCallSent}
         bar={
@@ -1592,7 +1733,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} />
+      <CallDone details={det} who={who} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );
@@ -1653,10 +1794,18 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   /* ── Assemble ──────────────────────────────────────────────────── */
 
+  /*
+   * Three steps at every width: your bill, your estimate, your call (Cal, 16
+   * Nov 2026). From 1024 the estimate used to share one screen with the ask,
+   * named "Your call" with "Your estimate" ticked off unseen, so a typed
+   * amount looked like it skipped straight to the contact form. The estimate
+   * is now its own step everywhere; from 1024 it stays in the left lane while
+   * the ask takes the right, so nothing moves under the visitor.
+   */
   const progressState: ('done' | 'current' | 'future')[] =
-    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !wide ? ['done', 'current', 'future'] : step === 'done' && !draft.result?.fallback ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
-  const headerName = (step === 'time' || step === 'details') && wide ? 'Your call' : STEP_NAME[step];
-  const headerCount = step === 'done' ? null : (step === 'time' && wide ? STEP_COUNT.details : STEP_COUNT[step]) ?? null;
+    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !askOnTime ? ['done', 'current', 'future'] : step === 'done' && !draft.result?.fallback ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
+  const headerName = askOnTime ? STEP_NAME.details : STEP_NAME[step];
+  const headerCount = step === 'done' ? null : (askOnTime ? STEP_COUNT.details : STEP_COUNT[step]) ?? null;
   const showPhoneBack = depth > 1 && step !== 'done';
 
   let left: ReactNode;
@@ -1664,10 +1813,14 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   if (step === 'bill' || step === 'segment') {
     left = billLeft;
     right = billRight;
-  } else if (step === 'time' || (step === 'details' && wide)) {
-    // From 1024: the estimate and the ask side by side, one screen.
+  } else if (step === 'time' && !askOnTime) {
+    // Your estimate, its own step. From 1024 the right lane says what happens next and holds the one button.
     left = timeLeft;
-    right = wide ? askBlock(false) : null;
+    right = wide ? estimateNext : null;
+  } else if (wide && (step === 'time' || step === 'details')) {
+    // Your call, from 1024: the estimate and what it rests on stay in the left lane, the ask on the right.
+    left = timeLeft;
+    right = askBlock(step === 'details');
   } else if (step === 'details') {
     left = askBlock(true);
     right = null;
@@ -1758,7 +1911,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <section className="si-lane si-lane--left" aria-label={step === 'time' ? 'Your estimate' : undefined}>
           <div className="si-col">{left}</div>
         </section>
-        <section className="si-lane si-lane--right" aria-label={step === 'bill' || step === 'done' ? 'Your estimate' : 'Your free call'} hidden={right === null}>
+        <section className="si-lane si-lane--right" aria-label={step === 'bill' || step === 'done' ? 'Your estimate' : step === 'time' && !askOnTime ? 'What happens next' : 'Your free call'} hidden={right === null}>
           <div className="si-col">{right}</div>
         </section>
       </main>
