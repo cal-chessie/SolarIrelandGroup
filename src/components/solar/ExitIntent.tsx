@@ -4,7 +4,7 @@
  * The exit quiz (Cal, 9 Nov 2026; restyled and lengthened 11 Nov). Four
  * one-tap questions (home or business, what they are after, the bill, what
  * else is in the house), an honest result, then the same ask as every other
- * road ("Send my savings", or "Ring me today" when there is no quote).
+ * road ("Send my savings", or "Ring me for my estimate" when there is no quote).
  *
  * The look is the old exit popup's, class for class (Cal, 11 Nov): the dark
  * card with the yellow top edge, the logo ring and name, the green pill, the

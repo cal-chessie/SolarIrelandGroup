@@ -58,8 +58,8 @@ describe('/book-survey cold', () => {
     const { default: BookSurveyClient } = await import('@/app/book-survey/BookSurveyClient');
     render(<BookSurveyClient lt={null} segment="domestic" src={null} />);
     fireEvent.click(await screen.findByRole('button', { name: /Skip this/ }));
-    expect(screen.queryByRole('button', { name: /estimate/i })).toBeNull();
-    expect(screen.getByRole('button', { name: 'Ring me today' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /send my estimate|send my savings/i })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Ring me for my estimate' })).toBeTruthy();
     const body = await fillAndSend();
     expect(body.quoteToken).toBeNull();
     const done = await screen.findByRole('heading', { level: 2, name: /ring you shortly/ });

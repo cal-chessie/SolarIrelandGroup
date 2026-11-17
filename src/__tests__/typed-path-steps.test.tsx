@@ -88,7 +88,7 @@ async function walk(wide: boolean) {
   // Screen 1 sells the next screen and never shows a figure.
   expect(lanesText()).toContain('your grant and when it pays for itself');
   expect(lanesText()).toContain('We check your roof, meter and shading.');
-  expect(lanesText()).toContain('We find out if a battery is feasible.');
+  expect(lanesText()).toContain('We see if a battery suits your home.');
   expect(lanesText()).toContain('We book your BER');
   expect(document.querySelector('.si-hero__fig')).toBeNull();
 
