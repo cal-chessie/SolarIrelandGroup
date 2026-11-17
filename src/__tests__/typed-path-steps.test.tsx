@@ -19,7 +19,8 @@ vi.mock('@/components/intake/intake.css', () => ({}));
 // The consent-gated layer: the intake's events go through trackEvent, nowhere else.
 vi.mock('@/lib/analytics', async (orig) => ({ ...(await orig<typeof import('@/lib/analytics')>()), trackEvent: vi.fn() }));
 
-const BILL_READ_WORDS = /read your bill|from your bill|we read|bill can't tell|full estimate/i;
+// "Your full estimate" is Cal's own wording for every state (17 Nov 2026), so it is allowed here.
+const BILL_READ_WORDS = /read your bill|from your bill|we read|bill can't tell/i;
 
 function setWidth(wide: boolean) {
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: wide ? 1440 : 390 });
@@ -87,9 +88,9 @@ async function walk(wide: boolean) {
 
   // Screen 1 sells the next screen and never shows a figure.
   // Estimate first, the call a soft second (Cal, 17 Nov 2026), and no call-only skip.
-  expect(lanesText()).toContain('Your full estimate and PDF breakdown land in your inbox.');
+  expect(lanesText()).toContain('Your full estimate and PDF breakdown sent to your inbox.');
   expect(lanesText()).toContain('One of our team goes through the final details with you.');
-  expect(lanesText()).toContain('You get a fixed-price final proposal.');
+  expect(lanesText()).toContain('You then get a fixed-price final proposal on the call.');
   expect(lanesText()).toContain('We book your BER');
   expect(lanesText()).not.toMatch(/Skip the bill|15-minute call/);
   expect(document.querySelector('.si-hero__fig')).toBeNull();
@@ -126,8 +127,8 @@ async function walk(wide: boolean) {
   expect(document.querySelector('[data-split]')?.textContent).toMatch(/off your bill \+ .* for what you send back at/);
   expect(lanesText()).toContain('From the €150 a month you told us. Close estimate, not a quote.');
   expect(lanesText()).toContain('Where should we send your estimate?');
-  expect(lanesText()).toContain('The full breakdown and a PDF, by email. No visit, no obligation.');
-  expect(lanesText()).toContain('Then we go through the final details and send your fixed-price proposal.');
+  expect(lanesText()).toContain('Your full estimate and PDF breakdown, sent to your email. No visit, no obligation.');
+  expect(lanesText()).toContain('Then one of our team goes through the final details with you.');
   expect(lanesText()).toContain('For the final details, after your estimate.');
   // The call is mentioned once, under the button: no best-time chips beside the estimate.
   expect(lanesText()).not.toContain('Best time to ring');
@@ -157,8 +158,8 @@ async function walk(wide: boolean) {
   // Then done.
   await waitFor(() => expect(stepOf()).toBe('done'));
   expect(progress()).toEqual(['done', 'done']);
-  expect(lanesText()).toContain('Thanks, Mary. Your estimate and PDF breakdown are on their way to your inbox.');
-  expect(lanesText()).toContain('Next, one of our team goes through the final details with you, then you get a fixed-price proposal.');
+  expect(lanesText()).toContain('Thanks, Mary. Your full estimate and PDF breakdown are on their way to your email.');
+  expect(lanesText()).toContain('Next, one of our team goes through the final details with you, then you get a fixed-price final proposal.');
   expect(lanesText()).not.toMatch(/On the call we|Save our number/);
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
   expect(submitted).toHaveLength(1);
@@ -180,7 +181,7 @@ describe('typed words', () => {
   it('the ask never claims a bill was read on a typed amount', () => {
     const h = askHeadline({ estimate: true, typed: true });
     expect(`${h.heading} ${h.sub}`).not.toMatch(BILL_READ_WORDS);
-    expect(h.sub).toContain('the amount you gave us');
+    expect(h.heading).toBe('Where should we send your estimate?');
   });
   it('AISolar hears "typed" through the existing door field, and only on the typed path', () => {
     expect(leadDoor('analyser-manual', 'typed')).toBe('analyser-typed');

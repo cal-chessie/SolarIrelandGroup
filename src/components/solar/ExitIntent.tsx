@@ -59,7 +59,6 @@ import { billBand, funnel } from '@/lib/intake/funnel';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { estimate } from '@/lib/estimate';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
-import { CALLER } from '@/lib/intake/caller';
 // intake.css loads when the quiz opens (tryOpen below), not when this mounts
 // at idle: on the home page that idle load shipped the whole intake app's CSS
 // during the first load, 86% of it unused (PageSpeed, 13 Nov 2026).
@@ -541,12 +540,12 @@ export default function ExitIntent() {
               <p className="mt-2 text-sm text-gray-400 leading-relaxed">
                 On a bill of about {eur(bill?.amount ?? 0)} a month, from the same engine as your full estimate. Your own bill makes it exact.
                 {interest === 'both' ? ` We'll price the charger too, and tell you about the SEAI home charger grant, ${CHARGER_GRANT}.` : ''}
-                {extras.length ? ' We will look at the extras you picked on the call.' : ''}
+                {extras.length ? ' We will look at the extras you picked with the final details.' : ''}
               </p>
             </>
           ) : (
             <p className="text-sm text-gray-400 leading-relaxed" role="alert">
-              We couldn&apos;t work that out just now. Leave your details and {CALLER} will ring you today and work it out with you, or ring us on{' '}
+              We couldn&apos;t work that out just now. Leave your details and your full estimate follows by email, or ring us on{' '}
               <a className="text-yellow-400 underline underline-offset-2" href={PHONE_HREF}>
                 {PHONE}
               </a>
@@ -583,7 +582,7 @@ export default function ExitIntent() {
               setStage('ask');
             }}
           >
-            {priced ? 'See my full savings' : 'Ask us to ring me'} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            {priced ? 'See my full savings' : 'Get my full estimate'} <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </>
@@ -596,15 +595,9 @@ export default function ExitIntent() {
           details={details}
           onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
           heading={
-            quotes?.at.quoteToken && !evOnly ? (
-              <>
-                Where should we send your <span className="text-gradient">savings?</span>
-              </>
-            ) : (
-              <>
-                Where should we <span className="text-gradient">ring you?</span>
-              </>
-            )
+            <>
+              Where should we send your <span className="text-gradient">estimate?</span>
+            </>
           }
           headingLevel="h2"
           headingRef={headRef}

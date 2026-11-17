@@ -342,6 +342,15 @@ describe('the outbox', () => {
     expect(`${subject}\n${text}`).not.toMatch(/[\u2013\u2014]/);
     expect(text).toContain('They were told: "Saved, not booked yet. We\'ll confirm by email."');
   });
+  it('a held call tells the owner the homeowner was promised their full estimate by email', () => {
+    const call = submitReq({ source: 'website_qualified', intent: 'call', slot: null, quoteToken: null } as Partial<SubmitRequest>);
+    const { subject, text } = alertText(toIngestBody(call, null), KEY, 'aisolar_timeout', true);
+    expect(subject).toMatch(/^Estimate promised by email: /);
+    expect(text).toContain('They were told: "We have your details, and your full estimate will follow by email."');
+    expect(text).toContain('send it to them, then ring them for the final details');
+    expect(text).toContain('Priced estimate with it: no, the team works it out from the bill');
+    expect(`${subject}\n${text}`).not.toMatch(/[\u2013\u2014]/);
+  });
   it('backs off 1, 2, 4, 8, 16, then every 30 minutes', () => {
     expect([1, 2, 3, 4, 5, 6, 9].map(backoffMinutes)).toEqual([1, 2, 4, 8, 16, 30, 30]);
   });

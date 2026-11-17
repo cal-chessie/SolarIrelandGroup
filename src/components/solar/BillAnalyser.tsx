@@ -1294,7 +1294,7 @@ export default function BillAnalyser({ variant = 'section', door = 'analyser', i
               setTimeout(() => el?.focus({ preventScroll: true }), 350);
             }}
           >
-            Send my savings
+            Send my estimate
           </button>
         </div>
       ) : null}

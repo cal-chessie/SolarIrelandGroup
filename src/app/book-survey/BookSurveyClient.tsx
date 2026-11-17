@@ -16,7 +16,9 @@
  *  - ?lt= with full details on file: "Is this you?" and one button. A bill on
  *    file is priced silently; no bill on file asks the one question first.
  *  - ?lt= with something missing: the form, prefilled with what is on file.
- *  - A device that already asked: "A member of our team is ringing you today" (inside CallAsk).
+ *  - A device that already asked: "We have your details" (inside CallAsk).
+ *  - 17 Nov 2026: every state leads with the full estimate by email; the call
+ *    is the soft second step (Cal: "let the other 3 points stand with them").
  *
  * Every submit goes through /api/intake/submit as intent "call" with the
  * magic link threaded, so a return visit never makes a second lead.
@@ -35,7 +37,6 @@ import { stripSensitiveParams } from '@/lib/privacyUrl';
 import { SOLAR_DATA } from '@/lib/solar-data';
 import { parseLinkToken } from '@/lib/intake/linkToken';
 import '@/components/intake/intake.css';
-import { CALLER } from '@/lib/intake/caller';
 
 const PHONE = SOLAR_DATA.provider.phone;
 const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, '')}`;
@@ -227,7 +228,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         footer={
           <p className="si-callpage__more">
             <a className="si-btn--quiet" href="/solar-calculator">
-              Want your figures before the call? Read my bill <ChevronRight size={16} aria-hidden="true" />
+              Want your figures now? Read my bill <ChevronRight size={16} aria-hidden="true" />
             </a>
           </p>
         }
@@ -303,15 +304,15 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           onDetails={(p) => setDetails((d) => ({ ...d, ...p }))}
           online={online}
           confirm={confirm}
-          cta="Send my savings"
+          cta="Send my estimate"
           heading={confirm ? 'Is this you?' : link.state === 'ready' ? 'Check your details' : askHeadline({ estimate: !!quote, business: segment === 'commercial' }).heading}
           headingLevel="h2"
           headingRef={askHeadRef}
           sub={
             confirm
               ? quote
-                ? 'One tap and your savings are on their way. Say when suits best for the call, if you like.'
-                : `One tap and ${CALLER} will ring you today. Say when suits best, if you like.`
+                ? 'One tap and your full estimate is on its way to your email.'
+                : 'One tap and we have your details. Your full estimate follows by email.'
               : priced
                 ? `On about ${eur(priced.amount)} a month, solar could save you around ${eur(priced.saving)} a year. ${askHeadline({ estimate: true, business: segment === 'commercial' }).sub}`
                 : askHeadline({ estimate: !!quote, business: segment === 'commercial' }).sub
@@ -348,21 +349,21 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl xl:max-w-[74rem] 2xl:max-w-[78rem] mx-auto lg:px-8 si-callpage__lanes">
             <section className="si-callpage__intro" aria-labelledby="si-bs-h1">
-              <p className="si-an-kicker">Free estimate and call</p>
+              <p className="si-an-kicker">Free full estimate</p>
               <h1 id="si-bs-h1" className="si-callpage__h1">
                 Get your full solar estimate
               </h1>
               <p className="si-callpage__sub">
-                Tell us roughly what your electricity bill is and we email your full estimate. Then {CALLER} rings you for a free 15-minute call, not a visit, to go through it and answer anything about the SEAI grant. No obligation.
+                Tell us roughly what your electricity bill is and your full estimate is sent to your email. No visit, no obligation.
               </p>
             </section>
-            <section className="si-callpage__more-lane" aria-label="What happens on the call">
-              <p className="si-group-label">On the call we&apos;ll</p>
-              <ul className="si-done-call__list">
-                <li>Go through your figures with you</li>
-                <li>Answer anything you want to ask about solar and the SEAI grant</li>
-                <li>Agree the next step with you, if you want one</li>
-              </ul>
+            <section className="si-callpage__more-lane" aria-label="What happens next">
+              <p className="si-group-label">How it works</p>
+              <ol className="si-done-call__list">
+                <li>Your full estimate sent to your inbox.</li>
+                <li>One of our team goes through the final details with you.</li>
+                <li>You then get a fixed-price final proposal on the call.</li>
+              </ol>
               <div className="si-callpage__alt">
                 <a className="si-btn--quiet" href="/solar-calculator">
                   Want your figures first? Read my bill <ChevronRight size={16} aria-hidden="true" />
@@ -372,7 +373,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
                 </a>
               </div>
             </section>
-            <section className="si-an-card si-callpage__card" aria-label="Your estimate and call">
+            <section className="si-an-card si-callpage__card" aria-label="Your estimate">
               {card}
             </section>
           </div>

@@ -63,7 +63,6 @@ import {
   type Step,
 } from './model';
 import { Collapse, EuroInput, Field, NoteRow, parseEuro, PrimaryButton, Spinner, TextInput } from './ui';
-import { CALLER_START } from '@/lib/intake/caller';
 
 export interface IntakeAppProps {
   variant: 'layer' | 'page';
@@ -75,8 +74,8 @@ const STEP_NAME: Record<Step, string> = {
   segment: 'Get your estimate',
   bill: 'Your bill',
   time: 'Your estimate',
-  details: 'Your call',
-  done: 'Estimate sent',
+  details: 'Your details',
+  done: 'Details sent',
 };
 const STEP_COUNT: Partial<Record<Step, string>> = { bill: '1 of 3', time: '2 of 3', details: '3 of 3' };
 /** The typed path (Cal, 17 Nov 2026): Your bill, then Your estimate with the form beside it, then done. */
@@ -1523,7 +1522,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     <div className="si-est">
       {estimateHead}
       <p className="si-est__down">We can&apos;t work out your figures this second.</p>
-      <p className="si-hint">You can still book your free call, and we go through your figures with you then.</p>
+      <p className="si-hint">You can still send your details, and your full estimate follows by email.</p>
     </div>
   ) : figures ? (
     <div className="si-est">
@@ -1690,7 +1689,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </div>
     ) : null;
 
-  const nextLabel = !hasBasis ? 'Book my free call' : emailable ? 'Send my estimate' : 'Next, your free call';
+  const nextLabel = 'Send my estimate';
 
   const timeLeft = (
     <div className="si-screen-in si-screen">
@@ -1726,12 +1725,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   /* From 1024, the estimate step's right lane: what happens next, and the one button that moves on. */
   const estimateNext = (
     <div className="si-screen-in si-screen">
-      <h2 className="si-lane-title">{emailable ? 'Your estimate, in your inbox' : 'Your figures, worked out in full'}</h2>
-      <p className="si-sub">
-        {emailable
-          ? "Your estimate goes to your inbox, and one of our team will ring you to talk it through."
-          : `Next we ask where to ring you. ${CALLER_START} works out your full figures with you on a free 15-minute call.`}
-      </p>
+      <h2 className="si-lane-title">Your estimate, in your inbox</h2>
+      <p className="si-sub">Your full estimate goes to your email. Then one of our team goes through the final details with you.</p>
       {addBill ? <div className="si-mt-24">{addBill}</div> : null}
       <div className="si-actions">
         <div className="si-actions__inner">
@@ -1787,16 +1782,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   /** AISolar attaches the PDF only when the estimate has a net cost and a payback (a business priced at the proposal has neither). */
   const pdfGoes = !!figures && figures.netCostEur != null && figures.paybackYears != null;
-  const headline0 = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures });
   /**
-   * Typed "Your estimate": the estimate is right beside the form, so the words
-   * under the heading stay to one sentence (Cal, 17 Nov 2026).
+   * One heading and one line for every state (Cal, 17 Nov 2026: estimate
+   * first, always). The PDF is named only when one really goes: a priced
+   * quote (AISolar emails it) for a home with a net cost and a payback.
    */
-  const headline = merged
-    ? emailable
-      ? { heading: 'Where should we send your estimate?', sub: pdfGoes ? 'The full breakdown and a PDF, by email. No visit, no obligation.' : 'The full breakdown, by email. No visit, no obligation.' }
-      : { heading: headline0.heading, sub: `${CALLER_START} rings you to work out your full figures, with no visit and no obligation.` }
-    : headline0;
+  const headline = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures, pdf: emailable && pdfGoes });
   const onSendAttempt = () =>
     track('typed_send_click', {
       method: draftRef.current.billMethod ?? 'kwh',
@@ -1836,10 +1827,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           basis: !hasBasis ? 'none' : typed ? 'typed' : 'read',
         }}
         onSent={onCallSent}
-        cta={merged ? 'Send my estimate' : undefined}
-        promise={merged ? (isBiz ? 'Then we book your site survey and send your fixed-price proposal.' : 'Then we go through the final details and send your fixed-price proposal.') : undefined}
         bestTime={!merged}
-        busyLabel={merged ? 'Sending your estimate' : undefined}
         onAttempt={merged ? onSendAttempt : undefined}
         bar={
           merged && !wide
@@ -1871,7 +1859,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} pdf={pdfGoes} business={isBiz} />
+      <CallDone details={det} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} pdf={draft.callEstimate !== false && pdfGoes} business={isBiz} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );
@@ -1881,7 +1869,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       {figures ? (
         <div className="si-mt-24">{heroAndReceipt(figures, { live: true })}</div>
       ) : (
-        <p className="si-sub si-mt-16">No bill yet. We work out your figures with you on the call.</p>
+        <p className="si-sub si-mt-16">No bill yet. Your full estimate follows by email.</p>
       )}
       <footer className="si-lane-foot">
         <div className="si-only-phone">{trustLine}</div>
@@ -1897,8 +1885,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
    * (AISolar builds the PDF only when there is a net cost and a payback).
    */
   const NEXT_STEPS = isBiz
-    ? ['Your estimate lands in your inbox.', 'A site survey checks your roof, meter and board.', 'You get a fixed-price final proposal.']
-    : ['Your full estimate and PDF breakdown land in your inbox.', 'One of our team goes through the final details with you.', 'You get a fixed-price final proposal.'];
+    ? ['Your full estimate sent to your inbox.', 'A site survey checks your roof, meter and board.', 'You get a fixed-price final proposal.']
+    : ['Your full estimate and PDF breakdown sent to your inbox.', 'One of our team goes through the final details with you.', 'You then get a fixed-price final proposal on the call.'];
   const WHY_US = ['SEAI registered', 'RECI registered', '5-year workmanship warranty', '25-year panel warranty', 'We book your BER'];
   const billRight = (
     <div className="si-screen-in si-screen si-next" data-next="">
@@ -2006,7 +1994,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       data-outcome={step === 'done' ? (draft.result?.fallback ? 'held' : 'call') : undefined}
       role={variant === 'layer' ? 'dialog' : undefined}
       aria-modal={variant === 'layer' ? 'true' : undefined}
-      aria-label={variant === 'layer' ? 'Get your solar estimate and book a free call' : undefined}
+      aria-label={variant === 'layer' ? 'Get your full solar estimate by email' : undefined}
       lang="en-IE"
     >
       <header className="si-header">
@@ -2077,7 +2065,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <section className="si-lane si-lane--left" aria-label={step === 'time' ? 'Your estimate' : undefined}>
           <div className="si-col">{left}</div>
         </section>
-        <section className="si-lane si-lane--right" aria-label={step === 'bill' ? 'What happens next' : step === 'done' ? 'Your estimate' : merged ? 'Your details' : step === 'time' && !askOnTime ? 'What happens next' : 'Your free call'} hidden={right === null}>
+        <section className="si-lane si-lane--right" aria-label={step === 'bill' ? 'What happens next' : step === 'done' ? 'Your estimate' : merged ? 'Your details' : step === 'time' && !askOnTime ? 'What happens next' : 'Your estimate'} hidden={right === null}>
           <div className="si-col">{right}</div>
         </section>
       </main>

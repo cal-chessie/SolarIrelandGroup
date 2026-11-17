@@ -2,7 +2,7 @@
 
 /**
  * The one ending of both roads (CALL-FUNNEL-PLAN, 4 Nov 2026): name, mobile,
- * email, an optional best time to ring, and "Send my full estimate". The Bill
+ * email, an optional best time to ring, and "Send my estimate". The Bill
  * Analyser (Road 1) and the Apple intake (Road 2) both render this, so the
  * ask, its errors, its failures and its confirmation are word for word the
  * same on both.
@@ -10,23 +10,22 @@
  * No Eircode field, no address, no survey, no slot. If the bill reader read a
  * valid Eircode, one line says it will be used, with a way to leave it off.
  *
- * Cal's answers (4 Nov): the best time is one tap and never required; the
- * confirmation says "Thanks, Mary. Our team will ring you shortly." (16 Nov:
- * never a person's name, see lib/intake/caller.) Never office hours, never a working day, never "we'll tell you
- * straight".
+ * Cal's answers (4 Nov): the best time is one tap and never required. 17 Nov:
+ * every state leads with the estimate by email; the confirmation says
+ * "Thanks, Mary. Your full estimate is on its way to your email." Never a
+ * person's name, never office hours, never "we'll ring" first.
  */
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { CircleAlert, Mail, MapPin, MessageCircle, Phone, PhoneIncoming, UserPlus } from 'lucide-react';
+import { CircleAlert, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import type { BestTime, CallBillRead, Segment, SubmitRequest, SubmitResponse } from '@/lib/intake/contract';
 import { firstName, isEmail, isPhone, normalisePhone } from '@/lib/intake/format';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
 import { leadAttribution } from '@/lib/postOrigin';
 import { funnel, generateLead, type LeadRoad } from '@/lib/intake/funnel';
-import { ndmgDoubledLive, SOLAR_DATA } from '@/lib/solar-data';
+import { SOLAR_DATA } from '@/lib/solar-data';
 import { newKey, submitIntake } from './api';
 import { Banner, Field, PrimaryButton, TextInput } from './ui';
-import { CALLER_START } from '@/lib/intake/caller';
 
 export interface CallDetails {
   name: string;
@@ -143,22 +142,22 @@ export function CallRemembered({
   return (
     <div className="si-ask si-ask--remembered" data-call-remembered="">
       <span className="si-done-mark" aria-hidden="true">
-        <PhoneIncoming size={24} />
+        <Mail size={24} />
       </span>
       <H className="si-ask__title si-mt-24">
-        {today ? `${CALLER_START} is ringing you today${memory.first ? `, ${memory.first}` : ''}.` : `You asked for a free call on ${dublinWeekday(memory.at)}.`}
+        {today ? `We have your details${memory.first ? `, ${memory.first}` : ''}.` : `You sent us your details on ${dublinWeekday(memory.at)}.`}
       </H>
       <p className="si-ask__sub">
         {today
-          ? `Your free 15-minute call is booked in. If it's late, first thing tomorrow.${memory.bestTime ? ` ${BEST_LINE[memory.bestTime]}` : ''}`
-          : `If we haven't reached you yet, ring us on ${PHONE} and we'll take it from there.`}
+          ? `Your full estimate is on its way to your email. Next, one of our team goes through the final details with you.`
+          : `If your estimate hasn't reached you yet, ring us on ${PHONE} and we'll take it from there.`}
       </p>
       <div className="si-ask__go si-ask__go--row">
         <a className="si-btn si-btn--secondary" href={PHONE_HREF}>
           <Phone size={18} aria-hidden="true" /> Ring us on {PHONE}
         </a>
         <button type="button" className="si-btn--quiet" onClick={onAnother}>
-          Not you, or need another call?
+          Not you, or need another estimate?
         </button>
       </div>
     </div>
@@ -194,68 +193,35 @@ function track(event: string, properties: Record<string, string | number | boole
 type Issue = null | { kind: 'failed' } | { kind: 'rate' };
 
 /**
- * The ask's own words, by whether an estimate will really be emailed. With a
- * priced bill: "Send my full estimate" and the same-day call line. Without
- * one (the bill was skipped, or could not be priced): nothing about an email,
- * a member of our team works the estimate out with them on the call.
+ * The ask's own words. Cal, 17 Nov 2026: "they can get the full estimate sent
+ * to their email, and let the other 3 points stand with them." So every state
+ * (a priced quote, a rough local estimate, no quote at all) leads with the
+ * estimate by email; the call is one soft line under the button. `estimate`
+ * is kept for callers; the words no longer change with it.
  */
-export function askCopy(o: { estimate: boolean }): { cta: string; promise: string; busy: string; before: string } {
-  if (o.estimate) {
-    return {
-      cta: 'Send my savings',
-      promise: 'Then we give you a quick ring today to go through it.',
-      busy: 'Sending your savings',
-      before: 'before we can send your savings',
-    };
-  }
+export const ASK_PROMISE = 'Then one of our team goes through the final details with you.';
+export function askCopy(_o: { estimate: boolean }): { cta: string; promise: string; busy: string; before: string } {
   return {
     cta: 'Send my estimate',
-    promise: `${CALLER_START} will ring you shortly and work out your estimate with you.`,
-    busy: 'Sending',
-    before: 'before we can ring you',
+    promise: ASK_PROMISE,
+    busy: 'Sending your estimate',
+    before: 'before we can send your estimate',
   };
 }
 
 /**
- * The ask's heading and sub, one set of words for every door (Cal, 10 Nov:
- * getting their details and sending the estimate comes first, the call
- * second). `estimate`: a priced quote rides with the request, so the email
- * really goes. `rough`: the figures on screen are the local rough estimate,
- * so nothing is emailed now; the call works out the full one. Neither: no
- * bill at all, and the copy promises only the call.
+ * The ask's heading and sub, one set of words for every door and every state
+ * (Cal, 17 Nov 2026: estimate first, always). `pdf`: AISolar really attaches
+ * a PDF breakdown (a home estimate with a net cost and a payback), so the line
+ * may name it; it never promises a PDF that does not go. The other flags are
+ * kept for callers and change nothing.
  */
-export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean; typed?: boolean }): { heading: string; sub: string } {
-  // Cal, 11 Nov: "dont sell the estimate sell the value within it".
-  const grant = o.business
-    ? ndmgDoubledLive()
-      ? `your grant of up to ${SOLAR_DATA.ndmgDoubled.maxLabel} under the doubled business grant`
-      : 'your SEAI business grant'
-    : `your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}`;
-  if (o.estimate && o.typed) {
-    // A typed amount, no bill read: nothing here may say we read a bill.
-    return {
-      heading: 'Where should we send your savings?',
-      sub: `Your yearly saving, the right system size, ${grant} and when it pays for itself, worked out from the amount you gave us and in your inbox now. Then a quick call to check your roof and when you use power, and a proposal with final numbers. No visit, no obligation.`,
-    };
-  }
-  if (o.estimate) {
-    const what = `Your yearly saving, the right system for your roof, ${grant} and when it pays for itself, worked out from your bill and in your inbox now.`;
-    return {
-      heading: 'Where should we send your savings?',
-      sub: o.battery
-        ? `${what} Then a quick call about when your home uses power, so you know whether a battery is worth adding, and a proposal with final numbers. No visit, no obligation.`
-        : `${what} Then a quick call to check what a bill can't tell us, and a proposal with final numbers. No visit, no obligation.`,
-    };
-  }
-  if (o.rough) {
-    return {
-      heading: 'Want your savings worked out in full?',
-      sub: `We give you a quick ring today to check what a bill can't tell us, like your roof and when you use power, then send you a proposal with your saving, ${grant} and final numbers. No visit, no obligation.`,
-    };
-  }
+export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean; typed?: boolean; pdf?: boolean }): { heading: string; sub: string } {
   return {
-    heading: 'Where should we ring you?',
-    sub: "We give you a quick ring today to work out your savings with you and check what a bill can't tell us, like your roof and when you use power. Then we send you a proposal with final numbers. No visit, no obligation.",
+    heading: 'Where should we send your estimate?',
+    sub: o.pdf && !o.business
+      ? 'Your full estimate and PDF breakdown, sent to your email. No visit, no obligation.'
+      : 'Your full estimate, sent to your email. No visit, no obligation.',
   };
 }
 
@@ -277,7 +243,7 @@ export function CallAsk({
   online = true,
   actionsRef,
   confirm = false,
-  cta = 'Send my savings',
+  cta = 'Send my estimate',
   promise,
   busyLabel,
   onAttempt,
@@ -417,8 +383,8 @@ function CallForm({
   }, [issue]);
 
   const errors: Record<string, string> = {};
-  if (details.name.trim().length < 2) errors.name = "Add your name so we know who we're calling.";
-  if (!details.mobile.trim()) errors.mobile = 'Add a mobile so we can ring you.';
+  if (details.name.trim().length < 2) errors.name = 'Add your name so we know who the estimate is for.';
+  if (!details.mobile.trim()) errors.mobile = 'Add a mobile for the final details.';
   else if (!isPhone(details.mobile)) errors.mobile = 'That mobile looks short. Irish mobiles start 08 and have 10 digits.';
   if (!details.email.trim()) errors.email = 'Add your email.';
   else if (!isEmail(details.email)) errors.email = "Check your email. It needs an @ and a dot.";
@@ -554,13 +520,13 @@ function CallForm({
   );
 
   const label =
-    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : estimate ? cta : ask.cta;
+    rateLeft > 0 ? `Try again in ${rateLeft}s` : issue?.kind === 'failed' ? 'Try again' : cta || ask.cta;
   const button = (
     <PrimaryButton
       label={label}
       arrow={false}
       busy={busy}
-      busyLabel={estimate && busyLabel ? busyLabel : ask.busy}
+      busyLabel={busyLabel || ask.busy}
       offline={!online || rateLeft > 0}
       offlineLabel={rateLeft > 0 ? `Try again in ${rateLeft}s` : undefined}
     />
@@ -571,7 +537,7 @@ function CallForm({
   const extra = (
     <>
       <p className="si-ask__promise">
-        {estimate ? <Mail size={14} aria-hidden="true" /> : <Phone size={14} aria-hidden="true" />} {estimate && promise ? promise : ask.promise}
+        <Mail size={14} aria-hidden="true" /> {promise || ask.promise}
       </p>
       {slow ? (
         <p className="si-still" role="status">
@@ -604,7 +570,7 @@ function CallForm({
       );
     if (k === 'mobile')
       return (
-        <Field id={id('mobile')} label="Mobile" hint={estimate ? 'For the final details, after your estimate.' : 'So we can ring you.'} error={errOf('mobile')}>
+        <Field id={id('mobile')} label="Mobile" hint="For the final details, after your estimate." error={errOf('mobile')}>
           <TextInput
             id={id('mobile')}
             name="tel"
@@ -623,7 +589,7 @@ function CallForm({
         </Field>
       );
     return (
-      <Field id={id('email')} label="Email" hint={estimate ? 'Where we send your estimate.' : 'So you have a note of the call.'} error={errOf('email')}>
+      <Field id={id('email')} label="Email" hint="Where we send your estimate." error={errOf('email')}>
         <TextInput
           id={id('email')}
           name="email"
@@ -728,7 +694,7 @@ function CallForm({
             </>
           ) : (
             <>
-              <span>We&apos;ll ask for your Eircode on the call.</span>
+              <span>We&apos;ll ask for your Eircode with the final details.</span>
               <button type="button" className="si-btn--quiet" onClick={() => setUseEircode(true)}>
                 Use it after all
               </button>
@@ -745,7 +711,7 @@ function CallForm({
         </div>
       )}
       <p className="si-legal">
-        We only use your details for {estimate ? 'your estimate and the follow-up' : 'this call'}.{' '}
+        We only use your details for your estimate and the follow-up.{' '}
         <a href="/privacy" target="_blank" rel="noopener">
           Privacy notice
         </a>
@@ -753,20 +719,6 @@ function CallForm({
       </p>
     </form>
   );
-}
-
-/** vCard for "Add to contacts", built on tap only. */
-function saveContact() {
-  const card = ['BEGIN:VCARD', 'VERSION:3.0', 'N:;Solar Ireland Group;;;', 'FN:Solar Ireland', 'ORG:Solar Ireland Group', `TEL;TYPE=CELL:${PHONE.replace(/\s+/g, '')}`, `URL:https://${SOLAR_DATA.provider.website}`, 'END:VCARD'].join('\r\n');
-  const url = URL.createObjectURL(new Blob([card], { type: 'text/vcard' }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'solar-ireland.vcf';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 2000);
-  track('call_contact_saved', {});
 }
 
 /** The confirmation, the same on both roads. */
@@ -777,31 +729,20 @@ function saveContact() {
  * emailed to the homeowner, so the held state never says "check your inbox".
  */
 export function callDoneCopy(o: { held: boolean; first: string; estimate?: boolean; typed?: boolean; pdf?: boolean; business?: boolean }): { title: string; facts: string; announce: string } {
-  // Cal's words (16 Nov 2026): "Our team will ring you shortly." Never a name.
+  // Cal, 17 Nov 2026: the estimate leads every confirmation, never "we'll ring".
   const thanks = `Thanks${o.first ? `, ${o.first}` : ''}.`;
-  const ring = 'Our team will ring you shortly.';
-  if (o.held) {
-    return {
-      title: `Saved. ${ring}`,
-      facts: '',
-      announce: `Saved. ${ring}`,
-    };
-  }
-  if (o.estimate === false) {
-    // No priced bill went with it: no estimate email is coming, so none is promised.
-    return {
-      title: `${thanks} ${ring}`,
-      facts: "We'll work out your estimate with you on the call.",
-      announce: `Sent. ${ring}`,
-    };
-  }
-  // Cal, 17 Nov 2026: the estimate is the sell, the call a soft next step. The
-  // PDF is named only when AISolar really attaches one (a net cost and a
-  // payback; a business priced at the proposal has neither).
-  const sent = o.pdf ? 'Your estimate and PDF breakdown are on their way to your inbox.' : 'Your estimate is on its way to your inbox.';
   const next = o.business
-    ? 'Next, one of our team books your site survey, then you get a fixed-price proposal.'
-    : 'Next, one of our team goes through the final details with you, then you get a fixed-price proposal.';
+    ? 'Next, one of our team books your site survey, then you get a fixed-price final proposal.'
+    : 'Next, one of our team goes through the final details with you, then you get a fixed-price final proposal.';
+  if (o.held || o.estimate === false) {
+    // Nothing has been emailed yet (held on the site, or no priced quote rode
+    // with it): the team sends the estimate, so the words stay true.
+    const line = 'We have your details, and your full estimate will follow by email.';
+    return { title: `${thanks} ${line}`, facts: next, announce: `${line} ${next}` };
+  }
+  // The PDF is named only when AISolar really attaches one (a net cost and a
+  // payback; a business priced at the proposal has neither).
+  const sent = o.pdf && !o.business ? 'Your full estimate and PDF breakdown are on their way to your email.' : 'Your full estimate is on its way to your email.';
   return {
     title: `${thanks} ${sent}`,
     facts: next,
@@ -838,10 +779,6 @@ export function CallDone({
   const H = headingLevel;
   const fname = firstName(details.name) || '';
   const copy = callDoneCopy({ held, first: fname, estimate, typed, pdf, business });
-  // An estimate went: the screen says so and names the next step once. The
-  // number, the save-our-number card and the call list are for the call-only
-  // endings (no estimate went, or the submit was held).
-  const callOnly = held || !estimate;
   return (
     <div className="si-done-call" data-call-done={held ? 'held' : estimate ? 'sent' : 'call'}>
       <span className="si-done-mark" aria-hidden="true">
@@ -853,30 +790,6 @@ export function CallDone({
         {copy.title}
       </H>
       {copy.facts ? <p className="si-facts">{copy.facts}</p> : null}
-      {callOnly ? (
-        <>
-          <p className="si-done-call__line">
-        We&apos;ll ring <b className="si-white">{details.mobile.trim()}</b>.{details.bestTime ? ` ${BEST_LINE[details.bestTime]}` : ''}
-      </p>
-      <div className="si-done-call__save">
-        <p>
-          Save our number so you know it&apos;s us:{' '}
-          <a className="si-inline" href={PHONE_HREF}>
-            {PHONE}
-          </a>
-        </p>
-        <button type="button" className="si-btn si-btn--secondary si-btn--sm" onClick={saveContact}>
-          <UserPlus size={18} aria-hidden="true" /> Add to contacts
-        </button>
-      </div>
-      <p className="si-group-label si-mt-32">On the call we&apos;ll</p>
-      <ul className="si-done-call__list">
-        <li>Go through your figures with you</li>
-        <li>Answer anything you want to ask about solar and the SEAI grant</li>
-        <li>Agree the next step with you, if you want one</li>
-      </ul>
-        </>
-      ) : null}
       {footer}
     </div>
   );

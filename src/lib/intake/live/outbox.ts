@@ -159,11 +159,14 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
     `Address: ${p.address || ''}`,
     `County: ${p.county || ''}`,
     `Home or business: ${p.meta.segment === 'commercial' ? `Business${p.meta.businessName ? `, ${p.meta.businessName}` : ''}` : 'Home'}`,
-    `Asked for: ${call ? `A free 15-minute call${p.bestTime ? `, best time: ${p.bestTime === 'any' ? 'any time' : p.bestTime}` : ''}` : askedLine(p)}`,
+    `Asked for: ${call ? `Their full estimate by email, then a call for the final details${p.bestTime ? `, best time: ${p.bestTime === 'any' ? 'any time' : p.bestTime}` : ''}` : askedLine(p)}`,
+    ...(call ? [`Priced estimate with it: ${p.quoteToken ? 'yes' : 'no, the team works it out from the bill'}`] : []),
     ...(call && p.mprn ? [`MPRN (from their bill): ${p.mprn}`] : []),
     `Bill: ${p.monthlyBill != null ? `€${p.monthlyBill} a month` : 'not given'}`,
     '',
-    call ? 'They were told: "Saved. Our team will ring you shortly." Ring them.' : 'They were told: "Saved, not booked yet. We\'ll confirm by email."',
+    call
+      ? 'They were told: "We have your details, and your full estimate will follow by email." They were promised their full estimate by email: send it to them, then ring them for the final details.'
+      : 'They were told: "Saved, not booked yet. We\'ll confirm by email."',
     '',
     stored
       ? 'The website holds this lead and sends it again every few minutes until AISolar accepts it, with the same reference, so it can never become two leads. When it lands you get the usual new-lead alert from AISolar.'
@@ -171,7 +174,7 @@ export function alertText(p: IngestBody, key: string, reason: string, stored: bo
     '',
     `Reference: ${key}`,
   ];
-  return { subject: call ? `Call requested: ${who}. Held on the website, AISolar did not accept it.` : `Lead held on the website: ${who}. AISolar did not accept it.`, text: lines.join('\n') };
+  return { subject: call ? `Estimate promised by email: ${who}. Held on the website, AISolar did not accept it.` : `Lead held on the website: ${who}. AISolar did not accept it.`, text: lines.join('\n') };
 }
 
 /** The owner-alert line for a lead AISolar refused as sent: replaying cannot help, a person must add it. */

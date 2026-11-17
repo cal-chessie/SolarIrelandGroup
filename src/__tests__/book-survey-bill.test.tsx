@@ -46,12 +46,12 @@ describe('/book-survey cold', () => {
     expect(await screen.findByText(/electricity bill a month/)).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: '€160' }));
     await screen.findByText(/save you around €640 a year/);
-    expect(screen.getByRole('button', { name: 'Send my savings' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Send my estimate' })).toBeTruthy();
     const quote = sent.find((s) => s.url.includes('/api/intake/quote'))!.body as { requests: { segment: string; bill: { amountEur: number } }[] };
     expect(quote.requests[0]).toMatchObject({ segment: 'domestic', bill: { amountEur: 160 } });
     const body = await fillAndSend();
     expect(body).toMatchObject({ intent: 'call', quoteToken: 'tok.mac', monthlyBill: 160, phone: '087 123 4567' });
-    expect((await screen.findByRole('heading', { level: 2, name: /on its way/ })).textContent).toContain('Your estimate is on its way to your inbox');
+    expect((await screen.findByRole('heading', { level: 2, name: /on its way/ })).textContent).toContain('Your full estimate is on its way to your email');
   });
 
   it('no call-only skip: the bill question offers only the amounts (Cal, 17 Nov 2026)', async () => {
@@ -79,14 +79,14 @@ describe('/book-survey?lt= (M6)', () => {
 });
 
 describe('/book-survey returning device', () => {
-  it('a device that already asked sees "ringing you today", not the bill question', async () => {
+  it('a device that already asked sees "We have your details", not the bill question', async () => {
     localStorage.setItem('si_call_requested', JSON.stringify({ v: 1, at: Date.now(), first: 'Mary', bestTime: null }));
     window.history.replaceState(null, '', '/book-survey');
     const { default: BookSurveyClient } = await import('@/app/book-survey/BookSurveyClient');
     render(<BookSurveyClient lt={null} segment="domestic" src={null} />);
     await waitFor(() => expect(document.querySelector('[data-call-remembered]')).not.toBeNull());
     expect(document.querySelector('[data-bill-question]')).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: /need another call/ }));
+    fireEvent.click(screen.getByRole('button', { name: /need another estimate/ }));
     expect(await screen.findByText(/electricity bill a month/)).toBeTruthy();
   });
 });
