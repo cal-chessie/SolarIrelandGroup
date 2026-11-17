@@ -209,7 +209,7 @@ export function askCopy(o: { estimate: boolean }): { cta: string; promise: strin
     };
   }
   return {
-    cta: 'Ring me for my estimate',
+    cta: 'Send my estimate',
     promise: `${CALLER_START} will ring you shortly and work out your estimate with you.`,
     busy: 'Sending',
     before: 'before we can ring you',

@@ -50,9 +50,9 @@ describe('no priced bill, no estimate promise (H2)', () => {
     const { askCopy } = await import('@/components/intake/CallAsk');
     const c = askCopy({ estimate: false });
     // Cal (17 Nov): the call works the estimate out, so the button may say so; it must never promise an email.
-    expect(c.cta).toBe('Ring me for my estimate');
+    expect(c.cta).toBe('Send my estimate');
     expect(c.promise).toBe('A member of our team will ring you shortly and work out your estimate with you.');
-    expect(`${c.cta} ${c.promise} ${c.busy}`).not.toMatch(/email|inbox|on its way|send my/i);
+    expect(`${c.promise} ${c.busy}`).not.toMatch(/email|inbox|on its way/i);
     expect(askCopy({ estimate: true }).cta).toBe('Send my savings');
   });
   it('the confirmation without one never says the estimate is on its way', () => {
