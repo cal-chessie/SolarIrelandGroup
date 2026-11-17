@@ -2127,7 +2127,7 @@ button.si-photo:hover {
 }
 .si-live__receipt dd {
   /* A fixed box, so a wider or narrower figure never moves it (no layout shift). */
-  min-width: 7em;
+  min-width: 5em;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2222,6 +2222,9 @@ button.si-photo:hover {
   .si-live__split,
   .si-live__basis {
     min-height: 1lh;
+  }
+  .si-live__receipt dd {
+    min-width: 7em;
   }
 }
 @media (min-width: 1024px) {
@@ -4529,4 +4532,9 @@ h1.si-ask__title {
   .si-an-row__value {
     font-size: 19px;
   }
+}
+
+/* The photo row's place, held while the intake config loads (no layout shift when it lands). */
+.si-group[data-reserved='true'] {
+  visibility: hidden;
 }

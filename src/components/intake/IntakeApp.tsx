@@ -1074,6 +1074,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const chips = config ? (isBiz ? config.bill.chips.commercial : config.bill.chips.domestic) : isBiz ? [500, 1000, 2000, 3000, 5000, 8000] : [80, 120, 160, 200, 250, 300];
   const readerOn = !!config?.bill.readerEnabled;
+  /** The config is still on its way: the photo row keeps its place (hidden), so the estimate under it never jumps when it lands. */
+  const readerPending = !config && !configFailed;
 
   const fileInput = readerOn ? (
     <input
@@ -1092,7 +1094,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   ) : null;
 
   const photoRow = (where: 'bill' | 'time') => {
-    if (!readerOn) return null;
+    if (!readerOn && !(where === 'bill' && readerPending)) return null;
     const here = photo.where === where;
     if (photo.status === 'reading' && here) {
       return (
@@ -1261,11 +1263,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         ) : null}
       </div>
       {/* Just failed a read on the analyser: the photo row is not offered again here. */}
-      {readerOn && !(draft.carry && carryWhy[draft.carry.from]) ? <div className="si-group">{photoRow('bill')}</div> : null}
+      {(readerOn || readerPending) && !(draft.carry && carryWhy[draft.carry.from]) ? (
+        <div className="si-group" data-reserved={readerOn ? undefined : 'true'} aria-hidden={readerOn ? undefined : true} inert={!readerOn}>
+          {photoRow('bill')}
+        </div>
+      ) : null}
       {fileInput}
       {/* From 1024 the way out sits under the amount; under 1024 it sits at the foot, after the estimate. */}
       <div className="si-only-desk">{skipRow}</div>
-      {cookieLine}
+      {/* Under 1024 the cookie line sits at the very foot (after the estimate), so its late arrival moves nothing. */}
+      {cookieLine ? <div className="si-only-desk">{cookieLine}</div> : null}
     </form>
   );
 
@@ -2085,6 +2092,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         ) : null}
         {basisPanel}
         <div className="si-only-phone si-mt-32">{skipRow}</div>
+        {cookieLine ? <div className="si-only-phone">{cookieLine}</div> : null}
       </div>
       <footer className="si-lane-foot">{trustLine}</footer>
     </div>

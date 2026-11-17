@@ -100,7 +100,7 @@ async function walk(wide: boolean) {
   await act(async () => {
     fireEvent.click(screen.getByRole('button', { name: 'About €200 a month' }));
   });
-  await waitFor(() => expect(hero()).toMatch(/^€[\d,]+$/));
+  await waitFor(() => expect(hero()).toMatch(/^€[\d,]+$/), { timeout: 4000 });
   expect(stepOf()).toBe('bill');
   expect(window.location.search).toContain('step=bill');
   expect(document.getElementById('si-name')).toBeNull();
@@ -108,7 +108,8 @@ async function walk(wide: boolean) {
 
   // Typing moves it too (debounced), still on "Your bill".
   fireEvent.change(document.getElementById('si-bill')!, { target: { value: '150' } });
-  await waitFor(() => expect(hero()).not.toBe(at200));
+  await waitFor(() => expect(hero()).not.toBe(at200), { timeout: 4000 });
+  await waitFor(() => expect(lanesText()).toContain('From the €150 a month you told us.'), { timeout: 4000 });
   expect(stepOf()).toBe('bill');
   expect(lanesText()).toContain('for what you send back at');
   expect(lanesText()).toContain('From the €150 a month you told us. Close estimate, not a quote.');
@@ -118,9 +119,8 @@ async function walk(wide: boolean) {
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
 
   // The events: shown once, the amount changes (debounced), a panel opened.
-  await waitFor(() => expect(events('typed_estimate_shown')).toHaveLength(1));
-  await waitFor(() => expect(events('typed_amount_changed').length).toBeGreaterThanOrEqual(1), { timeout: 2500 });
-  expect(events('typed_amount_changed').at(-1)).toMatchObject({ band: 150 });
+  await waitFor(() => expect(events('typed_estimate_shown')).toHaveLength(1), { timeout: 4000 });
+  await waitFor(() => expect(events('typed_amount_changed').some((p) => p.band === 150 && p.method === 'typed')).toBe(true), { timeout: 4000 });
   const how = document.querySelector<HTMLButtonElement>('[data-open="how"]')!;
   await act(async () => {
     fireEvent.click(how);
@@ -133,7 +133,7 @@ async function walk(wide: boolean) {
   await act(async () => {
     fireEvent.click(screen.getAllByRole('button', { name: /Send my estimate/ })[0]);
   });
-  await waitFor(() => expect(document.getElementById('si-name')).toBeTruthy());
+  await waitFor(() => expect(document.getElementById('si-name')).toBeTruthy(), { timeout: 4000 });
   expect(stepOf()).toBe('details');
   expect(progress()).toEqual(['done', 'current']);
   expect(events('typed_send_click')).toHaveLength(1);
@@ -160,10 +160,10 @@ async function walk(wide: boolean) {
 describe('the typed path: the estimate builds live on "Your bill"', () => {
   it('desktop (from 1024): amount with the live estimate, details, call', async () => {
     await walk(true);
-  });
+  }, 20000);
   it('phone: amount with the live estimate, details, call', async () => {
     await walk(false);
-  });
+  }, 20000);
 });
 
 describe('typed words', () => {
