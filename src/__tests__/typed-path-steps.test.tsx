@@ -132,8 +132,15 @@ async function walk(wide: boolean) {
   expect(lanesText()).toContain('For the final details, after your estimate.');
   // The call is mentioned once, under the button: no best-time chips beside the estimate.
   expect(lanesText()).not.toContain('Best time to ring');
-  expect(lanesText()).toContain('What your number is based on');
-  expect(lanesText()).toContain('Why the battery is left out');
+  // Nothing loose under the estimate: what the number rests on lives inside the two toggles.
+  expect(document.querySelector('[data-basis]')).toBeNull();
+  const howPanel = document.getElementById('si-xp-how')?.textContent ?? '';
+  const closerPanel = document.getElementById('si-xp-closer')?.textContent ?? '';
+  expect(howPanel).toContain('What we used');
+  expect(howPanel).toContain('What your number is based on');
+  expect(howPanel).toContain('Why the battery is left out');
+  expect(closerPanel).toContain('I know my yearly kWh');
+  expect(closerPanel).toContain('What the call adds');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
   await waitFor(() => expect(events()).toContain('typed_estimate_shown'));
 

@@ -4479,158 +4479,87 @@ h1.si-ask__title {
   margin-top: 6px;
 }
 .si-more {
-  margin-top: 20px;
-  container-type: inline-size;
-}
-.si-more__btns {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-}
-@container (min-width: 520px) {
-  .si-more__btns {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
+  margin-top: 24px;
 }
 /*
- * The two estimate toggles: disclosure cards, not pills. Amber tints only.
- * The resting tint sits on the button; hover and open strengthen it through
- * the ::before layer, so every state change is opacity or transform, and the
- * 1px edge is an inset shadow, so nothing reflows when a card opens.
+ * The two estimate toggles: quiet disclosure rows (Cal, 17 Nov 2026: the
+ * amber cards were "absolutely brutal"). Full width, no fill, no box, a
+ * hairline in the site's divider colour above each and under the last. The
+ * label is amber at body size; a small amber chevron turns when open. Each
+ * panel opens in place under its own row.
  */
-.si-xcard {
-  position: relative;
-  isolation: isolate;
+.si-xrow {
+  box-shadow: inset 0 1px 0 var(--si-line);
+  scroll-margin-top: calc(var(--si-header-h) + 16px);
+}
+.si-xrow:last-child {
+  box-shadow: inset 0 1px 0 var(--si-line), inset 0 -1px 0 var(--si-line);
+}
+.si-xrow__btn {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 16px;
   width: 100%;
-  min-height: 64px;
-  padding: 14px 16px 14px 14px;
-  border-radius: var(--si-r);
-  background: rgba(255, 185, 0, 0.07);
-  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.3);
-  color: var(--si-fg);
+  min-height: 56px;
+  padding: 16px 2px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--si-amber);
   font: inherit;
   text-align: left;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  transition: transform var(--si-dur-2) var(--si-ease-out);
 }
-.si-xcard::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: rgba(255, 185, 0, 0.07);
-  box-shadow: inset 0 0 0 1px var(--si-amber);
-  opacity: 0;
-  transition: opacity var(--si-dur-2) var(--si-ease);
-  pointer-events: none;
-}
-.si-xcard__icon {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(255, 185, 0, 0.14);
-  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.2);
-  color: var(--si-amber);
-}
-.si-xcard__text {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.si-xcard__label {
+.si-xrow__label {
   font-size: 16px;
-  line-height: 22px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--si-fg);
+  line-height: 24px;
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: transparent;
+  text-wrap: pretty;
+  transition: color var(--si-dur-1) var(--si-ease), text-decoration-color var(--si-dur-1) var(--si-ease);
 }
-.si-xcard__sub {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
-  color: var(--si-fg-muted);
-}
-.si-xcard__chev {
+.si-xrow__chev {
   flex: none;
   color: var(--si-amber);
   transition: transform var(--si-dur-2) var(--si-ease);
 }
-.si-xcard__label,
-.si-xcard__sub {
-  text-wrap: pretty;
-}
-/* Side by side, each card is a tile: icon and chevron share the top row, so the
-   label and its sub-line get the full width and do not break mid-phrase. */
-@container (min-width: 520px) {
-  .si-xcard {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas:
-      'icon . chev'
-      'text text text';
-    align-items: center;
-    align-content: start;
-    row-gap: 14px;
-    padding: 16px;
-  }
-  .si-xcard__icon {
-    grid-area: icon;
-  }
-  .si-xcard__chev {
-    grid-area: chev;
-  }
-  .si-xcard__text {
-    grid-area: text;
-  }
-}
 @media (hover: hover) and (pointer: fine) {
-  .si-xcard:hover {
-    transform: translateY(-2px);
-  }
-  .si-xcard:hover::before {
-    opacity: 0.5;
+  .si-xrow__btn:hover .si-xrow__label {
+    color: var(--si-amber-hover);
+    text-decoration-color: rgba(255, 210, 48, 0.5);
   }
 }
-.si-xcard:active {
-  transform: translateY(0) scale(0.99);
-  transition-duration: var(--si-dur-1);
+.si-xrow__btn:focus-visible {
+  outline-offset: 0;
 }
-.si-xcard:active::before,
-.si-xcard[aria-expanded='true']::before {
-  opacity: 1;
-}
-.si-xcard[aria-expanded='true'] .si-xcard__chev {
+.si-xrow__btn[aria-expanded='true'] .si-xrow__chev {
   transform: rotate(180deg);
 }
-.si-xp {
-  scroll-margin-top: calc(var(--si-header-h) + 16px);
+/* The panel fades and settles in as the row's grid rows open; opacity and transform only. */
+.si-xrow__panel {
+  padding: 4px 2px 28px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--si-dur-2) var(--si-ease), transform var(--si-dur-3) var(--si-ease-out);
 }
-.si-xp__body {
-  margin-top: 16px;
-  padding: 24px 0 8px;
-  box-shadow: inset 0 1px 0 var(--si-line);
+.si-xrow[data-open='true'] .si-xrow__panel {
+  opacity: 1;
+  transform: none;
 }
-.si-xp__title {
-  margin-bottom: 12px;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--si-amber);
-}
-.si-xp__body .si-how {
+.si-xrow__panel .si-how {
   padding-top: 0;
+}
+/* What the number rests on, inside a panel: the same type, without the block's own rule. */
+.si-basis--in {
+  margin-top: 28px;
+  padding-top: 0;
+  box-shadow: none;
 }
 
 /* Phones, typed "Your estimate": the send bar arrives once the form is in view. Transform and opacity only. */
@@ -4649,14 +4578,14 @@ h1.si-ask__title {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .si-xcard,
-  .si-xcard::before,
-  .si-xcard__chev,
+  .si-collapse,
+  .si-xrow__label,
+  .si-xrow__chev,
+  .si-xrow__panel,
   .si-actions--send {
     transition: none !important;
   }
-  .si-xcard:hover,
-  .si-xcard:active {
+  .si-xrow__panel {
     transform: none;
   }
 }

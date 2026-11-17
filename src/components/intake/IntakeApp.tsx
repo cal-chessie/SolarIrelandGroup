@@ -31,7 +31,7 @@
  */
 import './intake.css';
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { Building2, Calculator, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, House, Camera, Info, SlidersHorizontal, WifiOff, X } from 'lucide-react';
+import { Building2, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, House, Camera, Info, WifiOff, X } from 'lucide-react';
 import type { BillReadResult, CallBillRead, IntakeConfig, Quote, Segment, SubmitResponse } from '@/lib/intake/contract';
 import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeExitPath, intakeHref, type IntakeOpenOptions } from '@/lib/intake/open';
@@ -755,8 +755,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   };
 
   /**
-   * "See how we worked this out" and "Make it more accurate": the two amber
-   * disclosure cards are the toggles. An opened panel is brought into view.
+   * "See how we worked this out" and "Make it more accurate": the two quiet
+   * disclosure rows are the toggles. An opened panel is brought into view.
    */
   const togglePanel = (key: 'how' | 'closer') => {
     const opening = !panels[key];
@@ -1569,9 +1569,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   // The roof's yield as the quote used it (AISolar's maths has authority); solar-data's figure only when the quote has no months.
   const genYear = figures?.monthlyGeneration?.reduce((a, b) => a + b, 0) ?? 0;
   const yieldPerKwp = figures && genYear > 0 && figures.kwp > 0 ? Math.round(genYear / figures.kwp / 10) * 10 : SOLAR_DATA.system.generationPerKwp;
-  const basisPanel =
+  const basisList =
     figures ? (
-      <div className="si-basis" data-basis={typed ? 'typed' : 'read'}>
+      <>
         <p className="si-group-label si-basis__h">What your number is based on</p>
         <ul className="si-basis__list">
           <li>
@@ -1608,19 +1608,32 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </li>
           <li>Panels only. No battery in the price or the saving.</li>
         </ul>
-        <p className="si-group-label si-basis__h">What the call adds</p>
-        <p className="si-basis__p">
-          A member of the team goes through your figures with you. If you want to go ahead, a site survey checks your roof, your meter and any shading, then you get a fixed price.
-        </p>
-        {!isBiz ? (
-          <>
-            <p className="si-group-label si-basis__h">Why the battery is left out</p>
-            <p className="si-basis__p">
-              A battery only pays when it&apos;s sized to how and when you use power, and {typed ? 'a bill amount' : 'a bill'} can&apos;t show that. So on the call we ask a few questions first, then talk you
-              through battery options and the <b {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</b> SEAI battery grant.
-            </p>
-          </>
-        ) : null}
+      </>
+    ) : null;
+  const basisCall = (
+    <>
+      <p className="si-group-label si-basis__h">What the call adds</p>
+      <p className="si-basis__p">
+        A member of the team goes through your figures with you. If you want to go ahead, a site survey checks your roof, your meter and any shading, then you get a fixed price.
+      </p>
+    </>
+  );
+  const basisBattery = !isBiz ? (
+    <>
+      <p className="si-group-label si-basis__h">Why the battery is left out</p>
+      <p className="si-basis__p">
+        A battery only pays when it&apos;s sized to how and when you use power, and {typed ? 'a bill amount' : 'a bill'} can&apos;t show that. So on the call we ask a few questions first, then talk you
+        through battery options and the <b {...prov('assumed')}>{SOLAR_DATA.batteryGrant.label}</b> SEAI battery grant.
+      </p>
+    </>
+  ) : null;
+  // The read path keeps it as one block under the estimate; on the typed path its parts live inside the two toggles.
+  const basisPanel =
+    figures ? (
+      <div className="si-basis" data-basis={typed ? 'typed' : 'read'}>
+        {basisList}
+        {basisCall}
+        {basisBattery}
       </div>
     ) : null;
 
@@ -1646,54 +1659,49 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </div>
   ) : null;
 
-  /** Typed "Your estimate": the two amber toggles and the panels they open, under the estimate. */
+  /**
+   * Typed "Your estimate": two quiet disclosure rows under the estimate (Cal,
+   * 17 Nov 2026: "subtlety", and everything below inside the toggles). Each row
+   * opens in place, so its panel sits directly under its own label.
+   */
   const typedMore =
     merged && figures ? (
       <div className="si-more">
-        <div className="si-more__btns">
-          {(
-            [
-              ['how', 'See how we worked this out', 'Every figure and where it came from', Calculator],
-              ['closer', 'Make it more accurate', 'Add your supplier or yearly kWh', SlidersHorizontal],
-            ] as const
-          ).map(([key, label, sub, Icon]) => (
-            <button
-              key={key}
-              type="button"
-              className="si-xcard"
-              aria-controls={`si-xp-${key}`}
-              aria-expanded={panels[key]}
-              aria-labelledby={`si-xc-${key}-l`}
-              aria-describedby={`si-xc-${key}-s`}
-              onClick={() => togglePanel(key)}
-            >
-              <span className="si-xcard__icon" aria-hidden="true">
-                <Icon size={18} strokeWidth={2} />
-              </span>
-              <span className="si-xcard__text">
-                <span className="si-xcard__label" id={`si-xc-${key}-l`}>
-                  {label}
-                </span>
-                <span className="si-xcard__sub" id={`si-xc-${key}-s`}>
-                  {sub}
-                </span>
-              </span>
-              <ChevronDown size={18} aria-hidden="true" className="si-xcard__chev" />
-            </button>
-          ))}
-        </div>
         {(
           [
-            ['how', 'See how we worked this out', <div className="si-how" key="b">{howBody}</div>],
-            ['closer', 'Make it more accurate', <div className="si-how" key="b">{closerBody(addBill)}</div>],
+            [
+              'how',
+              'See how we worked this out',
+              <>
+                <div className="si-how">{howBody}</div>
+                <div className="si-basis si-basis--in">{basisList}</div>
+                {basisBattery ? <div className="si-basis si-basis--in">{basisBattery}</div> : null}
+              </>,
+            ],
+            [
+              'closer',
+              'Make it more accurate',
+              <>
+                <div className="si-how">{closerBody(addBill)}</div>
+                <div className="si-basis si-basis--in">{basisCall}</div>
+              </>,
+            ],
           ] as const
         ).map(([key, label, body]) => (
-          <div className="si-xp" data-xp={key} data-open={panels[key] ? 'true' : 'false'} key={key}>
+          <div className="si-xrow" data-xp={key} data-open={panels[key] ? 'true' : 'false'} key={key}>
+            <button
+              type="button"
+              className="si-xrow__btn"
+              id={`si-xr-${key}`}
+              aria-controls={`si-xp-${key}`}
+              aria-expanded={panels[key]}
+              onClick={() => togglePanel(key)}
+            >
+              <span className="si-xrow__label">{label}</span>
+              <ChevronDown size={16} strokeWidth={2.25} aria-hidden="true" className="si-xrow__chev" />
+            </button>
             <Collapse open={panels[key]} id={`si-xp-${key}`}>
-              <section className="si-xp__body" aria-labelledby={`si-xp-${key}-h`}>
-                <h2 className="si-xp__title" id={`si-xp-${key}-h`}>
-                  {label}
-                </h2>
+              <section className="si-xrow__panel" aria-labelledby={`si-xr-${key}`}>
                 {body}
               </section>
             </Collapse>
@@ -1709,8 +1717,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       {segTag}
       {estimateMain}
       {typedMore}
-      {/* Typed on phones: the form follows the toggles, and what the number rests on follows the form. */}
-      {merged && !wide ? null : basisPanel}
+      {/* Typed: what the number rests on lives inside the two toggles. */}
+      {merged ? null : basisPanel}
       {/* Phones and portrait tablets: the add-bill offer sits with the estimate; from 1024 it sits by the button. Typed: inside "Make it more accurate". */}
       {step === 'time' && !wide && !merged ? addBill : null}
       {fileInput}
@@ -1864,7 +1872,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             : undefined
         }
       />
-      {merged && !wide ? basisPanel : null}
     </div>
   );
 
