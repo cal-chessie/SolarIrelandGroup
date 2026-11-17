@@ -1,8 +1,13 @@
 /**
- * The typed path's step order (Cal, 16 Nov 2026): a typed amount used to land
- * on "Your call" from 1024, the estimate ticked off unseen beside the form.
- * Now, at every width: amount, then the estimate on its own step, then the
- * contact details, then the call. Nothing on it says a bill was read, and
+ * The typed path's step order.
+ *
+ * 16 Nov 2026: a typed amount used to land on "Your call" from 1024, the
+ * estimate ticked off unseen beside the form, so the estimate got its own step.
+ * 17 Nov 2026 (Cal, option A): the estimate now builds live on "Your bill",
+ * beside the amount, and a tapped amount only moves the estimate, it never
+ * navigates. One primary, "Send my estimate", goes straight to the contact
+ * details. So at every width: Your bill (with the live estimate), then Your
+ * call, then the confirmation. Nothing on it says a bill was read, and
  * AISolar is told the lead came from a typed amount (meta.door), with no
  * bill read attached.
  */
@@ -77,34 +82,61 @@ const lanesText = () =>
     .map((l) => l.textContent)
     .join(' ');
 
+const events = (name: string) => vi.mocked(trackEvent).mock.calls.filter(([e]) => e.event === name).map(([e]) => e.properties ?? {});
+const hero = () => document.querySelector('.si-live-card .si-hero__fig b')?.textContent ?? null;
+
 async function walk(wide: boolean) {
   setWidth(wide);
   render(<IntakeApp variant="page" initial={{ door: 'analyser-manual', segment: 'home', step: 'bill', stepRaw: 'bill' }} />);
   await waitFor(() => expect(stepOf()).toBe('bill'));
 
-  fireEvent.change(document.getElementById('si-bill')!, { target: { value: '150' } });
-  await act(async () => {
-    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }));
-  });
+  // Step 1, before any amount: a calm prompt, never a made-up personal number.
+  expect(progress()).toEqual(['current', 'future']);
+  expect(document.querySelector('.si-header__step')?.textContent).toBe('Your bill');
+  expect(hero()).toBeNull();
+  expect(lanesText()).toContain('Pick your monthly bill to see your estimate');
 
-  // Step 2 is the estimate, not the form.
-  await waitFor(() => expect(document.querySelector('.si-hero__fig')).toBeTruthy());
-  expect(stepOf()).toBe('time');
-  expect(progress()).toEqual(['done', 'current', 'future']);
-  expect(document.querySelector('.si-header__step')?.textContent).toBe('Your estimate');
+  // A suggested amount moves the estimate and nothing else.
+  await act(async () => {
+    fireEvent.click(screen.getByRole('button', { name: 'About €200 a month' }));
+  });
+  await waitFor(() => expect(hero()).toMatch(/^€[\d,]+$/));
+  expect(stepOf()).toBe('bill');
+  expect(window.location.search).toContain('step=bill');
   expect(document.getElementById('si-name')).toBeNull();
+  const at200 = hero();
+
+  // Typing moves it too (debounced), still on "Your bill".
+  fireEvent.change(document.getElementById('si-bill')!, { target: { value: '150' } });
+  await waitFor(() => expect(hero()).not.toBe(at200));
+  expect(stepOf()).toBe('bill');
+  expect(lanesText()).toContain('for what you send back at');
+  expect(lanesText()).toContain('From the €150 a month you told us. Close estimate, not a quote.');
+  expect(lanesText()).toContain('Your estimate goes to your inbox, and one of our team will ring you to talk it through.');
   expect(lanesText()).toContain('What your number is based on');
   expect(lanesText()).toContain('Why the battery is left out');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
-  await waitFor(() => expect(vi.mocked(trackEvent).mock.calls.some(([e]) => e.event === 'typed_estimate_shown')).toBe(true));
 
-  // Step 3: the contact details.
+  // The events: shown once, the amount changes (debounced), a panel opened.
+  await waitFor(() => expect(events('typed_estimate_shown')).toHaveLength(1));
+  await waitFor(() => expect(events('typed_amount_changed').length).toBeGreaterThanOrEqual(1), { timeout: 2500 });
+  expect(events('typed_amount_changed').at(-1)).toMatchObject({ band: 150 });
+  const how = document.querySelector<HTMLButtonElement>('[data-open="how"]')!;
+  await act(async () => {
+    fireEvent.click(how);
+  });
+  expect(how.getAttribute('aria-expanded')).toBe('true');
+  expect(document.querySelector('[data-xp="how"] .si-xp__btn')?.getAttribute('aria-expanded')).toBe('true');
+  expect(events('typed_expand').at(-1)).toMatchObject({ panel: 'how' });
+
+  // Step 2: "Send my estimate" goes straight to the contact details. No estimate step between.
   await act(async () => {
     fireEvent.click(screen.getAllByRole('button', { name: /Send my estimate/ })[0]);
   });
   await waitFor(() => expect(document.getElementById('si-name')).toBeTruthy());
   expect(stepOf()).toBe('details');
-  expect(progress()).toEqual(['done', 'done', 'current']);
+  expect(progress()).toEqual(['done', 'current']);
+  expect(events('typed_send_click')).toHaveLength(1);
   expect(lanesText()).toContain('worked out from the amount you gave us');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
 
@@ -125,11 +157,11 @@ async function walk(wide: boolean) {
   expect(submitted[0].monthlyBill).toBe(150);
 }
 
-describe('the typed path never skips the estimate', () => {
-  it('desktop (from 1024): amount, estimate, details, call', async () => {
+describe('the typed path: the estimate builds live on "Your bill"', () => {
+  it('desktop (from 1024): amount with the live estimate, details, call', async () => {
     await walk(true);
   });
-  it('phone: amount, estimate, details, call', async () => {
+  it('phone: amount with the live estimate, details, call', async () => {
     await walk(false);
   });
 });
@@ -148,5 +180,15 @@ describe('typed words', () => {
     expect(leadDoor('analyser-offline', 'read')).toBe('analyser-offline');
     expect(leadDoor('nav', 'none')).toBe('nav');
     expect(leadDoor('analyser', undefined)).toBe('analyser');
+  });
+});
+
+describe('no estimate step for a typed amount', () => {
+  it('an old ?step=time link with a typed amount opens on "Your bill"; a bill read and no bill keep their step', async () => {
+    const { freshDraft, validStep } = await import('@/components/intake/model');
+    const typedDraft = { ...freshDraft(), segment: 'domestic' as const, bill: 160 };
+    expect(validStep('time', typedDraft)).toBe('bill');
+    expect(validStep('time', { ...typedDraft, billRead: { amountEur: 160, period: 'month', supplier: null, annualKwh: 4200, unitRateEur: 0.35, standingChargeAnnualEur: null, dayKwh: null, nightKwh: null } })).toBe('time');
+    expect(validStep('time', { ...freshDraft(), segment: 'domestic' as const })).toBe('time');
   });
 });

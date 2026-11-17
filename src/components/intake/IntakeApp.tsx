@@ -79,6 +79,43 @@ const STEP_NAME: Record<Step, string> = {
   done: 'Estimate sent',
 };
 const STEP_COUNT: Partial<Record<Step, string>> = { bill: '1 of 3', time: '2 of 3', details: '3 of 3' };
+/** The typed path (Cal, 17 Nov 2026, option A): the estimate builds live on "Your bill", so two steps, then the confirmation. */
+const STEP_COUNT_2: Partial<Record<Step, string>> = { bill: '1 of 2', details: '2 of 2' };
+
+/**
+ * A figure that glides to its new value instead of jumping (about a quarter
+ * of a second, ease-out). Reduced motion, and the first value, land at once.
+ */
+function useGlide(target: number | null, ms = 260): number | null {
+  // `frame` belongs to one target; a stale frame is never shown.
+  const [frame, setFrame] = useState<{ to: number; v: number } | null>(null);
+  const shown = useRef<number | null>(target);
+  useEffect(() => {
+    const start = shown.current;
+    let reduce = false;
+    try {
+      reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      /* no matchMedia: land at once */
+    }
+    if (target == null || start == null || reduce || start === target || typeof requestAnimationFrame !== 'function') {
+      shown.current = target;
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / ms);
+      const v = start + (target - start) * (1 - Math.pow(1 - p, 3));
+      shown.current = v;
+      setFrame(p < 1 ? { to: target, v } : null);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, ms]);
+  return frame && frame.to === target ? frame.v : target;
+}
 
 const TAG_TEXT = {
   you_told_us: 'You told us',
@@ -130,7 +167,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   });
   const [step, setStep] = useState<Step>(() => {
     const want = (initial.stepRaw as Step | null) || initial.step || 'bill';
-    return want === 'time' ? 'time' : 'bill';
+    // A typed amount has no separate estimate step: its estimate is on "Your bill".
+    return want === 'time' && initial.bill == null ? 'time' : 'bill';
   });
   const [hydrated, setHydrated] = useState(false);
   /** Lanes side by side from 1024 px; under that, one view at a time. */
@@ -140,13 +178,17 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const [quoteStatus, setQuoteStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   /** The quote service could not answer, so the figures are a rough estimate from the engine here (roughQuote). */
   const [rough, setRough] = useState(false);
-  const [preview, setPreview] = useState<Quote | null>(null);
   const [updatedFlash, setUpdatedFlash] = useState(false);
   const sharpenTick = useRef(0);
   const shownTick = useRef(0);
+  /** "Your bill": the two panels under the live estimate. */
+  const [panels, setPanels] = useState<{ how: boolean; closer: boolean }>({ how: false, closer: false });
+  const typedShownRef = useRef(false);
+  const billGivenRef = useRef(false);
+  const amountTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const kwhFromField = useRef(false);
 
   const [billError, setBillError] = useState<string | null>(null);
-  const [pendingChip, setPendingChip] = useState<number | null>(null);
   const [kwhOpen, setKwhOpen] = useState(false);
   const [kwhText, setKwhText] = useState('');
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -199,6 +241,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const seg = draft.segment;
   const isBiz = seg === 'commercial';
   const figures = quote?.hasBasis ? quote.figures : null;
+  /** The hero figure glides between amounts on "Your bill" instead of jumping. */
+  const heroGlide = useGlide(figures ? figures.annualSavingEur : null);
   const hasBasis = draft.bill != null || draft.annualKwh != null;
   /** The typed path: a figure they gave us, no bill read. Every word on it must be true for a typed amount. */
   const typed = hasBasis && !draft.billRead;
@@ -624,6 +668,18 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       const t = setTimeout(() => setUpdatedFlash(false), 3000);
       return () => clearTimeout(t);
     }
+    if (step === 'bill' && typed) {
+      // The live estimate on "Your bill": shown once, then updated as the amount changes.
+      if (!typedShownRef.current) {
+        typedShownRef.current = true;
+        setAnnounce(`Estimate ready: about ${eur(figures.annualSavingEur)} a year`);
+        track('intake_estimate_shown', { at_minimum: figures.sizedAtMinimum, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
+        track('typed_estimate_shown', { method: draft.billMethod ?? 'kwh', rough, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId, view: 'live' });
+      } else {
+        setAnnounce(`Estimate updated: about ${eur(figures.annualSavingEur)} a year`);
+      }
+      return;
+    }
     if (step === 'time') {
       setAnnounce(`Estimate ready: about ${eur(figures.annualSavingEur)} a year`);
       track('intake_estimate_shown', { at_minimum: figures.sizedAtMinimum, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
@@ -642,34 +698,39 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     void getQuotes(items);
   }, [step, seg, config, isBiz]);
 
-  /* Desktop, Screen 1: the right lane is the estimate building live as they type (debounced, cached). */
+  /*
+   * "Your bill" (Cal, 17 Nov 2026, option A): the amount settles into the
+   * draft as they type (debounced), so the estimate beside it is the real
+   * quote, priced by the same call as before. A tapped amount lands at once.
+   */
   const billNow = parseEuro(draft.billText);
   useEffect(() => {
-    if (step !== 'bill' || !wide || !seg) return;
-    if (billNow == null) {
-      setPreview(null);
-      return;
-    }
-    const item = quoteItemOf({ ...draftRef.current, bill: billNow, annualKwh: null, billRead: null });
-    if (!item) return;
-    const hit = cachedQuote(item);
-    if (hit) {
-      setPreview(hit);
-      return;
-    }
-    let alive = true;
+    if (step !== 'bill' || !hydrated) return;
     const t = setTimeout(() => {
-      getQuotes([item]).then((r) => {
-        if (!alive) return;
-        if (r && r[0]) setPreview(r[0]);
-        else setPreview(roughQuote(item));
-      });
-    }, 320);
-    return () => {
-      alive = false;
-      clearTimeout(t);
-    };
-  }, [step, wide, seg, billNow, draft.per]);
+      const d = draftRef.current;
+      if (billNow === d.bill) return;
+      if (billNow == null) update({ bill: null });
+      else commitBill(billNow, 'typed', d.per);
+    }, 350);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [billNow, step, hydrated]);
+
+  /* Business, "I know our yearly kWh": the same, for the kWh field. */
+  useEffect(() => {
+    if (step !== 'bill' || !hydrated || !kwhOpen) return;
+    const t = setTimeout(() => {
+      const k = Number(kwhText.replace(/[,\s]/g, ''));
+      if (Number.isFinite(k) && k >= 100) {
+        kwhFromField.current = true;
+        if (draftRef.current.annualKwh !== Math.round(k)) update({ annualKwh: Math.round(k), skipped: false });
+      } else if (kwhFromField.current) {
+        kwhFromField.current = false;
+        update({ annualKwh: null });
+      }
+    }, 400);
+    return () => clearTimeout(t);
+  }, [kwhText, kwhOpen, step, hydrated, update]);
 
   /* Each screen: focus its heading, start at the top, say where we are. */
   useEffect(() => {
@@ -702,36 +763,84 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       saveDeviceDraft(nd);
       return nd;
     });
-    track('intake_bill_given', { method, per, band: Math.round(amount / 25) * 25, segment: seg, flow_id: draft.flowId });
+    const band = Math.round(amount / 25) * 25;
+    const d0 = draftRef.current;
+    if (!billGivenRef.current) {
+      billGivenRef.current = true;
+      track('intake_bill_given', { method, per, band, segment: d0.segment, flow_id: d0.flowId });
+    }
+    // Every settled change of amount on "Your bill", debounced so typing 1, 17, 175 is one event.
+    if (amountTimer.current) clearTimeout(amountTimer.current);
+    amountTimer.current = setTimeout(() => {
+      const d = draftRef.current;
+      track('typed_amount_changed', { method, per, band, segment: d.segment, flow_id: d.flowId });
+    }, 800);
     setResumeOffer(null);
   };
 
+  /** Enter in the amount: settle it now and drop the keyboard, so the estimate is in view. Nothing navigates. */
   const onBillSubmit = (e: FormEvent) => {
     e.preventDefault();
     const amount = parseEuro(draft.billText);
-    const kwh = kwhOpen ? Number(kwhText.replace(/[,\s]/g, '')) : NaN;
-    const kwhOk = Number.isFinite(kwh) && kwh >= 100;
-    if (amount == null && !kwhOk) {
+    if (amount == null && draft.annualKwh == null) {
       // Not an error: nothing is wrong yet (ui-spec 4.3). Calm words, amber edge.
       setBillError('Type an amount, tap the closest, or skip the bill.');
       billInputRef.current?.focus();
       return;
     }
     setBillError(null);
-    if (kwhOk) update({ annualKwh: Math.round(kwh) });
-    if (amount != null) commitBill(amount, 'typed', draft.per);
-    else update({ skipped: false });
-    go('time');
+    if (amount != null && amount !== draft.bill) commitBill(amount, 'typed', draft.per);
+    (document.activeElement as HTMLElement | null)?.blur?.();
   };
 
+  /** A suggested amount only updates the estimate beside it (Cal, 17 Nov 2026). It never moves the flow on. */
   const onChip = (amount: number) => {
-    setPendingChip(amount);
+    setBillError(null);
+    update({ billText: String(amount) });
     commitBill(amount, 'chip', 'month');
-    // The choice is seen for a beat, then the flow moves on (one tap, ux-spec 11.7).
-    setTimeout(() => {
-      setPendingChip(null);
-      go('time');
-    }, 160);
+  };
+
+  /** The one primary on "Your bill": straight to the contact details. */
+  const onSend = () => {
+    const d = draftRef.current;
+    const amount = parseEuro(d.billText);
+    if (amount == null && d.annualKwh == null && d.bill == null) {
+      setBillError('Type an amount, tap the closest, or skip the bill.');
+      billInputRef.current?.focus();
+      return;
+    }
+    // A figure still settling (typed in the last moment) goes with them.
+    if (amount != null && amount !== d.bill) commitBill(amount, 'typed', d.per);
+    track('typed_send_click', {
+      band: amount != null ? Math.round(amount / 25) * 25 : null,
+      per: d.per,
+      method: d.billMethod ?? 'kwh',
+      rough,
+      emailable,
+      segment: d.segment,
+      flow_id: d.flowId,
+    });
+    go('details');
+  };
+
+  /** "See how we worked this out" and "Make it more accurate": open the panel below and bring it into view. */
+  const openPanel = (key: 'how' | 'closer', via: 'card' | 'header') => {
+    const opening = via === 'card' ? true : !panels[key];
+    setPanels((p) => ({ ...p, [key]: opening }));
+    if (opening) track('typed_expand', { panel: key, via, segment: seg, flow_id: draftRef.current.flowId });
+    if (via === 'card') {
+      let reduce = false;
+      try {
+        reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch {
+        /* default motion */
+      }
+      setTimeout(() => {
+        const el = rootRef.current?.querySelector<HTMLElement>(`[data-xp="${key}"]`);
+        el?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+        el?.querySelector<HTMLElement>('.si-xp__btn')?.focus({ preventScroll: true });
+      }, 40);
+    }
   };
 
   const onSkip = () => {
@@ -747,7 +856,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     update({ segment: r.segment, segmentProv: 'you_told_us', bill: r.bill, billText: String(r.bill), per: r.per, pkg: r.pkg ?? draftRef.current.pkg, billMethod: 'typed', skipped: false });
     setResumeOffer(null);
     track('intake_resume', { from: 'device' });
-    go('time');
   };
 
   const onStartAgain = () => {
@@ -1041,6 +1149,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         value={draft.billText}
         invalid={false}
         placeholder="150"
+        enterKeyHint="done"
         aria-describedby={billError ? 'si-bill-msg' : draft.per === '2months' && billNow != null ? 'si-bill-per' : undefined}
         onChange={(e) => {
           update({ billText: e.target.value.replace(/[^\d.,€\s]/g, '').slice(0, 9) });
@@ -1061,6 +1170,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </label>
         ))}
       </fieldset>
+    </div>
+  );
+
+  /** No bill to hand: the call without figures. Quiet, never competing with "Send my estimate". */
+  const skipRow = (
+    <div className="si-skip">
+      <p className="si-small">No bill to hand? You can still book a free 15-minute call.</p>
+      <button type="button" className="si-btn--quiet" onClick={onSkip} aria-label="Skip the bill and book a free call">
+        Skip the bill <ChevronRight size={16} aria-hidden="true" />
+      </button>
     </div>
   );
 
@@ -1116,7 +1235,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
               key={a}
               type="button"
               className="si-chip"
-              data-selected={pendingChip === a ? 'true' : 'false'}
+              data-selected={billNow === a && draft.per === 'month' ? 'true' : 'false'}
+              aria-pressed={billNow === a && draft.per === 'month'}
               aria-label={`About ${eur(a)}${i === chips.length - 1 ? ' or more' : ''} a month`}
               onClick={() => onChip(a)}
             >
@@ -1143,17 +1263,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       {/* Just failed a read on the analyser: the photo row is not offered again here. */}
       {readerOn && !(draft.carry && carryWhy[draft.carry.from]) ? <div className="si-group">{photoRow('bill')}</div> : null}
       {fileInput}
-      <div className="si-actions" ref={actionsRef}>
-        <div className="si-actions__inner">
-          <div className="si-pair">
-            <button type="button" className="si-btn si-btn--secondary" onClick={onSkip} aria-label="Skip the bill and book a free call">
-              Skip the bill
-            </button>
-            <PrimaryButton label="See my savings" arrow={false} offline={!online} offlineLabel="Offline" />
-          </div>
-          <p className="si-actions__note">No bill to hand? You can still book a free 15-minute call.</p>
-        </div>
-      </div>
+      {/* From 1024 the way out sits under the amount; under 1024 it sits at the foot, after the estimate. */}
+      <div className="si-only-desk">{skipRow}</div>
       {cookieLine}
     </form>
   );
@@ -1294,9 +1405,13 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const selfPct = figures && figures.annualSavingEur > 0 ? Math.round((figures.selfUseSavingEur / figures.annualSavingEur) * 100) : 50;
 
-  /** "How we worked this out": a bottom sheet under 1024, a disclosure in the lane from 1024. */
-  const sheetBody = figures ? (
-    <div className="si-how">
+  /**
+   * "How we worked this out": a bottom sheet under 1024, a disclosure in the
+   * lane from 1024. On "Your bill" its two halves are the two panels under the
+   * live estimate (howBody, closerBody), word for word.
+   */
+  const howBody = figures ? (
+    <>
       {isBiz ? (
         <p className="si-how__lead">
           The NDMG pays up to the lower of its table amount or 45% of the cost. These enhanced rates are for applications made by 6 July 2027. Business solar
@@ -1347,7 +1462,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         ))}
       </div>
-      <p className="si-group-label si-how__h">Make it closer</p>
+    </>
+  ) : null;
+
+  const closerBody = (opts: { photo: ReactNode }) => (
+    <>
       {!isBiz && config ? (
         <fieldset>
           <legend className="si-small">Who&apos;s your supplier?</legend>
@@ -1387,8 +1506,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         </Field>
       </div>
-      {readerOn ? <div className="si-mt-16">{photoRow('time')}</div> : null}
+      {opts.photo}
       <p className="si-how__line si-mt-16">Panels only. Ask about a battery on the call.</p>
+    </>
+  );
+
+  const sheetBody = figures ? (
+    <div className="si-how">
+      {howBody}
+      <p className="si-group-label si-how__h">Make it closer</p>
+      {closerBody({ photo: readerOn ? <div className="si-mt-16">{photoRow('time')}</div> : null })}
     </div>
   ) : null;
 
@@ -1751,42 +1878,214 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </div>
   );
 
-  /* ── Screen 1, desktop right lane: the estimate building live ──── */
+  /*
+   * ── "Your bill" (Cal, 17 Nov 2026, option A): the estimate builds live ──
+   *
+   * Left lane: the amount (unchanged). Right lane: the estimate for whatever
+   * is on screen, priced by the same quote call, then the one primary, "Send
+   * my estimate", straight to the contact details. A tapped amount only moves
+   * the estimate; nothing navigates. Every slot keeps its height in every
+   * state (empty, working, ready, down), so nothing shifts as the number
+   * changes. Under 1024 the lanes stack: amount, estimate, the bar.
+   */
+  const livePending = quoteStatus === 'loading' && !!figures;
+  const liveWaiting = hasBasis && !figures && quoteStatus === 'loading';
+  const liveDown = hasBasis && !figures && (quoteStatus === 'error' || (configFailed && quoteStatus !== 'loading'));
+  const ghost = <span className="si-skel si-skel--line si-live__ghost" aria-hidden="true" />;
+  const heroNow = figures ? eur(heroGlide ?? figures.annualSavingEur) : null;
+  const liveRows: { k: string; dt: ReactNode; dd: ReactNode; words?: boolean }[] = isBiz
+    ? [
+        { k: 'sys', dt: 'System, about', dd: figures ? <span {...prov('estimate')}>{kwp(figures.kwp)}</span> : ghost },
+        { k: 'grant', dt: 'NDMG grant, up to', dd: figures ? <span {...prov('estimate')}>{eur(figures.grantEur)}</span> : ghost },
+        { k: 'price', dt: 'Your price', dd: 'In your proposal', words: true },
+      ]
+    : [
+        {
+          k: 'net',
+          dt: figures ? (
+            <>
+              After your <span {...prov('estimate')}>{eur(figures.grantEur)}</span> SEAI grant
+            </>
+          ) : (
+            'After your SEAI grant'
+          ),
+          dd: figures ? <span {...prov('estimate')}>{figures.netCostEur != null ? eur(figures.netCostEur) : ''}</span> : ghost,
+        },
+        { k: 'payback', dt: 'Pays back in about', dd: figures ? <span {...prov('estimate')}>{figures.paybackYears != null ? years(figures.paybackYears) : ''}</span> : ghost },
+        { k: 'sys', dt: figures?.sizedAtMinimum ? 'Our smallest system' : 'System', dd: figures ? <span {...prov('estimate')}>{kwp(figures.kwp)}</span> : ghost },
+      ];
+  const livePrompt = liveDown
+    ? "We can't work out your figures this second."
+    : liveWaiting
+    ? 'Working out your figures'
+    : isBiz
+    ? 'Pick your monthly spend to see your estimate'
+    : 'Pick your monthly bill to see your estimate';
+  /** Cal's line for this moment. When the quote can't be emailed (rough or down), the call does the figures instead. */
+  const sendable = !figures || emailable;
+  const inboxLine = sendable
+    ? 'Your estimate goes to your inbox, and one of our team will ring you to talk it through.'
+    : `Next we ask where to ring you. ${CALLER_START} works out your full figures with you on a free 15-minute call.`;
+  const sendLabel = sendable && !liveDown ? 'Send my estimate' : 'Next, your free call';
 
-  const liveFig = preview?.hasBasis ? preview.figures : null;
+  const liveCard = (
+    <section
+      className="si-live-card"
+      aria-labelledby="si-live-title"
+      data-state={figures ? 'ready' : liveDown ? 'down' : liveWaiting ? 'waiting' : 'empty'}
+      data-pending={livePending ? 'true' : undefined}
+      aria-busy={livePending || liveWaiting ? 'true' : undefined}
+    >
+      <div className="si-est__head">
+        <h2 className="si-est__title" id="si-live-title">
+          Your estimate
+        </h2>
+        <span className="si-tag">{rough ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
+        {updatedFlash ? (
+          <span className="si-updated">
+            <Check size={14} aria-hidden="true" /> Updated
+          </span>
+        ) : null}
+      </div>
+      <div className="si-live__hero">
+        <p className="si-hero__pre" data-hide={figures ? undefined : 'true'}>
+          About
+        </p>
+        <p className="si-hero__fig si-live__fig">
+          {figures ? (
+            <b {...prov('estimate')} aria-describedby="si-live-per">
+              {heroNow}
+            </b>
+          ) : (
+            <span className="si-live__prompt" role={liveWaiting ? undefined : 'note'}>
+              {livePrompt}
+            </span>
+          )}
+        </p>
+        <p className="si-hero__per" id="si-live-per" data-hide={figures ? undefined : 'true'}>
+          a year, off {isBiz ? 'the' : 'your'} bill and from the power you send back
+        </p>
+      </div>
+      <dl className="si-receipt si-live__receipt">
+        {liveRows.map((r) => (
+          <div className="si-receipt__row" key={r.k}>
+            <dt>{r.dt}</dt>
+            <dd className={r.words ? 'si-receipt__words' : undefined}>{r.dd}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="si-live__split" data-split="">
+        {figures ? (
+          <>
+            <b {...prov('estimate')}>{eur(figures.selfUseSavingEur)}</b> off {isBiz ? 'the' : 'your'} bill + <b {...prov('estimate')}>{eur(figures.exportIncomeEur)}</b> for what you
+            send back at <span {...prov('assumed')}>{cents(figures.exportRateEur)}</span>
+          </>
+        ) : (
+          ghost
+        )}
+      </p>
+      <p className="si-prov-line si-live__basis" id="si-live-basis">
+        {figures ? basisShort : liveDown ? 'You can still book your free call, and we go through your figures with you then.' : isBiz ? 'Indicative, not a quote.' : 'Close estimate, not a quote.'}
+      </p>
+      {rough && figures ? (
+        <p className="si-small si-mt-8" data-rough-estimate="">
+          A rough estimate from your bill amount. Your full estimate checks it against your roof and when you use power.
+        </p>
+      ) : null}
+      <div className="si-live__more">
+        <button
+          type="button"
+          className="si-btn si-btn--amber"
+          data-open="how"
+          aria-controls="si-xp-how"
+          aria-expanded={panels.how}
+          disabled={!figures}
+          onClick={() => openPanel('how', 'card')}
+        >
+          See how we worked this out <ChevronDown size={18} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="si-btn si-btn--amber"
+          data-open="closer"
+          aria-controls="si-xp-closer"
+          aria-expanded={panels.closer}
+          disabled={!figures}
+          onClick={() => openPanel('closer', 'card')}
+        >
+          Make it more accurate <ChevronDown size={18} aria-hidden="true" />
+        </button>
+      </div>
+      <p className="si-small si-live__inbox si-only-phone" data-inbox-line="">
+        {inboxLine}
+      </p>
+    </section>
+  );
+
+  /** A panel under the live estimate: amber, a full-width hit area, a chevron that turns, aria-expanded. */
+  const expander = (key: 'how' | 'closer', label: string, body: ReactNode) => (
+    <div className="si-xp" data-xp={key}>
+      <h3 className="si-xp__h">
+        <button type="button" className="si-xp__btn" aria-expanded={panels[key]} aria-controls={`si-xp-${key}`} onClick={() => openPanel(key, 'header')}>
+          <span>{label}</span>
+          <ChevronDown size={22} className="si-xp__chev" aria-hidden="true" />
+        </button>
+      </h3>
+      <Collapse open={panels[key]} id={`si-xp-${key}`}>
+        <div className="si-xp__body">{body}</div>
+      </Collapse>
+    </div>
+  );
+
   const billRight = (
     <div className="si-screen-in si-screen si-live">
-      <div className="si-est__head">
-        <h2 className="si-est__title">Your estimate</h2>
-        <span className="si-tag">{liveFig && !preview?.quoteToken ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
-      </div>
-      {liveFig && billNow != null ? (
-        <>
-          {heroAndReceipt(liveFig, { live: true })}
-          <p className="si-small si-mt-16">
-            From the <span {...prov('you_told_us')}>{eur(billNow)}</span> {draft.per === '2months' ? 'every 2 months' : 'a month'} you typed. See my savings, then we send you the full breakdown.
+      {liveCard}
+      <div className="si-actions si-live__actions" ref={actionsRef}>
+        <div className="si-actions__inner">
+          <p className="si-live__mini si-only-phone" aria-hidden="true">
+            {figures ? (
+              <>
+                About <b>{heroNow}</b> a year
+                {!isBiz && figures.netCostEur != null ? (
+                  <>
+                    <span> · </span>
+                    <b>{eur(figures.netCostEur)}</b> after grant
+                  </>
+                ) : null}
+              </>
+            ) : (
+              livePrompt
+            )}
           </p>
-        </>
-      ) : (
-        <>
-          <p className="si-live__empty">Your estimate appears here as soon as you give us a bill.</p>
-          <div className="si-est__body" aria-hidden="true">
-            <div className="si-hero">
-              <span className="si-skel si-skel--line" style={{ width: 56 }} />
-              <span className="si-skel si-skel--hero si-skel--line" />
-              <span className="si-skel si-skel--line" style={{ width: '60%' }} />
-            </div>
-            <div className="si-receipt si-receipt--ghost">
-              {(isBiz ? ['System, about', 'NDMG grant, up to', 'Your price'] : ['After your SEAI grant', 'Pays back in about', 'System']).map((l) => (
-                <div className="si-receipt__row" key={l}>
-                  <span>{l}</span>
-                  <span className="si-skel si-skel--line" style={{ width: 64 }} />
-                </div>
-              ))}
-            </div>
+          <div data-send="">
+            <PrimaryButton
+              type="button"
+              arrow={false}
+              offline={!online}
+              offlineLabel="Offline"
+              label={
+                <span className="si-btn__in">
+                  {sendLabel} <ChevronRight size={18} aria-hidden="true" />
+                </span>
+              }
+              onClick={onSend}
+            />
           </div>
-        </>
-      )}
+          <p className="si-actions__note si-live__note si-only-desk" data-inbox-line="">
+            {inboxLine}
+          </p>
+        </div>
+      </div>
+      <div className="si-live__below">
+        {figures ? (
+          <div className="si-xps">
+            {expander('how', 'How we worked this out', <div className="si-how">{howBody}</div>)}
+            {expander('closer', 'Make it closer', <div className="si-how">{closerBody({ photo: addBill })}</div>)}
+          </div>
+        ) : null}
+        {basisPanel}
+        <div className="si-only-phone si-mt-32">{skipRow}</div>
+      </div>
       <footer className="si-lane-foot">{trustLine}</footer>
     </div>
   );
@@ -1801,10 +2100,27 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
    * is now its own step everywhere; from 1024 it stays in the left lane while
    * the ask takes the right, so nothing moves under the visitor.
    */
-  const progressState: ('done' | 'current' | 'future')[] =
-    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !askOnTime ? ['done', 'current', 'future'] : step === 'done' && !draft.result?.fallback ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
+  /*
+   * Option A (Cal, 17 Nov 2026): a typed amount gets its estimate live on
+   * "Your bill", so its steps are Your bill, then Your call. A bill photo and
+   * a skipped bill keep their own estimate step, so they keep three.
+   */
+  const twoSteps = step === 'bill' || ((step === 'details' || step === 'done') && hasBasis && !draft.billRead);
+  const progressLabels = twoSteps ? ['Your bill', 'Your call'] : ['Your bill', 'Your estimate', 'Your call'];
+  const progressState: ('done' | 'current' | 'future')[] = twoSteps
+    ? step === 'bill'
+      ? ['current', 'future']
+      : step === 'done' && !draft.result?.fallback
+      ? ['done', 'done']
+      : ['done', 'current']
+    : step === 'time' && !askOnTime
+    ? ['done', 'current', 'future']
+    : step === 'done' && !draft.result?.fallback
+    ? ['done', 'done', 'done']
+    : ['done', 'done', 'current'];
   const headerName = askOnTime ? STEP_NAME.details : STEP_NAME[step];
-  const headerCount = step === 'done' ? null : (askOnTime ? STEP_COUNT.details : STEP_COUNT[step]) ?? null;
+  const counts = twoSteps ? STEP_COUNT_2 : STEP_COUNT;
+  const headerCount = step === 'done' ? null : (askOnTime ? counts.details : counts[step]) ?? null;
   const showPhoneBack = depth > 1 && step !== 'done';
 
   let left: ReactNode;
@@ -1881,8 +2197,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         </div>
         {(
-          <ol className="si-progress" aria-label="Progress">
-            {['Your bill', 'Your estimate', 'Your call'].map((l, i) => (
+          <ol className="si-progress" aria-label="Progress" data-steps={progressLabels.length}>
+            {progressLabels.map((l, i) => (
               <li key={l} data-state={progressState[i]} aria-current={progressState[i] === 'current' ? 'step' : undefined}>
                 <span className="si-progress__dot" aria-hidden="true">
                   {progressState[i] === 'done' ? <Check size={12} strokeWidth={3} /> : i + 1}

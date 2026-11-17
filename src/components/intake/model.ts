@@ -147,7 +147,9 @@ export function validStep(s: Step | null, d: Draft): Step {
   if (s === 'details') return d.segment ? 'details' : 'bill';
   // No separate home-or-business screen (APPLE-DECISIONS 1): every door opens
   // on Screen 1 or 2, with the switch on Screen 1.
-  if (s === 'time') return d.segment ? 'time' : 'bill';
+  // A typed amount has no estimate step of its own (Cal, 17 Nov 2026, option A):
+  // its estimate builds live on "Your bill". A bill read or no bill keeps "time".
+  if (s === 'time') return d.segment && (d.billRead || (d.bill == null && d.annualKwh == null)) ? 'time' : 'bill';
   return 'bill';
 }
 
