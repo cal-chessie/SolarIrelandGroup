@@ -121,13 +121,23 @@ async function walk(wide: boolean) {
   // The events: shown once, the amount changes (debounced), a panel opened.
   await waitFor(() => expect(events('typed_estimate_shown')).toHaveLength(1), { timeout: 4000 });
   await waitFor(() => expect(events('typed_amount_changed').some((p) => p.band === 150 && p.method === 'typed')).toBe(true), { timeout: 4000 });
+  // One set of controls: the amber buttons are the toggles; their panels carry the same names.
+  expect(screen.queryByRole('button', { name: /^How we worked this out/ })).toBeNull();
+  expect(screen.queryByRole('button', { name: /^Make it closer/ })).toBeNull();
   const how = document.querySelector<HTMLButtonElement>('[data-open="how"]')!;
+  expect(how.textContent).toContain('See how we worked this out');
   await act(async () => {
     fireEvent.click(how);
   });
   expect(how.getAttribute('aria-expanded')).toBe('true');
-  expect(document.querySelector('[data-xp="how"] .si-xp__btn')?.getAttribute('aria-expanded')).toBe('true');
+  expect(document.getElementById('si-xp-how-h')?.textContent).toBe('See how we worked this out');
+  expect(document.querySelector('[data-xp="how"]')?.getAttribute('data-open')).toBe('true');
   expect(events('typed_expand').at(-1)).toMatchObject({ panel: 'how' });
+  await act(async () => {
+    fireEvent.click(how);
+  });
+  expect(how.getAttribute('aria-expanded')).toBe('false');
+  expect(document.getElementById('si-xp-closer-h')?.textContent).toBe('Make it more accurate');
 
   // Step 2: "Send my estimate" goes straight to the contact details. No estimate step between.
   await act(async () => {
@@ -143,8 +153,13 @@ async function walk(wide: boolean) {
   fireEvent.change(document.getElementById('si-name')!, { target: { value: 'Mary Byrne' } });
   fireEvent.change(document.getElementById('si-mobile')!, { target: { value: '0871234567' } });
   fireEvent.change(document.getElementById('si-email')!, { target: { value: 'mary@example.invalid' } });
+  // The contact step's button has the same name as the one that led here.
+  const submit = document.querySelector<HTMLButtonElement>('form.si-ask button[type="submit"]')!;
+  expect(submit.textContent).toContain('Send my estimate');
+  expect(lanesText()).toContain('Then our team will ring you shortly to go through it.');
+  expect(lanesText()).toContain('your €1,800 SEAI grant (up to €2,400 with a battery)');
   await act(async () => {
-    fireEvent.click(screen.getByRole('button', { name: 'Send my savings' }));
+    fireEvent.click(submit);
   });
 
   // Then the call.

@@ -230,7 +230,8 @@ export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: b
     ? ndmgDoubledLive()
       ? `your grant of up to ${SOLAR_DATA.ndmgDoubled.maxLabel} under the doubled business grant`
       : 'your SEAI business grant'
-    : `your grant of up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel}`;
+    : // The estimate beside the ask says "After your €1,800 SEAI grant"; the ask must agree with it (Cal's review, 17 Nov 2026).
+      `your ${SOLAR_DATA.grant.label} SEAI grant (up to ${SOLAR_DATA.batteryGrant.withSolarMaxLabel} with a battery)`;
   if (o.estimate && o.typed) {
     // A typed amount, no bill read: nothing here may say we read a bill.
     return {
@@ -278,6 +279,8 @@ export function CallAsk({
   actionsRef,
   confirm = false,
   cta = 'Send my savings',
+  promise,
+  busyLabel,
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -295,6 +298,9 @@ export function CallAsk({
   confirm?: boolean;
   /** The primary's label when an estimate will be emailed (a priced bill rides with the request). */
   cta?: string;
+  /** The line under the primary, and its busy label, when an estimate will be emailed. Defaults to askCopy's. */
+  promise?: string;
+  busyLabel?: string;
 }) {
   const [memory, setMemory] = useState<CallMemory | null>(null);
   const [another, setAnother] = useState(false);
@@ -315,7 +321,7 @@ export function CallAsk({
   }
   return (
     <CallForm
-      {...{ idPrefix, details, onDetails, ctx, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta }}
+      {...{ idPrefix, details, onDetails, ctx, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta, promise, busyLabel }}
     />
   );
 }
@@ -335,6 +341,8 @@ function CallForm({
   actionsRef,
   confirm,
   cta,
+  promise,
+  busyLabel,
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -350,6 +358,8 @@ function CallForm({
   actionsRef?: React.Ref<HTMLDivElement>;
   confirm: boolean;
   cta: string;
+  promise?: string;
+  busyLabel?: string;
 }) {
   const [editing, setEditing] = useState(!confirm);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -540,7 +550,7 @@ function CallForm({
       label={label}
       arrow={false}
       busy={busy}
-      busyLabel={ask.busy}
+      busyLabel={estimate && busyLabel ? busyLabel : ask.busy}
       offline={!online || rateLeft > 0}
       offlineLabel={rateLeft > 0 ? `Try again in ${rateLeft}s` : undefined}
     />
@@ -551,7 +561,7 @@ function CallForm({
   const extra = (
     <>
       <p className="si-ask__promise">
-        {estimate ? <Mail size={14} aria-hidden="true" /> : <Phone size={14} aria-hidden="true" />} {ask.promise}
+        {estimate ? <Mail size={14} aria-hidden="true" /> : <Phone size={14} aria-hidden="true" />} {estimate && promise ? promise : ask.promise}
       </p>
       {slow ? (
         <p className="si-still" role="status">

@@ -86,6 +86,14 @@ const STEP_COUNT_2: Partial<Record<Step, string>> = { bill: '1 of 2', details: '
  * A figure that glides to its new value instead of jumping (about a quarter
  * of a second, ease-out). Reduced motion, and the first value, land at once.
  */
+function prefersReducedMotion(): boolean {
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch {
+    return false;
+  }
+}
+
 function useGlide(target: number | null, ms = 260): number | null {
   // `frame` belongs to one target; a stale frame is never shown.
   const [frame, setFrame] = useState<{ to: number; v: number } | null>(null);
@@ -187,6 +195,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const billGivenRef = useRef(false);
   const amountTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const kwhFromField = useRef(false);
+  /** Phones: bring the live estimate into view once, after the first tapped amount prices. */
+  const cardScrollRef = useRef(false);
+  const cardShownRef = useRef(false);
 
   const [billError, setBillError] = useState<string | null>(null);
   const [kwhOpen, setKwhOpen] = useState(false);
@@ -688,6 +699,20 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote, quoteStatus]);
 
+  /* Phones, "Your bill": the first tapped amount's estimate is brought into view if it sits below the fold. */
+  useEffect(() => {
+    if (step !== 'bill' || !figures || !cardScrollRef.current) return;
+    cardScrollRef.current = false;
+    cardShownRef.current = true;
+    const card = rootRef.current?.querySelector<HTMLElement>('.si-live-card');
+    const bar = actionsRef.current;
+    if (!card) return;
+    const fold = window.innerHeight - (bar && getComputedStyle(bar).position === 'fixed' ? bar.offsetHeight : 0);
+    const hero = card.querySelector<HTMLElement>('.si-hero__fig') ?? card;
+    if (hero.getBoundingClientRect().bottom <= fold) return;
+    card.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+  }, [figures, step]);
+
   /* The six chips are priced in one call while Screen 1 is open. */
   useEffect(() => {
     if (step !== 'bill' || !seg || !config) return;
@@ -796,6 +821,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   /** A suggested amount only updates the estimate beside it (Cal, 17 Nov 2026). It never moves the flow on. */
   const onChip = (amount: number) => {
     setBillError(null);
+    // Phones: the first estimate from a tapped amount is brought into view (never while typing).
+    if (!wide && !cardShownRef.current) cardScrollRef.current = true;
     update({ billText: String(amount) });
     commitBill(amount, 'chip', 'month');
   };
@@ -823,24 +850,21 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     go('details');
   };
 
-  /** "See how we worked this out" and "Make it more accurate": open the panel below and bring it into view. */
-  const openPanel = (key: 'how' | 'closer', via: 'card' | 'header') => {
-    const opening = via === 'card' ? true : !panels[key];
+  /**
+   * "See how we worked this out" and "Make it more accurate": the two amber
+   * buttons are the toggles (one set of controls, Cal's review 17 Nov 2026).
+   * Their panels open under the primary, so "Send my estimate" never moves;
+   * an opened panel is brought into view.
+   */
+  const togglePanel = (key: 'how' | 'closer') => {
+    const opening = !panels[key];
     setPanels((p) => ({ ...p, [key]: opening }));
-    if (opening) track('typed_expand', { panel: key, via, segment: seg, flow_id: draftRef.current.flowId });
-    if (via === 'card') {
-      let reduce = false;
-      try {
-        reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      } catch {
-        /* default motion */
-      }
-      setTimeout(() => {
-        const el = rootRef.current?.querySelector<HTMLElement>(`[data-xp="${key}"]`);
-        el?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
-        el?.querySelector<HTMLElement>('.si-xp__btn')?.focus({ preventScroll: true });
-      }, 40);
-    }
+    if (!opening) return;
+    track('typed_expand', { panel: key, segment: seg, flow_id: draftRef.current.flowId });
+    setTimeout(() => {
+      const el = rootRef.current?.querySelector<HTMLElement>(`[data-xp="${key}"]`);
+      if (el) el.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }, 60);
   };
 
   const onSkip = () => {
@@ -1093,12 +1117,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     />
   ) : null;
 
-  const photoRow = (where: 'bill' | 'time') => {
+  const photoRow = (where: 'bill' | 'time', attach = true) => {
     if (!readerOn && !(where === 'bill' && readerPending)) return null;
     const here = photo.where === where;
     if (photo.status === 'reading' && here) {
       return (
-        <div className="si-photo si-photo--reading" role="status" ref={photoRowRef}>
+        <div className="si-photo si-photo--reading" role="status" ref={attach ? photoRowRef : undefined}>
           <span className="si-reading__thumb" aria-hidden="true">
             {photo.preview ? <img src={photo.preview} alt="" /> : null}
             <span className="si-reading__line" />
@@ -1115,7 +1139,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const tooBig = photo.status === 'too_large' && here;
     const failed = (photo.status === 'unreadable' || photo.status === 'error' || photo.status === 'too_large') && here;
     return (
-      <div ref={photoRowRef}>
+      <div ref={attach ? photoRowRef : undefined}>
         <button type="button" className="si-photo" data-state={failed ? 'unreadable' : 'idle'} onClick={() => fileRef.current?.click()}>
           <span className="si-photo__icon" aria-hidden="true">
             {failed ? <Info size={20} /> : <Camera size={20} />}
@@ -1139,6 +1163,14 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </div>
     );
   };
+
+  /** The bill photo row's place under the estimate on phones (amount, estimate, photo, skip), beside the amount from 1024. */
+  const photoGroup = (desk: boolean) =>
+    (readerOn || readerPending) && !(draft.carry && carryWhy[draft.carry.from]) ? (
+      <div className={`si-group ${desk ? 'si-only-desk' : 'si-only-phone'}`} data-reserved={readerOn ? undefined : 'true'} aria-hidden={readerOn ? undefined : true} inert={!readerOn}>
+        {photoRow('bill', desk === wide)}
+      </div>
+    ) : null;
 
   const amountField = (
     <div className="si-amount" data-invalid={billError ? 'nudge' : undefined}>
@@ -1263,11 +1295,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         ) : null}
       </div>
       {/* Just failed a read on the analyser: the photo row is not offered again here. */}
-      {(readerOn || readerPending) && !(draft.carry && carryWhy[draft.carry.from]) ? (
-        <div className="si-group" data-reserved={readerOn ? undefined : 'true'} aria-hidden={readerOn ? undefined : true} inert={!readerOn}>
-          {photoRow('bill')}
-        </div>
-      ) : null}
+      {photoGroup(true)}
       {fileInput}
       {/* From 1024 the way out sits under the amount; under 1024 it sits at the foot, after the estimate. */}
       <div className="si-only-desk">{skipRow}</div>
@@ -1521,7 +1549,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const sheetBody = figures ? (
     <div className="si-how">
       {howBody}
-      <p className="si-group-label si-how__h">Make it closer</p>
+      <p className="si-group-label si-how__h">Make it more accurate</p>
       {closerBody({ photo: readerOn ? <div className="si-mt-16">{photoRow('time')}</div> : null })}
     </div>
   ) : null;
@@ -1846,6 +1874,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           basis: !hasBasis ? 'none' : typed ? 'typed' : 'read',
         }}
         onSent={onCallSent}
+        // One name for one action: the intake's button before this one said "Send my estimate" (Cal's review, 17 Nov 2026).
+        cta="Send my estimate"
+        busyLabel="Sending your estimate"
+        promise="Then our team will ring you shortly to go through it."
         bar={
           asH1
             ? (button, extra) => (
@@ -2000,28 +2032,25 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         </p>
       ) : null}
       <div className="si-live__more">
-        <button
-          type="button"
-          className="si-btn si-btn--amber"
-          data-open="how"
-          aria-controls="si-xp-how"
-          aria-expanded={panels.how}
-          disabled={!figures}
-          onClick={() => openPanel('how', 'card')}
-        >
-          See how we worked this out <ChevronDown size={18} aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="si-btn si-btn--amber"
-          data-open="closer"
-          aria-controls="si-xp-closer"
-          aria-expanded={panels.closer}
-          disabled={!figures}
-          onClick={() => openPanel('closer', 'card')}
-        >
-          Make it more accurate <ChevronDown size={18} aria-hidden="true" />
-        </button>
+        {(
+          [
+            ['how', 'See how we worked this out'],
+            ['closer', 'Make it more accurate'],
+          ] as const
+        ).map(([key, label]) => (
+          <button
+            key={key}
+            type="button"
+            className="si-btn si-btn--amber"
+            data-open={key}
+            aria-controls={`si-xp-${key}`}
+            aria-expanded={panels[key]}
+            disabled={!figures}
+            onClick={() => togglePanel(key)}
+          >
+            {label} <ChevronDown size={18} aria-hidden="true" className="si-btn__chev" />
+          </button>
+        ))}
       </div>
       <p className="si-small si-live__inbox si-only-phone" data-inbox-line="">
         {inboxLine}
@@ -2029,17 +2058,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </section>
   );
 
-  /** A panel under the live estimate: amber, a full-width hit area, a chevron that turns, aria-expanded. */
-  const expander = (key: 'how' | 'closer', label: string, body: ReactNode) => (
-    <div className="si-xp" data-xp={key}>
-      <h3 className="si-xp__h">
-        <button type="button" className="si-xp__btn" aria-expanded={panels[key]} aria-controls={`si-xp-${key}`} onClick={() => openPanel(key, 'header')}>
-          <span>{label}</span>
-          <ChevronDown size={22} className="si-xp__chev" aria-hidden="true" />
-        </button>
-      </h3>
+  /** A panel the amber buttons open: its heading matches its button, and it opens under the primary. */
+  const panel = (key: 'how' | 'closer', label: string, body: ReactNode) => (
+    <div className="si-xp" data-xp={key} data-open={panels[key] ? 'true' : 'false'}>
       <Collapse open={panels[key]} id={`si-xp-${key}`}>
-        <div className="si-xp__body">{body}</div>
+        <section className="si-xp__body" aria-labelledby={`si-xp-${key}-h`}>
+          <h3 className="si-xp__title" id={`si-xp-${key}-h`}>
+            {label}
+          </h3>
+          {body}
+        </section>
       </Collapse>
     </div>
   );
@@ -2047,6 +2075,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const billRight = (
     <div className="si-screen-in si-screen si-live">
       {liveCard}
+      {/* Phones: the photo row and the way out sit under the estimate, never between the amount and it. */}
+      {photoGroup(false)}
+      <div className="si-only-phone">{skipRow}</div>
       <div className="si-actions si-live__actions" ref={actionsRef}>
         <div className="si-actions__inner">
           <p className="si-live__mini si-only-phone" aria-hidden="true">
@@ -2086,12 +2117,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       <div className="si-live__below">
         {figures ? (
           <div className="si-xps">
-            {expander('how', 'How we worked this out', <div className="si-how">{howBody}</div>)}
-            {expander('closer', 'Make it closer', <div className="si-how">{closerBody({ photo: addBill })}</div>)}
+            {panel('how', 'See how we worked this out', <div className="si-how">{howBody}</div>)}
+            {panel('closer', 'Make it more accurate', <div className="si-how">{closerBody({ photo: addBill })}</div>)}
           </div>
         ) : null}
         {basisPanel}
-        <div className="si-only-phone si-mt-32">{skipRow}</div>
         {cookieLine ? <div className="si-only-phone">{cookieLine}</div> : null}
       </div>
       <footer className="si-lane-foot">{trustLine}</footer>
