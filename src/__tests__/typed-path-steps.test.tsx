@@ -20,7 +20,7 @@ vi.mock('@/components/intake/intake.css', () => ({}));
 vi.mock('@/lib/analytics', async (orig) => ({ ...(await orig<typeof import('@/lib/analytics')>()), trackEvent: vi.fn() }));
 
 // "Your full estimate" is Cal's own wording for every state (17 Nov 2026), so it is allowed here.
-const BILL_READ_WORDS = /read your bill|from your bill|we read|bill can't tell/i;
+const BILL_READ_WORDS = /read your bill|from your bill|we read/i;
 
 function setWidth(wide: boolean) {
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: wide ? 1440 : 390 });
@@ -127,7 +127,7 @@ async function walk(wide: boolean) {
   expect(document.querySelector('[data-split]')?.textContent).toMatch(/off your bill \+ .* for what you send back at/);
   expect(lanesText()).toContain('From the €150 a month you told us. Close estimate, not a quote.');
   expect(lanesText()).toContain('Where should we send your estimate?');
-  expect(lanesText()).toContain('Your full estimate and PDF breakdown, sent to your email. No visit, no obligation.');
+  expect(lanesText()).toContain("Your full estimate and PDF breakdown, sent to your inbox. We then discuss what a bill can't tell us, like your roof size and when you use power. You'll receive a fixed-rate proposal with your final savings, your €1,800 SEAI grant (up to €2,400 with a battery) and final numbers.");
   expect(lanesText()).toContain('Then one of our team goes through the final details with you.');
   expect(lanesText()).toContain('For the final details, after your estimate.');
   // The call is mentioned once, under the button: no best-time chips beside the estimate.

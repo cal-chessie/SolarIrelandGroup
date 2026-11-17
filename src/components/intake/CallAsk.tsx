@@ -219,9 +219,10 @@ export function askCopy(_o: { estimate: boolean }): { cta: string; promise: stri
 export function askHeadline(o: { estimate: boolean; rough?: boolean; battery?: boolean; business?: boolean; typed?: boolean; pdf?: boolean }): { heading: string; sub: string } {
   return {
     heading: 'Where should we send your estimate?',
-    sub: o.pdf && !o.business
-      ? 'Your full estimate and PDF breakdown, sent to your email. No visit, no obligation.'
-      : 'Your full estimate, sent to your email. No visit, no obligation.',
+    // Cal's words, 17 Nov 2026.
+    sub: o.business
+      ? "Your full estimate, sent to your inbox. We then discuss what a bill can't tell us, like your roof and when you use power. You'll receive a fixed-rate proposal with your final savings, your SEAI business grant and final numbers."
+      : `${o.pdf ? 'Your full estimate and PDF breakdown' : 'Your full estimate'}, sent to your inbox. We then discuss what a bill can't tell us, like your roof size and when you use power. You'll receive a fixed-rate proposal with your final savings, your €1,800 SEAI grant (up to €2,400 with a battery) and final numbers.`,
   };
 }
 

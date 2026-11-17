@@ -58,8 +58,8 @@ describe('estimate first in every state (Cal, 17 Nov 2026)', () => {
       render(<CallAsk idPrefix="t" details={details} onDetails={() => {}} ctx={ctxOf(st.token)} onSent={() => {}} heading={h.heading} sub={h.sub} />);
       expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Where should we send your estimate?');
       const sub = st.head.pdf
-        ? 'Your full estimate and PDF breakdown, sent to your email. No visit, no obligation.'
-        : 'Your full estimate, sent to your email. No visit, no obligation.';
+        ? "Your full estimate and PDF breakdown, sent to your inbox. We then discuss what a bill can't tell us, like your roof size and when you use power. You'll receive a fixed-rate proposal with your final savings, your €1,800 SEAI grant (up to €2,400 with a battery) and final numbers."
+        : "Your full estimate, sent to your inbox. We then discuss what a bill can't tell us, like your roof size and when you use power. You'll receive a fixed-rate proposal with your final savings, your €1,800 SEAI grant (up to €2,400 with a battery) and final numbers.";
       expect(h.sub).toBe(sub);
       expect(h.sub).not.toMatch(CALL_FIRST);
       const text = document.body.textContent || '';
@@ -91,7 +91,7 @@ describe('estimate first in every state (Cal, 17 Nov 2026)', () => {
   }
 
   it('a quote without a PDF never promises one', () => {
-    expect(askHeadline({ estimate: true, pdf: false }).sub).toBe('Your full estimate, sent to your email. No visit, no obligation.');
+    expect(askHeadline({ estimate: true, pdf: false }).sub).toBe("Your full estimate, sent to your inbox. We then discuss what a bill can't tell us, like your roof size and when you use power. You'll receive a fixed-rate proposal with your final savings, your €1,800 SEAI grant (up to €2,400 with a battery) and final numbers.");
     expect(askHeadline({ estimate: true, pdf: true, business: true }).sub).not.toMatch(/PDF/);
     expect(callDoneCopy({ held: false, first: 'Mary', estimate: true }).title).toBe('Thanks, Mary. Your full estimate is on its way to your email.');
     expect(callDoneCopy({ held: false, first: 'Mary', estimate: true, pdf: true, business: true }).title).not.toMatch(/PDF/);
