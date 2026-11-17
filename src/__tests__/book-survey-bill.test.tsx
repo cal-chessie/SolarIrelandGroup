@@ -54,16 +54,12 @@ describe('/book-survey cold', () => {
     expect((await screen.findByRole('heading', { level: 2, name: /on its way/ })).textContent).toContain('Your estimate is on its way to your inbox');
   });
 
-  it('skipping the bill: no estimate promised on the button or the confirmation', async () => {
+  it('no call-only skip: the bill question offers only the amounts (Cal, 17 Nov 2026)', async () => {
     const { default: BookSurveyClient } = await import('@/app/book-survey/BookSurveyClient');
     render(<BookSurveyClient lt={null} segment="domestic" src={null} />);
-    fireEvent.click(await screen.findByRole('button', { name: /Skip this/ }));
-    expect(screen.getByRole('button', { name: 'Send my estimate' })).toBeTruthy();
-    const body = await fillAndSend();
-    expect(body.quoteToken).toBeNull();
-    const done = await screen.findByRole('heading', { level: 2, name: /ring you shortly/ });
-    expect(done.textContent).not.toMatch(/estimate/);
-    expect(document.body.textContent).not.toMatch(/inbox|on its way/i);
+    expect(await screen.findByText(/electricity bill a month/)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Skip/ })).toBeNull();
+    expect(document.body.textContent).toContain('One tap gets you your full estimate by email.');
   });
 });
 

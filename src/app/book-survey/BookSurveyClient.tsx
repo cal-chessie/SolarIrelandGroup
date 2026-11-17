@@ -260,7 +260,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
           <h2 className="si-ask__title" ref={billHeadRef} tabIndex={-1}>
             Roughly what&apos;s your electricity bill a month?
           </h2>
-          <p className="si-ask__sub">One tap. It turns into your full estimate, sent by email, before we ring you.</p>
+          <p className="si-ask__sub">One tap gets you your full estimate by email.</p>
           <div className="si-exit__chips" role="group" aria-label="Your monthly electricity bill">
             {chips.map((a, i) => {
               const orMore = i === chips.length - 1;
@@ -272,9 +272,7 @@ export default function BookSurveyClient({ lt, segment: startSegment, src }: { l
               );
             })}
           </div>
-          <button type="button" className="si-btn--quiet si-callpage__skip" onClick={() => answerBill('skipped')}>
-            Not sure? Skip this and we will work it out with you on the call
-          </button>
+          {/* No call-only skip (Cal, 17 Nov 2026): one tap on the closest gets them their estimate. */}
         </div>
       </>
     );

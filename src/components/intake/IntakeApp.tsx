@@ -354,7 +354,9 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     if (variant === 'page' && fromUrlStep) first = validStep(fromUrlStep, d);
     else if (initial.step) first = validStep(initial.step, d);
     else first = 'bill';
-    if (first === 'time' && d.bill == null && d.annualKwh == null) d.skipped = true;
+    // No call-only road (Cal, 17 Nov 2026): a link to "Your estimate" with no bill
+    // (an old /book-survey link) opens on Screen 1, where a chip gets them an estimate.
+    if (first === 'time' && d.bill == null && d.annualKwh == null) first = 'bill';
     firstStepRef.current = first;
 
     // Same device, half-finished: offer to pick up (ux-spec 2.4).
@@ -725,7 +727,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     const kwhOk = Number.isFinite(kwh) && kwh >= 100;
     if (amount == null && !kwhOk) {
       // Not an error: nothing is wrong yet (ui-spec 4.3). Calm words, amber edge.
-      setBillError('Type an amount, tap the closest, or skip the bill.');
+      setBillError('Type a rough amount or tap the closest.');
       billInputRef.current?.focus();
       return;
     }
@@ -767,13 +769,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       const r = el?.getBoundingClientRect();
       if (el && r && r.top > window.innerHeight * 0.75) el.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     }, 60);
-  };
-
-  const onSkip = () => {
-    update({ bill: null, billText: '', skipped: true, billMethod: null, annualKwh: null, billRead: null });
-    track('intake_bill_skipped', { segment: seg, flow_id: draft.flowId });
-    setBillError(null);
-    go('time');
   };
 
   const onResume = () => {
@@ -1191,13 +1186,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       {fileInput}
       <div className="si-actions" ref={actionsRef}>
         <div className="si-actions__inner">
-          <div className="si-pair">
-            <button type="button" className="si-btn si-btn--secondary" onClick={onSkip} aria-label="Skip the bill and book a free call">
-              Skip the bill
-            </button>
-            <PrimaryButton label="See my estimate" arrow={false} offline={!online} offlineLabel="Offline" disabled={!canSee} />
-          </div>
-          <p className="si-actions__note">No bill to hand? You can still book a free 15-minute call.</p>
+          {/* Cal, 17 Nov 2026: the estimate is the sell, so there is no call-only "Skip the bill". A rough figure or a chip gets anyone an estimate. */}
+          <PrimaryButton label="See my estimate" arrow={false} offline={!online} offlineLabel="Offline" disabled={!canSee} />
         </div>
       </div>
       {wide ? cookieLine : null}
@@ -1795,6 +1785,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </span>
     ) : null;
 
+  /** AISolar attaches the PDF only when the estimate has a net cost and a payback (a business priced at the proposal has neither). */
+  const pdfGoes = !!figures && figures.netCostEur != null && figures.paybackYears != null;
   const headline0 = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures });
   /**
    * Typed "Your estimate": the estimate is right beside the form, so the words
@@ -1802,7 +1794,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
    */
   const headline = merged
     ? emailable
-      ? { heading: 'Where should we send your estimate?', sub: 'We email you this estimate, with no visit and no obligation.' }
+      ? { heading: 'Where should we send your estimate?', sub: pdfGoes ? 'The full breakdown and a PDF, by email. No visit, no obligation.' : 'The full breakdown, by email. No visit, no obligation.' }
       : { heading: headline0.heading, sub: `${CALLER_START} rings you to work out your full figures, with no visit and no obligation.` }
     : headline0;
   const onSendAttempt = () =>
@@ -1845,7 +1837,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         }}
         onSent={onCallSent}
         cta={merged ? 'Send my estimate' : undefined}
-        promise={merged ? 'Your estimate goes to your inbox, and one of our team will ring you to talk it through.' : undefined}
+        promise={merged ? (isBiz ? 'Then we book your site survey and send your fixed-price proposal.' : 'Then we go through the final details and send your fixed-price proposal.') : undefined}
+        bestTime={!merged}
         busyLabel={merged ? 'Sending your estimate' : undefined}
         onAttempt={merged ? onSendAttempt : undefined}
         bar={
@@ -1878,7 +1871,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const doneLeft = (
     <div className="si-screen-in si-screen">
-      <CallDone details={det} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} />
+      <CallDone details={det} headingRef={h1Ref} headingLevel="h1" held={!!draft.result?.fallback} estimate={draft.callEstimate !== false} typed={typed} pdf={pdfGoes} business={isBiz} />
       <footer className="si-lane-foot si-lane-foot--left">{trustLine}</footer>
     </div>
   );
@@ -1898,28 +1891,20 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   );
 
   /*
-   * Screen 1's right lane (Cal, 17 Nov 2026): sell the next screen without
-   * giving the number away. What they get next, what happens after, and why
-   * us. Under 1024 the same block sits under the picker, tighter.
+   * Screen 1's right lane (Cal, 17 Nov 2026): "the estimate is the sell". Three
+   * steps, estimate first, the call a soft second, then why us. A business gets
+   * a site survey, and its estimate carries no price, so no PDF is promised
+   * (AISolar builds the PDF only when there is a net cost and a payback).
    */
-  // Cal, 17 Nov 2026. A business always gets an on-site survey, so the business road says so.
   const NEXT_STEPS = isBiz
-    ? ['Your estimate lands in your inbox.', 'One of our team gives you a call.', 'A site survey checks your roof, meter and board.', 'We see if a battery suits your business.', 'You get a fixed-price final proposal.']
-    : ['Your estimate lands in your inbox.', 'One of our team gives you a call.', 'We check your roof, meter and shading.', 'We see if a battery suits your home.', 'You get a fixed-price final proposal.'];
+    ? ['Your estimate lands in your inbox.', 'A site survey checks your roof, meter and board.', 'You get a fixed-price final proposal.']
+    : ['Your full estimate and PDF breakdown land in your inbox.', 'One of our team goes through the final details with you.', 'You get a fixed-price final proposal.'];
   const WHY_US = ['SEAI registered', 'RECI registered', '5-year workmanship warranty', '25-year panel warranty', 'We book your BER'];
   const billRight = (
     <div className="si-screen-in si-screen si-next" data-next="">
-      <section className="si-next__block" aria-labelledby="si-next-get">
-        <h2 className="si-next__h" id="si-next-get">
-          On the next screen
-        </h2>
-        <p className="si-next__lead">
-          {isBiz ? 'Your yearly saving, the system size and your grant.' : 'Your yearly saving, the system size, your grant and when it pays for itself.'}
-        </p>
-      </section>
       <section className="si-next__block" aria-labelledby="si-next-then">
         <h2 className="si-next__h" id="si-next-then">
-          What happens next
+          How it works
         </h2>
         <ol className="si-steps">
           {NEXT_STEPS.map((t, i) => (
@@ -1946,16 +1931,6 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         </ul>
       </section>
       {/* The cookie line arrives after mount. On phones it is the last thing on the page; from 1024 it ends the left lane. Either way nothing moves. */}
-      <footer className="si-lane-foot">
-        <p className="si-foot-line">
-          <span>
-            Questions?{' '}
-            <a href={waLink} target="_blank" rel="noopener noreferrer">
-              WhatsApp us
-            </a>
-          </span>
-        </p>
-      </footer>
       {wide ? null : cookieLine}
     </div>
   );

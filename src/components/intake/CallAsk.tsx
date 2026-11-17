@@ -281,6 +281,7 @@ export function CallAsk({
   promise,
   busyLabel,
   onAttempt,
+  bestTime = true,
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -303,6 +304,8 @@ export function CallAsk({
   busyLabel?: string;
   /** Every press of the primary, valid or not (the intake's typed_send_click). */
   onAttempt?: () => void;
+  /** Offer the optional "Best time to ring" chips. Off beside the estimate: the call is mentioned once, under the button. */
+  bestTime?: boolean;
 }) {
   const [memory, setMemory] = useState<CallMemory | null>(null);
   const [another, setAnother] = useState(false);
@@ -323,7 +326,7 @@ export function CallAsk({
   }
   return (
     <CallForm
-      {...{ idPrefix, details, onDetails, ctx, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta, promise, busyLabel, onAttempt }}
+      {...{ idPrefix, details, onDetails, ctx, onSent, bar, heading, headingLevel, headingRef, sub, online, actionsRef, confirm, cta, promise, busyLabel, onAttempt, bestTime }}
     />
   );
 }
@@ -346,6 +349,7 @@ function CallForm({
   promise,
   busyLabel,
   onAttempt,
+  bestTime,
 }: {
   idPrefix: string;
   details: CallDetails;
@@ -364,6 +368,7 @@ function CallForm({
   promise?: string;
   busyLabel?: string;
   onAttempt?: () => void;
+  bestTime: boolean;
 }) {
   const [editing, setEditing] = useState(!confirm);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -599,7 +604,7 @@ function CallForm({
       );
     if (k === 'mobile')
       return (
-        <Field id={id('mobile')} label="Mobile" hint="So we can ring you for the call." error={errOf('mobile')}>
+        <Field id={id('mobile')} label="Mobile" hint={estimate ? 'For the final details, after your estimate.' : 'So we can ring you.'} error={errOf('mobile')}>
           <TextInput
             id={id('mobile')}
             name="tel"
@@ -618,7 +623,7 @@ function CallForm({
         </Field>
       );
     return (
-      <Field id={id('email')} label="Email" hint={estimate ? 'So you have a note of your figures and the call.' : 'So you have a note of the call.'} error={errOf('email')}>
+      <Field id={id('email')} label="Email" hint={estimate ? 'Where we send your estimate.' : 'So you have a note of the call.'} error={errOf('email')}>
         <TextInput
           id={id('email')}
           name="email"
@@ -689,6 +694,7 @@ function CallForm({
           </button>
         </div>
       )}
+      {bestTime ? (
       <fieldset className="si-ask__best">
         <legend className="si-label">
           Best time to ring <span className="si-ask__opt">optional</span>
@@ -707,6 +713,7 @@ function CallForm({
           ))}
         </div>
       </fieldset>
+      ) : null}
       {eircode ? (
         <p className="si-ask__eir">
           <MapPin size={16} aria-hidden="true" />
@@ -738,7 +745,7 @@ function CallForm({
         </div>
       )}
       <p className="si-legal">
-        We only use your details for this call{estimate ? ' and your estimate' : ''}.{' '}
+        We only use your details for {estimate ? 'your estimate and the follow-up' : 'this call'}.{' '}
         <a href="/privacy" target="_blank" rel="noopener">
           Privacy notice
         </a>
@@ -769,12 +776,10 @@ function saveContact() {
  * and the owner has it by email (lib/intake/live/outbox.ts). Nothing has been
  * emailed to the homeowner, so the held state never says "check your inbox".
  */
-export function callDoneCopy(o: { held: boolean; first: string; estimate?: boolean; typed?: boolean }): { title: string; facts: string; announce: string } {
+export function callDoneCopy(o: { held: boolean; first: string; estimate?: boolean; typed?: boolean; pdf?: boolean; business?: boolean }): { title: string; facts: string; announce: string } {
   // Cal's words (16 Nov 2026): "Our team will ring you shortly." Never a name.
   const thanks = `Thanks${o.first ? `, ${o.first}` : ''}.`;
   const ring = 'Our team will ring you shortly.';
-  // Cal's words (16 Nov 2026) for after an estimate is sent.
-  const NEXT = "Next, one of our team will ring you to go through your options, then we'll send your final proposal.";
   if (o.held) {
     return {
       title: `Saved. ${ring}`,
@@ -790,18 +795,17 @@ export function callDoneCopy(o: { held: boolean; first: string; estimate?: boole
       announce: `Sent. ${ring}`,
     };
   }
-  if (o.typed) {
-    // From the amount they typed: their estimate, not a "full" one read off a bill.
-    return {
-      title: `${thanks} Your estimate is on its way to your inbox.`,
-      facts: NEXT,
-      announce: `Your estimate is on its way to your inbox. ${NEXT}`,
-    };
-  }
+  // Cal, 17 Nov 2026: the estimate is the sell, the call a soft next step. The
+  // PDF is named only when AISolar really attaches one (a net cost and a
+  // payback; a business priced at the proposal has neither).
+  const sent = o.pdf ? 'Your estimate and PDF breakdown are on their way to your inbox.' : 'Your estimate is on its way to your inbox.';
+  const next = o.business
+    ? 'Next, one of our team books your site survey, then you get a fixed-price proposal.'
+    : 'Next, one of our team goes through the final details with you, then you get a fixed-price proposal.';
   return {
-    title: `${thanks} Your estimate is on its way to your inbox.`,
-    facts: NEXT,
-    announce: `Your estimate is on its way to your inbox. ${NEXT}`,
+    title: `${thanks} ${sent}`,
+    facts: next,
+    announce: `${sent} ${next}`,
   };
 }
 
@@ -813,6 +817,8 @@ export function CallDone({
   held = false,
   estimate = true,
   typed = false,
+  pdf = false,
+  business = false,
 }: {
   details: CallDetails;
   headingRef?: React.Ref<HTMLHeadingElement>;
@@ -824,10 +830,18 @@ export function CallDone({
   estimate?: boolean;
   /** The figures came from a typed amount, not a bill read. */
   typed?: boolean;
+  /** AISolar attaches a PDF to this estimate (a net cost and a payback). */
+  pdf?: boolean;
+  /** A business: the next step is the site survey. */
+  business?: boolean;
 }) {
   const H = headingLevel;
   const fname = firstName(details.name) || '';
-  const copy = callDoneCopy({ held, first: fname, estimate, typed });
+  const copy = callDoneCopy({ held, first: fname, estimate, typed, pdf, business });
+  // An estimate went: the screen says so and names the next step once. The
+  // number, the save-our-number card and the call list are for the call-only
+  // endings (no estimate went, or the submit was held).
+  const callOnly = held || !estimate;
   return (
     <div className="si-done-call" data-call-done={held ? 'held' : estimate ? 'sent' : 'call'}>
       <span className="si-done-mark" aria-hidden="true">
@@ -839,7 +853,9 @@ export function CallDone({
         {copy.title}
       </H>
       {copy.facts ? <p className="si-facts">{copy.facts}</p> : null}
-      <p className="si-done-call__line">
+      {callOnly ? (
+        <>
+          <p className="si-done-call__line">
         We&apos;ll ring <b className="si-white">{details.mobile.trim()}</b>.{details.bestTime ? ` ${BEST_LINE[details.bestTime]}` : ''}
       </p>
       <div className="si-done-call__save">
@@ -859,6 +875,8 @@ export function CallDone({
         <li>Answer anything you want to ask about solar and the SEAI grant</li>
         <li>Agree the next step with you, if you want one</li>
       </ul>
+        </>
+      ) : null}
       {footer}
     </div>
   );

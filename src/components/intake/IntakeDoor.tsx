@@ -20,7 +20,6 @@ export default function IntakeDoor({
   segment = 'home',
   label = "What's your electricity bill?",
   whatsapp = false,
-  bookLink = true,
   businessLink = true,
   id,
 }: {
@@ -28,7 +27,6 @@ export default function IntakeDoor({
   segment?: DoorSegment;
   label?: string;
   whatsapp?: boolean;
-  bookLink?: boolean;
   businessLink?: boolean;
   id?: string;
 }) {
@@ -63,17 +61,7 @@ export default function IntakeDoor({
         </button>
       </div>
       <p className="si-door__links">
-        {bookLink ? (
-          <a
-            href={intakeHref({ door: `${door}-book`, segment, step: 'time' })}
-            onClick={(e) => {
-              e.preventDefault();
-              openIntake({ door: `${door}-book`, segment, step: 'time' });
-            }}
-          >
-            Just book a free call
-          </a>
-        ) : null}
+        {/* No "Just book a free call" (Cal, 17 Nov 2026): the estimate is the sell, the call comes after it. */}
         {businessLink ? (
           <a
             href={intakeHref({ door: `${door}-business`, segment: 'business', step: 'bill' })}
