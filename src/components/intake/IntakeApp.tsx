@@ -1902,7 +1902,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
    * giving the number away. What they get next, what happens after, and why
    * us. Under 1024 the same block sits under the picker, tighter.
    */
-  const NEXT_STEPS = ['Your estimate lands in your inbox.', 'One of our team rings you shortly.', 'A site survey checks your roof, meter and shading.', 'You get a fixed-price final proposal.'];
+  const NEXT_STEPS = ['Your estimate lands in your inbox.', 'One of our team gives you a call.', 'We check your roof, meter and shading.', 'We find out if a battery is feasible.', 'You get a fixed-price final proposal.'];
   const WHY_US = ['SEAI registered', 'RECI registered', '5-year workmanship warranty', '25-year panel warranty', 'We book your BER'];
   const billRight = (
     <div className="si-screen-in si-screen si-next" data-next="">
