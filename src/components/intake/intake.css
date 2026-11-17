@@ -4463,7 +4463,7 @@ h1.si-ask__title {
   }
 }
 
-/* "Your estimate", typed: the split, the two amber toggles, their panels. */
+/* "Your estimate", typed: the split, the two amber disclosure cards, their panels. */
 .si-split {
   margin-top: 16px;
   font-size: 16px;
@@ -4492,36 +4492,125 @@ h1.si-ask__title {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
-.si-btn--amber {
-  min-height: 52px;
-  padding: 0 16px;
-  gap: 6px;
-  background: transparent;
-  color: var(--si-amber);
-  box-shadow: inset 0 0 0 1.5px var(--si-amber);
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 600;
-  white-space: normal;
-  text-align: center;
+/*
+ * The two estimate toggles: disclosure cards, not pills. Amber tints only.
+ * The resting tint sits on the button; hover and open strengthen it through
+ * the ::before layer, so every state change is opacity or transform, and the
+ * 1px edge is an inset shadow, so nothing reflows when a card opens.
+ */
+.si-xcard {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 16px 14px 14px;
+  border-radius: var(--si-r);
+  background: rgba(255, 185, 0, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.3);
+  color: var(--si-fg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--si-dur-2) var(--si-ease-out);
 }
-@media (hover: hover) and (pointer: fine) {
-  .si-btn--amber:hover {
-    background: var(--si-amber-wash);
-    color: var(--si-amber-hover);
-  }
+.si-xcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: rgba(255, 185, 0, 0.07);
+  box-shadow: inset 0 0 0 1px var(--si-amber);
+  opacity: 0;
+  transition: opacity var(--si-dur-2) var(--si-ease);
+  pointer-events: none;
 }
-.si-btn--amber:active {
-  background: rgba(255, 185, 0, 0.18);
-}
-.si-btn--amber[aria-expanded='true'] {
-  background: var(--si-amber-wash);
-}
-.si-btn--amber .si-btn__chev {
+.si-xcard__icon {
   flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 185, 0, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 185, 0, 0.2);
+  color: var(--si-amber);
+}
+.si-xcard__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.si-xcard__label {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--si-fg);
+}
+.si-xcard__sub {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--si-fg-muted);
+}
+.si-xcard__chev {
+  flex: none;
+  color: var(--si-amber);
   transition: transform var(--si-dur-2) var(--si-ease);
 }
-.si-btn--amber[aria-expanded='true'] .si-btn__chev {
+.si-xcard__label,
+.si-xcard__sub {
+  text-wrap: pretty;
+}
+/* Side by side, each card is a tile: icon and chevron share the top row, so the
+   label and its sub-line get the full width and do not break mid-phrase. */
+@container (min-width: 520px) {
+  .si-xcard {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      'icon . chev'
+      'text text text';
+    align-items: center;
+    align-content: start;
+    row-gap: 14px;
+    padding: 16px;
+  }
+  .si-xcard__icon {
+    grid-area: icon;
+  }
+  .si-xcard__chev {
+    grid-area: chev;
+  }
+  .si-xcard__text {
+    grid-area: text;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .si-xcard:hover {
+    transform: translateY(-2px);
+  }
+  .si-xcard:hover::before {
+    opacity: 0.5;
+  }
+}
+.si-xcard:active {
+  transform: translateY(0) scale(0.99);
+  transition-duration: var(--si-dur-1);
+}
+.si-xcard:active::before,
+.si-xcard[aria-expanded='true']::before {
+  opacity: 1;
+}
+.si-xcard[aria-expanded='true'] .si-xcard__chev {
   transform: rotate(180deg);
 }
 .si-xp {
@@ -4560,9 +4649,15 @@ h1.si-ask__title {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .si-btn--amber .si-btn__chev,
+  .si-xcard,
+  .si-xcard::before,
+  .si-xcard__chev,
   .si-actions--send {
     transition: none !important;
+  }
+  .si-xcard:hover,
+  .si-xcard:active {
+    transform: none;
   }
 }
 

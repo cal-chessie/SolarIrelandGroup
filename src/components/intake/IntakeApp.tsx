@@ -31,7 +31,7 @@
  */
 import './intake.css';
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { Building2, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, House, Camera, Info, WifiOff, X } from 'lucide-react';
+import { Building2, Calculator, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, House, Camera, Info, SlidersHorizontal, WifiOff, X } from 'lucide-react';
 import type { BillReadResult, CallBillRead, IntakeConfig, Quote, Segment, SubmitResponse } from '@/lib/intake/contract';
 import { cents, eur, kwp, num, years } from '@/lib/intake/format';
 import { intakeExitPath, intakeHref, type IntakeOpenOptions } from '@/lib/intake/open';
@@ -756,7 +756,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   /**
    * "See how we worked this out" and "Make it more accurate": the two amber
-   * buttons are the toggles. An opened panel is brought into view.
+   * disclosure cards are the toggles. An opened panel is brought into view.
    */
   const togglePanel = (key: 'how' | 'closer') => {
     const opening = !panels[key];
@@ -1653,19 +1653,32 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <div className="si-more__btns">
           {(
             [
-              ['how', 'See how we worked this out'],
-              ['closer', 'Make it more accurate'],
+              ['how', 'See how we worked this out', 'Every figure and where it came from', Calculator],
+              ['closer', 'Make it more accurate', 'Add your supplier or yearly kWh', SlidersHorizontal],
             ] as const
-          ).map(([key, label]) => (
+          ).map(([key, label, sub, Icon]) => (
             <button
               key={key}
               type="button"
-              className="si-btn si-btn--amber"
+              className="si-xcard"
               aria-controls={`si-xp-${key}`}
               aria-expanded={panels[key]}
+              aria-labelledby={`si-xc-${key}-l`}
+              aria-describedby={`si-xc-${key}-s`}
               onClick={() => togglePanel(key)}
             >
-              {label} <ChevronDown size={18} aria-hidden="true" className="si-btn__chev" />
+              <span className="si-xcard__icon" aria-hidden="true">
+                <Icon size={18} strokeWidth={2} />
+              </span>
+              <span className="si-xcard__text">
+                <span className="si-xcard__label" id={`si-xc-${key}-l`}>
+                  {label}
+                </span>
+                <span className="si-xcard__sub" id={`si-xc-${key}-s`}>
+                  {sub}
+                </span>
+              </span>
+              <ChevronDown size={18} aria-hidden="true" className="si-xcard__chev" />
             </button>
           ))}
         </div>
