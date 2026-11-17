@@ -1,10 +1,10 @@
 /**
- * The typed path's step order (Cal, 16 Nov 2026): a typed amount used to land
- * on "Your call" from 1024, the estimate ticked off unseen beside the form.
- * Now, at every width: amount, then the estimate on its own step, then the
- * contact details, then the call. Nothing on it says a bill was read, and
- * AISolar is told the lead came from a typed amount (meta.door), with no
- * bill read attached.
+ * The typed path's pay-off (Cal, 17 Nov 2026). "Your bill" sells the next
+ * screen without the number; a tapped amount only selects, and "See my
+ * estimate" moves on. "Your estimate" reveals the number with the contact
+ * form beside it (under it on phones), so the path is two steps before done.
+ * Nothing on it says a bill was read, and AISolar is told the lead came from
+ * a typed amount (meta.door), with no bill read attached.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -77,46 +77,78 @@ const lanesText = () =>
     .map((l) => l.textContent)
     .join(' ');
 
+const events = () => vi.mocked(trackEvent).mock.calls.map(([e]) => e.event);
+
 async function walk(wide: boolean) {
   setWidth(wide);
   render(<IntakeApp variant="page" initial={{ door: 'analyser-manual', segment: 'home', step: 'bill', stepRaw: 'bill' }} />);
   await waitFor(() => expect(stepOf()).toBe('bill'));
+  expect(progress()).toEqual(['current', 'future']);
 
-  fireEvent.change(document.getElementById('si-bill')!, { target: { value: '150' } });
+  // Screen 1 sells the next screen and never shows a figure.
+  expect(lanesText()).toContain('your grant and when it pays for itself');
+  expect(lanesText()).toContain('A site survey checks your roof, meter and shading.');
+  expect(lanesText()).toContain('We book your BER');
+  expect(document.querySelector('.si-hero__fig')).toBeNull();
+
+  // Nothing to price yet: the primary waits.
+  const see = () => screen.getByRole('button', { name: 'See my estimate' }) as HTMLButtonElement;
+  expect(see().disabled).toBe(true);
+
+  // A tapped amount selects and does not navigate.
   await act(async () => {
-    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }));
+    fireEvent.click(screen.getByRole('button', { name: 'About €160 a month' }));
   });
+  await new Promise((r) => setTimeout(r, 400));
+  expect(stepOf()).toBe('bill');
+  expect(screen.getByRole('button', { name: 'About €160 a month' }).getAttribute('aria-pressed')).toBe('true');
+  expect((document.getElementById('si-bill') as HTMLInputElement).value).toBe('160');
+  expect(see().disabled).toBe(false);
+  expect(document.querySelector('.si-hero__fig')).toBeNull();
 
-  // Step 2 is the estimate, not the form.
+  // Typing replaces it; "See my estimate" moves on.
+  fireEvent.change(document.getElementById('si-bill')!, { target: { value: '150' } });
+  expect(screen.getByRole('button', { name: 'About €160 a month' }).getAttribute('aria-pressed')).toBe('false');
+  await act(async () => {
+    fireEvent.click(see());
+  });
+  expect(events()).toContain('typed_see_estimate_click');
+
+  // "Your estimate": the number, and the form on the same screen.
   await waitFor(() => expect(document.querySelector('.si-hero__fig')).toBeTruthy());
   expect(stepOf()).toBe('time');
-  expect(progress()).toEqual(['done', 'current', 'future']);
+  expect(progress()).toEqual(['done', 'current']);
   expect(document.querySelector('.si-header__step')?.textContent).toBe('Your estimate');
-  expect(document.getElementById('si-name')).toBeNull();
+  expect(document.getElementById('si-name')).toBeTruthy();
+  expect(document.querySelector('[data-split]')?.textContent).toMatch(/off your bill \+ .* for what you send back at/);
+  expect(lanesText()).toContain('From the €150 a month you told us. Close estimate, not a quote.');
+  expect(lanesText()).toContain('Where should we send your estimate?');
   expect(lanesText()).toContain('What your number is based on');
   expect(lanesText()).toContain('Why the battery is left out');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
-  await waitFor(() => expect(vi.mocked(trackEvent).mock.calls.some(([e]) => e.event === 'typed_estimate_shown')).toBe(true));
+  await waitFor(() => expect(events()).toContain('typed_estimate_shown'));
 
-  // Step 3: the contact details.
+  // The two amber toggles.
+  const how = screen.getByRole('button', { name: /See how we worked this out/ });
+  expect(how.getAttribute('aria-expanded')).toBe('false');
   await act(async () => {
-    fireEvent.click(screen.getAllByRole('button', { name: /Send my estimate/ })[0]);
+    fireEvent.click(how);
   });
-  await waitFor(() => expect(document.getElementById('si-name')).toBeTruthy());
-  expect(stepOf()).toBe('details');
-  expect(progress()).toEqual(['done', 'done', 'current']);
-  expect(lanesText()).toContain('worked out from the amount you gave us');
-  expect(lanesText()).not.toMatch(BILL_READ_WORDS);
+  expect(how.getAttribute('aria-expanded')).toBe('true');
+  expect(screen.getByRole('button', { name: /Make it more accurate/ }).getAttribute('aria-expanded')).toBe('false');
+  expect(events()).toContain('typed_expand');
 
   fireEvent.change(document.getElementById('si-name')!, { target: { value: 'Mary Byrne' } });
   fireEvent.change(document.getElementById('si-mobile')!, { target: { value: '0871234567' } });
   fireEvent.change(document.getElementById('si-email')!, { target: { value: 'mary@example.invalid' } });
   await act(async () => {
-    fireEvent.click(screen.getByRole('button', { name: 'Send my savings' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Send my estimate' }));
   });
+  expect(events()).toContain('typed_send_click');
 
-  // Then the call.
+  // Then done.
   await waitFor(() => expect(stepOf()).toBe('done'));
+  expect(progress()).toEqual(['done', 'done']);
   expect(lanesText()).toContain('Your estimate is on its way to your inbox.');
   expect(lanesText()).not.toMatch(BILL_READ_WORDS);
   expect(submitted).toHaveLength(1);
@@ -125,11 +157,11 @@ async function walk(wide: boolean) {
   expect(submitted[0].monthlyBill).toBe(150);
 }
 
-describe('the typed path never skips the estimate', () => {
-  it('desktop (from 1024): amount, estimate, details, call', async () => {
+describe('the typed path pays off on the next screen', () => {
+  it('desktop (from 1024): amount, then the estimate with the form beside it, then done', async () => {
     await walk(true);
   });
-  it('phone: amount, estimate, details, call', async () => {
+  it('phone: amount, then the estimate with the form under it, then done', async () => {
     await walk(false);
   });
 });

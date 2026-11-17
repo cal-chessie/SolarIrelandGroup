@@ -23,6 +23,7 @@ export function PrimaryButton({
   ariaLabel,
   form,
   offlineLabel,
+  disabled,
 }: {
   label: ReactNode;
   busyLabel?: ReactNode;
@@ -35,11 +36,14 @@ export function PrimaryButton({
   arrow?: boolean;
   ariaLabel?: string;
   form?: string;
+  /** Nothing to act on yet (for example no amount on "Your bill"). The screen says what is needed. */
+  disabled?: boolean;
 }) {
   return (
     <button
       type={type}
       form={form}
+      disabled={disabled}
       className="si-btn si-btn--primary"
       data-primary="true"
       aria-disabled={busy || offline ? 'true' : undefined}

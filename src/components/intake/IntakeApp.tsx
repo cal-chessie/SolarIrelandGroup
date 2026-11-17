@@ -79,6 +79,8 @@ const STEP_NAME: Record<Step, string> = {
   done: 'Estimate sent',
 };
 const STEP_COUNT: Partial<Record<Step, string>> = { bill: '1 of 3', time: '2 of 3', details: '3 of 3' };
+/** The typed path (Cal, 17 Nov 2026): Your bill, then Your estimate with the form beside it, then done. */
+const STEP_COUNT_2: Partial<Record<Step, string>> = { bill: '1 of 2', time: '2 of 2' };
 
 const TAG_TEXT = {
   you_told_us: 'You told us',
@@ -97,6 +99,10 @@ function track(event: string, properties: Record<string, string | number | boole
   } catch {
     /* analytics never breaks the intake */
   }
+}
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 }
 
 function breakpoint(): 'phone' | 'tablet' | 'desktop' {
@@ -140,7 +146,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const [quoteStatus, setQuoteStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   /** The quote service could not answer, so the figures are a rough estimate from the engine here (roughQuote). */
   const [rough, setRough] = useState(false);
-  const [preview, setPreview] = useState<Quote | null>(null);
+  /** Typed path, "Your estimate": the two amber toggles' panels. */
+  const [panels, setPanels] = useState<{ how: boolean; closer: boolean }>({ how: false, closer: false });
+  /** Phones, typed "Your estimate": the sticky send bar arrives once the form is in view (it never covers the estimate first). */
+  const [sendArmed, setSendArmed] = useState(false);
+  const shownKey = useRef<string | null>(null);
   const [updatedFlash, setUpdatedFlash] = useState(false);
   const sharpenTick = useRef(0);
   const shownTick = useRef(0);
@@ -206,6 +216,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   const emailable = !!quote?.quoteToken;
   /** From 1024 with no bill at all (skipped): nothing to show on an estimate step, so the ask sits beside "No bill, no problem". */
   const askOnTime = step === 'time' && wide && !hasBasis;
+  /**
+   * The typed path's pay-off (Cal, 17 Nov 2026): "Your estimate" reveals the
+   * number and holds the contact form beside it (under it on phones). A bill
+   * photo keeps its own estimate step and contact step.
+   */
+  const merged = step === 'time' && typed;
 
   /* ── URL and history ───────────────────────────────────────────── */
 
@@ -624,13 +640,18 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       const t = setTimeout(() => setUpdatedFlash(false), 3000);
       return () => clearTimeout(t);
     }
-    if (step === 'time') {
+    // Once per arrival on "Your estimate" with this quote. A tapped amount is
+    // often priced before the step changes, so the step is a dependency too.
+    const key = `${qKey}|${draft.billRead ? 'read' : 'typed'}`;
+    if (step === 'time' && shownKey.current !== key) {
+      shownKey.current = key;
       setAnnounce(`Estimate ready: about ${eur(figures.annualSavingEur)} a year`);
       track('intake_estimate_shown', { at_minimum: figures.sizedAtMinimum, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
       if (typed) track('typed_estimate_shown', { method: draft.billMethod ?? 'kwh', rough, kwp_band: Math.round(figures.kwp), segment: seg, flow_id: draft.flowId });
     }
+    if (step !== 'time') shownKey.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote, quoteStatus]);
+  }, [quote, quoteStatus, step]);
 
   /* The six chips are priced in one call while Screen 1 is open. */
   useEffect(() => {
@@ -642,34 +663,25 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     void getQuotes(items);
   }, [step, seg, config, isBiz]);
 
-  /* Desktop, Screen 1: the right lane is the estimate building live as they type (debounced, cached). */
   const billNow = parseEuro(draft.billText);
+
+  /* Phones, typed "Your estimate": arm the sticky send once the form comes into view or takes focus. */
   useEffect(() => {
-    if (step !== 'bill' || !wide || !seg) return;
-    if (billNow == null) {
-      setPreview(null);
+    if (!merged || wide) {
+      setSendArmed(false);
       return;
     }
-    const item = quoteItemOf({ ...draftRef.current, bill: billNow, annualKwh: null, billRead: null });
-    if (!item) return;
-    const hit = cachedQuote(item);
-    if (hit) {
-      setPreview(hit);
-      return;
-    }
-    let alive = true;
-    const t = setTimeout(() => {
-      getQuotes([item]).then((r) => {
-        if (!alive) return;
-        if (r && r[0]) setPreview(r[0]);
-        else setPreview(roughQuote(item));
-      });
-    }, 320);
+    const lane = rootRef.current?.querySelector<HTMLElement>('.si-lane--right');
+    if (!lane) return;
+    const arm = () => setSendArmed(true);
+    const io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver((es) => es.some((x) => x.isIntersecting) && arm(), { rootMargin: '0px 0px -25% 0px' }) : null;
+    io?.observe(lane);
+    lane.addEventListener('focusin', arm);
     return () => {
-      alive = false;
-      clearTimeout(t);
+      io?.disconnect();
+      lane.removeEventListener('focusin', arm);
     };
-  }, [step, wide, seg, billNow, draft.per]);
+  }, [merged, wide]);
 
   /* Each screen: focus its heading, start at the top, say where we are. */
   useEffect(() => {
@@ -678,7 +690,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     if (variant === 'layer' && root) root.scrollTop = 0;
     else window.scrollTo(0, 0);
     const t = setTimeout(() => h1Ref.current?.focus({ preventScroll: true }), 30);
-    if (step === 'details' || askOnTime) track('intake_ask_shown', { segment: seg, view: wide ? 'lanes' : 'ask', flow_id: draftRef.current.flowId });
+    if (step === 'details' || askOnTime || merged) track('intake_ask_shown', { segment: seg, view: wide ? 'lanes' : 'ask', flow_id: draftRef.current.flowId });
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, hydrated]);
@@ -719,19 +731,42 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     }
     setBillError(null);
     if (kwhOk) update({ annualKwh: Math.round(kwh) });
-    if (amount != null) commitBill(amount, 'typed', draft.per);
+    // A tapped amount that was not changed since keeps its method.
+    const method = amount != null && pendingChip === amount && draft.per === 'month' ? 'chip' : 'typed';
+    if (amount != null) commitBill(amount, method, draft.per);
     else update({ skipped: false });
+    track('typed_see_estimate_click', {
+      method: amount != null ? method : 'kwh',
+      band: amount != null ? Math.round(amount / 25) * 25 : null,
+      per: draft.per,
+      segment: seg,
+      flow_id: draft.flowId,
+    });
+    setPanels({ how: false, closer: false });
     go('time');
   };
 
+  /** A tapped amount only selects (Cal, 17 Nov 2026). "See my estimate" moves on. */
   const onChip = (amount: number) => {
     setPendingChip(amount);
-    commitBill(amount, 'chip', 'month');
-    // The choice is seen for a beat, then the flow moves on (one tap, ux-spec 11.7).
+    setBillError(null);
+    update({ billText: String(amount), per: 'month' });
+  };
+
+  /**
+   * "See how we worked this out" and "Make it more accurate": the two amber
+   * buttons are the toggles. An opened panel is brought into view.
+   */
+  const togglePanel = (key: 'how' | 'closer') => {
+    const opening = !panels[key];
+    setPanels((p) => ({ ...p, [key]: opening }));
+    if (!opening) return;
+    track('typed_expand', { panel: key, segment: seg, flow_id: draftRef.current.flowId });
     setTimeout(() => {
-      setPendingChip(null);
-      go('time');
-    }, 160);
+      const el = rootRef.current?.querySelector<HTMLElement>(`[data-xp="${key}"]`);
+      const r = el?.getBoundingClientRect();
+      if (el && r && r.top > window.innerHeight * 0.75) el.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }, 60);
   };
 
   const onSkip = () => {
@@ -966,6 +1001,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const chips = config ? (isBiz ? config.bill.chips.commercial : config.bill.chips.domestic) : isBiz ? [500, 1000, 2000, 3000, 5000, 8000] : [80, 120, 160, 200, 250, 300];
   const readerOn = !!config?.bill.readerEnabled;
+  /** While the intake config loads, the photo row keeps its place (hidden), so nothing under it moves when it lands. */
+  const readerPending = !config && !configFailed;
 
   const fileInput = readerOn ? (
     <input
@@ -983,8 +1020,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     />
   ) : null;
 
-  const photoRow = (where: 'bill' | 'time') => {
-    if (!readerOn) return null;
+  const photoRow = (where: 'bill' | 'time', placeholder = false) => {
+    if (!readerOn && !placeholder) return null;
     const here = photo.where === where;
     if (photo.status === 'reading' && here) {
       return (
@@ -1029,6 +1066,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </div>
     );
   };
+
+  const kwhNow = kwhOpen ? Number(kwhText.replace(/[,\s]/g, '')) : NaN;
+  /** "See my estimate" waits for something to price: an amount, or a business's yearly kWh. */
+  const canSee = billNow != null || (Number.isFinite(kwhNow) && kwhNow >= 100);
 
   const amountField = (
     <div className="si-amount" data-invalid={billError ? 'nudge' : undefined}>
@@ -1116,7 +1157,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
               key={a}
               type="button"
               className="si-chip"
-              data-selected={pendingChip === a ? 'true' : 'false'}
+              data-selected={billNow === a && draft.per === 'month' ? 'true' : 'false'}
+              aria-pressed={billNow === a && draft.per === 'month'}
               aria-label={`About ${eur(a)}${i === chips.length - 1 ? ' or more' : ''} a month`}
               onClick={() => onChip(a)}
             >
@@ -1141,7 +1183,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         ) : null}
       </div>
       {/* Just failed a read on the analyser: the photo row is not offered again here. */}
-      {readerOn && !(draft.carry && carryWhy[draft.carry.from]) ? <div className="si-group">{photoRow('bill')}</div> : null}
+      {(readerOn || readerPending) && !(draft.carry && carryWhy[draft.carry.from]) ? (
+        <div className="si-group" style={readerPending ? { visibility: 'hidden' } : undefined} aria-hidden={readerPending ? 'true' : undefined}>
+          {photoRow('bill', readerPending)}
+        </div>
+      ) : null}
       {fileInput}
       <div className="si-actions" ref={actionsRef}>
         <div className="si-actions__inner">
@@ -1149,12 +1195,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             <button type="button" className="si-btn si-btn--secondary" onClick={onSkip} aria-label="Skip the bill and book a free call">
               Skip the bill
             </button>
-            <PrimaryButton label="See my savings" arrow={false} offline={!online} offlineLabel="Offline" />
+            <PrimaryButton label="See my estimate" arrow={false} offline={!online} offlineLabel="Offline" disabled={!canSee} />
           </div>
           <p className="si-actions__note">No bill to hand? You can still book a free 15-minute call.</p>
         </div>
       </div>
-      {cookieLine}
+      {wide ? cookieLine : null}
     </form>
   );
 
@@ -1294,9 +1340,13 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   const selfPct = figures && figures.annualSavingEur > 0 ? Math.round((figures.selfUseSavingEur / figures.annualSavingEur) * 100) : 50;
 
-  /** "How we worked this out": a bottom sheet under 1024, a disclosure in the lane from 1024. */
-  const sheetBody = figures ? (
-    <div className="si-how">
+  /**
+   * "How we worked this out": a bottom sheet under 1024, a disclosure in the
+   * lane from 1024 (the bill photo path). On the typed path its two halves are
+   * the two amber panels (howBody, closerBody), word for word.
+   */
+  const howBody = figures ? (
+    <>
       {isBiz ? (
         <p className="si-how__lead">
           The NDMG pays up to the lower of its table amount or 45% of the cost. These enhanced rates are for applications made by 6 July 2027. Business solar
@@ -1347,7 +1397,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         ))}
       </div>
-      <p className="si-group-label si-how__h">Make it closer</p>
+    </>
+  ) : null;
+
+  const closerBody = (photoSlot: ReactNode) => (
+    <>
       {!isBiz && config ? (
         <fieldset>
           <legend className="si-small">Who&apos;s your supplier?</legend>
@@ -1387,8 +1441,16 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         </Field>
       </div>
-      {readerOn ? <div className="si-mt-16">{photoRow('time')}</div> : null}
+      {photoSlot}
       <p className="si-how__line si-mt-16">Panels only. Ask about a battery on the call.</p>
+    </>
+  );
+
+  const sheetBody = figures ? (
+    <div className="si-how">
+      {howBody}
+      <p className="si-group-label si-how__h">Make it more accurate</p>
+      {closerBody(readerOn ? <div className="si-mt-16">{photoRow('time')}</div> : null)}
     </div>
   ) : null;
 
@@ -1477,6 +1539,12 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     <div className="si-est">
       {estimateHead}
       {heroAndReceipt(figures)}
+      {merged ? (
+        <p className="si-split" data-split="">
+          <b {...prov('estimate')}>{eur(figures.selfUseSavingEur)}</b> off {isBiz ? 'the' : 'your'} bill + <b {...prov('estimate')}>{eur(figures.exportIncomeEur)}</b> for what you send back at{' '}
+          <span {...prov('assumed')}>{cents(figures.exportRateEur)}</span>
+        </p>
+      ) : null}
       <p className="si-prov-line" id="si-prov-line">
         {basisShort}
       </p>
@@ -1485,8 +1553,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           A rough estimate from your bill amount. Your full estimate checks it against your roof and when you use power.
         </p>
       ) : null}
-      {howLink}
-      {wide ? (
+      {merged ? null : howLink}
+      {wide && !merged ? (
         <Collapse open={sheetOpen} id="si-how">
           {sheetBody}
           <button type="button" className="si-btn si-btn--secondary si-btn--sm si-mt-16" onClick={closeSheet}>
@@ -1589,17 +1657,63 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </div>
   ) : null;
 
+  /** Typed "Your estimate": the two amber toggles and the panels they open, under the estimate. */
+  const typedMore =
+    merged && figures ? (
+      <div className="si-more">
+        <div className="si-more__btns">
+          {(
+            [
+              ['how', 'See how we worked this out'],
+              ['closer', 'Make it more accurate'],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              className="si-btn si-btn--amber"
+              aria-controls={`si-xp-${key}`}
+              aria-expanded={panels[key]}
+              onClick={() => togglePanel(key)}
+            >
+              {label} <ChevronDown size={18} aria-hidden="true" className="si-btn__chev" />
+            </button>
+          ))}
+        </div>
+        {(
+          [
+            ['how', 'See how we worked this out', <div className="si-how" key="b">{howBody}</div>],
+            ['closer', 'Make it more accurate', <div className="si-how" key="b">{closerBody(addBill)}</div>],
+          ] as const
+        ).map(([key, label, body]) => (
+          <div className="si-xp" data-xp={key} data-open={panels[key] ? 'true' : 'false'} key={key}>
+            <Collapse open={panels[key]} id={`si-xp-${key}`}>
+              <section className="si-xp__body" aria-labelledby={`si-xp-${key}-h`}>
+                <h2 className="si-xp__title" id={`si-xp-${key}-h`}>
+                  {label}
+                </h2>
+                {body}
+              </section>
+            </Collapse>
+          </div>
+        ))}
+      </div>
+    ) : null;
+
   const nextLabel = !hasBasis ? 'Book my free call' : emailable ? 'Send my estimate' : 'Next, your free call';
 
   const timeLeft = (
     <div className="si-screen-in si-screen">
       {segTag}
       {estimateMain}
-      {basisPanel}
-      {/* Phones and portrait tablets: the add-bill offer sits with the estimate; from 1024 it sits by the button. */}
-      {step === 'time' && !wide ? addBill : null}
+      {typedMore}
+      {/* Typed on phones: the form follows the toggles, and what the number rests on follows the form. */}
+      {merged && !wide ? null : basisPanel}
+      {/* Phones and portrait tablets: the add-bill offer sits with the estimate; from 1024 it sits by the button. Typed: inside "Make it more accurate". */}
+      {step === 'time' && !wide && !merged ? addBill : null}
       {fileInput}
-      {/* Phones and portrait tablets: the estimate's one primary moves on to the ask. */}
+      {/* Phones and portrait tablets: the estimate's one primary moves on to the ask. Typed: the form is on this screen. */}
+      {merged ? null : (
       <div className="si-actions si-actions--phone" ref={step === 'time' ? actionsRef : undefined}>
         <div className="si-actions__inner">
           <PrimaryButton
@@ -1614,6 +1728,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           />
         </div>
       </div>
+      )}
       {cookieLine}
     </div>
   );
@@ -1668,7 +1783,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       }
     : null;
   const phoneChip =
-    !wide && figures ? (
+    !wide && figures && !merged ? (
       <span className="si-estchip">
         About <b {...prov('estimate')}>{eur(figures.annualSavingEur)}</b> a year
         {!isBiz && figures.netCostEur != null ? (
@@ -1680,7 +1795,24 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       </span>
     ) : null;
 
-  const headline = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures });
+  const headline0 = askHeadline({ estimate: emailable, rough: rough && !!figures, business: isBiz, typed: typed && !!figures });
+  /**
+   * Typed "Your estimate": the estimate is right beside the form, so the words
+   * under the heading stay to one sentence (Cal, 17 Nov 2026).
+   */
+  const headline = merged
+    ? emailable
+      ? { heading: 'Where should we send your estimate?', sub: 'We email you this estimate, with no visit and no obligation.' }
+      : { heading: headline0.heading, sub: `${CALLER_START} rings you to work out your full figures, with no visit and no obligation.` }
+    : headline0;
+  const onSendAttempt = () =>
+    track('typed_send_click', {
+      method: draftRef.current.billMethod ?? 'kwh',
+      rough,
+      emailable,
+      segment: seg,
+      flow_id: draftRef.current.flowId,
+    });
   /** `asH1`: the ask is the screen's heading (its own step, at every width). */
   const askBlock = (asH1: boolean) => (
     <div className="si-screen-in si-screen">
@@ -1712,8 +1844,21 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           basis: !hasBasis ? 'none' : typed ? 'typed' : 'read',
         }}
         onSent={onCallSent}
+        cta={merged ? 'Send my estimate' : undefined}
+        promise={merged ? 'Your estimate goes to your inbox, and one of our team will ring you to talk it through.' : undefined}
+        busyLabel={merged ? 'Sending your estimate' : undefined}
+        onAttempt={merged ? onSendAttempt : undefined}
         bar={
-          asH1
+          merged && !wide
+            ? (button, extra) => (
+                <div className="si-actions si-actions--send" ref={actionsRef} data-armed={sendArmed ? 'true' : 'false'}>
+                  <div className="si-actions__inner">
+                    {button}
+                    {extra}
+                  </div>
+                </div>
+              )
+            : asH1
             ? (button, extra) => (
                 <div className="si-actions" ref={actionsRef}>
                   <div className="si-actions__inner">
@@ -1725,6 +1870,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
             : undefined
         }
       />
+      {merged && !wide ? basisPanel : null}
     </div>
   );
 
@@ -1751,43 +1897,63 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     </div>
   );
 
-  /* ── Screen 1, desktop right lane: the estimate building live ──── */
-
-  const liveFig = preview?.hasBasis ? preview.figures : null;
+  /*
+   * Screen 1's right lane (Cal, 17 Nov 2026): sell the next screen without
+   * giving the number away. What they get next, what happens after, and why
+   * us. Under 1024 the same block sits under the picker, tighter.
+   */
+  const NEXT_STEPS = ['Your estimate lands in your inbox.', 'One of our team rings you shortly.', 'A site survey checks your roof, meter and shading.', 'You get a fixed-price final proposal.'];
+  const WHY_US = ['SEAI registered', 'RECI registered', '5-year workmanship warranty', '25-year panel warranty', 'We book your BER'];
   const billRight = (
-    <div className="si-screen-in si-screen si-live">
-      <div className="si-est__head">
-        <h2 className="si-est__title">Your estimate</h2>
-        <span className="si-tag">{liveFig && !preview?.quoteToken ? 'Rough estimate' : isBiz ? 'Indicative estimate' : 'Close estimate'}</span>
-      </div>
-      {liveFig && billNow != null ? (
-        <>
-          {heroAndReceipt(liveFig, { live: true })}
-          <p className="si-small si-mt-16">
-            From the <span {...prov('you_told_us')}>{eur(billNow)}</span> {draft.per === '2months' ? 'every 2 months' : 'a month'} you typed. See my savings, then we send you the full breakdown.
-          </p>
-        </>
-      ) : (
-        <>
-          <p className="si-live__empty">Your estimate appears here as soon as you give us a bill.</p>
-          <div className="si-est__body" aria-hidden="true">
-            <div className="si-hero">
-              <span className="si-skel si-skel--line" style={{ width: 56 }} />
-              <span className="si-skel si-skel--hero si-skel--line" />
-              <span className="si-skel si-skel--line" style={{ width: '60%' }} />
-            </div>
-            <div className="si-receipt si-receipt--ghost">
-              {(isBiz ? ['System, about', 'NDMG grant, up to', 'Your price'] : ['After your SEAI grant', 'Pays back in about', 'System']).map((l) => (
-                <div className="si-receipt__row" key={l}>
-                  <span>{l}</span>
-                  <span className="si-skel si-skel--line" style={{ width: 64 }} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-      <footer className="si-lane-foot">{trustLine}</footer>
+    <div className="si-screen-in si-screen si-next" data-next="">
+      <section className="si-next__block" aria-labelledby="si-next-get">
+        <h2 className="si-next__h" id="si-next-get">
+          On the next screen
+        </h2>
+        <p className="si-next__lead">
+          {isBiz ? 'Your yearly saving, the system size and your grant.' : 'Your yearly saving, the system size, your grant and when it pays for itself.'}
+        </p>
+      </section>
+      <section className="si-next__block" aria-labelledby="si-next-then">
+        <h2 className="si-next__h" id="si-next-then">
+          What happens next
+        </h2>
+        <ol className="si-steps">
+          {NEXT_STEPS.map((t, i) => (
+            <li key={t}>
+              <span className="si-steps__n" aria-hidden="true">
+                {i + 1}
+              </span>
+              <span className="si-steps__t">{t}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+      <section className="si-next__block" aria-labelledby="si-next-why">
+        <h2 className="si-next__h" id="si-next-why">
+          Why Solar Ireland
+        </h2>
+        <ul className="si-why">
+          {WHY_US.map((t) => (
+            <li key={t}>
+              <Check size={16} strokeWidth={2.5} aria-hidden="true" />
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      {/* The cookie line arrives after mount. On phones it is the last thing on the page; from 1024 it ends the left lane. Either way nothing moves. */}
+      <footer className="si-lane-foot">
+        <p className="si-foot-line">
+          <span>
+            Questions?{' '}
+            <a href={waLink} target="_blank" rel="noopener noreferrer">
+              WhatsApp us
+            </a>
+          </span>
+        </p>
+      </footer>
+      {wide ? null : cookieLine}
     </div>
   );
 
@@ -1801,10 +1967,28 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
    * is now its own step everywhere; from 1024 it stays in the left lane while
    * the ask takes the right, so nothing moves under the visitor.
    */
-  const progressState: ('done' | 'current' | 'future')[] =
-    step === 'bill' ? ['current', 'future', 'future'] : step === 'time' && !askOnTime ? ['done', 'current', 'future'] : step === 'done' && !draft.result?.fallback ? ['done', 'done', 'done'] : ['done', 'done', 'current'];
+  /*
+   * The typed path's pay-off (Cal, 17 Nov 2026): Your bill, then Your
+   * estimate with the form beside it, then done. "Your bill" shows two steps
+   * because a typed amount is the usual road; a bill photo or a skipped bill
+   * keeps its three.
+   */
+  const twoSteps = step === 'bill' || step === 'segment' || (typed && (step === 'time' || step === 'done'));
+  const progressLabels = twoSteps ? ['Your bill', 'Your estimate'] : ['Your bill', 'Your estimate', 'Your call'];
+  const progressState: ('done' | 'current' | 'future')[] = twoSteps
+    ? step === 'bill' || step === 'segment'
+      ? ['current', 'future']
+      : step === 'done' && !draft.result?.fallback
+      ? ['done', 'done']
+      : ['done', 'current']
+    : step === 'time' && !askOnTime
+    ? ['done', 'current', 'future']
+    : step === 'done' && !draft.result?.fallback
+    ? ['done', 'done', 'done']
+    : ['done', 'done', 'current'];
   const headerName = askOnTime ? STEP_NAME.details : STEP_NAME[step];
-  const headerCount = step === 'done' ? null : (askOnTime ? STEP_COUNT.details : STEP_COUNT[step]) ?? null;
+  const counts = twoSteps ? STEP_COUNT_2 : STEP_COUNT;
+  const headerCount = step === 'done' ? null : (askOnTime ? counts.details : counts[step]) ?? null;
   const showPhoneBack = depth > 1 && step !== 'done';
 
   let left: ReactNode;
@@ -1812,6 +1996,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
   if (step === 'bill' || step === 'segment') {
     left = billLeft;
     right = billRight;
+  } else if (merged) {
+    // Typed: the pay-off. The estimate on the left (first on phones), the form on the right (under it on phones).
+    left = timeLeft;
+    right = askBlock(false);
   } else if (step === 'time' && !askOnTime) {
     // Your estimate, its own step. From 1024 the right lane says what happens next and holds the one button.
     left = timeLeft;
@@ -1834,6 +2022,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
       className={`si-intake ${variant === 'layer' ? 'si-layer' : 'si-page'}`}
       data-entering={variant === 'layer' ? 'true' : undefined}
       data-step={step}
+      data-merged={merged ? 'true' : undefined}
       data-wide={wide ? 'true' : 'false'}
       data-segment={seg ?? 'unknown'}
       data-outcome={step === 'done' ? (draft.result?.fallback ? 'held' : 'call') : undefined}
@@ -1881,8 +2070,8 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           </div>
         </div>
         {(
-          <ol className="si-progress" aria-label="Progress">
-            {['Your bill', 'Your estimate', 'Your call'].map((l, i) => (
+          <ol className="si-progress" aria-label="Progress" data-n={progressLabels.length}>
+            {progressLabels.map((l, i) => (
               <li key={l} data-state={progressState[i]} aria-current={progressState[i] === 'current' ? 'step' : undefined}>
                 <span className="si-progress__dot" aria-hidden="true">
                   {progressState[i] === 'done' ? <Check size={12} strokeWidth={3} /> : i + 1}
@@ -1910,7 +2099,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
         <section className="si-lane si-lane--left" aria-label={step === 'time' ? 'Your estimate' : undefined}>
           <div className="si-col">{left}</div>
         </section>
-        <section className="si-lane si-lane--right" aria-label={step === 'bill' || step === 'done' ? 'Your estimate' : step === 'time' && !askOnTime ? 'What happens next' : 'Your free call'} hidden={right === null}>
+        <section className="si-lane si-lane--right" aria-label={step === 'bill' ? 'What happens next' : step === 'done' ? 'Your estimate' : merged ? 'Your details' : step === 'time' && !askOnTime ? 'What happens next' : 'Your free call'} hidden={right === null}>
           <div className="si-col">{right}</div>
         </section>
       </main>

@@ -144,7 +144,9 @@ export function quoteItemOf(d: Draft): QuoteRequestItem | null {
 export function validStep(s: Step | null, d: Draft): Step {
   if (s === 'done') return d.result ? 'done' : validStep('details', d);
   // The call funnel: the ask needs only the segment (no slot, no bill).
-  if (s === 'details') return d.segment ? 'details' : 'bill';
+  // A typed amount has no separate contact step (Cal, 17 Nov 2026): its form
+  // sits beside the estimate on "Your estimate", so an old ?step=details opens there.
+  if (s === 'details') return !d.segment ? 'bill' : (d.bill != null || d.annualKwh != null) && !d.billRead ? 'time' : 'details';
   // No separate home-or-business screen (APPLE-DECISIONS 1): every door opens
   // on Screen 1 or 2, with the switch on Screen 1.
   if (s === 'time') return d.segment ? 'time' : 'bill';
