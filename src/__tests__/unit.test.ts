@@ -46,7 +46,7 @@ describe('SOLAR_DATA', () => {
   it('has all required social media links', () => {
     expect(SOLAR_DATA.social.facebook).toMatch(/^https:\/\/www\./);
     expect(SOLAR_DATA.social.instagram).toMatch(/^https:\/\/www\./);
-    expect(SOLAR_DATA.social.x).toMatch(/^https:\/\//);
+    expect(SOLAR_DATA.social.threads).toMatch(/^https:\/\/www\./);
     expect(SOLAR_DATA.social.tiktok).toMatch(/^https:\/\/www\./);
   });
 

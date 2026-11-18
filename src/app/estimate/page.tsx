@@ -8,7 +8,7 @@ import { parseIntakeQuery } from '@/lib/intake/open';
  * no-layer fallback lands on. The URL never holds personal data.
  */
 export const metadata: Metadata = {
-  title: 'Your solar estimate and a free call',
+  title: 'Your free solar estimate',
   description: 'See what solar would save you from your electricity bill, and get your full estimate sent straight to your inbox.',
   alternates: { canonical: 'https://solarirelandgroup.ie/estimate' },
   robots: { index: false, follow: true },
