@@ -1639,12 +1639,13 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   /*
    * Typed path only: a good estimate stands, the bill makes it sharper.
-   * Shown only while the bill reader works (NEXT_PUBLIC_TYPED_ADD_BILL=1):
-   * on 16 Nov 2026 the live reader answered "offline" to every upload, and we
-   * never invite someone into a dead end. Never blocks: the primary stays
+   * On by default since 18 Nov 2026, when the live reader was proven working
+   * again. NEXT_PUBLIC_TYPED_ADD_BILL=0 in Vercel is the kill switch: on
+   * 16 Nov the reader answered "offline" to every upload, and we never invite
+   * someone into a dead end. It also hides itself whenever the reader is off. Never blocks: the primary stays
    * "Send my estimate".
    */
-  const addBillOn = process.env.NEXT_PUBLIC_TYPED_ADD_BILL === '1' && readerOn && typed && emailable && !isBiz && !!figures && !rough;
+  const addBillOn = process.env.NEXT_PUBLIC_TYPED_ADD_BILL !== '0' && readerOn && typed && emailable && !isBiz && !!figures && !rough;
   const addBillBusy = photo.where === 'time' && photo.status !== 'idle';
   const addBill = addBillOn ? (
     <div className="si-addbill" data-add-bill="">
