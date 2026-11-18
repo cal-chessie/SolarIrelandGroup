@@ -1,3 +1,4 @@
+import { postmarkAlerter, type Alerter } from '@/lib/intake/live/outbox';
 /**
  * leadBridge - server-only forwarding core shared by every lead route.
  *
@@ -65,7 +66,7 @@ const INGEST_TIMEOUT_MS = 8_000;
 const INGEST_BACKOFF_MS = 1_000;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export async function forwardLead(lead: BridgeLead): Promise<BridgeResult> {
+async function forwardLeadInner(lead: BridgeLead): Promise<BridgeResult> {
   // ─── Primary: AISolar ingest-lead ───
   const ingestUrl = process.env.AISOLAR_INGEST_URL;
   const sourceKey = process.env.AISOLAR_SOURCE_KEY;
@@ -169,4 +170,44 @@ async function persistFallback(lead: BridgeLead): Promise<boolean> {
     console.error('[leadBridge] fallback persist error:', err);
     return false;
   }
+}
+
+/**
+ * Every lead from these doors (the contact form, the chat's lead capture)
+ * also emails the owner (Cal, 18 Nov 2026: "email notifications for every
+ * lead action on the site so I don't miss a thing"). AISolar's new-lead email
+ * covers the intake's own leads; these older doors had none, and a lead that
+ * AISolar did not take was only in the logs.
+ */
+export async function forwardLead(lead: BridgeLead, deps: { alert?: Alerter | null } = {}): Promise<BridgeResult> {
+  const result = await forwardLeadInner(lead);
+  const alert = deps.alert === undefined ? postmarkAlerter() : deps.alert;
+  if (!alert) {
+    console.error('[lead] no owner alert configured (POSTMARK_SERVER_TOKEN, OWNER_ALERT_EMAIL, OWNER_ALERT_FROM)');
+    return result;
+  }
+  const m = leadAlertText(lead, result);
+  await alert.send(m.subject, m.text);
+  return result;
+}
+
+export function leadAlertText(lead: BridgeLead, result: BridgeResult): { subject: string; text: string } {
+  const where = result.ok && !result.fallback
+    ? 'It is in AISolar.'
+    : result.ok
+      ? 'AISolar did not take it, so the website saved it in its backup store. Add it in AISolar by hand.'
+      : 'AISolar did not take it and the website could not save a copy. This email is the only record: add it in AISolar by hand.';
+  const lines = [
+    `A new lead came in through the website (${lead.source}).`,
+    where,
+    '',
+    `Name: ${lead.name || ''}`,
+    `Mobile: ${lead.phone || ''}`,
+    `Email: ${lead.email || ''}`,
+    lead.county ? `County: ${lead.county}` : '',
+    lead.monthlyBill != null ? `Bill: €${lead.monthlyBill} a month` : '',
+    lead.message ? `Message: ${lead.message.slice(0, 1500)}` : '',
+  ].filter((l, i) => l !== '' || i === 2);
+  const flag = result.ok && !result.fallback ? '' : ' (NOT in AISolar)';
+  return { subject: `New lead${flag}: ${lead.name || lead.phone || lead.email || 'no name'} via ${lead.source}`, text: lines.join('\n') };
 }

@@ -16,7 +16,7 @@
  *  - ?lt= with full details on file: "Is this you?" and one button. A bill on
  *    file is priced silently; no bill on file asks the one question first.
  *  - ?lt= with something missing: the form, prefilled with what is on file.
- *  - A device that already asked: "We have your details" (inside CallAsk).
+ *  - A device that already asked: "Welcome back", with a way to send this estimate (inside CallAsk).
  *  - 17 Nov 2026: every state leads with the full estimate by email; the call
  *    is the soft second step (Cal: "let the other 3 points stand with them").
  *

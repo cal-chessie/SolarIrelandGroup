@@ -109,6 +109,10 @@ function breakpoint(): 'phone' | 'tablet' | 'desktop' {
   return window.innerWidth < 640 ? 'phone' : window.innerWidth < 1024 ? 'tablet' : 'desktop';
 }
 
+
+/** Chips are monthly bands; with "2 months" picked they show the 2-month amount. */
+const perFactor = (per: 'month' | '2months') => (per === '2months' ? 2 : 1);
+
 export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps) {
   /* ── State ─────────────────────────────────────────────────────── */
 
@@ -659,10 +663,10 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     if (step !== 'bill' || !seg || !config) return;
     const amounts = isBiz ? config.bill.chips.commercial : config.bill.chips.domestic;
     const items = amounts
-      .map((a) => quoteItemOf({ ...draftRef.current, bill: a, per: 'month', annualKwh: null, billRead: null }))
+      .map((a) => quoteItemOf({ ...draftRef.current, bill: a * perFactor(draftRef.current.per), annualKwh: null, billRead: null }))
       .filter((q): q is NonNullable<typeof q> => q != null);
     void getQuotes(items);
-  }, [step, seg, config, isBiz]);
+  }, [step, seg, config, isBiz, draft.per]);
 
   const billNow = parseEuro(draft.billText);
 
@@ -733,7 +737,7 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
     setBillError(null);
     if (kwhOk) update({ annualKwh: Math.round(kwh) });
     // A tapped amount that was not changed since keeps its method.
-    const method = amount != null && pendingChip === amount && draft.per === 'month' ? 'chip' : 'typed';
+    const method = amount != null && pendingChip === amount ? 'chip' : 'typed';
     if (amount != null) commitBill(amount, method, draft.per);
     else update({ skipped: false });
     track('typed_see_estimate_click', {
@@ -749,9 +753,11 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
 
   /** A tapped amount only selects (Cal, 17 Nov 2026). "See my estimate" moves on. */
   const onChip = (amount: number) => {
+    // The chips follow the period they picked (Cal, 18 Nov 2026: "it keeps
+    // going to monthly"). A tap used to force "a month" back on.
     setPendingChip(amount);
     setBillError(null);
-    update({ billText: String(amount), per: 'month' });
+    update({ billText: String(amount) });
   };
 
   /**
@@ -1146,20 +1152,23 @@ export default function IntakeApp({ variant, initial, onClose }: IntakeAppProps)
           Or pick the closest
         </p>
         <div className="si-chips" role="group" aria-labelledby="si-chips-label">
-          {chips.map((a, i) => (
-            <button
-              key={a}
-              type="button"
-              className="si-chip"
-              data-selected={billNow === a && draft.per === 'month' ? 'true' : 'false'}
-              aria-pressed={billNow === a && draft.per === 'month'}
-              aria-label={`About ${eur(a)}${i === chips.length - 1 ? ' or more' : ''} a month`}
-              onClick={() => onChip(a)}
-            >
-              {eur(a)}
-              {i === chips.length - 1 ? '+' : ''}
-            </button>
-          ))}
+          {chips.map((m, i) => {
+            const a = m * perFactor(draft.per);
+            return (
+              <button
+                key={m}
+                type="button"
+                className="si-chip"
+                data-selected={billNow === a ? 'true' : 'false'}
+                aria-pressed={billNow === a}
+                aria-label={`About ${eur(a)}${i === chips.length - 1 ? ' or more' : ''} ${draft.per === '2months' ? 'every 2 months' : 'a month'}`}
+                onClick={() => onChip(a)}
+              >
+                {eur(a)}
+                {i === chips.length - 1 ? '+' : ''}
+              </button>
+            );
+          })}
         </div>
         {isBiz ? (
           <div className="si-mt-8">

@@ -10,7 +10,7 @@ import { portalOrigins } from '@/lib/intake/portal';
 import { adaptSubmit, outboxAnswer } from '@/lib/intake/live/adapt';
 import { callAISolar, visitorHeaders } from '@/lib/intake/live/client';
 import { toIngestBody, type IngestBody } from '@/lib/intake/live/ingest';
-import { holdInOutbox, outboxDeps, replayDue } from '@/lib/intake/live/outbox';
+import { holdInOutbox, outboxDeps, postmarkAlerter, replayDue, returningText } from '@/lib/intake/live/outbox';
 import { readQuoteToken } from '@/lib/intake/stub/quote';
 import { STUB_SETTINGS } from '@/lib/intake/stub/settings';
 import { alternativesAfter, fixtureTaken, gridSlot } from '@/lib/intake/stub/slots';
@@ -284,6 +284,13 @@ async function liveSubmit(request: Request, key: string, env: LiveEnv) {
     if (a.deviceToken) res.headers.append('set-cookie', deviceCookie(a.deviceToken));
     if (a.body.booking.outcome === 'booked' || a.body.booking.outcome === 'moved') {
       res.headers.append('set-cookie', `si_hold=; Path=/api/intake; Max-Age=0; HttpOnly; SameSite=Lax${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
+    }
+    // A returning customer: AISolar emails the owner only for a new lead.
+    if (a.body.path === 'threaded' || a.body.path === 'deduped') {
+      const alert = postmarkAlerter();
+      const m = returningText(payload, a.body.path);
+      if (alert) after(() => alert.send(m.subject, m.text).then(() => undefined));
+      else console.error('[intake submit] returning customer, but no owner alert is configured');
     }
     kickReplay(env);
     return res;

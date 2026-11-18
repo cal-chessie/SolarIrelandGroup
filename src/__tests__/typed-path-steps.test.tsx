@@ -210,3 +210,30 @@ describe('no call-only road (Cal, 17 Nov 2026)', () => {
     expect(lanesText()).not.toMatch(/Where should we ring you|No bill, no problem/);
   });
 });
+
+describe('the bill period sticks (Cal, 18 Nov 2026: "it keeps going to monthly")', () => {
+  it('with "2 months" picked, the chips show 2-month amounts and a tap keeps "2 months" all the way to the quote', async () => {
+    setWidth(false);
+    render(<IntakeApp variant="page" initial={{ door: 'analyser-manual', segment: 'home', step: 'bill', stepRaw: 'bill' }} />);
+    await waitFor(() => expect(stepOf()).toBe('bill'));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('radio', { name: 'every 2 months' }));
+    });
+    const chip = screen.getByRole('button', { name: 'About €320 every 2 months' });
+    await act(async () => {
+      fireEvent.click(chip);
+    });
+    expect((screen.getByRole('radio', { name: 'every 2 months' }) as HTMLInputElement).checked).toBe(true);
+    expect(chip.getAttribute('aria-pressed')).toBe('true');
+    expect((document.getElementById('si-bill') as HTMLInputElement).value).toBe('320');
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'See my estimate' }));
+    });
+    await waitFor(() => expect(stepOf()).toBe('time'));
+    const bodies = vi.mocked(globalThis.fetch).mock.calls
+      .filter(([u]) => String(u).includes('/api/intake/quote'))
+      .flatMap(([, i]) => (JSON.parse(String(i?.body)) as { requests: QuoteRequestItem[] }).requests);
+    expect(bodies.some((r) => r.bill?.amountEur === 320 && r.bill.period === 'two_months')).toBe(true);
+    expect(bodies.some((r) => r.bill?.amountEur === 320 && r.bill.period === 'month')).toBe(false);
+  });
+});

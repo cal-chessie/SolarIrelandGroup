@@ -144,21 +144,20 @@ export function CallRemembered({
       <span className="si-done-mark" aria-hidden="true">
         <Mail size={24} />
       </span>
-      <H className="si-ask__title si-mt-24">
-        {today ? `We have your details${memory.first ? `, ${memory.first}` : ''}.` : `You sent us your details on ${dublinWeekday(memory.at)}.`}
-      </H>
+      <H className="si-ask__title si-mt-24">{`Welcome back${memory.first ? `, ${memory.first}` : ''}.`}</H>
       <p className="si-ask__sub">
-        {today
-          ? `Your full estimate is on its way to your email. Next, one of our team goes through the final details with you.`
-          : `If your estimate hasn't reached you yet, ring us on ${PHONE} and we'll take it from there.`}
+        {/* Cal, 18 Nov 2026: the old "your estimate is on its way" was untrue for
+            a returning visitor whose new estimate had not been sent. Say only
+            what happened, and give a way to send this one. */}
+        {`You sent us your details ${today ? 'earlier today' : `on ${dublinWeekday(memory.at)}`}. Want this estimate sent to your inbox too?`}
       </p>
       <div className="si-ask__go si-ask__go--row">
-        <a className="si-btn si-btn--secondary" href={PHONE_HREF}>
-          <Phone size={18} aria-hidden="true" /> Ring us on {PHONE}
-        </a>
-        <button type="button" className="si-btn--quiet" onClick={onAnother}>
-          Not you, or need another estimate?
+        <button type="button" className="si-btn si-btn--primary" onClick={onAnother}>
+          Send me this estimate
         </button>
+        <a className="si-btn--quiet" href={PHONE_HREF}>
+          <Phone size={16} aria-hidden="true" /> Or ring us on {PHONE}
+        </a>
       </div>
     </div>
   );

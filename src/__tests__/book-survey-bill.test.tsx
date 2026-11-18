@@ -79,14 +79,18 @@ describe('/book-survey?lt= (M6)', () => {
 });
 
 describe('/book-survey returning device', () => {
-  it('a device that already asked sees "We have your details", not the bill question', async () => {
+  it('a device that already asked is welcomed back honestly, not told an estimate is on its way', async () => {
     localStorage.setItem('si_call_requested', JSON.stringify({ v: 1, at: Date.now(), first: 'Mary', bestTime: null }));
     window.history.replaceState(null, '', '/book-survey');
     const { default: BookSurveyClient } = await import('@/app/book-survey/BookSurveyClient');
     render(<BookSurveyClient lt={null} segment="domestic" src={null} />);
     await waitFor(() => expect(document.querySelector('[data-call-remembered]')).not.toBeNull());
     expect(document.querySelector('[data-bill-question]')).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: /need another estimate/ }));
+    const text = document.body.textContent || '';
+    expect(text).toContain('Welcome back, Mary.');
+    expect(text).toContain('You sent us your details earlier today. Want this estimate sent to your inbox too?');
+    expect(text).not.toMatch(/on its way|We have your details/);
+    fireEvent.click(screen.getByRole('button', { name: 'Send me this estimate' }));
     expect(await screen.findByText(/electricity bill a month/)).toBeTruthy();
   });
 });

@@ -145,6 +145,31 @@ function askedLine(p: IngestBody): string {
   return 'No time asked';
 }
 
+/**
+ * A returning customer (Cal, 18 Nov 2026: "there's no way for me to know as a
+ * business"). AISolar's new-lead email goes only for a NEW lead; when someone
+ * already on file submits again, AISolar threads it onto their record and no
+ * email went. This is that email.
+ */
+export function returningText(p: IngestBody, path: string): { subject: string; text: string } {
+  const who = p.name || p.phone || p.email;
+  const biz = p.meta.segment === 'commercial';
+  const lines = [
+    'Someone already in AISolar came back to the website and sent their details again.',
+    `AISolar added it to their existing record (${path}), so it sent no new-lead email.`,
+    '',
+    `Name: ${p.name || ''}`,
+    `Mobile: ${p.phone || ''}`,
+    `Email: ${p.email}`,
+    `Home or business: ${biz ? `Business${p.meta.businessName ? `, ${p.meta.businessName}` : ''}` : 'Home'}`,
+    `Bill: ${p.monthlyBill != null ? `€${p.monthlyBill} a month` : 'not given'}`,
+    `Page: ${p.meta.page || ''}`,
+    '',
+    'Open their lead in AISolar: they are interested again, so a call today is worth it.',
+  ];
+  return { subject: `Returning customer: ${who}${biz ? ' (business)' : ''}`, text: lines.join('\n') };
+}
+
 export function alertText(p: IngestBody, key: string, reason: string, stored: boolean): { subject: string; text: string } {
   const who = [p.name || 'No name', p.phone || p.email].join(', ');
   const call = p.intent === 'call';
